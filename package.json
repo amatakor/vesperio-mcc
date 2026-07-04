@@ -9,6 +9,7 @@
     "check:feed": "bun scripts/check-feed.ts",
     "check:registry": "bun scripts/check-registry.ts",
     "check:signals": "bun scripts/check-signals.ts",
+    "test": "bun test scripts",
     "build": "bun run typecheck && bun run check:feed && bun run check:registry && bun run check:signals && vite build",
     "preview": "vite preview"
   },
@@ -17,6 +18,7 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@types/bun": "^1.3.14",
     "@types/node": "^24.0.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
