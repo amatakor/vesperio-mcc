@@ -1,12 +1,17 @@
-/* Design rules per CLAUDE.md: dark background, mono for structural
-   elements, no border-radius, no transform hovers, one accent colour.
+/* Brutalist editorial, per CLAUDE.md house rules:
+   no border-radius anywhere, no transform-based hovers, mono type for
+   structural elements, dark background, one accent colour.
    --acc is a neutral placeholder; Florian supplies the real palette. */
+
 :root {
   --bg: #0e1012;
+  --panel: #14171a;
   --fg: #d6dbe0;
   --dim: #7c858d;
+  --line: #2a2f34;
   --acc: #9aa4ab;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --serifish: georgia, "Times New Roman", serif;
 }
 
 * {
@@ -18,5 +23,292 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--acc);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.shell {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0 1.25rem 4rem;
+}
+
+/* ---------------------------------------------------------- masthead */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.5rem 0 1rem;
+  border-bottom: 2px solid var(--fg);
+  margin-bottom: 2rem;
+}
+
+.brand {
+  color: var(--fg);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.brand:hover {
+  text-decoration: none;
+  color: var(--acc);
+}
+
+.nav {
+  display: flex;
+  gap: 1.25rem;
+}
+.nav a {
+  color: var(--dim);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+.nav a:hover {
+  color: var(--acc);
+}
+
+/* -------------------------------------------------------------- text */
+
+.lede {
+  color: var(--dim);
+  max-width: 40rem;
+}
+
+.page-title {
+  font-size: 1.35rem;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.75rem;
+}
+
+.dim {
+  color: var(--dim);
+  font-weight: 400;
+}
+
+.empty {
+  color: var(--dim);
+  border: 1px dashed var(--line);
+  padding: 1rem;
+}
+
+/* -------------------------------------------------------------- feed */
+
+.cat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.cat-row a {
+  color: var(--dim);
+}
+.cat-row a:hover {
+  color: var(--acc);
+}
+
+.feed-row {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin-bottom: 0.3rem;
+}
+
+.date {
+  color: var(--dim);
+}
+
+.chip {
+  border: 1px solid var(--line);
+  padding: 0.05rem 0.45rem;
+  color: var(--dim);
+}
+a.chip:hover {
+  text-decoration: none;
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.chip-critical {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.chip-notable {
+  color: var(--fg);
+}
+.chip-reported {
+  border-style: dashed;
+}
+
+.feed-headline {
+  font-size: 1.05rem;
+  margin: 0 0 0.25rem;
+  line-height: 1.35;
+}
+.feed-headline a {
+  color: var(--fg);
+}
+.feed-headline a:hover {
+  color: var(--acc);
+  text-decoration: none;
+}
+
+.tagline {
+  color: var(--dim);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------- item */
+
+.item-page h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--acc);
+  margin: 1.75rem 0 0.4rem;
+}
+
+.for-who {
+  color: var(--dim);
+  border-left: 3px solid var(--line);
+  padding-left: 0.75rem;
+}
+
+.kv {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  gap: 0.35rem 1rem;
+  font-size: 0.85rem;
+}
+.kv dt {
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+.kv dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------------------------- registry */
+
+.index-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1.5rem;
+}
+.index-list li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+table.profile,
+table.stat-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+}
+table.profile th,
+table.profile td,
+table.stat-table th,
+table.stat-table td {
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+table.profile thead th {
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+}
+table.profile td.empty {
+  color: var(--dim);
+  border-style: solid;
+}
+table.stat-table th {
+  font-weight: 400;
+}
+table.stat-table td {
+  text-align: right;
+  color: var(--acc);
+}
+
+/* -------------------------------------------------------------- stats */
+
+.stat-block {
+  border-top: 1px solid var(--line);
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+.stat-block h2 {
+  font-size: 1rem;
+}
+.stat-block h2 a {
+  color: var(--dim);
+}
+
+.citation code {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.8rem;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  color: var(--dim);
+}
+
+/* -------------------------------------------------------------- about */
+
+.qa h3 {
+  font-size: 0.95rem;
+  margin: 1.5rem 0 0.25rem;
+  color: var(--acc);
+}
+.qa p {
+  margin: 0.25rem 0 0;
+  max-width: 42rem;
+}
+
+/* ------------------------------------------------------------- footer */
+
+.footer {
+  margin-top: 4rem;
+  border-top: 2px solid var(--fg);
+  padding-top: 1rem;
+  color: var(--dim);
+  font-size: 0.8rem;
 }
