@@ -10,7 +10,7 @@
     "check:registry": "bun scripts/check-registry.ts",
     "check:signals": "bun scripts/check-signals.ts",
     "test": "bun test scripts",
-    "build": "bun run typecheck && bun run check:feed && bun run check:registry && bun run check:signals && vite build",
+    "build": "bun run typecheck && bun run check:feed && bun run check:registry && bun run check:signals && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && bun scripts/prerender.ts",
     "preview": "vite preview"
   },
   "dependencies": {
