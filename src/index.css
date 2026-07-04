@@ -1,0 +1,22 @@
+/* Design rules per CLAUDE.md: dark background, mono for structural
+   elements, no border-radius, no transform hovers, one accent colour.
+   --acc is a neutral placeholder; Florian supplies the real palette. */
+:root {
+  --bg: #0e1012;
+  --fg: #d6dbe0;
+  --dim: #7c858d;
+  --acc: #9aa4ab;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+}

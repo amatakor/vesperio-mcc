@@ -1,0 +1,27 @@
+{
+  "name": "vesperio-mcc",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "check:feed": "bun scripts/check-feed.ts",
+    "check:registry": "bun scripts/check-registry.ts",
+    "check:signals": "bun scripts/check-signals.ts",
+    "build": "bun run typecheck && bun run check:feed && bun run check:registry && bun run check:signals && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0"
+  }
+}
