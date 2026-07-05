@@ -118,3 +118,28 @@ a newer entry if a lesson changes.
 - 2026-07-05-P: Redirects and rebrands: maxar.com redirects to
   vantor.com (Vantor rebrand); oneweb.net redirects to eutelsat.com;
   Amazon now calls Kuiper "Amazon Leo" on official pages.
+
+## Filtered-source sweep, 08:58-18:07 UTC window (2026-07-05)
+
+- 2026-07-05-Q: Scope judgment call: excluded a SpaceNews report on ESA
+  authorizing Airbus to begin Aeolus-2 wind-lidar satellite development
+  (EUR51M initial phase, 2034 target launch). It satisfies the letter of
+  "government procurement of commercial space services" and Airbus is a
+  tracked source, but it reads as legacy institutional weather-science
+  procurement via a heritage prime, not a new-space-economy event in the
+  spirit of the site (contrast with the Portugal/Norway ICEYE deals,
+  which are agile-constellation operators winning sovereign contracts).
+  Flag for Florian if that read is wrong; if it recurs, worth an explicit
+  scope note for ESA/Eumetsat Earth-science procurement via legacy primes.
+- 2026-07-05-R: SEC EDGAR atom feeds need a real contact-style
+  User-Agent ("VesperioMCC-Sweep contact@vesperio.ai"); a bare product
+  token without contact info (e.g. just "VesperioMCC-Sweep/1.0") still
+  gets a 403 "Undeclared Automated Tool" page even though it looks like
+  a User-Agent is set.
+- 2026-07-05-S: A short, narrow re-check window (same-day, ~9 hours
+  since the last sweep) against a small filtered source list is a
+  legitimate sweep shape distinct from the 30-day backfill runs earlier
+  today; all 12 named sources came back unchanged from the prior run
+  except one fresh SpaceNews story, and zero items shipped. A quiet
+  sweep with a documented scope call is a valid outcome, not a gap in
+  coverage.
