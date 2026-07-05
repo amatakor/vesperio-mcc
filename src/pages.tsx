@@ -340,31 +340,45 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
         pre-formatted citation. Machine-readable copy at{" "}
         <a href="/stats.json">/stats.json</a>.
       </p>
-      {blocks.map((b) => (
-        <section key={b.id} id={b.id} className="stat-block">
-          <h2>
-            <a href={`#${b.id}`}>#</a> {b.title}
-          </h2>
-          {b.rows.length === 0 ? (
-            <p className="empty">No data yet; this index reads zero until the feed and registry fill.</p>
-          ) : (
-            <table className="stat-table">
-              <tbody>
-                {b.rows.map(([label, value]) => (
-                  <tr key={label}>
-                    <th scope="row">{label}</th>
-                    <td>{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          <p className="dim">{b.method}</p>
-          <p className="citation">
-            <code>{b.citation}</code>
-          </p>
-        </section>
-      ))}
+      <p>
+        <span className="badge-acc">updated {generatedAt.slice(0, 10)}</span>
+      </p>
+      {blocks.map((b) => {
+        const max = Math.max(1, ...b.rows.map(([, v]) => v));
+        return (
+          <section key={b.id} id={b.id} className="stat-block">
+            <h2>
+              <a href={`#${b.id}`}>#</a> {b.title}
+            </h2>
+            {b.rows.length === 0 ? (
+              <p className="empty">
+                No data yet; this index reads zero until the feed and registry fill.
+              </p>
+            ) : (
+              <table className="stat-table">
+                <tbody>
+                  {b.rows.map(([label, value]) => (
+                    <tr key={label}>
+                      <th scope="row">{label}</th>
+                      <td className="num">{value}</td>
+                      <td className="bar-cell">
+                        <div
+                          className="bar"
+                          style={{ width: `${Math.max(2, (value / max) * 100)}%` }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            <p className="dim">{b.method}</p>
+            <p className="citation">
+              <code>{b.citation}</code>
+            </p>
+          </section>
+        );
+      })}
     </Layout>
   );
 }
