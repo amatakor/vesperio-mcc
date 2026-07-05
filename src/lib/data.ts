@@ -21,7 +21,9 @@ export const items: Item[] = (itemsJson as ItemsFile).items
   .slice()
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
-export const signals = (signalsJson as SignalsFile).people;
+const signalsFile = signalsJson as unknown as SignalsFile;
+export const signals = signalsFile.people;
+export const signalOutlets = signalsFile.outlets;
 
 export const sweeps: SweepLogEntry[] = (stateJson as StateFile).sweeps
   .slice()
