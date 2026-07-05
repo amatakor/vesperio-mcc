@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Item, SourcedField, ConstellationProfile, VehicleProfile } from "./data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
 import { items, signals, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
-import { computeStats } from "./lib/stats";
+import { computeHero, computeStats } from "./lib/stats";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
 const LAST_ITEM_KEY = "mcc:last-item";
@@ -629,29 +629,40 @@ export function SignalsPage() {
 // ------------------------------------------------------------------ stats
 
 export function StatsPage({ generatedAt }: { generatedAt: string }) {
-  const blocks = computeStats(items, constellations, vehicles, new Date(generatedAt));
+  const now = new Date(generatedAt);
+  const hero = computeHero(items, constellations, vehicles, sweeps, now);
+  const blocks = computeStats(items, constellations, vehicles, now);
   return (
     <Layout>
       <h1 className="page-title">stats</h1>
       <p className="lede">
-        Basic indices computed from MCC data at build time. Each block has a stable anchor and a
-        pre-formatted citation. Machine-readable copy at{" "}
+        Live indices computed from MCC data on every build. Each block answers one question,
+        states its method, and offers a ready-made citation. Machine-readable copy at{" "}
         <a href="/stats.json">/stats.json</a>.
       </p>
+      <p className="hero-sentence">{hero.sentence}</p>
       <p>
         <span className="badge-acc">updated {generatedAt.slice(0, 10)}</span>
       </p>
+      <div className="tiles">
+        {hero.tiles.map(([num, label, sub]) => (
+          <div key={label} className="tile">
+            <span className="tile-num">{num}</span>
+            <span className="tile-label">{label}</span>
+            <span className="tile-sub">{sub}</span>
+          </div>
+        ))}
+      </div>
       {blocks.map((b) => {
         const max = Math.max(1, ...b.rows.map(([, v]) => v));
         return (
           <section key={b.id} id={b.id} className="stat-block">
             <h2>
-              <a href={`#${b.id}`}>#</a> {b.title}
+              <a href={`#${b.id}`}>#</a> {b.question}
             </h2>
+            <p className="stat-answer">{b.answer}</p>
             {b.rows.length === 0 ? (
-              <p className="empty">
-                No data yet; this index reads zero until the feed and registry fill.
-              </p>
+              <p className="empty">// no data yet; this index fills as the feed and registry grow</p>
             ) : (
               <table className="stat-table">
                 <tbody>
@@ -670,10 +681,13 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
                 </tbody>
               </table>
             )}
-            <p className="dim">{b.method}</p>
-            <p className="citation">
-              <code>{b.citation}</code>
-            </p>
+            <p className="dim stat-method">{b.method}</p>
+            <details className="cite">
+              <summary>cite this</summary>
+              <p className="citation">
+                <code>{b.citation}</code>
+              </p>
+            </details>
           </section>
         );
       })}
