@@ -454,6 +454,7 @@ function checkSourcedField(
 }
 
 const CONSTELLATION_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["overview", "string"],
   ["operator", "string"],
   ["country", "string"],
   ["sensor_types", "string[]"],
@@ -467,6 +468,7 @@ const CONSTELLATION_FIELDS: Array<[string, "string" | "number" | "boolean" | "st
 ];
 
 const VEHICLE_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["overview", "string"],
   ["provider", "string"],
   ["country", "string"],
   ["vehicle_class", "string"],

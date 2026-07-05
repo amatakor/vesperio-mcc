@@ -322,6 +322,8 @@ export interface ConstellationProfile {
   name: string;
   entity_type: "constellation";
   domain: ConstellationDomain;
+  /** 2-4 sentence sourced overview; every claim backed by this field's source. */
+  overview: SourcedField<string>;
   operator: SourcedField<string>;
   country: SourcedField<string>;
   /** EO sensor modality/ies, e.g. ["sar"]; null for connectivity. */
@@ -341,6 +343,8 @@ export interface VehicleProfile {
   slug: string;
   name: string;
   entity_type: "vehicle";
+  /** 2-4 sentence sourced overview; every claim backed by this field's source. */
+  overview: SourcedField<string>;
   provider: SourcedField<string>;
   country: SourcedField<string>;
   /** e.g. "small", "medium", "heavy", "super-heavy". */
