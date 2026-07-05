@@ -25,6 +25,7 @@ import {
   constellationChildren,
 } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
+import { OrbitsStage } from "./orbits/stage";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
 const LAST_ITEM_KEY = "mcc:last-item";
@@ -71,6 +72,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <a href="/tag/iot/">iot</a>
           <a href="/tag/launch/">launch</a>
           <a href="/registry/">registry</a>
+          <a href="/orbits/">orbits</a>
           <a href="/signals/">signals</a>
           <a href="/stats/">stats</a>
           <a href="/log/">log</a>
@@ -1651,6 +1653,26 @@ function matchesSignalQuery(p: SignalPerson, q: string): boolean {
     .join(" ")
     .toLowerCase();
   return hay.includes(q);
+}
+
+// ---------------------------------------------------------------- orbits
+
+export function OrbitsPage() {
+  return (
+    <Layout>
+      <h1 className="page-title">Orbits</h1>
+      <p className="lede">
+        The Registry rendered physically: tracked constellations on live propagated positions,
+        with active spaceports and industry facilities on the ground.
+      </p>
+      <OrbitsStage />
+      <p className="orbits-credit">
+        Orbital data: CelesTrak (Dr. T.S. Kelso). Launch data: The Space Devs / Launch Library 2.
+        Positions are SGP4 propagations from public element sets, accurate to a few km; not for
+        operational use.
+      </p>
+    </Layout>
+  );
 }
 
 export function SignalsPage() {

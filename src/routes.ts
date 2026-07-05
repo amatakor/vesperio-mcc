@@ -24,6 +24,7 @@ export type Route =
   | { page: "item"; id: string }
   | { page: "category"; category: string }
   | { page: "tag"; tag: string }
+  | { page: "orbits" }
   | { page: "registry" }
   | { page: "constellation"; slug: string }
   | { page: "vehicle"; slug: string }
@@ -45,6 +46,7 @@ export function normalizePath(pathname: string): string {
 export function matchRoute(pathname: string): Route {
   const p = normalizePath(pathname);
   if (p === "/") return { page: "home" };
+  if (p === "/orbits/") return { page: "orbits" };
   if (p === "/registry/") return { page: "registry" };
   if (p === "/signals/") return { page: "signals" };
   if (p === "/stats/") return { page: "stats" };
@@ -118,6 +120,13 @@ export function headFor(path: string): Head {
       return {
         title: `#${route.tag} | MCC`,
         description: `Items tagged ${route.tag} in the MCC feed, each with its source and confidence label.`,
+        canonical,
+      };
+    case "orbits":
+      return {
+        title: "Orbits | MCC",
+        description:
+          "Live 3D view of the constellations tracked in the MCC Registry, with active spaceports and industry facilities. SGP4 propagation from public element sets.",
         canonical,
       };
     case "registry":
@@ -195,6 +204,7 @@ export function headFor(path: string): Head {
 export function listRoutes(): string[] {
   return [
     "/",
+    "/orbits/",
     "/registry/",
     "/signals/",
     "/stats/",
