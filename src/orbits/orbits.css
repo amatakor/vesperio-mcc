@@ -840,6 +840,18 @@
   pointer-events: auto;
 }
 
+/* ------------------------------------------------ narrow desktop
+   Below 1280px the globe runs right under the HUD text, so the left
+   sections get translucent boxes again (Florian 2026-07-06). */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .ocol-left .hud {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+}
+
 /* ------------------------------------------------ short desktop
    Compact HUD spacing so the three left sections fit common laptop
    heights without scrolling; the full spacing needs ~1000px. */
@@ -900,11 +912,16 @@
   .ocol-right > * {
     pointer-events: auto;
   }
-  /* The left column is a bare HUD (Florian 2026-07-06: no boxes); only
-     the VIEW cluster and the rail keep their translucent panels. */
+  /* The left column is a bare HUD on wide screens (Florian 2026-07-06:
+     no boxes); only the VIEW cluster and the rail keep their
+     translucent panels. */
   .ocol-left .view,
   .ocol-right .rail {
     background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
+  }
+  /* Extra air under the tracked counter (Florian 2026-07-06). */
+  .hud + .hud {
+    margin-top: 14px;
   }
   /* Clear of the floating right rail (24px padding + 352px + 14px). */
   .ostatus {

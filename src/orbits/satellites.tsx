@@ -310,6 +310,26 @@ export function Satellites({
     }
   });
 
+  /** Selects the satellite at a global point index (label clicks). */
+  const pickByIndex = (index: number, e: ThreeEvent<MouseEvent>) => {
+    const down = downPos.current;
+    if (
+      down &&
+      Math.hypot(e.nativeEvent.clientX - down.x, e.nativeEvent.clientY - down.y) > 8
+    ) {
+      return;
+    }
+    if (occludedByGlobe(e.ray, e.distance, OCCLUDER_RADIUS)) return;
+    for (const { entry, start, count } of plan.segments) {
+      if (index >= start && index < start + count) {
+        const i = index - start;
+        e.stopPropagation();
+        onPick({ slug: entry.slug, id: entry.ids[i]!, name: entry.names[i]!, index });
+        return;
+      }
+    }
+  };
+
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     const down = downPos.current;
     if (
@@ -370,7 +390,13 @@ export function Satellites({
         </points>
       ))}
       {labels.flatMap((l, li) =>
-        l.sprites.map((s, si) => <primitive key={`${li}-${si}`} object={s} />),
+        l.sprites.map((s, si) => (
+          <primitive
+            key={`${li}-${si}`}
+            object={s}
+            onClick={(e: ThreeEvent<MouseEvent>) => pickByIndex(l.seg.start + si, e)}
+          />
+        )),
       )}
     </>
   );

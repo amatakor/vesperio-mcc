@@ -239,7 +239,7 @@ function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicl
 /**
  * Two of the left column's three equally spaced sections (the third is
  * the VIEW cluster): the prominent tracked count on its own, then the
- * launch block (countdown, orbital flow, vehicle ranking).
+ * launch block (orbital flow, countdown, vehicle ranking).
  */
 export function HudColumn({
   tracked,
@@ -258,8 +258,8 @@ export function HudColumn({
       </div>
       {stats && (
         <div className="hud">
-          <Countdown upcoming={stats.upcoming} />
           <FlowChart stats={stats} />
+          <Countdown upcoming={stats.upcoming} />
           <VehicleBars vehicles={stats.vehicles_6mo} />
         </div>
       )}
