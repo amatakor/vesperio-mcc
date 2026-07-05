@@ -1,6 +1,5 @@
-# Registry maintenance. INERT until the news sweep is validated:
-# manual trigger only. Enable the weekly cron once the first supervised
-# sweeps pass (BUILD_PLAN.md Task 5, SETUP.md step 6).
+# Registry maintenance, weekly. Cron enabled 2026-07-05 alongside the
+# news sweep after Task 5 acceptance.
 #
 # Requires the CLAUDE_CODE_OAUTH_TOKEN repo secret (claude setup-token)
 # and the Claude GitHub App installed on this repo.
@@ -9,9 +8,8 @@ name: maintain-registry
 
 on:
   workflow_dispatch:
-  # Enable after the news sweep is validated; weekly per CLAUDE.md.
-  # schedule:
-  #   - cron: "0 6 * * 1"
+  schedule:
+    - cron: "0 6 * * 1"
 
 concurrency:
   group: data-writes
