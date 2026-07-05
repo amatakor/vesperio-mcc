@@ -56,3 +56,39 @@ a newer entry if a lesson changes.
   WebFetch and curl with a descriptive User-Agent) and was flipped to
   status "dead" this run. Don't keep re-fetching it every sweep; revisit
   only if a differently-shaped URL (e.g. an RSS/JSON endpoint) turns up.
+- 2026-07-05-J: One-off 30-day backfill run (Florian-approved, source list
+  restricted to Planet Labs/ICEYE/Rocket Lab/European Spaceflight/
+  SpaceNews/Launch Library/six SEC 8-K feeds). Lessons:
+  - When a run is restricted to a named source list, treat any company
+    or agency whose own site/filing isn't on that list as unreachable
+    this run, even if it's the true primary source. SpaceNews and
+    European Spaceflight items were correctly capped at `reported`
+    (not upgraded to `confirmed`) for exactly this reason -- e.g. NASA's
+    lunar lander awards, the FCC vote, and Amazon/ULA's Atlas V flight
+    all have primary sources (nasa.gov, fcc.gov, ULA/Amazon newsroom)
+    that simply weren't in this run's allowed list.
+  - Launch Library 2 is usable as a *confirmed*-tier primary source for
+    launch occurrence facts (CLAUDE.md's source ladder item 5), including
+    government/defense missions like Rocket Lab's VICTUS HAZE -- the
+    `mission.description` field on the per-launch endpoint is often
+    detailed enough to write a full item without needing the launch
+    provider's own (Cloudflare-gated) site.
+  - Backfill discipline: an event whose only public disclosure predates
+    the backfill window doesn't qualify even if a later article
+    *describing* that disclosure falls inside the window. Excluded a
+    Rocket Factory Augsburg product-roadmap item this run for exactly
+    this reason (underlying reveal was OHB's May 18 Capital Markets
+    Update, outside the 30-day cutoff; only OHB's own June 22 capital
+    raise announcement, a separate event, qualified).
+  - Scope judgment call: treated EchoStar's DISH DBS + DISH Wireless
+    Chapter 11 filing as out of scope. DISH DBS is legacy satellite TV
+    and DISH Wireless is entirely terrestrial 5G; neither is "new-space
+    relevant" per CLAUDE.md's GEO-operator carve-out. Flag for Florian
+    if that read is wrong.
+  - Process bug (self-caught, not a source issue): the first draft's
+    newItems array silently dropped one fully-verified item (Blue
+    Origin's New Glenn pad-CONOPS story) that the same draft's own
+    summary text described. finalize-sweep has no cross-check between
+    a draft's prose summary and its actual newItems array, so this kind
+    of slip isn't mechanically caught -- double-count newItems against
+    the summary's claimed count before running finalize-sweep next time.
