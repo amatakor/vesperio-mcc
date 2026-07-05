@@ -313,7 +313,7 @@ export interface SourcedField<T> {
   as_of: string | null;
 }
 
-export const CONSTELLATION_DOMAINS = ["eo", "connectivity"] as const;
+export const CONSTELLATION_DOMAINS = ["eo", "connectivity", "iot"] as const;
 export type ConstellationDomain = (typeof CONSTELLATION_DOMAINS)[number];
 
 export interface ConstellationProfile {
@@ -322,6 +322,8 @@ export interface ConstellationProfile {
   name: string;
   entity_type: "constellation";
   domain: ConstellationDomain;
+  /** Slug of the fleet-level parent profile, when the operator names sub-constellations. */
+  parent?: string | null;
   /** 2-4 sentence sourced overview; every claim backed by this field's source. */
   overview: SourcedField<string>;
   operator: SourcedField<string>;
@@ -361,4 +363,58 @@ export interface VehicleProfile {
   notes?: string | null;
 }
 
-export type RegistryProfile = ConstellationProfile | VehicleProfile;
+export const SPACEPORT_REGIONS = [
+  "north-america",
+  "south-america",
+  "europe",
+  "asia",
+  "oceania",
+  "middle-east",
+] as const;
+export type SpaceportRegion = (typeof SPACEPORT_REGIONS)[number];
+
+export interface SpaceportProfile {
+  /** Must match the filename. */
+  slug: string;
+  name: string;
+  entity_type: "spaceport";
+  /** Structural grouping for browsing, like domain on constellations. */
+  region: SpaceportRegion;
+  /** 2-4 sentence sourced overview. */
+  overview: SourcedField<string>;
+  country: SourcedField<string>;
+  operator: SourcedField<string>;
+  first_launch_date: SourcedField<string>;
+  launches_total: SourcedField<number>;
+  status: SourcedField<string>;
+  website: SourcedField<string>;
+  notes?: string | null;
+}
+
+export const ORG_KINDS = [
+  "manufacturer",
+  "in-space-services",
+  "ground-segment",
+  "institution",
+  "finance",
+] as const;
+export type OrgKind = (typeof ORG_KINDS)[number];
+
+export interface OrgProfile {
+  /** Must match the filename. */
+  slug: string;
+  name: string;
+  entity_type: "organization";
+  /** Structural grouping for browsing. */
+  kind: OrgKind;
+  /** 2-4 sentence sourced overview. */
+  overview: SourcedField<string>;
+  country: SourcedField<string>;
+  founded: SourcedField<number>;
+  focus: SourcedField<string>;
+  status: SourcedField<string>;
+  website: SourcedField<string>;
+  notes?: string | null;
+}
+
+export type RegistryProfile = ConstellationProfile | VehicleProfile | SpaceportProfile | OrgProfile;

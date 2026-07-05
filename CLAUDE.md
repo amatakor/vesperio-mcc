@@ -22,6 +22,9 @@ The platform tracks new space events: the commercial space economy and the event
 **In scope:**
 - Commercial EO operators and their constellations (optical, SAR, hyperspectral, RF, GHG)
 - Connectivity constellations and operators (Starlink, Kuiper, OneWeb/Eutelsat, AST SpaceMobile, GEO operators when the event is new-space relevant)
+- IoT and RF constellations: IoT messaging operators (Kineis, Astrocast, Myriota, OQ Technology) and RF-sensing operators (Unseenlabs, HawkEye 360, Spire). Classification rule: RF sensing is EO, RF communication is IoT (sensor or modem)
+- Spaceports and launch infrastructure, orbital sites worldwide
+- The wider ecosystem where events move the commercial market: manufacturers and bus providers, in-space services (tugs, cleanup, capsules, manufacturing), ground-segment providers, institutions and regulators (space agencies, UN bodies, FCC/ITU/NOAA), and space-focused investment funds
 - Launch vehicles and launch providers, orbital only
 - Human spaceflight, active programs only, where contracts and outcomes affect commercial providers (Commercial Crew, CLD/commercial stations, Artemis awards to commercial primes). Science-only mission coverage stays out.
 - Regulatory events affecting any of the above (FCC, ITU, NOAA CRSRA, export control, spectrum)
@@ -149,7 +152,7 @@ Registry updates run in a separate scheduled workflow (`maintain-registry.yml`),
 
 ## Registry rules
 
-- v1 scope: EO constellations, connectivity constellations, and orbital launch vehicles. One profile per entity, uniform fields per entity type.
+- Scope (extended 2026-07-05): constellations (EO, connectivity, IoT; fleet-level parents may carry named child constellations via the parent field), orbital launch vehicles, spaceports (grouped by region), and ecosystem organizations (manufacturer, in-space-services, ground-segment, institution, finance). One profile per entity, uniform fields per entity type.
 - No free-form essays, with one exception: a profile may carry a short overview block (2-4 sentences) stored as a sourced field like any other; every claim in it must be backed by that field's source URL and as_of date. Anything the source does not state stays out of the overview.
 - Every field carries a `source` and `as_of` date. Unknown fields stay `null`; never estimate.
 - Structural edits (new fields, new entries) happen only via @claude issues reviewed by Florian, never in scheduled runs.
