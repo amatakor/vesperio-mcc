@@ -69,7 +69,7 @@ jobs:
       - name: Build must pass before any commit
         run: bun run build
 
-      - name: Commit feed changes (skip on zero-activity sweeps)
+      - name: Commit feed changes
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -89,10 +89,6 @@ jobs:
           ts = e['at'][:16].replace('T', ' ')
           print(f\"{e['added']} new, {e['updated']} updated, {e['held']} held ({ts} UTC)\")
           ")
-          if echo "$counts" | grep -q "^0 new, 0 updated, 0 held"; then
-            echo "Zero-activity sweep; per policy, no feed commit."
-            exit 0
-          fi
           git config user.name "mcc-sweep-bot"
           git config user.email "actions@users.noreply.github.com"
           git add src/data SWEEP_MEMORY.md public/img/items

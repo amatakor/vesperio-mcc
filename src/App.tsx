@@ -10,6 +10,7 @@ import {
   SignalsPage,
   StatsPage,
   AboutPage,
+  LogPage,
   NotFoundPage,
 } from "./pages";
 
@@ -34,6 +35,8 @@ export default function App({ path, generatedAt }: { path: string; generatedAt: 
       return <StatsPage generatedAt={generatedAt} />;
     case "about":
       return <AboutPage />;
+    case "log":
+      return <LogPage />;
     case "not-found":
       return <NotFoundPage />;
   }
