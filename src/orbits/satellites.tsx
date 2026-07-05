@@ -18,7 +18,8 @@ import type { LayoutEntry } from "./types";
 /** Must stay just inside the ocean sphere radius in scene.tsx. */
 const OCCLUDER_RADIUS = 0.995;
 
-/** No name labels above this layer size; they would be unreadable. */
+/** Labels per layer; oversized layers label their first LABEL_LIMIT
+ * satellites (catalog order) rather than none at all. */
 const LABEL_LIMIT = 150;
 
 function labelTexture(text: string, color: string): THREE.CanvasTexture {
@@ -27,6 +28,10 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   c.height = 32;
   const ctx = c.getContext("2d")!;
   ctx.font = "600 20px ui-monospace, 'SF Mono', Menlo, monospace";
+  // Semi-translucent backing box so labels read over the cloud.
+  const w = Math.min(ctx.measureText(text).width, 244);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.62)";
+  ctx.fillRect(0, 2, w + 9, 28);
   ctx.fillStyle = color;
   ctx.textBaseline = "middle";
   ctx.fillText(text, 4, 17, 248);
@@ -191,15 +196,16 @@ export function Satellites({
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
   // satellite, positions synced from the shared buffer each frame.
-  // Skipped for very large layers where labels would be unreadable soup.
+  // Layers past LABEL_LIMIT label their first LABEL_LIMIT satellites in
+  // catalog order (Florian 2026-07-06: some labels beat none).
   const labels = useMemo(() => {
     if (highlightSlugs === null || !showLabels) return [];
     const out: { seg: { start: number; count: number }; sprites: THREE.Sprite[] }[] = [];
     for (const seg of plan.segments) {
-      if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0 || seg.count > LABEL_LIMIT) {
+      if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0) {
         continue;
       }
-      const sprites = seg.entry.names.map((n) => {
+      const sprites = seg.entry.names.slice(0, LABEL_LIMIT).map((n) => {
         const sprite = new THREE.Sprite(
           new THREE.SpriteMaterial({
             map: labelTexture(n, labelColor),
@@ -212,7 +218,7 @@ export function Satellites({
         sprite.center.set(-0.12, 0.5);
         return sprite;
       });
-      out.push({ seg: { start: seg.start, count: seg.count }, sprites });
+      out.push({ seg: { start: seg.start, count: sprites.length }, sprites });
     }
     return out;
   }, [plan, highlightSlugs, labelColor, showLabels]);

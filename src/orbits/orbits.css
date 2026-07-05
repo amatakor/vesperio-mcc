@@ -95,7 +95,7 @@
   color: var(--dim);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
   pointer-events: none;
 }
 
@@ -191,10 +191,22 @@
   padding: 0 2px;
 }
 .lcd-big {
-  font-size: 28px;
+  font-size: 34px;
 }
 .lcd-clock {
   font-size: 17px;
+}
+
+/* The countdown links to the mission's feed item or vehicle profile. */
+.hud-countdown-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.hud-countdown-link:hover .hud-mission {
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
 }
 
 .hud-countdown {
@@ -548,14 +560,16 @@
   text-overflow: ellipsis;
   letter-spacing: 0.5px;
 }
-/* Row names link to the registry profile. */
+/* Row names link to the registry profile; the affordance stays quiet
+   (Florian 2026-07-06: no accent flood), just a dim underline. */
 .rl-name-link {
   color: inherit;
   text-decoration: none;
 }
 .rl-name-link:hover {
-  color: var(--acc);
   text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
 }
 .rl-child .rl-name {
   color: #c9c9c9;
@@ -828,7 +842,7 @@
     padding: 10px 0;
   }
   .lcd-big {
-    font-size: 24px;
+    font-size: 30px;
   }
   .flow-legend {
     margin-top: 7px;
@@ -847,13 +861,15 @@
   }
 }
 
-/* ------------------------------------------------- narrow desktop
-   Option 1 (Florian 2026-07-06): below this width the globe stops
-   shrinking. The canvas goes full-bleed under the frame and the side
-   columns float over its edges on slightly translucent fills, so the
-   panels cut into the globe instead of crushing it. */
+/* ---------------------------------------------------- desktop canvas
+   The canvas runs full-bleed under the whole frame at every desktop
+   width; the side columns float over it on slightly translucent fills
+   so the star field reads through (Florian 2026-07-06). On wide
+   screens FitCamera pads the fit so the globe still sits between the
+   panels; below 1280px the globe stops shrinking and the panels cut
+   into it (Option 1). */
 
-@media (min-width: 901px) and (max-width: 1280px) {
+@media (min-width: 901px) {
   .oframe-main {
     position: relative;
     justify-content: space-between;
@@ -875,13 +891,17 @@
     pointer-events: auto;
   }
   .ocol-left .hud {
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
     border: 1px solid var(--line);
     padding: 10px 12px;
   }
   .ocol-left .view,
   .ocol-right .rail {
-    background: color-mix(in srgb, var(--panel-dark) 78%, transparent);
+    background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
+  }
+  /* Clear of the floating right rail (24px padding + 352px + 14px). */
+  .ostatus {
+    right: 390px;
   }
 }
 

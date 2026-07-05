@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import type { OrbitsStatsFile } from "../data/schema";
+import { items, vehicles } from "../lib/data";
 
 // ---------------------------------------------------------------- LCD
 
@@ -38,6 +39,33 @@ function pad2(n: number): string {
   return String(n).padStart(2, "0");
 }
 
+/**
+ * Where a countdown click lands (Florian 2026-07-06): the feed item
+ * covering the mission when one exists, else the vehicle's registry
+ * profile, else nowhere. LL2 names launches "Vehicle | Mission".
+ */
+function launchHref(next: OrbitsStatsFile["upcoming"][number]): string | null {
+  // Hyphen/space variants ("Transporter 17" vs "Transporter-17") match.
+  const norm = (s: string) => s.toLowerCase().replace(/-/g, " ").replace(/\s+/g, " ");
+  const missionRaw = next.name.split(" | ")[1] ?? next.name;
+  const mission = norm(missionRaw.replace(/\(.*?\)/g, "").trim());
+  if (mission.length >= 4) {
+    const item = items.find(
+      (i) =>
+        norm(i.headline).includes(mission) || norm(i.explainer.tagline).includes(mission),
+    );
+    if (item) return `/item/${item.id}/`;
+  }
+  const vname = next.vehicle.toLowerCase();
+  const veh = vehicles
+    .filter((v) => {
+      const n = v.name.toLowerCase();
+      return vname.startsWith(n) || n.startsWith(vname);
+    })
+    .sort((a, b) => b.name.length - a.name.length)[0];
+  return veh ? `/registry/vehicles/${veh.slug}/` : null;
+}
+
 /** Ticks locally each second; rolls to the next launch at T-0. */
 function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const [nowMs, setNowMs] = useState(() => Date.now());
@@ -56,9 +84,10 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const s = Math.floor(diff / 1000) % 60;
   const netDate = new Date(next.net);
   const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
+  const href = launchHref(next);
 
-  return (
-    <div className="hud-module">
+  const body = (
+    <>
       <div className="hud-label">NEXT LAUNCH · T MINUS</div>
       <div className="hud-countdown">
         <span className="hud-tminus">T-{days}D</span>
@@ -68,6 +97,17 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
       <div className="hud-pad">
         {[next.pad, netLabel].filter(Boolean).join(" · ").toUpperCase()}
       </div>
+    </>
+  );
+  return (
+    <div className="hud-module">
+      {href ? (
+        <a className="hud-countdown-link" href={href}>
+          {body}
+        </a>
+      ) : (
+        body
+      )}
     </div>
   );
 }
@@ -173,8 +213,8 @@ function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }
 
 /**
  * Two of the left column's three equally spaced sections (the third is
- * the VIEW cluster): the timers (title row, tracked count, countdown)
- * and the charts (orbital flow, launches by vehicle).
+ * the VIEW cluster): the prominent tracked count on its own, then the
+ * launch block (countdown, orbital flow, vehicle ranking).
  */
 export function HudColumn({
   tracked,
@@ -190,10 +230,10 @@ export function HudColumn({
           <div className="hud-label">SATELLITES TRACKED</div>
           <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
         </div>
-        {stats && <Countdown upcoming={stats.upcoming} />}
       </div>
       {stats && (
         <div className="hud">
+          <Countdown upcoming={stats.upcoming} />
           <FlowChart stats={stats} />
           <VehicleBars vehicles={stats.vehicles_6mo} />
         </div>
@@ -209,6 +249,8 @@ export interface ViewClusterProps {
   onZoomOut(): void;
   autoRotate: boolean;
   onToggleAutoRotate(): void;
+  axisLock: boolean;
+  onToggleAxisLock(): void;
   labelsOn: boolean;
   onToggleLabels(): void;
   onReset(): void;
@@ -233,6 +275,17 @@ export function ViewCluster(p: ViewClusterProps) {
         <span>AUTO-ROTATE</span>
         <button type="button" className="view-btn" onClick={p.onToggleAutoRotate}>
           [{p.autoRotate ? "ON" : "OFF"}]
+        </button>
+      </div>
+      <div className="view-row">
+        <span>LOCK AXIS</span>
+        <button
+          type="button"
+          className="view-btn"
+          onClick={p.onToggleAxisLock}
+          title="Locked: dragging spins the globe about its tilted axis"
+        >
+          [{p.axisLock ? "ON" : "OFF"}]
         </button>
       </div>
       <div className="view-row">

@@ -199,19 +199,22 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
 /**
  * Fits the camera distance so everything up to `fitRadius` (the globe,
  * or the highest enabled navigation shell) is inside the viewport at
- * any aspect ratio. Zoom is disabled, so this distance holds until the
- * fit target changes.
+ * any aspect ratio. `sidePad` shrinks the effective width: the canvas
+ * runs full-bleed under the floating side panels, but on wide screens
+ * the globe should still fit between them. Zoom is disabled, so this
+ * distance holds until the fit target changes.
  */
-function FitCamera({ fitRadius }: { fitRadius: number }) {
+function FitCamera({ fitRadius, sidePad }: { fitRadius: number; sidePad: number }) {
   const { camera, size } = useThree();
   useEffect(() => {
     // A zero-sized container during the first layout pass would push the
     // camera to Infinity and poison the position with NaN for the whole
     // session; skip until the size is real and self-heal a bad position.
     if (size.width < 2 || size.height < 2) return;
+    const width = Math.max(size.width - 2 * sidePad, 120);
     const persp = camera as THREE.PerspectiveCamera;
     const vHalf = (persp.fov * Math.PI) / 360;
-    const hHalf = Math.atan(Math.tan(vHalf) * (size.width / size.height));
+    const hHalf = Math.atan(Math.tan(vHalf) * (width / size.height));
     const denom = Math.sin(Math.min(vHalf, hHalf));
     if (!Number.isFinite(denom) || denom < 1e-3) return;
     const d = fitRadius / denom;
@@ -219,7 +222,7 @@ function FitCamera({ fitRadius }: { fitRadius: number }) {
     if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
     else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size, fitRadius]);
+  }, [camera, size, fitRadius, sidePad]);
   return null;
 }
 
@@ -276,12 +279,21 @@ function PopupAnchor({
 
 /** Controlled orbit controls for user drags; auto-rotate is the globe
  * spinning (AutoSpin), not a camera orbit, so the axial tilt holds.
+ * With the axis locked (default) camera rotation is off entirely and
+ * dragging spins the globe instead (handler on the canvas wrap).
  * Scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
-function Controls({ onInteract }: { onInteract(): void }) {
+function Controls({
+  enableRotate,
+  onInteract,
+}: {
+  enableRotate: boolean;
+  onInteract(): void;
+}) {
   return (
     <OrbitControls
       enablePan={false}
       enableZoom={false}
+      enableRotate={enableRotate}
       enableDamping
       dampingFactor={0.08}
       rotateSpeed={0.5}
@@ -402,9 +414,21 @@ export default function Scene() {
     void loadStats().then(setStats);
   }, []);
   const [autoRotate, setAutoRotate] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  // Locked (default): dragging spins the globe about its own tilted
+  // axis, so the tilt never changes; unlocked frees the camera orbit.
+  const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
   const [zoomStep, setZoomStep] = useState(0);
   const [resetNonce, setResetNonce] = useState(0);
+  // Wide screens keep the globe fitted between the floating panels even
+  // though the canvas itself runs full-bleed underneath them.
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1281px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1281px)");
+    const onChange = (e: MediaQueryListEvent) => setWide(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
   // v2 key: categories now default open (Florian 2026-07-06); the bump
   // clears everyone's stored v1 collapse state so the new default shows.
   const [collapse, setCollapse] = useState<Record<string, boolean>>(() => {
@@ -450,6 +474,13 @@ export default function Scene() {
   const workerRef = useRef<Worker | null>(null);
   // The earth-fixed group AutoSpin rotates; everything ECEF lives inside.
   const spinGroup = useRef<THREE.Group | null>(null);
+  // Axis-locked manual drag: last pointer X while the primary button is
+  // down; null when not dragging.
+  const dragLastX = useRef<number | null>(null);
+  const axisLockRef = useRef(axisLock);
+  axisLockRef.current = axisLock;
+  const autoRotateRef = useRef(autoRotate);
+  autoRotateRef.current = autoRotate;
 
   const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
 
@@ -969,6 +1000,8 @@ export default function Scene() {
             onZoomOut={() => setZoomStep((z) => Math.max(-2, z - 1))}
             autoRotate={autoRotate}
             onToggleAutoRotate={() => setAutoRotate((v) => !v)}
+            axisLock={axisLock}
+            onToggleAxisLock={() => setAxisLock((v) => !v)}
             labelsOn={labelsOn}
             onToggleLabels={() => setLabelsOn((v) => !v)}
             onReset={onReset}
@@ -978,6 +1011,23 @@ export default function Scene() {
           className="orbits-canvas-wrap"
           onPointerDown={(e) => {
             downPos.current = { x: e.clientX, y: e.clientY };
+            dragLastX.current = e.clientX;
+          }}
+          onPointerMove={(e) => {
+            // Axis-locked drag: horizontal motion spins the earth about
+            // its own tilted axis; the camera (and the tilt) stays put.
+            if (!axisLockRef.current || dragLastX.current === null) return;
+            const dx = e.clientX - dragLastX.current;
+            dragLastX.current = e.clientX;
+            if (dx === 0 || !spinGroup.current) return;
+            spinGroup.current.rotation.y += dx * 0.006;
+            if (autoRotateRef.current) setAutoRotate(false);
+          }}
+          onPointerUp={() => {
+            dragLastX.current = null;
+          }}
+          onPointerLeave={() => {
+            dragLastX.current = null;
           }}
         >
         <Canvas
@@ -995,7 +1045,7 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} />
+          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} />
           {/* The earth's axis leans by its real obliquity; the sky shares
               the axis (declination is measured from the equator), while
               AutoSpin turns only the earth-fixed inner group, so the tilt
@@ -1037,7 +1087,7 @@ export default function Scene() {
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
           <CameraReset nonce={resetNonce} spinRef={spinGroup} />
           <AutoSpin on={autoRotate && !reducedMotion} spinRef={spinGroup} />
-          <Controls onInteract={() => setAutoRotate(false)} />
+          <Controls enableRotate={!axisLock} onInteract={() => setAutoRotate(false)} />
         </Canvas>
         <div className="ostatus">
           STATUS: LIVE <i className="hud-live-dot" />
