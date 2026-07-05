@@ -1065,3 +1065,32 @@ a.sig-tag:hover {
   object-fit: cover;
   display: block;
 }
+
+/* Whole signal card is one link; hover inverts it, ai-tldr style. */
+a.sig-card {
+  color: var(--fg);
+}
+a.sig-card:hover {
+  background: #f2f2f2;
+  border-color: #f2f2f2;
+  color: var(--acc-ink);
+}
+a.sig-card:hover .sig-name,
+a.sig-card:hover .sig-followers {
+  color: var(--acc-ink);
+  border-color: rgba(10, 10, 10, 0.35);
+}
+a.sig-card:hover .sig-handle {
+  color: rgba(10, 10, 10, 0.6);
+}
+a.sig-card:hover .sig-why {
+  color: rgba(10, 10, 10, 0.75);
+}
+a.sig-card:hover .sig-tag {
+  color: rgba(10, 10, 10, 0.65);
+  border-color: rgba(10, 10, 10, 0.3);
+}
+a.sig-card:hover .sig-p-x {
+  color: var(--acc-ink);
+  border-color: var(--acc-ink);
+}
