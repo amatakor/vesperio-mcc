@@ -34,9 +34,11 @@
   flex: none;
   display: flex;
   flex-direction: column;
-  /* Three equally spaced sections: timers, flow and launches, VIEW. */
-  justify-content: space-between;
-  gap: 16px;
+  /* Three zones (Florian 2026-07-06): the counter at the top, the
+     launch block centered in the leftover between counter and VIEW
+     (auto margins, see below), the VIEW box at the bottom. The gap is
+     the guaranteed minimum padding between zones. */
+  gap: 24px;
   min-height: 0;
   /* Sections never squash mid-module; short windows scroll instead. */
   overflow-y: auto;
@@ -139,7 +141,7 @@
 }
 
 .hud-module {
-  padding: 14px 0;
+  padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
 /* The left column is three equally spaced sections; each section's
@@ -919,19 +921,22 @@
   .ocol-right .rail {
     background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
   }
-  /* Extra air under the tracked counter, and the launch block
-     stretches to fill the column, spreading its three modules evenly
-     instead of clumping them (Florian 2026-07-06). */
+  /* The launch block keeps its natural height and centers in the
+     space between the counter and the VIEW box; the counter and VIEW
+     stay pinned to their ends (Florian 2026-07-06). */
   .hud + .hud {
-    margin-top: 14px;
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    margin-top: auto;
+    margin-bottom: auto;
   }
-  /* Clear of the floating right rail (376px) with real breathing room. */
+  /* The VIEW box keeps clear air above it even on tight screens. */
+  .ocol-left .view {
+    margin-top: 8px;
+  }
+  /* Centered in the dead space between the globe's lower-right edge,
+     the rail, and the footer (Florian 2026-07-06). */
   .ostatus {
-    right: 408px;
+    right: 452px;
+    bottom: 48px;
   }
 }
 
