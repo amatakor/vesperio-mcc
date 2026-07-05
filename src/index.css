@@ -886,24 +886,161 @@ table.stat-table td.num {
   display: flex;
   gap: 0.6rem;
   align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
-.signal-card h3 {
-  margin: 0 0 0.15rem;
+.sig-tagline {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--dim);
 }
-.signal-role {
+
+.sig-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0;
+  margin: 0.75rem 0 0.5rem;
+}
+.sig-tabs {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.sig-tab {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+}
+.sig-tab .count {
   color: var(--dim);
-  margin: 0 0 0.5rem;
-}
-.signal-foot {
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-.signal-foot .chip {
   font-weight: 400;
-  text-transform: lowercase;
+}
+.sig-tab:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.sig-tab.active {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
+}
+.sig-tab.active .count {
+  color: var(--acc-ink);
+}
+.sig-search {
+  flex: 1;
+  min-width: 14rem;
+  max-width: 22rem;
+  margin-left: auto;
+}
+
+.sig-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.sig-card {
+  border: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 5.25rem 1fr;
+}
+.sig-card:hover {
+  border-color: var(--dim);
+}
+.sig-avatar {
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--acc);
+  letter-spacing: 0.05em;
+}
+.sig-body {
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.sig-top {
+  display: flex;
+  gap: 0.35rem;
+  align-items: baseline;
+}
+.sig-platform {
+  color: var(--fg);
+}
+.sig-followers {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  color: var(--fg);
+}
+.sig-name {
+  font-family: var(--mono);
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+.sig-handle {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--acc);
+  overflow-wrap: anywhere;
+}
+.sig-role {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin: 0;
+}
+.sig-why {
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  color: var(--dim);
+  margin: 0.15rem 0 0.5rem;
+}
+.sig-tags {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+.sig-tag {
+  font-size: 0.6rem;
+  color: var(--dim);
+  border-color: var(--line);
+}
+a.sig-tag:hover {
+  color: var(--acc);
+  border-color: var(--acc);
+}
+.sig-extra {
+  border-style: dotted;
 }
