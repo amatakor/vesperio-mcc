@@ -126,6 +126,38 @@ a:hover {
   border-color: var(--acc);
 }
 
+/* ------------------------------------------------------------ orbits */
+
+/* The 3D stage. Chrome around it stays in the shared tokens; neon
+   lives only inside the canvas (data) per the Orbits spec. */
+.orbits-stage {
+  height: min(72vh, 40rem);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  touch-action: none;
+}
+
+.orbits-fallback {
+  height: min(72vh, 40rem);
+  border: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  color: var(--dim);
+}
+.orbits-fallback a {
+  text-decoration: underline;
+}
+
+.orbits-credit {
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  margin-top: 0.75rem;
+}
+
 /* -------------------------------------------------------------- text */
 
 .lede {
