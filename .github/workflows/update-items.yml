@@ -9,7 +9,15 @@ name: update-items
 
 on:
   workflow_dispatch:
+    inputs:
+      source_filter:
+        description: >-
+          Comma-separated source names to fetch (empty = all). Supervised
+          runs use the reduced set below per BUILD_PLAN Task 5.
+        required: false
+        default: "Planet Labs, ICEYE, SpaceX, Rocket Lab, SEC EDGAR 8-K feed: PL, Launch Library 2 (TheSpaceDevs)"
   # Enable after Task 5 acceptance; 05:00 / 17:00 UTC per SETUP.md.
+  # Scheduled runs have no source_filter and sweep the full source list.
   # schedule:
   #   - cron: "0 5,17 * * *"
 
@@ -44,6 +52,11 @@ jobs:
             `bun scripts/finalize-sweep.ts` to merge it; never edit
             src/data/items.json, held.json, state.json, or sources.json
             directly. Do not commit or push; the workflow handles that.
+
+            Source filter for this run (comma-separated names; if empty,
+            fetch every source with status verified or unverified):
+            "${{ inputs.source_filter }}". When a filter is set, fetch
+            only the named sources and record source health only for them.
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
