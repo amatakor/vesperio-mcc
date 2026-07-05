@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Item, SourcedField, ConstellationProfile, VehicleProfile, SignalPerson } from "./data/schema";
+import type {
+  Item,
+  SourcedField,
+  ConstellationProfile,
+  VehicleProfile,
+  SpaceportProfile,
+  OrgProfile,
+  SignalPerson,
+} from "./data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
 import {
   items,
@@ -9,9 +17,12 @@ import {
   signalAvatars,
   constellations,
   vehicles,
+  spaceports,
+  organizations,
   sweeps,
   itemsByTag,
   itemsMentioning,
+  constellationChildren,
 } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
 
@@ -512,15 +523,20 @@ function GuntersAttribution({ rows }: { rows: Array<[string, SourcedField<unknow
   );
 }
 
-type EntityKind = "eo" | "connectivity" | "vehicle";
+type EntityKind = "eo" | "connectivity" | "iot" | "vehicle" | "spaceport" | "org";
 
 interface RegEntry {
   slug: string;
   name: string;
   kind: EntityKind;
   href: string;
+  /** Grouping key: operator/provider name, region, or org kind. */
+  group: string;
+  /** Sub-grouping for constellations (fleet parent slug); null otherwise. */
+  parent: string | null;
   affiliation: string;
   figure: string | null;
+  figure2: string | null;
   status: string | null;
   firstDate: string | null;
   asOf: string | null;
@@ -532,17 +548,40 @@ interface RegEntry {
 const KIND_LABEL: Record<EntityKind, string> = {
   eo: "eo constellation",
   connectivity: "connectivity",
+  iot: "iot / rf",
   vehicle: "launch vehicle",
+  spaceport: "spaceport",
+  org: "organization",
 };
 
-function regEntries(): RegEntry[] {
-  const cons: RegEntry[] = constellations.map((c) => ({
+const REGION_LABEL: Record<string, string> = {
+  "north-america": "north america",
+  "south-america": "south america",
+  europe: "europe",
+  asia: "asia",
+  oceania: "oceania",
+  "middle-east": "middle east",
+};
+
+const ORG_KIND_LABEL: Record<string, string> = {
+  manufacturer: "manufacturer",
+  "in-space-services": "in-space services",
+  "ground-segment": "ground segment",
+  institution: "institution",
+  finance: "finance",
+};
+
+function constellationEntries(): RegEntry[] {
+  return constellations.map((c) => ({
     slug: c.slug,
     name: c.name,
-    kind: c.domain === "eo" ? ("eo" as const) : ("connectivity" as const),
+    kind: c.domain === "eo" ? ("eo" as const) : c.domain === "iot" ? ("iot" as const) : ("connectivity" as const),
     href: `/registry/constellations/${c.slug}/`,
+    group: c.operator.value ?? "Operator unconfirmed",
+    parent: c.parent ?? null,
     affiliation: c.operator.value ?? "Operator unconfirmed",
     figure: c.sats_on_orbit.value !== null ? `${c.sats_on_orbit.value} on orbit` : null,
+    figure2: null,
     status: c.status.value,
     firstDate: c.first_launch_date.value,
     asOf: c.operator.as_of,
@@ -550,13 +589,19 @@ function regEntries(): RegEntry[] {
     sensors: c.sensor_types.value ?? [],
     reusable: null,
   }));
-  const vehs: RegEntry[] = vehicles.map((v) => ({
+}
+
+function vehicleEntries(): RegEntry[] {
+  return vehicles.map((v) => ({
     slug: v.slug,
     name: v.name,
     kind: "vehicle" as const,
     href: `/registry/vehicles/${v.slug}/`,
+    group: v.provider.value ?? "Provider unconfirmed",
+    parent: null,
     affiliation: v.provider.value ?? "Provider unconfirmed",
     figure: v.flights_total.value !== null ? `${v.flights_total.value} flights` : null,
+    figure2: null,
     status: v.status.value,
     firstDate: v.first_flight_date.value,
     asOf: v.provider.as_of,
@@ -564,9 +609,49 @@ function regEntries(): RegEntry[] {
     sensors: [],
     reusable: v.reusable.value,
   }));
-  return [...cons, ...vehs];
 }
 
+function spaceportEntries(): RegEntry[] {
+  return spaceports.map((s) => ({
+    slug: s.slug,
+    name: s.name,
+    kind: "spaceport" as const,
+    href: `/registry/spaceports/${s.slug}/`,
+    group: s.region,
+    parent: null,
+    affiliation: s.operator.value ?? "Operator unconfirmed",
+    figure: s.launches_total.value !== null ? `${s.launches_total.value} launches hosted` : null,
+    figure2: s.country.value,
+    status: s.status.value,
+    firstDate: s.first_launch_date.value,
+    asOf: s.launches_total.as_of,
+    snippet: s.overview.value,
+    sensors: [],
+    reusable: null,
+  }));
+}
+
+function orgEntries(): RegEntry[] {
+  return organizations.map((o) => ({
+    slug: o.slug,
+    name: o.name,
+    kind: "org" as const,
+    href: `/registry/organizations/${o.slug}/`,
+    group: o.kind,
+    parent: null,
+    affiliation: o.kind,
+    figure: o.founded.value !== null ? `founded ${o.founded.value}` : null,
+    figure2: o.country.value,
+    status: o.status.value,
+    firstDate: null,
+    asOf: o.focus.as_of,
+    snippet: o.overview.value ?? o.focus.value,
+    sensors: [],
+    reusable: null,
+  }));
+}
+
+/** Shared attribute filters, applied across all four sections at once. */
 const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
   ["eo", "eo", (e) => e.kind === "eo"],
   ["connectivity", "connectivity", (e) => e.kind === "connectivity"],
@@ -575,35 +660,315 @@ const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
   ["optical", "optical", (e) => e.sensors.includes("optical")],
   ["reusable", "reusable", (e) => e.reusable === true],
   ["operational", "operational", (e) => e.status !== null],
+  ["iot", "iot", (e) => e.kind === "iot"],
+  ["institutions", "institutions", (e) => e.kind === "org" && e.group === "institution"],
 ];
 
 function matchesRegQuery(e: RegEntry, q: string): boolean {
   return [e.name, e.affiliation, e.slug].join(" ").toLowerCase().includes(q);
 }
 
-/** Three-pane browser in the ai-tldr /models/ mould: operators, entities, preview. */
-export function RegistryIndexPage() {
-  const [filter, setFilter] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
-  const [selOp, setSelOp] = useState<string | null>(null);
+/** Preview card shared by every section's third (or fourth) pane. */
+function RegPreviewCard({ entry, extraChips }: { entry: RegEntry; extraChips?: ReactNode }) {
+  return (
+    <>
+      <div className="reg-pane-head">
+        {entry.name}
+        <span className="dim"> / {entry.affiliation}</span>
+      </div>
+      <a className="reg-card" href={entry.href}>
+        <div className="card-meta">
+          <span className="chip chip-notable">{KIND_LABEL[entry.kind]}</span>
+          {entry.status && <span className="chip">{entry.status}</span>}
+          {entry.asOf && <span className="date">{entry.asOf}</span>}
+        </div>
+        <h3 className="sig-name">{entry.name}</h3>
+        {entry.snippet ? (
+          <p className="reg-snippet">
+            {entry.snippet.length > 260 ? entry.snippet.slice(0, 260) + "..." : entry.snippet}
+          </p>
+        ) : (
+          <p className="reg-snippet dim">
+            No sourced overview yet. Unknowns stay unknown rather than estimated.
+          </p>
+        )}
+        <div className="tag-row">
+          {entry.figure && <span className="chip sig-tag">{entry.figure}</span>}
+          {entry.figure2 && <span className="chip sig-tag">{entry.figure2}</span>}
+          {entry.firstDate && <span className="chip sig-tag">first: {entry.firstDate}</span>}
+          {entry.sensors.map((s) => (
+            <span key={s} className="chip sig-tag">
+              {s}
+            </span>
+          ))}
+          {entry.reusable === true && <span className="chip sig-tag">reusable</span>}
+          {extraChips}
+        </div>
+        <span className="reg-open">facts, events &amp; sources &rarr;</span>
+      </a>
+    </>
+  );
+}
+
+/** One clickable pane row: name, a count/label on the right, a chevron. */
+function RegRow({
+  label,
+  aside,
+  selected,
+  onClick,
+}: {
+  label: string;
+  aside: ReactNode;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button className={`reg-row${selected ? " selected" : ""}`} onClick={onClick}>
+      <span className="reg-row-name">{label}</span>
+      <span className="count">{aside}</span>
+      <span className="reg-chev">&rsaquo;</span>
+    </button>
+  );
+}
+
+/**
+ * Reusable two-level pane browser: group -> entity -> preview. Used by the
+ * launch providers, spaceports, and ecosystem sections. Constellations get
+ * a bespoke browser below because it can grow a fourth pane.
+ */
+function PaneBrowser({
+  entries,
+  groupLabel,
+  groupDisplay = (name) => name,
+  entityAside,
+}: {
+  entries: RegEntry[];
+  groupLabel: string;
+  groupDisplay?: (name: string) => string;
+  entityAside: (e: RegEntry) => ReactNode;
+}) {
+  const [selGroup, setSelGroup] = useState<string | null>(null);
   const [selSlug, setSelSlug] = useState<string | null>(null);
 
-  const all = useMemo(regEntries, []);
-  const q = query.trim().toLowerCase();
-  const active = REG_FILTERS.find(([id]) => id === filter);
-  const visible = all.filter(
-    (e) => (!active || active[2](e)) && (q === "" || matchesRegQuery(e, q)),
-  );
-
-  const byOp = new Map<string, RegEntry[]>();
-  for (const e of visible) byOp.set(e.affiliation, [...(byOp.get(e.affiliation) ?? []), e]);
-  const operators = [...byOp.entries()].sort(
+  const byGroup = new Map<string, RegEntry[]>();
+  for (const e of entries) byGroup.set(e.group, [...(byGroup.get(e.group) ?? []), e]);
+  const groups = [...byGroup.entries()].sort(
     (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
   );
 
+  const group = groups.find(([name]) => name === selGroup) ?? groups[0];
+  const groupEntries = (group ? group[1] : []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  const sel = groupEntries.find((e) => e.slug === selSlug) ?? groupEntries[0];
+
+  return (
+    <div className="reg-browser">
+      <div className="reg-pane reg-ops">
+        <div className="reg-pane-head">
+          {groupLabel} <span className="dim">{groups.length}</span>
+        </div>
+        {groups.map(([name, list]) => (
+          <RegRow
+            key={name}
+            label={groupDisplay(name)}
+            aside={list.length}
+            selected={!!group && name === group[0]}
+            onClick={() => {
+              setSelGroup(name);
+              setSelSlug(null);
+            }}
+          />
+        ))}
+      </div>
+      <div className="reg-pane reg-ents">
+        <div className="reg-pane-head">{group ? groupDisplay(group[0]) : ""}</div>
+        {groupEntries.map((e) => (
+          <RegRow
+            key={e.slug}
+            label={e.name}
+            aside={entityAside(e)}
+            selected={!!sel && e.slug === sel.slug}
+            onClick={() => setSelSlug(e.slug)}
+          />
+        ))}
+      </div>
+      <div className="reg-pane reg-preview">{sel && <RegPreviewCard entry={sel} />}</div>
+    </div>
+  );
+}
+
+const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connectivity", iot: "iot" };
+
+/**
+ * Constellation section browser: domain -> operator -> constellation, with
+ * a fourth pane for named sub-constellations (e.g. Planet's SkySat,
+ * SuperDove, Pelican, Tanager) when the selected entry has children.
+ */
+function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
+  const [selDomain, setSelDomain] = useState<string | null>(null);
+  const [selOp, setSelOp] = useState<string | null>(null);
+  const [selSlug, setSelSlug] = useState<string | null>(null);
+  const [selChild, setSelChild] = useState<string | null>(null);
+
+  const byDomain = new Map<string, RegEntry[]>();
+  for (const e of entries) byDomain.set(e.kind, [...(byDomain.get(e.kind) ?? []), e]);
+  const domains = (["eo", "connectivity", "iot"] as const)
+    .filter((d) => (byDomain.get(d) ?? []).length > 0)
+    .map((d) => [d, byDomain.get(d) ?? []] as [string, RegEntry[]]);
+
+  const domain = domains.find(([d]) => d === selDomain) ?? domains[0];
+  const domainEntries = domain ? domain[1] : [];
+
+  const byOp = new Map<string, RegEntry[]>();
+  for (const e of domainEntries) byOp.set(e.group, [...(byOp.get(e.group) ?? []), e]);
+  const operators = [...byOp.entries()].sort(
+    (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
+  );
   const op = operators.find(([name]) => name === selOp) ?? operators[0];
-  const entities = op ? op[1] : [];
-  const sel = entities.find((e) => e.slug === selSlug) ?? entities[0];
+
+  // The constellation pane lists only top-level entries (no parent).
+  const topLevel = (op ? op[1] : [])
+    .filter((e) => !e.parent)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const sel = topLevel.find((e) => e.slug === selSlug) ?? topLevel[0];
+
+  const children = sel ? entries.filter((e) => e.parent === sel.slug).sort((a, b) => a.name.localeCompare(b.name)) : [];
+  const child = children.find((e) => e.slug === selChild) ?? undefined;
+  const preview = child ?? sel;
+
+  return (
+    <div className="reg-browser reg-browser-4">
+      <div className="reg-pane reg-ops">
+        <div className="reg-pane-head">
+          domain <span className="dim">{domains.length}</span>
+        </div>
+        {domains.map(([d, list]) => (
+          <RegRow
+            key={d}
+            label={DOMAIN_LABEL[d] ?? d}
+            aside={list.length}
+            selected={!!domain && d === domain[0]}
+            onClick={() => {
+              setSelDomain(d);
+              setSelOp(null);
+              setSelSlug(null);
+              setSelChild(null);
+            }}
+          />
+        ))}
+      </div>
+      <div className="reg-pane reg-ops">
+        <div className="reg-pane-head">
+          operator <span className="dim">{operators.length}</span>
+        </div>
+        {operators.map(([name, list]) => (
+          <RegRow
+            key={name}
+            label={name}
+            aside={list.length}
+            selected={!!op && name === op[0]}
+            onClick={() => {
+              setSelOp(name);
+              setSelSlug(null);
+              setSelChild(null);
+            }}
+          />
+        ))}
+      </div>
+      <div className="reg-pane reg-ents">
+        <div className="reg-pane-head">{op ? op[0] : ""}</div>
+        {topLevel.map((e) => (
+          <RegRow
+            key={e.slug}
+            label={e.name}
+            aside={KIND_LABEL[e.kind]}
+            selected={!!sel && e.slug === sel.slug}
+            onClick={() => {
+              setSelSlug(e.slug);
+              setSelChild(null);
+            }}
+          />
+        ))}
+      </div>
+      {sel && children.length > 0 && (
+        <div className="reg-pane reg-ents">
+          <div className="reg-pane-head">
+            {sel.name} constellations <span className="dim">{children.length}</span>
+          </div>
+          {children.map((c) => (
+            <RegRow
+              key={c.slug}
+              label={c.name}
+              aside="constellation"
+              selected={!!child && c.slug === child.slug}
+              onClick={() => setSelChild(c.slug)}
+            />
+          ))}
+        </div>
+      )}
+      <div className="reg-pane reg-preview">{preview && <RegPreviewCard entry={preview} />}</div>
+    </div>
+  );
+}
+
+interface RegSection {
+  id: string;
+  heading: string;
+  tagline: string;
+  entries: RegEntry[];
+}
+
+/** Registry index: four stacked sections, one shared search and filter set. */
+export function RegistryIndexPage() {
+  const [filter, setFilter] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+
+  const allConstellations = useMemo(constellationEntries, []);
+  const allVehicles = useMemo(vehicleEntries, []);
+  const allSpaceports = useMemo(spaceportEntries, []);
+  const allOrgs = useMemo(orgEntries, []);
+  const all = useMemo(
+    () => [...allConstellations, ...allVehicles, ...allSpaceports, ...allOrgs],
+    [allConstellations, allVehicles, allSpaceports, allOrgs],
+  );
+
+  const q = query.trim().toLowerCase();
+  const active = REG_FILTERS.find(([id]) => id === filter);
+  const passes = (e: RegEntry) => (!active || active[2](e)) && (q === "" || matchesRegQuery(e, q));
+
+  const launchEntries = allVehicles.filter(passes);
+  const constellationEntriesVisible = allConstellations.filter(passes);
+  const spaceportEntriesVisible = allSpaceports.filter(passes);
+  const orgEntriesVisible = allOrgs.filter(passes);
+
+  const sections: RegSection[] = [
+    {
+      id: "launch",
+      heading: "launch service providers",
+      tagline: "Who flies, and on what.",
+      entries: launchEntries,
+    },
+    {
+      id: "constellations",
+      heading: "constellations",
+      tagline: "What is up, who owns it.",
+      entries: constellationEntriesVisible,
+    },
+    {
+      id: "spaceports",
+      heading: "spaceports",
+      tagline: "Where it leaves the ground.",
+      entries: spaceportEntriesVisible,
+    },
+    {
+      id: "ecosystem",
+      heading: "ecosystem",
+      tagline: "Everyone else who moves the market.",
+      entries: orgEntriesVisible,
+    },
+  ];
+
+  const visibleCount = sections.reduce((n, s) => n + s.entries.length, 0);
 
   return (
     <Layout>
@@ -633,87 +998,51 @@ export function RegistryIndexPage() {
           </button>
         ))}
       </div>
-      {visible.length === 0 ? (
+      {visibleCount === 0 ? (
         <p className="empty">// nothing matches: adjust filters</p>
       ) : (
-        <div className="reg-browser">
-          <div className="reg-pane reg-ops">
-            <div className="reg-pane-head">
-              operators <span className="dim">{operators.length}</span>
-            </div>
-            {operators.map(([name, list]) => (
-              <button
-                key={name}
-                className={`reg-row${op && name === op[0] ? " selected" : ""}`}
-                onClick={() => {
-                  setSelOp(name);
-                  setSelSlug(null);
-                }}
-              >
-                <span className="reg-row-name">{name}</span>
-                <span className="count">{list.length}</span>
-                <span className="reg-chev">&rsaquo;</span>
-              </button>
-            ))}
-          </div>
-          <div className="reg-pane reg-ents">
-            <div className="reg-pane-head">{op ? op[0] : ""}</div>
-            {entities.map((e) => (
-              <button
-                key={e.slug}
-                className={`reg-row${sel && e.slug === sel.slug ? " selected" : ""}`}
-                onClick={() => setSelSlug(e.slug)}
-              >
-                <span className="reg-row-name">{e.name}</span>
-                <span className="count">{KIND_LABEL[e.kind]}</span>
-                <span className="reg-chev">&rsaquo;</span>
-              </button>
-            ))}
-          </div>
-          <div className="reg-pane reg-preview">
-            {sel && (
-              <>
-                <div className="reg-pane-head">
-                  {sel.name}
-                  <span className="dim"> / {sel.affiliation}</span>
-                </div>
-                <a className="reg-card" href={sel.href}>
-                  <div className="card-meta">
-                    <span className="chip chip-notable">{KIND_LABEL[sel.kind]}</span>
-                    {sel.status && <span className="chip">{sel.status}</span>}
-                    {sel.asOf && <span className="date">{sel.asOf}</span>}
-                  </div>
-                  <h3 className="sig-name">{sel.name}</h3>
-                  {sel.snippet ? (
-                    <p className="reg-snippet">
-                      {sel.snippet.length > 260 ? sel.snippet.slice(0, 260) + "..." : sel.snippet}
-                    </p>
-                  ) : (
-                    <p className="reg-snippet dim">
-                      No sourced overview yet. Unknowns stay unknown rather than estimated.
-                    </p>
-                  )}
-                  <div className="tag-row">
-                    {sel.figure && <span className="chip sig-tag">{sel.figure}</span>}
-                    {sel.firstDate && <span className="chip sig-tag">first: {sel.firstDate}</span>}
-                    {sel.sensors.map((s) => (
-                      <span key={s} className="chip sig-tag">
-                        {s}
-                      </span>
-                    ))}
-                    {sel.reusable === true && <span className="chip sig-tag">reusable</span>}
-                  </div>
-                  <span className="reg-open">facts, events &amp; sources &rarr;</span>
-                </a>
-              </>
-            )}
-          </div>
-        </div>
+        sections.map((s) => {
+          if (s.entries.length === 0) return null;
+          return (
+            <section key={s.id} className="signal-section reg-section">
+              <h2 className="signal-heading">
+                <span>
+                  {s.heading} <span className="badge-acc">{s.entries.length}</span>
+                </span>
+                <span className="sig-tagline">{s.tagline}</span>
+              </h2>
+              {s.id === "launch" && (
+                <PaneBrowser
+                  entries={s.entries}
+                  groupLabel="provider"
+                  entityAside={() => "vehicle"}
+                />
+              )}
+              {s.id === "constellations" && <ConstellationBrowser entries={s.entries} />}
+              {s.id === "spaceports" && (
+                <PaneBrowser
+                  entries={s.entries}
+                  groupLabel="region"
+                  groupDisplay={(r) => REGION_LABEL[r] ?? r}
+                  entityAside={() => "site"}
+                />
+              )}
+              {s.id === "ecosystem" && (
+                <PaneBrowser
+                  entries={s.entries}
+                  groupLabel="kind"
+                  groupDisplay={(k) => ORG_KIND_LABEL[k] ?? k}
+                  entityAside={() => "organization"}
+                />
+              )}
+            </section>
+          );
+        })
       )}
       <p className="dim reg-footnote">
-        A registry of constellations and launch vehicles. Pick an operator, then an entity, to
-        open its profile; every figure carries its source and as-of date, and unknown fields
-        stay unknown. Numbers refresh on the weekly maintenance sweep.
+        A registry of constellations, launch vehicles, spaceports, and the wider ecosystem. Pick
+        a group, then an entity, to open its profile; every figure carries its source and as-of
+        date, and unknown fields stay unknown. Numbers refresh on the weekly maintenance sweep.
       </p>
     </Layout>
   );
@@ -735,12 +1064,33 @@ interface ProfileMeta {
   siblings: Array<{ slug: string; name: string; affiliation: string | null }>;
   breadcrumbSegment: string;
   faq: FaqItem[];
+  /** Fleet parent, for constellations with a named operator-level parent profile. */
+  parentLink?: { slug: string; name: string } | null;
+  /** Named sub-constellations of this profile (e.g. Planet's SkySat, SuperDove). */
+  children?: Array<{ slug: string; name: string }>;
 }
 
-function Breadcrumbs({ segment, name }: { segment: string; name: string }) {
+function Breadcrumbs({
+  segment,
+  name,
+  parentLink,
+}: {
+  segment: string;
+  name: string;
+  parentLink?: { slug: string; name: string } | null;
+}) {
   return (
     <p className="dim mono breadcrumbs">
       <a href="/registry/">registry</a> / <a href="/registry/">{segment}</a> / {name}
+      {parentLink && (
+        <>
+          {" "}
+          <span className="dim">
+            (part of{" "}
+            <a href={`/registry/constellations/${parentLink.slug}/`}>{parentLink.name}</a>)
+          </span>
+        </>
+      )}
     </p>
   );
 }
@@ -814,6 +1164,23 @@ function RelatedSection({
   );
 }
 
+/** Named sub-constellations of a fleet-level parent (e.g. Planet's SkySat, SuperDove). */
+function ChildConstellationsSection({ children }: { children: Array<{ slug: string; name: string }> }) {
+  if (children.length === 0) return null;
+  return (
+    <section id="constellations" className="panel">
+      <h2>constellations</h2>
+      <div className="tag-row">
+        {children.map((c) => (
+          <a key={c.slug} className="chip chip-tag" href={`/registry/constellations/${c.slug}/`}>
+            {c.name}
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SourcesSection({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
   const byUrl = new Map<string, string[]>();
   for (const [label, f] of rows) {
@@ -877,9 +1244,11 @@ function FaqSection({ items }: { items: FaqItem[] }) {
   );
 }
 
-/** Shared destination-page shell for constellation and vehicle profiles. */
+/** Shared destination-page shell for every registry profile type. */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
+  const children = profile.children ?? [];
   const sections: Array<[string, string]> = [["facts", "facts"]];
+  if (children.length > 0) sections.push(["constellations", "constellations"]);
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
   const hasEvents = itemsMentioning(names).length > 0;
   if (hasEvents) sections.push(["events", "events"]);
@@ -907,7 +1276,11 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   return (
     <Layout>
       <div className="registry-profile">
-        <Breadcrumbs segment={profile.breadcrumbSegment} name={profile.name} />
+        <Breadcrumbs
+          segment={profile.breadcrumbSegment}
+          name={profile.name}
+          parentLink={profile.parentLink}
+        />
         <h1 className="page-title">
           {profile.name} <span className="dim">/ {profile.typeLabel}</span>
         </h1>
@@ -927,6 +1300,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <ProfileTable rows={profile.rows} />
           {profile.notes && <p className="dim">{profile.notes}</p>}
         </section>
+        <ChildConstellationsSection children={children} />
         <EventsSection profile={profile} />
         <RelatedSection profile={profile} related={related} prev={prev} next={next} />
         {hasSources && <SourcesSection rows={profile.rows} />}
@@ -969,6 +1343,8 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
       render: (v) => `${profile.name} first launched on ${v as string}.`,
     },
   ];
+  const children = constellationChildren(profile.slug);
+  const parent = profile.parent ? constellations.find((c) => c.slug === profile.parent) : undefined;
   const meta: ProfileMeta = {
     slug: profile.slug,
     name: profile.name,
@@ -982,6 +1358,8 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
     breadcrumbSegment: "constellations",
     faq,
+    parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
+    children: children.map((c) => ({ slug: c.slug, name: c.name })),
   };
   return <ProfilePage profile={meta} />;
 }
@@ -1035,6 +1413,95 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     siblingsBase: "/registry/vehicles/",
     siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
     breadcrumbSegment: "vehicles",
+    faq,
+  };
+  return <ProfilePage profile={meta} />;
+}
+
+export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
+  const rows: Array<[string, SourcedField<unknown>]> = [
+    ["country", profile.country],
+    ["operator", profile.operator],
+    ["first launch", profile.first_launch_date],
+    ["launches total", profile.launches_total],
+    ["status", profile.status],
+    ["website", profile.website],
+  ];
+  const faq: FaqItem[] = [
+    {
+      q: `Where is ${profile.name}?`,
+      field: profile.country,
+      render: (v) => `${profile.name} is located in ${v as string}.`,
+    },
+    {
+      q: `How many launches has ${profile.name} hosted?`,
+      field: profile.launches_total,
+      render: (v) => `${profile.name} has hosted ${v as number} launches.`,
+    },
+    {
+      q: `Who operates ${profile.name}?`,
+      field: profile.operator,
+      render: (v) => `${profile.name} is operated by ${v as string}.`,
+    },
+  ];
+  const meta: ProfileMeta = {
+    slug: profile.slug,
+    name: profile.name,
+    typeLabel: "spaceport",
+    affiliation: profile.operator.value,
+    rows,
+    overview: profile.overview,
+    notes: profile.notes,
+    href: `/registry/spaceports/${profile.slug}/`,
+    siblingsBase: "/registry/spaceports/",
+    siblings: spaceports
+      .filter((s) => s.region === profile.region)
+      .map((s) => ({ slug: s.slug, name: s.name, affiliation: s.region })),
+    breadcrumbSegment: "spaceports",
+    faq,
+  };
+  return <ProfilePage profile={meta} />;
+}
+
+export function OrgPage({ profile }: { profile: OrgProfile }) {
+  const rows: Array<[string, SourcedField<unknown>]> = [
+    ["country", profile.country],
+    ["founded", profile.founded],
+    ["focus", profile.focus],
+    ["status", profile.status],
+    ["website", profile.website],
+  ];
+  const faq: FaqItem[] = [
+    {
+      q: `What is ${profile.name}?`,
+      field: profile.focus,
+      render: (v) => `${profile.name} focuses on ${v as string}.`,
+    },
+    {
+      q: `Where is ${profile.name} based?`,
+      field: profile.country,
+      render: (v) => `${profile.name} is based in ${v as string}.`,
+    },
+    {
+      q: `When was ${profile.name} founded?`,
+      field: profile.founded,
+      render: (v) => `${profile.name} was founded in ${v as number}.`,
+    },
+  ];
+  const meta: ProfileMeta = {
+    slug: profile.slug,
+    name: profile.name,
+    typeLabel: "organization",
+    affiliation: null,
+    rows,
+    overview: profile.overview,
+    notes: profile.notes,
+    href: `/registry/organizations/${profile.slug}/`,
+    siblingsBase: "/registry/organizations/",
+    siblings: organizations
+      .filter((o) => o.kind === profile.kind)
+      .map((o) => ({ slug: o.slug, name: o.name, affiliation: o.kind })),
+    breadcrumbSegment: "organizations",
     faq,
   };
   return <ProfilePage profile={meta} />;
@@ -1282,7 +1749,7 @@ export function SignalsPage() {
 
 export function StatsPage({ generatedAt }: { generatedAt: string }) {
   const now = new Date(generatedAt);
-  const hero = computeHero(items, constellations, vehicles, sweeps, now);
+  const hero = computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations);
   const blocks = computeStats(items, constellations, vehicles, now);
   return (
     <Layout>

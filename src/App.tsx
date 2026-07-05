@@ -1,5 +1,11 @@
 import { matchRoute } from "./routes";
-import { itemById, constellationBySlug, vehicleBySlug } from "./lib/data";
+import {
+  itemById,
+  constellationBySlug,
+  vehicleBySlug,
+  spaceportBySlug,
+  orgBySlug,
+} from "./lib/data";
 import {
   HomePage,
   ItemPage,
@@ -8,6 +14,8 @@ import {
   RegistryIndexPage,
   ConstellationPage,
   VehiclePage,
+  SpaceportPage,
+  OrgPage,
   SignalsPage,
   StatsPage,
   AboutPage,
@@ -32,6 +40,10 @@ export default function App({ path, generatedAt }: { path: string; generatedAt: 
       return <ConstellationPage profile={constellationBySlug(route.slug)!} />;
     case "vehicle":
       return <VehiclePage profile={vehicleBySlug(route.slug)!} />;
+    case "spaceport":
+      return <SpaceportPage profile={spaceportBySlug(route.slug)!} />;
+    case "org":
+      return <OrgPage profile={orgBySlug(route.slug)!} />;
     case "signals":
       return <SignalsPage />;
     case "stats":
