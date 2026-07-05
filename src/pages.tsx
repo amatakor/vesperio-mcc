@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Item, SourcedField, ConstellationProfile, VehicleProfile } from "./data/schema";
+import type { Item, SourcedField, ConstellationProfile, VehicleProfile, SignalPerson } from "./data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
-import { items, signals, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
+import { items, signals, signalOutlets, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
@@ -595,32 +595,103 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
 
 // ---------------------------------------------------------------- signals
 
+const BUCKET_LABELS: Record<string, string> = {
+  founder_exec: "founders & executives",
+  agency_leader: "agency leaders",
+  engineer_operator: "engineers & trackers",
+  analyst: "analysts",
+  journalist: "journalists",
+  creator: "creators",
+};
+
+function SignalCard({ person }: { person: SignalPerson }) {
+  const primary = person.channels.find((c) => c.status === "verified_active") ?? person.channels[0];
+  return (
+    <article className="card signal-card">
+      <div className="card-meta">
+        {person.whitelist === "yes" && <span className="chip chip-notable">whitelist</span>}
+        {person.whitelist === "review" && <span className="chip chip-reported">under review</span>}
+        {primary?.follower_scale_est && (
+          <span className="date">{primary.follower_scale_est.split(" ")[0]}</span>
+        )}
+      </div>
+      <h3 className="card-headline">
+        {primary ? (
+          <a href={primary.url} rel="noopener">
+            {person.name}
+          </a>
+        ) : (
+          person.name
+        )}
+      </h3>
+      <p className="signal-role">
+        {person.role} · {person.org}
+      </p>
+      <p className="card-tagline">{person.why}</p>
+      <div className="card-foot signal-foot">
+        {person.channels.map((c) => (
+          <a
+            key={c.url}
+            className={`chip ${c.status === "verified_active" ? "" : "chip-reported"}`}
+            href={c.url}
+            rel="noopener"
+          >
+            {c.type}
+            {c.handle ? ` @${c.handle}` : ""}
+          </a>
+        ))}
+      </div>
+    </article>
+  );
+}
+
 export function SignalsPage() {
+  const whitelisted = signals.filter((p) => p.whitelist === "yes").length;
   return (
     <Layout>
       <h1 className="page-title">signals</h1>
       <p className="lede">
-        People worth following in the new space economy. Hand-curated by a human; the machine never
-        edits this list.
+        People worth following in the new space economy, curated by role. Hand-picked by a human;
+        the machine never edits this list. The {whitelisted} on the sourcing whitelist are the only
+        voices whose posts can become signal-tier items.
+      </p>
+      <p className="dim mono">
+        {signals.length} people worth following · {whitelisted} on the sourcing whitelist
       </p>
       {signals.length === 0 ? (
         <p className="empty">The list is being curated. First entries land soon.</p>
       ) : (
-        <ul className="index-list">
-          {signals.map((p) => (
-            <li key={p.name}>
-              {p.url ? (
-                <a href={p.url} rel="noopener">
-                  {p.name}
+        Object.entries(BUCKET_LABELS).map(([bucket, label]) => {
+          const group = signals.filter((p) => p.bucket === bucket);
+          if (group.length === 0) return null;
+          return (
+            <section key={bucket} className="signal-section">
+              <h2 className="signal-heading">
+                {label} <span className="badge-acc">{group.length}</span>
+              </h2>
+              <div className="cards">
+                {group.map((p) => (
+                  <SignalCard key={p.id} person={p} />
+                ))}
+              </div>
+            </section>
+          );
+        })
+      )}
+      {signalOutlets.length > 0 && (
+        <section className="signal-section">
+          <h2 className="signal-heading">outlets we read</h2>
+          <ul className="index-list">
+            {signalOutlets.map((o) => (
+              <li key={o.id}>
+                <a href={o.url} rel="noopener">
+                  {o.name}
                 </a>
-              ) : (
-                p.name
-              )}
-              {p.handle ? <span className="dim"> ({p.handle})</span> : null}
-              <div className="dim">{p.why}</div>
-            </li>
-          ))}
-        </ul>
+                <div className="dim">{o.why}</div>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </Layout>
   );

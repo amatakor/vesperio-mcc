@@ -14,6 +14,9 @@ import {
   CONSTELLATION_DOMAINS,
   HEADLINE_MAX_CHARS,
   TAGLINE_MAX_CHARS,
+  SIGNAL_BUCKETS,
+  SIGNAL_WHITELIST,
+  CHANNEL_STATUSES,
 } from "../../src/data/schema";
 
 const ID_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*$/;
@@ -308,27 +311,105 @@ export function validateSourcesFile(data: unknown): string[] {
 
 export function validateSignalsFile(data: unknown): string[] {
   const errors: string[] = [];
-  if (!isObj(data) || !Array.isArray(data.people)) {
-    return ['signals.json: root must be { "people": [...] }'];
+  if (
+    !isObj(data) ||
+    !isObj(data.meta) ||
+    !Array.isArray(data.people) ||
+    !Array.isArray(data.outlets) ||
+    !Array.isArray(data.excluded)
+  ) {
+    return ['signals.json: root must be { meta, people[], outlets[], excluded[] }'];
   }
+
+  const seen = new Set<string>();
   data.people.forEach((p, i) => {
     const path = `people[${i}]`;
     if (!isObj(p)) {
       errors.push(`${path}: must be an object`);
       return;
     }
+    const id = reqString(p, "id", path, errors);
+    if (id !== null) {
+      if (!TAG_RE.test(id)) errors.push(`${path}.id: must be lowercase kebab-case`);
+      if (seen.has(id)) errors.push(`${path}.id: duplicate id "${id}"`);
+      seen.add(id);
+    }
     reqString(p, "name", path, errors);
+    reqString(p, "role", path, errors);
+    reqString(p, "org", path, errors);
     reqString(p, "why", path, errors);
-    for (const key of ["handle", "url"]) {
-      const v = p[key];
-      if (v !== undefined && v !== null && typeof v !== "string") {
-        errors.push(`${path}.${key}: must be null or a string when present`);
+    if (!SIGNAL_BUCKETS.includes(p.bucket as never)) {
+      errors.push(`${path}.bucket: "${String(p.bucket)}" not in [${SIGNAL_BUCKETS.join(", ")}]`);
+    }
+    if (!SIGNAL_WHITELIST.includes(p.whitelist as never)) {
+      errors.push(`${path}.whitelist: must be one of [${SIGNAL_WHITELIST.join(", ")}]`);
+    }
+    reqStringArray(p, "domains", path, errors);
+    reqStringArray(p, "regions", path, errors);
+    for (const key of ["ingest_rules", "notes"]) {
+      if (p[key] !== undefined && typeof p[key] !== "string") {
+        errors.push(`${path}.${key}: must be a string when present`);
       }
     }
-    if (typeof p.url === "string" && !isHttpUrl(p.url)) {
-      errors.push(`${path}.url: must be an http(s) URL`);
+    if (!Array.isArray(p.channels) || p.channels.length === 0) {
+      errors.push(`${path}.channels: required non-empty array`);
+      return;
+    }
+    let hasActive = false;
+    p.channels.forEach((c, j) => {
+      const cPath = `${path}.channels[${j}]`;
+      if (!isObj(c)) {
+        errors.push(`${cPath}: must be an object`);
+        return;
+      }
+      reqString(c, "type", cPath, errors);
+      if (!isHttpUrl(c.url)) errors.push(`${cPath}.url: required http(s) URL`);
+      if (!CHANNEL_STATUSES.includes(c.status as never)) {
+        errors.push(`${cPath}.status: "${String(c.status)}" not in [${CHANNEL_STATUSES.join(", ")}]`);
+      }
+      if (c.status === "verified_active") hasActive = true;
+      for (const key of ["last_seen", "verified_on"]) {
+        const v = c[key];
+        if (v !== null && v !== undefined && !(typeof v === "string" && isValidDate(v))) {
+          errors.push(`${cPath}.${key}: must be null or YYYY-MM-DD`);
+        }
+      }
+      for (const key of ["handle", "rss", "follower_scale_est", "notes"]) {
+        if (c[key] !== undefined && typeof c[key] !== "string") {
+          errors.push(`${cPath}.${key}: must be a string when present`);
+        }
+      }
+    });
+    if (p.whitelist === "yes" && !hasActive) {
+      errors.push(`${path}: whitelist "yes" requires at least one verified_active channel`);
     }
   });
+
+  data.outlets.forEach((o, i) => {
+    const path = `outlets[${i}]`;
+    if (!isObj(o)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    reqString(o, "id", path, errors);
+    reqString(o, "name", path, errors);
+    reqString(o, "why", path, errors);
+    if (!isHttpUrl(o.url)) errors.push(`${path}.url: required http(s) URL`);
+    reqStringArray(o, "domains", path, errors);
+  });
+
+  data.excluded.forEach((e, i) => {
+    const path = `excluded[${i}]`;
+    if (!isObj(e)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    reqString(e, "id", path, errors);
+    reqString(e, "name", path, errors);
+    reqString(e, "reason", path, errors);
+    if (typeof e.recheck !== "boolean") errors.push(`${path}.recheck: required boolean`);
+  });
+
   return errors;
 }
 

@@ -214,18 +214,90 @@ export interface SourcesFile {
 
 // -------------------------------------------------------------- signals
 
-/** Hand-curated by Florian only. The agent never edits signals.json. */
-export interface Signal {
+/**
+ * Hand-curated by Florian only; the agent never edits signals.json.
+ * Schema adopted from Florian's verified scouting run of 2026-07-05.
+ * Only people with whitelist "yes", via channels with status
+ * "verified_active", qualify as signal-tier sourcing. ingest_rules,
+ * when present, constrain which of a person's posts are eligible.
+ */
+
+export const SIGNAL_BUCKETS = [
+  "founder_exec",
+  "agency_leader",
+  "engineer_operator",
+  "analyst",
+  "journalist",
+  "creator",
+] as const;
+export type SignalBucket = (typeof SIGNAL_BUCKETS)[number];
+
+export const SIGNAL_WHITELIST = ["yes", "review", "no"] as const;
+export type SignalWhitelist = (typeof SIGNAL_WHITELIST)[number];
+
+export const CHANNEL_STATUSES = [
+  "verified_active",
+  "exists_activity_unverified",
+  "stale",
+  "dead",
+] as const;
+export type ChannelStatus = (typeof CHANNEL_STATUSES)[number];
+
+export interface SignalChannel {
+  /** e.g. "x", "bluesky", "substack", "site", "youtube", "podcast", "linkedin", "beehiiv". */
+  type: string;
+  handle?: string;
+  url: string;
+  rss?: string;
+  status: ChannelStatus;
+  /** YYYY-MM-DD of the newest post seen, or null when not sampled. */
+  last_seen: string | null;
+  /** YYYY-MM-DD the channel was last checked, or null. */
+  verified_on: string | null;
+  follower_scale_est?: string;
+  notes?: string;
+}
+
+export interface SignalPerson {
+  id: string;
   name: string;
-  handle?: string | null;
-  url?: string | null;
+  bucket: SignalBucket;
+  role: string;
+  org: string;
+  domains: string[];
+  regions: string[];
   /** One line on why this person is worth following. */
   why: string;
+  whitelist: SignalWhitelist;
+  /** Optional constraint on which posts are ingest-eligible. */
+  ingest_rules?: string;
+  notes?: string;
+  channels: SignalChannel[];
+}
+
+export interface SignalOutlet {
+  id: string;
+  name: string;
+  url: string;
+  people?: string[];
+  people_named?: string[];
+  domains: string[];
+  why: string;
+  notes?: string;
+}
+
+export interface SignalExcluded {
+  id: string;
+  name: string;
+  reason: string;
+  recheck: boolean;
 }
 
 export interface SignalsFile {
-  $comment?: string;
-  people: Signal[];
+  meta: Record<string, unknown>;
+  people: SignalPerson[];
+  outlets: SignalOutlet[];
+  excluded: SignalExcluded[];
 }
 
 // ------------------------------------------------------------- registry

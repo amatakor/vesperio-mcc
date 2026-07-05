@@ -36,10 +36,13 @@ items; that is a successful sweep, not a failure. Padding is the bug.
      the outlet named in the copy. Always look for the primary source
      first; when it exists, link it and ship `confirmed` instead (see
      CLAUDE.md, "The source ladder").
-   - Social posts by Signals-list individuals (`src/data/signals.json`)
-     or named executives of the actor produce `signal` candidates,
-     account named and flagged "unconfirmed" in the copy. Accounts
-     outside the ladder never produce candidates.
+   - Social posts produce `signal` candidates only from: individuals in
+     `src/data/signals.json` with `whitelist: "yes"`, via channels whose
+     `status` is `verified_active`, honoring each person's
+     `ingest_rules` when present; or named executives/officials of the
+     actor concerned. Account named and flagged "unconfirmed" in the
+     copy. `whitelist: "review"` and `"no"` entries, and all accounts
+     outside the ladder, never produce candidates.
    - Record source health: first successful fetch of an `unverified`
      source flips it to `verified`; a third consecutive failure flips
      it to `dead` with a dated note. Track consecutive failures in the

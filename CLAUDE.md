@@ -60,7 +60,7 @@ An item's confidence is set by the best source it has. Three tiers, and the copy
 
 **`reported` allows credible trade press as the basis.** Wire services and trade press (Reuters, SpaceNews, Payload, European Spaceflight, NASASpaceflight) reporting with named sources, direct quotes, or documents they publish. The item names the outlet in the copy ("per SpaceNews"). If the outlet merely relays a company statement, link the company statement instead and confirm. Unnamed-source reporting from these outlets is also `reported`, phrased as such ("Reuters reports, citing unnamed sources").
 
-**`signal` allows curated voices as the basis.** Posts on X or other social platforms by individuals on the Signals list (`src/data/signals.json`) or by named executives or officials of the actor, speaking about their own organisation or domain. The item names the account and flags it in the copy ("per @handle on X, unconfirmed"). Everyone outside the ladder (anonymous accounts, random aggregators, forum posts) does not qualify at any tier.
+**`signal` allows curated voices as the basis.** Posts on X or other social platforms by individuals on the Signals whitelist (`whitelist: "yes"` in `src/data/signals.json`, via `verified_active` channels, honoring their `ingest_rules`) or by named executives or officials of the actor, speaking about their own organisation or domain. The item names the account and flags it in the copy ("per @handle on X, unconfirmed"). Everyone outside the ladder (anonymous accounts, random aggregators, forum posts) does not qualify at any tier.
 
 **Upgrade rule.** When a better source appears for a published item, upgrade it via an update: switch source_url to the better source, raise the confidence tier, keep the id.
 
