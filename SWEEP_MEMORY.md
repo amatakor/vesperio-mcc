@@ -92,3 +92,29 @@ a newer entry if a lesson changes.
     a draft's prose summary and its actual newItems array, so this kind
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
+
+## Task 13 registry fill crawl (2026-07-05)
+
+- 2026-07-05-K: Launch Library API versioning. 2.2.0 `/launches/` list
+  endpoints return 404; use 2.3.0 for launch lists. 2.2.0
+  `/config/launcher/` pages still resolve. Unauthenticated rate limit is
+  ~15 req/hr, so fetch bulk snapshots once and work from the saved file
+  instead of per-entity calls.
+- 2026-07-05-L: Launch Library location records carry an `active: true`
+  database boolean. It is NOT a stated operational status; never publish
+  it as a status value.
+- 2026-07-05-M: Collector agents repeatedly inferred `country` from city
+  names or office addresses. A country field needs the country name
+  literally stated on the cited page.
+- 2026-07-05-N: Collector agents sometimes fabricate plausible quotes
+  (caught on astroscale, unseenlabs, starlink, and JAXA pages, plus an
+  invented full date for Uchinoura's 1970 launch against a year-only
+  source). Adversarial re-fetch verification against every cited source
+  is mandatory before publishing crawled facts.
+- 2026-07-05-O: Unreachable-from-fetcher sites this run: fcc.gov
+  (timeouts, even via curl), Space Force *.spaceforce.mil (403),
+  rocketlabusa.com (403), orbex.space (502), he360.com, ghgsat.com,
+  starlink.com (JS app). unoosa.org needs a browser user agent via curl.
+- 2026-07-05-P: Redirects and rebrands: maxar.com redirects to
+  vantor.com (Vantor rebrand); oneweb.net redirects to eutelsat.com;
+  Amazon now calls Kuiper "Amazon Leo" on official pages.
