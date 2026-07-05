@@ -595,81 +595,148 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
 
 // ---------------------------------------------------------------- signals
 
-const BUCKET_LABELS: Record<string, string> = {
-  founder_exec: "founders & executives",
-  agency_leader: "agency leaders",
-  engineer_operator: "engineers & trackers",
-  analyst: "analysts",
-  journalist: "journalists",
-  creator: "creators",
+const BUCKET_META: Record<string, [string, string]> = {
+  founder_exec: ["founders & executives", "The people running the rockets and constellations."],
+  agency_leader: ["agency leaders", "The officials whose signatures move programs."],
+  engineer_operator: ["engineers & trackers", "Builders and independent trackers posting primary data."],
+  analyst: ["analysts", "The sharpest reads on markets, China, and policy."],
+  journalist: ["journalists", "Reporters who break it before the wires."],
+  creator: ["creators", "Video explainers credible enough for engineers to cite."],
 };
 
+function initialsOf(name: string): string {
+  const parts = name.split(" ").filter(Boolean);
+  return ((parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "")).toUpperCase();
+}
+
+function followerBadge(person: SignalPerson): string | null {
+  const est = person.channels.find((c) => c.follower_scale_est)?.follower_scale_est;
+  return est ? est.split(" ")[0]! : null;
+}
+
 function SignalCard({ person }: { person: SignalPerson }) {
-  const primary = person.channels.find((c) => c.status === "verified_active") ?? person.channels[0];
+  const primary =
+    person.channels.find((c) => c.status === "verified_active") ?? person.channels[0];
+  const extras = person.channels.filter((c) => c !== primary);
+  const followers = followerBadge(person);
   return (
-    <article className="card signal-card">
-      <div className="card-meta">
-        {person.whitelist === "yes" && <span className="chip chip-notable">whitelist</span>}
-        {person.whitelist === "review" && <span className="chip chip-reported">under review</span>}
-        {primary?.follower_scale_est && (
-          <span className="date">{primary.follower_scale_est.split(" ")[0]}</span>
-        )}
+    <article className="sig-card">
+      <div className="sig-avatar" aria-hidden="true">
+        {initialsOf(person.name)}
       </div>
-      <h3 className="card-headline">
-        {primary ? (
-          <a href={primary.url} rel="noopener">
-            {person.name}
+      <div className="sig-body">
+        <div className="sig-top">
+          {primary && (
+            <span className={`chip sig-platform${primary.status === "verified_active" ? "" : " chip-reported"}`}>
+              {primary.type}
+            </span>
+          )}
+          {person.whitelist === "yes" && <span className="chip chip-notable">whitelist</span>}
+          {person.whitelist === "review" && <span className="chip chip-reported">review</span>}
+          {followers && <span className="sig-followers">{followers}</span>}
+        </div>
+        <h3 className="sig-name">{person.name}</h3>
+        {primary && (
+          <a className="sig-handle" href={primary.url} rel="noopener">
+            {primary.handle ? `@${primary.handle}` : primary.url.replace(/^https?:\/\/(www\.)?/, "")}
           </a>
-        ) : (
-          person.name
         )}
-      </h3>
-      <p className="signal-role">
-        {person.role} · {person.org}
-      </p>
-      <p className="card-tagline">{person.why}</p>
-      <div className="card-foot signal-foot">
-        {person.channels.map((c) => (
-          <a
-            key={c.url}
-            className={`chip ${c.status === "verified_active" ? "" : "chip-reported"}`}
-            href={c.url}
-            rel="noopener"
-          >
-            {c.type}
-            {c.handle ? ` @${c.handle}` : ""}
-          </a>
-        ))}
+        <p className="sig-role">
+          {person.role} · {person.org}
+        </p>
+        <p className="sig-why">{person.why}</p>
+        <div className="sig-tags">
+          {person.domains.map((d) => (
+            <span key={d} className="chip sig-tag">
+              {d.replace(/_/g, "-")}
+            </span>
+          ))}
+          {extras.map((c) => (
+            <a key={c.url} className="chip sig-tag sig-extra" href={c.url} rel="noopener">
+              {c.type}
+            </a>
+          ))}
+        </div>
       </div>
     </article>
   );
 }
 
+function matchesSignalQuery(p: SignalPerson, q: string): boolean {
+  const hay = [
+    p.name,
+    p.org,
+    p.role,
+    p.why,
+    ...p.domains,
+    ...p.regions,
+    ...p.channels.map((c) => c.handle ?? ""),
+  ]
+    .join(" ")
+    .toLowerCase();
+  return hay.includes(q);
+}
+
 export function SignalsPage() {
+  const [bucket, setBucket] = useState<string>("all");
+  const [query, setQuery] = useState("");
+  const q = query.trim().toLowerCase();
+
+  const filtered = signals.filter(
+    (p) => (bucket === "all" || p.bucket === bucket) && (q === "" || matchesSignalQuery(p, q)),
+  );
   const whitelisted = signals.filter((p) => p.whitelist === "yes").length;
+  const countFor = (b: string) => signals.filter((p) => p.bucket === b).length;
+
   return (
     <Layout>
-      <h1 className="page-title">signals</h1>
-      <p className="lede">
-        People worth following in the new space economy, curated by role. Hand-picked by a human;
-        the machine never edits this list. The {whitelisted} on the sourcing whitelist are the only
-        voices whose posts can become signal-tier items.
-      </p>
+      <h1 className="page-title">top signals to follow</h1>
       <p className="dim mono">
-        {signals.length} people worth following · {whitelisted} on the sourcing whitelist
+        {signals.length} people worth following · curated by role · {whitelisted} on the sourcing
+        whitelist
       </p>
-      {signals.length === 0 ? (
-        <p className="empty">The list is being curated. First entries land soon.</p>
+      <div className="sig-controls">
+        <div className="sig-tabs">
+          <button
+            className={`sig-tab${bucket === "all" ? " active" : ""}`}
+            onClick={() => setBucket("all")}
+          >
+            all <span className="count">{signals.length}</span>
+          </button>
+          {Object.entries(BUCKET_META).map(([b, [label]]) => (
+            <button
+              key={b}
+              className={`sig-tab${bucket === b ? " active" : ""}`}
+              onClick={() => setBucket(b)}
+            >
+              {label} <span className="count">{countFor(b)}</span>
+            </button>
+          ))}
+        </div>
+        <input
+          type="text"
+          className="filter-input sig-search"
+          placeholder="/ search name, handle, topic"
+          aria-label="Search signals"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+      {filtered.length === 0 ? (
+        <p className="empty">// nobody matches: adjust filters</p>
       ) : (
-        Object.entries(BUCKET_LABELS).map(([bucket, label]) => {
-          const group = signals.filter((p) => p.bucket === bucket);
+        Object.entries(BUCKET_META).map(([b, [label, tagline]]) => {
+          const group = filtered.filter((p) => p.bucket === b);
           if (group.length === 0) return null;
           return (
-            <section key={bucket} className="signal-section">
+            <section key={b} className="signal-section">
               <h2 className="signal-heading">
-                {label} <span className="badge-acc">{group.length}</span>
+                <span>
+                  {label} <span className="badge-acc">{group.length}</span>
+                </span>
+                <span className="sig-tagline">{tagline}</span>
               </h2>
-              <div className="cards">
+              <div className="sig-grid">
                 {group.map((p) => (
                   <SignalCard key={p.id} person={p} />
                 ))}
@@ -678,9 +745,14 @@ export function SignalsPage() {
           );
         })
       )}
-      {signalOutlets.length > 0 && (
+      {signalOutlets.length > 0 && bucket === "all" && q === "" && (
         <section className="signal-section">
-          <h2 className="signal-heading">outlets we read</h2>
+          <h2 className="signal-heading">
+            <span>
+              outlets we read <span className="badge-acc">{signalOutlets.length}</span>
+            </span>
+            <span className="sig-tagline">Publications, not people; tracked as sources.</span>
+          </h2>
           <ul className="index-list">
             {signalOutlets.map((o) => (
               <li key={o.id}>
@@ -696,6 +768,7 @@ export function SignalsPage() {
     </Layout>
   );
 }
+
 
 // ------------------------------------------------------------------ stats
 
