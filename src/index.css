@@ -1,17 +1,19 @@
-/* Brutalist editorial, per CLAUDE.md house rules:
-   no border-radius anywhere, no transform-based hovers, mono type for
-   structural elements, dark background, one accent colour.
-   --acc is a neutral placeholder; Florian supplies the real palette. */
+/* Design system in the ai-tldr.dev mould, written as our own CSS per
+   CLAUDE.md (no blueprint CSS copied). Pure black ground, one loud
+   yellow accent, bold mono for everything structural, quiet sans for
+   body copy, boxed uppercase chips, no border-radius, no transform
+   hovers. Palette set by Florian 2026-07-05: copy ai-tldr's scheme. */
 
 :root {
-  --bg: #0e1012;
-  --panel: #14171a;
-  --fg: #d6dbe0;
-  --dim: #7c858d;
-  --line: #2a2f34;
-  --acc: #9aa4ab;
-  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --serifish: georgia, "Times New Roman", serif;
+  --bg: #0a0a0a;
+  --panel: #141414;
+  --fg: #f2f2f2;
+  --dim: #8f8f8f;
+  --line: #2e2e2e;
+  --acc: #ffe600;
+  --acc-ink: #0a0a0a; /* text on solid accent */
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
 }
 
 * {
@@ -28,16 +30,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Body copy reads in sans; structure stays mono. */
+p {
+  font-family: var(--sans);
+}
+
 a {
-  color: var(--acc);
+  color: var(--fg);
   text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+  color: var(--acc);
 }
 
 .shell {
-  max-width: 68rem;
+  max-width: 76rem;
   margin: 0 auto;
   padding: 0 1.25rem 4rem;
 }
@@ -45,7 +52,7 @@ a:hover {
 .item-page,
 .qa,
 .lede {
-  max-width: 44rem;
+  max-width: 46rem;
 }
 
 /* ---------------------------------------------------------- masthead */
@@ -54,49 +61,67 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem 1.5rem;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 0 1rem;
+  padding: 1.1rem 0;
   border-bottom: 2px solid var(--fg);
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
 }
 
 .brand {
   color: var(--fg);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.brand::before {
+  content: "";
+  width: 0.85em;
+  height: 0.85em;
+  background: var(--acc);
+  display: inline-block;
 }
 .brand:hover {
-  text-decoration: none;
-  color: var(--acc);
+  color: var(--fg);
+}
+.brand:hover::before {
+  background: var(--fg);
 }
 
 .nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.4rem;
 }
 .nav a {
   color: var(--dim);
   text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid transparent;
 }
 .nav a:hover {
   color: var(--acc);
+  border-color: var(--acc);
 }
 
 /* -------------------------------------------------------------- text */
 
 .lede {
   color: var(--dim);
-  max-width: 40rem;
+  font-size: 0.95rem;
 }
 
 .page-title {
-  font-size: 1.35rem;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-  margin: 0 0 0.75rem;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0.5rem 0 0.75rem;
 }
 
 .dim {
@@ -110,109 +135,19 @@ a:hover {
   padding: 1rem;
 }
 
-/* -------------------------------------------------------------- feed */
-
-.cat-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1rem;
-  padding: 0.75rem 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 1.5rem;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.cat-row a {
-  color: var(--dim);
-}
-.cat-row a:hover {
-  color: var(--acc);
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
-  gap: 0.75rem;
-}
-
-.card {
-  border: 1px solid var(--line);
-  background: var(--bg);
-  padding: 1.1rem 1.2rem 0.9rem;
-  display: flex;
-  flex-direction: column;
-}
-.card:hover {
-  background: var(--panel);
-}
-
-.card-meta,
-.feed-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-items: baseline;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  margin-bottom: 0.55rem;
-}
-.card-meta .date {
-  margin-left: auto;
-}
-
-.card-headline {
-  font-size: 1.05rem;
-  line-height: 1.35;
-  margin: 0 0 0.35rem;
-}
-.card-headline a {
-  color: var(--fg);
-}
-.card-headline a:hover {
-  color: var(--acc);
-  text-decoration: none;
-}
-
-.card-tagline {
-  color: var(--dim);
-  margin: 0 0 1rem;
-}
-
-.card-foot {
-  margin-top: auto;
-  border-top: 1px solid var(--line);
-  padding-top: 0.6rem;
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-}
-.card-companies {
-  color: var(--fg);
-}
-.card-details {
-  margin-left: auto;
-  color: var(--acc);
-}
-
-.date {
-  color: var(--dim);
-}
+/* -------------------------------------------------------------- chips */
 
 .chip {
-  border: 1px solid var(--line);
-  padding: 0.05rem 0.45rem;
-  color: var(--dim);
+  border: 1px solid var(--dim);
+  padding: 0.1rem 0.5rem;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 a.chip:hover {
-  text-decoration: none;
   border-color: var(--acc);
   color: var(--acc);
 }
@@ -221,34 +156,158 @@ a.chip:hover {
   color: var(--acc);
 }
 .chip-notable {
-  color: var(--fg);
+  border-color: var(--fg);
+}
+.chip-routine {
+  border-color: var(--line);
+  color: var(--dim);
 }
 .chip-reported {
   border-style: dashed;
+  color: var(--dim);
 }
 .chip-signal {
   border-style: dotted;
+  border-color: var(--acc);
   color: var(--acc);
 }
 
-.tagline {
+/* Solid accent badge, black text: for as-of / updated stamps. */
+.badge-acc {
+  background: var(--acc);
+  color: var(--acc-ink);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  display: inline-block;
+}
+
+/* -------------------------------------------------------------- feed */
+
+.cat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.75rem 0 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.cat-row a {
   color: var(--dim);
-  margin: 0;
+  border: 1px solid var(--line);
+  padding: 0.2rem 0.55rem;
+}
+.cat-row a:hover {
+  color: var(--acc);
+  border-color: var(--acc);
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 0.6rem;
+}
+
+.card {
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 1rem 1.1rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  border-color: var(--dim);
+}
+
+.card-meta,
+.feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: baseline;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}
+.card-meta .date {
+  margin-left: auto;
+}
+
+.card-headline {
+  font-family: var(--mono);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.4rem;
+}
+.card-headline a {
+  color: var(--fg);
+}
+.card-headline a:hover {
+  color: var(--acc);
+}
+
+.card-tagline {
+  color: var(--dim);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.card-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 0.55rem;
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+.card-companies {
+  color: var(--fg);
+}
+.card-sources {
+  font-weight: 400;
+}
+.card-details {
+  margin-left: auto;
+  color: var(--fg);
+}
+.card-details:hover {
+  color: var(--acc);
 }
 
 /* --------------------------------------------------------------- item */
 
+.item-page h1 {
+  text-transform: none;
+}
+
 .item-page h2 {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--acc);
   margin: 1.75rem 0 0.4rem;
 }
 
+.item-page p {
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
 .for-who {
   color: var(--dim);
-  border-left: 3px solid var(--line);
+  border-left: 3px solid var(--acc);
   padding-left: 0.75rem;
 }
 
@@ -265,11 +324,15 @@ a.chip:hover {
   color: var(--dim);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 .kv dd {
   margin: 0;
   overflow-wrap: anywhere;
+}
+.kv a {
+  color: var(--acc);
 }
 
 /* ----------------------------------------------------------- registry */
@@ -303,18 +366,15 @@ table.stat-table td {
 table.profile thead th {
   color: var(--dim);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 700;
 }
 table.profile td.empty {
   color: var(--dim);
   border-style: solid;
 }
-table.stat-table th {
-  font-weight: 400;
-}
-table.stat-table td {
-  text-align: right;
+table.profile a {
   color: var(--acc);
 }
 
@@ -322,14 +382,40 @@ table.stat-table td {
 
 .stat-block {
   border-top: 1px solid var(--line);
-  margin-top: 2rem;
-  padding-top: 1rem;
+  margin-top: 2.25rem;
+  padding-top: 1.1rem;
 }
 .stat-block h2 {
-  font-size: 1rem;
+  font-size: 1.05rem;
+  text-transform: none;
 }
 .stat-block h2 a {
-  color: var(--dim);
+  color: var(--acc);
+}
+
+table.stat-table th {
+  font-weight: 400;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  width: 16rem;
+}
+table.stat-table td {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+table.stat-table td.num {
+  text-align: right;
+  color: var(--acc);
+  font-weight: 700;
+  width: 4.5rem;
+}
+.bar-cell {
+  width: 45%;
+}
+.bar {
+  height: 0.7rem;
+  background: var(--acc);
+  min-width: 2px;
 }
 
 .citation code {
@@ -338,7 +424,7 @@ table.stat-table td {
   border: 1px solid var(--line);
   padding: 0.6rem 0.8rem;
   overflow-wrap: anywhere;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--dim);
 }
 
@@ -351,7 +437,6 @@ table.stat-table td {
 }
 .qa p {
   margin: 0.25rem 0 0;
-  max-width: 42rem;
 }
 
 /* ------------------------------------------------------------- footer */
@@ -362,4 +447,7 @@ table.stat-table td {
   padding-top: 1rem;
   color: var(--dim);
   font-size: 0.8rem;
+}
+.footer a {
+  color: var(--acc);
 }
