@@ -7,7 +7,7 @@
  * reads as a distant background rather than a skin on the globe.
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { loadStars } from "./elements";
@@ -64,7 +64,15 @@ function makeCloud(
   return new THREE.Points(g, m);
 }
 
-export function Stars({ color }: { color: string }) {
+export function Stars({
+  color,
+  spinRef,
+}: {
+  color: string;
+  /** The earth-fixed spin group: the parallax follows globe spin (auto-
+   * rotate, axis-locked drags) exactly like camera azimuth changes. */
+  spinRef: MutableRefObject<THREE.Group | null>;
+}) {
   const [stars, setStars] = useState<[number, number, number][] | null>(null);
   useEffect(() => {
     let alive = true;
@@ -110,9 +118,11 @@ export function Stars({ color }: { color: string }) {
       a.unwrapped += d;
     }
     a.last = lon;
-    // Sidereal orientation plus the parallax share of the camera motion
-    // (positive group rotation.y adds to effective longitude).
-    g.rotation.y = -gmstRad(Date.now()) + PARALLAX * a.unwrapped;
+    // Sidereal orientation plus the parallax share of the total view
+    // rotation: camera azimuth and globe spin combined (positive group
+    // rotation.y adds to effective longitude).
+    const spin = spinRef.current ? spinRef.current.rotation.y : 0;
+    g.rotation.y = -gmstRad(Date.now()) + PARALLAX * (a.unwrapped + spin);
   });
 
   if (!clouds) return null;

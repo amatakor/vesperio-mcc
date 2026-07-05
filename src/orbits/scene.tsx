@@ -783,6 +783,13 @@ export default function Scene() {
   );
   const anyStale = enabledStates.some((s) => s.status === "stale");
 
+  // An explicit constellation focus restricts picking to its layers
+  // (Florian 2026-07-06: no more stray Starlink hits under focus).
+  const pickSlugs = useMemo(
+    () => (selectedConstellation ? new Set(expandHighlight(selectedConstellation)) : null),
+    [selectedConstellation],
+  );
+
   // A selected fleet parent highlights all of its child layers.
   const highlightSlugs = useMemo(() => {
     const base = selectedConstellation
@@ -1051,7 +1058,7 @@ export default function Scene() {
               AutoSpin turns only the earth-fixed inner group, so the tilt
               holds on screen during auto-rotate. */}
           <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
-            <Stars color={colors.fg} />
+            <Stars color={colors.fg} spinRef={spinGroup} />
             <group ref={spinGroup}>
               <Globe colors={colors} />
               {shells.map((s) => (
@@ -1062,6 +1069,7 @@ export default function Scene() {
                 buffers={buffersRef}
                 colorBySlug={colorBySlug}
                 highlightSlugs={highlightSlugs}
+                pickSlugs={pickSlugs}
                 labelColor={colors.fg}
                 showLabels={labelsOn}
                 downPos={downPos}

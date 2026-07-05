@@ -339,6 +339,16 @@
   color: var(--dim);
   letter-spacing: 0.5px;
 }
+/* Family rows link to the registry; same quiet affordance as the rail. */
+.veh-link {
+  color: inherit;
+  text-decoration: none;
+}
+.veh-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
+}
 .veh-count {
   color: var(--fg);
   font-weight: 700;
@@ -890,11 +900,8 @@
   .ocol-right > * {
     pointer-events: auto;
   }
-  .ocol-left .hud {
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
-    border: 1px solid var(--line);
-    padding: 10px 12px;
-  }
+  /* The left column is a bare HUD (Florian 2026-07-06: no boxes); only
+     the VIEW cluster and the rail keep their translucent panels. */
   .ocol-left .view,
   .ocol-right .rail {
     background: color-mix(in srgb, var(--panel-dark) 80%, transparent);

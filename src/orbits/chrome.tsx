@@ -180,14 +180,31 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
 
 // ------------------------------------------------------ vehicle bars
 
-function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
-  const top = vehicles.slice(0, 4);
-  const rest = vehicles.slice(4);
+/** Where a vehicle-family row links (Florian 2026-07-06): the registry
+ * vehicle profile when the family names exactly one, else the launch
+ * section of the registry browser. */
+function familyHref(family: string): string {
+  const f = family.toLowerCase();
+  const matches = vehicles.filter((v) => v.name.toLowerCase().startsWith(f));
+  return matches.length === 1
+    ? `/registry/vehicles/${matches[0]!.slug}/`
+    : "/registry/#launch";
+}
+
+function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
+  const top = families.slice(0, 4);
+  const rest = families.slice(4);
   const restCount = rest.reduce((a, v) => a + v.count, 0);
   const max = Math.max(1, ...top.map((v) => v.count), restCount);
   const rows = [
-    ...top.map((v) => ({ label: v.family.toUpperCase(), count: v.count })),
-    ...(rest.length > 0 ? [{ label: `OTHER (${rest.length})`, count: restCount }] : []),
+    ...top.map((v) => ({
+      label: v.family.toUpperCase(),
+      count: v.count,
+      href: familyHref(v.family),
+    })),
+    ...(rest.length > 0
+      ? [{ label: `OTHER (${rest.length})`, count: restCount, href: null }]
+      : []),
   ];
   return (
     <div className="hud-module">
@@ -196,7 +213,15 @@ function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }
         {rows.map((r) => (
           <div key={r.label} className="veh-row">
             <div className="veh-head">
-              <span className="veh-name">{r.label}</span>
+              <span className="veh-name">
+                {r.href ? (
+                  <a className="veh-link" href={r.href}>
+                    {r.label}
+                  </a>
+                ) : (
+                  r.label
+                )}
+              </span>
               <span className="veh-count">{r.count}</span>
             </div>
             <div className="veh-track">
