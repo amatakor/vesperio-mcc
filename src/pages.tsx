@@ -35,10 +35,42 @@ export function Layout({ children }: { children: ReactNode }) {
 
 // ------------------------------------------------------------------- feed
 
+const CAT_ABBR: Record<string, string> = {
+  launch: "LAU",
+  constellation: "CON",
+  contract: "CTR",
+  procurement: "PRC",
+  regulatory: "REG",
+  financial: "FIN",
+  product: "PRD",
+  partnership: "PTN",
+  incident: "INC",
+  geopolitical: "GEO",
+  "human-spaceflight": "HSF",
+};
+
+/** Image when the pipeline found one; otherwise a generated text tile. */
+function CardMedia({ item }: { item: Item }) {
+  if (item.image) {
+    return (
+      <a href={`/item/${item.id}/`} className="card-media">
+        <img src={item.image.src} alt="" loading="lazy" />
+      </a>
+    );
+  }
+  return (
+    <a href={`/item/${item.id}/`} className="card-media card-tile">
+      <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
+      <span className="tile-co">{item.companies[0] ?? item.category}</span>
+    </a>
+  );
+}
+
 function Card({ item }: { item: Item }) {
   const sources = 1 + item.secondary_urls.length;
   return (
     <article className="card">
+      <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`}>
           {item.category}
@@ -119,6 +151,16 @@ export function ItemPage({ item }: { item: Item }) {
           <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
         </div>
         <h1 className="page-title">{item.headline}</h1>
+        {item.image && (
+          <figure className="item-figure">
+            <img src={item.image.src} alt={item.headline} />
+            <figcaption className="dim">
+              <a href={item.image.origin_url} rel="noopener">
+                {item.image.credit}
+              </a>
+            </figcaption>
+          </figure>
+        )}
         <p className="tagline">{item.explainer.tagline}</p>
         <h2>What happened</h2>
         <p>{item.explainer.what_happened}</p>

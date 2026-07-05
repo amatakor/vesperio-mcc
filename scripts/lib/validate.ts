@@ -145,6 +145,22 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   if (v.publishDate !== undefined && !isIsoDatetime(v.publishDate)) {
     errors.push(`${path}.publishDate: must be an ISO datetime when present`);
   }
+
+  if (v.image !== undefined && v.image !== null) {
+    if (!isObj(v.image)) {
+      errors.push(`${path}.image: must be null or { src, credit, origin_url }`);
+    } else {
+      const img = v.image;
+      const src = reqString(img, "src", `${path}.image`, errors);
+      if (src !== null && !src.startsWith("/img/") && !isHttpUrl(src)) {
+        errors.push(`${path}.image.src: must be a /img/ path or an http(s) URL`);
+      }
+      reqString(img, "credit", `${path}.image`, errors);
+      if (!isHttpUrl(img.origin_url)) {
+        errors.push(`${path}.image.origin_url: required http(s) URL`);
+      }
+    }
+  }
 }
 
 export function validateItemsFile(data: unknown): string[] {

@@ -114,6 +114,16 @@ Each item in `src/data/items.json`:
 - No em dashes anywhere on the site.
 - Headlines name the actor first: "Firefly wins NASA VADR task order", not "NASA awards task order to Firefly".
 
+## Item images
+
+Card and item artwork is stamped exclusively by the deterministic `scripts/fetch-thumbs.ts` pipeline, in this priority order:
+
+1. The source's own og:image / twitter:image (the image the publisher designates for link previews), re-hosted under `public/img/items/`, credited to the source host, linked to the source page.
+2. A curated freely licensed stock image from `src/data/stock-images.json`, keyed by source domain (e.g. sec.gov filings get the SEC headquarters photo). Every entry records license, author, and origin URL; the map grows only via reviewed PRs with the license verified.
+3. Nothing: the site renders a generated mono text tile from the item's own fields.
+
+Never: image search results, AI-generated imagery of real events, official agency seals (legally restricted), or images hand-picked by the drafting agent. Any image is removed on request from its rights holder by setting the item's `image` to null.
+
 ## Scheduled run procedure (update-items.yml)
 
 1. Read `SWEEP_MEMORY.md` first. It contains lessons from past runs (flaky sources, recurring dedup traps, style corrections). Apply them.
