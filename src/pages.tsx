@@ -838,7 +838,7 @@ function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
   const preview = child ?? sel;
 
   return (
-    <div className="reg-browser reg-browser-4">
+    <div className={`reg-browser ${children.length > 0 ? "reg-browser-5" : "reg-browser-4"}`}>
       <div className="reg-pane reg-ops">
         <div className="reg-pane-head">
           domain <span className="dim">{domains.length}</span>
