@@ -11,6 +11,8 @@ import type {
   SweepLogEntry,
   ConstellationProfile,
   VehicleProfile,
+  SpaceportProfile,
+  OrgProfile,
 } from "../data/schema";
 import { DOMAIN_TAGS } from "../data/schema";
 import itemsJson from "../data/items.json";
@@ -37,6 +39,12 @@ const constellationModules = import.meta.glob("../data/registry/constellations/*
 const vehicleModules = import.meta.glob("../data/registry/vehicles/*.json", {
   eager: true,
 }) as Record<string, { default: VehicleProfile }>;
+const spaceportModules = import.meta.glob("../data/registry/spaceports/*.json", {
+  eager: true,
+}) as Record<string, { default: SpaceportProfile }>;
+const organizationModules = import.meta.glob("../data/registry/organizations/*.json", {
+  eager: true,
+}) as Record<string, { default: OrgProfile }>;
 
 const bySlug = <T extends { slug: string }>(mods: Record<string, { default: T }>): T[] =>
   Object.values(mods)
@@ -45,6 +53,8 @@ const bySlug = <T extends { slug: string }>(mods: Record<string, { default: T }>
 
 export const constellations: ConstellationProfile[] = bySlug(constellationModules);
 export const vehicles: VehicleProfile[] = bySlug(vehicleModules);
+export const spaceports: SpaceportProfile[] = bySlug(spaceportModules);
+export const organizations: OrgProfile[] = bySlug(organizationModules);
 
 export function itemById(id: string): Item | undefined {
   return items.find((i) => i.id === id);
@@ -68,6 +78,21 @@ export function constellationBySlug(slug: string): ConstellationProfile | undefi
 
 export function vehicleBySlug(slug: string): VehicleProfile | undefined {
   return vehicles.find((v) => v.slug === slug);
+}
+
+export function spaceportBySlug(slug: string): SpaceportProfile | undefined {
+  return spaceports.find((s) => s.slug === slug);
+}
+
+export function orgBySlug(slug: string): OrgProfile | undefined {
+  return organizations.find((o) => o.slug === slug);
+}
+
+/** Constellations whose parent matches slug (fleet sub-constellations), sorted by name. */
+export function constellationChildren(slug: string): ConstellationProfile[] {
+  return constellations
+    .filter((c) => c.parent === slug)
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

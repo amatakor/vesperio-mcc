@@ -5,7 +5,14 @@
  * cross-cutting analytics stay reserved for the v2 paid layer.
  */
 
-import type { Item, ConstellationProfile, VehicleProfile, SweepLogEntry } from "../data/schema";
+import type {
+  Item,
+  ConstellationProfile,
+  VehicleProfile,
+  SpaceportProfile,
+  OrgProfile,
+  SweepLogEntry,
+} from "../data/schema";
 
 export const SITE_ORIGIN = "https://mcc.vesperio.ai";
 
@@ -55,6 +62,8 @@ export function computeHero(
   vehicles: VehicleProfile[],
   sweeps: SweepLogEntry[],
   now: Date,
+  spaceports: SpaceportProfile[],
+  organizations: OrgProfile[],
 ): HeroStats {
   const real = realItems(items);
   const last7 = real.filter((i) => daysAgo(i.date, now) <= 7).length;
@@ -82,7 +91,11 @@ export function computeHero(
       [String(real.length), "items tracked", "verified, all-time"],
       [String(last7), "in the last 7 days", "fresh this week"],
       [String(last30), "in the last 30 days", "this month"],
-      [String(constellations.length + vehicles.length), "registry profiles", "sourced and dated"],
+      [
+        String(constellations.length + vehicles.length + spaceports.length + organizations.length),
+        "registry profiles",
+        "sourced and dated",
+      ],
       [String(sources.size), "distinct sources", "cited in the feed"],
       [String(sweeps.length), "sweeps run", "including quiet ones"],
     ],

@@ -9,9 +9,13 @@ import {
   items,
   constellations,
   vehicles,
+  spaceports,
+  organizations,
   itemById,
   constellationBySlug,
   vehicleBySlug,
+  spaceportBySlug,
+  orgBySlug,
   allTags,
 } from "./lib/data";
 
@@ -23,6 +27,8 @@ export type Route =
   | { page: "registry" }
   | { page: "constellation"; slug: string }
   | { page: "vehicle"; slug: string }
+  | { page: "spaceport"; slug: string }
+  | { page: "org"; slug: string }
   | { page: "signals" }
   | { page: "stats" }
   | { page: "about" }
@@ -62,6 +68,16 @@ export function matchRoute(pathname: string): Route {
 
   const veh = p.match(/^\/registry\/vehicles\/([^/]+)\/$/);
   if (veh) return vehicleBySlug(veh[1]!) ? { page: "vehicle", slug: veh[1]! } : { page: "not-found" };
+
+  const spaceport = p.match(/^\/registry\/spaceports\/([^/]+)\/$/);
+  if (spaceport) {
+    return spaceportBySlug(spaceport[1]!)
+      ? { page: "spaceport", slug: spaceport[1]! }
+      : { page: "not-found" };
+  }
+
+  const org = p.match(/^\/registry\/organizations\/([^/]+)\/$/);
+  if (org) return orgBySlug(org[1]!) ? { page: "org", slug: org[1]! } : { page: "not-found" };
 
   const tag = p.match(/^\/tag\/([^/]+)\/$/);
   if (tag) {
@@ -127,6 +143,22 @@ export function headFor(path: string): Head {
         canonical,
       };
     }
+    case "spaceport": {
+      const s = spaceportBySlug(route.slug)!;
+      return {
+        title: `${s.name} spaceport profile | MCC`,
+        description: `Reference profile of the ${s.name} spaceport with sourced, dated figures.`,
+        canonical,
+      };
+    }
+    case "org": {
+      const o = orgBySlug(route.slug)!;
+      return {
+        title: `${o.name} organization profile | MCC`,
+        description: `Reference profile of the ${o.name} organization with sourced, dated figures.`,
+        canonical,
+      };
+    }
     case "signals":
       return {
         title: "Signals | MCC",
@@ -172,6 +204,8 @@ export function listRoutes(): string[] {
     ...items.map((i) => `/item/${i.id}/`),
     ...constellations.map((c) => `/registry/constellations/${c.slug}/`),
     ...vehicles.map((v) => `/registry/vehicles/${v.slug}/`),
+    ...spaceports.map((s) => `/registry/spaceports/${s.slug}/`),
+    ...organizations.map((o) => `/registry/organizations/${o.slug}/`),
     ...allTags.map((t) => `/tag/${t}/`),
   ];
 }
