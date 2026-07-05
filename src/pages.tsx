@@ -514,138 +514,207 @@ function GuntersAttribution({ rows }: { rows: Array<[string, SourcedField<unknow
 
 type EntityKind = "eo" | "connectivity" | "vehicle";
 
-interface EntityCard {
+interface RegEntry {
   slug: string;
   name: string;
   kind: EntityKind;
   href: string;
-  affiliation: string | null;
+  affiliation: string;
   figure: string | null;
   status: string | null;
-}
-
-function toEntityCard(kind: EntityKind, profile: ConstellationProfile | VehicleProfile): EntityCard {
-  if (profile.entity_type === "constellation") {
-    return {
-      slug: profile.slug,
-      name: profile.name,
-      kind,
-      href: `/registry/constellations/${profile.slug}/`,
-      affiliation: profile.operator.value,
-      figure: profile.sats_on_orbit.value !== null ? `${profile.sats_on_orbit.value} on orbit` : null,
-      status: profile.status.value,
-    };
-  }
-  return {
-    slug: profile.slug,
-    name: profile.name,
-    kind,
-    href: `/registry/vehicles/${profile.slug}/`,
-    affiliation: profile.provider.value,
-    figure: profile.flights_total.value !== null ? `${profile.flights_total.value} flights` : null,
-    status: profile.status.value,
-  };
+  firstDate: string | null;
+  asOf: string | null;
+  snippet: string | null;
+  sensors: string[];
+  reusable: boolean | null;
 }
 
 const KIND_LABEL: Record<EntityKind, string> = {
-  eo: "eo",
+  eo: "eo constellation",
   connectivity: "connectivity",
-  vehicle: "vehicle",
+  vehicle: "launch vehicle",
 };
 
-function matchesEntityQuery(card: EntityCard, q: string): boolean {
-  const hay = [card.name, card.affiliation ?? "", card.slug].join(" ").toLowerCase();
-  return hay.includes(q);
+function regEntries(): RegEntry[] {
+  const cons: RegEntry[] = constellations.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    kind: c.domain === "eo" ? ("eo" as const) : ("connectivity" as const),
+    href: `/registry/constellations/${c.slug}/`,
+    affiliation: c.operator.value ?? "Operator unconfirmed",
+    figure: c.sats_on_orbit.value !== null ? `${c.sats_on_orbit.value} on orbit` : null,
+    status: c.status.value,
+    firstDate: c.first_launch_date.value,
+    asOf: c.operator.as_of,
+    snippet: c.overview.value,
+    sensors: c.sensor_types.value ?? [],
+    reusable: null,
+  }));
+  const vehs: RegEntry[] = vehicles.map((v) => ({
+    slug: v.slug,
+    name: v.name,
+    kind: "vehicle" as const,
+    href: `/registry/vehicles/${v.slug}/`,
+    affiliation: v.provider.value ?? "Provider unconfirmed",
+    figure: v.flights_total.value !== null ? `${v.flights_total.value} flights` : null,
+    status: v.status.value,
+    firstDate: v.first_flight_date.value,
+    asOf: v.provider.as_of,
+    snippet: v.overview.value,
+    sensors: [],
+    reusable: v.reusable.value,
+  }));
+  return [...cons, ...vehs];
 }
 
-function EntityGridCard({ card }: { card: EntityCard }) {
-  return (
-    <a className="sig-card entity-card" href={card.href}>
-      <div className="sig-body">
-        <div className="sig-top">
-          <span className={`chip sig-platform ent-p-${card.kind}`}>{KIND_LABEL[card.kind]}</span>
-          {card.status && <span className="chip chip-tag">{card.status}</span>}
-        </div>
-        <h3 className="sig-name">{card.name}</h3>
-        {card.affiliation && <span className="sig-handle">{card.affiliation}</span>}
-        {card.figure && <p className="sig-why">{card.figure}</p>}
-      </div>
-    </a>
-  );
+const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
+  ["eo", "eo", (e) => e.kind === "eo"],
+  ["connectivity", "connectivity", (e) => e.kind === "connectivity"],
+  ["vehicles", "vehicles", (e) => e.kind === "vehicle"],
+  ["sar", "sar", (e) => e.sensors.includes("sar")],
+  ["optical", "optical", (e) => e.sensors.includes("optical")],
+  ["reusable", "reusable", (e) => e.reusable === true],
+  ["operational", "operational", (e) => e.status !== null],
+];
+
+function matchesRegQuery(e: RegEntry, q: string): boolean {
+  return [e.name, e.affiliation, e.slug].join(" ").toLowerCase().includes(q);
 }
 
+/** Three-pane browser in the ai-tldr /models/ mould: operators, entities, preview. */
 export function RegistryIndexPage() {
-  const [tab, setTab] = useState<"all" | EntityKind>("all");
+  const [filter, setFilter] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [selOp, setSelOp] = useState<string | null>(null);
+  const [selSlug, setSelSlug] = useState<string | null>(null);
 
-  const cards: EntityCard[] = useMemo(
-    () => [
-      ...constellations.map((c) => toEntityCard(c.domain === "eo" ? "eo" : "connectivity", c)),
-      ...vehicles.map((v) => toEntityCard("vehicle", v)),
-    ],
-    [],
-  );
-
-  const countFor = (k: EntityKind) => cards.filter((c) => c.kind === k).length;
-  const eoCount = countFor("eo");
-  const connCount = countFor("connectivity");
-  const vehCount = countFor("vehicle");
-
+  const all = useMemo(regEntries, []);
   const q = query.trim().toLowerCase();
-  const filtered = cards.filter(
-    (c) => (tab === "all" || c.kind === tab) && (q === "" || matchesEntityQuery(c, q)),
+  const active = REG_FILTERS.find(([id]) => id === filter);
+  const visible = all.filter(
+    (e) => (!active || active[2](e)) && (q === "" || matchesRegQuery(e, q)),
   );
+
+  const byOp = new Map<string, RegEntry[]>();
+  for (const e of visible) byOp.set(e.affiliation, [...(byOp.get(e.affiliation) ?? []), e]);
+  const operators = [...byOp.entries()].sort(
+    (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
+  );
+
+  const op = operators.find(([name]) => name === selOp) ?? operators[0];
+  const entities = op ? op[1] : [];
+  const sel = entities.find((e) => e.slug === selSlug) ?? entities[0];
 
   return (
     <Layout>
-      <h1 className="page-title">registry</h1>
-      <p className="lede">
-        Standardised reference profiles. Every figure carries a source URL and an as-of date;
-        unknown fields stay unknown rather than estimated.
-      </p>
-      <p className="dim mono">
-        {cards.length} profiles · {constellations.length} constellations · {vehicles.length}{" "}
-        vehicles · every figure sourced and dated
-      </p>
-      <div className="sig-controls">
-        <div className="sig-tabs">
-          <button className={`sig-tab${tab === "all" ? " active" : ""}`} onClick={() => setTab("all")}>
-            all <span className="count">{cards.length}</span>
-          </button>
-          <button className={`sig-tab${tab === "eo" ? " active" : ""}`} onClick={() => setTab("eo")}>
-            eo <span className="count">{eoCount}</span>
-          </button>
-          <button
-            className={`sig-tab${tab === "connectivity" ? " active" : ""}`}
-            onClick={() => setTab("connectivity")}
-          >
-            connectivity <span className="count">{connCount}</span>
-          </button>
-          <button
-            className={`sig-tab${tab === "vehicle" ? " active" : ""}`}
-            onClick={() => setTab("vehicle")}
-          >
-            vehicles <span className="count">{vehCount}</span>
-          </button>
-        </div>
+      <div className="reg-head">
+        <h1 className="page-title">registry</h1>
         <input
           type="text"
-          className="filter-input sig-search"
-          placeholder="/ search name, operator, provider"
+          className="filter-input reg-search"
+          placeholder="/ filter: entity, operator or provider..."
           aria-label="Search registry"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
+        <span className="reg-counts mono">
+          <strong>{all.length}</strong> profiles{" "}
+          <strong>{new Set(all.map((e) => e.affiliation)).size}</strong> operators
+        </span>
       </div>
-      {filtered.length === 0 ? (
+      <div className="sig-tabs reg-chips">
+        {REG_FILTERS.map(([id, label]) => (
+          <button
+            key={id}
+            className={`sig-tab${filter === id ? " active" : ""}`}
+            onClick={() => setFilter(filter === id ? null : id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      {visible.length === 0 ? (
         <p className="empty">// nothing matches: adjust filters</p>
       ) : (
-        <div className="sig-grid">
-          {filtered.map((c) => (
-            <EntityGridCard key={`${c.kind}-${c.slug}`} card={c} />
-          ))}
+        <div className="reg-browser">
+          <div className="reg-pane reg-ops">
+            <div className="reg-pane-head">
+              operators <span className="dim">{operators.length}</span>
+            </div>
+            {operators.map(([name, list]) => (
+              <button
+                key={name}
+                className={`reg-row${op && name === op[0] ? " selected" : ""}`}
+                onClick={() => {
+                  setSelOp(name);
+                  setSelSlug(null);
+                }}
+              >
+                <span className="reg-row-name">{name}</span>
+                <span className="count">{list.length}</span>
+                <span className="reg-chev">&rsaquo;</span>
+              </button>
+            ))}
+          </div>
+          <div className="reg-pane reg-ents">
+            <div className="reg-pane-head">{op ? op[0] : ""}</div>
+            {entities.map((e) => (
+              <button
+                key={e.slug}
+                className={`reg-row${sel && e.slug === sel.slug ? " selected" : ""}`}
+                onClick={() => setSelSlug(e.slug)}
+              >
+                <span className="reg-row-name">{e.name}</span>
+                <span className="count">{KIND_LABEL[e.kind]}</span>
+                <span className="reg-chev">&rsaquo;</span>
+              </button>
+            ))}
+          </div>
+          <div className="reg-pane reg-preview">
+            {sel && (
+              <>
+                <div className="reg-pane-head">
+                  {sel.name}
+                  <span className="dim"> / {sel.affiliation}</span>
+                </div>
+                <a className="reg-card" href={sel.href}>
+                  <div className="card-meta">
+                    <span className="chip chip-notable">{KIND_LABEL[sel.kind]}</span>
+                    {sel.status && <span className="chip">{sel.status}</span>}
+                    {sel.asOf && <span className="date">{sel.asOf}</span>}
+                  </div>
+                  <h3 className="sig-name">{sel.name}</h3>
+                  {sel.snippet ? (
+                    <p className="reg-snippet">
+                      {sel.snippet.length > 260 ? sel.snippet.slice(0, 260) + "..." : sel.snippet}
+                    </p>
+                  ) : (
+                    <p className="reg-snippet dim">
+                      No sourced overview yet. Unknowns stay unknown rather than estimated.
+                    </p>
+                  )}
+                  <div className="tag-row">
+                    {sel.figure && <span className="chip sig-tag">{sel.figure}</span>}
+                    {sel.firstDate && <span className="chip sig-tag">first: {sel.firstDate}</span>}
+                    {sel.sensors.map((s) => (
+                      <span key={s} className="chip sig-tag">
+                        {s}
+                      </span>
+                    ))}
+                    {sel.reusable === true && <span className="chip sig-tag">reusable</span>}
+                  </div>
+                  <span className="reg-open">facts, events &amp; sources &rarr;</span>
+                </a>
+              </>
+            )}
+          </div>
         </div>
       )}
+      <p className="dim reg-footnote">
+        A registry of constellations and launch vehicles. Pick an operator, then an entity, to
+        open its profile; every figure carries its source and as-of date, and unknown fields
+        stay unknown. Numbers refresh on the weekly maintenance sweep.
+      </p>
     </Layout>
   );
 }
