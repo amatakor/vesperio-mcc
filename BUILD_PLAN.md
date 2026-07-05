@@ -229,3 +229,38 @@ CLAUDE.md).
   scaffolds) can go to cheaper subagents; schema design, finalize-sweep
   logic, and anything in Task 2's validation path stay with the top
   model. Final review of every diff stays with the orchestrator.
+
+## Task 13 — Registry fill crawl (one-off, orchestrated)
+
+Goal: fill the 92 profiles' null fields with sourced values in one
+supervised research session, before launch. Frugal routing: cheap
+agents collect candidate field values TO FILES (never into the
+orchestrator's context), a verify pass checks each claim against its
+single source, a deterministic merge script writes profiles, and
+check-registry gates every batch. One PR per batch, orchestrator
+reviews diffs, Florian spot-checks 5 fields per batch.
+
+Batches, in order:
+1. Ecosystem organizations (20, currently all-null): website, country,
+   founded, focus, overview from each org's own site (about pages;
+   institutions from official pages). 1-2 fetches per org.
+2. Constellations: IoT/RF seeds (6), Planet children (4), and null
+   fields on existing profiles. Bases: operator sites, Gunter's Space
+   Page deep links (single-page facts only, exact URL, attribution
+   renders automatically), Launch Library.
+3. Spaceports (23): operator, status, website, first launch, overview.
+   Bases: official spaceport/agency pages, Launch Library location
+   records (mind the ~15 req/hr unauthenticated rate limit; bulk
+   endpoints first).
+4. Vehicles (light pass): last/next flight from Launch Library bulk
+   queries; vehicle_class only where a source states a class.
+
+Hard rules (unchanged, repeated because agents drift): one source per
+field with as_of; numbers copied exactly or left null; no summing
+across Gunter's pages; no estimates, no training-data recall; em
+dashes normalized out of prose; polite user agents (SEC-style
+etiquette everywhere); every fetched URL recorded.
+
+Accept when: check-registry passes; each batch PR reviewed; Florian
+spot-checks 5 filled fields per batch against sources; the registry
+index shows meaningfully fewer "unknown" values.
