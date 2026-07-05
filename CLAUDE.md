@@ -107,7 +107,11 @@ Each item in `src/data/items.json`:
 
 **Confidence** (exactly one): `confirmed` (primary source: the actor itself or an official record), `reported` (credible trade press with named sourcing; outlet named in the copy), `signal` (Signals-list individual or named executive on social; account named and flagged "unconfirmed" in the copy).
 
-**Tags**: lowercase, reuse existing tags before inventing new ones. Seed set: `sar`, `optical`, `hyperspectral`, `rf`, `ghg`, `connectivity`, `direct-to-device`, `smallsat-launch`, `heavy-lift`, `rideshare`, `pricing`, `china`, `india`, `europe`, `japan`, `mena`, `us-gov`, `esa`, `export-control`, `sanctions`, `m-and-a`, `funding`, `bankruptcy`, `reusability`, `commercial-crew`, `commercial-stations`.
+**Tags**: lowercase, reuse existing tags before inventing new ones; newly coined tags are logged in the sweep entry for human review. Four tiers:
+- Domain (every item carries one where applicable): `eo`, `connectivity`, `launch`, `human-spaceflight`
+- Modality: `sar`, `optical`, `hyperspectral`, `rf`, `ghg`, `direct-to-device`, `heavy-lift`, `smallsat-launch`, `rideshare`, `reusability`
+- Geography: `china`, `india`, `europe`, `japan`, `mena`, `us-gov`, `esa`
+- Theme: `pricing`, `export-control`, `sanctions`, `m-and-a`, `funding`, `bankruptcy`, `commercial-crew`, `commercial-stations`
 
 ## Writing style
 

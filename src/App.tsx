@@ -4,6 +4,7 @@ import {
   HomePage,
   ItemPage,
   CategoryPage,
+  TagPage,
   RegistryIndexPage,
   ConstellationPage,
   VehiclePage,
@@ -23,6 +24,8 @@ export default function App({ path, generatedAt }: { path: string; generatedAt: 
       return <ItemPage item={itemById(route.id)!} />;
     case "category":
       return <CategoryPage category={route.category} />;
+    case "tag":
+      return <TagPage tag={route.tag} />;
     case "registry":
       return <RegistryIndexPage />;
     case "constellation":

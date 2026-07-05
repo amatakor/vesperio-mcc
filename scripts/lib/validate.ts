@@ -146,6 +146,29 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
     errors.push(`${path}.publishDate: must be an ISO datetime when present`);
   }
 
+  // Non-confirmed items must carry their evidence block; confirmed items need none.
+  if (v.confidence === "reported" || v.confidence === "signal") {
+    if (!isObj(v.evidence)) {
+      errors.push(`${path}.evidence: required for ${String(v.confidence)} items ({ said_by, basis, confirmation })`);
+    }
+  }
+  if (v.evidence !== undefined && v.evidence !== null) {
+    if (!isObj(v.evidence)) {
+      errors.push(`${path}.evidence: must be null or { said_by, basis, confirmation }`);
+    } else {
+      reqString(v.evidence, "said_by", `${path}.evidence`, errors);
+      reqString(v.evidence, "basis", `${path}.evidence`, errors);
+      if (v.evidence.confirmation !== null && typeof v.evidence.confirmation !== "string") {
+        errors.push(`${path}.evidence.confirmation: must be a string or null`);
+      }
+      checkNoEmDash(
+        typeof v.evidence.basis === "string" ? v.evidence.basis : null,
+        `${path}.evidence.basis`,
+        errors,
+      );
+    }
+  }
+
   if (v.image !== undefined && v.image !== null) {
     if (!isObj(v.image)) {
       errors.push(`${path}.image: must be null or { src, credit, origin_url }`);
