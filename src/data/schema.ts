@@ -414,6 +414,7 @@ export interface SpaceportProfile {
 
 export const ORG_KINDS = [
   "manufacturer",
+  "launch-services",
   "in-space-services",
   "ground-segment",
   "institution",
