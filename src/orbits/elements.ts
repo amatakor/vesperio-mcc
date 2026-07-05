@@ -8,6 +8,7 @@ import type {
   OrbitsElementsFile,
   OrbitsFacilitiesFile,
   OrbitsSpaceportsFile,
+  OrbitsStarsFile,
   OrbitsStatsFile,
 } from "../data/schema";
 import { STALE_AFTER_DAYS } from "./types";
@@ -54,6 +55,15 @@ export function loadFacilities(): Promise<OrbitsFacilitiesFile | null> {
     .then((res) => (res.ok ? (res.json() as Promise<OrbitsFacilitiesFile>) : null))
     .catch(() => null);
   return facilitiesPromise;
+}
+
+let starsPromise: Promise<OrbitsStarsFile | null> | null = null;
+
+export function loadStars(): Promise<OrbitsStarsFile | null> {
+  starsPromise ??= fetch("/data/orbits/stars.json")
+    .then((res) => (res.ok ? (res.json() as Promise<OrbitsStarsFile>) : null))
+    .catch(() => null);
+  return starsPromise;
 }
 
 let statsPromise: Promise<OrbitsStatsFile | null> | null = null;

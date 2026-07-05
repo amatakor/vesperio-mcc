@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from "react";
 import type { OrbitsStatsFile } from "../data/schema";
+import { items, vehicles } from "../lib/data";
 
 // ---------------------------------------------------------------- LCD
 
@@ -38,6 +39,33 @@ function pad2(n: number): string {
   return String(n).padStart(2, "0");
 }
 
+/**
+ * Where a countdown click lands (Florian 2026-07-06): the feed item
+ * covering the mission when one exists, else the vehicle's registry
+ * profile, else nowhere. LL2 names launches "Vehicle | Mission".
+ */
+function launchHref(next: OrbitsStatsFile["upcoming"][number]): string | null {
+  // Hyphen/space variants ("Transporter 17" vs "Transporter-17") match.
+  const norm = (s: string) => s.toLowerCase().replace(/-/g, " ").replace(/\s+/g, " ");
+  const missionRaw = next.name.split(" | ")[1] ?? next.name;
+  const mission = norm(missionRaw.replace(/\(.*?\)/g, "").trim());
+  if (mission.length >= 4) {
+    const item = items.find(
+      (i) =>
+        norm(i.headline).includes(mission) || norm(i.explainer.tagline).includes(mission),
+    );
+    if (item) return `/item/${item.id}/`;
+  }
+  const vname = next.vehicle.toLowerCase();
+  const veh = vehicles
+    .filter((v) => {
+      const n = v.name.toLowerCase();
+      return vname.startsWith(n) || n.startsWith(vname);
+    })
+    .sort((a, b) => b.name.length - a.name.length)[0];
+  return veh ? `/registry/vehicles/${veh.slug}/` : null;
+}
+
 /** Ticks locally each second; rolls to the next launch at T-0. */
 function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const [nowMs, setNowMs] = useState(() => Date.now());
@@ -56,9 +84,10 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const s = Math.floor(diff / 1000) % 60;
   const netDate = new Date(next.net);
   const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
+  const href = launchHref(next);
 
-  return (
-    <div className="hud-module">
+  const body = (
+    <>
       <div className="hud-label">NEXT LAUNCH · T MINUS</div>
       <div className="hud-countdown">
         <span className="hud-tminus">T-{days}D</span>
@@ -68,6 +97,17 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
       <div className="hud-pad">
         {[next.pad, netLabel].filter(Boolean).join(" · ").toUpperCase()}
       </div>
+    </>
+  );
+  return (
+    <div className="hud-module">
+      {href ? (
+        <a className="hud-countdown-link" href={href}>
+          {body}
+        </a>
+      ) : (
+        body
+      )}
     </div>
   );
 }
@@ -140,14 +180,31 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
 
 // ------------------------------------------------------ vehicle bars
 
-function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
-  const top = vehicles.slice(0, 4);
-  const rest = vehicles.slice(4);
+/** Where a vehicle-family row links (Florian 2026-07-06): the registry
+ * vehicle profile when the family names exactly one, else the launch
+ * section of the registry browser. */
+function familyHref(family: string): string {
+  const f = family.toLowerCase();
+  const matches = vehicles.filter((v) => v.name.toLowerCase().startsWith(f));
+  return matches.length === 1
+    ? `/registry/vehicles/${matches[0]!.slug}/`
+    : "/registry/#launch";
+}
+
+function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
+  const top = families.slice(0, 4);
+  const rest = families.slice(4);
   const restCount = rest.reduce((a, v) => a + v.count, 0);
   const max = Math.max(1, ...top.map((v) => v.count), restCount);
   const rows = [
-    ...top.map((v) => ({ label: v.family.toUpperCase(), count: v.count })),
-    ...(rest.length > 0 ? [{ label: `OTHER (${rest.length})`, count: restCount }] : []),
+    ...top.map((v) => ({
+      label: v.family.toUpperCase(),
+      count: v.count,
+      href: familyHref(v.family),
+    })),
+    ...(rest.length > 0
+      ? [{ label: `OTHER (${rest.length})`, count: restCount, href: null }]
+      : []),
   ];
   return (
     <div className="hud-module">
@@ -156,7 +213,15 @@ function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }
         {rows.map((r) => (
           <div key={r.label} className="veh-row">
             <div className="veh-head">
-              <span className="veh-name">{r.label}</span>
+              <span className="veh-name">
+                {r.href ? (
+                  <a className="veh-link" href={r.href}>
+                    {r.label}
+                  </a>
+                ) : (
+                  r.label
+                )}
+              </span>
               <span className="veh-count">{r.count}</span>
             </div>
             <div className="veh-track">
@@ -171,6 +236,11 @@ function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }
 
 // ----------------------------------------------------------- HUD column
 
+/**
+ * Two of the left column's three equally spaced sections (the third is
+ * the VIEW cluster): the prominent tracked count on its own, then the
+ * launch block (orbital flow, countdown, vehicle ranking).
+ */
 export function HudColumn({
   tracked,
   stats,
@@ -179,25 +249,21 @@ export function HudColumn({
   stats: OrbitsStatsFile | null;
 }) {
   return (
-    <div className="hud">
-      <div className="hud-title-row">
-        <span className="hud-title">ORBITS</span>
-        <span className="hud-live">
-          <i className="hud-live-dot" /> LIVE
-        </span>
-      </div>
-      <div className="hud-module">
-        <div className="hud-label">SATELLITES TRACKED</div>
-        <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+    <>
+      <div className="hud">
+        <div className="hud-module">
+          <div className="hud-label">SATELLITES TRACKED</div>
+          <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+        </div>
       </div>
       {stats && (
-        <>
-          <Countdown upcoming={stats.upcoming} />
+        <div className="hud">
           <FlowChart stats={stats} />
+          <Countdown upcoming={stats.upcoming} />
           <VehicleBars vehicles={stats.vehicles_6mo} />
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
@@ -208,6 +274,8 @@ export interface ViewClusterProps {
   onZoomOut(): void;
   autoRotate: boolean;
   onToggleAutoRotate(): void;
+  axisLock: boolean;
+  onToggleAxisLock(): void;
   labelsOn: boolean;
   onToggleLabels(): void;
   onReset(): void;
@@ -232,6 +300,17 @@ export function ViewCluster(p: ViewClusterProps) {
         <span>AUTO-ROTATE</span>
         <button type="button" className="view-btn" onClick={p.onToggleAutoRotate}>
           [{p.autoRotate ? "ON" : "OFF"}]
+        </button>
+      </div>
+      <div className="view-row">
+        <span>LOCK AXIS</span>
+        <button
+          type="button"
+          className="view-btn"
+          onClick={p.onToggleAxisLock}
+          title="Locked: dragging spins the globe about its tilted axis"
+        >
+          [{p.axisLock ? "ON" : "OFF"}]
         </button>
       </div>
       <div className="view-row">
@@ -268,11 +347,12 @@ export function ViewCluster(p: ViewClusterProps) {
 
 // ------------------------------------------------------------- footer
 
+/** Freshness stamps carry the date, not just the time (Florian 2026-07-06). */
 function zTime(iso: string | null): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
+  return `${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
 }
 
 export function FooterBar({
@@ -287,7 +367,7 @@ export function FooterBar({
   tleStale: boolean;
 }) {
   const entries = [
-    { label: "TLE", value: zTime(tle), stale: tleStale },
+    { label: "ORBITS DB", value: zTime(tle), stale: tleStale },
     { label: "LAUNCH", value: zTime(launch), stale: false },
     { label: "REGISTRY", value: zTime(registry), stale: false },
   ].filter((e) => e.value !== null);

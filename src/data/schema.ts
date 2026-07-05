@@ -614,3 +614,18 @@ export interface OrbitsStatsFile {
   /** The next few scheduled launches, for the countdown and rollover. */
   upcoming: { name: string; vehicle: string; pad: string; net: string }[];
 }
+
+/**
+ * stars.json: the Orbits star background, generated once by
+ * scripts/orbits/build-stars.ts from the Yale Bright Star Catalog
+ * (public domain). Committed, not on any cron: the catalog is J2000
+ * and static.
+ */
+export interface OrbitsStarsFile {
+  fetched_at: string;
+  source: string;
+  attribution: string;
+  mag_limit: number;
+  /** [ra_deg, dec_deg, vmag] per star. */
+  stars: [number, number, number][];
+}

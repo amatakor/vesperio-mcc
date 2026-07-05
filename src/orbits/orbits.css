@@ -1,7 +1,8 @@
 /* 6A Orbits chrome (design handoff 2026-07-06). One accent meaning:
-   --acc = live or focused. Neon appears only as 8px category swatches.
-   No border-radius (except the intentional ORB/legend circles), no
-   shadows, no gradients, transitions <= 100ms. */
+   --acc = live or focused. Neon appears only as 8px category swatches
+   and the LIVE status lamp (--live, Florian 2026-07-06), whose glow is
+   the single allowed shadow. No border-radius (except the intentional
+   ORB/legend circles), no gradients, transitions <= 100ms. */
 
 /* 7-segment LCD face for live numerals (OFL, vendored). */
 @font-face {
@@ -33,9 +34,17 @@
   flex: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
+  /* Three zones (Florian 2026-07-06): the counter at the top, the
+     launch block centered in the leftover between counter and VIEW
+     (auto margins, see below), the VIEW box at the bottom. The gap is
+     the guaranteed minimum padding between zones. */
+  gap: 24px;
   min-height: 0;
+  /* Sections never squash mid-module; short windows scroll instead. */
+  overflow-y: auto;
+}
+.ocol-left > * {
+  flex: none;
 }
 
 .orbits-canvas-wrap {
@@ -75,23 +84,28 @@
   min-height: 0;
 }
 
-/* Corner-ticked panel, 6A fill. */
+/* Live status lamp, bottom-right inside the globe window; above the
+   canvas-wrap edge fades (z-index 1). */
+.ostatus {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  pointer-events: none;
+}
+
+/* Plain 6A panel (corner ticks removed, Florian 2026-07-06). */
 .opanel6 {
   position: relative;
   background: var(--panel-dark);
   border: 1px solid var(--line);
-  background-repeat: no-repeat;
-  background-size:
-    8px 1px, 1px 8px, 8px 1px, 1px 8px,
-    8px 1px, 1px 8px, 8px 1px, 1px 8px;
-  background-position:
-    top 0 left 0, top 0 left 0, top 0 right 0, top 0 right 0,
-    bottom 0 left 0, bottom 0 left 0, bottom 0 right 0, bottom 0 right 0;
-  background-image:
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim));
 }
 
 /* ----------------------------------------------------------------- HUD */
@@ -101,37 +115,55 @@
   overflow: hidden;
 }
 
-.hud-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
-}
-.hud-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  color: var(--fg);
-}
-.hud-live {
-  font-size: 8px;
-  letter-spacing: 1.5px;
-  color: var(--dim);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
 .hud-live-dot {
   width: 6px;
   height: 6px;
-  background: var(--acc);
+  background: var(--live);
+  box-shadow:
+    0 0 4px var(--live),
+    0 0 9px var(--live);
   display: inline-block;
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hud-live-dot {
+    animation: none;
+  }
 }
 
 .hud-module {
-  padding: 14px 0;
+  padding: 20px 0;
   border-bottom: 1px solid var(--line);
+}
+/* Generous air between the launch block's modules; the block growing
+   also tightens its outer gaps toward the counter and VIEW. */
+.hud + .hud .hud-module {
+  padding: 32px 0;
+}
+/* The counter is its own object, not a list row: centered in the
+   column, no rule under it, floated slightly into the frame. */
+.ocol-left > .hud:first-child {
+  margin-top: 16px;
+  text-align: center;
+}
+/* The left column is three equally spaced sections; each section's
+   first module sits flush and the last drops its trailing border and
+   padding so sections end clean. */
+.hud > .hud-module:first-child {
+  padding-top: 0;
+}
+.hud > .hud-module:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 .hud-label {
   font-size: 8px;
@@ -172,10 +204,22 @@
   padding: 0 2px;
 }
 .lcd-big {
-  font-size: 28px;
+  font-size: 48px;
 }
 .lcd-clock {
   font-size: 17px;
+}
+
+/* The countdown links to the mission's feed item or vehicle profile. */
+.hud-countdown-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.hud-countdown-link:hover .hud-mission {
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
 }
 
 .hud-countdown {
@@ -307,6 +351,16 @@
 .veh-name {
   color: var(--dim);
   letter-spacing: 0.5px;
+}
+/* Family rows link to the registry; same quiet affordance as the rail. */
+.veh-link {
+  color: inherit;
+  text-decoration: none;
+}
+.veh-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
 }
 .veh-count {
   color: var(--fg);
@@ -529,6 +583,17 @@
   text-overflow: ellipsis;
   letter-spacing: 0.5px;
 }
+/* Row names link to the registry profile; the affordance stays quiet
+   (Florian 2026-07-06: no accent flood), just a dim underline. */
+.rl-name-link {
+  color: inherit;
+  text-decoration: none;
+}
+.rl-name-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dim);
+  text-underline-offset: 2px;
+}
 .rl-child .rl-name {
   color: #c9c9c9;
   padding-left: 6px;
@@ -679,18 +744,6 @@
   border: 1px solid var(--line);
   padding: 0.6rem 0.65rem;
   font-family: var(--mono);
-  background-repeat: no-repeat;
-  background-size:
-    8px 1px, 1px 8px, 8px 1px, 1px 8px,
-    8px 1px, 1px 8px, 8px 1px, 1px 8px;
-  background-position:
-    top 0 left 0, top 0 left 0, top 0 right 0, top 0 right 0,
-    bottom 0 left 0, bottom 0 left 0, bottom 0 right 0, bottom 0 right 0;
-  background-image:
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim));
 }
 
 .oswatch {
@@ -798,6 +851,116 @@
 }
 .opopup-anchor .opopup {
   pointer-events: auto;
+}
+
+/* ------------------------------------------------ narrow desktop
+   Below 1280px the globe runs right under the HUD text, so the left
+   sections get translucent boxes again (Florian 2026-07-06). */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .ocol-left .hud {
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+}
+
+/* ------------------------------------------------ short desktop
+   Compact HUD spacing so the three left sections fit common laptop
+   heights without scrolling; the full spacing needs ~1000px. */
+
+@media (min-width: 901px) and (max-height: 940px) {
+  .ocol-left {
+    gap: 8px;
+  }
+  .hud-label {
+    margin-bottom: 5px;
+  }
+  .hud-module {
+    padding: 9px 0;
+  }
+  .lcd-big {
+    font-size: 36px;
+  }
+  .hud + .hud .hud-module {
+    padding: 10px 0;
+  }
+  .ocol-left > .hud:first-child {
+    margin-top: 0;
+  }
+  .ocol-left .view {
+    margin-top: 0;
+  }
+  .flow-legend {
+    margin-top: 7px;
+  }
+  .veh {
+    gap: 6px;
+  }
+  .view {
+    padding: 10px 14px;
+  }
+  .view-row {
+    padding: 2px 0;
+  }
+  .view-rule {
+    margin: 8px 0;
+  }
+}
+
+/* ---------------------------------------------------- desktop canvas
+   The canvas runs full-bleed under the whole frame at every desktop
+   width; the side columns float over it on slightly translucent fills
+   so the star field reads through (Florian 2026-07-06). On wide
+   screens FitCamera pads the fit so the globe still sits between the
+   panels; below 1280px the globe stops shrinking and the panels cut
+   into it (Option 1). */
+
+@media (min-width: 901px) {
+  .oframe-main {
+    position: relative;
+    justify-content: space-between;
+  }
+  .orbits-canvas-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .ocol-left,
+  .ocol-right {
+    position: relative;
+    z-index: 2;
+    /* Only the panels themselves catch the pointer; the gaps between
+       the left column's sections stay draggable globe. */
+    pointer-events: none;
+  }
+  .ocol-left > *,
+  .ocol-right > * {
+    pointer-events: auto;
+  }
+  /* The left column is a bare HUD on wide screens (Florian 2026-07-06:
+     no boxes); only the VIEW cluster and the rail keep their
+     translucent panels. */
+  .ocol-left .view,
+  .ocol-right .rail {
+    background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
+  }
+  /* The launch block keeps its natural height and centers in the
+     space between the counter and the VIEW box; the counter and VIEW
+     stay pinned to their ends (Florian 2026-07-06). */
+  .hud + .hud {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  /* The VIEW box keeps clear air above it even on tight screens. */
+  .ocol-left .view {
+    margin-top: 8px;
+  }
+  /* Centered in the dead space between the globe's lower-right edge,
+     the rail, and the footer (Florian 2026-07-06). */
+  .ostatus {
+    right: 452px;
+    bottom: 48px;
+  }
 }
 
 /* -------------------------------------------------------------- mobile */

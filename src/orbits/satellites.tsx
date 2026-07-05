@@ -18,7 +18,8 @@ import type { LayoutEntry } from "./types";
 /** Must stay just inside the ocean sphere radius in scene.tsx. */
 const OCCLUDER_RADIUS = 0.995;
 
-/** No name labels above this layer size; they would be unreadable. */
+/** Labels per layer; oversized layers label their first LABEL_LIMIT
+ * satellites (catalog order) rather than none at all. */
 const LABEL_LIMIT = 150;
 
 function labelTexture(text: string, color: string): THREE.CanvasTexture {
@@ -27,6 +28,10 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   c.height = 32;
   const ctx = c.getContext("2d")!;
   ctx.font = "600 20px ui-monospace, 'SF Mono', Menlo, monospace";
+  // Semi-translucent backing box so labels read over the cloud.
+  const w = Math.min(ctx.measureText(text).width, 244);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.62)";
+  ctx.fillRect(0, 2, w + 9, 28);
   ctx.fillStyle = color;
   ctx.textBaseline = "middle";
   ctx.fillText(text, 4, 17, 248);
@@ -59,6 +64,9 @@ interface Props {
   /** Highlighted layer slugs (a fleet parent expands to its children);
    * everything else dims hard. */
   highlightSlugs: ReadonlySet<string> | null;
+  /** With a constellation explicitly focused, clicks land only on its
+   * layers; null = every layer is pickable (Florian 2026-07-06). */
+  pickSlugs: ReadonlySet<string> | null;
   /** Resolved foreground color for the satellite name labels. */
   labelColor: string;
   /** VIEW cluster gate for the per-satellite name labels. */
@@ -108,6 +116,37 @@ function satTexture(): THREE.CanvasTexture {
   return satTex;
 }
 
+/** Stylised ISS glyph: long truss, four solar array pairs, module stack
+ * through the middle. Rendered whenever the station is visible, not
+ * just on focus (Florian 2026-07-06: custom ISS icon). */
+let issTex: THREE.CanvasTexture | null = null;
+function issTexture(): THREE.CanvasTexture {
+  if (!issTex) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 64;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    // Main truss across the middle.
+    ctx.fillRect(4, 30, 56, 4);
+    // Two solar array pairs at each truss end, above and below.
+    for (const x of [6, 16, 40, 50]) {
+      ctx.fillRect(x, 8, 8, 20);
+      ctx.fillRect(x, 36, 8, 20);
+    }
+    // Pressurised module stack, perpendicular through the center.
+    ctx.fillRect(28, 16, 8, 32);
+    issTex = new THREE.CanvasTexture(c);
+  }
+  return issTex;
+}
+
+/** Layers drawn as their own glyph even when nothing is focused. */
+const GLYPH_SLUGS = new Set(["iss"]);
+
+function glyphTextureFor(slug: string): THREE.CanvasTexture {
+  return GLYPH_SLUGS.has(slug) ? issTexture() : satTexture();
+}
+
 /** Hard dim for non-highlighted layers (Florian 2026-07-05: dim more). */
 function dimmed(c: THREE.Color): THREE.Color {
   const l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
@@ -119,6 +158,7 @@ export function Satellites({
   buffers,
   colorBySlug,
   highlightSlugs,
+  pickSlugs,
   labelColor,
   showLabels,
   downPos,
@@ -172,13 +212,15 @@ export function Satellites({
     attr.needsUpdate = true;
   }, [geometry, plan, colorBySlug, highlightSlugs]);
 
-  // Highlight overlays: zero-copy views onto each highlighted layer's
-  // contiguous segment of the shared position buffer.
+  // Glyph overlays: zero-copy views onto each layer's contiguous segment
+  // of the shared position buffer. Highlighted layers always; glyph
+  // layers (the ISS) also when nothing is focused.
   const highlights = useMemo(() => {
-    if (highlightSlugs === null) return [];
+    const wanted = (slug: string) =>
+      highlightSlugs === null ? GLYPH_SLUGS.has(slug) : highlightSlugs.has(slug);
     const full = geometry.getAttribute("position")!.array as Float32Array;
     return plan.segments
-      .filter((s) => highlightSlugs.has(s.entry.slug) && s.count > 0)
+      .filter((s) => wanted(s.entry.slug) && s.count > 0)
       .map((seg) => {
         const view = full.subarray(seg.start * 3, (seg.start + seg.count) * 3);
         const g = new THREE.BufferGeometry();
@@ -191,15 +233,16 @@ export function Satellites({
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
   // satellite, positions synced from the shared buffer each frame.
-  // Skipped for very large layers where labels would be unreadable soup.
+  // Layers past LABEL_LIMIT label their first LABEL_LIMIT satellites in
+  // catalog order (Florian 2026-07-06: some labels beat none).
   const labels = useMemo(() => {
     if (highlightSlugs === null || !showLabels) return [];
     const out: { seg: { start: number; count: number }; sprites: THREE.Sprite[] }[] = [];
     for (const seg of plan.segments) {
-      if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0 || seg.count > LABEL_LIMIT) {
+      if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0) {
         continue;
       }
-      const sprites = seg.entry.names.map((n) => {
+      const sprites = seg.entry.names.slice(0, LABEL_LIMIT).map((n) => {
         const sprite = new THREE.Sprite(
           new THREE.SpriteMaterial({
             map: labelTexture(n, labelColor),
@@ -212,7 +255,7 @@ export function Satellites({
         sprite.center.set(-0.12, 0.5);
         return sprite;
       });
-      out.push({ seg: { start: seg.start, count: seg.count }, sprites });
+      out.push({ seg: { start: seg.start, count: sprites.length }, sprites });
     }
     return out;
   }, [plan, highlightSlugs, labelColor, showLabels]);
@@ -267,6 +310,26 @@ export function Satellites({
     }
   });
 
+  /** Selects the satellite at a global point index (label clicks). */
+  const pickByIndex = (index: number, e: ThreeEvent<MouseEvent>) => {
+    const down = downPos.current;
+    if (
+      down &&
+      Math.hypot(e.nativeEvent.clientX - down.x, e.nativeEvent.clientY - down.y) > 8
+    ) {
+      return;
+    }
+    if (occludedByGlobe(e.ray, e.distance, OCCLUDER_RADIUS)) return;
+    for (const { entry, start, count } of plan.segments) {
+      if (index >= start && index < start + count) {
+        const i = index - start;
+        e.stopPropagation();
+        onPick({ slug: entry.slug, id: entry.ids[i]!, name: entry.names[i]!, index });
+        return;
+      }
+    }
+  };
+
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     const down = downPos.current;
     if (
@@ -277,10 +340,17 @@ export function Satellites({
     }
     // The overall nearest visible hit owns the click; anything hidden
     // behind the occluding globe is unpickable (spec 3), and hits that
-    // belong to another layer propagate to that layer's handler.
-    const nearest = e.intersections.find(
-      (h) => h.index !== undefined && !occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS),
-    );
+    // belong to another layer propagate to that layer's handler. With a
+    // focus active, only the focused layers' points are pickable.
+    const allowedSegs =
+      pickSlugs === null ? null : plan.segments.filter((s) => pickSlugs.has(s.entry.slug));
+    const nearest = e.intersections.find((h) => {
+      if (h.index === undefined || occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS)) {
+        return false;
+      }
+      if (allowedSegs === null) return true;
+      return allowedSegs.some((s) => h.index! >= s.start && h.index! < s.start + s.count);
+    });
     if (!nearest || nearest.object !== pointsRef.current) return;
     for (const { entry, start, count } of plan.segments) {
       if (nearest.index! >= start && nearest.index! < start + count) {
@@ -311,7 +381,7 @@ export function Satellites({
           <pointsMaterial
             size={0.13}
             sizeAttenuation
-            map={satTexture()}
+            map={glyphTextureFor(h.slug)}
             color={h.color}
             transparent
             alphaTest={0.1}
@@ -320,7 +390,13 @@ export function Satellites({
         </points>
       ))}
       {labels.flatMap((l, li) =>
-        l.sprites.map((s, si) => <primitive key={`${li}-${si}`} object={s} />),
+        l.sprites.map((s, si) => (
+          <primitive
+            key={`${li}-${si}`}
+            object={s}
+            onClick={(e: ThreeEvent<MouseEvent>) => pickByIndex(l.seg.start + si, e)}
+          />
+        )),
       )}
     </>
   );

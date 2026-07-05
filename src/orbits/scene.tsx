@@ -55,11 +55,21 @@ import { FooterBar, HudColumn, ViewCluster } from "./chrome";
 import { LayerRail, type RailCategory, type RailRow } from "./rail";
 import { Popup, type PopupField } from "./popup";
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
+import { Stars } from "./stars";
 import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
 import { CATEGORY_TOKENS, RESERVE_TOKEN } from "./types";
 
 const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = 0.995; // occluder
+
+/** Earth's axial tilt (obliquity), degrees; the pole leans screen-right
+ * from the default front view (Florian 2026-07-06). */
+const AXIAL_TILT_DEG = 23.44;
+
+/** Auto-rotate spins the earth about its own tilted axis (so the tilt
+ * holds on screen), eastward like the real one. Rad/s; ~150s per turn,
+ * matching the old camera-orbit pace. */
+const SPIN_RAD_PER_S = (2 * Math.PI) / 150;
 
 // ------------------------------------------------------------- theme
 
@@ -189,19 +199,37 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
 /**
  * Fits the camera distance so everything up to `fitRadius` (the globe,
  * or the highest enabled navigation shell) is inside the viewport at
- * any aspect ratio. Zoom is disabled, so this distance holds until the
- * fit target changes.
+ * any aspect ratio. `sidePad` shrinks the effective width: the canvas
+ * runs full-bleed under the floating side panels, but on wide screens
+ * the globe should still fit between them. `shiftX` slides the view
+ * horizontally (px, positive = scene moves left) so the globe centers
+ * between the unequal side panels. Zoom is disabled, so this distance
+ * holds until the fit target changes.
  */
-function FitCamera({ fitRadius }: { fitRadius: number }) {
+function FitCamera({
+  fitRadius,
+  sidePad,
+  shiftX,
+}: {
+  fitRadius: number;
+  sidePad: number;
+  shiftX: number;
+}) {
   const { camera, size } = useThree();
   useEffect(() => {
     // A zero-sized container during the first layout pass would push the
     // camera to Infinity and poison the position with NaN for the whole
     // session; skip until the size is real and self-heal a bad position.
     if (size.width < 2 || size.height < 2) return;
+    const width = Math.max(size.width - 2 * sidePad, 120);
     const persp = camera as THREE.PerspectiveCamera;
+    if (shiftX !== 0) {
+      persp.setViewOffset(size.width, size.height, shiftX, 0, size.width, size.height);
+    } else {
+      persp.clearViewOffset();
+    }
     const vHalf = (persp.fov * Math.PI) / 360;
-    const hHalf = Math.atan(Math.tan(vHalf) * (size.width / size.height));
+    const hHalf = Math.atan(Math.tan(vHalf) * (width / size.height));
     const denom = Math.sin(Math.min(vHalf, hHalf));
     if (!Number.isFinite(denom) || denom < 1e-3) return;
     const d = fitRadius / denom;
@@ -209,7 +237,7 @@ function FitCamera({ fitRadius }: { fitRadius: number }) {
     if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
     else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size, fitRadius]);
+  }, [camera, size, fitRadius, sidePad, shiftX]);
   return null;
 }
 
@@ -264,31 +292,55 @@ function PopupAnchor({
   return null;
 }
 
-/** Controlled orbit controls: the VIEW cluster owns auto-rotate state;
- * scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
+/** Controlled orbit controls for user drags; auto-rotate is the globe
+ * spinning (AutoSpin), not a camera orbit, so the axial tilt holds.
+ * With the axis locked (default) camera rotation is off entirely and
+ * dragging spins the globe instead (handler on the canvas wrap).
+ * Scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
 function Controls({
-  autoRotate,
+  enableRotate,
   onInteract,
 }: {
-  autoRotate: boolean;
+  enableRotate: boolean;
   onInteract(): void;
 }) {
   return (
     <OrbitControls
       enablePan={false}
       enableZoom={false}
+      enableRotate={enableRotate}
       enableDamping
       dampingFactor={0.08}
       rotateSpeed={0.5}
-      autoRotate={autoRotate}
-      autoRotateSpeed={0.4}
       onStart={onInteract}
     />
   );
 }
 
-/** Snaps the camera back to the front view when `nonce` changes. */
-function CameraReset({ nonce }: { nonce: number }) {
+/** Spins the earth-fixed group about its own (tilted) axis. */
+function AutoSpin({
+  on,
+  spinRef,
+}: {
+  on: boolean;
+  spinRef: MutableRefObject<THREE.Group | null>;
+}) {
+  useFrame((_, delta) => {
+    const g = spinRef.current;
+    if (on && g) g.rotation.y += SPIN_RAD_PER_S * delta;
+  });
+  return null;
+}
+
+/** Snaps the camera to the front view and the spin to zero when `nonce`
+ * changes. */
+function CameraReset({
+  nonce,
+  spinRef,
+}: {
+  nonce: number;
+  spinRef: MutableRefObject<THREE.Group | null>;
+}) {
   const { camera } = useThree();
   useEffect(() => {
     if (nonce === 0) return;
@@ -296,7 +348,8 @@ function CameraReset({ nonce }: { nonce: number }) {
     camera.position.set(0, 0, d);
     camera.up.set(0, 1, 0);
     camera.lookAt(0, 0, 0);
-  }, [camera, nonce]);
+    if (spinRef.current) spinRef.current.rotation.y = 0;
+  }, [camera, nonce, spinRef]);
   return null;
 }
 
@@ -376,30 +429,47 @@ export default function Scene() {
     void loadStats().then(setStats);
   }, []);
   const [autoRotate, setAutoRotate] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  // Locked (default): dragging spins the globe about its own tilted
+  // axis, so the tilt never changes; unlocked frees the camera orbit.
+  const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
   const [zoomStep, setZoomStep] = useState(0);
   const [resetNonce, setResetNonce] = useState(0);
+  // Wide screens keep the globe fitted between the floating panels even
+  // though the canvas itself runs full-bleed underneath them; on every
+  // desktop width the view shifts left so the globe centers between the
+  // unequal panels (left column 296px incl. padding, right rail 376px).
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1281px)").matches);
+  const [desktop, setDesktop] = useState(() => window.matchMedia("(min-width: 901px)").matches);
+  useEffect(() => {
+    const pairs: [MediaQueryList, (e: MediaQueryListEvent) => void][] = [
+      [window.matchMedia("(min-width: 1281px)"), (e) => setWide(e.matches)],
+      [window.matchMedia("(min-width: 901px)"), (e) => setDesktop(e.matches)],
+    ];
+    for (const [mq, fn] of pairs) mq.addEventListener("change", fn);
+    return () => {
+      for (const [mq, fn] of pairs) mq.removeEventListener("change", fn);
+    };
+  }, []);
+  // v2 key: categories now default open (Florian 2026-07-06); the bump
+  // clears everyone's stored v1 collapse state so the new default shows.
   const [collapse, setCollapse] = useState<Record<string, boolean>>(() => {
     try {
-      const saved = localStorage.getItem("orbits:collapse");
+      const saved = localStorage.getItem("orbits:collapse:v2");
       if (saved) return JSON.parse(saved) as Record<string, boolean>;
     } catch {
       // localStorage unavailable; fall through to defaults.
     }
-    // Defaults per the 6A handoff: fleets collapsed (fit guarantee),
-    // EO expanded, the smaller categories collapsed.
+    // Defaults: every category open, fleets collapsed (fit guarantee).
     const init: Record<string, boolean> = {};
     for (const node of catalogTree) {
       if (node.children.length > 0) init[node.entry.slug] = true;
     }
-    init["cat:connectivity"] = true;
-    init["cat:iot"] = true;
-    init["cat:human-spaceflight"] = true;
     return init;
   });
   useEffect(() => {
     try {
-      localStorage.setItem("orbits:collapse", JSON.stringify(collapse));
+      localStorage.setItem("orbits:collapse:v2", JSON.stringify(collapse));
     } catch {
       // Best-effort persistence only.
     }
@@ -424,6 +494,15 @@ export default function Scene() {
   const downPos = useRef<{ x: number; y: number } | null>(null);
   const popupEl = useRef<HTMLDivElement | null>(null);
   const workerRef = useRef<Worker | null>(null);
+  // The earth-fixed group AutoSpin rotates; everything ECEF lives inside.
+  const spinGroup = useRef<THREE.Group | null>(null);
+  // Axis-locked manual drag: last pointer X while the primary button is
+  // down; null when not dragging.
+  const dragLastX = useRef<number | null>(null);
+  const axisLockRef = useRef(axisLock);
+  axisLockRef.current = axisLock;
+  const autoRotateRef = useRef(autoRotate);
+  autoRotateRef.current = autoRotate;
 
   const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
 
@@ -726,6 +805,13 @@ export default function Scene() {
   );
   const anyStale = enabledStates.some((s) => s.status === "stale");
 
+  // An explicit constellation focus restricts picking to its layers
+  // (Florian 2026-07-06: no more stray Starlink hits under focus).
+  const pickSlugs = useMemo(
+    () => (selectedConstellation ? new Set(expandHighlight(selectedConstellation)) : null),
+    [selectedConstellation],
+  );
+
   // A selected fleet parent highlights all of its child layers.
   const highlightSlugs = useMemo(() => {
     const base = selectedConstellation
@@ -858,6 +944,15 @@ export default function Scene() {
   // World position for the popup anchor, read per frame.
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
+  // ECEF scene coords -> world coords through the tilt/spin groups.
+  const toWorld = useCallback((v: THREE.Vector3): THREE.Vector3 => {
+    const g = spinGroup.current;
+    if (g) {
+      g.updateWorldMatrix(true, false);
+      v.applyMatrix4(g.matrixWorld);
+    }
+    return v;
+  }, []);
   const getPopupWorldPos = useCallback((): THREE.Vector3 | null => {
     const sel = selectionRef.current;
     if (!sel) return null;
@@ -866,7 +961,7 @@ export default function Scene() {
         sel.pick.kind === "spaceport"
           ? { lat: sel.pick.spaceport.lat, lon: sel.pick.spaceport.lon }
           : { lat: sel.pick.facility.lat, lon: sel.pick.facility.lon };
-      return latLonToVec3(t.lat, t.lon, 1.005);
+      return toWorld(latLonToVec3(t.lat, t.lon, 1.005));
     }
     // Interpolate the selected satellite's position, matching the layer.
     let index = 0;
@@ -896,8 +991,8 @@ export default function Scene() {
     const y = lerp(1);
     const z = lerp(2);
     if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) return null;
-    return new THREE.Vector3(x, y, z);
-  }, []);
+    return toWorld(new THREE.Vector3(x, y, z));
+  }, [toWorld]);
 
   const arcColor =
     arc && selection?.kind === "sat" ? colorBySlug.get(selection.sat.slug) ?? colors.accent : null;
@@ -934,6 +1029,8 @@ export default function Scene() {
             onZoomOut={() => setZoomStep((z) => Math.max(-2, z - 1))}
             autoRotate={autoRotate}
             onToggleAutoRotate={() => setAutoRotate((v) => !v)}
+            axisLock={axisLock}
+            onToggleAxisLock={() => setAxisLock((v) => !v)}
             labelsOn={labelsOn}
             onToggleLabels={() => setLabelsOn((v) => !v)}
             onReset={onReset}
@@ -943,6 +1040,23 @@ export default function Scene() {
           className="orbits-canvas-wrap"
           onPointerDown={(e) => {
             downPos.current = { x: e.clientX, y: e.clientY };
+            dragLastX.current = e.clientX;
+          }}
+          onPointerMove={(e) => {
+            // Axis-locked drag: horizontal motion spins the earth about
+            // its own tilted axis; the camera (and the tilt) stays put.
+            if (!axisLockRef.current || dragLastX.current === null) return;
+            const dx = e.clientX - dragLastX.current;
+            dragLastX.current = e.clientX;
+            if (dx === 0 || !spinGroup.current) return;
+            spinGroup.current.rotation.y += dx * 0.006;
+            if (autoRotateRef.current) setAutoRotate(false);
+          }}
+          onPointerUp={() => {
+            dragLastX.current = null;
+          }}
+          onPointerLeave={() => {
+            dragLastX.current = null;
           }}
         >
         <Canvas
@@ -960,40 +1074,54 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} />
-          <Globe colors={colors} />
-          {shells.map((s) => (
-            <ShellLines key={s.slug} positions={s.positions} color={s.color} />
-          ))}
-          <Satellites
-            layout={layout}
-            buffers={buffersRef}
-            colorBySlug={colorBySlug}
-            highlightSlugs={highlightSlugs}
-            labelColor={colors.fg}
-            showLabels={labelsOn}
-            downPos={downPos}
-            onPick={pickSat}
-          />
-          <GroundMarkers
-            spaceports={spaceports}
-            facilities={facilities}
-            showSpaceports={showSpaceports}
-            showFacilities={showFacilities}
-            baseColor={colors.coast}
-            accentColor={colors.accent}
-            alertColor={colors.alert}
-            recentIds={recentIds}
-            reducedMotion={reducedMotion}
-            selected={selection?.kind === "ground" ? selection.pick : null}
-            downPos={downPos}
-            onPick={pickGround}
-          />
-          {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} shiftX={desktop ? 40 : 0} />
+          {/* The earth's axis leans by its real obliquity; the sky shares
+              the axis (declination is measured from the equator), while
+              AutoSpin turns only the earth-fixed inner group, so the tilt
+              holds on screen during auto-rotate. */}
+          <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
+            <Stars color={colors.fg} spinRef={spinGroup} />
+            <group ref={spinGroup}>
+              <Globe colors={colors} />
+              {shells.map((s) => (
+                <ShellLines key={s.slug} positions={s.positions} color={s.color} />
+              ))}
+              <Satellites
+                layout={layout}
+                buffers={buffersRef}
+                colorBySlug={colorBySlug}
+                highlightSlugs={highlightSlugs}
+                pickSlugs={pickSlugs}
+                labelColor={colors.fg}
+                showLabels={labelsOn}
+                downPos={downPos}
+                onPick={pickSat}
+              />
+              <GroundMarkers
+                spaceports={spaceports}
+                facilities={facilities}
+                showSpaceports={showSpaceports}
+                showFacilities={showFacilities}
+                baseColor={colors.coast}
+                accentColor={colors.accent}
+                alertColor={colors.alert}
+                recentIds={recentIds}
+                reducedMotion={reducedMotion}
+                selected={selection?.kind === "ground" ? selection.pick : null}
+                downPos={downPos}
+                onPick={pickGround}
+              />
+              {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+            </group>
+          </group>
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
-          <CameraReset nonce={resetNonce} />
-          <Controls autoRotate={autoRotate} onInteract={() => setAutoRotate(false)} />
+          <CameraReset nonce={resetNonce} spinRef={spinGroup} />
+          <AutoSpin on={autoRotate && !reducedMotion} spinRef={spinGroup} />
+          <Controls enableRotate={!axisLock} onInteract={() => setAutoRotate(false)} />
         </Canvas>
+        <div className="ostatus">
+          STATUS: LIVE <i className="hud-live-dot" />
+        </div>
         {popup && (
           <div ref={popupEl} className="opopup-anchor">
             <Popup
