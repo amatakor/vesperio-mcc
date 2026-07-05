@@ -766,11 +766,19 @@ table.profile a {
 }
 .toc-list {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 0;
   font-size: 0.85rem;
+  list-style: none;
+  counter-reset: toc;
 }
 .toc-list li {
   margin: 0.15rem 0;
+}
+.toc-list li::before {
+  counter-increment: toc;
+  content: counter(toc, decimal-leading-zero) " ";
+  color: var(--dim);
+  font-family: var(--mono);
 }
 .toc-list a {
   color: var(--fg);
