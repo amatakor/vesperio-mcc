@@ -16,6 +16,7 @@ import {
   validateElementsFile,
   validateSpaceportsFile,
   validateFacilitiesFile,
+  validateStatsFile,
 } from "./lib/validate";
 
 const DATA_DIR = "public/data/orbits";
@@ -63,6 +64,10 @@ for (const slug of [...mappedSlugs].sort()) {
 const spaceportsPath = join(DATA_DIR, "spaceports.json");
 const spaceports = loadJson(spaceportsPath, errors);
 if (spaceports !== undefined) errors.push(...validateSpaceportsFile(spaceports));
+
+const statsPath = join(DATA_DIR, "stats.json");
+const stats = loadJson(statsPath, errors);
+if (stats !== undefined) errors.push(...validateStatsFile(stats));
 
 const facilitiesPath = join(DATA_DIR, "facilities.json");
 const facilities = loadJson(facilitiesPath, errors);

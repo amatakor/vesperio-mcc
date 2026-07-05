@@ -42,6 +42,9 @@ jobs:
       - name: Fetch spaceports (Launch Library 2)
         run: bun scripts/orbits/fetch-spaceports.ts
 
+      - name: Fetch HUD stats (Launch Library 2 + SATCAT)
+        run: bun scripts/orbits/fetch-stats.ts
+
       - name: Build must pass before any commit
         run: bun run build
 

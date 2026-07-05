@@ -121,8 +121,16 @@ export interface Ll2Pad {
 export interface Ll2Launch {
   name?: string;
   net?: string | null;
-  rocket?: { configuration?: { name?: string; full_name?: string } | null } | null;
-  pad?: (Ll2Pad & { location?: { id?: number } | null }) | null;
+  status?: { abbrev?: string | null } | null;
+  rocket?: {
+    configuration?: {
+      name?: string;
+      full_name?: string;
+      /** LL2 2.3.0: broadest family first, e.g. [Long March, Long March 8]. */
+      families?: { name?: string }[];
+    } | null;
+  } | null;
+  pad?: (Ll2Pad & { name?: string; location?: { id?: number } | null }) | null;
 }
 
 function vehicleName(l: Ll2Launch): string | null {
@@ -242,4 +250,171 @@ export function buildSpaceports(args: {
 
   spaceports.sort((a, b) => a.name.localeCompare(b.name));
   return { spaceports, errors };
+}
+
+// ---------------------------------------------------------------- stats
+
+const DAY_MS = 24 * 3600 * 1000;
+const WEEK_MS = 7 * DAY_MS;
+const WINDOW_MS = 30 * DAY_MS;
+
+/** Launch statuses that count as failures in the flow chart. */
+const FAILURE_ABBREVS = new Set(["Failure", "Partial Failure"]);
+
+function netMs(l: Ll2Launch): number | null {
+  if (!l.net) return null;
+  const t = new Date(l.net).getTime();
+  return Number.isNaN(t) ? null : t;
+}
+
+/** UTC-midnight ISO date for a bucket start. */
+function bucketStartIso(ms: number): string {
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+export interface StatsInputs {
+  now: Date;
+  /** Past launches, roughly the last 180 days (net in the past). */
+  previous: Ll2Launch[];
+  /** Future launches (net in the future). */
+  upcoming: Ll2Launch[];
+  /** Decay timestamps (ms epoch) of catalog objects, any range. */
+  decays: number[];
+}
+
+export type OrbitsStats = Omit<
+  import("../../src/data/schema").OrbitsStatsFile,
+  "fetched_at" | "source"
+>;
+
+/**
+ * Computes the 6A HUD metrics: 30-day launched/failed/scheduled/
+ * deorbited totals with 4 weekly buckets each side of now, the 6-month
+ * per-family launch ranking, and the next few upcoming launches.
+ */
+export function buildStats({ now, previous, upcoming, decays }: StatsInputs): OrbitsStats {
+  const nowMs = now.getTime();
+
+  const launchedWeekly = [3, 2, 1, 0].map((w) => ({
+    start: bucketStartIso(nowMs - (w + 1) * WEEK_MS),
+    launched: 0,
+    failed: 0,
+  }));
+  let launchedTotal = 0;
+  let failedTotal = 0;
+  const families = new Map<string, number>();
+
+  for (const l of previous) {
+    const t = netMs(l);
+    if (t === null || t > nowMs) continue;
+    const age = nowMs - t;
+    if (age <= 180 * DAY_MS) {
+      const c = l.rocket?.configuration;
+      const family = c?.families?.[0]?.name || c?.name || "Unknown";
+      families.set(family, (families.get(family) ?? 0) + 1);
+    }
+    if (age <= WINDOW_MS) {
+      launchedTotal++;
+      const failed = FAILURE_ABBREVS.has(l.status?.abbrev ?? "");
+      if (failed) failedTotal++;
+      const bucket = 3 - Math.min(3, Math.floor(age / WEEK_MS));
+      const slot = launchedWeekly[bucket];
+      if (slot) {
+        slot.launched++;
+        if (failed) slot.failed++;
+      }
+    }
+  }
+
+  const scheduledWeekly = [0, 1, 2, 3].map((w) => ({
+    start: bucketStartIso(nowMs + w * WEEK_MS),
+    count: 0,
+  }));
+  let scheduledTotal = 0;
+  const dated = upcoming
+    .map((l) => ({ l, t: netMs(l) }))
+    .filter((x): x is { l: Ll2Launch; t: number } => x.t !== null && x.t >= nowMs)
+    .sort((a, b) => a.t - b.t);
+  for (const { t } of dated) {
+    const ahead = t - nowMs;
+    if (ahead > WINDOW_MS) continue;
+    scheduledTotal++;
+    const bucket = Math.min(3, Math.floor(ahead / WEEK_MS));
+    scheduledWeekly[bucket]!.count++;
+  }
+
+  const deorbitWeekly = [3, 2, 1, 0].map((w) => ({
+    start: bucketStartIso(nowMs - (w + 1) * WEEK_MS),
+    count: 0,
+  }));
+  let deorbitTotal = 0;
+  for (const t of decays) {
+    const age = nowMs - t;
+    if (age < 0 || age > WINDOW_MS) continue;
+    deorbitTotal++;
+    const bucket = 3 - Math.min(3, Math.floor(age / WEEK_MS));
+    deorbitWeekly[bucket]!.count++;
+  }
+
+  return {
+    launched_30d: { total: launchedTotal, failed: failedTotal, weekly: launchedWeekly },
+    scheduled_30d: { total: scheduledTotal, weekly: scheduledWeekly },
+    deorbited_30d: { total: deorbitTotal, weekly: deorbitWeekly },
+    vehicles_6mo: [...families.entries()]
+      .map(([family, count]) => ({ family, count }))
+      .sort((a, b) => b.count - a.count || a.family.localeCompare(b.family)),
+    upcoming: dated.slice(0, 5).map(({ l }) => ({
+      name: l.name ?? "",
+      vehicle: l.rocket?.configuration?.full_name ?? l.rocket?.configuration?.name ?? "",
+      pad: l.pad?.name ?? "",
+      net: l.net!,
+    })),
+  };
+}
+
+/**
+ * Parses the CelesTrak SATCAT CSV and returns decay timestamps (ms).
+ * Handles quoted fields; keys columns by header name so column-order
+ * drift upstream cannot corrupt the result.
+ */
+export function satcatDecays(csv: string): number[] {
+  const lines = csv.split("\n");
+  if (lines.length < 2) return [];
+  const header = splitCsvLine(lines[0]!);
+  const decayIdx = header.indexOf("DECAY_DATE");
+  if (decayIdx === -1) return [];
+  const out: number[] = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i]!;
+    if (!line) continue;
+    const cols = splitCsvLine(line);
+    const decay = cols[decayIdx];
+    if (!decay) continue;
+    const t = new Date(decay + "T00:00:00Z").getTime();
+    if (!Number.isNaN(t)) out.push(t);
+  }
+  return out;
+}
+
+function splitCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let cur = "";
+  let quoted = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i]!;
+    if (quoted) {
+      if (ch === '"') {
+        if (line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else quoted = false;
+      } else cur += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ",") {
+      out.push(cur);
+      cur = "";
+    } else if (ch !== "\r") cur += ch;
+  }
+  out.push(cur);
+  return out;
 }

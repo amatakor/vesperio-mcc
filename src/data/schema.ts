@@ -585,3 +585,32 @@ export interface OrbitsFacilitiesFile {
   as_of: string;
   facilities: OrbitsFacility[];
 }
+
+/** One weekly bucket in the stats.json flow chart. */
+export interface OrbitsWeekBucket {
+  /** ISO date (UTC midnight) the 7-day bucket starts. */
+  start: string;
+  count: number;
+}
+
+/**
+ * stats.json: the live-HUD metrics (6A design), computed on the
+ * 12-hour cron from Launch Library 2 and the CelesTrak SATCAT.
+ * Windows are 30 days for totals; the flow chart uses 4 weekly
+ * buckets on each side of now.
+ */
+export interface OrbitsStatsFile {
+  fetched_at: string;
+  source: string;
+  launched_30d: {
+    total: number;
+    failed: number;
+    weekly: { start: string; launched: number; failed: number }[];
+  };
+  scheduled_30d: { total: number; weekly: OrbitsWeekBucket[] };
+  deorbited_30d: { total: number; weekly: OrbitsWeekBucket[] };
+  /** Launches per vehicle family over 180 days, ranked descending. */
+  vehicles_6mo: { family: string; count: number }[];
+  /** The next few scheduled launches, for the countdown and rollover. */
+  upcoming: { name: string; vehicle: string; pad: string; net: string }[];
+}

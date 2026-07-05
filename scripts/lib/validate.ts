@@ -636,6 +636,81 @@ export function validateSpaceportsFile(data: unknown): string[] {
   return errors;
 }
 
+export function validateStatsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["stats.json: root must be an object"];
+  if (!isIsoDatetime(data.fetched_at)) errors.push("stats.json.fetched_at: required ISO datetime");
+  reqString(data, "source", "stats.json", errors);
+
+  const nonNegInt = (v: unknown): boolean =>
+    typeof v === "number" && Number.isInteger(v) && v >= 0;
+  const checkWeekly = (v: unknown, path: string, keys: string[]): void => {
+    if (!Array.isArray(v) || v.length !== 4) {
+      errors.push(`${path}: required array of 4 weekly buckets`);
+      return;
+    }
+    v.forEach((b, i) => {
+      if (!isObj(b)) {
+        errors.push(`${path}[${i}]: must be an object`);
+        return;
+      }
+      if (!(typeof b.start === "string" && isValidDate(b.start))) {
+        errors.push(`${path}[${i}].start: required YYYY-MM-DD date`);
+      }
+      for (const k of keys) {
+        if (!nonNegInt(b[k])) errors.push(`${path}[${i}].${k}: required non-negative integer`);
+      }
+    });
+  };
+
+  const launched = data.launched_30d;
+  if (!isObj(launched)) errors.push("stats.json.launched_30d: required object");
+  else {
+    if (!nonNegInt(launched.total)) errors.push("stats.json.launched_30d.total: required non-negative integer");
+    if (!nonNegInt(launched.failed)) errors.push("stats.json.launched_30d.failed: required non-negative integer");
+    checkWeekly(launched.weekly, "stats.json.launched_30d.weekly", ["launched", "failed"]);
+  }
+  for (const key of ["scheduled_30d", "deorbited_30d"] as const) {
+    const block = data[key];
+    if (!isObj(block)) errors.push(`stats.json.${key}: required object`);
+    else {
+      if (!nonNegInt(block.total)) errors.push(`stats.json.${key}.total: required non-negative integer`);
+      checkWeekly(block.weekly, `stats.json.${key}.weekly`, ["count"]);
+    }
+  }
+
+  if (!Array.isArray(data.vehicles_6mo)) {
+    errors.push("stats.json.vehicles_6mo: required array");
+  } else {
+    data.vehicles_6mo.forEach((v, i) => {
+      const path = `stats.json.vehicles_6mo[${i}]`;
+      if (!isObj(v)) {
+        errors.push(`${path}: must be an object`);
+        return;
+      }
+      reqString(v, "family", path, errors);
+      if (!nonNegInt(v.count)) errors.push(`${path}.count: required non-negative integer`);
+    });
+  }
+
+  if (!Array.isArray(data.upcoming)) {
+    errors.push("stats.json.upcoming: required array");
+  } else {
+    data.upcoming.forEach((u, i) => {
+      const path = `stats.json.upcoming[${i}]`;
+      if (!isObj(u)) {
+        errors.push(`${path}: must be an object`);
+        return;
+      }
+      reqString(u, "name", path, errors);
+      if (typeof u.vehicle !== "string") errors.push(`${path}.vehicle: required string`);
+      if (typeof u.pad !== "string") errors.push(`${path}.pad: required string`);
+      if (!isIsoDatetime(u.net)) errors.push(`${path}.net: required ISO datetime`);
+    });
+  }
+  return errors;
+}
+
 export function validateFacilitiesFile(data: unknown): string[] {
   const errors: string[] = [];
   if (!isObj(data)) return ["facilities.json: root must be an object"];
