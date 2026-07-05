@@ -12,7 +12,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Also see SEC filings (PL). Florian's employer: include for completeness, apply no insider context ever. | [2026-07-05] Fetched cleanly; most recent Pulse post (June 17) predates this run's freshness window, no candidate. | [2026-07-05] Re-fetched cleanly; most recent Pulse post still June 17, 2026, outside the freshness window, no candidate.",
+        "notes": "Also see SEC filings (PL). Florian's employer: include for completeness, apply no insider context ever. | [2026-07-05] Fetched cleanly; most recent Pulse post (June 17) predates this run's freshness window, no candidate. | [2026-07-05] Re-fetched cleanly; most recent Pulse post still June 17, 2026, outside the freshness window, no candidate. | [2026-07-05] Re-fetched cleanly; most recent Pulse post still June 17, 2026 (a later April item also visible), nothing inside the freshness window.",
         "fail_count": 0
       },
       {
@@ -25,7 +25,7 @@
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-05] Fetched cleanly; six press releases visible, two within freshness window used as candidates. | [2026-07-05] Re-fetched cleanly; same six press releases as the prior run (the two newest already in items.json), nothing new within the freshness window."
+        "notes": "[2026-07-05] Fetched cleanly; six press releases visible, two within freshness window used as candidates. | [2026-07-05] Re-fetched cleanly; same six press releases as the prior run (the two newest already in items.json), nothing new within the freshness window. | [2026-07-05] Re-fetched cleanly; same six press releases as the last two runs, most recent still July 1, 2026 (already in items.json), no new candidate."
       },
       {
         "name": "BlackSky",
@@ -146,9 +146,9 @@
         "cadence": "irregular",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Sparse official comms. Launch cadence better tracked via Launch Library API. | [2026-07-05] Standard fetch returned only the page header (JS-rendered, no article content) on two attempts; needs a JS-capable fetch or an alternate feed. | [2026-07-05] Fetched again (both WebFetch and curl with descriptive User-Agent); still only the Angular app shell with no article markup, no content extractable. One more consecutive failure flips this to dead.",
-        "fail_count": 2
+        "status": "dead",
+        "notes": "Sparse official comms. Launch cadence better tracked via Launch Library API. | [2026-07-05] Standard fetch returned only the page header (JS-rendered, no article content) on two attempts; needs a JS-capable fetch or an alternate feed. | [2026-07-05] Fetched again (both WebFetch and curl with descriptive User-Agent); still only the Angular app shell with no article markup, no content extractable. One more consecutive failure flips this to dead. | [2026-07-05] Third consecutive failure. Both WebFetch and curl with a descriptive User-Agent return only the Angular app shell (no article markup); flipping to dead per the 3-failure rule. Re-verify manually if the site changes to a server-rendered news page.",
+        "fail_count": 3
       },
       {
         "name": "Rocket Lab",
@@ -159,7 +159,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent. | [2026-07-05] The /updates/ listing page now fetches cleanly via curl with a descriptive User-Agent (real headlines and dates), reversing the prior 403. Individual article pages, however, are gated by a Cloudflare JS challenge (403 via both WebFetch and curl) -- listing metadata alone isn't enough to verify facts for publication; see held item.",
+        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent. | [2026-07-05] The /updates/ listing page now fetches cleanly via curl with a descriptive User-Agent (real headlines and dates), reversing the prior 403. Individual article pages, however, are gated by a Cloudflare JS challenge (403 via both WebFetch and curl) -- listing metadata alone isn't enough to verify facts for publication; see held item. | [2026-07-05] The /updates/ listing page fetches cleanly via curl with a descriptive User-Agent (same behavior as last run). Individual article pages are still gated by a Cloudflare JS challenge, but the Rocket Lab/Iridium deal referenced in the listing was independently confirmed this run via Rocket Lab's own 8-K exhibit on SEC EDGAR, so the listing-vs-article gap no longer blocks that story.",
         "fail_count": 0
       },
       {
@@ -269,7 +269,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Free API, rate-limited (~15 req/hr unauth). The backbone for launch events. Verify current API version. | [2026-07-05] Fetched previous/upcoming launches directly; no SpaceX or Rocket Lab launch within the freshness window carried a notable, sourced angle beyond the routine manifest. | [2026-07-05] One previous + one upcoming call; no SpaceX or Rocket Lab launch in the window carried a notable, sourced angle beyond the routine manifest.",
+        "notes": "Free API, rate-limited (~15 req/hr unauth). The backbone for launch events. Verify current API version. | [2026-07-05] Fetched previous/upcoming launches directly; no SpaceX or Rocket Lab launch within the freshness window carried a notable, sourced angle beyond the routine manifest. | [2026-07-05] One previous + one upcoming call; no SpaceX or Rocket Lab launch in the window carried a notable, sourced angle beyond the routine manifest. | [2026-07-05] One previous + one upcoming call (15 results each), consistent with the rate-limit lesson. SpaceX and Rocket Lab entries are routine Starlink/Electron manifest launches; none carried a notable, sourced angle beyond the routine cadence already on record.",
         "fail_count": 0
       },
       {
@@ -367,7 +367,9 @@
         "cadence": "event",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-05] First successful fetch (curl with a descriptive User-Agent, no 403). Most recent filing is a June 29, 2026 8-K (items 1.01/7.01/9.01) containing the Rocket Lab-Iridium merger agreement and joint press release, used as the primary source for a confirmed item this run."
       },
       {
         "name": "SEC EDGAR 8-K feed: SATL",
@@ -505,8 +507,9 @@
         "cadence": "daily",
         "language": "en",
         "tier": 2,
-        "status": "unverified",
-        "notes": "Discovery + cross-check only. Never republish their reporting as an item basis; find the primary source they cite."
+        "status": "verified",
+        "notes": "Discovery + cross-check only. Never republish their reporting as an item basis; find the primary source they cite. | [2026-07-05] First successful fetch of the RSS feed. Discovery/cross-check only per source notes; no SpaceX, Rocket Lab, ICEYE, Planet Labs, or Iridium story in the feed added information beyond what was already sourced directly from primary sources this run.",
+        "fail_count": 0
       },
       {
         "name": "Payload",

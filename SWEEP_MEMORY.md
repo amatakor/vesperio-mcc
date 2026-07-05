@@ -41,3 +41,18 @@ a newer entry if a lesson changes.
   Acquire Iridium in Historic Deal" could not be verified beyond its
   headline+date and was held rather than published. Re-check the article
   URL next sweep before treating Rocket Lab as fully readable.
+- 2026-07-05-H: When a company's own newsroom page is Cloudflare-gated,
+  check its SEC 8-K feed before holding a story on headline alone --
+  Item 1.01 (material definitive agreement) filings often attach the
+  exact press release as an EX-99.1 exhibit, which is a clean, primary,
+  fully-readable HTML document straight from EDGAR. That is exactly how
+  the Rocket Lab/Iridium acquisition (held 2026-07-05 for lack of
+  article text) got confirmed and published this run: RKLB's 8-K filed
+  2026-06-29 carried the full joint press release as EX-99.1. SEC EDGAR
+  filing-index pages and exhibit documents fetch fine with curl plus a
+  descriptive User-Agent (no special headers needed beyond that).
+- 2026-07-05-I: SpaceX's spacex.com/updates/ has now failed 3 consecutive
+  times across two sweeps (always an unrendered Angular shell, both via
+  WebFetch and curl with a descriptive User-Agent) and was flipped to
+  status "dead" this run. Don't keep re-fetching it every sweep; revisit
+  only if a differently-shaped URL (e.g. an RSS/JSON endpoint) turns up.
