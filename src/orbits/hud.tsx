@@ -92,6 +92,7 @@ export function LayersPanel(props: LayersPanelProps) {
                   className="ocheck"
                   aria-pressed={c.enabled}
                   aria-label={`Toggle ${c.name} layer`}
+                  title={c.enabled ? `Hide the ${c.name} layer` : `Show the ${c.name} layer`}
                   onClick={() => onToggleConstellation(c.slug)}
                 >
                   {c.enabled ? "[x]" : "[ ]"}
@@ -99,6 +100,7 @@ export function LayersPanel(props: LayersPanelProps) {
                 <button
                   type="button"
                   className="oname"
+                  title={selected ? "Clear the highlight" : `Highlight ${c.name} on the globe`}
                   onClick={() => onSelectConstellation(selected ? null : c.slug)}
                 >
                   {c.name}
@@ -134,6 +136,7 @@ export function LayersPanel(props: LayersPanelProps) {
         </button>
         <span className="oname otoggle-label">FACILITIES &amp; HQS</span>
       </div>
+      <div className="ohint">[x] shows or hides a layer. Click a name to highlight it.</div>
     </div>
   );
 }

@@ -63,10 +63,33 @@ function glowTexture(): THREE.CanvasTexture {
   return glowTex;
 }
 
-/** ~30% intensity, pulled toward its own luminance (spec 3 dim state). */
+/** Miniature satellite glyph (body + solar wings) for highlighted layers. */
+let satTex: THREE.CanvasTexture | null = null;
+function satTexture(): THREE.CanvasTexture {
+  if (!satTex) {
+    const c = document.createElement("canvas");
+    c.width = c.height = 64;
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 4;
+    // Solar wings, boom, body.
+    ctx.fillRect(2, 24, 20, 16);
+    ctx.fillRect(42, 24, 20, 16);
+    ctx.beginPath();
+    ctx.moveTo(22, 32);
+    ctx.lineTo(42, 32);
+    ctx.stroke();
+    ctx.fillRect(25, 25, 14, 14);
+    satTex = new THREE.CanvasTexture(c);
+  }
+  return satTex;
+}
+
+/** Hard dim for non-highlighted layers (Florian 2026-07-05: dim more). */
 function dimmed(c: THREE.Color): THREE.Color {
   const l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
-  return new THREE.Color(l, l, l).lerp(c, 0.35).multiplyScalar(0.3);
+  return new THREE.Color(l, l, l).lerp(c, 0.25).multiplyScalar(0.12);
 }
 
 export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPos, onPick }: Props) {
@@ -94,12 +117,17 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
   useEffect(() => () => geometry.dispose(), [geometry]);
 
   // Per-point colors change only with layout, palette, or highlight.
+  // With a highlight active, the highlighted layer's points go black in
+  // this additive base layer (black renders as nothing) and reappear as
+  // satellite glyphs in the overlay below; everything else dims hard.
   useEffect(() => {
     const attr = geometry.getAttribute("color") as THREE.BufferAttribute;
     const arr = attr.array as Float32Array;
+    const black = new THREE.Color(0, 0, 0);
     for (const { entry, start, count } of plan.segments) {
       const base = new THREE.Color(colorBySlug.get(entry.slug) ?? "#ffffff");
-      const c = highlightSlug === null || highlightSlug === entry.slug ? base : dimmed(base);
+      const c =
+        highlightSlug === null ? base : highlightSlug === entry.slug ? black : dimmed(base);
       for (let i = 0; i < count; i++) {
         arr[(start + i) * 3] = c.r;
         arr[(start + i) * 3 + 1] = c.g;
@@ -109,11 +137,29 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
     attr.needsUpdate = true;
   }, [geometry, plan, colorBySlug, highlightSlug]);
 
+  // Highlight overlay: a zero-copy view onto the highlighted layer's
+  // contiguous segment of the shared position buffer.
+  const highlight = useMemo(() => {
+    if (highlightSlug === null) return null;
+    const seg = plan.segments.find((s) => s.entry.slug === highlightSlug);
+    if (!seg || seg.count === 0) return null;
+    const full = geometry.getAttribute("position")!.array as Float32Array;
+    const view = full.subarray(seg.start * 3, (seg.start + seg.count) * 3);
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(view, 3));
+    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
+    return { geometry: g, color: colorBySlug.get(highlightSlug) ?? "#ffffff" };
+  }, [geometry, plan, colorBySlug, highlightSlug]);
+  useEffect(() => () => highlight?.geometry.dispose(), [highlight]);
+
   useFrame(() => {
     const { prev, next, prevTime, nextTime } = buffers.current;
     if (!next) return;
     const attr = geometry.getAttribute("position") as THREE.BufferAttribute;
     const out = attr.array as Float32Array;
+    const overlayAttr = highlight?.geometry.getAttribute("position") as
+      | THREE.BufferAttribute
+      | undefined;
     const n = Math.min(out.length, next.length);
     const span = nextTime - prevTime;
     const alpha =
@@ -135,6 +181,8 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
       }
     }
     attr.needsUpdate = true;
+    // The overlay's attribute views the same memory; only flag it.
+    if (overlayAttr) overlayAttr.needsUpdate = true;
   });
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
@@ -164,16 +212,31 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
 
   if (plan.total === 0) return null;
   return (
-    <points ref={pointsRef} geometry={geometry} frustumCulled={false} onClick={handleClick}>
-      <pointsMaterial
-        size={0.014}
-        sizeAttenuation
-        map={glowTexture()}
-        vertexColors
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
+    <>
+      <points ref={pointsRef} geometry={geometry} frustumCulled={false} onClick={handleClick}>
+        <pointsMaterial
+          size={0.014}
+          sizeAttenuation
+          map={glowTexture()}
+          vertexColors
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      {highlight && (
+        <points geometry={highlight.geometry} frustumCulled={false}>
+          <pointsMaterial
+            size={0.034}
+            sizeAttenuation
+            map={satTexture()}
+            color={highlight.color}
+            transparent
+            alphaTest={0.1}
+            depthWrite={false}
+          />
+        </points>
+      )}
+    </>
   );
 }

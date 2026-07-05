@@ -128,13 +128,19 @@ a:hover {
 
 /* ------------------------------------------------------------ orbits */
 
-/* The 3D stage. Chrome around it stays in the shared tokens; neon
-   lives only inside the canvas (data) per the Orbits spec. */
+/* The 3D stage: frameless, as tall as the viewport comfortably allows
+   (Florian 2026-07-05). Chrome around it stays in the shared tokens;
+   neon lives only inside the canvas (data) per the Orbits spec. */
 .orbits-stage {
-  height: min(72vh, 40rem);
-  border: 1px solid var(--line);
+  height: min(80vh, 50rem);
   background: var(--bg);
   touch-action: none;
+}
+
+@media (max-width: 720px) {
+  .orbits-stage {
+    height: 68vh;
+  }
 }
 
 .orbits-fallback {
