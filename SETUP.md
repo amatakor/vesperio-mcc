@@ -20,7 +20,7 @@ Each task is a self-contained brief with acceptance criteria.
 ## 4. Cloudflare Pages
 - Connect the repo in Cloudflare Pages, build command `bun run build`,
   output `dist/`.
-- Add custom domain `mcc.vesperio.com` (CNAME in the vesperio.com zone).
+- Add custom domain `mcc.vesperio.ai` (CNAME in the vesperio.com zone).
 
 ## 5. First supervised sweeps
 - Trigger `update-items.yml` manually (workflow_dispatch) with only

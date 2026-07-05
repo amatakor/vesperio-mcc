@@ -2,7 +2,7 @@
  * Last build step. Uses the SSR bundle (dist/server/entry-server.js,
  * built by `vite build --ssr`) to emit one static HTML file per route
  * into dist/, each with the correct title, meta description, and
- * canonical URL for https://mcc.vesperio.com, plus dist/stats.json
+ * canonical URL for https://mcc.vesperio.ai, plus dist/stats.json
  * and a dist/404.html.
  */
 

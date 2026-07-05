@@ -18,7 +18,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
 
-const UA = "MCC-Vesperio thumbnail fetcher (mcc.vesperio.com; mail@florianwardell.com)";
+const UA = "MCC-Vesperio thumbnail fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 3 * 1024 * 1024;
 const OUT_DIR = "public/img/items";
 

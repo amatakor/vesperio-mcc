@@ -6,7 +6,7 @@
 
 import type { Item, ConstellationProfile, VehicleProfile } from "../data/schema";
 
-export const SITE_ORIGIN = "https://mcc.vesperio.com";
+export const SITE_ORIGIN = "https://mcc.vesperio.ai";
 
 export interface StatBlock {
   /** Anchor id on /stats/, and key in stats.json. */
