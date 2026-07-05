@@ -1071,6 +1071,8 @@ interface ProfileMeta {
   parentLink?: { slug: string; name: string } | null;
   /** Named sub-constellations of this profile (e.g. Planet's SkySat, SuperDove). */
   children?: Array<{ slug: string; name: string }>;
+  /** Full vehicle roster of a provider org, active and retired alike. */
+  vehicleRoster?: Array<{ slug: string; name: string; status: string | null }>;
 }
 
 function Breadcrumbs({
@@ -1184,6 +1186,23 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
   );
 }
 
+/** A provider's vehicles, active and retired alike; the status makes the tag meaningful. */
+function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: string; status: string | null }> }) {
+  if (roster.length === 0) return null;
+  return (
+    <section id="vehicles" className="panel">
+      <h2>vehicles</h2>
+      <div className="tag-row">
+        {roster.map((v) => (
+          <a key={v.slug} className="chip chip-tag" href={`/registry/vehicles/${v.slug}/`}>
+            {v.name} <span className="dim">/ {v.status ?? "status unknown"}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SourcesSection({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
   const byUrl = new Map<string, string[]>();
   for (const [label, f] of rows) {
@@ -1250,8 +1269,10 @@ function FaqSection({ items }: { items: FaqItem[] }) {
 /** Shared destination-page shell for every registry profile type. */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
+  const roster = profile.vehicleRoster ?? [];
   const sections: Array<[string, string]> = [["facts", "facts"]];
   if (children.length > 0) sections.push(["constellations", "constellations"]);
+  if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
   const hasEvents = itemsMentioning(names).length > 0;
   if (hasEvents) sections.push(["events", "events"]);
@@ -1304,6 +1325,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           {profile.notes && <p className="dim">{profile.notes}</p>}
         </section>
         <ChildConstellationsSection children={children} />
+        <VehicleRosterSection roster={roster} />
         <EventsSection profile={profile} />
         <RelatedSection profile={profile} related={related} prev={prev} next={next} />
         {hasSources && <SourcesSection rows={profile.rows} />}
@@ -1474,6 +1496,11 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     ["status", profile.status],
     ["website", profile.website],
   ];
+  // Full roster, active and retired alike, matched on the vehicle's stated provider.
+  const vehicleRoster = vehicles
+    .filter((v) => v.provider.value && v.provider.value.toLowerCase() === profile.name.toLowerCase())
+    .map((v) => ({ slug: v.slug, name: v.name, status: v.status.value }))
+    .sort((a, b) => a.name.localeCompare(b.name));
   const faq: FaqItem[] = [
     {
       q: `What is ${profile.name}?`,
@@ -1506,6 +1533,7 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
       .map((o) => ({ slug: o.slug, name: o.name, affiliation: o.kind })),
     breadcrumbSegment: "organizations",
     faq,
+    vehicleRoster,
   };
   return <ProfilePage profile={meta} />;
 }
