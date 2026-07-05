@@ -1,8 +1,38 @@
 import type { ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Item, SourcedField, ConstellationProfile, VehicleProfile } from "./data/schema";
-import { CATEGORIES } from "./data/schema";
-import { items, signals, constellations, vehicles, sweeps } from "./lib/data";
+import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
+import { items, signals, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
 import { computeStats } from "./lib/stats";
+
+/** sessionStorage key set on card-link click, read once on the next mount. */
+const LAST_ITEM_KEY = "mcc:last-item";
+
+function markVisited(id: string) {
+  try {
+    sessionStorage.setItem(LAST_ITEM_KEY, id);
+  } catch {
+    // sessionStorage unavailable (e.g. private mode); visited-highlight is best-effort.
+  }
+}
+
+/** Reads and clears the last-visited item id, then scrolls its card into view. */
+function useVisitedHighlight() {
+  useEffect(() => {
+    let id: string | null = null;
+    try {
+      id = sessionStorage.getItem(LAST_ITEM_KEY);
+      if (id) sessionStorage.removeItem(LAST_ITEM_KEY);
+    } catch {
+      return;
+    }
+    if (!id) return;
+    const el = document.querySelector(`[data-item-id="${CSS.escape(id)}"]`);
+    if (!el) return;
+    el.classList.add("card-visited");
+    el.scrollIntoView({ block: "center" });
+  }, []);
+}
 
 // ------------------------------------------------------------------ layout
 
@@ -15,6 +45,9 @@ export function Layout({ children }: { children: ReactNode }) {
         </a>
         <nav className="nav">
           <a href="/">news</a>
+          <a href="/tag/eo/">eo</a>
+          <a href="/tag/connectivity/">connectivity</a>
+          <a href="/tag/launch/">launch</a>
           <a href="/registry/">registry</a>
           <a href="/signals/">signals</a>
           <a href="/stats/">stats</a>
@@ -50,32 +83,59 @@ const CAT_ABBR: Record<string, string> = {
   "human-spaceflight": "HSF",
 };
 
+function UnverifiedBanner() {
+  return <span className="unverified-banner">unverified</span>;
+}
+
 /** Image when the pipeline found one; otherwise a generated text tile. */
 function CardMedia({ item }: { item: Item }) {
+  const unverified = item.confidence !== "confirmed";
   if (item.image) {
     return (
-      <a href={`/item/${item.id}/`} className="card-media">
+      <a
+        href={`/item/${item.id}/`}
+        className="card-media"
+        onClick={() => markVisited(item.id)}
+      >
         <img src={item.image.src} alt="" loading="lazy" />
+        {unverified && <UnverifiedBanner />}
       </a>
     );
   }
   return (
-    <a href={`/item/${item.id}/`} className="card-media card-tile">
+    <a
+      href={`/item/${item.id}/`}
+      className="card-media card-tile"
+      onClick={() => markVisited(item.id)}
+    >
       <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
       <span className="tile-co">{item.companies[0] ?? item.category}</span>
+      {unverified && <UnverifiedBanner />}
     </a>
   );
+}
+
+/** Up to 2 tags, domain tags preferred first. */
+function cardTags(item: Item): string[] {
+  const domain = item.tags.filter((t) => (DOMAIN_TAGS as readonly string[]).includes(t));
+  const rest = item.tags.filter((t) => !(DOMAIN_TAGS as readonly string[]).includes(t));
+  return [...domain, ...rest].slice(0, 2);
 }
 
 function Card({ item }: { item: Item }) {
   const sources = 1 + item.secondary_urls.length;
   return (
-    <article className={`card card-${item.impact}`}>
+    <article className={`card card-${item.impact}`} data-item-id={item.id}>
       <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`}>
           {item.category}
         </a>
+        {cardTags(item).map((t) => (
+          <a key={t} className="chip chip-tag" href={`/tag/${t}/`}>
+            #{t}
+          </a>
+        ))}
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.confidence !== "confirmed" && (
           <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
@@ -83,7 +143,9 @@ function Card({ item }: { item: Item }) {
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
-        <a href={`/item/${item.id}/`}>{item.headline}</a>
+        <a href={`/item/${item.id}/`} onClick={() => markVisited(item.id)}>
+          {item.headline}
+        </a>
       </h2>
       <p className="card-tagline">{item.explainer.tagline}</p>
       {item.impact === "critical" && (
@@ -94,7 +156,7 @@ function Card({ item }: { item: Item }) {
         <span className="card-sources">
           {sources} source{sources === 1 ? "" : "s"}
         </span>
-        <a className="card-details" href={`/item/${item.id}/`}>
+        <a className="card-details" href={`/item/${item.id}/`} onClick={() => markVisited(item.id)}>
           details →
         </a>
       </div>
@@ -102,12 +164,64 @@ function Card({ item }: { item: Item }) {
   );
 }
 
-function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
+/** Renders the card grid with no visited-highlight wiring of its own. */
+function FeedListBare({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
   if (list.length === 0) return <p className="empty">{emptyNote}</p>;
   return <div className="cards">{list.map((i) => <Card key={i.id} item={i} />)}</div>;
 }
 
+/** FeedListBare plus the visited-highlight mount effect, for pages with a fixed list. */
+function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
+  useVisitedHighlight();
+  return <FeedListBare list={list} emptyNote={emptyNote} />;
+}
+
+function matchesQuery(item: Item, q: string): boolean {
+  const haystack = [item.headline, item.explainer.tagline, ...item.companies, ...item.tags]
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(q);
+}
+
 export function HomePage() {
+  const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    function onKeydown(e: KeyboardEvent) {
+      if (e.key !== "/") return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+      e.preventDefault();
+      inputRef.current?.focus();
+    }
+    window.addEventListener("keydown", onKeydown);
+    return () => window.removeEventListener("keydown", onKeydown);
+  }, []);
+
+  const q = query.trim().toLowerCase();
+  const shown = useMemo(() => (q === "" ? items : items.filter((i) => matchesQuery(i, q))), [q]);
+
+  const catCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const i of items) m.set(i.category, (m.get(i.category) ?? 0) + 1);
+    return m;
+  }, []);
+
+  const domainCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const t of DOMAIN_TAGS) m.set(t, 0);
+    for (const i of items) {
+      for (const t of i.tags) {
+        if (m.has(t)) m.set(t, (m.get(t) ?? 0) + 1);
+      }
+    }
+    return m;
+  }, []);
+
+  useVisitedHighlight();
+
   return (
     <Layout>
       <p className="lede">
@@ -116,13 +230,38 @@ export function HomePage() {
         and an honest confidence label.
       </p>
       <nav className="cat-row">
-        {CATEGORIES.map((c) => (
+        {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) => (
           <a key={c} href={`/news/${c}/`}>
-            {c}
+            {c} <span className="count">{catCounts.get(c) ?? 0}</span>
           </a>
         ))}
       </nav>
-      <FeedList list={items} emptyNote="No items yet. The first sweep has not run." />
+      <nav className="cat-row domain-row">
+        {DOMAIN_TAGS.map((t) => (
+          <a key={t} href={`/tag/${t}/`}>
+            {t} <span className="count">{domainCounts.get(t) ?? 0}</span>
+          </a>
+        ))}
+      </nav>
+      <div className="filter-bar">
+        <input
+          ref={inputRef}
+          type="text"
+          className="filter-input"
+          placeholder="/ search"
+          aria-label="Search items"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <span className="filter-tally mono">
+          {shown.length} / {items.length}
+        </span>
+      </div>
+      {q !== "" && shown.length === 0 ? (
+        <p className="empty">// no items match: adjust filters</p>
+      ) : (
+        <FeedListBare list={shown} emptyNote="No items yet. The first sweep has not run." />
+      )}
     </Layout>
   );
 }
@@ -135,6 +274,18 @@ export function CategoryPage({ category }: { category: string }) {
         list={items.filter((i) => i.category === category)}
         emptyNote={`No ${category} items tracked yet.`}
       />
+      <p>
+        <a href="/">All news</a>
+      </p>
+    </Layout>
+  );
+}
+
+export function TagPage({ tag }: { tag: string }) {
+  return (
+    <Layout>
+      <h1 className="page-title">#{tag}</h1>
+      <FeedList list={itemsByTag(tag)} emptyNote={`No ${tag} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -181,7 +332,10 @@ export function ItemPage({ item }: { item: Item }) {
           <div className="item-side">
             {item.image && (
               <figure className="item-figure">
-                <img src={item.image.src} alt={item.headline} />
+                <div className="item-figure-media">
+                  <img src={item.image.src} alt={item.headline} />
+                  {item.confidence !== "confirmed" && <UnverifiedBanner />}
+                </div>
                 <figcaption className="dim">
                   <a href={item.image.origin_url} rel="noopener">
                     {item.image.credit}
@@ -225,6 +379,19 @@ export function ItemPage({ item }: { item: Item }) {
                 <p>{item.explainer.for_who}</p>
               </section>
             )}
+            {item.evidence && (
+              <section className="panel">
+                <h2>evidence</h2>
+                <dl className="kv">
+                  <dt>Said by</dt>
+                  <dd>{item.evidence.said_by}</dd>
+                  <dt>Basis</dt>
+                  <dd>{item.evidence.basis}</dd>
+                  <dt>What would confirm it</dt>
+                  <dd>{item.evidence.confirmation ?? "not stated"}</dd>
+                </dl>
+              </section>
+            )}
             <section className="panel">
               <h2>quick facts</h2>
               <dl className="kv">
@@ -241,16 +408,16 @@ export function ItemPage({ item }: { item: Item }) {
                 {item.publishDate && (
                   <>
                     <dt>Published</dt>
-                    <dd>{item.publishDate.slice(0, 10)}</dd>
+                    <dd>{item.publishDate.slice(0, 16).replace("T", " ")} UTC</dd>
                   </>
                 )}
               </dl>
             </section>
             <div className="tag-row">
               {item.tags.map((t) => (
-                <span key={t} className="chip">
+                <a key={t} className="chip chip-tag" href={`/tag/${t}/`}>
                   #{t}
-                </span>
+                </a>
               ))}
             </div>
             <p>

@@ -178,6 +178,14 @@ a.chip:hover {
   border-color: var(--acc);
   color: var(--acc);
 }
+.chip-tag {
+  color: var(--dim);
+  border-color: var(--line);
+}
+.chip-tag:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
 
 /* Solid accent badge, black text: for as-of / updated stamps. */
 .badge-acc {
@@ -207,32 +215,85 @@ a.chip:hover {
   color: var(--dim);
   border: 1px solid var(--line);
   padding: 0.2rem 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 .cat-row a:hover {
   color: var(--acc);
   border-color: var(--acc);
 }
+.cat-row .count {
+  color: var(--dim);
+  font-weight: 400;
+}
+.cat-row a:hover .count {
+  color: var(--acc);
+}
+.domain-row {
+  padding-top: 0;
+}
+
+/* -------------------------------------------------------------- filter */
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.filter-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 0.5rem 0.7rem;
+}
+.filter-input::placeholder {
+  color: var(--dim);
+}
+.filter-input:focus {
+  outline: none;
+  border-color: var(--acc);
+}
+.filter-tally {
+  color: var(--dim);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
 
 .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  gap: 0.6rem;
+  columns: 20rem;
+  column-gap: 0.6rem;
 }
 
 .card {
   border: 1px solid var(--line);
   background: var(--bg);
   padding: 1rem 1.1rem 0.8rem;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: 0.6rem;
 }
 .card:hover {
   border-color: var(--dim);
+}
+.card.card-visited {
+  outline: 2px solid var(--acc);
+  outline-offset: -2px;
+}
+.card.card-critical.card-visited {
+  outline-color: var(--alert);
 }
 
 /* Full-bleed media strip at the top of a card; image or generated tile. */
 .card-media {
   display: block;
+  position: relative;
   aspect-ratio: 16 / 9;
   margin: -1rem -1.1rem 0.8rem;
   border-bottom: 1px solid var(--line);
@@ -272,8 +333,30 @@ a.card-tile:hover .tile-cat {
   color: var(--fg);
 }
 
+/* UNVERIFIED strip: overlaid on any non-confirmed item's media, card or
+   item page alike. Parent needs position: relative. */
+.unverified-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--panel);
+  border-top: 1px dashed var(--dim);
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 0.25rem 0;
+}
+
 .item-figure {
   margin: 1rem 0;
+}
+.item-figure-media {
+  position: relative;
 }
 .item-figure img {
   width: 100%;
@@ -328,12 +411,8 @@ a.card-tile:hover .tile-cat {
   margin: 0 0 1rem;
 }
 
-/* Critical items shout: full accent card, double width, extra body. */
-@media (min-width: 46rem) {
-  .card-critical {
-    grid-column: span 2;
-  }
-}
+/* Critical items shout: full accent card, extra body. Masonry columns
+   mean cards no longer span tracks; critical cards stay tall instead. */
 .card-critical {
   background: var(--acc);
   border-color: var(--acc);

@@ -5,12 +5,21 @@
 
 import { CATEGORIES } from "./data/schema";
 import { SITE_ORIGIN } from "./lib/stats";
-import { items, constellations, vehicles, itemById, constellationBySlug, vehicleBySlug } from "./lib/data";
+import {
+  items,
+  constellations,
+  vehicles,
+  itemById,
+  constellationBySlug,
+  vehicleBySlug,
+  allTags,
+} from "./lib/data";
 
 export type Route =
   | { page: "home" }
   | { page: "item"; id: string }
   | { page: "category"; category: string }
+  | { page: "tag"; tag: string }
   | { page: "registry" }
   | { page: "constellation"; slug: string }
   | { page: "vehicle"; slug: string }
@@ -54,6 +63,11 @@ export function matchRoute(pathname: string): Route {
   const veh = p.match(/^\/registry\/vehicles\/([^/]+)\/$/);
   if (veh) return vehicleBySlug(veh[1]!) ? { page: "vehicle", slug: veh[1]! } : { page: "not-found" };
 
+  const tag = p.match(/^\/tag\/([^/]+)\/$/);
+  if (tag) {
+    return allTags.includes(tag[1]!) ? { page: "tag", tag: tag[1]! } : { page: "not-found" };
+  }
+
   return { page: "not-found" };
 }
 
@@ -82,6 +96,12 @@ export function headFor(path: string): Head {
       return {
         title: `${route.category} news | MCC`,
         description: `Tracked ${route.category} items in the new space economy, each with a primary source.`,
+        canonical,
+      };
+    case "tag":
+      return {
+        title: `#${route.tag} | MCC`,
+        description: `Items tagged ${route.tag} in the MCC feed, each with its source and confidence label.`,
         canonical,
       };
     case "registry":
@@ -152,5 +172,6 @@ export function listRoutes(): string[] {
     ...items.map((i) => `/item/${i.id}/`),
     ...constellations.map((c) => `/registry/constellations/${c.slug}/`),
     ...vehicles.map((v) => `/registry/vehicles/${v.slug}/`),
+    ...allTags.map((t) => `/tag/${t}/`),
   ];
 }

@@ -12,6 +12,7 @@ import type {
   ConstellationProfile,
   VehicleProfile,
 } from "../data/schema";
+import { DOMAIN_TAGS } from "../data/schema";
 import itemsJson from "../data/items.json";
 import signalsJson from "../data/signals.json";
 import stateJson from "../data/state.json";
@@ -47,6 +48,14 @@ export function itemById(id: string): Item | undefined {
 
 export function itemsByCategory(category: string): Item[] {
   return items.filter((i) => i.category === category);
+}
+
+export const allTags: string[] = [
+  ...new Set([...items.flatMap((i) => i.tags), ...DOMAIN_TAGS]),
+].sort();
+
+export function itemsByTag(tag: string): Item[] {
+  return items.filter((i) => i.tags.includes(tag));
 }
 
 export function constellationBySlug(slug: string): ConstellationProfile | undefined {
