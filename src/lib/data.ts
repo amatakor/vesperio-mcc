@@ -16,6 +16,7 @@ import { DOMAIN_TAGS } from "../data/schema";
 import itemsJson from "../data/items.json";
 import signalsJson from "../data/signals.json";
 import stateJson from "../data/state.json";
+import signalAvatarsJson from "../data/signal-avatars.json";
 
 export const items: Item[] = (itemsJson as ItemsFile).items
   .slice()
@@ -24,6 +25,7 @@ export const items: Item[] = (itemsJson as ItemsFile).items
 const signalsFile = signalsJson as unknown as SignalsFile;
 export const signals = signalsFile.people;
 export const signalOutlets = signalsFile.outlets;
+export const signalAvatars: Record<string, string> = signalAvatarsJson as Record<string, string>;
 
 export const sweeps: SweepLogEntry[] = (stateJson as StateFile).sweeps
   .slice()

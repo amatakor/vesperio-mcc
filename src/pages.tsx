@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Item, SourcedField, ConstellationProfile, VehicleProfile, SignalPerson } from "./data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
-import { items, signals, signalOutlets, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
+import { items, signals, signalOutlets, signalAvatars, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
@@ -611,28 +611,97 @@ function initialsOf(name: string): string {
 
 function followerBadge(person: SignalPerson): string | null {
   const est = person.channels.find((c) => c.follower_scale_est)?.follower_scale_est;
-  return est ? est.split(" ")[0]! : null;
+  if (!est) return null;
+  const token = est.split(" ")[0]!;
+  return /^\d+[KM]$/.test(token) ? `${token}+` : token;
+}
+
+const PLATFORM_LABELS: Record<string, string> = {
+  x: "twitter/x",
+  youtube: "youtube",
+  bluesky: "bluesky",
+  linkedin: "linkedin",
+  substack: "substack",
+  beehiiv: "newsletter",
+  podcast: "podcast",
+  site: "web",
+};
+
+/** Platform marks, nominative use: they say where the link goes. */
+const PLATFORM_ICONS: Record<string, ReactNode> = {
+  x: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  ),
+  youtube: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M23.5 6.19a3.02 3.02 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.51A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.123 2.136c1.872.51 9.377.51 9.377.51s7.505 0 9.377-.51a3.02 3.02 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.545 15.568V8.432L15.818 12z" />
+    </svg>
+  ),
+  bluesky: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z" />
+    </svg>
+  ),
+  linkedin: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+    </svg>
+  ),
+  substack: (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
+    </svg>
+  ),
+};
+
+function PlatformChip({ type, active }: { type: string; active: boolean }) {
+  return (
+    <span className={`chip sig-platform sig-p-${type}${active ? "" : " chip-reported"}`}>
+      {PLATFORM_ICONS[type]}
+      {PLATFORM_LABELS[type] ?? type}
+    </span>
+  );
+}
+
+const ROLE_TAGS = [
+  "ceo",
+  "founder",
+  "administrator",
+  "director general",
+  "editor",
+  "correspondent",
+  "reporter",
+  "analyst",
+  "astrophysicist",
+  "tracker",
+  "youtuber",
+  "director",
+  "principal",
+  "author",
+] as const;
+
+function roleTag(role: string): string | null {
+  const lower = role.toLowerCase();
+  return ROLE_TAGS.find((r) => lower.includes(r)) ?? null;
 }
 
 function SignalCard({ person }: { person: SignalPerson }) {
   const primary =
     person.channels.find((c) => c.status === "verified_active") ?? person.channels[0];
-  const extras = person.channels.filter((c) => c !== primary);
   const followers = followerBadge(person);
+  const avatar = signalAvatars[person.id];
+  const role = roleTag(person.role);
+  const tags = [person.org, ...(role ? [role] : []), ...person.domains.map((d) => d.replace(/_/g, "-"))];
   return (
     <article className="sig-card">
       <div className="sig-avatar" aria-hidden="true">
-        {initialsOf(person.name)}
+        {avatar ? <img src={avatar} alt="" loading="lazy" /> : initialsOf(person.name)}
       </div>
       <div className="sig-body">
         <div className="sig-top">
-          {primary && (
-            <span className={`chip sig-platform${primary.status === "verified_active" ? "" : " chip-reported"}`}>
-              {primary.type}
-            </span>
-          )}
-          {person.whitelist === "yes" && <span className="chip chip-notable">whitelist</span>}
-          {person.whitelist === "review" && <span className="chip chip-reported">review</span>}
+          {primary && <PlatformChip type={primary.type} active={primary.status === "verified_active"} />}
           {followers && <span className="sig-followers">{followers}</span>}
         </div>
         <h3 className="sig-name">{person.name}</h3>
@@ -641,20 +710,12 @@ function SignalCard({ person }: { person: SignalPerson }) {
             {primary.handle ? `@${primary.handle}` : primary.url.replace(/^https?:\/\/(www\.)?/, "")}
           </a>
         )}
-        <p className="sig-role">
-          {person.role} · {person.org}
-        </p>
         <p className="sig-why">{person.why}</p>
         <div className="sig-tags">
-          {person.domains.map((d) => (
-            <span key={d} className="chip sig-tag">
-              {d.replace(/_/g, "-")}
+          {tags.map((t) => (
+            <span key={t} className="chip sig-tag">
+              {t}
             </span>
-          ))}
-          {extras.map((c) => (
-            <a key={c.url} className="chip sig-tag sig-extra" href={c.url} rel="noopener">
-              {c.type}
-            </a>
           ))}
         </div>
       </div>

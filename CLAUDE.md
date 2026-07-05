@@ -131,6 +131,8 @@ Card and item artwork is stamped exclusively by the deterministic `scripts/fetch
 
 Never: image search results, AI-generated imagery of real events, official agency seals (legally restricted), or images hand-picked by the drafting agent. Any image is removed on request from its rights holder by setting the item's `image` to null.
 
+Signals avatars follow the same logic via `scripts/fetch-avatars.ts`: the profile picture of the exact account the card links to, re-hosted under `public/img/signals/`, initials tile when none is fetchable, removed on request from the person concerned by deleting the file and manifest entry.
+
 ## Scheduled run procedure (update-items.yml)
 
 1. Read `SWEEP_MEMORY.md` first. It contains lessons from past runs (flaky sources, recurring dedup traps, style corrections). Apply them.
