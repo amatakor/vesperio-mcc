@@ -57,6 +57,7 @@ export const CATEGORY_TOKENS: Record<ConstellationDomain, string> = {
   connectivity: "--neon-connectivity",
   iot: "--neon-iot",
   "human-spaceflight": "--neon-hsf",
+  navigation: "--neon-nav",
 };
 
 /** Anything uncategorized, and ground-marker hover/selection accents. */
@@ -67,4 +68,5 @@ export const CATEGORY_ORDER: ConstellationDomain[] = [
   "connectivity",
   "iot",
   "human-spaceflight",
+  "navigation",
 ];

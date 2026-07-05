@@ -26,22 +26,33 @@ export interface LayersPanelProps {
   selectedSlug: string | null;
   onToggleConstellation(slug: string): void;
   onSelectConstellation(slug: string | null): void;
+  /** Category header click: toggles every layer in that category. */
+  onToggleCategory(category: ConstellationDomain): void;
   spaceportsOn: boolean;
   onToggleSpaceports(): void;
   facilitiesOn: boolean;
   onToggleFacilities(): void;
 }
 
-const CATEGORY_ORDER: ConstellationDomain[] = ["eo", "connectivity", "iot", "human-spaceflight"];
+const CATEGORY_ORDER: ConstellationDomain[] = [
+  "eo",
+  "connectivity",
+  "iot",
+  "human-spaceflight",
+  "navigation",
+];
 
 const CATEGORY_LABELS: Record<ConstellationDomain, string> = {
   eo: "EO",
   connectivity: "CONNECTIVITY",
   iot: "IOT",
   "human-spaceflight": "HUMAN SPACEFLIGHT",
+  navigation: "NAVIGATION",
 };
 
 function statusSuffix(c: LegendConstellation): string {
+  // A disabled layer that never loaded has nothing to report.
+  if (!c.enabled && c.count === null) return "";
   switch (c.status) {
     case "ok":
       return c.count !== null ? String(c.count) : "";
@@ -62,6 +73,7 @@ export function LayersPanel(props: LayersPanelProps) {
     selectedSlug,
     onToggleConstellation,
     onSelectConstellation,
+    onToggleCategory,
     spaceportsOn,
     onToggleSpaceports,
     facilitiesOn,
@@ -78,14 +90,19 @@ export function LayersPanel(props: LayersPanelProps) {
       <div className="opanel-title">LAYERS</div>
       {groups.map((group) => (
         <div className="ogroup" key={group.category}>
-          <div className="ogroup-head">
+          <button
+            type="button"
+            className="ogroup-head"
+            title={`Toggle every ${CATEGORY_LABELS[group.category]} layer`}
+            onClick={() => onToggleCategory(group.category)}
+          >
             <span
               className="oswatch"
               style={{ background: `var(${CATEGORY_TOKEN_FOR(group.items)})` }}
               aria-hidden="true"
             />
             <span className="ogroup-label">{CATEGORY_LABELS[group.category]}</span>
-          </div>
+          </button>
           {group.items.flatMap((c) => {
             const row = (item: LegendConstellation, child: boolean) => {
               const selected = selectedSlug === item.slug;
