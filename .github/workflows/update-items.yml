@@ -1,25 +1,36 @@
-# News sweep. INERT until Task 5 acceptance: manual trigger only.
-# Do NOT enable the cron until two consecutive manual sweeps produce
-# zero factual errors and zero rule violations (BUILD_PLAN.md Task 5).
+# News sweep, twice daily. Cron enabled 2026-07-05 after Task 5
+# acceptance: four supervised sweeps, zero factual errors, Florian
+# signed off on every published item.
+#
+# Scheduled runs currently use the cautious source set below (soft
+# launch per Florian's 2b decision); remove the fallback list in
+# SCHEDULED_SOURCES to go to the full source list.
 #
 # Requires the CLAUDE_CODE_OAUTH_TOKEN repo secret (claude setup-token)
 # and the Claude GitHub App installed on this repo.
 
 name: update-items
 
+env:
+  SCHEDULED_SOURCES: "Planet Labs, ICEYE, Rocket Lab, European Spaceflight, SpaceNews, Launch Library 2 (TheSpaceDevs), SEC EDGAR 8-K feed: PL, SEC EDGAR 8-K feed: BKSY, SEC EDGAR 8-K feed: RKLB, SEC EDGAR 8-K feed: SATL, SEC EDGAR 8-K feed: SPIR, SEC EDGAR 8-K feed: ASTS"
+
 on:
   workflow_dispatch:
     inputs:
       source_filter:
         description: >-
-          Comma-separated source names to fetch (empty = all). Supervised
-          runs use the reduced set below per BUILD_PLAN Task 5.
+          Comma-separated source names to fetch. Empty = the scheduled
+          default set (SCHEDULED_SOURCES above).
         required: false
-        default: "Planet Labs, ICEYE, SpaceX, Rocket Lab, SEC EDGAR 8-K feed: PL, Launch Library 2 (TheSpaceDevs)"
-  # Enable after Task 5 acceptance; 05:00 / 17:00 UTC per SETUP.md.
-  # Scheduled runs have no source_filter and sweep the full source list.
-  # schedule:
-  #   - cron: "0 5,17 * * *"
+        default: ""
+      extra_instructions:
+        description: >-
+          One-off instructions appended to the sweep prompt (e.g. a
+          backfill window). Leave empty for normal runs.
+        required: false
+        default: ""
+  schedule:
+    - cron: "0 5,17 * * *"
 
 concurrency:
   group: data-writes
@@ -55,10 +66,11 @@ jobs:
             src/data/items.json, held.json, state.json, or sources.json
             directly. Do not commit or push; the workflow handles that.
 
-            Source filter for this run (comma-separated names; if empty,
-            fetch every source with status verified or unverified):
-            "${{ inputs.source_filter }}". When a filter is set, fetch
-            only the named sources and record source health only for them.
+            Source filter for this run (comma-separated names): fetch
+            only these sources, and record source health only for them:
+            "${{ inputs.source_filter || env.SCHEDULED_SOURCES }}".
+
+            ${{ inputs.extra_instructions }}
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
