@@ -39,8 +39,9 @@ interface Props {
   buffers: MutableRefObject<SnapshotBuffers>;
   /** Resolved CSS color per constellation slug (category neon). */
   colorBySlug: Map<string, string>;
-  /** Highlighted constellation; everything else dims to ~30% desaturated. */
-  highlightSlug: string | null;
+  /** Highlighted layer slugs (a fleet parent expands to its children);
+   * everything else dims hard. */
+  highlightSlugs: ReadonlySet<string> | null;
   /** Pointer-down screen position, for the drag-vs-click filter. */
   downPos: MutableRefObject<{ x: number; y: number } | null>;
   onPick(sat: PickedSat): void;
@@ -92,7 +93,7 @@ function dimmed(c: THREE.Color): THREE.Color {
   return new THREE.Color(l, l, l).lerp(c, 0.25).multiplyScalar(0.12);
 }
 
-export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPos, onPick }: Props) {
+export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downPos, onPick }: Props) {
   const pointsRef = useRef<THREE.Points>(null);
 
   const plan = useMemo(() => {
@@ -127,7 +128,11 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
     for (const { entry, start, count } of plan.segments) {
       const base = new THREE.Color(colorBySlug.get(entry.slug) ?? "#ffffff");
       const c =
-        highlightSlug === null ? base : highlightSlug === entry.slug ? black : dimmed(base);
+        highlightSlugs === null
+          ? base
+          : highlightSlugs.has(entry.slug)
+            ? black
+            : dimmed(base);
       for (let i = 0; i < count; i++) {
         arr[(start + i) * 3] = c.r;
         arr[(start + i) * 3 + 1] = c.g;
@@ -135,31 +140,33 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
       }
     }
     attr.needsUpdate = true;
-  }, [geometry, plan, colorBySlug, highlightSlug]);
+  }, [geometry, plan, colorBySlug, highlightSlugs]);
 
-  // Highlight overlay: a zero-copy view onto the highlighted layer's
+  // Highlight overlays: zero-copy views onto each highlighted layer's
   // contiguous segment of the shared position buffer.
-  const highlight = useMemo(() => {
-    if (highlightSlug === null) return null;
-    const seg = plan.segments.find((s) => s.entry.slug === highlightSlug);
-    if (!seg || seg.count === 0) return null;
+  const highlights = useMemo(() => {
+    if (highlightSlugs === null) return [];
     const full = geometry.getAttribute("position")!.array as Float32Array;
-    const view = full.subarray(seg.start * 3, (seg.start + seg.count) * 3);
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(view, 3));
-    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
-    return { geometry: g, color: colorBySlug.get(highlightSlug) ?? "#ffffff" };
-  }, [geometry, plan, colorBySlug, highlightSlug]);
-  useEffect(() => () => highlight?.geometry.dispose(), [highlight]);
+    return plan.segments
+      .filter((s) => highlightSlugs.has(s.entry.slug) && s.count > 0)
+      .map((seg) => {
+        const view = full.subarray(seg.start * 3, (seg.start + seg.count) * 3);
+        const g = new THREE.BufferGeometry();
+        g.setAttribute("position", new THREE.BufferAttribute(view, 3));
+        g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
+        return { slug: seg.entry.slug, geometry: g, color: colorBySlug.get(seg.entry.slug) ?? "#ffffff" };
+      });
+  }, [geometry, plan, colorBySlug, highlightSlugs]);
+  useEffect(() => () => highlights.forEach((h) => h.geometry.dispose()), [highlights]);
 
   useFrame(() => {
     const { prev, next, prevTime, nextTime } = buffers.current;
     if (!next) return;
     const attr = geometry.getAttribute("position") as THREE.BufferAttribute;
     const out = attr.array as Float32Array;
-    const overlayAttr = highlight?.geometry.getAttribute("position") as
-      | THREE.BufferAttribute
-      | undefined;
+    const overlayAttrs = highlights.map(
+      (h) => h.geometry.getAttribute("position") as THREE.BufferAttribute,
+    );
     const n = Math.min(out.length, next.length);
     const span = nextTime - prevTime;
     const alpha =
@@ -181,8 +188,8 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
       }
     }
     attr.needsUpdate = true;
-    // The overlay's attribute views the same memory; only flag it.
-    if (overlayAttr) overlayAttr.needsUpdate = true;
+    // The overlays' attributes view the same memory; only flag them.
+    for (const oa of overlayAttrs) oa.needsUpdate = true;
   });
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
@@ -224,19 +231,19 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlug, downPo
           blending={THREE.AdditiveBlending}
         />
       </points>
-      {highlight && (
-        <points geometry={highlight.geometry} frustumCulled={false}>
+      {highlights.map((h) => (
+        <points key={h.slug} geometry={h.geometry} frustumCulled={false}>
           <pointsMaterial
-            size={0.034}
+            size={0.055}
             sizeAttenuation
             map={satTexture()}
-            color={highlight.color}
+            color={h.color}
             transparent
             alphaTest={0.1}
             depthWrite={false}
           />
         </points>
-      )}
+      ))}
     </>
   );
 }

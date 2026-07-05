@@ -38,7 +38,13 @@ import type {
   OrbitsSpaceport,
 } from "../data/schema";
 import { organizations } from "../lib/data";
-import { catalogBySlug, ll2ToRegistrySlug, orbitCatalog } from "./catalog";
+import {
+  catalogBySlug,
+  catalogTree,
+  expandHighlight,
+  ll2ToRegistrySlug,
+  orbitCatalog,
+} from "./catalog";
 import { loadElements, loadFacilities, loadSpaceports } from "./elements";
 import { latLonToVec3 } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
@@ -126,21 +132,73 @@ function Globe({ colors }: { colors: { ocean: string; grid: string; coast: strin
 
 // ---------------------------------------------------------- overlays
 
+/**
+ * The selected satellite's orbit: solid ahead in the direction of
+ * flight, dashed behind (Florian 2026-07-05). The worker samples the
+ * arc chronologically with the satellite at the midpoint.
+ */
 function ArcLine({ positions, color }: { positions: Float32Array; color: string }) {
-  const line = useMemo(() => {
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.85 });
-    return new THREE.Line(g, m);
+  const lines = useMemo(() => {
+    const mid = Math.floor(positions.length / 3 / 2);
+    const ahead = new THREE.BufferGeometry();
+    ahead.setAttribute("position", new THREE.BufferAttribute(positions.subarray(mid * 3), 3));
+    const behind = new THREE.BufferGeometry();
+    behind.setAttribute(
+      "position",
+      new THREE.BufferAttribute(positions.subarray(0, (mid + 1) * 3), 3),
+    );
+    const solid = new THREE.Line(
+      ahead,
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }),
+    );
+    const dashed = new THREE.Line(
+      behind,
+      new THREE.LineDashedMaterial({
+        color,
+        transparent: true,
+        opacity: 0.5,
+        dashSize: 0.02,
+        gapSize: 0.025,
+      }),
+    );
+    dashed.computeLineDistances();
+    return [solid, dashed];
   }, [positions, color]);
   useEffect(
     () => () => {
-      line.geometry.dispose();
-      (line.material as THREE.Material).dispose();
+      for (const l of lines) {
+        l.geometry.dispose();
+        (l.material as THREE.Material).dispose();
+      }
     },
-    [line],
+    [lines],
   );
-  return <primitive object={line} />;
+  return (
+    <>
+      {lines.map((l, i) => (
+        <primitive key={i} object={l} />
+      ))}
+    </>
+  );
+}
+
+/**
+ * Fits the camera distance so the whole globe (plus a small margin) is
+ * always inside the viewport, whatever the aspect ratio. Zoom is
+ * disabled, so this distance holds for the session.
+ */
+function FitCamera() {
+  const { camera, size } = useThree();
+  useEffect(() => {
+    const persp = camera as THREE.PerspectiveCamera;
+    const vHalf = (persp.fov * Math.PI) / 360;
+    const hHalf = Math.atan(Math.tan(vHalf) * (size.width / Math.max(size.height, 1)));
+    const d = 1.04 / Math.sin(Math.min(vHalf, hHalf));
+    const len = persp.position.length() || 1;
+    persp.position.multiplyScalar(d / len);
+    persp.updateProjectionMatrix();
+  }, [camera, size]);
+  return null;
 }
 
 /**
@@ -176,14 +234,14 @@ function PopupAnchor({
 
 function Controls({ reducedMotion }: { reducedMotion: boolean }) {
   const [autoRotate, setAutoRotate] = useState(!reducedMotion);
+  // Zoom disabled for now (Florian 2026-07-05); FitCamera owns distance.
   return (
     <OrbitControls
       enablePan={false}
+      enableZoom={false}
       enableDamping
       dampingFactor={0.08}
       rotateSpeed={0.5}
-      minDistance={1.4}
-      maxDistance={4}
       autoRotate={autoRotate}
       autoRotateSpeed={0.4}
       onStart={() => setAutoRotate(false)}
@@ -229,6 +287,7 @@ export default function Scene() {
       grid: token("--globe-grid"),
       coast: token("--globe-coast"),
       accent: token(RESERVE_TOKEN),
+      alert: token("--alert"),
     }),
     [],
   );
@@ -411,23 +470,29 @@ export default function Scene() {
     [post],
   );
 
+  // Toggling a fleet parent toggles all of its child layers together.
   const toggleConstellation = useCallback(
     (slug: string) => {
+      const slugs = expandHighlight(slug);
+      if (slugs.length === 0) return;
       setEnabled((prev) => {
         const next = new Set(prev);
-        if (next.has(slug)) next.delete(slug);
-        else next.add(slug);
+        const anyOn = slugs.some((s) => next.has(s));
+        for (const s of slugs) {
+          if (anyOn) next.delete(s);
+          else next.add(s);
+        }
         return next;
       });
       const sel = selectionRef.current;
-      if (sel?.kind === "sat" && sel.sat.slug === slug) clearSelection();
+      if (sel?.kind === "sat" && slugs.includes(sel.sat.slug)) clearSelection();
     },
     [clearSelection],
   );
 
-  // Legend model.
-  const legend: LegendConstellation[] = orbitCatalog.map((e) => {
-    const s = layerState.get(e.slug)!;
+  // Legend model, nested like the Registry (fleet parents with children).
+  const legendEntry = (e: (typeof orbitCatalog)[number]): LegendConstellation => {
+    const s = layerState.get(e.slug) ?? { status: "loading" as const, count: null, fetchedAt: null };
     return {
       slug: e.slug,
       name: e.name,
@@ -436,6 +501,27 @@ export default function Scene() {
       enabled: enabled.has(e.slug),
       status: s.status === "loading" ? "loading" : s.status,
       count: s.count,
+    };
+  };
+  const legend: LegendConstellation[] = catalogTree.map((node) => {
+    if (node.children.length === 0) return legendEntry(node.entry);
+    const children = node.children.map(legendEntry);
+    const counts = children.map((c) => c.count).filter((c): c is number => c !== null);
+    return {
+      slug: node.entry.slug,
+      name: node.entry.name,
+      category: node.entry.category,
+      colorToken: node.entry.colorToken,
+      enabled: children.some((c) => c.enabled),
+      status: children.some((c) => c.status === "loading")
+        ? "loading"
+        : children.some((c) => c.status === "stale")
+          ? "stale"
+          : children.every((c) => c.status === "missing")
+            ? "missing"
+            : "ok",
+      count: counts.length > 0 ? counts.reduce((a, b) => a + b, 0) : null,
+      children,
     };
   });
 
@@ -459,8 +545,25 @@ export default function Scene() {
       : []),
   ];
 
-  const highlightSlug =
-    selectedConstellation ?? (selection?.kind === "sat" ? selection.sat.slug : null);
+  // A selected fleet parent highlights all of its child layers.
+  const highlightSlugs = useMemo(() => {
+    const base = selectedConstellation
+      ? expandHighlight(selectedConstellation)
+      : selection?.kind === "sat"
+        ? [selection.sat.slug]
+        : null;
+    return base && base.length > 0 ? new Set(base) : null;
+  }, [selectedConstellation, selection]);
+
+  // Spaceports with a launch inside the last 30 days pulse red.
+  const recentIds = useMemo(() => {
+    const cutoff = Date.now() - 30 * 24 * 3600 * 1000;
+    return new Set(
+      (spaceports ?? [])
+        .filter((s) => s.last_launch && new Date(s.last_launch.net).getTime() > cutoff)
+        .map((s) => s.ll2_id),
+    );
+  }, [spaceports]);
 
   // Popup content.
   const popup = useMemo(() => {
@@ -504,6 +607,9 @@ export default function Scene() {
         { label: "UPCOMING", value: String(sp.upcoming_count) },
         ...(sp.next_launch
           ? [{ label: "NEXT", value: `${sp.next_launch.vehicle} ${formatNet(sp.next_launch.net)}` }]
+          : []),
+        ...(sp.last_launch
+          ? [{ label: "LAST", value: `${sp.last_launch.vehicle} ${formatNet(sp.last_launch.net)}` }]
           : []),
         ...(sp.vehicles.length > 0 ? [{ label: "VEHICLES", value: sp.vehicles.join(", ") }] : []),
       ];
@@ -590,12 +696,12 @@ export default function Scene() {
         }}
       >
         <Canvas
-          camera={{ position: [0, 0.4, 2.6], fov: 45 }}
+          camera={{ position: [0, 0, 2.7], fov: 45 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           onCreated={({ raycaster }) => {
-            // Tap-friendly pick radius (~10px at default zoom, spec 4:
-            // touch-first, primary selection is tap).
+            // Tap-friendly pick radius (~10px, spec 4: touch-first,
+            // primary selection is tap).
             raycaster.params.Points.threshold = 0.04;
           }}
           onPointerMissed={() => {
@@ -604,12 +710,13 @@ export default function Scene() {
             clearSelection();
           }}
         >
+          <FitCamera />
           <Globe colors={colors} />
           <Satellites
             layout={layout}
             buffers={buffersRef}
             colorBySlug={colorBySlug}
-            highlightSlug={highlightSlug}
+            highlightSlugs={highlightSlugs}
             downPos={downPos}
             onPick={pickSat}
           />
@@ -620,6 +727,9 @@ export default function Scene() {
             showFacilities={showFacilities}
             baseColor={colors.coast}
             accentColor={colors.accent}
+            alertColor={colors.alert}
+            recentIds={recentIds}
+            reducedMotion={reducedMotion}
             selected={selection?.kind === "ground" ? selection.pick : null}
             downPos={downPos}
             onPick={pickGround}

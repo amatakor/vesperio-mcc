@@ -615,14 +615,16 @@ export function validateSpaceportsFile(data: unknown): string[] {
         errors.push(`${path}.${key}: required non-negative integer`);
       }
     }
-    if (s.next_launch !== null) {
-      if (!isObj(s.next_launch)) {
-        errors.push(`${path}.next_launch: must be null or { name, vehicle, net }`);
+    for (const key of ["next_launch", "last_launch"] as const) {
+      const launch = s[key];
+      if (launch === null) continue;
+      if (!isObj(launch)) {
+        errors.push(`${path}.${key}: must be null or { name, vehicle, net }`);
       } else {
-        reqString(s.next_launch, "name", `${path}.next_launch`, errors);
-        reqString(s.next_launch, "vehicle", `${path}.next_launch`, errors);
-        if (!isIsoDatetime(s.next_launch.net)) {
-          errors.push(`${path}.next_launch.net: required ISO datetime`);
+        reqString(launch, "name", `${path}.${key}`, errors);
+        reqString(launch, "vehicle", `${path}.${key}`, errors);
+        if (!isIsoDatetime(launch.net)) {
+          errors.push(`${path}.${key}.net: required ISO datetime`);
         }
       }
     }
