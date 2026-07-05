@@ -4,7 +4,7 @@
  * Exits 1 on any violation.
  */
 
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, basename } from "node:path";
 import { loadJson, report } from "./lib/run-checks";
 import { validateRegistryProfile } from "./lib/validate";
@@ -15,7 +15,28 @@ let count = 0;
 const kinds = [
   { dir: "src/data/registry/constellations", type: "constellation" as const },
   { dir: "src/data/registry/vehicles", type: "vehicle" as const },
+  { dir: "src/data/registry/spaceports", type: "spaceport" as const },
+  { dir: "src/data/registry/organizations", type: "organization" as const },
 ];
+
+// Constellation parent links must point at an existing constellation.
+{
+  const dir = "src/data/registry/constellations";
+  if (existsSync(dir)) {
+    const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
+    const slugs = new Set(files.map((f) => basename(f, ".json")));
+    for (const file of files) {
+      try {
+        const p = JSON.parse(readFileSync(join(dir, file), "utf8")) as { parent?: string | null };
+        if (p.parent && !slugs.has(p.parent)) {
+          errors.push(`constellations/${file}: parent "${p.parent}" does not exist`);
+        }
+      } catch {
+        /* parse errors surface in the main loop */
+      }
+    }
+  }
+}
 
 for (const { dir, type } of kinds) {
   if (!existsSync(dir)) continue;

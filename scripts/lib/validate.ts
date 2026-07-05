@@ -12,6 +12,8 @@ import {
   FEED_TYPES,
   SOURCE_TIERS,
   CONSTELLATION_DOMAINS,
+  SPACEPORT_REGIONS,
+  ORG_KINDS,
   HEADLINE_MAX_CHARS,
   TAGLINE_MAX_CHARS,
   SIGNAL_BUCKETS,
@@ -483,9 +485,28 @@ const VEHICLE_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]
   ["price_per_launch_usd", "number"],
 ];
 
+const SPACEPORT_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["overview", "string"],
+  ["country", "string"],
+  ["operator", "string"],
+  ["first_launch_date", "string"],
+  ["launches_total", "number"],
+  ["status", "string"],
+  ["website", "string"],
+];
+
+const ORG_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["overview", "string"],
+  ["country", "string"],
+  ["founded", "number"],
+  ["focus", "string"],
+  ["status", "string"],
+  ["website", "string"],
+];
+
 export function validateRegistryProfile(
   data: unknown,
-  expectedType: "constellation" | "vehicle",
+  expectedType: "constellation" | "vehicle" | "spaceport" | "organization",
   expectedSlug: string,
 ): string[] {
   const errors: string[] = [];
@@ -508,9 +529,22 @@ export function validateRegistryProfile(
     if (!CONSTELLATION_DOMAINS.includes(data.domain as never)) {
       errors.push(`${path}.domain: must be one of [${CONSTELLATION_DOMAINS.join(", ")}]`);
     }
+    if (data.parent !== undefined && data.parent !== null && typeof data.parent !== "string") {
+      errors.push(`${path}.parent: must be null or a constellation slug`);
+    }
     for (const [key, kind] of CONSTELLATION_FIELDS) checkSourcedField(data, key, kind, path, errors);
-  } else {
+  } else if (expectedType === "vehicle") {
     for (const [key, kind] of VEHICLE_FIELDS) checkSourcedField(data, key, kind, path, errors);
+  } else if (expectedType === "spaceport") {
+    if (!SPACEPORT_REGIONS.includes(data.region as never)) {
+      errors.push(`${path}.region: must be one of [${SPACEPORT_REGIONS.join(", ")}]`);
+    }
+    for (const [key, kind] of SPACEPORT_FIELDS) checkSourcedField(data, key, kind, path, errors);
+  } else {
+    if (!ORG_KINDS.includes(data.kind as never)) {
+      errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
+    }
+    for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
   }
   return errors;
 }
