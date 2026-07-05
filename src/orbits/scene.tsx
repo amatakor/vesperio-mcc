@@ -319,6 +319,7 @@ export default function Scene() {
       coast: token("--globe-coast"),
       accent: token(RESERVE_TOKEN),
       alert: token("--alert"),
+      fg: token("--fg"),
     }),
     [],
   );
@@ -660,10 +661,11 @@ export default function Scene() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConstellation, enabled, layout, colorBySlug, colors.accent]);
 
-  // Camera fit: the globe by default; the whole shell when a navigation
-  // layer (MEO) is enabled.
+  // Camera fit: the globe plus generous air for the LEO cloud (Florian
+  // 2026-07-05: let the design breathe); widens further if a MEO layer
+  // is ever enabled.
   const fitRadius = useMemo(() => {
-    let max = 1.04;
+    let max = 1.28;
     for (const e of orbitCatalog) {
       if (e.category !== "navigation" || !enabled.has(e.slug)) continue;
       const recs = recordsRef.current.get(e.slug);
@@ -838,6 +840,7 @@ export default function Scene() {
             buffers={buffersRef}
             colorBySlug={colorBySlug}
             highlightSlugs={highlightSlugs}
+            labelColor={colors.fg}
             downPos={downPos}
             onPick={pickSat}
           />

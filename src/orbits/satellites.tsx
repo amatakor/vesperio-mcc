@@ -18,6 +18,23 @@ import type { LayoutEntry } from "./types";
 /** Must stay just inside the ocean sphere radius in scene.tsx. */
 const OCCLUDER_RADIUS = 0.995;
 
+/** No name labels above this layer size; they would be unreadable. */
+const LABEL_LIMIT = 150;
+
+function labelTexture(text: string, color: string): THREE.CanvasTexture {
+  const c = document.createElement("canvas");
+  c.width = 256;
+  c.height = 32;
+  const ctx = c.getContext("2d")!;
+  ctx.font = "600 20px ui-monospace, 'SF Mono', Menlo, monospace";
+  ctx.fillStyle = color;
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, 4, 17, 248);
+  const t = new THREE.CanvasTexture(c);
+  t.anisotropy = 2;
+  return t;
+}
+
 /** Double-buffered worker snapshots; the render loop lerps between them. */
 export interface SnapshotBuffers {
   prev: Float32Array | null;
@@ -42,6 +59,8 @@ interface Props {
   /** Highlighted layer slugs (a fleet parent expands to its children);
    * everything else dims hard. */
   highlightSlugs: ReadonlySet<string> | null;
+  /** Resolved foreground color for the satellite name labels. */
+  labelColor: string;
   /** Pointer-down screen position, for the drag-vs-click filter. */
   downPos: MutableRefObject<{ x: number; y: number } | null>;
   onPick(sat: PickedSat): void;
@@ -93,7 +112,15 @@ function dimmed(c: THREE.Color): THREE.Color {
   return new THREE.Color(l, l, l).lerp(c, 0.25).multiplyScalar(0.12);
 }
 
-export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downPos, onPick }: Props) {
+export function Satellites({
+  layout,
+  buffers,
+  colorBySlug,
+  highlightSlugs,
+  labelColor,
+  downPos,
+  onPick,
+}: Props) {
   const pointsRef = useRef<THREE.Points>(null);
 
   const plan = useMemo(() => {
@@ -159,6 +186,44 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downP
   }, [geometry, plan, colorBySlug, highlightSlugs]);
   useEffect(() => () => highlights.forEach((h) => h.geometry.dispose()), [highlights]);
 
+  // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
+  // satellite, positions synced from the shared buffer each frame.
+  // Skipped for very large layers where labels would be unreadable soup.
+  const labels = useMemo(() => {
+    if (highlightSlugs === null) return [];
+    const out: { seg: { start: number; count: number }; sprites: THREE.Sprite[] }[] = [];
+    for (const seg of plan.segments) {
+      if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0 || seg.count > LABEL_LIMIT) {
+        continue;
+      }
+      const sprites = seg.entry.names.map((n) => {
+        const sprite = new THREE.Sprite(
+          new THREE.SpriteMaterial({
+            map: labelTexture(n, labelColor),
+            transparent: true,
+            depthWrite: false,
+          }),
+        );
+        sprite.scale.set(0.36, 0.045, 1);
+        // Anchor left of the texture just right of the glyph.
+        sprite.center.set(-0.12, 0.5);
+        return sprite;
+      });
+      out.push({ seg: { start: seg.start, count: seg.count }, sprites });
+    }
+    return out;
+  }, [plan, highlightSlugs, labelColor]);
+  useEffect(
+    () => () =>
+      labels.forEach((l) =>
+        l.sprites.forEach((s) => {
+          s.material.map?.dispose();
+          s.material.dispose();
+        }),
+      ),
+    [labels],
+  );
+
   useFrame(() => {
     const { prev, next, prevTime, nextTime } = buffers.current;
     if (!next) return;
@@ -190,6 +255,13 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downP
     attr.needsUpdate = true;
     // The overlays' attributes view the same memory; only flag them.
     for (const oa of overlayAttrs) oa.needsUpdate = true;
+    // Move the name labels with their satellites.
+    for (const l of labels) {
+      for (let i = 0; i < l.seg.count; i++) {
+        const j = (l.seg.start + i) * 3;
+        l.sprites[i]!.position.set(out[j]!, out[j + 1]!, out[j + 2]!);
+      }
+    }
   });
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
@@ -234,7 +306,7 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downP
       {highlights.map((h) => (
         <points key={h.slug} geometry={h.geometry} frustumCulled={false}>
           <pointsMaterial
-            size={0.085}
+            size={0.13}
             sizeAttenuation
             map={satTexture()}
             color={h.color}
@@ -244,6 +316,9 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downP
           />
         </points>
       ))}
+      {labels.flatMap((l, li) =>
+        l.sprites.map((s, si) => <primitive key={`${li}-${si}`} object={s} />),
+      )}
     </>
   );
 }
