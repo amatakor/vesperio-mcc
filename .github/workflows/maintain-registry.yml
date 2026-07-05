@@ -69,4 +69,7 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add src/data/registry
           git commit -m "registry: maintenance update ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+          # main may have moved during the run; registry commits touch only
+          # data files, so a rebase is clean or fails loudly.
+          git pull --rebase origin main
           git push
