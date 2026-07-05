@@ -159,3 +159,74 @@ describe("buildSpaceports", () => {
     expect(errors).toHaveLength(1);
   });
 });
+
+describe("buildStats", () => {
+  const now = new Date("2026-07-06T12:00:00Z");
+  const day = 24 * 3600 * 1000;
+  const past = (d: number, family: string, failed = false) => ({
+    name: `${family} | Mission`,
+    net: new Date(now.getTime() - d * day).toISOString(),
+    status: { abbrev: failed ? "Failure" : "Success" },
+    rocket: { configuration: { name: family + " v1", families: [{ name: family }], full_name: family + " Block X" } },
+    pad: { name: "Pad 1", location: { id: 1 } },
+  });
+  const future = (d: number, family = "Falcon") => ({
+    name: `${family} | Up`,
+    net: new Date(now.getTime() + d * day).toISOString(),
+    rocket: { configuration: { name: family, families: [{ name: family }], full_name: family + " 9" } },
+    pad: { name: "SLC-40", location: { id: 1 } },
+  });
+  const { buildStats } = require("../orbits/lib");
+
+  test("computes 30d totals, weekly buckets, failures, and family ranking", () => {
+    const stats = buildStats({
+      now,
+      previous: [
+        past(2, "Falcon"),
+        past(9, "Falcon", true),
+        past(16, "Long March"),
+        past(40, "Falcon"),
+        past(100, "Electron"),
+      ],
+      upcoming: [future(1), future(10), future(40)],
+      decays: [now.getTime() - 3 * day, now.getTime() - 12 * day, now.getTime() - 45 * day],
+    });
+    expect(stats.launched_30d.total).toBe(3);
+    expect(stats.launched_30d.failed).toBe(1);
+    expect(stats.launched_30d.weekly.map((w: { launched: number }) => w.launched)).toEqual([0, 1, 1, 1]);
+    expect(stats.launched_30d.weekly[2]!.failed).toBe(1);
+    expect(stats.scheduled_30d.total).toBe(2);
+    expect(stats.scheduled_30d.weekly.map((w: { count: number }) => w.count)).toEqual([1, 1, 0, 0]);
+    expect(stats.deorbited_30d.total).toBe(2);
+    expect(stats.vehicles_6mo).toEqual([
+      { family: "Falcon", count: 3 },
+      { family: "Electron", count: 1 },
+      { family: "Long March", count: 1 },
+    ]);
+    expect(stats.upcoming).toHaveLength(3);
+    expect(stats.upcoming[0]).toEqual({
+      name: "Falcon | Up",
+      vehicle: "Falcon 9",
+      pad: "SLC-40",
+      net: future(1).net,
+    });
+  });
+});
+
+describe("satcatDecays", () => {
+  const { satcatDecays } = require("../orbits/lib");
+  test("extracts decay dates from quoted CSV keyed by header", () => {
+    const csv = [
+      'OBJECT_NAME,NORAD_CAT_ID,DECAY_DATE,PERIOD',
+      '"SAT, ALPHA",1,2026-06-30,90.1',
+      'BETA,2,,92.4',
+      'GAMMA,3,2026-07-01,91.0',
+    ].join("\n");
+    const out = satcatDecays(csv);
+    expect(out).toHaveLength(2);
+    expect(new Date(out[0]).toISOString().slice(0, 10)).toBe("2026-06-30");
+  });
+  test("returns empty when the DECAY_DATE column is missing", () => {
+    expect(satcatDecays("A,B\n1,2")).toEqual([]);
+  });
+});
