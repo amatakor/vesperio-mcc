@@ -11,6 +11,7 @@ A machine-maintained tracker for the new space economy: Earth observation, conne
 3. **Signals** (influencers): a hand-curated list of people worth following. The agent never edits this section. The list doubles as the whitelist for `signal`-tier sourcing: only people on it (plus named executives of the actor concerned) can be the basis of an item via social posts.
 4. **Stats**: a public page of basic computed indices from our own data (launch cadence by provider, sats on orbit by constellation, items tracked), each stat block with an anchor and a pre-formatted citation string with retrieval date, plus a `/stats.json` endpoint. Deeper cross-cutting indices (contract volume by agency, pricing trends, growth analytics) are reserved for the v2 paid layer and must not appear here.
 5. **Learn**: parked for a later phase. Do not build or scaffold it without explicit instruction.
+6. **Log**: the public sweep changelog, rendered from state.json: every sweep's counters and summary, including zero-add sweeps and why they were quiet. The machine's restraint, visible.
 
 The product promise is reliability. A reader should never catch this site claiming more confidence than its source supports. Confirmed means confirmed; everything less is labelled. Missing a story is acceptable; publishing a false one as fact is not.
 
@@ -61,7 +62,9 @@ An item's confidence is set by the best source it has. Three tiers, and the copy
 
 **`signal` allows curated voices as the basis.** Posts on X or other social platforms by individuals on the Signals list (`src/data/signals.json`) or by named executives or officials of the actor, speaking about their own organisation or domain. The item names the account and flags it in the copy ("per @handle on X, unconfirmed"). Everyone outside the ladder (anonymous accounts, random aggregators, forum posts) does not qualify at any tier.
 
-**Upgrade rule.** When a better source appears for a published item, upgrade it via an update: switch source_url to the better source, raise the confidence tier, keep the id. Announcements of record (a signed contract, a completed launch) should be re-checked against a corporate or official source in the next sweeps and upgraded when possible.
+**Upgrade rule.** When a better source appears for a published item, upgrade it via an update: switch source_url to the better source, raise the confidence tier, keep the id.
+
+**Presentation of non-confirmed items.** The sourcing is named in the headline itself ("SpaceNews: ..." for reported, "Per @handle: ..." for signal). Item media carries an UNVERIFIED banner. The item page shows an evidence block: who said it, on what basis (named sources, documents, count of corroborating outlets), and what would confirm or deny it, with the expected timing when the source states one. Announcements of record (a signed contract, a completed launch) should be re-checked against a corporate or official source in the next sweeps and upgraded when possible.
 
 **Edge cases:**
 - State media (Xinhua, TASS) on state programs: primary for facts of record, `reported` for everything else, origin always labelled.
@@ -134,13 +137,14 @@ Never: image search results, AI-generated imagery of real events, official agenc
 6. Run the build (`bun run build`) to confirm the feed parses and the site builds before committing. A commit that breaks the build is worse than a skipped run.
 7. Append new lessons to `SWEEP_MEMORY.md` (source behaviour changes, mistakes caught, judgment calls worth remembering). Keep entries short and dated.
 8. Commit with message `ingest: N new, M updated, K held (YYYY-MM-DD HH:MM UTC)`.
-9. If a run produces zero items, still write the sweep log entry, but commit no feed changes. Do not pad quiet days.
+9. If a run produces zero items, still write and commit the sweep log entry in state.json; the public /log/ page renders it, and a quiet day explained is a trust signal. Feed content is never padded: no items, no filler, on quiet days.
 
 Registry updates run in a separate scheduled workflow (`maintain-registry.yml`), lower cadence (weekly): update factual fields (sats on orbit, flight counts, next flight) from Launch Library and published items only, every change carrying `source` and `as_of`. Never restructure the registry in a scheduled run.
 
 ## Registry rules
 
-- v1 scope: EO constellations, connectivity constellations, and orbital launch vehicles. One profile per entity, uniform fields per entity type, no free-form essays.
+- v1 scope: EO constellations, connectivity constellations, and orbital launch vehicles. One profile per entity, uniform fields per entity type.
+- No free-form essays, with one exception: a profile may carry a short overview block (2-4 sentences) stored as a sourced field like any other; every claim in it must be backed by that field's source URL and as_of date. Anything the source does not state stays out of the overview.
 - Every field carries a `source` and `as_of` date. Unknown fields stay `null`; never estimate.
 - Structural edits (new fields, new entries) happen only via @claude issues reviewed by Florian, never in scheduled runs.
 

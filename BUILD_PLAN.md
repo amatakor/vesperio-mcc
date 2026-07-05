@@ -126,6 +126,98 @@ and zero rule violations. Only then enable the cron schedules.
 
 ---
 
+## Phase 2 — ai-tldr.dev parity (agreed with Florian, 2026-07-05)
+
+Derived from a full first-hand UX audit of ai-tldr.dev (feed, detail
+overlays, /log/, /stats/, /models/ to version-page depth, /influencers/,
+Learn to article depth). Same rules: one task per PR, CLAUDE.md wins.
+Frugal routing: policy text, decomposition, integration, and review stay
+with the top model; bounded page builds go to cheaper agents gated on
+`bun run build` + tests passing.
+
+## Task 7 — /log/: public sweep changelog
+
+- `/log/` route rendering `state.json` sweeps newest first: UTC
+  timestamp, +added / ~updated / held counters as chips, the sweep
+  summary sentence, coverage chips. Header carries aggregate counters
+  (N sweeps, X added, Y updated, Z held). Add "log" to the site nav.
+- update-items.yml: commit the state.json log entry on zero-activity
+  sweeps too (rule 9 as amended in CLAUDE.md); feed content still never
+  padded.
+
+Accept when: /log/ prerenders with correct meta, renders the real sweep
+history, and a zero-add sweep produces a log-only commit.
+
+## Task 8 — Feed v2
+
+- Tag tiers per CLAUDE.md (domain/modality/geography/theme), `eo` added
+  to the seed set; sweep prompt requires a domain tag where applicable.
+- Tags on cards (2-3, after category chip), prerendered `/tag/{tag}/`
+  pages, counts on category and tag chips, domain views (EO,
+  Connectivity, Launch) in the nav.
+- Client-side search over the feed with a live "N / total" tally, "/"
+  keyboard shortcut, and a mono empty state.
+- Masonry feed layout (CSS columns); visited-card highlight on return;
+  timestamps show time, not just date, where available.
+- finalize-sweep logs newly coined tags in the sweep log entry.
+- Presentation spec for non-confirmed items per CLAUDE.md: sourcing
+  named in the headline, UNVERIFIED banner on card/item media,
+  evidence block on the item page (who said it, on what basis, what
+  would confirm or deny it and when, if stated).
+
+Accept when: tag pages prerender, counts are correct at build time,
+search filters live, and a signal-tier fixture renders with banner,
+headline attribution, and evidence block.
+
+## Task 9 — Stats v2
+
+- Prose hero with inline bold figures over big-number tiles; UPDATED
+  badge (exists).
+- Question-titled blocks with a one-line answer pull-quote, methodology
+  footnote, and CITE THIS expander producing a claim-sentence citation
+  (quotable sentence + anchor URL + retrieval date). Keep /stats.json.
+- New blocks: shipping velocity (items per week, trailing windows,
+  momentum vs prior window), launch cadence per provider (avg days
+  between launch items, min 3 items), impact mix, confidence mix.
+
+Accept when: every block has anchor, question, answer line, method
+line, and citation; zero data still renders zeros.
+
+## Task 10 — Signals shell
+
+- /signals/ in the influencers-page mould: role-grouped sections with
+  per-section counts, platform chip, follower-scale badge (optional
+  field), one-line why-follow, topic chips, header count line.
+- signals.json schema extended accordingly (role, platform, followers
+  band, topics); stays hand-curated, agent never edits, and doubles as
+  the signal-tier whitelist.
+
+Accept when: renders the extended schema; empty list still renders the
+curation note.
+
+## Task 11 — Registry v2
+
+- Profiles become destination pages: on-page numbered TOC, sourced
+  overview prose (per amended CLAUDE.md registry rules), spec table
+  (exists), event history pulled from items.json mentions, lineage /
+  variants table (vehicle families, constellation generations), FAQ
+  block, aggregated source-links list, siblings row.
+- Typed source labels site-wide: source links labelled by kind (press
+  release, 8-K filing, FCC grant, webcast, API record, coverage).
+- Type-adaptive quick-facts panel on item pages (launch items surface
+  vehicle/orbit facts; financial items surface deal terms) where the
+  drafting agent supplied them; never derived from memory.
+
+Accept when: check-registry passes with the extended schema; five
+random profiles spot-check against sources; every filled field still
+carries source + as_of.
+
+Deliberately skipped from the audit: 3D city, monetization widgets,
+share/star buttons, ASK AI row (optional later), Learn (parked per
+CLAUDE.md).
+
+---
+
 ## Session rules for Claude Code
 
 - Read CLAUDE.md at the start of every session.
