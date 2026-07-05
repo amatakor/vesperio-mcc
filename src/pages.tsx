@@ -24,8 +24,9 @@ export function Layout({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <footer className="footer">
         <p>
-          Machine-maintained. Every item links its primary source. Missing a story is acceptable;
-          publishing a false one is not. <a href="/about/">Verification policy</a>
+          Machine-maintained. Every item links its source and wears its confidence. Missing a
+          story is acceptable; publishing a false one as fact is not.{" "}
+          <a href="/about/">Verification policy</a>
         </p>
       </footer>
     </div>
@@ -34,29 +35,40 @@ export function Layout({ children }: { children: ReactNode }) {
 
 // ------------------------------------------------------------------- feed
 
-function FeedRow({ item }: { item: Item }) {
+function Card({ item }: { item: Item }) {
+  const sources = 1 + item.secondary_urls.length;
   return (
-    <article className="feed-row">
-      <div className="feed-meta">
-        <span className="date">{item.date}</span>
-        <a className={`chip chip-${item.impact}`} href={`/news/${item.category}/`}>
+    <article className="card">
+      <div className="card-meta">
+        <a className="chip" href={`/news/${item.category}/`}>
           {item.category}
         </a>
+        <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.confidence !== "confirmed" && (
           <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
         )}
+        <span className="date">{item.date}</span>
       </div>
-      <h2 className="feed-headline">
+      <h2 className="card-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
-      <p className="tagline">{item.explainer.tagline}</p>
+      <p className="card-tagline">{item.explainer.tagline}</p>
+      <div className="card-foot">
+        <span className="card-companies">{item.companies.join(" · ")}</span>
+        <span className="card-sources">
+          {sources} source{sources === 1 ? "" : "s"}
+        </span>
+        <a className="card-details" href={`/item/${item.id}/`}>
+          details →
+        </a>
+      </div>
     </article>
   );
 }
 
 function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
   if (list.length === 0) return <p className="empty">{emptyNote}</p>;
-  return <div className="feed">{list.map((i) => <FeedRow key={i.id} item={i} />)}</div>;
+  return <div className="cards">{list.map((i) => <Card key={i.id} item={i} />)}</div>;
 }
 
 export function HomePage() {
@@ -64,8 +76,8 @@ export function HomePage() {
     <Layout>
       <p className="lede">
         The new space economy, tracked by machine: Earth observation, connectivity, launch,
-        commercial human spaceflight. Every item carries a plain-English explainer and a primary
-        source.
+        commercial human spaceflight. Every item carries a plain-English explainer, its source,
+        and an honest confidence label.
       </p>
       <nav className="cat-row">
         {CATEGORIES.map((c) => (
