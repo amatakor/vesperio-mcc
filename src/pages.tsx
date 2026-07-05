@@ -68,6 +68,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <a href="/">news</a>
           <a href="/tag/eo/">eo</a>
           <a href="/tag/connectivity/">connectivity</a>
+          <a href="/tag/iot/">iot</a>
           <a href="/tag/launch/">launch</a>
           <a href="/registry/">registry</a>
           <a href="/signals/">signals</a>
@@ -1750,7 +1751,7 @@ export function SignalsPage() {
 export function StatsPage({ generatedAt }: { generatedAt: string }) {
   const now = new Date(generatedAt);
   const hero = computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations);
-  const blocks = computeStats(items, constellations, vehicles, now);
+  const blocks = computeStats(items, constellations, vehicles, spaceports, now);
   return (
     <Layout>
       <h1 className="page-title">stats</h1>

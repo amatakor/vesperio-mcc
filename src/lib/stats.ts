@@ -106,6 +106,7 @@ export function computeStats(
   items: Item[],
   constellations: ConstellationProfile[],
   vehicles: VehicleProfile[],
+  spaceports: SpaceportProfile[],
   now: Date,
 ): StatBlock[] {
   const asOf = now.toISOString().slice(0, 10);
@@ -248,6 +249,26 @@ export function computeStats(
     method:
       "The sats_on_orbit field of each registry profile; every value carries its own source and as-of date on the profile page. Operators without a sourced figure are absent, not estimated.",
     citation: cite(satsAnswer, "sats-on-orbit", asOf),
+  });
+
+  // ------------------------------------------------------- spaceports
+  const portRows = sortDesc(
+    spaceports
+      .filter((p) => p.launches_total.value !== null)
+      .map((p) => [p.name, p.launches_total.value as number] as [string, number]),
+  ).slice(0, 12);
+  const portAnswer =
+    portRows.length === 0
+      ? "No spaceport has a sourced launch count yet."
+      : `${portRows[0]![0]} leads the tracked sites with ${portRows[0]![1]} launches hosted, all-time.`;
+  blocks.push({
+    id: "launch-sites",
+    question: "Where do launches happen?",
+    answer: portAnswer,
+    rows: portRows,
+    method:
+      "All-time launches hosted per registry spaceport profile (top 12 shown), each figure sourced to its Launch Library location record with an as-of date.",
+    citation: cite(portAnswer, "launch-sites", asOf),
   });
 
   // ------------------------------------------------- vehicle flight counts
