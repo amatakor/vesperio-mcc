@@ -695,7 +695,7 @@ function SignalCard({ person }: { person: SignalPerson }) {
   const role = roleTag(person.role);
   const tags = [person.org, ...(role ? [role] : []), ...person.domains.map((d) => d.replace(/_/g, "-"))];
   return (
-    <article className="sig-card">
+    <a className="sig-card" href={primary ? primary.url : undefined} rel="noopener">
       <div className="sig-avatar" aria-hidden="true">
         {avatar ? <img src={avatar} alt="" loading="lazy" /> : initialsOf(person.name)}
       </div>
@@ -706,9 +706,9 @@ function SignalCard({ person }: { person: SignalPerson }) {
         </div>
         <h3 className="sig-name">{person.name}</h3>
         {primary && (
-          <a className="sig-handle" href={primary.url} rel="noopener">
+          <span className="sig-handle">
             {primary.handle ? `@${primary.handle}` : primary.url.replace(/^https?:\/\/(www\.)?/, "")}
-          </a>
+          </span>
         )}
         <p className="sig-why">{person.why}</p>
         <div className="sig-tags">
@@ -719,7 +719,7 @@ function SignalCard({ person }: { person: SignalPerson }) {
           ))}
         </div>
       </div>
-    </article>
+    </a>
   );
 }
 
