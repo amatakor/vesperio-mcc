@@ -28,12 +28,17 @@
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  max-height: min(72vh, 40rem);
+  max-height: min(80vh, 50rem);
 }
 
 @media (max-width: 720px) {
   .orbits-rail {
     max-height: none;
+  }
+
+  /* Finger-sized rows on touch layouts (spec 4: touch-first). */
+  .orow {
+    padding: 0.4rem 0;
   }
 }
 
@@ -179,6 +184,19 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+button.oname:hover {
+  text-decoration: underline;
+}
+
+.ohint {
+  color: var(--dim);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  border-top: 1px solid var(--line);
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
 }
 
 .otoggle-label {
