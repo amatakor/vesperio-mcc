@@ -54,8 +54,13 @@ jobs:
         run: bun run build
 
       - name: Commit registry changes
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          # The Claude action swaps git credentials for its own short-lived
+          # app token; point the remote back at the workflow token to push.
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           if git diff --quiet -- src/data/registry; then
             echo "No registry changes; nothing to commit."
             exit 0
