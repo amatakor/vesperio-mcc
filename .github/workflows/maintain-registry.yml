@@ -42,8 +42,8 @@ jobs:
             in full, then execute the maintenance procedure exactly. Update
             factual fields on existing profiles only, every change with a
             fresh source URL and as_of date; touch nothing outside
-            src/data/registry/. Do not commit or push; the workflow handles
-            that.
+            src/data/registry/ and public/data/orbits/facilities.json. Do
+            not commit or push; the workflow handles that.
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
@@ -59,13 +59,13 @@ jobs:
           # The Claude action swaps git credentials for its own short-lived
           # app token; point the remote back at the workflow token to push.
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git diff --quiet -- src/data/registry; then
+          if git diff --quiet -- src/data/registry public/data/orbits/facilities.json; then
             echo "No registry changes; nothing to commit."
             exit 0
           fi
           git config user.name "mcc-registry-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add src/data/registry
+          git add src/data/registry public/data/orbits/facilities.json
           git commit -m "registry: maintenance update ($(date -u '+%Y-%m-%d %H:%M UTC'))"
           # main may have moved during the run; registry commits touch only
           # data files, so a rebase is clean or fails loudly.

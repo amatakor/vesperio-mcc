@@ -19,6 +19,9 @@ import {
   SIGNAL_BUCKETS,
   SIGNAL_WHITELIST,
   CHANNEL_STATUSES,
+  FACILITY_TYPES,
+  OMM_STRING_FIELDS,
+  OMM_NUMBER_FIELDS,
 } from "../../src/data/schema";
 
 const ID_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*$/;
@@ -504,6 +507,138 @@ const ORG_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> 
   ["website", "string"],
 ];
 
+// --------------------------------------------------------------- orbits
+
+function checkLatLon(o: Obj, path: string, errors: string[]): void {
+  const { lat, lon } = o;
+  if (typeof lat !== "number" || !Number.isFinite(lat) || lat < -90 || lat > 90) {
+    errors.push(`${path}.lat: required number in [-90, 90]`);
+  }
+  if (typeof lon !== "number" || !Number.isFinite(lon) || lon < -180 || lon > 180) {
+    errors.push(`${path}.lon: required number in [-180, 180]`);
+  }
+}
+
+export function validateElementsFile(data: unknown, fileName: string): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return [`${fileName}: root must be an object`];
+  if (!isIsoDatetime(data.fetched_at)) errors.push(`${fileName}.fetched_at: required ISO datetime`);
+  if (!isHttpUrl(data.source)) errors.push(`${fileName}.source: required http(s) URL`);
+  reqString(data, "constellation", fileName, errors);
+  if (!Array.isArray(data.records)) {
+    errors.push(`${fileName}.records: required array`);
+    return errors;
+  }
+  const seen = new Set<number>();
+  data.records.forEach((r, i) => {
+    const path = `${fileName}.records[${i}]`;
+    if (!isObj(r)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    for (const key of OMM_STRING_FIELDS) {
+      if (typeof r[key] !== "string" || r[key] === "") errors.push(`${path}.${key}: required string`);
+    }
+    for (const key of OMM_NUMBER_FIELDS) {
+      if (typeof r[key] !== "number" || !Number.isFinite(r[key])) {
+        errors.push(`${path}.${key}: required finite number`);
+      }
+    }
+    const extra = Object.keys(r).filter(
+      (k) =>
+        !(OMM_STRING_FIELDS as readonly string[]).includes(k) &&
+        !(OMM_NUMBER_FIELDS as readonly string[]).includes(k),
+    );
+    if (extra.length > 0) {
+      errors.push(`${path}: unexpected fields [${extra.join(", ")}]; strip to the json2satrec set`);
+    }
+    if (typeof r.NORAD_CAT_ID === "number") {
+      if (seen.has(r.NORAD_CAT_ID)) errors.push(`${path}: duplicate NORAD_CAT_ID ${r.NORAD_CAT_ID}`);
+      seen.add(r.NORAD_CAT_ID);
+    }
+  });
+  return errors;
+}
+
+export function validateSpaceportsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["spaceports.json: root must be an object"];
+  if (!isIsoDatetime(data.fetched_at)) errors.push("spaceports.json.fetched_at: required ISO datetime");
+  if (!isHttpUrl(data.source)) errors.push("spaceports.json.source: required http(s) URL");
+  if (!Array.isArray(data.spaceports)) {
+    errors.push("spaceports.json.spaceports: required array");
+    return errors;
+  }
+  data.spaceports.forEach((s, i) => {
+    const path = `spaceports[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    if (typeof s.ll2_id !== "number" || !Number.isInteger(s.ll2_id)) {
+      errors.push(`${path}.ll2_id: required integer`);
+    }
+    reqString(s, "name", path, errors);
+    reqString(s, "country", path, errors);
+    checkLatLon(s, path, errors);
+    for (const key of ["total_launch_count", "upcoming_count"]) {
+      const n = s[key];
+      if (typeof n !== "number" || !Number.isInteger(n) || n < 0) {
+        errors.push(`${path}.${key}: required non-negative integer`);
+      }
+    }
+    if (s.next_launch !== null) {
+      if (!isObj(s.next_launch)) {
+        errors.push(`${path}.next_launch: must be null or { name, vehicle, net }`);
+      } else {
+        reqString(s.next_launch, "name", `${path}.next_launch`, errors);
+        reqString(s.next_launch, "vehicle", `${path}.next_launch`, errors);
+        if (!isIsoDatetime(s.next_launch.net)) {
+          errors.push(`${path}.next_launch.net: required ISO datetime`);
+        }
+      }
+    }
+    reqStringArray(s, "vehicles", path, errors);
+    if (s.info_url !== null && !isHttpUrl(s.info_url)) {
+      errors.push(`${path}.info_url: must be null or an http(s) URL`);
+    }
+  });
+  return errors;
+}
+
+export function validateFacilitiesFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["facilities.json: root must be an object"];
+  if (!(typeof data.as_of === "string" && isValidDate(data.as_of))) {
+    errors.push("facilities.json.as_of: required YYYY-MM-DD date");
+  }
+  if (!Array.isArray(data.facilities)) {
+    errors.push("facilities.json.facilities: required array");
+    return errors;
+  }
+  data.facilities.forEach((f, i) => {
+    const path = `facilities[${i}]`;
+    if (!isObj(f)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    reqString(f, "name", path, errors);
+    const slug = reqString(f, "operator_slug", path, errors);
+    if (slug !== null && !TAG_RE.test(slug)) {
+      errors.push(`${path}.operator_slug: must be lowercase kebab-case`);
+    }
+    if (!FACILITY_TYPES.includes(f.type as never)) {
+      errors.push(`${path}.type: "${String(f.type)}" not in [${FACILITY_TYPES.join(", ")}]`);
+    }
+    checkLatLon(f, path, errors);
+    checkNoEmDash(reqString(f, "blurb", path, errors), `${path}.blurb`, errors);
+    if (!isHttpUrl(f.source_url)) {
+      errors.push(`${path}.source_url: required http(s) URL; no source, no pin`);
+    }
+  });
+  return errors;
+}
+
 export function validateRegistryProfile(
   data: unknown,
   expectedType: "constellation" | "vehicle" | "spaceport" | "organization",
@@ -531,6 +666,29 @@ export function validateRegistryProfile(
     }
     if (data.parent !== undefined && data.parent !== null && typeof data.parent !== "string") {
       errors.push(`${path}.parent: must be null or a constellation slug`);
+    }
+    if (data.orbits !== undefined && data.orbits !== null) {
+      const o = data.orbits;
+      if (!isObj(o)) {
+        errors.push(`${path}.orbits: must be null or { celestrak_group, celestrak_name, name_pattern }`);
+      } else {
+        for (const key of ["celestrak_group", "celestrak_name", "name_pattern"]) {
+          if (!(key in o)) errors.push(`${path}.orbits.${key}: required (use null)`);
+          else if (o[key] !== null && typeof o[key] !== "string") {
+            errors.push(`${path}.orbits.${key}: must be null or a string`);
+          }
+        }
+        if (o.celestrak_group === null && o.celestrak_name === null) {
+          errors.push(`${path}.orbits: needs celestrak_group or celestrak_name (or set orbits to null)`);
+        }
+        if (typeof o.name_pattern === "string") {
+          try {
+            new RegExp(o.name_pattern);
+          } catch {
+            errors.push(`${path}.orbits.name_pattern: not a valid regex`);
+          }
+        }
+      }
     }
     for (const [key, kind] of CONSTELLATION_FIELDS) checkSourcedField(data, key, kind, path, errors);
   } else if (expectedType === "vehicle") {
