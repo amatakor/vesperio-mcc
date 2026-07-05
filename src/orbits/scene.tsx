@@ -36,6 +36,7 @@ import type {
   OmmRecord,
   OrbitsFacility,
   OrbitsSpaceport,
+  OrbitsStatsFile,
 } from "../data/schema";
 import { organizations } from "../lib/data";
 import type { ConstellationDomain } from "../data/schema";
@@ -47,14 +48,15 @@ import {
   orbitCatalog,
 } from "./catalog";
 import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
-import { loadElements, loadFacilities, loadSpaceports } from "./elements";
+import { loadElements, loadFacilities, loadSpaceports, loadStats } from "./elements";
 import { latLonToVec3 } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
-import { DataPanel, LayersPanel, type LegendConstellation } from "./hud";
+import { FooterBar, HudColumn, ViewCluster } from "./chrome";
+import { LayerRail, type RailCategory, type RailRow } from "./rail";
 import { Popup, type PopupField } from "./popup";
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
 import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
-import { RESERVE_TOKEN } from "./types";
+import { CATEGORY_TOKENS, RESERVE_TOKEN } from "./types";
 
 const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = 0.995; // occluder
@@ -262,9 +264,15 @@ function PopupAnchor({
   return null;
 }
 
-function Controls({ reducedMotion }: { reducedMotion: boolean }) {
-  const [autoRotate, setAutoRotate] = useState(!reducedMotion);
-  // Zoom disabled for now (Florian 2026-07-05); FitCamera owns distance.
+/** Controlled orbit controls: the VIEW cluster owns auto-rotate state;
+ * scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
+function Controls({
+  autoRotate,
+  onInteract,
+}: {
+  autoRotate: boolean;
+  onInteract(): void;
+}) {
   return (
     <OrbitControls
       enablePan={false}
@@ -274,9 +282,22 @@ function Controls({ reducedMotion }: { reducedMotion: boolean }) {
       rotateSpeed={0.5}
       autoRotate={autoRotate}
       autoRotateSpeed={0.4}
-      onStart={() => setAutoRotate(false)}
+      onStart={onInteract}
     />
   );
+}
+
+/** Snaps the camera back to the front view when `nonce` changes. */
+function CameraReset({ nonce }: { nonce: number }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    if (nonce === 0) return;
+    const d = camera.position.length() || 2.7;
+    camera.position.set(0, 0, d);
+    camera.up.set(0, 1, 0);
+    camera.lookAt(0, 0, 0);
+  }, [camera, nonce]);
+  return null;
 }
 
 // ------------------------------------------------------------- state
@@ -347,6 +368,45 @@ export default function Scene() {
   const [spaceportsFetchedAt, setSpaceportsFetchedAt] = useState<string | null>(null);
   const [facilities, setFacilities] = useState<OrbitsFacility[] | null>(null);
   const [facilitiesAsOf, setFacilitiesAsOf] = useState<string | null>(null);
+  void facilitiesAsOf;
+
+  // 6A chrome state: HUD stats feed, VIEW controls, rail collapse map.
+  const [stats, setStats] = useState<OrbitsStatsFile | null>(null);
+  useEffect(() => {
+    void loadStats().then(setStats);
+  }, []);
+  const [autoRotate, setAutoRotate] = useState(() => !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [labelsOn, setLabelsOn] = useState(true);
+  const [zoomStep, setZoomStep] = useState(0);
+  const [resetNonce, setResetNonce] = useState(0);
+  const [collapse, setCollapse] = useState<Record<string, boolean>>(() => {
+    try {
+      const saved = localStorage.getItem("orbits:collapse");
+      if (saved) return JSON.parse(saved) as Record<string, boolean>;
+    } catch {
+      // localStorage unavailable; fall through to defaults.
+    }
+    // Defaults per the 6A handoff: fleets collapsed (fit guarantee),
+    // EO expanded, the smaller categories collapsed.
+    const init: Record<string, boolean> = {};
+    for (const node of catalogTree) {
+      if (node.children.length > 0) init[node.entry.slug] = true;
+    }
+    init["cat:connectivity"] = true;
+    init["cat:iot"] = true;
+    init["cat:human-spaceflight"] = true;
+    return init;
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem("orbits:collapse", JSON.stringify(collapse));
+    } catch {
+      // Best-effort persistence only.
+    }
+  }, [collapse]);
+  const toggleCollapse = useCallback((key: string) => {
+    setCollapse((prev) => ({ ...prev, [key]: !prev[key] }));
+  }, []);
 
   // Selection state. The deep link (?constellation=slug) preselects.
   const [selectedConstellation, setSelectedConstellation] = useState<string | null>(() => {
@@ -575,42 +635,87 @@ export default function Scene() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Legend model, nested like the Registry (fleet parents with children).
-  const legendEntry = (e: (typeof orbitCatalog)[number]): LegendConstellation => {
+  // Rail model, nested like the Registry (fleet parents with children).
+  const staleHoursOf = (fetchedAt: string | null): number | null => {
+    if (!fetchedAt) return null;
+    const h = Math.floor((Date.now() - new Date(fetchedAt).getTime()) / 3600000);
+    return Number.isFinite(h) && h >= 0 ? h : null;
+  };
+  const railRow = (
+    e: (typeof orbitCatalog)[number],
+    child: boolean,
+  ): RailRow => {
     const s = layerState.get(e.slug) ?? { status: "loading" as const, count: null, fetchedAt: null };
     return {
       slug: e.slug,
       name: e.name,
-      category: e.category,
-      colorToken: e.colorToken,
-      enabled: enabled.has(e.slug),
-      status: s.status === "loading" ? "loading" : s.status,
+      fleet: false,
+      child,
       count: s.count,
+      cloudOn: enabled.has(e.slug),
+      focused: selectedConstellation === e.slug,
+      status: s.status,
+      staleHours: s.status === "stale" ? staleHoursOf(s.fetchedAt) : null,
+      collapsed: false,
     };
   };
-  const legend: LegendConstellation[] = catalogTree.map((node) => {
-    if (node.children.length === 0) return legendEntry(node.entry);
-    const children = node.children.map(legendEntry);
-    const counts = children.map((c) => c.count).filter((c): c is number => c !== null);
-    return {
-      slug: node.entry.slug,
-      name: node.entry.name,
-      category: node.entry.category,
-      colorToken: node.entry.colorToken,
-      enabled: children.some((c) => c.enabled),
-      status: children.some((c) => c.status === "loading")
-        ? "loading"
-        : children.some((c) => c.status === "stale")
-          ? "stale"
-          : children.every((c) => c.status === "missing")
-            ? "missing"
-            : "ok",
-      count: counts.length > 0 ? counts.reduce((a, b) => a + b, 0) : null,
-      children,
-    };
-  });
+  const railCategories: RailCategory[] = [];
+  for (const cat of ["eo", "connectivity", "iot", "human-spaceflight"] as const) {
+    const nodes = catalogTree.filter((n) => n.entry.category === cat);
+    if (nodes.length === 0) continue;
+    const catCollapsed = collapse[`cat:${cat}`] ?? false;
+    const rows: RailRow[] = [];
+    let constellationCount = 0;
+    for (const node of nodes) {
+      constellationCount += node.children.length > 0 ? 1 + node.children.length : 1;
+      if (node.children.length === 0) {
+        rows.push(railRow(node.entry, false));
+        continue;
+      }
+      const children = node.children.map((c) => railRow(c, true));
+      const counts = children.map((c) => c.count).filter((c): c is number => c !== null);
+      const fleetCollapsed = collapse[node.entry.slug] ?? true;
+      rows.push({
+        slug: node.entry.slug,
+        name: node.entry.name.replace(/\s*\(fleet\)$/i, ""),
+        fleet: true,
+        child: false,
+        count: counts.length > 0 ? counts.reduce((a, b) => a + b, 0) : null,
+        cloudOn: children.some((c) => c.cloudOn),
+        focused: selectedConstellation === node.entry.slug,
+        status: children.some((c) => c.status === "loading")
+          ? "loading"
+          : children.some((c) => c.status === "stale")
+            ? "stale"
+            : children.every((c) => c.status === "missing")
+              ? "missing"
+              : "ok",
+        staleHours: null,
+        collapsed: fleetCollapsed,
+      });
+      if (!fleetCollapsed) rows.push(...children);
+    }
+    railCategories.push({
+      id: cat,
+      label: cat === "human-spaceflight" ? "HUMAN SPACEFLIGHT" : cat.toUpperCase(),
+      colorToken: CATEGORY_TOKENS[cat],
+      count: constellationCount,
+      cloudOn: nodes.some((n) =>
+        n.children.length > 0
+          ? n.children.some((c) => enabled.has(c.slug))
+          : enabled.has(n.entry.slug),
+      ),
+      collapsed: catCollapsed,
+      rows,
+    });
+  }
+  const trackedRows = catalogTree.reduce(
+    (a, n) => a + 1 + n.children.length,
+    0,
+  );
+  const trackedSats = [...layerState.values()].reduce((a, s) => a + (s.count ?? 0), 0);
 
-  // Data panel: oldest elements timestamp across enabled layers.
+  // Footer freshness: oldest enabled elements timestamp + feed stamps.
   const enabledStates = orbitCatalog
     .filter((e) => enabled.has(e.slug))
     .map((e) => layerState.get(e.slug)!)
@@ -620,15 +725,6 @@ export default function Scene() {
     null,
   );
   const anyStale = enabledStates.some((s) => s.status === "stale");
-  const dataEntries = [
-    { label: "Elements as of", fetchedAt: oldestElements, stale: anyStale },
-    ...(showSpaceports
-      ? [{ label: "Spaceports as of", fetchedAt: spaceportsFetchedAt, stale: false }]
-      : []),
-    ...(showFacilities
-      ? [{ label: "Facilities as of", fetchedAt: facilitiesAsOf, stale: false }]
-      : []),
-  ];
 
   // A selected fleet parent highlights all of its child layers.
   const highlightSlugs = useMemo(() => {
@@ -661,9 +757,8 @@ export default function Scene() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConstellation, enabled, layout, colorBySlug, colors.accent]);
 
-  // Camera fit: the globe plus generous air for the LEO cloud (Florian
-  // 2026-07-05: let the design breathe); widens further if a MEO layer
-  // is ever enabled.
+  // Camera fit: the globe plus generous air for the LEO cloud, widened
+  // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
   const fitRadius = useMemo(() => {
     let max = 1.28;
     for (const e of orbitCatalog) {
@@ -671,9 +766,9 @@ export default function Scene() {
       const recs = recordsRef.current.get(e.slug);
       if (recs && recs.length > 0) max = Math.max(max, maxApogeeSceneUnits(recs) * 1.06);
     }
-    return max;
+    return max * Math.pow(0.82, zoomStep);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, layout]);
+  }, [enabled, layout, zoomStep]);
 
   // Spaceports with a launch inside the last 30 days pulse red.
   const recentIds = useMemo(() => {
@@ -807,14 +902,49 @@ export default function Scene() {
   const arcColor =
     arc && selection?.kind === "sat" ? colorBySlug.get(selection.sat.slug) ?? colors.accent : null;
 
+  // Keyboard: ESC clears focus, R resets the view (6A handoff).
+  const focusRef = useRef(selectConstellation);
+  focusRef.current = selectConstellation;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        focusRef.current(null);
+        clearSelection();
+      } else if (e.key === "r" || e.key === "R") {
+        setResetNonce((n) => n + 1);
+        setZoomStep(0);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [clearSelection]);
+
+  const onReset = () => {
+    setResetNonce((n) => n + 1);
+    setZoomStep(0);
+  };
+
   return (
-    <div className="orbits-layout">
-      <div
-        className="orbits-stage orbits-canvas-wrap"
-        onPointerDown={(e) => {
-          downPos.current = { x: e.clientX, y: e.clientY };
-        }}
-      >
+    <div className="oframe">
+      <div className="oframe-main">
+        <div className="ocol-left">
+          <HudColumn tracked={trackedSats} stats={stats} />
+          <ViewCluster
+            onZoomIn={() => setZoomStep((z) => Math.min(4, z + 1))}
+            onZoomOut={() => setZoomStep((z) => Math.max(-2, z - 1))}
+            autoRotate={autoRotate}
+            onToggleAutoRotate={() => setAutoRotate((v) => !v)}
+            labelsOn={labelsOn}
+            onToggleLabels={() => setLabelsOn((v) => !v)}
+            onReset={onReset}
+          />
+        </div>
+        <div
+          className="orbits-canvas-wrap"
+          onPointerDown={(e) => {
+            downPos.current = { x: e.clientX, y: e.clientY };
+          }}
+        >
         <Canvas
           camera={{ position: [0, 0, 2.7], fov: 45 }}
           dpr={[1, 2]}
@@ -841,6 +971,7 @@ export default function Scene() {
             colorBySlug={colorBySlug}
             highlightSlugs={highlightSlugs}
             labelColor={colors.fg}
+            showLabels={labelsOn}
             downPos={downPos}
             onPick={pickSat}
           />
@@ -860,7 +991,8 @@ export default function Scene() {
           />
           {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
-          <Controls reducedMotion={reducedMotion} />
+          <CameraReset nonce={resetNonce} />
+          <Controls autoRotate={autoRotate} onInteract={() => setAutoRotate(false)} />
         </Canvas>
         {popup && (
           <div ref={popupEl} className="opopup-anchor">
@@ -876,21 +1008,32 @@ export default function Scene() {
             />
           </div>
         )}
+        </div>
+        <div className="ocol-right">
+          <LayerRail
+            categories={railCategories}
+            trackedTotal={trackedRows}
+            allOff={enabled.size === 0}
+            spaceports={{ on: showSpaceports, count: spaceports?.length ?? null }}
+            facilities={{ on: showFacilities, count: facilities?.length ?? null }}
+            onToggleCloud={toggleConstellation}
+            onFocus={(slug) =>
+              selectConstellation(selectedConstellation === slug ? null : slug)
+            }
+            onToggleCategoryCloud={toggleCategory}
+            onToggleCollapse={toggleCollapse}
+            onToggleSpaceports={() => setShowSpaceports((v) => !v)}
+            onToggleFacilities={() => setShowFacilities((v) => !v)}
+            onRestoreDefaults={() => setEnabled(new Set(orbitCatalog.map((e) => e.slug)))}
+          />
+        </div>
       </div>
-      <div className="orbits-rail">
-        <LayersPanel
-          constellations={legend}
-          selectedSlug={selectedConstellation}
-          onToggleConstellation={toggleConstellation}
-          onSelectConstellation={selectConstellation}
-          onToggleCategory={toggleCategory}
-          spaceportsOn={showSpaceports}
-          onToggleSpaceports={() => setShowSpaceports((v) => !v)}
-          facilitiesOn={showFacilities}
-          onToggleFacilities={() => setShowFacilities((v) => !v)}
-        />
-        <DataPanel entries={dataEntries} />
-      </div>
+      <FooterBar
+        tle={oldestElements}
+        launch={stats?.fetched_at ?? null}
+        registry={spaceportsFetchedAt}
+        tleStale={anyStale}
+      />
     </div>
   );
 }

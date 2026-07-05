@@ -11,16 +11,25 @@ import { lazy, Suspense, useEffect, useState } from "react";
 const Scene = lazy(() => import("./scene"));
 
 function Fallback({ reason }: { reason: "loading" | "no-webgl" }) {
+  if (reason === "no-webgl") {
+    return (
+      <div className="orbits-fallback">
+        <div className="orbits-fallback-card opanel6">
+          <div className="orbits-fallback-title">3D VIEW UNAVAILABLE</div>
+          <p>
+            This view needs WebGL, which this browser does not provide. The same constellations,
+            spaceports, and operators are in the Registry.
+          </p>
+          <a className="orbits-fallback-link" href="/registry/">
+            OPEN REGISTRY →
+          </a>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="orbits-fallback">
-      {reason === "no-webgl" ? (
-        <p>
-          This view needs WebGL, which this browser does not provide. The same constellations,
-          spaceports, and operators are in the <a href="/registry/">Registry</a>.
-        </p>
-      ) : (
-        <p>Loading the globe.</p>
-      )}
+      <p>Loading the globe.</p>
     </div>
   );
 }
