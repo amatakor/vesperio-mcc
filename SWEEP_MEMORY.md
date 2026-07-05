@@ -19,3 +19,15 @@ a newer entry if a lesson changes.
   fallback lead source.
 - 2026-07-05-D: Launch Library free tier is rate-limited. One upcoming
   + one previous call per sweep is enough; never poll per-entity.
+- 2026-07-05-E: The WebFetch-style tool renders spacex.com/updates as a
+  blank JS shell (no article content) and rocketlabcorp.com/updates
+  returns HTTP 403 both times, no exception seen yet. Plain `curl` with a
+  descriptive User-Agent works fine for SEC EDGAR (which 403s without
+  one) and for Launch Library 2's raw JSON API; worth trying curl before
+  writing SpaceX/Rocket Lab off as dead.
+- 2026-07-05-F: First-ever sweep (state.lastSweep was null) surfaced
+  press releases and filings up to a month old. Treated anything older
+  than ~7 days from `now` as stale rather than backfilling it as
+  "today's news"; only items inside that window became candidates. Seems
+  like the right call given the twice-daily cadence, but flag if a human
+  wanted the backlog captured instead.
