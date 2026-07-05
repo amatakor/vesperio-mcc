@@ -115,7 +115,13 @@ function Row({ row, p }: { row: RailRow; p: RailProps }) {
         {row.child && <span className="rl-tree" aria-hidden="true" />}
       </span>
       <span className={`rl-name${loading ? " rl-name-loading" : ""}`}>
-        {row.name.toUpperCase()}
+        <a
+          className="rl-name-link"
+          href={`/registry/constellations/${row.slug}/`}
+          title={`${row.name} registry profile`}
+        >
+          {row.name.toUpperCase()}
+        </a>
         {row.fleet && <span className="rl-fleet-tag"> FLEET</span>}
         {row.status === "stale" && row.staleHours !== null && (
           <span className="rl-stale">STALE {row.staleHours}H</span>

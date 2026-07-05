@@ -62,6 +62,15 @@ import { CATEGORY_TOKENS, RESERVE_TOKEN } from "./types";
 const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = 0.995; // occluder
 
+/** Earth's axial tilt (obliquity), degrees; the pole leans screen-right
+ * from the default front view (Florian 2026-07-06). */
+const AXIAL_TILT_DEG = 23.44;
+
+/** Auto-rotate spins the earth about its own tilted axis (so the tilt
+ * holds on screen), eastward like the real one. Rad/s; ~150s per turn,
+ * matching the old camera-orbit pace. */
+const SPIN_RAD_PER_S = (2 * Math.PI) / 150;
+
 // ------------------------------------------------------------- theme
 
 /** Reads a shared theme token; the tokens are the single color source. */
@@ -265,15 +274,10 @@ function PopupAnchor({
   return null;
 }
 
-/** Controlled orbit controls: the VIEW cluster owns auto-rotate state;
- * scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
-function Controls({
-  autoRotate,
-  onInteract,
-}: {
-  autoRotate: boolean;
-  onInteract(): void;
-}) {
+/** Controlled orbit controls for user drags; auto-rotate is the globe
+ * spinning (AutoSpin), not a camera orbit, so the axial tilt holds.
+ * Scroll/pinch zoom stays off (the [+]/[-] buttons step FitCamera). */
+function Controls({ onInteract }: { onInteract(): void }) {
   return (
     <OrbitControls
       enablePan={false}
@@ -281,15 +285,35 @@ function Controls({
       enableDamping
       dampingFactor={0.08}
       rotateSpeed={0.5}
-      autoRotate={autoRotate}
-      autoRotateSpeed={0.4}
       onStart={onInteract}
     />
   );
 }
 
-/** Snaps the camera back to the front view when `nonce` changes. */
-function CameraReset({ nonce }: { nonce: number }) {
+/** Spins the earth-fixed group about its own (tilted) axis. */
+function AutoSpin({
+  on,
+  spinRef,
+}: {
+  on: boolean;
+  spinRef: MutableRefObject<THREE.Group | null>;
+}) {
+  useFrame((_, delta) => {
+    const g = spinRef.current;
+    if (on && g) g.rotation.y += SPIN_RAD_PER_S * delta;
+  });
+  return null;
+}
+
+/** Snaps the camera to the front view and the spin to zero when `nonce`
+ * changes. */
+function CameraReset({
+  nonce,
+  spinRef,
+}: {
+  nonce: number;
+  spinRef: MutableRefObject<THREE.Group | null>;
+}) {
   const { camera } = useThree();
   useEffect(() => {
     if (nonce === 0) return;
@@ -297,7 +321,8 @@ function CameraReset({ nonce }: { nonce: number }) {
     camera.position.set(0, 0, d);
     camera.up.set(0, 1, 0);
     camera.lookAt(0, 0, 0);
-  }, [camera, nonce]);
+    if (spinRef.current) spinRef.current.rotation.y = 0;
+  }, [camera, nonce, spinRef]);
   return null;
 }
 
@@ -380,27 +405,25 @@ export default function Scene() {
   const [labelsOn, setLabelsOn] = useState(true);
   const [zoomStep, setZoomStep] = useState(0);
   const [resetNonce, setResetNonce] = useState(0);
+  // v2 key: categories now default open (Florian 2026-07-06); the bump
+  // clears everyone's stored v1 collapse state so the new default shows.
   const [collapse, setCollapse] = useState<Record<string, boolean>>(() => {
     try {
-      const saved = localStorage.getItem("orbits:collapse");
+      const saved = localStorage.getItem("orbits:collapse:v2");
       if (saved) return JSON.parse(saved) as Record<string, boolean>;
     } catch {
       // localStorage unavailable; fall through to defaults.
     }
-    // Defaults per the 6A handoff: fleets collapsed (fit guarantee),
-    // EO expanded, the smaller categories collapsed.
+    // Defaults: every category open, fleets collapsed (fit guarantee).
     const init: Record<string, boolean> = {};
     for (const node of catalogTree) {
       if (node.children.length > 0) init[node.entry.slug] = true;
     }
-    init["cat:connectivity"] = true;
-    init["cat:iot"] = true;
-    init["cat:human-spaceflight"] = true;
     return init;
   });
   useEffect(() => {
     try {
-      localStorage.setItem("orbits:collapse", JSON.stringify(collapse));
+      localStorage.setItem("orbits:collapse:v2", JSON.stringify(collapse));
     } catch {
       // Best-effort persistence only.
     }
@@ -425,6 +448,8 @@ export default function Scene() {
   const downPos = useRef<{ x: number; y: number } | null>(null);
   const popupEl = useRef<HTMLDivElement | null>(null);
   const workerRef = useRef<Worker | null>(null);
+  // The earth-fixed group AutoSpin rotates; everything ECEF lives inside.
+  const spinGroup = useRef<THREE.Group | null>(null);
 
   const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
 
@@ -859,6 +884,15 @@ export default function Scene() {
   // World position for the popup anchor, read per frame.
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
+  // ECEF scene coords -> world coords through the tilt/spin groups.
+  const toWorld = useCallback((v: THREE.Vector3): THREE.Vector3 => {
+    const g = spinGroup.current;
+    if (g) {
+      g.updateWorldMatrix(true, false);
+      v.applyMatrix4(g.matrixWorld);
+    }
+    return v;
+  }, []);
   const getPopupWorldPos = useCallback((): THREE.Vector3 | null => {
     const sel = selectionRef.current;
     if (!sel) return null;
@@ -867,7 +901,7 @@ export default function Scene() {
         sel.pick.kind === "spaceport"
           ? { lat: sel.pick.spaceport.lat, lon: sel.pick.spaceport.lon }
           : { lat: sel.pick.facility.lat, lon: sel.pick.facility.lon };
-      return latLonToVec3(t.lat, t.lon, 1.005);
+      return toWorld(latLonToVec3(t.lat, t.lon, 1.005));
     }
     // Interpolate the selected satellite's position, matching the layer.
     let index = 0;
@@ -897,8 +931,8 @@ export default function Scene() {
     const y = lerp(1);
     const z = lerp(2);
     if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) return null;
-    return new THREE.Vector3(x, y, z);
-  }, []);
+    return toWorld(new THREE.Vector3(x, y, z));
+  }, [toWorld]);
 
   const arcColor =
     arc && selection?.kind === "sat" ? colorBySlug.get(selection.sat.slug) ?? colors.accent : null;
@@ -962,40 +996,52 @@ export default function Scene() {
           }}
         >
           <FitCamera fitRadius={fitRadius} />
-          <Stars color={colors.fg} />
-          <Globe colors={colors} />
-          {shells.map((s) => (
-            <ShellLines key={s.slug} positions={s.positions} color={s.color} />
-          ))}
-          <Satellites
-            layout={layout}
-            buffers={buffersRef}
-            colorBySlug={colorBySlug}
-            highlightSlugs={highlightSlugs}
-            labelColor={colors.fg}
-            showLabels={labelsOn}
-            downPos={downPos}
-            onPick={pickSat}
-          />
-          <GroundMarkers
-            spaceports={spaceports}
-            facilities={facilities}
-            showSpaceports={showSpaceports}
-            showFacilities={showFacilities}
-            baseColor={colors.coast}
-            accentColor={colors.accent}
-            alertColor={colors.alert}
-            recentIds={recentIds}
-            reducedMotion={reducedMotion}
-            selected={selection?.kind === "ground" ? selection.pick : null}
-            downPos={downPos}
-            onPick={pickGround}
-          />
-          {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+          {/* The earth's axis leans by its real obliquity; the sky shares
+              the axis (declination is measured from the equator), while
+              AutoSpin turns only the earth-fixed inner group, so the tilt
+              holds on screen during auto-rotate. */}
+          <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
+            <Stars color={colors.fg} />
+            <group ref={spinGroup}>
+              <Globe colors={colors} />
+              {shells.map((s) => (
+                <ShellLines key={s.slug} positions={s.positions} color={s.color} />
+              ))}
+              <Satellites
+                layout={layout}
+                buffers={buffersRef}
+                colorBySlug={colorBySlug}
+                highlightSlugs={highlightSlugs}
+                labelColor={colors.fg}
+                showLabels={labelsOn}
+                downPos={downPos}
+                onPick={pickSat}
+              />
+              <GroundMarkers
+                spaceports={spaceports}
+                facilities={facilities}
+                showSpaceports={showSpaceports}
+                showFacilities={showFacilities}
+                baseColor={colors.coast}
+                accentColor={colors.accent}
+                alertColor={colors.alert}
+                recentIds={recentIds}
+                reducedMotion={reducedMotion}
+                selected={selection?.kind === "ground" ? selection.pick : null}
+                downPos={downPos}
+                onPick={pickGround}
+              />
+              {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+            </group>
+          </group>
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
-          <CameraReset nonce={resetNonce} />
-          <Controls autoRotate={autoRotate} onInteract={() => setAutoRotate(false)} />
+          <CameraReset nonce={resetNonce} spinRef={spinGroup} />
+          <AutoSpin on={autoRotate && !reducedMotion} spinRef={spinGroup} />
+          <Controls onInteract={() => setAutoRotate(false)} />
         </Canvas>
+        <div className="ostatus">
+          STATUS: LIVE <i className="hud-live-dot" />
+        </div>
         {popup && (
           <div ref={popupEl} className="opopup-anchor">
             <Popup

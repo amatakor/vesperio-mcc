@@ -186,12 +186,6 @@ export function HudColumn({
   return (
     <>
       <div className="hud">
-        <div className="hud-title-row">
-          <span className="hud-title">ORBITS</span>
-          <span className="hud-live">
-            <i className="hud-live-dot" /> LIVE
-          </span>
-        </div>
         <div className="hud-module">
           <div className="hud-label">SATELLITES TRACKED</div>
           <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
@@ -275,11 +269,12 @@ export function ViewCluster(p: ViewClusterProps) {
 
 // ------------------------------------------------------------- footer
 
+/** Freshness stamps carry the date, not just the time (Florian 2026-07-06). */
 function zTime(iso: string | null): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
+  return `${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
 }
 
 export function FooterBar({
@@ -294,7 +289,7 @@ export function FooterBar({
   tleStale: boolean;
 }) {
   const entries = [
-    { label: "TLE", value: zTime(tle), stale: tleStale },
+    { label: "ORBITS DB", value: zTime(tle), stale: tleStale },
     { label: "LAUNCH", value: zTime(launch), stale: false },
     { label: "REGISTRY", value: zTime(registry), stale: false },
   ].filter((e) => e.value !== null);
