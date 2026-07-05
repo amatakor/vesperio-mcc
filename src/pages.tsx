@@ -1717,21 +1717,39 @@ function matchesSignalQuery(p: SignalPerson, q: string): boolean {
 
 // ---------------------------------------------------------------- orbits
 
+/** 6A app frame: full-bleed header (brand + nav rows, ORBITS underlined
+ * active), the stage filling the viewport, footer rendered by the scene.
+ * The old H1 + intro prose are removed on this view per the handoff. */
 export function OrbitsPage() {
+  const links: Array<[string, string]> = [
+    ["/", "news"],
+    ["/tag/eo/", "eo"],
+    ["/tag/connectivity/", "connectivity"],
+    ["/tag/iot/", "iot"],
+    ["/tag/launch/", "launch"],
+    ["/registry/", "registry"],
+    ["/orbits/", "orbits"],
+    ["/signals/", "signals"],
+    ["/stats/", "stats"],
+    ["/log/", "log"],
+    ["/about/", "about"],
+  ];
   return (
-    <Layout>
-      <h1 className="page-title">Orbits</h1>
-      <p className="lede">
-        The Registry rendered physically: tracked constellations on live propagated positions,
-        with active spaceports and industry facilities on the ground.
-      </p>
+    <div>
+      <header className="ohead">
+        <a href="/" className="brand">
+          MCC / MISSION CONTROL CENTER
+        </a>
+        <nav className="nav onav">
+          {links.map(([href, label]) => (
+            <a key={href} href={href} className={label === "orbits" ? "onav-active" : undefined}>
+              {label}
+            </a>
+          ))}
+        </nav>
+      </header>
       <OrbitsStage />
-      <p className="orbits-credit">
-        Orbital data: CelesTrak (Dr. T.S. Kelso). Launch data: The Space Devs / Launch Library 2.
-        Positions are SGP4 propagations from public element sets, accurate to a few km; not for
-        operational use.
-      </p>
-    </Layout>
+    </div>
   );
 }
 

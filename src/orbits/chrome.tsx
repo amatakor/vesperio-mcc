@@ -1,0 +1,311 @@
+/**
+ * 6A chrome around the globe (design handoff 2026-07-06): the left HUD
+ * column (LCD readouts, launch countdown, orbital flow chart, vehicle
+ * ranking), the VIEW cluster, and the footer bar. Purely presentational;
+ * scene.tsx owns state and data.
+ */
+
+import { useEffect, useState } from "react";
+import type { OrbitsStatsFile } from "../data/schema";
+
+// ---------------------------------------------------------------- LCD
+
+/** Amber 7-segment display with a ghost "888" layer underneath. */
+function Lcd({ value, className }: { value: string; className: string }) {
+  // DSEG7 has digits and the colon but no comma; commas render as lit
+  // mono glyphs between segment groups.
+  const parts = value.split(",");
+  return (
+    <span className={`lcd ${className}`}>
+      {parts.map((part, i) => (
+        <span key={i} className="lcd-part">
+          {i > 0 && <span className="lcd-comma">,</span>}
+          <span className="lcd-cell">
+            <span className="lcd-ghost" aria-hidden="true">
+              {part.replace(/[0-9]/g, "8")}
+            </span>
+            <span className="lcd-lit">{part}</span>
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------- countdown
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+/** Ticks locally each second; rolls to the next launch at T-0. */
+function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
+  const [nowMs, setNowMs] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNowMs(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const next = upcoming.find((u) => new Date(u.net).getTime() > nowMs);
+  if (!next) return null;
+
+  const diff = Math.max(0, new Date(next.net).getTime() - nowMs);
+  const days = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000) % 24;
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+  const netDate = new Date(next.net);
+  const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
+
+  return (
+    <div className="hud-module">
+      <div className="hud-label">NEXT LAUNCH · T MINUS</div>
+      <div className="hud-countdown">
+        <span className="hud-tminus">T-{days}D</span>
+        <Lcd className="lcd-clock" value={`${pad2(h)}:${pad2(m)}:${pad2(s)}`} />
+      </div>
+      <div className="hud-mission">{next.name.replace(" | ", " · ").toUpperCase()}</div>
+      <div className="hud-pad">
+        {[next.pad, netLabel].filter(Boolean).join(" · ").toUpperCase()}
+      </div>
+    </div>
+  );
+}
+
+// --------------------------------------------------------- flow chart
+
+function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
+  const launched = stats.launched_30d.weekly;
+  const scheduled = stats.scheduled_30d.weekly;
+  const decayed = stats.deorbited_30d.weekly;
+  const topMax = Math.max(1, ...launched.map((w) => w.launched), ...scheduled.map((w) => w.count));
+  const botMax = Math.max(1, ...decayed.map((w) => w.count));
+  const topH = (n: number) => Math.round((n / topMax) * 34);
+  const botH = (n: number) => Math.round((n / botMax) * 22);
+
+  return (
+    <div className="hud-module">
+      <div className="hud-label">ORBITAL FLOW · PAST 30D / NEXT 30D</div>
+      <div className="flow">
+        <div className="flow-top">
+          {launched.map((w, i) => (
+            <div key={`p${i}`} className="flow-col">
+              <span className="flow-fig">{w.launched}</span>
+              <span className="flow-bar" style={{ height: topH(w.launched) }}>
+                {w.failed > 0 && <span className="flow-fail" />}
+              </span>
+            </div>
+          ))}
+          <div className="flow-now">
+            <span className="flow-now-line" />
+            <span className="flow-now-label">NOW</span>
+          </div>
+          {scheduled.map((w, i) => (
+            <div key={`s${i}`} className="flow-col">
+              <span className="flow-fig">{w.count}</span>
+              <span className="flow-bar flow-bar-hollow" style={{ height: topH(w.count) }} />
+            </div>
+          ))}
+        </div>
+        <div className="flow-base" />
+        <div className="flow-bottom">
+          {decayed.map((w, i) => (
+            <div key={`d${i}`} className="flow-col">
+              <span className="flow-bar flow-bar-decay" style={{ height: botH(w.count) }} />
+              <span className="flow-fig">{w.count}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flow-legend">
+        <span>
+          <i className="flow-sw" style={{ background: "var(--fg)" }} /> LAUNCHED{" "}
+          <b>{stats.launched_30d.total}</b>
+        </span>
+        <span>
+          <i className="flow-sw" style={{ background: "var(--alert)" }} /> FAILED{" "}
+          <b>{stats.launched_30d.failed}</b>
+        </span>
+        <span>
+          <i className="flow-sw flow-sw-hollow" /> SCHEDULED <b>{stats.scheduled_30d.total}</b>
+        </span>
+        <span>
+          <i className="flow-sw" style={{ background: "var(--dim-deep)" }} /> DEORBITED{" "}
+          <b>{stats.deorbited_30d.total}</b>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------ vehicle bars
+
+function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
+  const top = vehicles.slice(0, 4);
+  const rest = vehicles.slice(4);
+  const restCount = rest.reduce((a, v) => a + v.count, 0);
+  const max = Math.max(1, ...top.map((v) => v.count), restCount);
+  const rows = [
+    ...top.map((v) => ({ label: v.family.toUpperCase(), count: v.count })),
+    ...(rest.length > 0 ? [{ label: `OTHER (${rest.length})`, count: restCount }] : []),
+  ];
+  return (
+    <div className="hud-module">
+      <div className="hud-label">LAUNCHES · 6 MO / BY VEHICLE</div>
+      <div className="veh">
+        {rows.map((r) => (
+          <div key={r.label} className="veh-row">
+            <div className="veh-head">
+              <span className="veh-name">{r.label}</span>
+              <span className="veh-count">{r.count}</span>
+            </div>
+            <div className="veh-track">
+              <span className="veh-fill" style={{ width: `${(r.count / max) * 100}%` }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------------- HUD column
+
+export function HudColumn({
+  tracked,
+  stats,
+}: {
+  tracked: number;
+  stats: OrbitsStatsFile | null;
+}) {
+  return (
+    <div className="hud">
+      <div className="hud-title-row">
+        <span className="hud-title">ORBITS</span>
+        <span className="hud-live">
+          <i className="hud-live-dot" /> LIVE
+        </span>
+      </div>
+      <div className="hud-module">
+        <div className="hud-label">SATELLITES TRACKED</div>
+        <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+      </div>
+      {stats && (
+        <>
+          <Countdown upcoming={stats.upcoming} />
+          <FlowChart stats={stats} />
+          <VehicleBars vehicles={stats.vehicles_6mo} />
+        </>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------- VIEW cluster
+
+export interface ViewClusterProps {
+  onZoomIn(): void;
+  onZoomOut(): void;
+  autoRotate: boolean;
+  onToggleAutoRotate(): void;
+  labelsOn: boolean;
+  onToggleLabels(): void;
+  onReset(): void;
+}
+
+export function ViewCluster(p: ViewClusterProps) {
+  return (
+    <div className="view opanel6">
+      <div className="view-title">VIEW</div>
+      <div className="view-row">
+        <span>ZOOM</span>
+        <span>
+          <button type="button" className="view-btn" onClick={p.onZoomIn} title="Zoom in">
+            [ + ]
+          </button>{" "}
+          <button type="button" className="view-btn" onClick={p.onZoomOut} title="Zoom out">
+            [ − ]
+          </button>
+        </span>
+      </div>
+      <div className="view-row">
+        <span>AUTO-ROTATE</span>
+        <button type="button" className="view-btn" onClick={p.onToggleAutoRotate}>
+          [{p.autoRotate ? "ON" : "OFF"}]
+        </button>
+      </div>
+      <div className="view-row">
+        <span>SAT LABELS</span>
+        <button type="button" className="view-btn" onClick={p.onToggleLabels}>
+          [{p.labelsOn ? "ON" : "OFF"}]
+        </button>
+      </div>
+      <div className="view-row">
+        <span>RESET VIEW</span>
+        <button type="button" className="view-btn" onClick={p.onReset} title="Reset view (R)">
+          [R]
+        </button>
+      </div>
+      <div className="view-rule" />
+      <div className="view-legend-title">GROUND MARKERS</div>
+      <div className="view-legend">
+        <span>
+          <i className="gm gm-tri" /> SPACEPORT
+        </span>
+        <span>
+          <i className="gm gm-sq" /> FACILITY
+        </span>
+        <span>
+          <i className="gm gm-dot" /> OPERATOR HQ
+        </span>
+        <span>
+          <i className="gm gm-ring" /> LAUNCH ACTIVITY &lt; 30D
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------- footer
+
+function zTime(iso: string | null): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
+}
+
+export function FooterBar({
+  tle,
+  launch,
+  registry,
+  tleStale,
+}: {
+  tle: string | null;
+  launch: string | null;
+  registry: string | null;
+  tleStale: boolean;
+}) {
+  const entries = [
+    { label: "TLE", value: zTime(tle), stale: tleStale },
+    { label: "LAUNCH", value: zTime(launch), stale: false },
+    { label: "REGISTRY", value: zTime(registry), stale: false },
+  ].filter((e) => e.value !== null);
+  return (
+    <div className="obar">
+      <span className="obar-attr">
+        ORBITAL DATA: CELESTRAK (DR. T.S. KELSO) · LAUNCH DATA: THE SPACE DEVS / LAUNCH LIBRARY 2
+        · SGP4 PROPAGATIONS, ACCURATE TO A FEW KM; NOT FOR OPERATIONAL USE
+      </span>
+      <span className="obar-fresh">
+        {entries.map((e, i) => (
+          <span key={e.label}>
+            {i > 0 && " · "}
+            <span className="obar-fresh-label">{e.label} </span>
+            <span className={e.stale ? "obar-fresh-stale" : "obar-fresh-value"}>{e.value}</span>
+          </span>
+        ))}
+      </span>
+    </div>
+  );
+}

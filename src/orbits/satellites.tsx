@@ -61,6 +61,8 @@ interface Props {
   highlightSlugs: ReadonlySet<string> | null;
   /** Resolved foreground color for the satellite name labels. */
   labelColor: string;
+  /** VIEW cluster gate for the per-satellite name labels. */
+  showLabels: boolean;
   /** Pointer-down screen position, for the drag-vs-click filter. */
   downPos: MutableRefObject<{ x: number; y: number } | null>;
   onPick(sat: PickedSat): void;
@@ -118,6 +120,7 @@ export function Satellites({
   colorBySlug,
   highlightSlugs,
   labelColor,
+  showLabels,
   downPos,
   onPick,
 }: Props) {
@@ -190,7 +193,7 @@ export function Satellites({
   // satellite, positions synced from the shared buffer each frame.
   // Skipped for very large layers where labels would be unreadable soup.
   const labels = useMemo(() => {
-    if (highlightSlugs === null) return [];
+    if (highlightSlugs === null || !showLabels) return [];
     const out: { seg: { start: number; count: number }; sprites: THREE.Sprite[] }[] = [];
     for (const seg of plan.segments) {
       if (!highlightSlugs.has(seg.entry.slug) || seg.count === 0 || seg.count > LABEL_LIMIT) {
@@ -212,7 +215,7 @@ export function Satellites({
       out.push({ seg: { start: seg.start, count: seg.count }, sprites });
     }
     return out;
-  }, [plan, highlightSlugs, labelColor]);
+  }, [plan, highlightSlugs, labelColor, showLabels]);
   useEffect(
     () => () =>
       labels.forEach((l) =>

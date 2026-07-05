@@ -136,6 +136,38 @@ a:hover {
 
 /* ------------------------------------------------------------ orbits */
 
+/* 6A full-bleed header for the /orbits app frame: brand row + nav row,
+   84px tall, hairline bottom border, active tab underlined in accent. */
+.ohead {
+  height: 84px;
+  padding: 14px 24px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ohead .brand {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+.onav {
+  gap: 20px;
+}
+.onav a {
+  padding: 0 0 8px;
+  border: none;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+.onav a:hover {
+  color: var(--fg);
+  border: none;
+}
+.onav a.onav-active {
+  color: var(--fg);
+  box-shadow: inset 0 -2px var(--acc);
+}
+
 /* The 3D stage: frameless, as tall as the viewport comfortably allows
    (Florian 2026-07-05). Chrome around it stays in the shared tokens;
    neon lives only inside the canvas (data) per the Orbits spec. */
