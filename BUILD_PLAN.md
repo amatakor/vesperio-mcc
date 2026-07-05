@@ -264,3 +264,86 @@ etiquette everywhere); every fetched URL recorded.
 Accept when: check-registry passes; each batch PR reviewed; Florian
 spot-checks 5 filled fields per batch against sources; the registry
 index shows meaningfully fewer "unknown" values.
+
+---
+
+## Sourcing note for registry crawls (Florian, 2026-07-05)
+
+Wikipedia is allowed as DISCOVERY ONLY: use it to find that an event or
+figure exists and to locate the primary source (usually the press
+release, filing, or agency page its footnotes cite), then fetch and cite
+that source. Wikipedia itself never appears in a `source` field; the
+ladder in CLAUDE.md is unchanged. Gunter's Space Page remains citable
+under the existing deep-link rules.
+
+## Task 14 — Constellation fleet-count fields (Florian, 2026-07-05)
+
+Replace the single `sats_on_orbit` with three SourcedFields:
+
+- `sats_launched_total`: cumulative satellites launched for the
+  constellation. Cumulative statements qualify ("has put 161 Jilin-1
+  satellites into orbit across 30 launches" fits here, not in active
+  counts).
+- `sats_active_claimed`: the operator's stated current active/on-orbit
+  count. Existing `sats_on_orbit` values migrate here unchanged
+  (they are operator/Gunter's claims).
+- `sats_active_verified`: count of tracked objects attributed to the
+  constellation in CelesTrak data, computed by script from the Orbits
+  element pipeline (Task: orbits PR1's celestrak_group/name_pattern
+  mappings), source = the exact CelesTrak query URL, refreshed by the
+  registry cron. Label the row's methodology on the profile page
+  (tracked objects, not a claim about operational health).
+
+Migration script + validate.ts + check-registry + facts-table UI in one
+PR. SEQUENCE AFTER orbits PR1/PR2 merge: both touch schema.ts and the
+constellation JSONs; doing this first would conflict.
+
+Accept when: check-registry passes with the new fields; no old
+sats_on_orbit key remains; at least the constellations with orbits
+mappings show a verified count with a CelesTrak source URL.
+
+## Task 15 — Operator history timelines (Florian, 2026-07-05)
+
+For organizations, constellation operators, and launch providers: a
+sourced event timeline (roughly the past 10 years, plus founding-era
+anchors) rendered as a numbered timeline block on registry profile
+pages. Example shape: Planet founded 2010, first Flock launch 2014,
+RapidEye acquisition 2015, SkySat acquisition 2017, IPO 2021, first
+Pelican launch 2023.
+
+- Schema: `events: Array<{date, headline, source, as_of}>` where date
+  may be YYYY, YYYY-MM, or YYYY-MM-DD (timeline dates are
+  precision-flexible, unlike SourcedField date fields; render what the
+  source states).
+- Headlines: actor-first, plain declarative, max ~90 chars, no hype.
+- Sourcing: primary sources per the ladder (company newsrooms, filings,
+  agency pages, Gunter's deep links); Wikipedia as discovery only (see
+  sourcing note above). Where only trade press records an event, the
+  headline names the outlet ("per SpaceNews"), mirroring the news
+  ladder's reported tier.
+- Crawl runs batched per the Task 13 pattern (collectors to files,
+  adversarial verify pass, deterministic merge, one PR per batch),
+  starting with the highest-traffic profiles (Planet, SpaceX, Rocket
+  Lab, ICEYE, Eutelsat/OneWeb, Airbus, Thales Alenia).
+
+Accept when: check-registry validates the events array; profile pages
+render the timeline; every event click-throughs to a source that states
+it.
+
+## Task 16 — Complete launch-provider vehicle rosters (Florian, 2026-07-05)
+
+The `status: active` tag on vehicles is meaningless while the registry
+only contains active vehicles. Two parts:
+
+1. Add retired/historical orbital vehicles of tracked providers as
+   registry entries (Falcon 1, Ariane 5, Vega, Antares, Delta IV Heavy,
+   Atlas V, earlier Long March variants, H-IIA/B, PSLV predecessors as
+   applicable). Seed from Launch Library config pages, which state a
+   vehicle status ("Active"/"Retired") and are citable; enrich per the
+   standard rules.
+2. Provider/LSP profile pages list their full vehicle roster, active
+   and retired, with status shown per vehicle.
+
+Accept when: the tracked LSPs' rosters include their retired orbital
+vehicles with sourced status; provider pages render the roster;
+check-registry passes.
