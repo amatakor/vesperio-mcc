@@ -16,6 +16,9 @@ export interface LegendConstellation {
   status: "ok" | "loading" | "stale" | "missing";
   /** Satellites loaded, null before load. */
   count: number | null;
+  /** Child constellations nested under a fleet parent, mirroring the
+   * Registry's parent/child structure (e.g. Planet's SuperDove). */
+  children?: LegendConstellation[];
 }
 
 export interface LayersPanelProps {
@@ -83,31 +86,41 @@ export function LayersPanel(props: LayersPanelProps) {
             />
             <span className="ogroup-label">{CATEGORY_LABELS[group.category]}</span>
           </div>
-          {group.items.map((c) => {
-            const selected = selectedSlug === c.slug;
-            return (
-              <div key={c.slug} className={`orow${selected ? " orow-selected" : ""}`}>
-                <button
-                  type="button"
-                  className="ocheck"
-                  aria-pressed={c.enabled}
-                  aria-label={`Toggle ${c.name} layer`}
-                  title={c.enabled ? `Hide the ${c.name} layer` : `Show the ${c.name} layer`}
-                  onClick={() => onToggleConstellation(c.slug)}
+          {group.items.flatMap((c) => {
+            const row = (item: LegendConstellation, child: boolean) => {
+              const selected = selectedSlug === item.slug;
+              return (
+                <div
+                  key={item.slug}
+                  className={`orow${child ? " orow-child" : ""}${selected ? " orow-selected" : ""}`}
                 >
-                  {c.enabled ? "[x]" : "[ ]"}
-                </button>
-                <button
-                  type="button"
-                  className="oname"
-                  title={selected ? "Clear the highlight" : `Highlight ${c.name} on the globe`}
-                  onClick={() => onSelectConstellation(selected ? null : c.slug)}
-                >
-                  {c.name}
-                </button>
-                <span className="ostatus">{statusSuffix(c)}</span>
-              </div>
-            );
+                  <button
+                    type="button"
+                    className="ocheck"
+                    aria-pressed={item.enabled}
+                    aria-label={`Toggle ${item.name} layer`}
+                    title={
+                      item.enabled ? `Hide the ${item.name} layer` : `Show the ${item.name} layer`
+                    }
+                    onClick={() => onToggleConstellation(item.slug)}
+                  >
+                    {item.enabled ? "[x]" : "[ ]"}
+                  </button>
+                  <button
+                    type="button"
+                    className="oname"
+                    title={
+                      selected ? "Clear the highlight" : `Highlight ${item.name} on the globe`
+                    }
+                    onClick={() => onSelectConstellation(selected ? null : item.slug)}
+                  >
+                    {item.name}
+                  </button>
+                  <span className="ostatus">{statusSuffix(item)}</span>
+                </div>
+              );
+            };
+            return [row(c, false), ...(c.children ?? []).map((child) => row(child, true))];
           })}
         </div>
       ))}

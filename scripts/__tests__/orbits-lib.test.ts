@@ -138,6 +138,11 @@ describe("buildSpaceports", () => {
       net: "2026-07-10T12:00:00Z",
     });
     expect(cape.vehicles).toEqual(["Atlas V 551", "Falcon 9 Block 5", "Vulcan VC4S"]);
+    expect(cape.last_launch).toEqual({
+      name: "Atlas V 551 | Mission",
+      vehicle: "Atlas V 551",
+      net: "2026-06-01T00:00:00Z",
+    });
     expect(cape.info_url).toBe("https://example.com/cape");
     expect(cape.lat).toBe(28.5);
     expect(cape.country).toBe("United States of America");

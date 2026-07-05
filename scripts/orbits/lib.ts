@@ -176,13 +176,22 @@ export function buildSpaceports(args: {
   }
 
   const previousVehicles = new Map<number, Set<string>>();
+  const lastByLoc = new Map<number, Ll2Launch>();
   for (const l of args.previous) {
     const id = locId(l);
+    if (id === null) continue;
     const v = vehicleName(l);
-    if (id === null || v === null) continue;
-    const set = previousVehicles.get(id) ?? new Set<string>();
-    set.add(v);
-    previousVehicles.set(id, set);
+    if (v !== null) {
+      const set = previousVehicles.get(id) ?? new Set<string>();
+      set.add(v);
+      previousVehicles.set(id, set);
+    }
+    if (l.net && !Number.isNaN(new Date(l.net).getTime())) {
+      const cur = lastByLoc.get(id);
+      if (!cur || new Date(l.net).getTime() > new Date(cur.net!).getTime()) {
+        lastByLoc.set(id, l);
+      }
+    }
   }
 
   const spaceports: OrbitsSpaceport[] = [];
@@ -220,6 +229,12 @@ export function buildSpaceports(args: {
       next_launch: next
         ? { name: next.name ?? "", vehicle: vehicleName(next) ?? "", net: next.net! }
         : null,
+      last_launch: (() => {
+        const last = lastByLoc.get(loc.id);
+        return last
+          ? { name: last.name ?? "", vehicle: vehicleName(last) ?? "", net: last.net! }
+          : null;
+      })(),
       vehicles: [...vehicles].sort(),
       info_url: padInfo.get(loc.id) ?? null,
     });

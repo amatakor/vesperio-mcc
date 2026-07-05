@@ -516,6 +516,9 @@ export interface OrbitsSpaceport {
   total_launch_count: number;
   upcoming_count: number;
   next_launch: { name: string; vehicle: string; net: string } | null;
+  /** Most recent past launch within the fetched window; null when the
+   * site had none in the last ~100 global launches. */
+  last_launch: { name: string; vehicle: string; net: string } | null;
   /** Rocket configurations launching from this site, deduped. */
   vehicles: string[];
   /** LL2 wiki/info URL where present. */
