@@ -201,10 +201,20 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
  * or the highest enabled navigation shell) is inside the viewport at
  * any aspect ratio. `sidePad` shrinks the effective width: the canvas
  * runs full-bleed under the floating side panels, but on wide screens
- * the globe should still fit between them. Zoom is disabled, so this
- * distance holds until the fit target changes.
+ * the globe should still fit between them. `shiftX` slides the view
+ * horizontally (px, positive = scene moves left) so the globe centers
+ * between the unequal side panels. Zoom is disabled, so this distance
+ * holds until the fit target changes.
  */
-function FitCamera({ fitRadius, sidePad }: { fitRadius: number; sidePad: number }) {
+function FitCamera({
+  fitRadius,
+  sidePad,
+  shiftX,
+}: {
+  fitRadius: number;
+  sidePad: number;
+  shiftX: number;
+}) {
   const { camera, size } = useThree();
   useEffect(() => {
     // A zero-sized container during the first layout pass would push the
@@ -213,6 +223,11 @@ function FitCamera({ fitRadius, sidePad }: { fitRadius: number; sidePad: number 
     if (size.width < 2 || size.height < 2) return;
     const width = Math.max(size.width - 2 * sidePad, 120);
     const persp = camera as THREE.PerspectiveCamera;
+    if (shiftX !== 0) {
+      persp.setViewOffset(size.width, size.height, shiftX, 0, size.width, size.height);
+    } else {
+      persp.clearViewOffset();
+    }
     const vHalf = (persp.fov * Math.PI) / 360;
     const hHalf = Math.atan(Math.tan(vHalf) * (width / size.height));
     const denom = Math.sin(Math.min(vHalf, hHalf));
@@ -222,7 +237,7 @@ function FitCamera({ fitRadius, sidePad }: { fitRadius: number; sidePad: number 
     if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
     else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size, fitRadius, sidePad]);
+  }, [camera, size, fitRadius, sidePad, shiftX]);
   return null;
 }
 
@@ -421,13 +436,20 @@ export default function Scene() {
   const [zoomStep, setZoomStep] = useState(0);
   const [resetNonce, setResetNonce] = useState(0);
   // Wide screens keep the globe fitted between the floating panels even
-  // though the canvas itself runs full-bleed underneath them.
+  // though the canvas itself runs full-bleed underneath them; on every
+  // desktop width the view shifts left so the globe centers between the
+  // unequal panels (left column 296px incl. padding, right rail 376px).
   const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1281px)").matches);
+  const [desktop, setDesktop] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1281px)");
-    const onChange = (e: MediaQueryListEvent) => setWide(e.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const pairs: [MediaQueryList, (e: MediaQueryListEvent) => void][] = [
+      [window.matchMedia("(min-width: 1281px)"), (e) => setWide(e.matches)],
+      [window.matchMedia("(min-width: 901px)"), (e) => setDesktop(e.matches)],
+    ];
+    for (const [mq, fn] of pairs) mq.addEventListener("change", fn);
+    return () => {
+      for (const [mq, fn] of pairs) mq.removeEventListener("change", fn);
+    };
   }, []);
   // v2 key: categories now default open (Florian 2026-07-06); the bump
   // clears everyone's stored v1 collapse state so the new default shows.
@@ -1052,7 +1074,7 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} />
+          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} shiftX={desktop ? 40 : 0} />
           {/* The earth's axis leans by its real obliquity; the sky shares
               the axis (declination is measured from the equator), while
               AutoSpin turns only the earth-fixed inner group, so the tilt
