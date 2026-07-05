@@ -1,7 +1,8 @@
 /* 6A Orbits chrome (design handoff 2026-07-06). One accent meaning:
-   --acc = live or focused. Neon appears only as 8px category swatches.
-   No border-radius (except the intentional ORB/legend circles), no
-   shadows, no gradients, transitions <= 100ms. */
+   --acc = live or focused. Neon appears only as 8px category swatches
+   and the LIVE status lamp (--live, Florian 2026-07-06), whose glow is
+   the single allowed shadow. No border-radius (except the intentional
+   ORB/legend circles), no gradients, transitions <= 100ms. */
 
 /* 7-segment LCD face for live numerals (OFL, vendored). */
 @font-face {
@@ -33,9 +34,15 @@
   flex: none;
   display: flex;
   flex-direction: column;
+  /* Three equally spaced sections: timers, flow and launches, VIEW. */
   justify-content: space-between;
   gap: 16px;
   min-height: 0;
+  /* Sections never squash mid-module; short windows scroll instead. */
+  overflow-y: auto;
+}
+.ocol-left > * {
+  flex: none;
 }
 
 .orbits-canvas-wrap {
@@ -75,23 +82,11 @@
   min-height: 0;
 }
 
-/* Corner-ticked panel, 6A fill. */
+/* Plain 6A panel (corner ticks removed, Florian 2026-07-06). */
 .opanel6 {
   position: relative;
   background: var(--panel-dark);
   border: 1px solid var(--line);
-  background-repeat: no-repeat;
-  background-size:
-    8px 1px, 1px 8px, 8px 1px, 1px 8px,
-    8px 1px, 1px 8px, 8px 1px, 1px 8px;
-  background-position:
-    top 0 left 0, top 0 left 0, top 0 right 0, top 0 right 0,
-    bottom 0 left 0, bottom 0 left 0, bottom 0 right 0, bottom 0 right 0;
-  background-image:
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim));
 }
 
 /* ----------------------------------------------------------------- HUD */
@@ -125,13 +120,37 @@
 .hud-live-dot {
   width: 6px;
   height: 6px;
-  background: var(--acc);
+  background: var(--live);
+  box-shadow:
+    0 0 4px var(--live),
+    0 0 9px var(--live);
   display: inline-block;
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hud-live-dot {
+    animation: none;
+  }
 }
 
 .hud-module {
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
+}
+/* The left column is three equally spaced sections; each section's last
+   module drops its trailing border and padding so sections end clean. */
+.hud > .hud-module:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 .hud-label {
   font-size: 8px;
@@ -679,18 +698,6 @@
   border: 1px solid var(--line);
   padding: 0.6rem 0.65rem;
   font-family: var(--mono);
-  background-repeat: no-repeat;
-  background-size:
-    8px 1px, 1px 8px, 8px 1px, 1px 8px,
-    8px 1px, 1px 8px, 8px 1px, 1px 8px;
-  background-position:
-    top 0 left 0, top 0 left 0, top 0 right 0, top 0 right 0,
-    bottom 0 left 0, bottom 0 left 0, bottom 0 right 0, bottom 0 right 0;
-  background-image:
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim)),
-    linear-gradient(var(--dim), var(--dim)), linear-gradient(var(--dim), var(--dim));
 }
 
 .oswatch {
@@ -798,6 +805,78 @@
 }
 .opopup-anchor .opopup {
   pointer-events: auto;
+}
+
+/* ------------------------------------------------ short desktop
+   Compact HUD spacing so the three left sections fit common laptop
+   heights without scrolling; the full spacing needs ~1000px. */
+
+@media (min-width: 901px) and (max-height: 940px) {
+  .ocol-left {
+    gap: 12px;
+  }
+  .hud-title-row {
+    padding-bottom: 8px;
+  }
+  .hud-module {
+    padding: 10px 0;
+  }
+  .lcd-big {
+    font-size: 24px;
+  }
+  .flow-legend {
+    margin-top: 7px;
+  }
+  .veh {
+    gap: 6px;
+  }
+  .view {
+    padding: 10px 14px;
+  }
+  .view-row {
+    padding: 2px 0;
+  }
+  .view-rule {
+    margin: 8px 0;
+  }
+}
+
+/* ------------------------------------------------- narrow desktop
+   Option 1 (Florian 2026-07-06): below this width the globe stops
+   shrinking. The canvas goes full-bleed under the frame and the side
+   columns float over its edges on slightly translucent fills, so the
+   panels cut into the globe instead of crushing it. */
+
+@media (min-width: 901px) and (max-width: 1280px) {
+  .oframe-main {
+    position: relative;
+    justify-content: space-between;
+  }
+  .orbits-canvas-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  .ocol-left,
+  .ocol-right {
+    position: relative;
+    z-index: 2;
+    /* Only the panels themselves catch the pointer; the gaps between
+       the left column's sections stay draggable globe. */
+    pointer-events: none;
+  }
+  .ocol-left > *,
+  .ocol-right > * {
+    pointer-events: auto;
+  }
+  .ocol-left .hud {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+  }
+  .ocol-left .view,
+  .ocol-right .rail {
+    background: color-mix(in srgb, var(--panel-dark) 78%, transparent);
+  }
 }
 
 /* -------------------------------------------------------------- mobile */

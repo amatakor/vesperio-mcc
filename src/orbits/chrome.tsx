@@ -171,6 +171,11 @@ function VehicleBars({ vehicles }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }
 
 // ----------------------------------------------------------- HUD column
 
+/**
+ * Two of the left column's three equally spaced sections (the third is
+ * the VIEW cluster): the timers (title row, tracked count, countdown)
+ * and the charts (orbital flow, launches by vehicle).
+ */
 export function HudColumn({
   tracked,
   stats,
@@ -179,25 +184,27 @@ export function HudColumn({
   stats: OrbitsStatsFile | null;
 }) {
   return (
-    <div className="hud">
-      <div className="hud-title-row">
-        <span className="hud-title">ORBITS</span>
-        <span className="hud-live">
-          <i className="hud-live-dot" /> LIVE
-        </span>
-      </div>
-      <div className="hud-module">
-        <div className="hud-label">SATELLITES TRACKED</div>
-        <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+    <>
+      <div className="hud">
+        <div className="hud-title-row">
+          <span className="hud-title">ORBITS</span>
+          <span className="hud-live">
+            <i className="hud-live-dot" /> LIVE
+          </span>
+        </div>
+        <div className="hud-module">
+          <div className="hud-label">SATELLITES TRACKED</div>
+          <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+        </div>
+        {stats && <Countdown upcoming={stats.upcoming} />}
       </div>
       {stats && (
-        <>
-          <Countdown upcoming={stats.upcoming} />
+        <div className="hud">
           <FlowChart stats={stats} />
           <VehicleBars vehicles={stats.vehicles_6mo} />
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

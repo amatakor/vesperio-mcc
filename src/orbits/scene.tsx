@@ -55,6 +55,7 @@ import { FooterBar, HudColumn, ViewCluster } from "./chrome";
 import { LayerRail, type RailCategory, type RailRow } from "./rail";
 import { Popup, type PopupField } from "./popup";
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
+import { Stars } from "./stars";
 import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
 import { CATEGORY_TOKENS, RESERVE_TOKEN } from "./types";
 
@@ -961,6 +962,7 @@ export default function Scene() {
           }}
         >
           <FitCamera fitRadius={fitRadius} />
+          <Stars color={colors.fg} />
           <Globe colors={colors} />
           {shells.map((s) => (
             <ShellLines key={s.slug} positions={s.positions} color={s.color} />
