@@ -37,11 +37,10 @@ export function OrbitsStage() {
 
   if (state === "no-webgl") return <Fallback reason="no-webgl" />;
   if (state === "idle") return <Fallback reason="loading" />;
+  // Scene owns the stage/rail layout (orbits.css).
   return (
-    <div className="orbits-stage">
-      <Suspense fallback={<Fallback reason="loading" />}>
-        <Scene />
-      </Suspense>
-    </div>
+    <Suspense fallback={<Fallback reason="loading" />}>
+      <Scene />
+    </Suspense>
   );
 }

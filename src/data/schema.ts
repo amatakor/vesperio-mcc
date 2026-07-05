@@ -398,6 +398,9 @@ export interface SpaceportProfile {
   entity_type: "spaceport";
   /** Structural grouping for browsing, like domain on constellations. */
   region: SpaceportRegion;
+  /** Launch Library 2 location id, linking Orbits ground markers back
+   * to this profile; absent when LL2 has no matching location. */
+  ll2_location_id?: SourcedField<number>;
   /** 2-4 sentence sourced overview. */
   overview: SourcedField<string>;
   country: SourcedField<string>;
