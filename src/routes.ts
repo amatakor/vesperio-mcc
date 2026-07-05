@@ -17,6 +17,7 @@ export type Route =
   | { page: "signals" }
   | { page: "stats" }
   | { page: "about" }
+  | { page: "log" }
   | { page: "not-found" };
 
 export function normalizePath(pathname: string): string {
@@ -33,6 +34,7 @@ export function matchRoute(pathname: string): Route {
   if (p === "/signals/") return { page: "signals" };
   if (p === "/stats/") return { page: "stats" };
   if (p === "/about/") return { page: "about" };
+  if (p === "/log/") return { page: "log" };
 
   const item = p.match(/^\/item\/([^/]+)\/$/);
   if (item) return itemById(item[1]!) ? { page: "item", id: item[1]! } : { page: "not-found" };
@@ -125,6 +127,13 @@ export function headFor(path: string): Head {
           "What MCC is, what it covers, and the verification policy: no primary source, no publish.",
         canonical,
       };
+    case "log":
+      return {
+        title: "Sweep log | MCC",
+        description:
+          "Every sweep the machine ran: what was added, what was held, and why quiet days were quiet.",
+        canonical,
+      };
     case "not-found":
       return { title: `Not found | MCC`, description: SITE_DESC, canonical };
   }
@@ -138,6 +147,7 @@ export function listRoutes(): string[] {
     "/signals/",
     "/stats/",
     "/about/",
+    "/log/",
     ...CATEGORIES.map((c) => `/news/${c}/`),
     ...items.map((i) => `/item/${i.id}/`),
     ...constellations.map((c) => `/registry/constellations/${c.slug}/`),

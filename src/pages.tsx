@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Item, SourcedField, ConstellationProfile, VehicleProfile } from "./data/schema";
 import { CATEGORIES } from "./data/schema";
-import { items, signals, constellations, vehicles } from "./lib/data";
+import { items, signals, constellations, vehicles, sweeps } from "./lib/data";
 import { computeStats } from "./lib/stats";
 
 // ------------------------------------------------------------------ layout
@@ -18,6 +18,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <a href="/registry/">registry</a>
           <a href="/signals/">signals</a>
           <a href="/stats/">stats</a>
+          <a href="/log/">log</a>
           <a href="/about/">about</a>
         </nav>
       </header>
@@ -563,6 +564,63 @@ export function AboutPage() {
           </div>
         ))}
       </section>
+    </Layout>
+  );
+}
+
+// --------------------------------------------------------------------- log
+
+function formatSweepTimestamp(at: string): string {
+  const d = new Date(at);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return (
+    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ` +
+    `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`
+  );
+}
+
+export function LogPage() {
+  const totals = sweeps.reduce(
+    (acc, s) => ({
+      added: acc.added + s.added,
+      updated: acc.updated + s.updated,
+      held: acc.held + s.held,
+    }),
+    { added: 0, updated: 0, held: 0 },
+  );
+  return (
+    <Layout>
+      <h1 className="page-title">sweep log</h1>
+      <p className="lede">
+        Every sweep the machine ran, including the quiet ones. No items is a valid result; an
+        unexplained gap is not.
+      </p>
+      <p className="dim mono">
+        {sweeps.length} sweep{sweeps.length === 1 ? "" : "s"} · +{totals.added} added · ~
+        {totals.updated} updated · {totals.held} held
+      </p>
+      {sweeps.length === 0 ? (
+        <p className="empty">// no sweeps logged yet</p>
+      ) : (
+        sweeps.map((s) => (
+          <section key={s.at} className="panel">
+            <div className="card-meta">
+              <span>{formatSweepTimestamp(s.at)}</span>
+              <span className={`chip${s.added > 0 ? " chip-notable" : ""}`}>+{s.added}</span>
+              <span className="chip">~{s.updated}</span>
+              {s.held > 0 && <span className="chip">{s.held} held</span>}
+            </div>
+            <p>{s.summary}</p>
+            <div className="tag-row">
+              {s.coverage.map((c) => (
+                <span key={c} className="chip">
+                  #{c}
+                </span>
+              ))}
+            </div>
+          </section>
+        ))
+      )}
     </Layout>
   );
 }
