@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   Item,
   SourcedField,
+  TimelineEvent,
   ConstellationProfile,
   VehicleProfile,
   SpaceportProfile,
@@ -1073,6 +1074,8 @@ interface ProfileMeta {
   children?: Array<{ slug: string; name: string }>;
   /** Full vehicle roster of a provider org, active and retired alike. */
   vehicleRoster?: Array<{ slug: string; name: string; status: string | null }>;
+  /** Sourced history timeline (Task 15); rendered when non-empty. */
+  history?: TimelineEvent[];
 }
 
 function Breadcrumbs({
@@ -1186,6 +1189,30 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
   );
 }
 
+/** Sourced history timeline: every event carries its own source link. */
+function HistorySection({ history }: { history: TimelineEvent[] }) {
+  if (history.length === 0) return null;
+  const ordered = [...history].sort((a, b) => a.date.localeCompare(b.date));
+  return (
+    <section id="history" className="panel">
+      <h2>history</h2>
+      <ol className="timeline">
+        {ordered.map((e) => (
+          <li key={`${e.date}-${e.headline}`}>
+            <span className="mono timeline-date">{e.date}</span>
+            <span>
+              {e.headline}{" "}
+              <a href={e.source} rel="noopener" className="dim">
+                (source, as of {e.as_of})
+              </a>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 /** A provider's vehicles, active and retired alike; the status makes the tag meaningful. */
 function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: string; status: string | null }> }) {
   if (roster.length === 0) return null;
@@ -1270,7 +1297,9 @@ function FaqSection({ items }: { items: FaqItem[] }) {
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
   const roster = profile.vehicleRoster ?? [];
+  const history = profile.history ?? [];
   const sections: Array<[string, string]> = [["facts", "facts"]];
+  if (history.length > 0) sections.push(["history", "history"]);
   if (children.length > 0) sections.push(["constellations", "constellations"]);
   if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
@@ -1325,6 +1354,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           {profile.notes && <p className="dim">{profile.notes}</p>}
         </section>
         <ChildConstellationsSection children={children} />
+        <HistorySection history={history} />
         <VehicleRosterSection roster={roster} />
         <EventsSection profile={profile} />
         <RelatedSection profile={profile} related={related} prev={prev} next={next} />
@@ -1382,6 +1412,7 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     siblingsBase: "/registry/constellations/",
     siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
     breadcrumbSegment: "constellations",
+    history: profile.events ?? [],
     faq,
     parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
     children: children.map((c) => ({ slug: c.slug, name: c.name })),
@@ -1534,6 +1565,7 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     breadcrumbSegment: "organizations",
     faq,
     vehicleRoster,
+    history: profile.events ?? [],
   };
   return <ProfilePage profile={meta} />;
 }
