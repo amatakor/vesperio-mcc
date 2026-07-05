@@ -79,6 +79,22 @@ export interface Explainer {
   for_who?: string;
 }
 
+/**
+ * Card/item artwork. Populated only by scripts/fetch-thumbs.ts: either
+ * the source's own og:image (credited and linked to the source) or a
+ * curated freely licensed stock image from stock-images.json. Never
+ * picked by hand, never image-searched, never generated imagery of
+ * real events. null/absent = the site renders a generated text tile.
+ */
+export interface ItemImage {
+  /** Site-relative path under /img/, or an absolute https URL. */
+  src: string;
+  /** Human-readable credit line shown on the item page. */
+  credit: string;
+  /** Where the image came from (source article or license page). */
+  origin_url: string;
+}
+
 export interface Item {
   /** Format: YYYY-MM-DD-slug, e.g. "2026-07-05-iceye-gen4-order". */
   id: string;
@@ -98,6 +114,8 @@ export interface Item {
   confidence: Confidence;
   /** ISO datetime stamped by finalize-sweep, absent in drafts. */
   publishDate?: string;
+  /** Stamped by scripts/fetch-thumbs.ts, never by the drafting agent. */
+  image?: ItemImage | null;
 }
 
 export interface ItemsFile {
