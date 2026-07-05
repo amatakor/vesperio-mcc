@@ -13,7 +13,9 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
 
 - Update factual fields on EXISTING profiles: sats on orbit, launches
   performed, flight record, next scheduled flight, operational status,
-  constellation phase.
+  constellation phase, and the overview field (2-4 sentences; every
+  claim must appear in that field's single source, per CLAUDE.md
+  registry rules).
 - Every changed field gets a fresh `as_of` (today) and a `source` URL
   fetched this run. Allowed bases: Launch Library API, the operator's
   own published material, official filings, a published item in
