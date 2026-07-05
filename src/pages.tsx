@@ -69,7 +69,7 @@ function CardMedia({ item }: { item: Item }) {
 function Card({ item }: { item: Item }) {
   const sources = 1 + item.secondary_urls.length;
   return (
-    <article className="card">
+    <article className={`card card-${item.impact}`}>
       <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`}>
@@ -85,6 +85,9 @@ function Card({ item }: { item: Item }) {
         <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
       <p className="card-tagline">{item.explainer.tagline}</p>
+      {item.impact === "critical" && (
+        <p className="card-extra">{item.explainer.what_happened}</p>
+      )}
       <div className="card-foot">
         <span className="card-companies">{item.companies.join(" · ")}</span>
         <span className="card-sources">
@@ -138,66 +141,122 @@ export function CategoryPage({ category }: { category: string }) {
   );
 }
 
+const IMPACT_LEVEL: Record<string, number> = { critical: 3, notable: 2, routine: 1 };
+
+function ImpactMeter({ impact }: { impact: string }) {
+  const level = IMPACT_LEVEL[impact] ?? 1;
+  return (
+    <span className={`meter meter-${impact}`} aria-label={`impact: ${impact}`}>
+      {[0, 1, 2].map((i) => (
+        <span key={i} className={`meter-cell${i < level ? " on" : ""}`} />
+      ))}
+    </span>
+  );
+}
+
+function hostOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
 export function ItemPage({ item }: { item: Item }) {
+  const sources = [item.source_url, ...item.secondary_urls];
   return (
     <Layout>
-      <article className="item-page">
-        <div className="feed-meta">
-          <span className="date">{item.date}</span>
-          <a className={`chip chip-${item.impact}`} href={`/news/${item.category}/`}>
+      <article className="item-page item-wide">
+        <div className="item-band">
+          <ImpactMeter impact={item.impact} />
+          <span className="band-impact">{item.impact}</span>
+          <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
           </a>
-          <span className="chip">{item.impact}</span>
           <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
+          <span className="date">{item.date}</span>
         </div>
-        <h1 className="page-title">{item.headline}</h1>
-        {item.image && (
-          <figure className="item-figure">
-            <img src={item.image.src} alt={item.headline} />
-            <figcaption className="dim">
-              <a href={item.image.origin_url} rel="noopener">
-                {item.image.credit}
-              </a>
-            </figcaption>
-          </figure>
-        )}
-        <p className="tagline">{item.explainer.tagline}</p>
-        <h2>What happened</h2>
-        <p>{item.explainer.what_happened}</p>
-        <h2>Why it matters</h2>
-        <p>{item.explainer.why_it_matters}</p>
-        {item.explainer.for_who && (
-          <p className="for-who">Most relevant to: {item.explainer.for_who}</p>
-        )}
-        <dl className="kv">
-          <dt>Companies</dt>
-          <dd>{item.companies.join(", ") || "none listed"}</dd>
-          <dt>Tags</dt>
-          <dd>{item.tags.join(", ") || "none"}</dd>
-          <dt>Primary source</dt>
-          <dd>
-            <a href={item.source_url} rel="noopener">
-              {item.source_url}
-            </a>
-          </dd>
-          {item.secondary_urls.length > 0 && (
-            <>
-              <dt>Secondary</dt>
-              <dd>
-                {item.secondary_urls.map((u) => (
-                  <div key={u}>
-                    <a href={u} rel="noopener">
-                      {u}
-                    </a>
-                  </div>
-                ))}
-              </dd>
-            </>
-          )}
-        </dl>
-        <p>
-          <a href="/">Back to the feed</a>
-        </p>
+        <div className="item-cols">
+          <div className="item-side">
+            {item.image && (
+              <figure className="item-figure">
+                <img src={item.image.src} alt={item.headline} />
+                <figcaption className="dim">
+                  <a href={item.image.origin_url} rel="noopener">
+                    {item.image.credit}
+                  </a>
+                </figcaption>
+              </figure>
+            )}
+            <div className="src-band">
+              // sources · {sources.length} outlet{sources.length === 1 ? "" : "s"}
+            </div>
+            <ol className="src-list">
+              {sources.map((u, i) => (
+                <li key={u}>
+                  <a href={u} rel="noopener">
+                    <span className="src-num">[{i + 1}]</span>
+                    <span>
+                      <span className="src-kind">{i === 0 ? "primary source" : "secondary"}</span>
+                      <span className="src-host">{hostOf(u)}</span>
+                    </span>
+                    <span className="src-arrow">↗</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="item-main">
+            <h1 className="page-title">{item.headline}</h1>
+            <p className="actor">{item.companies.join(" · ") || item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
+            <section className="panel">
+              <h2>what happened</h2>
+              <p>{item.explainer.what_happened}</p>
+            </section>
+            <section className="panel">
+              <h2>why it matters</h2>
+              <p>{item.explainer.why_it_matters}</p>
+            </section>
+            {item.explainer.for_who && (
+              <section className="panel">
+                <h2>for who</h2>
+                <p>{item.explainer.for_who}</p>
+              </section>
+            )}
+            <section className="panel">
+              <h2>quick facts</h2>
+              <dl className="kv">
+                <dt>Companies</dt>
+                <dd>{item.companies.join(", ") || "none listed"}</dd>
+                <dt>Category</dt>
+                <dd>{item.category}</dd>
+                <dt>Impact</dt>
+                <dd>{item.impact}</dd>
+                <dt>Confidence</dt>
+                <dd>{item.confidence}</dd>
+                <dt>Event date</dt>
+                <dd>{item.date}</dd>
+                {item.publishDate && (
+                  <>
+                    <dt>Published</dt>
+                    <dd>{item.publishDate.slice(0, 10)}</dd>
+                  </>
+                )}
+              </dl>
+            </section>
+            <div className="tag-row">
+              {item.tags.map((t) => (
+                <span key={t} className="chip">
+                  #{t}
+                </span>
+              ))}
+            </div>
+            <p>
+              <a href="/">Back to the feed</a>
+            </p>
+          </div>
+        </div>
       </article>
     </Layout>
   );
