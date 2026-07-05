@@ -584,7 +584,12 @@ function constellationEntries(): RegEntry[] {
     group: c.operator.value ?? "Operator unconfirmed",
     parent: c.parent ?? null,
     affiliation: c.operator.value ?? "Operator unconfirmed",
-    figure: c.sats_on_orbit.value !== null ? `${c.sats_on_orbit.value} on orbit` : null,
+    figure:
+      c.sats_active_verified.value !== null
+        ? `${c.sats_active_verified.value} tracked on orbit`
+        : c.sats_active_claimed.value !== null
+          ? `${c.sats_active_claimed.value} on orbit (claimed)`
+          : null,
     figure2: null,
     status: c.status.value,
     firstDate: c.first_launch_date.value,
@@ -1076,6 +1081,8 @@ interface ProfileMeta {
   vehicleRoster?: Array<{ slug: string; name: string; status: string | null }>;
   /** Sourced history timeline (Task 15); rendered when non-empty. */
   history?: TimelineEvent[];
+  /** Dim methodology note under the facts table. */
+  tableNote?: string | null;
 }
 
 function Breadcrumbs({
@@ -1351,6 +1358,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         <section id="facts" className="panel">
           <h2>facts</h2>
           <ProfileTable rows={profile.rows} />
+          {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
           {profile.notes && <p className="dim">{profile.notes}</p>}
         </section>
         <ChildConstellationsSection children={children} />
@@ -1373,7 +1381,9 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     ["operator", profile.operator],
     ["country", profile.country],
     ["sensor types", profile.sensor_types],
-    ["sats on orbit", profile.sats_on_orbit],
+    ["sats launched (total)", profile.sats_launched_total],
+    ["sats active (claimed)", profile.sats_active_claimed],
+    ["sats active (verified)", profile.sats_active_verified],
     ["sats planned", profile.sats_planned],
     ["orbit", profile.orbit],
     ["first launch", profile.first_launch_date],
@@ -1388,9 +1398,10 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
       render: (v) => `${profile.name} is operated by ${v as string}.`,
     },
     {
-      q: `How many ${profile.name} satellites are on orbit?`,
-      field: profile.sats_on_orbit,
-      render: (v) => `${profile.name} has ${v as number} satellites on orbit.`,
+      q: `How many ${profile.name} satellites are active on orbit?`,
+      field: profile.sats_active_verified,
+      render: (v) =>
+        `CelesTrak's catalog currently tracks ${v as number} object${(v as number) === 1 ? "" : "s"} for ${profile.name}.`,
     },
     {
       q: `When did ${profile.name} first launch?`,
@@ -1413,6 +1424,10 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
     breadcrumbSegment: "constellations",
     history: profile.events ?? [],
+    tableNote:
+      profile.sats_active_verified.value !== null
+        ? "sats active (verified) counts objects currently tracked in CelesTrak's catalog for this constellation. It is a tracking count, not an operator claim about satellite health."
+        : null,
     faq,
     parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
     children: children.map((c) => ({ slug: c.slug, name: c.name })),

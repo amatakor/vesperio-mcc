@@ -234,8 +234,14 @@ export function computeStats(
   // ------------------------------------------------------ sats on orbit
   const satsRows = sortDesc(
     constellations
-      .filter((c) => c.sats_on_orbit.value !== null)
-      .map((c) => [c.name, c.sats_on_orbit.value as number] as [string, number]),
+      .filter((c) => c.sats_active_verified.value !== null || c.sats_active_claimed.value !== null)
+      .map(
+        (c) =>
+          [c.name, (c.sats_active_verified.value ?? c.sats_active_claimed.value) as number] as [
+            string,
+            number,
+          ],
+      ),
   );
   const satsAnswer =
     satsRows.length === 0
@@ -247,7 +253,7 @@ export function computeStats(
     answer: satsAnswer,
     rows: satsRows,
     method:
-      "The sats_on_orbit field of each registry profile; every value carries its own source and as-of date on the profile page. Operators without a sourced figure are absent, not estimated.",
+      "The sats_active_verified field of each registry profile (CelesTrak tracking count), falling back to the operator-claimed figure; every value carries its own source and as-of date on the profile page. Operators without a sourced figure are absent, not estimated.",
     citation: cite(satsAnswer, "sats-on-orbit", asOf),
   });
 
