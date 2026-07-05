@@ -31,10 +31,15 @@ items; that is a successful sweep, not a failure. Padding is the bug.
    `{ id, normId, source_url, headline }`. This is the no-add-twice list.
 2. **Discovery.** Work through `src/data/sources.json`:
    - Fetch every source with status `verified` or `unverified`.
-   - Tier-1 sources produce candidates directly.
-   - Tier-2 sources produce leads only; trace each lead to its tier-1
-     primary source before it can become a candidate (see CLAUDE.md,
-     "What counts as a primary source").
+   - Tier-1 sources produce `confirmed` candidates directly.
+   - Tier-2 sources produce candidates at `reported` confidence, with
+     the outlet named in the copy. Always look for the primary source
+     first; when it exists, link it and ship `confirmed` instead (see
+     CLAUDE.md, "The source ladder").
+   - Social posts by Signals-list individuals (`src/data/signals.json`)
+     or named executives of the actor produce `signal` candidates,
+     account named and flagged "unconfirmed" in the copy. Accounts
+     outside the ladder never produce candidates.
    - Record source health: first successful fetch of an `unverified`
      source flips it to `verified`; a third consecutive failure flips
      it to `dead` with a dated note. Track consecutive failures in the
@@ -72,9 +77,13 @@ items; that is a successful sweep, not a failure. Padding is the bug.
 
 An item ships when all are true:
 - In scope per CLAUDE.md
-- Primary source linked, fetched this run, facts verified against it
+- Best available source linked, fetched this run, facts verified
+  against it, confidence set to the tier that source earns and the
+  sourcing named in the copy for anything below `confirmed`
 - New information (not a rewrite of an existing item; use `updates` for
-  developments on an existing story)
+  developments on an existing story). When a stronger source appears
+  for an existing item, use `updates` to raise its confidence and
+  switch source_url; keep the id.
 - A commercial director at an operator, reseller, or investor would
   want to know
 

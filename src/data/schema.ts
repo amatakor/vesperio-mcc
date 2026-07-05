@@ -26,7 +26,13 @@ export type Category = (typeof CATEGORIES)[number];
 export const IMPACTS = ["critical", "notable", "routine"] as const;
 export type Impact = (typeof IMPACTS)[number];
 
-export const CONFIDENCES = ["confirmed", "reported"] as const;
+/**
+ * The source ladder, best to weakest. confirmed = primary source
+ * (the actor or an official record); reported = credible trade press,
+ * outlet named in the copy; signal = Signals-list individual or named
+ * executive on social, flagged "unconfirmed" in the copy.
+ */
+export const CONFIDENCES = ["confirmed", "reported", "signal"] as const;
 export type Confidence = (typeof CONFIDENCES)[number];
 
 /** Seed tags. Reuse before inventing new ones; new tags stay lowercase. */
