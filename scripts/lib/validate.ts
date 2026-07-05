@@ -458,6 +458,34 @@ function checkSourcedField(
   }
 }
 
+const TIMELINE_DATE_RE = /^\d{4}(-\d{2}(-\d{2})?)?$/;
+
+/** Task 15 history timelines: date at source precision, sourced headline. */
+function checkTimeline(o: Obj, path: string, errors: string[]): void {
+  const events = o.events;
+  if (events === undefined) return;
+  if (!Array.isArray(events)) {
+    errors.push(`${path}.events: must be an array when present`);
+    return;
+  }
+  events.forEach((e, i) => {
+    const p = `${path}.events[${i}]`;
+    if (!isObj(e)) { errors.push(`${p}: must be an object`); return; }
+    if (typeof e.date !== "string" || !TIMELINE_DATE_RE.test(e.date)) {
+      errors.push(`${p}.date: must be YYYY, YYYY-MM, or YYYY-MM-DD`);
+    }
+    if (typeof e.headline !== "string" || e.headline.length === 0 || e.headline.length > 110) {
+      errors.push(`${p}.headline: required string, max 110 chars`);
+    } else if (/[\u2013\u2014]/.test(e.headline)) {
+      errors.push(`${p}.headline: contains em/en dash`);
+    }
+    if (!isHttpUrl(e.source)) errors.push(`${p}.source: must be an http(s) URL`);
+    if (typeof e.as_of !== "string" || !isValidDate(e.as_of)) {
+      errors.push(`${p}.as_of: must be YYYY-MM-DD`);
+    }
+  });
+}
+
 const CONSTELLATION_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
   ["overview", "string"],
   ["operator", "string"],
@@ -691,6 +719,7 @@ export function validateRegistryProfile(
       }
     }
     for (const [key, kind] of CONSTELLATION_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    checkTimeline(data, path, errors);
   } else if (expectedType === "vehicle") {
     for (const [key, kind] of VEHICLE_FIELDS) checkSourcedField(data, key, kind, path, errors);
   } else if (expectedType === "spaceport") {
@@ -706,6 +735,7 @@ export function validateRegistryProfile(
       errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
     }
     for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    checkTimeline(data, path, errors);
   }
   return errors;
 }

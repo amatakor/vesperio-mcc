@@ -314,6 +314,24 @@ export interface SourcedField<T> {
   as_of: string | null;
 }
 
+/**
+ * One sourced event on a profile's history timeline (Task 15). Dates keep
+ * the precision the source states: YYYY, YYYY-MM, or YYYY-MM-DD. The
+ * headline is actor-first plain English, max ~90 chars, no hype. Where
+ * only trade press records an event, the headline names the outlet
+ * ("per SpaceNews"), mirroring the news ladder's reported tier.
+ */
+export interface TimelineEvent {
+  /** YYYY, YYYY-MM, or YYYY-MM-DD, exactly as precise as the source. */
+  date: string;
+  /** Actor-first, factual, max ~90 chars. */
+  headline: string;
+  /** The page that states the event. Required. */
+  source: string;
+  /** YYYY-MM-DD the event was verified against the source. */
+  as_of: string;
+}
+
 export const CONSTELLATION_DOMAINS = ["eo", "connectivity", "iot", "human-spaceflight"] as const;
 export type ConstellationDomain = (typeof CONSTELLATION_DOMAINS)[number];
 
@@ -342,6 +360,8 @@ export interface ConstellationProfile {
   parent?: string | null;
   /** CelesTrak query mapping for the Orbits surface; null/absent = no layer. */
   orbits?: ConstellationOrbits | null;
+  /** Sourced history timeline; absent until the Task 15 crawl fills it. */
+  events?: TimelineEvent[];
   /** 2-4 sentence sourced overview; every claim backed by this field's source. */
   overview: SourcedField<string>;
   operator: SourcedField<string>;
@@ -429,6 +449,8 @@ export interface OrgProfile {
   entity_type: "organization";
   /** Structural grouping for browsing. */
   kind: OrgKind;
+  /** Sourced history timeline; absent until the Task 15 crawl fills it. */
+  events?: TimelineEvent[];
   /** 2-4 sentence sourced overview. */
   overview: SourcedField<string>;
   country: SourcedField<string>;
