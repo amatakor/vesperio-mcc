@@ -204,6 +204,35 @@ function ProfileTable({ rows }: { rows: Array<[string, SourcedField<unknown>]> }
   );
 }
 
+/**
+ * Gunter's Space Page permits summarization/RAG only with clear
+ * attribution and a direct link to the original URL; render both
+ * whenever any field on the profile cites it.
+ */
+function GuntersAttribution({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
+  const pages = [
+    ...new Set(
+      rows
+        .map(([, f]) => f.source)
+        .filter((s): s is string => typeof s === "string" && s.includes("space.skyrocket.de")),
+    ),
+  ];
+  if (pages.length === 0) return null;
+  return (
+    <p className="dim attribution">
+      Includes data from Gunter's Space Page:{" "}
+      {pages.map((url, i) => (
+        <span key={url}>
+          {i > 0 && ", "}
+          <a href={url} rel="noopener">
+            {url.replace("https://space.skyrocket.de/", "")}
+          </a>
+        </span>
+      ))}
+    </p>
+  );
+}
+
 export function RegistryIndexPage() {
   const eo = constellations.filter((c) => c.domain === "eo");
   const conn = constellations.filter((c) => c.domain === "connectivity");
@@ -238,26 +267,26 @@ export function RegistryIndexPage() {
 }
 
 export function ConstellationPage({ profile }: { profile: ConstellationProfile }) {
+  const rows: Array<[string, SourcedField<unknown>]> = [
+    ["operator", profile.operator],
+    ["country", profile.country],
+    ["sensor types", profile.sensor_types],
+    ["sats on orbit", profile.sats_on_orbit],
+    ["sats planned", profile.sats_planned],
+    ["orbit", profile.orbit],
+    ["first launch", profile.first_launch_date],
+    ["latest launch", profile.latest_launch_date],
+    ["status", profile.status],
+    ["website", profile.website],
+  ];
   return (
     <Layout>
       <h1 className="page-title">
         {profile.name} <span className="dim">/ {profile.domain} constellation</span>
       </h1>
-      <ProfileTable
-        rows={[
-          ["operator", profile.operator],
-          ["country", profile.country],
-          ["sensor types", profile.sensor_types],
-          ["sats on orbit", profile.sats_on_orbit],
-          ["sats planned", profile.sats_planned],
-          ["orbit", profile.orbit],
-          ["first launch", profile.first_launch_date],
-          ["latest launch", profile.latest_launch_date],
-          ["status", profile.status],
-          ["website", profile.website],
-        ]}
-      />
+      <ProfileTable rows={rows} />
       {profile.notes && <p className="dim">{profile.notes}</p>}
+      <GuntersAttribution rows={rows} />
       <p>
         <a href="/registry/">Back to the registry</a>
       </p>
@@ -266,28 +295,28 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
 }
 
 export function VehiclePage({ profile }: { profile: VehicleProfile }) {
+  const rows: Array<[string, SourcedField<unknown>]> = [
+    ["provider", profile.provider],
+    ["country", profile.country],
+    ["class", profile.vehicle_class],
+    ["payload to LEO (kg)", profile.payload_leo_kg],
+    ["reusable", profile.reusable],
+    ["first flight", profile.first_flight_date],
+    ["flights total", profile.flights_total],
+    ["flights successful", profile.flights_successful],
+    ["last flight", profile.last_flight_date],
+    ["next flight", profile.next_flight_date],
+    ["status", profile.status],
+    ["price per launch (USD)", profile.price_per_launch_usd],
+  ];
   return (
     <Layout>
       <h1 className="page-title">
         {profile.name} <span className="dim">/ launch vehicle</span>
       </h1>
-      <ProfileTable
-        rows={[
-          ["provider", profile.provider],
-          ["country", profile.country],
-          ["class", profile.vehicle_class],
-          ["payload to LEO (kg)", profile.payload_leo_kg],
-          ["reusable", profile.reusable],
-          ["first flight", profile.first_flight_date],
-          ["flights total", profile.flights_total],
-          ["flights successful", profile.flights_successful],
-          ["last flight", profile.last_flight_date],
-          ["next flight", profile.next_flight_date],
-          ["status", profile.status],
-          ["price per launch (USD)", profile.price_per_launch_usd],
-        ]}
-      />
+      <ProfileTable rows={rows} />
       {profile.notes && <p className="dim">{profile.notes}</p>}
+      <GuntersAttribution rows={rows} />
       <p>
         <a href="/registry/">Back to the registry</a>
       </p>

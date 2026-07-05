@@ -16,8 +16,13 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
   constellation phase.
 - Every changed field gets a fresh `as_of` (today) and a `source` URL
   fetched this run. Allowed bases: Launch Library API, the operator's
-  own published material, official filings, or a published item in
-  `src/data/items.json`.
+  own published material, official filings, a published item in
+  `src/data/items.json`, or Gunter's Space Page (space.skyrocket.de).
+- Gunter's terms: summarization/RAG only with clear attribution and a
+  direct link. Use the exact page URL as `source` (never the homepage),
+  and only facts stated on that single page; never sum counts across
+  multiple Gunter's pages into one figure. The site renders the
+  attribution notice automatically from the source URLs.
 - Set a field to `null` with a note if its previous source is gone and
   no current source exists. Null beats stale.
 

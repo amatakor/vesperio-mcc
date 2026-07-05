@@ -65,7 +65,7 @@ An item's confidence is set by the best source it has. Three tiers, and the copy
 
 **Edge cases:**
 - State media (Xinhua, TASS) on state programs: primary for facts of record, `reported` for everything else, origin always labelled.
-- Aggregator databases (Gunter's, NextSpaceflight): reference material for the registry, not a basis for news items.
+- Aggregator databases (Gunter's Space Page, NextSpaceflight): reference material for the registry, not a basis for news items. Gunter's terms permit summarization/RAG only with clear attribution and a direct link to the original URL; therefore every registry field based on it carries the exact page URL (deep link, never the homepage) in its `source`, registry pages render a visible attribution notice when Gunter's data is present, and only facts stated on that single page are used (no summing across pages).
 - Leaked documents: out of scope entirely. Hold until officially confirmed or reported so widely the actor responds on record; then the response is the source.
 
 Test to apply: could the linked source itself be wrong about the fact without the actor or official record being wrong? If yes, it is not primary, and the item cannot be `confirmed`.
