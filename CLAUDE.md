@@ -6,13 +6,13 @@ Editorial and operational policy for this repo. Applies to the scheduled ingesti
 
 A machine-maintained tracker for the new space economy: Earth observation, connectivity, launch, and commercial human spaceflight. Site surfaces:
 
-1. **News**: fresh items twice daily, each with a plain-English explainer, tags, and a primary-source link. Plus one prerendered static page per item and one filtered feed page per category (SEO surface).
+1. **News**: fresh items twice daily, each with a plain-English explainer, tags, a source link, and a visible confidence label. Plus one prerendered static page per item and one filtered feed page per category (SEO surface).
 2. **Registry**: standardised reference profiles of constellations and launch vehicles. One prerendered static page per entity. Each profile carries key computed figures (launch cadence, sats on orbit, flight record, growth trend) as anchored, citable stat blocks with as-of dates.
-3. **Signals** (influencers): a hand-curated list of people worth following. The agent never edits this section.
+3. **Signals** (influencers): a hand-curated list of people worth following. The agent never edits this section. The list doubles as the whitelist for `signal`-tier sourcing: only people on it (plus named executives of the actor concerned) can be the basis of an item via social posts.
 4. **Stats**: a public page of basic computed indices from our own data (launch cadence by provider, sats on orbit by constellation, items tracked), each stat block with an anchor and a pre-formatted citation string with retrieval date, plus a `/stats.json` endpoint. Deeper cross-cutting indices (contract volume by agency, pricing trends, growth analytics) are reserved for the v2 paid layer and must not appear here.
 5. **Learn**: parked for a later phase. Do not build or scaffold it without explicit instruction.
 
-The product promise is reliability. A reader should never catch this site being wrong. Missing a story is acceptable; publishing a false one is not.
+The product promise is reliability. A reader should never catch this site claiming more confidence than its source supports. Confirmed means confirmed; everything less is labelled. Missing a story is acceptable; publishing a false one as fact is not.
 
 ## Scope
 
@@ -33,11 +33,11 @@ The platform tracks new space events: the commercial space economy and the event
 - Deep space and planetary science missions with no commercial-provider angle
 - Suborbital tourism as routine events (first flights and incidents qualify)
 - Conflict analysis, battlefield OSINT, or claims about how space assets are being used operationally, unless stated by the operator or a government on the record
-- Rumours, personnel gossip, unsourced social media claims
+- Rumours, personnel gossip, and social media claims from accounts outside the source ladder (not the actor, not a named executive of it, not on the Signals list)
 
 ## Ingestion rules (hard rules, no exceptions)
 
-1. **No primary source, no publish.** Every item must link a tier-1 source from `src/data/sources.json`. Tier-2 sources (SpaceNews, Payload, NASASpaceflight, European Spaceflight, Xinhua) are for discovery only. If a tier-2 outlet reports something, find the primary source it is based on. If none exists yet, hold the item.
+1. **No source on the ladder, no publish; never overclaim.** Every item links the best available source and carries the confidence tier that source earns (see "The source ladder"). `confirmed` requires a primary source. Tier-2 trade press (SpaceNews, Payload, NASASpaceflight, European Spaceflight, Xinhua) can be the basis of an item at `reported` confidence. Social posts by Signals-list individuals or named executives of the actor can be the basis at `signal` confidence. Every non-confirmed item names its sourcing in the copy ("per SpaceNews", "per @handle on X, unconfirmed"). When a primary source exists, link it and use it; below the signal tier, hold the item.
 2. **Never state a fact that is not in the linked source.** No enrichment from model memory for dates, figures, names, or technical specs. Background context from memory is allowed only in the "why it matters" field and must be framed as context, not news.
 3. **Numbers are copied, not paraphrased.** Resolutions, prices, masses, orbit parameters, contract values: exact figures from the source or omit them.
 4. **Deduplicate before writing.** Check `src/data/items.json` for the same event (same company + same event type within 7 days). Update the existing item rather than creating a duplicate.
@@ -45,11 +45,11 @@ The platform tracks new space events: the commercial space economy and the event
 6. **State-media handling.** Facts of record (launch occurred, satellite count) from Chinese state sources are publishable. Claims about performance, commercial success, or intent are labelled "per [source], unverified."
 7. **Never fabricate a URL.** Only link URLs actually fetched during the run.
 
-## What counts as a primary source
+## The source ladder
 
-A primary source is the actor itself or an official record of the event. Concretely:
+An item's confidence is set by the best source it has. Three tiers, and the copy never claims more than its tier.
 
-**Primary (tier 1, publishable basis):**
+**`confirmed` requires a primary source.** A primary source is the actor itself or an official record of the event. Concretely:
 1. Statements by the company the item is about: press releases, official newsroom/blog posts, official corporate social accounts, investor relations pages
 2. Regulatory and legal records: FCC/ITU/NOAA filings, SEC filings, court documents, export-control and sanctions notices in official registers
 3. Government and agency statements: contract award notices (SAM.gov, esa-star, TED), official agency press releases, on-the-record statements published by the government itself
@@ -57,14 +57,18 @@ A primary source is the actor itself or an official record of the event. Concret
 5. Direct observational data: launch webcasts, Space-Track/CelesTrak orbital data, Launch Library records for launch occurrence facts
 6. Recorded first-party statements: earnings call transcripts, executives speaking on stage where a recording or official transcript is linkable
 
+**`reported` allows credible trade press as the basis.** Wire services and trade press (Reuters, SpaceNews, Payload, European Spaceflight, NASASpaceflight) reporting with named sources, direct quotes, or documents they publish. The item names the outlet in the copy ("per SpaceNews"). If the outlet merely relays a company statement, link the company statement instead and confirm. Unnamed-source reporting from these outlets is also `reported`, phrased as such ("Reuters reports, citing unnamed sources").
+
+**`signal` allows curated voices as the basis.** Posts on X or other social platforms by individuals on the Signals list (`src/data/signals.json`) or by named executives or officials of the actor, speaking about their own organisation or domain. The item names the account and flags it in the copy ("per @handle on X, unconfirmed"). Everyone outside the ladder (anonymous accounts, random aggregators, forum posts) does not qualify at any tier.
+
+**Upgrade rule.** When a better source appears for a published item, upgrade it via an update: switch source_url to the better source, raise the confidence tier, keep the id. Announcements of record (a signed contract, a completed launch) should be re-checked against a corporate or official source in the next sweeps and upgraded when possible.
+
 **Edge cases:**
-- Executive personal social accounts (e.g. a CEO posting on X): primary for that person's stated intent, but confidence is `reported` until echoed by a corporate channel or filing. Announcements of record (a signed contract, a completed launch) still need a corporate or official source.
 - State media (Xinhua, TASS) on state programs: primary for facts of record, `reported` for everything else, origin always labelled.
-- Wire services and trade press (Reuters, SpaceNews, Payload): never primary, regardless of quality. They are discovery and cross-check. If Reuters cites a company statement, link the company statement; if it cites unnamed sources, the item holds until an actor confirms.
 - Aggregator databases (Gunter's, NextSpaceflight): reference material for the registry, not a basis for news items.
 - Leaked documents: out of scope entirely. Hold until officially confirmed or reported so widely the actor responds on record; then the response is the source.
 
-Test to apply: could the linked source itself be wrong about the fact without the actor or official record being wrong? If yes, it is not primary.
+Test to apply: could the linked source itself be wrong about the fact without the actor or official record being wrong? If yes, it is not primary, and the item cannot be `confirmed`.
 
 ## Item format
 
@@ -98,7 +102,7 @@ Each item in `src/data/items.json`:
 - `notable`: matters to anyone tracking the sector (contract awards, constellation expansions, funding rounds, regulatory grants)
 - `routine`: worth logging, not worth a push (scheduled launch success, minor product update)
 
-**Confidence** (exactly one): `confirmed` (primary source is the actor itself or an official record), `reported` (credible primary-adjacent source, actor has not confirmed).
+**Confidence** (exactly one): `confirmed` (primary source: the actor itself or an official record), `reported` (credible trade press with named sourcing; outlet named in the copy), `signal` (Signals-list individual or named executive on social; account named and flagged "unconfirmed" in the copy).
 
 **Tags**: lowercase, reuse existing tags before inventing new ones. Seed set: `sar`, `optical`, `hyperspectral`, `rf`, `ghg`, `connectivity`, `direct-to-device`, `smallsat-launch`, `heavy-lift`, `rideshare`, `pricing`, `china`, `india`, `europe`, `japan`, `mena`, `us-gov`, `esa`, `export-control`, `sanctions`, `m-and-a`, `funding`, `bankruptcy`, `reusability`, `commercial-crew`, `commercial-stations`.
 
@@ -140,7 +144,7 @@ Registry updates run in a separate scheduled workflow (`maintain-registry.yml`),
 
 ## Things the agent must never do
 
-- Publish without a primary source
+- Publish from a source outside the ladder, or at a higher confidence than the source earns
 - Invent, estimate, or "recall" numbers, dates, or URLs
 - Edit the Signals/influencers list
 - Widen scope beyond the Scope section without an explicit instruction from Florian

@@ -42,7 +42,9 @@ function FeedRow({ item }: { item: Item }) {
         <a className={`chip chip-${item.impact}`} href={`/news/${item.category}/`}>
           {item.category}
         </a>
-        {item.confidence === "reported" && <span className="chip chip-reported">reported</span>}
+        {item.confidence !== "confirmed" && (
+          <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
+        )}
       </div>
       <h2 className="feed-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
@@ -102,9 +104,7 @@ export function ItemPage({ item }: { item: Item }) {
             {item.category}
           </a>
           <span className="chip">{item.impact}</span>
-          <span className={`chip ${item.confidence === "reported" ? "chip-reported" : ""}`}>
-            {item.confidence}
-          </span>
+          <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
         </div>
         <h1 className="page-title">{item.headline}</h1>
         <p className="tagline">{item.explainer.tagline}</p>
@@ -370,11 +370,11 @@ const QA: Array<[string, string]> = [
   ],
   [
     "What counts as a source?",
-    "Every published item links a primary source: the actor itself (press release, filing, webcast) or an official record of the event (regulator, court, procurement register, orbital tracking data). Wire services and trade press are used for discovery only and are never the basis of an item.",
+    "Every published item links the best available source on a three-tier ladder. confirmed items link a primary source: the actor itself (press release, filing, webcast) or an official record of the event (regulator, court, procurement register, orbital tracking data). reported items are based on credible trade press with named sourcing. signal items are based on posts by hand-picked individuals from the Signals list or named executives of the actor. Anonymous accounts and unattributed rumours are never a basis at any tier.",
   ],
   [
     "What do the confidence labels mean?",
-    "confirmed means the linked source is the actor itself or an official record. reported means the source is credible and primary-adjacent, but the actor has not confirmed; claims from state media outside facts of record are labelled per source, unverified.",
+    "The label states exactly how strong the sourcing is, and the copy never claims more. confirmed: the actor itself or an official record. reported: credible trade press, named in the item (per SpaceNews). signal: a curated voice on social media, named and flagged unconfirmed in the item. When a stronger source appears, the item is upgraded and keeps its address.",
   ],
   [
     "What happens when a story cannot be verified?",
