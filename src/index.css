@@ -730,6 +730,76 @@ table.profile a {
 
 /* -------------------------------------------------------------- stats */
 
+.hero-sentence {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 46rem;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: 0.6rem;
+  margin: 1.25rem 0 1rem;
+}
+.tile {
+  border: 1px solid var(--line);
+  padding: 0.8rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.tile-num {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  color: var(--acc);
+}
+.tile-label {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+.tile-sub {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+}
+
+.stat-answer {
+  border-left: 3px solid var(--acc);
+  padding-left: 0.75rem;
+  font-weight: 600;
+  max-width: 46rem;
+}
+
+.stat-method {
+  font-size: 0.8rem;
+  max-width: 46rem;
+}
+
+details.cite {
+  margin: 0.5rem 0 0;
+}
+details.cite summary {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  cursor: pointer;
+}
+details.cite summary:hover {
+  color: var(--acc);
+}
+details.cite[open] summary {
+  color: var(--acc);
+}
+
 .stat-block {
   border-top: 1px solid var(--line);
   margin-top: 2.25rem;

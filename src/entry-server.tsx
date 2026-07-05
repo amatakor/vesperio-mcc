@@ -7,8 +7,8 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { headFor, listRoutes, type Head } from "./routes";
-import { computeStats, statsJson } from "./lib/stats";
-import { items, constellations, vehicles } from "./lib/data";
+import { computeHero, computeStats, statsJson } from "./lib/stats";
+import { items, constellations, vehicles, sweeps } from "./lib/data";
 
 export { listRoutes };
 
@@ -21,5 +21,6 @@ export function render(path: string, generatedAt: string): { html: string; head:
 
 export function renderStatsJson(generatedAt: string): string {
   const now = new Date(generatedAt);
-  return statsJson(computeStats(items, constellations, vehicles, now), now);
+  const hero = computeHero(items, constellations, vehicles, sweeps, now);
+  return statsJson(hero, computeStats(items, constellations, vehicles, now), now);
 }
