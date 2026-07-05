@@ -22,5 +22,5 @@ export function render(path: string, generatedAt: string): { html: string; head:
 export function renderStatsJson(generatedAt: string): string {
   const now = new Date(generatedAt);
   const hero = computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations);
-  return statsJson(hero, computeStats(items, constellations, vehicles, now), now);
+  return statsJson(hero, computeStats(items, constellations, vehicles, spaceports, now), now);
 }

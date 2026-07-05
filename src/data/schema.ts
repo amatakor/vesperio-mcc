@@ -40,7 +40,7 @@ export type Confidence = (typeof CONFIDENCES)[number];
  * stay lowercase and are logged in the sweep entry for review.
  * Domain tags: every item carries one where applicable.
  */
-export const DOMAIN_TAGS = ["eo", "connectivity", "launch", "human-spaceflight"] as const;
+export const DOMAIN_TAGS = ["eo", "connectivity", "iot", "launch", "human-spaceflight"] as const;
 
 export const SEED_TAGS = [
   ...DOMAIN_TAGS,
@@ -69,6 +69,7 @@ export const SEED_TAGS = [
   "reusability",
   "commercial-crew",
   "commercial-stations",
+  "spaceport",
 ] as const;
 
 export const HEADLINE_MAX_CHARS = 90;
