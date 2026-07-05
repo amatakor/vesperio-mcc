@@ -332,7 +332,15 @@ export interface TimelineEvent {
   as_of: string;
 }
 
-export const CONSTELLATION_DOMAINS = ["eo", "connectivity", "iot", "human-spaceflight"] as const;
+export const CONSTELLATION_DOMAINS = [
+  "eo",
+  "connectivity",
+  "iot",
+  "human-spaceflight",
+  // Public GNSS constellations, included in Orbits on Florian's
+  // instruction (2026-07-05) for competitive context.
+  "navigation",
+] as const;
 export type ConstellationDomain = (typeof CONSTELLATION_DOMAINS)[number];
 
 /**

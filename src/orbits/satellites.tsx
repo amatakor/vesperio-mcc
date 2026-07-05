@@ -234,7 +234,7 @@ export function Satellites({ layout, buffers, colorBySlug, highlightSlugs, downP
       {highlights.map((h) => (
         <points key={h.slug} geometry={h.geometry} frustumCulled={false}>
           <pointsMaterial
-            size={0.055}
+            size={0.085}
             sizeAttenuation
             map={satTexture()}
             color={h.color}

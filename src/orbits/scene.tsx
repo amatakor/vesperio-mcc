@@ -38,6 +38,7 @@ import type {
   OrbitsSpaceport,
 } from "../data/schema";
 import { organizations } from "../lib/data";
+import type { ConstellationDomain } from "../data/schema";
 import {
   catalogBySlug,
   catalogTree,
@@ -45,6 +46,7 @@ import {
   ll2ToRegistrySlug,
   orbitCatalog,
 } from "./catalog";
+import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
 import { loadElements, loadFacilities, loadSpaceports } from "./elements";
 import { latLonToVec3 } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
@@ -55,7 +57,7 @@ import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
 import { RESERVE_TOKEN } from "./types";
 
 const GLOBE_RADIUS = 1;
-const OCEAN_RADIUS = 0.995;
+const OCEAN_RADIUS = 0.995; // occluder
 
 // ------------------------------------------------------------- theme
 
@@ -183,22 +185,50 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
 }
 
 /**
- * Fits the camera distance so the whole globe (plus a small margin) is
- * always inside the viewport, whatever the aspect ratio. Zoom is
- * disabled, so this distance holds for the session.
+ * Fits the camera distance so everything up to `fitRadius` (the globe,
+ * or the highest enabled navigation shell) is inside the viewport at
+ * any aspect ratio. Zoom is disabled, so this distance holds until the
+ * fit target changes.
  */
-function FitCamera() {
+function FitCamera({ fitRadius }: { fitRadius: number }) {
   const { camera, size } = useThree();
   useEffect(() => {
+    // A zero-sized container during the first layout pass would push the
+    // camera to Infinity and poison the position with NaN for the whole
+    // session; skip until the size is real and self-heal a bad position.
+    if (size.width < 2 || size.height < 2) return;
     const persp = camera as THREE.PerspectiveCamera;
     const vHalf = (persp.fov * Math.PI) / 360;
-    const hHalf = Math.atan(Math.tan(vHalf) * (size.width / Math.max(size.height, 1)));
-    const d = 1.04 / Math.sin(Math.min(vHalf, hHalf));
-    const len = persp.position.length() || 1;
-    persp.position.multiplyScalar(d / len);
+    const hHalf = Math.atan(Math.tan(vHalf) * (size.width / size.height));
+    const denom = Math.sin(Math.min(vHalf, hHalf));
+    if (!Number.isFinite(denom) || denom < 1e-3) return;
+    const d = fitRadius / denom;
+    const len = persp.position.length();
+    if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
+    else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size]);
+  }, [camera, size, fitRadius]);
   return null;
+}
+
+/** One faint ellipse per satellite of a highlighted constellation. */
+function ShellLines({ positions, color }: { positions: Float32Array; color: string }) {
+  const seg = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    return new THREE.LineSegments(
+      g,
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.22 }),
+    );
+  }, [positions, color]);
+  useEffect(
+    () => () => {
+      seg.geometry.dispose();
+      (seg.material as THREE.Material).dispose();
+    },
+    [seg],
+  );
+  return <primitive object={seg} />;
 }
 
 /**
@@ -264,6 +294,7 @@ const CATEGORY_LABEL: Record<string, string> = {
   connectivity: "CONNECTIVITY",
   iot: "IOT",
   "human-spaceflight": "HUMAN SF",
+  navigation: "NAVIGATION",
 };
 
 function formatNet(net: string): string {
@@ -300,9 +331,10 @@ export default function Scene() {
     [],
   );
 
-  // Layers and data state.
+  // Layers and data state. Navigation (public GNSS at MEO) starts off:
+  // enabling it widens the camera fit to the whole shell.
   const [enabled, setEnabled] = useState<Set<string>>(
-    () => new Set(orbitCatalog.map((e) => e.slug)),
+    () => new Set(orbitCatalog.filter((e) => e.category !== "navigation").map((e) => e.slug)),
   );
   const [layerState, setLayerState] = useState<Map<string, LayerState>>(
     () => new Map(orbitCatalog.map((e) => [e.slug, { status: "loading", count: null, fetchedAt: null }])),
@@ -470,25 +502,77 @@ export default function Scene() {
     [post],
   );
 
+  // Turning layers off also clears any selection or highlight that
+  // depended on them (a hidden layer cannot stay selected).
+  const dropSelectionFor = useCallback(
+    (slugs: string[]) => {
+      const sel = selectionRef.current;
+      if (sel?.kind === "sat" && slugs.includes(sel.sat.slug)) clearSelection();
+      setSelectedConstellation((cur) =>
+        cur && expandHighlight(cur).some((s) => slugs.includes(s)) ? null : cur,
+      );
+    },
+    [clearSelection],
+  );
+
   // Toggling a fleet parent toggles all of its child layers together.
   const toggleConstellation = useCallback(
     (slug: string) => {
       const slugs = expandHighlight(slug);
       if (slugs.length === 0) return;
+      const anyOn = slugs.some((s) => enabled.has(s));
       setEnabled((prev) => {
         const next = new Set(prev);
-        const anyOn = slugs.some((s) => next.has(s));
         for (const s of slugs) {
           if (anyOn) next.delete(s);
           else next.add(s);
         }
         return next;
       });
-      const sel = selectionRef.current;
-      if (sel?.kind === "sat" && slugs.includes(sel.sat.slug)) clearSelection();
+      if (anyOn) dropSelectionFor(slugs);
     },
-    [clearSelection],
+    [enabled, dropSelectionFor],
   );
+
+  // Category header click: every layer in the category on or off.
+  const toggleCategory = useCallback(
+    (category: ConstellationDomain) => {
+      const slugs = orbitCatalog.filter((e) => e.category === category).map((e) => e.slug);
+      if (slugs.length === 0) return;
+      const anyOn = slugs.some((s) => enabled.has(s));
+      setEnabled((prev) => {
+        const next = new Set(prev);
+        for (const s of slugs) {
+          if (anyOn) next.delete(s);
+          else next.add(s);
+        }
+        return next;
+      });
+      if (anyOn) dropSelectionFor(slugs);
+    },
+    [enabled, dropSelectionFor],
+  );
+
+  // Highlighting a constellation force-enables its layers: a selection
+  // and an unchecked box cannot coexist.
+  const selectConstellation = useCallback((slug: string | null) => {
+    setSelectedConstellation(slug);
+    if (slug) {
+      const slugs = expandHighlight(slug);
+      setEnabled((prev) => {
+        const next = new Set(prev);
+        for (const s of slugs) next.add(s);
+        return next;
+      });
+    }
+  }, []);
+
+  // The deep-linked constellation also gets its layers enabled.
+  useEffect(() => {
+    if (selectedConstellation) selectConstellation(selectedConstellation);
+    // Run once on mount for the ?constellation= deep link.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Legend model, nested like the Registry (fleet parents with children).
   const legendEntry = (e: (typeof orbitCatalog)[number]): LegendConstellation => {
@@ -554,6 +638,40 @@ export default function Scene() {
         : null;
     return base && base.length > 0 ? new Set(base) : null;
   }, [selectedConstellation, selection]);
+
+  // Orbit shells: every orbit of an explicitly selected constellation.
+  const shells = useMemo(() => {
+    if (!selectedConstellation) return [];
+    const now = new Date();
+    return expandHighlight(selectedConstellation)
+      .filter((s) => enabled.has(s))
+      .flatMap((s) => {
+        const recs = recordsRef.current.get(s) ?? [];
+        if (recs.length === 0) return [];
+        return [
+          {
+            slug: s,
+            positions: orbitShellSegments(recs, now),
+            color: colorBySlug.get(s) ?? colors.accent,
+          },
+        ];
+      });
+    // layout signals fresh records having arrived for enabled slugs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConstellation, enabled, layout, colorBySlug, colors.accent]);
+
+  // Camera fit: the globe by default; the whole shell when a navigation
+  // layer (MEO) is enabled.
+  const fitRadius = useMemo(() => {
+    let max = 1.04;
+    for (const e of orbitCatalog) {
+      if (e.category !== "navigation" || !enabled.has(e.slug)) continue;
+      const recs = recordsRef.current.get(e.slug);
+      if (recs && recs.length > 0) max = Math.max(max, maxApogeeSceneUnits(recs) * 1.06);
+    }
+    return max;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, layout]);
 
   // Spaceports with a launch inside the last 30 days pulse red.
   const recentIds = useMemo(() => {
@@ -710,8 +828,11 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera />
+          <FitCamera fitRadius={fitRadius} />
           <Globe colors={colors} />
+          {shells.map((s) => (
+            <ShellLines key={s.slug} positions={s.positions} color={s.color} />
+          ))}
           <Satellites
             layout={layout}
             buffers={buffersRef}
@@ -758,7 +879,8 @@ export default function Scene() {
           constellations={legend}
           selectedSlug={selectedConstellation}
           onToggleConstellation={toggleConstellation}
-          onSelectConstellation={setSelectedConstellation}
+          onSelectConstellation={selectConstellation}
+          onToggleCategory={toggleCategory}
           spaceportsOn={showSpaceports}
           onToggleSpaceports={() => setShowSpaceports((v) => !v)}
           facilitiesOn={showFacilities}

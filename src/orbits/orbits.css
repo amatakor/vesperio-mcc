@@ -48,6 +48,30 @@
   overflow: hidden;
 }
 
+/* The satellite cloud extends past the stage; fade it out at the top
+   and bottom edges so the clip reads as a deliberate overlay
+   (Florian 2026-07-05). */
+.orbits-canvas-wrap::before,
+.orbits-canvas-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3.5rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.orbits-canvas-wrap::before {
+  top: 0;
+  background: linear-gradient(var(--bg), transparent);
+}
+
+.orbits-canvas-wrap::after {
+  bottom: 0;
+  background: linear-gradient(transparent, var(--bg));
+}
+
 /* Frame-rate positioning wrapper for the popup; the anchor moves, the
    popup inside stays interactive. */
 .opopup-anchor {
@@ -127,6 +151,16 @@
   letter-spacing: 0.08em;
   font-size: 0.68rem;
   font-weight: 700;
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.ogroup-head:hover {
+  color: var(--fg);
 }
 
 .oswatch {

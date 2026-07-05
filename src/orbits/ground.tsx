@@ -58,9 +58,9 @@ function ringTexture(): THREE.CanvasTexture {
     c.width = c.height = 64;
     const ctx = c.getContext("2d")!;
     ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 8;
     ctx.beginPath();
-    ctx.arc(32, 32, 24, 0, Math.PI * 2);
+    ctx.arc(32, 32, 23, 0, Math.PI * 2);
     ctx.stroke();
     ringTex = new THREE.CanvasTexture(c);
   }
@@ -96,9 +96,9 @@ function ActivityPulse({
 
   useFrame(({ clock }) => {
     if (reducedMotion || !matRef.current) return;
-    const t = (clock.getElapsedTime() % 2.2) / 2.2;
-    matRef.current.size = 0.03 + t * 0.08;
-    matRef.current.opacity = 0.85 * (1 - t) ** 1.5;
+    const t = (clock.getElapsedTime() % 1.8) / 1.8;
+    matRef.current.size = 0.05 + t * 0.14;
+    matRef.current.opacity = 1 - t;
   });
 
   if (positions.length === 0) return null;
@@ -106,12 +106,12 @@ function ActivityPulse({
     <points geometry={geometry}>
       <pointsMaterial
         ref={matRef}
-        size={reducedMotion ? 0.055 : 0.03}
+        size={reducedMotion ? 0.09 : 0.05}
         sizeAttenuation
         map={ringTexture()}
         color={color}
         transparent
-        opacity={reducedMotion ? 0.7 : 0.85}
+        opacity={reducedMotion ? 0.8 : 1}
         depthWrite={false}
       />
     </points>
