@@ -1448,8 +1448,32 @@ a.sig-card:hover .sig-p-x {
   max-width: 46rem;
 }
 
-/* Task 15: profile history timelines */
-.timeline { list-style: none; padding: 0; margin: 0; }
-.timeline li { display: flex; gap: 12px; padding: 6px 0; border-top: 1px solid var(--line, #222); }
-.timeline li:first-child { border-top: 0; }
-.timeline-date { min-width: 92px; color: var(--dim, #888); }
+/* Task 15: profile history timelines. A vertical rail with square
+   accent nodes; dates in structural mono above each entry. */
+.timeline { list-style: none; padding: 2px 0 0 6px; margin: 0; }
+.timeline li {
+  position: relative;
+  display: block;
+  padding: 0 0 20px 22px;
+  border-left: 2px solid var(--line);
+}
+.timeline li:last-child { border-left-color: transparent; padding-bottom: 2px; }
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 3px;
+  width: 10px;
+  height: 10px;
+  background: var(--acc);
+  outline: 3px solid var(--bg);
+}
+.timeline-date {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+  margin-bottom: 3px;
+}
+.timeline li > span + span { display: block; max-width: 62ch; }
