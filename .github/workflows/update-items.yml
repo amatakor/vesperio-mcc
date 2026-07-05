@@ -67,8 +67,13 @@ jobs:
         run: bun run build
 
       - name: Commit feed changes (skip on zero-activity sweeps)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
+          # The Claude action swaps git credentials for its own short-lived
+          # app token; point the remote back at the workflow token to push.
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           rm -f sweep-draft.json
           if git diff --quiet -- src/data SWEEP_MEMORY.md; then
             echo "No data changes; nothing to commit."
