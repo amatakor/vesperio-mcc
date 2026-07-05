@@ -314,8 +314,23 @@ export interface SourcedField<T> {
   as_of: string | null;
 }
 
-export const CONSTELLATION_DOMAINS = ["eo", "connectivity", "iot"] as const;
+export const CONSTELLATION_DOMAINS = ["eo", "connectivity", "iot", "human-spaceflight"] as const;
 export type ConstellationDomain = (typeof CONSTELLATION_DOMAINS)[number];
+
+/**
+ * How the Orbits pipeline fetches this constellation's element sets from
+ * CelesTrak (spec ORBITS_SPEC.md §5.1). Group query preferred; NAME=
+ * substring query against the active catalog as fallback. name_pattern is
+ * a regex OBJECT_NAME must match to belong to this constellation (needed
+ * when a shared group or a broad NAME match covers several entries).
+ * Absent or null: no orbit layer (planned constellations, fleet parents
+ * whose children carry the layers).
+ */
+export interface ConstellationOrbits {
+  celestrak_group: string | null;
+  celestrak_name: string | null;
+  name_pattern: string | null;
+}
 
 export interface ConstellationProfile {
   /** Must match the filename, e.g. "iceye" for iceye.json. */
@@ -325,6 +340,8 @@ export interface ConstellationProfile {
   domain: ConstellationDomain;
   /** Slug of the fleet-level parent profile, when the operator names sub-constellations. */
   parent?: string | null;
+  /** CelesTrak query mapping for the Orbits surface; null/absent = no layer. */
+  orbits?: ConstellationOrbits | null;
   /** 2-4 sentence sourced overview; every claim backed by this field's source. */
   overview: SourcedField<string>;
   operator: SourcedField<string>;
@@ -419,3 +436,115 @@ export interface OrgProfile {
 }
 
 export type RegistryProfile = ConstellationProfile | VehicleProfile | SpaceportProfile | OrgProfile;
+
+// --------------------------------------------------------------- orbits
+//
+// Static data files under public/data/orbits/, produced by the Orbits
+// pipeline scripts (scripts/orbits/) on the 12-hour cron and consumed
+// only by the /orbits page. The client never calls external APIs.
+
+/**
+ * The subset of CCSDS OMM fields that satellite.js json2satrec consumes.
+ * CelesTrak GP JSON (FORMAT=JSON) carries exactly these; the fetch script
+ * whitelists them so format drift upstream cannot bloat the files.
+ */
+export const OMM_STRING_FIELDS = [
+  "OBJECT_NAME",
+  "OBJECT_ID",
+  "EPOCH",
+  "CLASSIFICATION_TYPE",
+] as const;
+export const OMM_NUMBER_FIELDS = [
+  "MEAN_MOTION",
+  "ECCENTRICITY",
+  "INCLINATION",
+  "RA_OF_ASC_NODE",
+  "ARG_OF_PERICENTER",
+  "MEAN_ANOMALY",
+  "EPHEMERIS_TYPE",
+  "NORAD_CAT_ID",
+  "ELEMENT_SET_NO",
+  "REV_AT_EPOCH",
+  "BSTAR",
+  "MEAN_MOTION_DOT",
+  "MEAN_MOTION_DDOT",
+] as const;
+
+export interface OmmRecord {
+  OBJECT_NAME: string;
+  OBJECT_ID: string;
+  EPOCH: string;
+  MEAN_MOTION: number;
+  ECCENTRICITY: number;
+  INCLINATION: number;
+  RA_OF_ASC_NODE: number;
+  ARG_OF_PERICENTER: number;
+  MEAN_ANOMALY: number;
+  EPHEMERIS_TYPE: number;
+  CLASSIFICATION_TYPE: string;
+  NORAD_CAT_ID: number;
+  ELEMENT_SET_NO: number;
+  REV_AT_EPOCH: number;
+  BSTAR: number;
+  MEAN_MOTION_DOT: number;
+  MEAN_MOTION_DDOT: number;
+}
+
+/** elements-<constellation-slug>.json */
+export interface OrbitsElementsFile {
+  /** ISO datetime the elements were fetched from CelesTrak. */
+  fetched_at: string;
+  /** The exact CelesTrak query URL the records came from. */
+  source: string;
+  /** Registry constellation slug this file belongs to. */
+  constellation: string;
+  records: OmmRecord[];
+}
+
+/** One active launch site in spaceports.json, merged from LL2. */
+export interface OrbitsSpaceport {
+  /** Launch Library 2 location id. */
+  ll2_id: number;
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+  total_launch_count: number;
+  upcoming_count: number;
+  next_launch: { name: string; vehicle: string; net: string } | null;
+  /** Rocket configurations launching from this site, deduped. */
+  vehicles: string[];
+  /** LL2 wiki/info URL where present. */
+  info_url: string | null;
+}
+
+/** spaceports.json */
+export interface OrbitsSpaceportsFile {
+  fetched_at: string;
+  source: string;
+  spaceports: OrbitsSpaceport[];
+}
+
+export const FACILITY_TYPES = ["hq", "production", "test", "launch"] as const;
+export type FacilityType = (typeof FACILITY_TYPES)[number];
+
+/**
+ * One hand-curated ground pin in facilities.json. Editorial rule applies:
+ * every entry needs a citable source_url; no source, no pin.
+ */
+export interface OrbitsFacility {
+  name: string;
+  /** Registry slug the pin links to (organization or constellation operator). */
+  operator_slug: string;
+  type: FacilityType;
+  lat: number;
+  lon: number;
+  blurb: string;
+  source_url: string;
+}
+
+/** facilities.json; maintained via the weekly registry workflow. */
+export interface OrbitsFacilitiesFile {
+  as_of: string;
+  facilities: OrbitsFacility[];
+}

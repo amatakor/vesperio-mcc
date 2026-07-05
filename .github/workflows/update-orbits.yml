@@ -1,0 +1,65 @@
+# Orbits data refresh, every 12 hours, offset from the news sweeps.
+# Fully deterministic (no agent): fetches CelesTrak element sets and the
+# Launch Library 2 spaceport stats into public/data/orbits/, gates on the
+# full build, and commits. ORBITS_SPEC.md 5.1/5.2 are the contract.
+#
+# Politeness: CelesTrak updates at most every 2 hours and asks users not
+# to poll faster; LL2's free tier allows 15 requests/hour and this run
+# needs about 7. Both scripts back off on errors and keep previous files
+# on failure, so a bad upstream day degrades to stale data, never to a
+# broken build.
+
+name: update-orbits
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 4,16 * * *"
+
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    if: github.repository == 'amatakor/vesperio-mcc'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Fetch orbital elements (CelesTrak)
+        run: bun scripts/orbits/fetch-elements.ts
+
+      - name: Fetch spaceports (Launch Library 2)
+        run: bun scripts/orbits/fetch-spaceports.ts
+
+      - name: Build must pass before any commit
+        run: bun run build
+
+      - name: Commit data refresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          if git diff --quiet -- public/data/orbits; then
+            echo "No orbits data changes; nothing to commit."
+            exit 0
+          fi
+          git config user.name "mcc-orbits-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/data/orbits
+          git commit -m "orbits: data refresh ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+          # main may have moved during the run; these commits touch only
+          # data files, so a rebase is clean or fails loudly.
+          git pull --rebase origin main
+          git push

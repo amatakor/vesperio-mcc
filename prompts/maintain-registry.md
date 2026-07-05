@@ -1,7 +1,7 @@
 ---
 prompt-id: mcc.maintain-registry
-prompt-version: 0.1.0
-output-target: src/data/registry/**
+prompt-version: 0.2.0
+output-target: src/data/registry/** + public/data/orbits/facilities.json
 ---
 
 # MCC — Registry Maintenance (weekly)
@@ -27,13 +27,24 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
   attribution notice automatically from the source URLs.
 - Set a field to `null` with a note if its previous source is gone and
   no current source exists. Null beats stale.
+- Curate the Orbits ground layer, `public/data/orbits/facilities.json`
+  (schema in `src/data/schema.ts`, OrbitsFacility): verify existing pins
+  against their `source_url` and update blurbs that have gone stale; add
+  missing operator HQ pins ONLY when a citable source states the location
+  (company site, filing, or reputable press) fetched this run. No source,
+  no pin. Coordinates are derived from the sourced address at city-block
+  precision. Every pin's `operator_slug` must match an existing registry
+  profile. Remove a pin when its facility is documented as closed.
 
 ## What you must never do
 
 - Add, remove, rename, or restructure profiles or fields. Those changes
   go through reviewed PRs opened by Florian.
 - Estimate, interpolate, or carry a number forward without re-verifying.
-- Touch anything outside `src/data/registry/`.
+- Touch anything outside `src/data/registry/` and
+  `public/data/orbits/facilities.json`. The other files under
+  `public/data/orbits/` belong to the deterministic update-orbits
+  workflow; never edit them.
 
 ## Procedure
 
