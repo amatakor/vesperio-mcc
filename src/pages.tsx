@@ -2,7 +2,17 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Item, SourcedField, ConstellationProfile, VehicleProfile, SignalPerson } from "./data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
-import { items, signals, signalOutlets, signalAvatars, constellations, vehicles, sweeps, itemsByTag } from "./lib/data";
+import {
+  items,
+  signals,
+  signalOutlets,
+  signalAvatars,
+  constellations,
+  vehicles,
+  sweeps,
+  itemsByTag,
+  itemsMentioning,
+} from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
@@ -502,25 +512,90 @@ function GuntersAttribution({ rows }: { rows: Array<[string, SourcedField<unknow
   );
 }
 
-export function RegistryIndexPage() {
-  const eo = constellations.filter((c) => c.domain === "eo");
-  const conn = constellations.filter((c) => c.domain === "connectivity");
-  const section = (title: string, list: Array<{ slug: string; name: string }>, base: string) => (
-    <section>
-      <h2>{title}</h2>
-      {list.length === 0 ? (
-        <p className="empty">No profiles yet.</p>
-      ) : (
-        <ul className="index-list">
-          {list.map((e) => (
-            <li key={e.slug}>
-              <a href={`${base}${e.slug}/`}>{e.name}</a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+type EntityKind = "eo" | "connectivity" | "vehicle";
+
+interface EntityCard {
+  slug: string;
+  name: string;
+  kind: EntityKind;
+  href: string;
+  affiliation: string | null;
+  figure: string | null;
+  status: string | null;
+}
+
+function toEntityCard(kind: EntityKind, profile: ConstellationProfile | VehicleProfile): EntityCard {
+  if (profile.entity_type === "constellation") {
+    return {
+      slug: profile.slug,
+      name: profile.name,
+      kind,
+      href: `/registry/constellations/${profile.slug}/`,
+      affiliation: profile.operator.value,
+      figure: profile.sats_on_orbit.value !== null ? `${profile.sats_on_orbit.value} on orbit` : null,
+      status: profile.status.value,
+    };
+  }
+  return {
+    slug: profile.slug,
+    name: profile.name,
+    kind,
+    href: `/registry/vehicles/${profile.slug}/`,
+    affiliation: profile.provider.value,
+    figure: profile.flights_total.value !== null ? `${profile.flights_total.value} flights` : null,
+    status: profile.status.value,
+  };
+}
+
+const KIND_LABEL: Record<EntityKind, string> = {
+  eo: "eo",
+  connectivity: "connectivity",
+  vehicle: "vehicle",
+};
+
+function matchesEntityQuery(card: EntityCard, q: string): boolean {
+  const hay = [card.name, card.affiliation ?? "", card.slug].join(" ").toLowerCase();
+  return hay.includes(q);
+}
+
+function EntityGridCard({ card }: { card: EntityCard }) {
+  return (
+    <a className="sig-card entity-card" href={card.href}>
+      <div className="sig-body">
+        <div className="sig-top">
+          <span className={`chip sig-platform ent-p-${card.kind}`}>{KIND_LABEL[card.kind]}</span>
+          {card.status && <span className="chip chip-tag">{card.status}</span>}
+        </div>
+        <h3 className="sig-name">{card.name}</h3>
+        {card.affiliation && <span className="sig-handle">{card.affiliation}</span>}
+        {card.figure && <p className="sig-why">{card.figure}</p>}
+      </div>
+    </a>
   );
+}
+
+export function RegistryIndexPage() {
+  const [tab, setTab] = useState<"all" | EntityKind>("all");
+  const [query, setQuery] = useState("");
+
+  const cards: EntityCard[] = useMemo(
+    () => [
+      ...constellations.map((c) => toEntityCard(c.domain === "eo" ? "eo" : "connectivity", c)),
+      ...vehicles.map((v) => toEntityCard("vehicle", v)),
+    ],
+    [],
+  );
+
+  const countFor = (k: EntityKind) => cards.filter((c) => c.kind === k).length;
+  const eoCount = countFor("eo");
+  const connCount = countFor("connectivity");
+  const vehCount = countFor("vehicle");
+
+  const q = query.trim().toLowerCase();
+  const filtered = cards.filter(
+    (c) => (tab === "all" || c.kind === tab) && (q === "" || matchesEntityQuery(c, q)),
+  );
+
   return (
     <Layout>
       <h1 className="page-title">registry</h1>
@@ -528,9 +603,269 @@ export function RegistryIndexPage() {
         Standardised reference profiles. Every figure carries a source URL and an as-of date;
         unknown fields stay unknown rather than estimated.
       </p>
-      {section("EO constellations", eo, "/registry/constellations/")}
-      {section("Connectivity constellations", conn, "/registry/constellations/")}
-      {section("Launch vehicles", vehicles, "/registry/vehicles/")}
+      <p className="dim mono">
+        {cards.length} profiles · {constellations.length} constellations · {vehicles.length}{" "}
+        vehicles · every figure sourced and dated
+      </p>
+      <div className="sig-controls">
+        <div className="sig-tabs">
+          <button className={`sig-tab${tab === "all" ? " active" : ""}`} onClick={() => setTab("all")}>
+            all <span className="count">{cards.length}</span>
+          </button>
+          <button className={`sig-tab${tab === "eo" ? " active" : ""}`} onClick={() => setTab("eo")}>
+            eo <span className="count">{eoCount}</span>
+          </button>
+          <button
+            className={`sig-tab${tab === "connectivity" ? " active" : ""}`}
+            onClick={() => setTab("connectivity")}
+          >
+            connectivity <span className="count">{connCount}</span>
+          </button>
+          <button
+            className={`sig-tab${tab === "vehicle" ? " active" : ""}`}
+            onClick={() => setTab("vehicle")}
+          >
+            vehicles <span className="count">{vehCount}</span>
+          </button>
+        </div>
+        <input
+          type="text"
+          className="filter-input sig-search"
+          placeholder="/ search name, operator, provider"
+          aria-label="Search registry"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+      {filtered.length === 0 ? (
+        <p className="empty">// nothing matches: adjust filters</p>
+      ) : (
+        <div className="sig-grid">
+          {filtered.map((c) => (
+            <EntityGridCard key={`${c.kind}-${c.slug}`} card={c} />
+          ))}
+        </div>
+      )}
+    </Layout>
+  );
+}
+
+// ---------------------------------------------------------- profile pages
+
+interface ProfileMeta {
+  slug: string;
+  name: string;
+  typeLabel: string;
+  /** operator (constellation) or provider (vehicle) value, for related/events matching. */
+  affiliation: string | null;
+  rows: Array<[string, SourcedField<unknown>]>;
+  overview: SourcedField<string>;
+  notes: string | null | undefined;
+  href: string;
+  siblingsBase: string;
+  siblings: Array<{ slug: string; name: string; affiliation: string | null }>;
+  breadcrumbSegment: string;
+  faq: FaqItem[];
+}
+
+function Breadcrumbs({ segment, name }: { segment: string; name: string }) {
+  return (
+    <p className="dim mono breadcrumbs">
+      <a href="/registry/">registry</a> / <a href="/registry/">{segment}</a> / {name}
+    </p>
+  );
+}
+
+/** Numbered "// on this page" jump-list, ai-tldr style, built from the sections present. */
+function OnThisPageToc({ sections }: { sections: Array<[string, string]> }) {
+  return (
+    <section className="panel toc-panel">
+      <h2>on this page</h2>
+      <ol className="toc-list">
+        {sections.map(([id, label]) => (
+          <li key={id}>
+            <a href={`#${id}`}>{label}</a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+function EventsSection({ profile }: { profile: ProfileMeta }) {
+  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
+  // items is sorted newest-first already; itemsMentioning preserves that order.
+  const events = itemsMentioning(names);
+  if (events.length === 0) return null;
+  return (
+    <section id="events" className="panel">
+      <h2>events</h2>
+      <ul className="index-list event-list">
+        {events.map((i) => (
+          <li key={i.id} className="event-row">
+            <span className="date">{i.date}</span>
+            <span className={`chip chip-${i.impact}`}>{i.impact}</span>
+            <a href={`/item/${i.id}/`}>{i.headline}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function RelatedSection({
+  profile,
+  related,
+  prev,
+  next,
+}: {
+  profile: ProfileMeta;
+  related: Array<{ slug: string; name: string; href: string }>;
+  prev: { slug: string; name: string } | null;
+  next: { slug: string; name: string } | null;
+}) {
+  if (related.length === 0 && !prev && !next) return null;
+  return (
+    <section id="related" className="panel">
+      <h2>related</h2>
+      {related.length > 0 && (
+        <div className="tag-row">
+          {related.map((r) => (
+            <a key={r.slug} className="chip chip-tag" href={r.href}>
+              {r.name}
+            </a>
+          ))}
+        </div>
+      )}
+      <div className="prev-next">
+        <span>{prev ? <a href={`${profile.siblingsBase}${prev.slug}/`}>&larr; {prev.name}</a> : <span className="dim">&larr; start</span>}</span>
+        <span>{next ? <a href={`${profile.siblingsBase}${next.slug}/`}>{next.name} &rarr;</a> : <span className="dim">end &rarr;</span>}</span>
+      </div>
+    </section>
+  );
+}
+
+function SourcesSection({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
+  const byUrl = new Map<string, string[]>();
+  for (const [label, f] of rows) {
+    if (!f.source) continue;
+    const list = byUrl.get(f.source) ?? [];
+    list.push(label);
+    byUrl.set(f.source, list);
+  }
+  const urls = [...byUrl.keys()];
+  if (urls.length === 0) return null;
+  return (
+    <section id="sources" className="panel">
+      <h2>sources</h2>
+      <ol className="src-list">
+        {urls.map((u, i) => (
+          <li key={u}>
+            <a href={u} rel="noopener">
+              <span className="src-num">[{i + 1}]</span>
+              <span>
+                <span className="src-kind">{hostOf(u)}</span>
+                <span className="src-host">{byUrl.get(u)!.join(", ")}</span>
+              </span>
+              <span className="src-arrow">↗</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+      <GuntersAttribution rows={rows} />
+    </section>
+  );
+}
+
+interface FaqItem {
+  q: string;
+  field: SourcedField<unknown>;
+  render: (value: unknown) => string;
+}
+
+function FaqSection({ items }: { items: FaqItem[] }) {
+  return (
+    <section id="faq" className="panel">
+      <h2>faq</h2>
+      {items.map(({ q, field, render }) => (
+        <details className="cite faq-item" key={q}>
+          <summary>{q}</summary>
+          <p className="citation">
+            {field.value === null || field.value === undefined ? (
+              "No sourced figure yet. Unknowns stay unknown rather than estimated."
+            ) : (
+              <>
+                {render(field.value)}{" "}
+                <a href={field.source ?? undefined} rel="noopener" className="dim">
+                  (source, as of {field.as_of})
+                </a>
+              </>
+            )}
+          </p>
+        </details>
+      ))}
+    </section>
+  );
+}
+
+/** Shared destination-page shell for constellation and vehicle profiles. */
+function ProfilePage({ profile }: { profile: ProfileMeta }) {
+  const sections: Array<[string, string]> = [["facts", "facts"]];
+  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
+  const hasEvents = itemsMentioning(names).length > 0;
+  if (hasEvents) sections.push(["events", "events"]);
+
+  const related = profile.affiliation
+    ? profile.siblings
+        .filter(
+          (s) =>
+            s.slug !== profile.slug &&
+            s.affiliation &&
+            s.affiliation.toLowerCase() === profile.affiliation!.toLowerCase(),
+        )
+        .map((s) => ({ slug: s.slug, name: s.name, href: `${profile.siblingsBase}${s.slug}/` }))
+    : [];
+  const ordered = profile.siblings.slice().sort((a, b) => a.name.localeCompare(b.name));
+  const idx = ordered.findIndex((s) => s.slug === profile.slug);
+  const prev = idx > 0 ? ordered[idx - 1]! : null;
+  const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1]! : null;
+  if (related.length > 0 || prev || next) sections.push(["related", "related"]);
+
+  const hasSources = profile.rows.some(([, f]) => !!f.source);
+  if (hasSources) sections.push(["sources", "sources"]);
+  sections.push(["faq", "faq"]);
+
+  return (
+    <Layout>
+      <div className="registry-profile">
+        <Breadcrumbs segment={profile.breadcrumbSegment} name={profile.name} />
+        <h1 className="page-title">
+          {profile.name} <span className="dim">/ {profile.typeLabel}</span>
+        </h1>
+        {profile.overview.value && (
+          <>
+            <p className="tagline-acc">{profile.overview.value}</p>
+            <p className="dim source-line">
+              <a href={profile.overview.source ?? undefined} rel="noopener">
+                (source, as of {profile.overview.as_of})
+              </a>
+            </p>
+          </>
+        )}
+        <OnThisPageToc sections={sections} />
+        <section id="facts" className="panel">
+          <h2>facts</h2>
+          <ProfileTable rows={profile.rows} />
+          {profile.notes && <p className="dim">{profile.notes}</p>}
+        </section>
+        <EventsSection profile={profile} />
+        <RelatedSection profile={profile} related={related} prev={prev} next={next} />
+        {hasSources && <SourcesSection rows={profile.rows} />}
+        <FaqSection items={profile.faq} />
+        <p>
+          <a href="/registry/">Back to the registry</a>
+        </p>
+      </div>
     </Layout>
   );
 }
@@ -548,19 +883,38 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     ["status", profile.status],
     ["website", profile.website],
   ];
-  return (
-    <Layout>
-      <h1 className="page-title">
-        {profile.name} <span className="dim">/ {profile.domain} constellation</span>
-      </h1>
-      <ProfileTable rows={rows} />
-      {profile.notes && <p className="dim">{profile.notes}</p>}
-      <GuntersAttribution rows={rows} />
-      <p>
-        <a href="/registry/">Back to the registry</a>
-      </p>
-    </Layout>
-  );
+  const faq: FaqItem[] = [
+    {
+      q: `Who operates ${profile.name}?`,
+      field: profile.operator,
+      render: (v) => `${profile.name} is operated by ${v as string}.`,
+    },
+    {
+      q: `How many ${profile.name} satellites are on orbit?`,
+      field: profile.sats_on_orbit,
+      render: (v) => `${profile.name} has ${v as number} satellites on orbit.`,
+    },
+    {
+      q: `When did ${profile.name} first launch?`,
+      field: profile.first_launch_date,
+      render: (v) => `${profile.name} first launched on ${v as string}.`,
+    },
+  ];
+  const meta: ProfileMeta = {
+    slug: profile.slug,
+    name: profile.name,
+    typeLabel: `${profile.domain} constellation`,
+    affiliation: profile.operator.value,
+    rows,
+    overview: profile.overview,
+    notes: profile.notes,
+    href: `/registry/constellations/${profile.slug}/`,
+    siblingsBase: "/registry/constellations/",
+    siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
+    breadcrumbSegment: "constellations",
+    faq,
+  };
+  return <ProfilePage profile={meta} />;
 }
 
 export function VehiclePage({ profile }: { profile: VehicleProfile }) {
@@ -578,19 +932,43 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     ["status", profile.status],
     ["price per launch (USD)", profile.price_per_launch_usd],
   ];
-  return (
-    <Layout>
-      <h1 className="page-title">
-        {profile.name} <span className="dim">/ launch vehicle</span>
-      </h1>
-      <ProfileTable rows={rows} />
-      {profile.notes && <p className="dim">{profile.notes}</p>}
-      <GuntersAttribution rows={rows} />
-      <p>
-        <a href="/registry/">Back to the registry</a>
-      </p>
-    </Layout>
-  );
+  const faq: FaqItem[] = [
+    {
+      q: `Who builds ${profile.name}?`,
+      field: profile.provider,
+      render: (v) => `${profile.name} is built by ${v as string}.`,
+    },
+    {
+      q: `How many times has ${profile.name} flown?`,
+      field: profile.flights_total,
+      render: (v) => `${profile.name} has flown ${v as number} times.`,
+    },
+    {
+      q: `When did ${profile.name} first fly?`,
+      field: profile.first_flight_date,
+      render: (v) => `${profile.name} first flew on ${v as string}.`,
+    },
+    {
+      q: `Is ${profile.name} reusable?`,
+      field: profile.reusable,
+      render: (v) => `${profile.name} is ${v ? "" : "not "}reusable.`,
+    },
+  ];
+  const meta: ProfileMeta = {
+    slug: profile.slug,
+    name: profile.name,
+    typeLabel: "launch vehicle",
+    affiliation: profile.provider.value,
+    rows,
+    overview: profile.overview,
+    notes: profile.notes,
+    href: `/registry/vehicles/${profile.slug}/`,
+    siblingsBase: "/registry/vehicles/",
+    siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
+    breadcrumbSegment: "vehicles",
+    faq,
+  };
+  return <ProfilePage profile={meta} />;
 }
 
 // ---------------------------------------------------------------- signals

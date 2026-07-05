@@ -69,3 +69,21 @@ export function constellationBySlug(slug: string): ConstellationProfile | undefi
 export function vehicleBySlug(slug: string): VehicleProfile | undefined {
   return vehicles.find((v) => v.slug === slug);
 }
+
+/**
+ * Feed items that name any of the given entity names: a match on
+ * item.companies (case-insensitive) or a whole-word match of the name
+ * in the headline. Used to build a registry profile's event history.
+ */
+export function itemsMentioning(names: string[]): Item[] {
+  const wanted = names.filter(Boolean).map((n) => n.toLowerCase());
+  if (wanted.length === 0) return [];
+  return items.filter((i) => {
+    if (i.companies.some((c) => wanted.includes(c.toLowerCase()))) return true;
+    return names.some((n) => {
+      if (!n) return false;
+      const re = new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
+      return re.test(i.headline);
+    });
+  });
+}

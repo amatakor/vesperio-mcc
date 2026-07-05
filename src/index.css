@@ -728,6 +728,141 @@ table.profile a {
   color: var(--acc);
 }
 
+/* Registry profile page: breadcrumbs, on-this-page TOC, events, related,
+   sources, faq. Reuses .panel, .src-list, .sig-tab, .sig-grid, .sig-card,
+   details.cite from the item/signals pages rather than new patterns. */
+.breadcrumbs {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+.source-line {
+  font-size: 0.78rem;
+  margin: -0.6rem 0 1.1rem;
+}
+.source-line a {
+  color: var(--dim);
+}
+.source-line a:hover {
+  color: var(--acc);
+}
+
+/* Profile pages get the same "// section" heading treatment as the item
+   page (.item-page h2 / .item-page .panel h2::before), scoped here under
+   .registry-profile instead of duplicating global .panel h2 rules. */
+.registry-profile {
+  max-width: 46rem;
+}
+.registry-profile h2 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--acc);
+  margin: 0 0 0.6rem;
+}
+.registry-profile .panel h2::before,
+.registry-profile .toc-panel h2::before {
+  content: "// ";
+}
+.toc-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.85rem;
+}
+.toc-list li {
+  margin: 0.15rem 0;
+}
+.toc-list a {
+  color: var(--fg);
+}
+.toc-list a:hover {
+  color: var(--acc);
+}
+
+.event-list {
+  margin: 0;
+}
+.event-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.event-row a {
+  color: var(--fg);
+}
+.event-row a:hover {
+  color: var(--acc);
+}
+
+.prev-next {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.prev-next a {
+  color: var(--acc);
+}
+
+.faq-item summary {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--fg);
+}
+.faq-item summary:hover {
+  color: var(--acc);
+}
+.faq-item .citation {
+  font-family: var(--sans);
+  background: none;
+  border: 0;
+  padding: 0.4rem 0 0;
+  font-size: 0.88rem;
+  color: var(--fg);
+}
+.faq-item .citation a {
+  color: var(--dim);
+}
+.faq-item .citation a:hover {
+  color: var(--acc);
+}
+
+/* Registry index cards reuse .sig-card/.sig-grid; kind chips get their
+   own accent per entity type, dim otherwise. No avatar column, so this
+   overrides .sig-card's two-column grid down to one (two classes beats
+   .sig-card's single-class specificity regardless of source order). */
+.sig-card.entity-card {
+  grid-template-columns: 1fr;
+}
+.entity-card .sig-body {
+  padding: 0.75rem 0.85rem;
+}
+.ent-p-eo {
+  color: var(--acc);
+  border-color: var(--acc);
+}
+.ent-p-connectivity {
+  color: #0085ff;
+  border-color: #0085ff;
+}
+.ent-p-vehicle {
+  color: var(--fg);
+  border-color: var(--fg);
+}
+a.sig-card.entity-card:hover .ent-p-eo,
+a.sig-card.entity-card:hover .ent-p-connectivity,
+a.sig-card.entity-card:hover .ent-p-vehicle {
+  color: var(--acc-ink);
+  border-color: var(--acc-ink);
+}
+
 /* -------------------------------------------------------------- stats */
 
 .hero-sentence {
