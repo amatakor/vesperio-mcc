@@ -1,31 +1,55 @@
 /**
- * The Orbits 3D scene: wireframe tactical globe per ORBITS_SPEC.md 3.
+ * The Orbits 3D scene: wireframe tactical globe (ORBITS_SPEC.md 3) plus
+ * the live data layers (spec 4-6): satellites propagated in a Web
+ * Worker, orbit arc and popup on selection, spaceport and facility
+ * ground markers, and the right-rail HUD.
+ *
  * Loaded only via dynamic import from stage.tsx; nothing outside
  * src/orbits/ may import this module.
  *
- * Base tier (quiet): ocean sphere in --globe-ocean occluding the far
- * side, 15 degree graticule in --globe-grid, coastlines in
- * --globe-coast (Florian picked coastlines over the dot-matrix
- * prototype, 2026-07-05).
+ * The globe is earth-fixed (satellite positions are ECEF); idle motion
+ * is the camera auto-orbiting via OrbitControls, stopped permanently by
+ * the first interaction, disabled under prefers-reduced-motion.
  *
  * All colors come from the shared theme tokens; no hex literals here
  * (acceptance criterion 8).
  */
 
-import { useEffect, useMemo, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MutableRefObject,
+} from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 import { mesh } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { MultiLineString } from "geojson";
 import landTopo from "world-atlas/land-110m.json";
+import "./orbits.css";
+
+import type {
+  OmmRecord,
+  OrbitsFacility,
+  OrbitsSpaceport,
+} from "../data/schema";
+import { organizations } from "../lib/data";
+import { catalogBySlug, ll2ToRegistrySlug, orbitCatalog } from "./catalog";
+import { loadElements, loadFacilities, loadSpaceports } from "./elements";
+import { latLonToVec3 } from "./geo";
+import { GroundMarkers, type GroundPick } from "./ground";
+import { DataPanel, LayersPanel, type LegendConstellation } from "./hud";
+import { Popup, type PopupField } from "./popup";
+import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
+import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
+import { RESERVE_TOKEN } from "./types";
 
 const GLOBE_RADIUS = 1;
-/** Occluder sits just inside the line layers to hide the far side. */
 const OCEAN_RADIUS = 0.995;
-const AUTO_ROTATE_RAD_PER_S = 0.05;
 
 // ------------------------------------------------------------- theme
 
@@ -37,16 +61,6 @@ function token(name: string): string {
 }
 
 // ---------------------------------------------------------- geometry
-
-function latLonToVec3(latDeg: number, lonDeg: number, r: number): THREE.Vector3 {
-  const lat = (latDeg * Math.PI) / 180;
-  const lon = (lonDeg * Math.PI) / 180;
-  return new THREE.Vector3(
-    r * Math.cos(lat) * Math.cos(lon),
-    r * Math.sin(lat),
-    -r * Math.cos(lat) * Math.sin(lon),
-  );
-}
 
 const topology = landTopo as unknown as Topology<{ land: GeometryCollection }>;
 
@@ -67,8 +81,7 @@ function coastlineSegments(): Float32Array {
 /** 15 degree graticule as line segments, sampled every 2 degrees. */
 function graticuleSegments(): Float32Array {
   const out: number[] = [];
-  const push = (a: THREE.Vector3, b: THREE.Vector3) =>
-    out.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  const push = (a: THREE.Vector3, b: THREE.Vector3) => out.push(a.x, a.y, a.z, b.x, b.y, b.z);
   for (let lat = -75; lat <= 75; lat += 15) {
     for (let lon = -180; lon < 180; lon += 2) {
       push(latLonToVec3(lat, lon, GLOBE_RADIUS), latLonToVec3(lat, lon + 2, GLOBE_RADIUS));
@@ -82,8 +95,6 @@ function graticuleSegments(): Float32Array {
   return new Float32Array(out);
 }
 
-// ------------------------------------------------------------- scene
-
 function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
   const geometry = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -94,88 +105,557 @@ function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
   return geometry;
 }
 
-function Graticule({ color }: { color: string }) {
-  const positions = useMemo(graticuleSegments, []);
-  const geometry = useLineGeometry(positions);
+function Globe({ colors }: { colors: { ocean: string; grid: string; coast: string } }) {
+  const grat = useLineGeometry(useMemo(graticuleSegments, []));
+  const coast = useLineGeometry(useMemo(coastlineSegments, []));
   return (
-    <lineSegments geometry={geometry}>
-      <lineBasicMaterial color={color} transparent opacity={0.85} />
-    </lineSegments>
+    <group>
+      <mesh>
+        <sphereGeometry args={[OCEAN_RADIUS, 64, 64]} />
+        <meshBasicMaterial color={colors.ocean} />
+      </mesh>
+      <lineSegments geometry={grat}>
+        <lineBasicMaterial color={colors.grid} transparent opacity={0.85} />
+      </lineSegments>
+      <lineSegments geometry={coast}>
+        <lineBasicMaterial color={colors.coast} />
+      </lineSegments>
+    </group>
   );
 }
 
-function Coastlines({ color }: { color: string }) {
-  const positions = useMemo(coastlineSegments, []);
-  const geometry = useLineGeometry(positions);
+// ---------------------------------------------------------- overlays
+
+function ArcLine({ positions, color }: { positions: Float32Array; color: string }) {
+  const line = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    const m = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.85 });
+    return new THREE.Line(g, m);
+  }, [positions, color]);
+  useEffect(
+    () => () => {
+      line.geometry.dispose();
+      (line.material as THREE.Material).dispose();
+    },
+    [line],
+  );
+  return <primitive object={line} />;
+}
+
+/**
+ * Projects the selected object's world position to container pixels
+ * every frame and moves the popup DOM node directly (no react state at
+ * frame rate).
+ */
+function PopupAnchor({
+  getWorldPos,
+  popupEl,
+}: {
+  getWorldPos: () => THREE.Vector3 | null;
+  popupEl: MutableRefObject<HTMLDivElement | null>;
+}) {
+  const { camera, size } = useThree();
+  const v = useMemo(() => new THREE.Vector3(), []);
+  useFrame(() => {
+    const el = popupEl.current;
+    if (!el) return;
+    const world = getWorldPos();
+    if (!world) {
+      el.style.visibility = "hidden";
+      return;
+    }
+    v.copy(world).project(camera);
+    const x = (v.x * 0.5 + 0.5) * size.width;
+    const y = (-v.y * 0.5 + 0.5) * size.height;
+    el.style.visibility = "visible";
+    el.style.transform = `translate(${Math.round(x + 14)}px, ${Math.round(y - 10)}px)`;
+  });
+  return null;
+}
+
+function Controls({ reducedMotion }: { reducedMotion: boolean }) {
+  const [autoRotate, setAutoRotate] = useState(!reducedMotion);
   return (
-    <lineSegments geometry={geometry}>
-      <lineBasicMaterial color={color} />
-    </lineSegments>
+    <OrbitControls
+      enablePan={false}
+      enableDamping
+      dampingFactor={0.08}
+      rotateSpeed={0.5}
+      minDistance={1.4}
+      maxDistance={4}
+      autoRotate={autoRotate}
+      autoRotateSpeed={0.4}
+      onStart={() => setAutoRotate(false)}
+    />
   );
 }
 
-function Globe() {
+// ------------------------------------------------------------- state
+
+interface LayerState {
+  status: "loading" | "ok" | "stale" | "missing";
+  count: number | null;
+  fetchedAt: string | null;
+}
+
+type Selection = { kind: "sat"; sat: PickedSat } | { kind: "ground"; pick: GroundPick };
+
+const CATEGORY_LABEL: Record<string, string> = {
+  eo: "EO",
+  connectivity: "CONNECTIVITY",
+  iot: "IOT",
+  "human-spaceflight": "HUMAN SF",
+};
+
+function formatNet(net: string): string {
+  const d = new Date(net);
+  if (Number.isNaN(d.getTime())) return net;
+  return d.toISOString().slice(0, 10);
+}
+
+function registryHrefForOperator(slug: string): string | null {
+  if (catalogBySlug.has(slug)) return `/registry/constellations/${slug}/`;
+  if (organizations.some((o) => o.slug === slug)) return `/registry/organizations/${slug}/`;
+  return null;
+}
+
+// -------------------------------------------------------------- scene
+
+export default function Scene() {
   const colors = useMemo(
     () => ({
       ocean: token("--globe-ocean"),
       grid: token("--globe-grid"),
       coast: token("--globe-coast"),
+      accent: token(RESERVE_TOKEN),
     }),
     [],
   );
-  const group = useRef<THREE.Group>(null);
-  const autoRotate = useRef(!window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const colorBySlug = useMemo(
+    () => new Map(orbitCatalog.map((e) => [e.slug, token(e.colorToken)])),
+    [],
+  );
+  const reducedMotion = useMemo(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
 
-  // Any interaction stops auto-rotation permanently for the session.
+  // Layers and data state.
+  const [enabled, setEnabled] = useState<Set<string>>(
+    () => new Set(orbitCatalog.map((e) => e.slug)),
+  );
+  const [layerState, setLayerState] = useState<Map<string, LayerState>>(
+    () => new Map(orbitCatalog.map((e) => [e.slug, { status: "loading", count: null, fetchedAt: null }])),
+  );
+  const [layout, setLayout] = useState<LayoutEntry[]>([]);
+  const [showSpaceports, setShowSpaceports] = useState(true);
+  const [showFacilities, setShowFacilities] = useState(false);
+  const [spaceports, setSpaceports] = useState<OrbitsSpaceport[] | null>(null);
+  const [spaceportsFetchedAt, setSpaceportsFetchedAt] = useState<string | null>(null);
+  const [facilities, setFacilities] = useState<OrbitsFacility[] | null>(null);
+  const [facilitiesAsOf, setFacilitiesAsOf] = useState<string | null>(null);
+
+  // Selection state. The deep link (?constellation=slug) preselects.
+  const [selectedConstellation, setSelectedConstellation] = useState<string | null>(() => {
+    const q = new URLSearchParams(window.location.search).get("constellation");
+    return q && catalogBySlug.has(q) ? q : null;
+  });
+  const [selection, setSelection] = useState<Selection | null>(null);
+  const selectionRef = useRef<Selection | null>(null);
+  selectionRef.current = selection;
+  const [watch, setWatch] = useState<{ id: number; lat: number; lon: number; altKm: number } | null>(null);
+  const [arc, setArc] = useState<{ id: number; positions: Float32Array } | null>(null);
+
+  const buffersRef = useRef<SnapshotBuffers>({ prev: null, next: null, prevTime: 0, nextTime: 0 });
+  const recordsRef = useRef(new Map<string, OmmRecord[]>());
+  const downPos = useRef<{ x: number; y: number } | null>(null);
+  const popupEl = useRef<HTMLDivElement | null>(null);
+  const workerRef = useRef<Worker | null>(null);
+
+  const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
+
+  // Worker lifecycle.
   useEffect(() => {
-    const stop = () => {
-      autoRotate.current = false;
+    const worker = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
+    workerRef.current = worker;
+    worker.onmessage = (event: MessageEvent<WorkerOut>) => {
+      const msg = event.data;
+      if (msg.type === "loaded") {
+        setLayerState((prev) => {
+          const next = new Map(prev);
+          const cur = next.get(msg.slug);
+          const stale = cur?.status === "stale";
+          next.set(msg.slug, {
+            status: msg.count === 0 ? "missing" : stale ? "stale" : "ok",
+            count: msg.count,
+            fetchedAt: cur?.fetchedAt ?? null,
+          });
+          return next;
+        });
+      } else if (msg.type === "layout") {
+        buffersRef.current = { prev: null, next: null, prevTime: 0, nextTime: 0 };
+        setLayout(msg.order);
+      } else if (msg.type === "snapshot") {
+        const b = buffersRef.current;
+        buffersRef.current = {
+          prev: b.next,
+          next: new Float32Array(msg.positions),
+          prevTime: b.nextTime,
+          nextTime: msg.time,
+        };
+      } else if (msg.type === "watch") {
+        const sel = selectionRef.current;
+        if (sel?.kind === "sat" && sel.sat.id === msg.id) {
+          setWatch({ id: msg.id, lat: msg.lat, lon: msg.lon, altKm: msg.altKm });
+        }
+      } else if (msg.type === "arc") {
+        const sel = selectionRef.current;
+        if (sel?.kind === "sat" && sel.sat.id === msg.id) {
+          setArc({ id: msg.id, positions: new Float32Array(msg.positions) });
+        }
+      }
     };
-    window.addEventListener("pointerdown", stop, { once: true });
-    window.addEventListener("wheel", stop, { once: true });
     return () => {
-      window.removeEventListener("pointerdown", stop);
-      window.removeEventListener("wheel", stop);
+      worker.terminate();
+      workerRef.current = null;
     };
   }, []);
 
-  useFrame((_, delta) => {
-    if (autoRotate.current && group.current) {
-      group.current.rotation.y += delta * AUTO_ROTATE_RAD_PER_S;
+  // Load element files once per constellation and hand them to the worker.
+  useEffect(() => {
+    for (const entry of orbitCatalog) {
+      if (!enabled.has(entry.slug) || recordsRef.current.has(entry.slug)) continue;
+      recordsRef.current.set(entry.slug, []);
+      void loadElements(entry.slug).then((res) => {
+        if (!res.ok) {
+          setLayerState((prev) => {
+            const next = new Map(prev);
+            next.set(entry.slug, { status: "missing", count: null, fetchedAt: null });
+            return next;
+          });
+          return;
+        }
+        recordsRef.current.set(entry.slug, res.file.records);
+        setLayerState((prev) => {
+          const next = new Map(prev);
+          next.set(entry.slug, {
+            status: res.stale ? "stale" : "loading",
+            count: null,
+            fetchedAt: res.file.fetched_at,
+          });
+          return next;
+        });
+        post({ type: "load", slug: entry.slug, records: res.file.records });
+      });
     }
+  }, [enabled, post]);
+
+  // Keep the worker's active set in sync with the UI.
+  useEffect(() => {
+    const slugs = orbitCatalog
+      .filter((e) => enabled.has(e.slug))
+      .filter((e) => {
+        const s = layerState.get(e.slug);
+        return s !== undefined && (s.status === "ok" || s.status === "stale") && (s.count ?? 0) > 0;
+      })
+      .map((e) => e.slug);
+    post({ type: "enable", slugs });
+  }, [enabled, layerState, post]);
+
+  // Ground data on demand.
+  useEffect(() => {
+    if (!showSpaceports || spaceports) return;
+    void loadSpaceports().then((file) => {
+      if (file) {
+        setSpaceports(file.spaceports);
+        setSpaceportsFetchedAt(file.fetched_at);
+      }
+    });
+  }, [showSpaceports, spaceports]);
+  useEffect(() => {
+    if (!showFacilities || facilities) return;
+    void loadFacilities().then((file) => {
+      if (file) {
+        setFacilities(file.facilities);
+        setFacilitiesAsOf(file.as_of);
+      }
+    });
+  }, [showFacilities, facilities]);
+
+  const clearSelection = useCallback(() => {
+    setSelection(null);
+    setWatch(null);
+    setArc(null);
+    post({ type: "watch", id: null });
+  }, [post]);
+
+  const pickSat = useCallback(
+    (sat: PickedSat) => {
+      setSelection({ kind: "sat", sat });
+      setWatch(null);
+      setArc(null);
+      post({ type: "watch", id: sat.id });
+      post({ type: "arc", id: sat.id });
+    },
+    [post],
+  );
+
+  const pickGround = useCallback(
+    (pick: GroundPick) => {
+      setSelection({ kind: "ground", pick });
+      setWatch(null);
+      setArc(null);
+      post({ type: "watch", id: null });
+    },
+    [post],
+  );
+
+  const toggleConstellation = useCallback(
+    (slug: string) => {
+      setEnabled((prev) => {
+        const next = new Set(prev);
+        if (next.has(slug)) next.delete(slug);
+        else next.add(slug);
+        return next;
+      });
+      const sel = selectionRef.current;
+      if (sel?.kind === "sat" && sel.sat.slug === slug) clearSelection();
+    },
+    [clearSelection],
+  );
+
+  // Legend model.
+  const legend: LegendConstellation[] = orbitCatalog.map((e) => {
+    const s = layerState.get(e.slug)!;
+    return {
+      slug: e.slug,
+      name: e.name,
+      category: e.category,
+      colorToken: e.colorToken,
+      enabled: enabled.has(e.slug),
+      status: s.status === "loading" ? "loading" : s.status,
+      count: s.count,
+    };
   });
 
-  return (
-    <group ref={group}>
-      <mesh>
-        <sphereGeometry args={[OCEAN_RADIUS, 64, 64]} />
-        <meshBasicMaterial color={colors.ocean} />
-      </mesh>
-      <Graticule color={colors.grid} />
-      <Coastlines color={colors.coast} />
-    </group>
+  // Data panel: oldest elements timestamp across enabled layers.
+  const enabledStates = orbitCatalog
+    .filter((e) => enabled.has(e.slug))
+    .map((e) => layerState.get(e.slug)!)
+    .filter((s) => s.fetchedAt !== null);
+  const oldestElements = enabledStates.reduce<string | null>(
+    (acc, s) => (acc === null || (s.fetchedAt && s.fetchedAt < acc) ? s.fetchedAt : acc),
+    null,
   );
-}
+  const anyStale = enabledStates.some((s) => s.status === "stale");
+  const dataEntries = [
+    { label: "Elements as of", fetchedAt: oldestElements, stale: anyStale },
+    ...(showSpaceports
+      ? [{ label: "Spaceports as of", fetchedAt: spaceportsFetchedAt, stale: false }]
+      : []),
+    ...(showFacilities
+      ? [{ label: "Facilities as of", fetchedAt: facilitiesAsOf, stale: false }]
+      : []),
+  ];
 
-export default function Scene() {
-  const controls = useRef<OrbitControlsImpl>(null);
+  const highlightSlug =
+    selectedConstellation ?? (selection?.kind === "sat" ? selection.sat.slug : null);
+
+  // Popup content.
+  const popup = useMemo(() => {
+    if (!selection) return null;
+    if (selection.kind === "sat") {
+      const { sat } = selection;
+      const entry = catalogBySlug.get(sat.slug);
+      const record = recordsRef.current.get(sat.slug)?.find((r) => r.NORAD_CAT_ID === sat.id);
+      const fields: PopupField[] = [
+        ...(entry?.operator ? [{ label: "OPERATOR", value: entry.operator }] : []),
+        { label: "CONSTELLATION", value: entry?.name ?? sat.slug },
+        { label: "CATEGORY", value: entry ? CATEGORY_LABEL[entry.category] ?? entry.category : "?" },
+        ...(record ? [{ label: "INC", value: `${record.INCLINATION.toFixed(2)}°` }] : []),
+        ...(watch && watch.id === sat.id
+          ? [
+              { label: "ALT", value: `${Math.round(watch.altKm)} KM` },
+              {
+                label: "LAT / LON",
+                value: `${Math.abs(watch.lat).toFixed(1)}${watch.lat < 0 ? "S" : "N"} ${Math.abs(watch.lon).toFixed(1)}${watch.lon < 0 ? "W" : "E"}`,
+              },
+            ]
+          : []),
+      ];
+      return {
+        title: sat.name,
+        swatchToken: entry?.colorToken ?? RESERVE_TOKEN,
+        fields,
+        href: entry ? `/registry/constellations/${entry.slug}/` : null,
+        hrefLabel: "Constellation profile",
+        secondaryHref: null as string | null,
+        secondaryLabel: null as string | null,
+      };
+    }
+    const { pick } = selection;
+    if (pick.kind === "spaceport") {
+      const sp = pick.spaceport;
+      const registrySlug = ll2ToRegistrySlug.get(sp.ll2_id) ?? null;
+      const fields: PopupField[] = [
+        { label: "COUNTRY", value: sp.country || "?" },
+        { label: "TOTAL LAUNCHES", value: String(sp.total_launch_count) },
+        { label: "UPCOMING", value: String(sp.upcoming_count) },
+        ...(sp.next_launch
+          ? [{ label: "NEXT", value: `${sp.next_launch.vehicle} ${formatNet(sp.next_launch.net)}` }]
+          : []),
+        ...(sp.vehicles.length > 0 ? [{ label: "VEHICLES", value: sp.vehicles.join(", ") }] : []),
+      ];
+      return {
+        title: sp.name,
+        swatchToken: RESERVE_TOKEN,
+        fields,
+        href: registrySlug ? `/registry/spaceports/${registrySlug}/` : sp.info_url,
+        hrefLabel: registrySlug ? "Spaceport profile" : sp.info_url ? "Source (LL2)" : null,
+        secondaryHref: registrySlug ? sp.info_url : null,
+        secondaryLabel: registrySlug && sp.info_url ? "Source (LL2)" : null,
+      };
+    }
+    const f = pick.facility;
+    const href = registryHrefForOperator(f.operator_slug);
+    return {
+      title: f.name,
+      swatchToken: RESERVE_TOKEN,
+      fields: [
+        { label: "TYPE", value: f.type.toUpperCase() },
+        { label: "OPERATOR", value: f.operator_slug },
+        { label: "ABOUT", value: f.blurb },
+      ],
+      href,
+      hrefLabel: href ? "Registry profile" : null,
+      secondaryHref: f.source_url,
+      secondaryLabel: "Source",
+    };
+  }, [selection, watch]);
+
+  // World position for the popup anchor, read per frame.
+  const layoutRef = useRef(layout);
+  layoutRef.current = layout;
+  const getPopupWorldPos = useCallback((): THREE.Vector3 | null => {
+    const sel = selectionRef.current;
+    if (!sel) return null;
+    if (sel.kind === "ground") {
+      const t =
+        sel.pick.kind === "spaceport"
+          ? { lat: sel.pick.spaceport.lat, lon: sel.pick.spaceport.lon }
+          : { lat: sel.pick.facility.lat, lon: sel.pick.facility.lon };
+      return latLonToVec3(t.lat, t.lon, 1.005);
+    }
+    // Interpolate the selected satellite's position, matching the layer.
+    let index = 0;
+    let found = false;
+    for (const entry of layoutRef.current) {
+      if (entry.slug === sel.sat.slug) {
+        const i = entry.ids.indexOf(sel.sat.id);
+        if (i === -1) return null;
+        index += i;
+        found = true;
+        break;
+      }
+      index += entry.ids.length;
+    }
+    if (!found) return null;
+    const { prev, next, prevTime, nextTime } = buffersRef.current;
+    if (!next || index * 3 + 2 >= next.length) return null;
+    const span = nextTime - prevTime;
+    const alpha = prev && span > 0 ? Math.min(Math.max((Date.now() - prevTime) / span, 0), 1.5) : 1;
+    const read = (arr: Float32Array, k: number) => arr[index * 3 + k]!;
+    const lerp = (k: number) => {
+      const b = read(next, k);
+      const a = prev && index * 3 + k < prev.length ? read(prev, k) : b;
+      return a + (b - a) * alpha;
+    };
+    const x = lerp(0);
+    const y = lerp(1);
+    const z = lerp(2);
+    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) return null;
+    return new THREE.Vector3(x, y, z);
+  }, []);
+
+  const arcColor =
+    arc && selection?.kind === "sat" ? colorBySlug.get(selection.sat.slug) ?? colors.accent : null;
 
   return (
-    <Canvas
-      camera={{ position: [0, 0.4, 2.6], fov: 45 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <Globe />
-      <OrbitControls
-        ref={controls}
-        enablePan={false}
-        enableDamping
-        dampingFactor={0.08}
-        rotateSpeed={0.5}
-        minDistance={1.4}
-        maxDistance={4}
-      />
-    </Canvas>
+    <div className="orbits-layout">
+      <div
+        className="orbits-stage orbits-canvas-wrap"
+        onPointerDown={(e) => {
+          downPos.current = { x: e.clientX, y: e.clientY };
+        }}
+      >
+        <Canvas
+          camera={{ position: [0, 0.4, 2.6], fov: 45 }}
+          dpr={[1, 2]}
+          gl={{ antialias: true, alpha: true }}
+          onCreated={({ raycaster }) => {
+            // Tap-friendly pick radius (~10px at default zoom, spec 4:
+            // touch-first, primary selection is tap).
+            raycaster.params.Points.threshold = 0.04;
+          }}
+          onPointerMissed={() => {
+            const down = downPos.current;
+            if (down === null) return;
+            clearSelection();
+          }}
+        >
+          <Globe colors={colors} />
+          <Satellites
+            layout={layout}
+            buffers={buffersRef}
+            colorBySlug={colorBySlug}
+            highlightSlug={highlightSlug}
+            downPos={downPos}
+            onPick={pickSat}
+          />
+          <GroundMarkers
+            spaceports={spaceports}
+            facilities={facilities}
+            showSpaceports={showSpaceports}
+            showFacilities={showFacilities}
+            baseColor={colors.coast}
+            accentColor={colors.accent}
+            selected={selection?.kind === "ground" ? selection.pick : null}
+            downPos={downPos}
+            onPick={pickGround}
+          />
+          {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+          <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
+          <Controls reducedMotion={reducedMotion} />
+        </Canvas>
+        {popup && (
+          <div ref={popupEl} className="opopup-anchor">
+            <Popup
+              title={popup.title}
+              swatchToken={popup.swatchToken}
+              fields={popup.fields}
+              href={popup.href}
+              hrefLabel={popup.hrefLabel}
+              secondaryHref={popup.secondaryHref}
+              secondaryLabel={popup.secondaryLabel}
+              onClose={clearSelection}
+            />
+          </div>
+        )}
+      </div>
+      <div className="orbits-rail">
+        <LayersPanel
+          constellations={legend}
+          selectedSlug={selectedConstellation}
+          onToggleConstellation={toggleConstellation}
+          onSelectConstellation={setSelectedConstellation}
+          spaceportsOn={showSpaceports}
+          onToggleSpaceports={() => setShowSpaceports((v) => !v)}
+          facilitiesOn={showFacilities}
+          onToggleFacilities={() => setShowFacilities((v) => !v)}
+        />
+        <DataPanel entries={dataEntries} />
+      </div>
+    </div>
   );
 }

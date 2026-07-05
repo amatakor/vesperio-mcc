@@ -1,0 +1,302 @@
+/* Orbits HUD: layers legend, data panel, ground/satellite popup, and the
+   layout scaffolding around the 3D stage. Consumers of this stylesheet
+   are hud.tsx, popup.tsx, and the scene integrator; the integrator owns
+   the actual `import "./orbits.css"` per CLAUDE.md's stack rules.
+
+   House rules carried over from src/index.css: no border-radius, no
+   box-shadow, no transform hovers, mono for structure, neon tokens only
+   as small identity swatches (.oswatch backgrounds), never as text
+   color or panel chrome. */
+
+/* --------------------------------------------------------- scaffolding */
+
+.orbits-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 212px;
+  gap: 10px;
+  height: 100%;
+}
+
+@media (max-width: 720px) {
+  .orbits-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orbits-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: min(72vh, 40rem);
+}
+
+@media (max-width: 720px) {
+  .orbits-rail {
+    max-height: none;
+  }
+}
+
+.orbits-canvas-wrap {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Frame-rate positioning wrapper for the popup; the anchor moves, the
+   popup inside stays interactive. */
+.opopup-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+.opopup-anchor .opopup {
+  pointer-events: auto;
+}
+
+/* -------------------------------------------------------------- panel */
+
+/* Corner ticks: four 8px L-shaped marks, one element, pure background
+   gradients pinned to each corner. Two 1px lines per corner. */
+.opanel {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.65rem;
+  font-family: var(--mono);
+  background-repeat: no-repeat;
+  background-size:
+    8px 1px,
+    1px 8px,
+    8px 1px,
+    1px 8px,
+    8px 1px,
+    1px 8px,
+    8px 1px,
+    1px 8px;
+  background-position:
+    top 0 left 0,
+    top 0 left 0,
+    top 0 right 0,
+    top 0 right 0,
+    bottom 0 left 0,
+    bottom 0 left 0,
+    bottom 0 right 0,
+    bottom 0 right 0;
+  background-image:
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim)),
+    linear-gradient(var(--dim), var(--dim));
+}
+
+.opanel-title {
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* --------------------------------------------------------- layers panel */
+
+.ogroup {
+  margin-bottom: 0.4rem;
+}
+
+.ogroup-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0;
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.oswatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+}
+
+.orow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0;
+  color: var(--dim);
+  font-size: 0.72rem;
+}
+
+.orow-selected {
+  background: var(--line);
+  color: var(--fg);
+}
+
+.orow-selected .oname {
+  color: var(--fg);
+}
+
+.ocheck,
+.oname,
+.opopup-close {
+  background: none;
+  border: none;
+  font: inherit;
+  font-family: var(--mono);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.ocheck {
+  flex: none;
+}
+
+.ocheck:hover,
+.oname:hover,
+.opopup-close:hover {
+  color: var(--fg);
+}
+
+.oname {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.otoggle-label {
+  cursor: default;
+}
+
+.ostatus {
+  flex: none;
+  color: var(--dim);
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+}
+
+.odivider {
+  border-top: 1px solid var(--line);
+  margin: 0.45rem 0;
+}
+
+/* ---------------------------------------------------------- data panel */
+
+.okv {
+  margin: 0.3rem 0;
+}
+
+.okv-label {
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.65rem;
+}
+
+.okv-value {
+  color: var(--fg);
+  font-size: 0.72rem;
+  margin-top: 0.1rem;
+}
+
+.ostale {
+  border: 1px dashed var(--line);
+  color: var(--fg);
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.4rem;
+  margin-top: 0.5rem;
+}
+
+/* -------------------------------------------------------------- popup */
+
+.opopup {
+  width: 210px;
+}
+
+.opopup-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.opopup-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.opopup-close {
+  flex: none;
+  color: var(--dim);
+  font-size: 0.7rem;
+}
+
+.opopup .okv {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.2rem 0;
+}
+
+.opopup .okv-label {
+  flex: none;
+}
+
+.opopup .okv-value {
+  margin-top: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.opopup-foot {
+  border-top: 1px solid var(--line);
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.opopup-link {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  color: var(--fg);
+}
+
+.opopup-link:hover {
+  color: var(--acc);
+}
+
+.opopup-link-secondary {
+  color: var(--dim);
+}
+
+.opopup-link-secondary:hover {
+  color: var(--fg);
+}

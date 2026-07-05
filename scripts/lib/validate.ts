@@ -698,6 +698,9 @@ export function validateRegistryProfile(
       errors.push(`${path}.region: must be one of [${SPACEPORT_REGIONS.join(", ")}]`);
     }
     for (const [key, kind] of SPACEPORT_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    if (data.ll2_location_id !== undefined) {
+      checkSourcedField(data, "ll2_location_id", "number", path, errors);
+    }
   } else {
     if (!ORG_KINDS.includes(data.kind as never)) {
       errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
