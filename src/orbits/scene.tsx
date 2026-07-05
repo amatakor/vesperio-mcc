@@ -4,23 +4,22 @@
  * src/orbits/ may import this module.
  *
  * Base tier (quiet): ocean sphere in --globe-ocean occluding the far
- * side, 15 degree graticule in --globe-grid, landmass in --globe-coast.
- * Two landmass prototypes ship behind the ?base= query while Florian
- * picks one: "lines" (coastline segments, default) and "dots"
- * (dot-matrix fill). The loser is deleted before merge (spec 3).
+ * side, 15 degree graticule in --globe-grid, coastlines in
+ * --globe-coast (Florian picked coastlines over the dot-matrix
+ * prototype, 2026-07-05).
  *
  * All colors come from the shared theme tokens; no hex literals here
  * (acceptance criterion 8).
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
-import { feature, mesh } from "topojson-client";
+import { mesh } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
-import type { MultiPolygon, Polygon, MultiLineString } from "geojson";
+import type { MultiLineString } from "geojson";
 import landTopo from "world-atlas/land-110m.json";
 
 const GLOBE_RADIUS = 1;
@@ -83,55 +82,6 @@ function graticuleSegments(): Float32Array {
   return new Float32Array(out);
 }
 
-/** Ray-cast point-in-ring test on lon/lat coordinates. */
-function inRing(lon: number, lat: number, ring: number[][]): boolean {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [xi, yi] = ring[i]! as [number, number];
-    const [xj, yj] = ring[j]! as [number, number];
-    if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
-      inside = !inside;
-    }
-  }
-  return inside;
-}
-
-function inLand(lon: number, lat: number, polys: Polygon[]): boolean {
-  for (const p of polys) {
-    const [outer, ...holes] = p.coordinates;
-    if (outer && inRing(lon, lat, outer as number[][])) {
-      return !holes.some((h) => inRing(lon, lat, h as number[][]));
-    }
-  }
-  return false;
-}
-
-/**
- * Dot-matrix prototype: Fibonacci-sphere sample points kept where they
- * fall on land.
- */
-function landDotPositions(count: number): Float32Array {
-  const landFc = feature(topology, topology.objects.land);
-  const geoms = landFc.features.map((f) => f.geometry) as (MultiPolygon | Polygon)[];
-  const polys: Polygon[] = geoms.flatMap((g) =>
-    g.type === "Polygon"
-      ? [g]
-      : g.coordinates.map((c) => ({ type: "Polygon", coordinates: c }) as Polygon),
-  );
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  const out: number[] = [];
-  for (let i = 0; i < count; i++) {
-    const y = 1 - (2 * (i + 0.5)) / count;
-    const lat = (Math.asin(y) * 180) / Math.PI;
-    const lon = ((((i * golden * 180) / Math.PI) % 360) + 540) % 360 - 180;
-    if (inLand(lon, lat, polys)) {
-      const v = latLonToVec3(lat, lon, GLOBE_RADIUS);
-      out.push(v.x, v.y, v.z);
-    }
-  }
-  return new Float32Array(out);
-}
-
 // ------------------------------------------------------------- scene
 
 function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
@@ -164,17 +114,7 @@ function Coastlines({ color }: { color: string }) {
   );
 }
 
-function LandDots({ color }: { color: string }) {
-  const positions = useMemo(() => landDotPositions(42000), []);
-  const geometry = useLineGeometry(positions);
-  return (
-    <points geometry={geometry}>
-      <pointsMaterial color={color} size={0.006} sizeAttenuation />
-    </points>
-  );
-}
-
-function Globe({ base }: { base: "lines" | "dots" }) {
+function Globe() {
   const colors = useMemo(
     () => ({
       ocean: token("--globe-ocean"),
@@ -212,17 +152,13 @@ function Globe({ base }: { base: "lines" | "dots" }) {
         <meshBasicMaterial color={colors.ocean} />
       </mesh>
       <Graticule color={colors.grid} />
-      {base === "lines" ? <Coastlines color={colors.coast} /> : <LandDots color={colors.coast} />}
+      <Coastlines color={colors.coast} />
     </group>
   );
 }
 
 export default function Scene() {
   const controls = useRef<OrbitControlsImpl>(null);
-  // Prototype toggle, dev-only: /orbits/?base=dots vs default lines.
-  const [base] = useState<"lines" | "dots">(() =>
-    new URLSearchParams(window.location.search).get("base") === "dots" ? "dots" : "lines",
-  );
 
   return (
     <Canvas
@@ -230,7 +166,7 @@ export default function Scene() {
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
     >
-      <Globe base={base} />
+      <Globe />
       <OrbitControls
         ref={controls}
         enablePan={false}
