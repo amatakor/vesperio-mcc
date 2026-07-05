@@ -63,7 +63,7 @@ tests under `scripts/__tests__/`).
   `/registry/vehicles/{slug}/`, `/signals/`, `/stats/`, `/about/`.
 - `scripts/prerender.ts`: emits a static HTML file per route with
   correct title, meta description, and canonical URL for
-  https://mcc.vesperio.com. Runs as the last build step.
+  https://mcc.vesperio.ai. Runs as the last build step.
 - Design rules from CLAUDE.md apply: no border-radius, no transform
   hovers, mono type for structural elements, dark background, one
   accent colour. Use a neutral placeholder accent (`--acc: #9aa4ab`)
@@ -119,7 +119,7 @@ and zero rule violations. Only then enable the cron schedules.
 
 - Remove fixture items. Activate the full source list.
 - Cloudflare Pages: build `bun run build`, output `dist/`, custom
-  domain mcc.vesperio.com.
+  domain mcc.vesperio.ai.
 - Populate signals.json (Florian, by hand).
 - Apply the real palette (Florian supplies tokens).
 - First week: read every sweep. Log lessons to SWEEP_MEMORY.md.

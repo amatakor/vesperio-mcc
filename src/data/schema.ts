@@ -1,5 +1,5 @@
 /**
- * Canonical data shapes for mcc.vesperio.com.
+ * Canonical data shapes for mcc.vesperio.ai.
  *
  * CLAUDE.md is the editorial spec these types implement; when a comment
  * here and CLAUDE.md disagree, CLAUDE.md wins. Runtime validation lives
