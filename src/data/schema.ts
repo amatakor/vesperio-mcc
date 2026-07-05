@@ -376,7 +376,16 @@ export interface ConstellationProfile {
   country: SourcedField<string>;
   /** EO sensor modality/ies, e.g. ["sar"]; null for connectivity. */
   sensor_types: SourcedField<string[]>;
-  sats_on_orbit: SourcedField<number>;
+  /** Cumulative satellites launched for the constellation, as stated. */
+  sats_launched_total: SourcedField<number>;
+  /** The operator's stated current active/on-orbit count. */
+  sats_active_claimed: SourcedField<number>;
+  /**
+   * Objects currently tracked in CelesTrak's catalog for this
+   * constellation; computed by scripts/compute-fleet-counts.ts from the
+   * committed element sets. A tracking count, not an operator health claim.
+   */
+  sats_active_verified: SourcedField<number>;
   sats_planned: SourcedField<number>;
   orbit: SourcedField<string>;
   first_launch_date: SourcedField<string>;
