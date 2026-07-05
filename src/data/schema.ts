@@ -35,14 +35,20 @@ export type Impact = (typeof IMPACTS)[number];
 export const CONFIDENCES = ["confirmed", "reported", "signal"] as const;
 export type Confidence = (typeof CONFIDENCES)[number];
 
-/** Seed tags. Reuse before inventing new ones; new tags stay lowercase. */
+/**
+ * Seed tags in four tiers. Reuse before inventing new ones; new tags
+ * stay lowercase and are logged in the sweep entry for review.
+ * Domain tags: every item carries one where applicable.
+ */
+export const DOMAIN_TAGS = ["eo", "connectivity", "launch", "human-spaceflight"] as const;
+
 export const SEED_TAGS = [
+  ...DOMAIN_TAGS,
   "sar",
   "optical",
   "hyperspectral",
   "rf",
   "ghg",
-  "connectivity",
   "direct-to-device",
   "smallsat-launch",
   "heavy-lift",
@@ -95,6 +101,21 @@ export interface ItemImage {
   origin_url: string;
 }
 
+/**
+ * Evidence block for non-confirmed items: who said it, on what basis,
+ * and what would confirm or deny it. Required by the sweep prompt for
+ * reported and signal items; every statement must come from the linked
+ * source, never from model memory.
+ */
+export interface Evidence {
+  /** Who made the claim, e.g. "Financial Times" or "@Peter_Beck on X". */
+  said_by: string;
+  /** The stated basis, e.g. "citing 12+ current and former employees". */
+  basis: string;
+  /** What would confirm or deny it, with timing if stated; null if unknown. */
+  confirmation: string | null;
+}
+
 export interface Item {
   /** Format: YYYY-MM-DD-slug, e.g. "2026-07-05-iceye-gen4-order". */
   id: string;
@@ -116,6 +137,8 @@ export interface Item {
   publishDate?: string;
   /** Stamped by scripts/fetch-thumbs.ts, never by the drafting agent. */
   image?: ItemImage | null;
+  /** Required for reported/signal items; absent for confirmed. */
+  evidence?: Evidence | null;
 }
 
 export interface ItemsFile {
@@ -147,6 +170,8 @@ export interface SweepLogEntry {
   summary: string;
   /** Categories genuinely searched this run; required even on zero-add sweeps. */
   coverage: string[];
+  /** Tags coined this sweep that are outside SEED_TAGS and prior items; for human review. */
+  new_tags?: string[];
 }
 
 export interface StateFile {

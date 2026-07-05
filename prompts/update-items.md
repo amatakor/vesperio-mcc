@@ -77,6 +77,11 @@ items; that is a successful sweep, not a failure. Padding is the bug.
 
 An item ships when all are true:
 - In scope per CLAUDE.md
+- Tagged with its domain tag (`eo`, `connectivity`, `launch`,
+  `human-spaceflight`) where one applies, per the CLAUDE.md tag tiers
+- If confidence is `reported` or `signal`: the headline names the
+  sourcing, and the item carries an `evidence` block ({ said_by,
+  basis, confirmation }) drawn strictly from the linked source
 - Best available source linked, fetched this run, facts verified
   against it, confidence set to the tier that source earns and the
   sourcing named in the copy for anything below `confirmed`

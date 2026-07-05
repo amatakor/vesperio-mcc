@@ -123,6 +123,18 @@ describe("finalize-sweep rejections", () => {
     expect(snapshotDataFiles()).toEqual(before);
   });
 
+  test("reported item without an evidence block is rejected", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.newItems[0].confidence = "reported";
+    draft.newItems[0].headline = "SpaceNews: Rocket Lab books confidential EO launch";
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const before = snapshotDataFiles();
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("evidence");
+    expect(snapshotDataFiles()).toEqual(before);
+  });
+
   test("unknown source name in sourceHealth is rejected", () => {
     const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
     draft.sourceHealth = [{ name: "Not A Source", status: "verified" }];
@@ -166,6 +178,16 @@ describe("finalize-sweep merge", () => {
     expect(iceye.notes).toContain("[2026-07-05] First successful fetch.");
 
     expect(existsSync(draftPath)).toBe(false);
+  });
+
+  test("newly coined tags are logged in the sweep entry for review", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.newItems[0].tags = ["smallsat-launch", "wildfire-response"];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.errors).toEqual([]);
+    const state = JSON.parse(readFileSync(join(dataDir, "state.json"), "utf8")) as StateFile;
+    expect(state.sweeps[0]!.new_tags).toEqual(["wildfire-response"]);
   });
 
   test("an update patches an existing item and keeps id and publishDate", () => {

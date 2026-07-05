@@ -21,7 +21,7 @@ import type {
   SourcesFile,
   SweepLogEntry,
 } from "../src/data/schema";
-import { CATEGORIES, SOURCE_STATUSES } from "../src/data/schema";
+import { CATEGORIES, SOURCE_STATUSES, SEED_TAGS } from "../src/data/schema";
 import {
   validateItem,
   validateItemsFile,
@@ -265,6 +265,13 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     ],
   };
 
+  // Tags coined this sweep (outside the seed set and all prior items) are
+  // logged for human review; inventing tags is allowed, silently is not.
+  const knownTags = new Set<string>([...SEED_TAGS, ...items.items.flatMap((it) => it.tags)]);
+  const newTags = [
+    ...new Set(stampedItems.flatMap((it) => it.tags).filter((t) => !knownTags.has(t))),
+  ].sort();
+
   const logEntry: SweepLogEntry = {
     at: nowIso,
     added: stampedItems.length,
@@ -272,6 +279,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     held: draft.held.length,
     summary: draft.summary,
     coverage: draft.coverage,
+    ...(newTags.length > 0 ? { new_tags: newTags } : {}),
   };
   const nextState: StateFile = {
     lastSweep: nowIso,
