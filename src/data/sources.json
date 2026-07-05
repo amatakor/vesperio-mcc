@@ -12,7 +12,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Also see SEC filings (PL). Florian's employer: include for completeness, apply no insider context ever. | [2026-07-05] Fetched cleanly; most recent Pulse post (June 17) predates this run's freshness window, no candidate.",
+        "notes": "Also see SEC filings (PL). Florian's employer: include for completeness, apply no insider context ever. | [2026-07-05] Fetched cleanly; most recent Pulse post (June 17) predates this run's freshness window, no candidate. | [2026-07-05] Re-fetched cleanly; most recent Pulse post still June 17, 2026, outside the freshness window, no candidate.",
         "fail_count": 0
       },
       {
@@ -25,7 +25,7 @@
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-05] Fetched cleanly; six press releases visible, two within freshness window used as candidates."
+        "notes": "[2026-07-05] Fetched cleanly; six press releases visible, two within freshness window used as candidates. | [2026-07-05] Re-fetched cleanly; same six press releases as the prior run (the two newest already in items.json), nothing new within the freshness window."
       },
       {
         "name": "BlackSky",
@@ -147,8 +147,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Sparse official comms. Launch cadence better tracked via Launch Library API. | [2026-07-05] Standard fetch returned only the page header (JS-rendered, no article content) on two attempts; needs a JS-capable fetch or an alternate feed.",
-        "fail_count": 1
+        "notes": "Sparse official comms. Launch cadence better tracked via Launch Library API. | [2026-07-05] Standard fetch returned only the page header (JS-rendered, no article content) on two attempts; needs a JS-capable fetch or an alternate feed. | [2026-07-05] Fetched again (both WebFetch and curl with descriptive User-Agent); still only the Angular app shell with no article markup, no content extractable. One more consecutive failure flips this to dead.",
+        "fail_count": 2
       },
       {
         "name": "Rocket Lab",
@@ -158,9 +158,9 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent.",
-        "fail_count": 1
+        "status": "verified",
+        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent. | [2026-07-05] The /updates/ listing page now fetches cleanly via curl with a descriptive User-Agent (real headlines and dates), reversing the prior 403. Individual article pages, however, are gated by a Cloudflare JS challenge (403 via both WebFetch and curl) -- listing metadata alone isn't enough to verify facts for publication; see held item.",
+        "fail_count": 0
       },
       {
         "name": "Arianespace",
@@ -269,7 +269,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Free API, rate-limited (~15 req/hr unauth). The backbone for launch events. Verify current API version. | [2026-07-05] Fetched previous/upcoming launches directly; no SpaceX or Rocket Lab launch within the freshness window carried a notable, sourced angle beyond the routine manifest.",
+        "notes": "Free API, rate-limited (~15 req/hr unauth). The backbone for launch events. Verify current API version. | [2026-07-05] Fetched previous/upcoming launches directly; no SpaceX or Rocket Lab launch within the freshness window carried a notable, sourced angle beyond the routine manifest. | [2026-07-05] One previous + one upcoming call; no SpaceX or Rocket Lab launch in the window carried a notable, sourced angle beyond the routine manifest.",
         "fail_count": 0
       },
       {
@@ -348,7 +348,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "EDGAR atom feeds are reliable and free. Requires User-Agent header. One entry per ticker. | [2026-07-05] 403 without a User-Agent header, succeeds with one set (per existing note); most recent PL 8-K filed 2026-06-05, outside freshness window.",
+        "notes": "EDGAR atom feeds are reliable and free. Requires User-Agent header. One entry per ticker. | [2026-07-05] 403 without a User-Agent header, succeeds with one set (per existing note); most recent PL 8-K filed 2026-06-05, outside freshness window. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-06-05, outside the freshness window.",
         "fail_count": 0
       },
       {

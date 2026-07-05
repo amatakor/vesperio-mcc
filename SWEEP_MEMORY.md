@@ -31,3 +31,13 @@ a newer entry if a lesson changes.
   "today's news"; only items inside that window became candidates. Seems
   like the right call given the twice-daily cadence, but flag if a human
   wanted the backlog captured instead.
+- 2026-07-05-G: rocketlabcorp.com/updates/ is now reachable with curl and
+  a descriptive User-Agent (200, real headlines+dates in the listing),
+  reversing the earlier 403. But individual article pages under
+  /updates/<slug>/ are gated by a Cloudflare "Just a moment..." JS
+  challenge (403 via both WebFetch and curl) even when the listing page
+  itself loads fine. A listing headline is not a substitute for the
+  article text: the July 3, 2026 Rocket Lab headline "Rocket Lab to
+  Acquire Iridium in Historic Deal" could not be verified beyond its
+  headline+date and was held rather than published. Re-check the article
+  URL next sweep before treating Rocket Lab as fully readable.
