@@ -466,6 +466,84 @@ describe("finalize-sweep merge", () => {
     expect(added.snr_trace.modifiers.some((m) => m.type === "persistence")).toBe(false);
   });
 
+  test("rescore re-bases the trace, preserves history, records the movement", () => {
+    // The existing item sits at snr 5 (first-party fixture trace). Rescore
+    // it as a trade lead corroborated by an official record: base 3 + 1 = 4.
+    writeDraft({
+      updates: [
+        {
+          id: existingItem.id,
+          patch: {},
+          note: "official record attached; prior crawl outcome corrected",
+          rescore: {
+            sources: [
+              { url: existingItem.source_url, outlet: "SpaceNews", class: "trade" },
+              { url: "https://www.gao.gov/products/gao-26-000000", outlet: "GAO", class: "official_record", via: "corroboration" },
+            ],
+            extraordinary: false,
+            crawl: "found_some",
+            whitelist: null,
+          },
+        },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.errors).toEqual([]);
+    const items = readItems();
+    const patched = items.items[0]!;
+    expect(patched.snr).toBe(4);
+    expect(patched.snr_trace.base.tier).toBe(3);
+    expect(patched.snr_trace.modifiers.map((m) => m.type)).toEqual(["corroboration_2plus"]);
+    expect(patched.snr_trace.history?.at(-1)).toMatchObject({ from: 5, to: 4 });
+    expect(patched.sources!.map((s) => s.class)).toEqual(["trade", "official_record"]);
+    expect(patched.secondary_urls).toContain("https://www.gao.gov/products/gao-26-000000");
+    const state = readState();
+    expect(state.sweeps[0]!.snr_movements).toMatchObject([{ id: existingItem.id, from: 5, to: 4 }]);
+  });
+
+  test("rescore and bump together are rejected", () => {
+    writeDraft({
+      updates: [
+        {
+          id: existingItem.id,
+          patch: {},
+          note: "x",
+          bump: "reinforcement",
+          rescore: {
+            sources: [{ url: existingItem.source_url, outlet: "X", class: "trade" }],
+            extraordinary: false,
+            crawl: "not_attempted",
+            whitelist: null,
+          },
+        },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("mutually exclusive");
+  });
+
+  test("rescore lead must equal the (patched) source_url", () => {
+    writeDraft({
+      updates: [
+        {
+          id: existingItem.id,
+          patch: {},
+          note: "x",
+          rescore: {
+            sources: [{ url: "https://example.com/other", outlet: "X", class: "trade" }],
+            extraordinary: false,
+            crawl: "not_attempted",
+            whitelist: null,
+          },
+        },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("must equal item.source_url");
+  });
+
   test("persistence auto-bumps an item published 15 days ago, once, never above 4", () => {
     // Rewrite the existing item as a 15-days-published SNR-3 (trade) item.
     const items = readItems();
