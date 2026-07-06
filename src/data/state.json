@@ -1,5 +1,5 @@
 {
-  "lastSweep": "2026-07-06T15:55:37.425Z",
+  "lastSweep": "2026-07-06T17:25:42.035Z",
   "sweeps": [
     {
       "at": "2026-07-05T06:04:08.173Z",
@@ -244,6 +244,38 @@
       "summary": "Edit-queue ruling executed (Florian, via bun run review): the Space Force/L3Harris Meadowlands item publishes trimmed to the acceptance and fielding facts with the operational-use line strictly attributed to SpaceNews; corroborated by Air & Space Forces Magazine and the Washington Times. The Airbus/Brave1 Ukraine MoU was discarded as out of scope (no space component); see reports/queue-decisions.md.",
       "coverage": [
         "procurement"
+      ]
+    },
+    {
+      "at": "2026-07-06T17:25:42.035Z",
+      "added": 0,
+      "updated": 3,
+      "held": 0,
+      "summary": "Crawl-engine audit repair pass (interactive): re-ran the corroboration crawl on the open web for all six items penalized with found_none under the old filter-confined crawl. Three had real independent coverage and were rescored (True Anomaly/VICTUS HAZE, Sybilla Technologies, Verde Technologies, each 2 to 4); three were re-searched and genuinely have no other coverage, so their found_none stands honestly (Austria/R-Space, MaiaSpace fourth engine, Lunar Forge). Corroboration is now open-web by policy; the run source filter constrains discovery only.",
+      "coverage": [
+        "product",
+        "financial",
+        "launch"
+      ],
+      "snr_movements": [
+        {
+          "id": "2026-07-02-true-anomaly-victus-haze-imaging",
+          "from": 2,
+          "to": 4,
+          "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's 9-source filter and claimed found_none while independent coverage existed. Open-web search found Air & Space Forces Magazine (July 1, same 61-hour imaging figure and noncooperative-target detail) and Space.com (July 3, the intercept). Crawl outcome corrected to found_some."
+        },
+        {
+          "id": "2026-07-02-sybilla-technologies-funding-round",
+          "from": 2,
+          "to": 4,
+          "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's source filter and claimed found_none. Open-web search found independent coverage of the same 35 million PLN round by Pulse 2.0 (June 14, naming 3TS Capital Partners and Vinci S.A.); EU-Startups also covered it but 403s our fetch tool, so it is not attached. Crawl outcome corrected to found_some."
+        },
+        {
+          "id": "2026-07-02-verde-technologies-space-pivot",
+          "from": 2,
+          "to": 4,
+          "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's source filter and claimed found_none. Open-web search found independent solar-trade coverage of the same space-pivot announcement: Taiyang News (June 30, Poirier CEO appointment and space course) and Perovskite-Info (June 26, space as launch market). Crawl outcome corrected to found_some."
+        }
       ]
     }
   ]

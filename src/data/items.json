@@ -1378,9 +1378,11 @@
       ],
       "source_url": "https://payloadspace.com/true-anomaly-approaches-images-rocket-lab-craft/",
       "secondary_urls": [
-        "https://ll.thespacedevs.com/2.2.0/launch/04154b70-045b-4e3a-bb5a-e5436091ba37/"
+        "https://ll.thespacedevs.com/2.2.0/launch/04154b70-045b-4e3a-bb5a-e5436091ba37/",
+        "https://www.airandspaceforces.com/victus-haze-mission-rapid-maneuvers-satellites/",
+        "https://www.space.com/space-exploration/launches-spacecraft/1-private-spacecraft-intercepts-another-on-space-forces-groundbreaking-victus-haze-mission"
       ],
-      "snr": 2,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -1389,13 +1391,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 1
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-06",
+            "from": 2,
+            "to": 4,
+            "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's 9-source filter and claimed found_none while independent coverage existed. Open-web search found Air & Space Forces Magazine (July 1, same 61-hour imaging figure and noncooperative-target detail) and Space.com (July 3, the intercept). Crawl outcome corrected to found_some."
+          }
+        ]
       },
       "sources": [
         {
@@ -1404,6 +1414,20 @@
           "class": "trade",
           "added": "2026-07-06",
           "via": "initial"
+        },
+        {
+          "url": "https://www.airandspaceforces.com/victus-haze-mission-rapid-maneuvers-satellites/",
+          "outlet": "Air & Space Forces Magazine",
+          "class": "trade",
+          "added": "2026-07-06",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.space.com/space-exploration/launches-spacecraft/1-private-spacecraft-intercepts-another-on-space-forces-groundbreaking-victus-haze-mission",
+          "outlet": "Space.com",
+          "class": "trade",
+          "added": "2026-07-06",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-06T12:46:11.576Z",
@@ -1615,8 +1639,10 @@
         "Sybilla Technologies"
       ],
       "source_url": "https://spacenews.com/polish-space-tech-company-sybilla-technologies-secures-funds-to-enter-u-s-market/",
-      "secondary_urls": [],
-      "snr": 2,
+      "secondary_urls": [
+        "https://pulse2.com/sybilla-technologies-raises-35-million-pln-about-9-5-million-to-expand-space-surveillance/amp/"
+      ],
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -1625,13 +1651,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 1
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-06",
+            "from": 2,
+            "to": 4,
+            "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's source filter and claimed found_none. Open-web search found independent coverage of the same 35 million PLN round by Pulse 2.0 (June 14, naming 3TS Capital Partners and Vinci S.A.); EU-Startups also covered it but 403s our fetch tool, so it is not attached. Crawl outcome corrected to found_some."
+          }
+        ]
       },
       "sources": [
         {
@@ -1640,6 +1674,13 @@
           "class": "trade",
           "added": "2026-07-06",
           "via": "initial"
+        },
+        {
+          "url": "https://pulse2.com/sybilla-technologies-raises-35-million-pln-about-9-5-million-to-expand-space-surveillance/amp/",
+          "outlet": "Pulse 2.0",
+          "class": "informal",
+          "added": "2026-07-06",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-06T12:46:11.576Z",
@@ -1723,8 +1764,11 @@
         "Verde Technologies"
       ],
       "source_url": "https://spacenews.com/perovskite-solar-panel-startup-verde-technologies-shifts-focus-to-space/",
-      "secondary_urls": [],
-      "snr": 2,
+      "secondary_urls": [
+        "https://taiyangnews.info/people/verde-names-jean-no%C3%ABl-poirier-ceo-to-scale-perovskite-solar",
+        "https://www.perovskite-info.com/verde-targets-space-launch-market-lightweight-perovskite-solar"
+      ],
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -1733,13 +1777,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 1
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-06",
+            "from": 2,
+            "to": 4,
+            "reason": "Crawl-engine audit (interactive, with Florian): the original corroboration crawl was confined to the run's source filter and claimed found_none. Open-web search found independent solar-trade coverage of the same space-pivot announcement: Taiyang News (June 30, Poirier CEO appointment and space course) and Perovskite-Info (June 26, space as launch market). Crawl outcome corrected to found_some."
+          }
+        ]
       },
       "sources": [
         {
@@ -1748,6 +1800,20 @@
           "class": "trade",
           "added": "2026-07-06",
           "via": "initial"
+        },
+        {
+          "url": "https://taiyangnews.info/people/verde-names-jean-no%C3%ABl-poirier-ceo-to-scale-perovskite-solar",
+          "outlet": "Taiyang News",
+          "class": "trade",
+          "added": "2026-07-06",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.perovskite-info.com/verde-targets-space-launch-market-lightweight-perovskite-solar",
+          "outlet": "Perovskite-Info",
+          "class": "trade",
+          "added": "2026-07-06",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-06T12:46:11.576Z",
