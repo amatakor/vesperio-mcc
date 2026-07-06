@@ -401,6 +401,20 @@ export function validateStateFile(data: unknown): string[] {
         });
       }
     }
+    if (s.signals !== undefined) {
+      const p = `${path}.signals`;
+      if (!isObj(s.signals)) {
+        errors.push(`${p}: must be an object when present`);
+      } else {
+        for (const key of ["checked", "x_attempted"]) {
+          const n = (s.signals as Record<string, unknown>)[key];
+          if (typeof n !== "number" || !Number.isInteger(n) || n < 0) {
+            errors.push(`${p}.${key}: required non-negative integer`);
+          }
+        }
+        reqString(s.signals as Record<string, unknown>, "note", p, errors);
+      }
+    }
   });
   return errors;
 }

@@ -128,6 +128,34 @@ function writeDraft(body: Record<string, unknown>): void {
   );
 }
 
+/** A minimal signals.json with one fetchable whitelisted channel + one X handle. */
+const FETCHABLE_URL = "https://spacepolicyonline.com";
+function seedSignals(): void {
+  const signals = {
+    meta: {},
+    people: [
+      {
+        id: "marcia-smith",
+        name: "Marcia Smith",
+        bucket: "analyst",
+        role: "Editor",
+        org: "SpacePolicyOnline",
+        domains: ["launch"],
+        regions: ["us"],
+        why: "Policy tracker.",
+        whitelist: "yes",
+        channels: [
+          { type: "site", url: FETCHABLE_URL, status: "verified_active", last_seen: null, verified_on: null },
+          { type: "x", handle: "SpcPlcyOnline", url: "https://x.com/SpcPlcyOnline", status: "verified_active", last_seen: null, verified_on: null },
+        ],
+      },
+    ],
+    outlets: [],
+    excluded: [],
+  };
+  writeFileSync(join(dataDir, "signals.json"), JSON.stringify(signals, null, 2));
+}
+
 function readLedger(): SourceLedgerFile {
   return JSON.parse(readFileSync(join(dataDir, "source_ledger.json"), "utf8")) as SourceLedgerFile;
 }
@@ -710,6 +738,54 @@ describe("finalize-sweep merge", () => {
     expect(patched.impact).toBe("seismic");
     expect(patched.explainer.why_it_matters).toContain("doubles previous guidance");
     expect(patched.explainer.tagline).toBe(existingItem.explainer.tagline);
+  });
+});
+
+describe("signals-pass gate", () => {
+  test("a draft with fetchable signal channels but no signalsPass is rejected", () => {
+    seedSignals();
+    writeDraft({}); // no signalsPass
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("draft.signalsPass: required object");
+  });
+
+  test("no signals.json means no gate (backward compatible)", () => {
+    // seedDataDir wrote no signals.json; a draft without signalsPass merges.
+    writeDraft({});
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
+
+  test("a valid signalsPass merges and records the outcome on the sweep entry", () => {
+    seedSignals();
+    writeDraft({
+      signalsPass: { checked: [FETCHABLE_URL], xAttempted: 1, note: "checked, nothing new in window" },
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const entry = readState().sweeps.at(-1)!;
+    expect(entry.signals).toEqual({ checked: 1, x_attempted: 1, note: "checked, nothing new in window" });
+  });
+
+  test("signalsPass listing a URL that is not a fetchable channel is rejected", () => {
+    seedSignals();
+    writeDraft({
+      signalsPass: { checked: ["https://not-a-signal.example/feed"], xAttempted: 0, note: "n/a" },
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("is not a fetchable whitelisted signal");
+  });
+
+  test("an empty checked list is legal with a note (honest rotation/unreachable)", () => {
+    seedSignals();
+    writeDraft({
+      signalsPass: { checked: [], xAttempted: 0, note: "narrow re-check, fetchable channels deferred to next full sweep" },
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readState().sweeps.at(-1)!.signals!.checked).toBe(0);
   });
 });
 

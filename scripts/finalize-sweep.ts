@@ -49,6 +49,25 @@ import {
 import { scoreClaim } from "./snr/score";
 import { applyModifier, daysBetween } from "./snr/match";
 import { recordClaim } from "./snr/ledger";
+import { fetchableSignalChannels } from "./lib/signals";
+import type { SignalsFile } from "../src/data/schema";
+
+/**
+ * The fetchable whitelisted signal channels the pass must account for.
+ * Returns an empty set when signals.json is absent or unreadable (test
+ * data dirs, or before the file exists): with no channels to check the
+ * signals-pass gate has nothing to enforce and stays out of the way.
+ */
+function loadFetchableSignalUrls(dataDir: string): Set<string> {
+  try {
+    const signals = JSON.parse(
+      readFileSync(join(dataDir, "signals.json"), "utf8"),
+    ) as SignalsFile;
+    return new Set(fetchableSignalChannels(signals).map((c) => c.url));
+  } catch {
+    return new Set();
+  }
+}
 
 /** The scoring block the agent supplies on each new item (contract §1). */
 interface DraftScoringSource {
@@ -121,6 +140,15 @@ interface Draft {
   sourceHealth: DraftSourceHealth[];
   summary: string;
   coverage: string[];
+  /**
+   * Signals-pass attestation (see prompts/update-items.md step 2). Required
+   * whenever signals.json has fetchable whitelisted channels: the pass is
+   * unenforceable otherwise and gets silently skipped. `checked` lists the
+   * fetchable channel URLs actually fetched this run; an empty list is legal
+   * only with a `note` explaining why (rotation, all unreachable), mirroring
+   * the corroboration crawl's honest "not_attempted".
+   */
+  signalsPass?: { checked: string[]; xAttempted: number; note: string };
 }
 
 export interface FinalizeOptions {
@@ -344,6 +372,57 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       errors.push(`draft.coverage: "${String(c)}" is not a known category`);
     }
   }
+
+  // ---- signals-pass gate --------------------------------------------------
+  // The signals pass produces whitelist-tier candidates from the people in
+  // signals.json. It was pure prose the scheduled agent skipped, exactly
+  // like the corroboration crawl before its gate. When there are fetchable
+  // whitelisted channels, the draft must carry a signalsPass block whose
+  // `checked` entries are real channel URLs; a skipped pass is now a
+  // rejection, not a silent gap. X handles stay best-effort (unenforced).
+  const fetchableSignalUrls = loadFetchableSignalUrls(opts.dataDir);
+  let signalsSummary: SweepLogEntry["signals"] | undefined;
+  if (fetchableSignalUrls.size > 0) {
+    const sp = draft.signalsPass;
+    if (!isObj(sp)) {
+      errors.push(
+        `draft.signalsPass: required object { checked: string[], xAttempted: number, note } ` +
+          `when signals.json has fetchable whitelisted channels (${fetchableSignalUrls.size} this run). ` +
+          `Run "bun scripts/signals-context.ts", check the fetchable channels, and report the outcome. ` +
+          `An empty "checked" is legal only with a note explaining why.`,
+      );
+    } else {
+      if (!Array.isArray(sp.checked) || sp.checked.some((u) => typeof u !== "string")) {
+        errors.push("draft.signalsPass.checked: required array of channel URL strings");
+      } else {
+        for (const url of sp.checked) {
+          if (!fetchableSignalUrls.has(url)) {
+            errors.push(
+              `draft.signalsPass.checked: "${url}" is not a fetchable whitelisted signal ` +
+                `channel (see signals-context). List only channels the pass actually fetched.`,
+            );
+          }
+        }
+      }
+      if (typeof sp.xAttempted !== "number" || !Number.isInteger(sp.xAttempted) || sp.xAttempted < 0) {
+        errors.push("draft.signalsPass.xAttempted: required non-negative integer (X handles searched)");
+      }
+      if (typeof sp.note !== "string" || sp.note.trim() === "") {
+        errors.push("draft.signalsPass.note: required non-empty string (what was found, or why empty)");
+      }
+      if (Array.isArray(sp.checked) && sp.checked.length === 0 && typeof sp.note === "string" && sp.note.trim() === "") {
+        errors.push("draft.signalsPass: an empty checked list requires a note explaining why (rotation, all unreachable)");
+      }
+      if (errors.length === 0) {
+        signalsSummary = {
+          checked: sp.checked.length,
+          x_attempted: sp.xAttempted,
+          note: sp.note.trim(),
+        };
+      }
+    }
+  }
+  if (errors.length > 0) return fail(errors);
 
   // ---- load current data files ------------------------------------------
   const itemsPath = join(opts.dataDir, "items.json");
@@ -870,6 +949,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     coverage: draft.coverage,
     ...(newTags.length > 0 ? { new_tags: newTags } : {}),
     ...(movements.length > 0 ? { snr_movements: movements } : {}),
+    ...(signalsSummary !== undefined ? { signals: signalsSummary } : {}),
   };
   const nextState: StateFile = {
     lastSweep: nowIso,

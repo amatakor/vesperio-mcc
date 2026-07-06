@@ -280,6 +280,13 @@ export interface SweepLogEntry {
   new_tags?: string[];
   /** SNR movements this sweep (upgrades, downgrades, disputes); rendered on /log. */
   snr_movements?: { id: string; from: SnrValue; to: SnrValue; reason: string }[];
+  /**
+   * Signals-pass outcome: how many whitelisted fetchable channels were
+   * checked, how many X handles were searched best-effort, and one line on
+   * what came of it. Present whenever there are fetchable signal channels
+   * to check; makes a skipped pass visible on /log instead of silent.
+   */
+  signals?: { checked: number; x_attempted: number; note: string };
 }
 
 export interface StateFile {
