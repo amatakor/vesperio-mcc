@@ -44,7 +44,19 @@
   "sats_active_verified": {
     "value": 2,
     "source": "https://celestrak.org/NORAD/elements/gp.php?NAME=SPOT&FORMAT=JSON",
-    "as_of": "2026-07-06"
+    "as_of": "2026-07-06",
+    "snr": 5,
+    "snr_trace": {
+      "base": {
+        "tier": 5,
+        "source": "https://celestrak.org/NORAD/elements/gp.php?NAME=SPOT&FORMAT=JSON",
+        "reason": "direct observational data (CelesTrak/Space-Track), scoped to what it measures: cataloged on orbit as of the field's as_of date"
+      },
+      "modifiers": [],
+      "final": 5,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "sats_planned": {
     "value": null,

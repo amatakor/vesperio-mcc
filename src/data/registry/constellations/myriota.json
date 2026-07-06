@@ -22,7 +22,25 @@
   "country": {
     "value": "Australia",
     "source": "https://www.spaceconnectonline.com.au/satellites/7158-myriota-enters-new-growth-phase-with-launch-of-hybrid-5g-satellite-and-cellular-iot-network",
-    "as_of": "2026-07-05"
+    "as_of": "2026-07-05",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://www.spaceconnectonline.com.au/satellites/7158-myriota-enters-new-growth-phase-with-launch-of-hybrid-5g-satellite-and-cellular-iot-network",
+        "reason": "reputable outlet, single reference"
+      },
+      "modifiers": [
+        {
+          "type": "corroboration_2plus",
+          "delta": 1,
+          "reason": "grandfathered: verified by the adversarial collector/verifier crawl pipeline, credited as corroboration (migration 2026-07-06, Florian's call in SNR_PLAN A6)"
+        }
+      ],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "sensor_types": {
     "value": null,
@@ -42,12 +60,36 @@
   "sats_active_verified": {
     "value": 4,
     "source": "https://celestrak.org/NORAD/elements/gp.php?NAME=CENTAURI&FORMAT=JSON",
-    "as_of": "2026-07-06"
+    "as_of": "2026-07-06",
+    "snr": 5,
+    "snr_trace": {
+      "base": {
+        "tier": 5,
+        "source": "https://celestrak.org/NORAD/elements/gp.php?NAME=CENTAURI&FORMAT=JSON",
+        "reason": "direct observational data (CelesTrak/Space-Track), scoped to what it measures: cataloged on orbit as of the field's as_of date"
+      },
+      "modifiers": [],
+      "final": 5,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "sats_planned": {
     "value": 50,
     "source": "https://space.skyrocket.de/doc_sdat/myriota-5.htm",
-    "as_of": "2026-07-05"
+    "as_of": "2026-07-05",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/myriota-5.htm",
+        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "orbit": {
     "value": "low-earth orbit (LEO)",
