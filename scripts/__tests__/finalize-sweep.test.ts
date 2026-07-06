@@ -29,7 +29,17 @@ const existingItem = {
   companies: ["ICEYE"],
   source_url: "https://example.com/iceye/press-existing",
   secondary_urls: [],
-  confidence: "confirmed",
+  snr: 5,
+  snr_trace: {
+    base: {
+      tier: 5,
+      source: "https://example.com/iceye/press-existing",
+      reason: "test fixture: first party",
+    },
+    modifiers: [],
+    final: 5,
+    scorer_version: 1,
+  },
   publishDate: "2026-07-01T12:00:00.000Z",
 };
 
@@ -123,15 +133,15 @@ describe("finalize-sweep rejections", () => {
     expect(snapshotDataFiles()).toEqual(before);
   });
 
-  test("reported item without an evidence block is rejected", () => {
+  test("item without an SNR score is rejected", () => {
     const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
-    draft.newItems[0].confidence = "reported";
-    draft.newItems[0].headline = "SpaceNews: Rocket Lab books confidential EO launch";
+    delete draft.newItems[0].snr;
+    delete draft.newItems[0].snr_trace;
     writeFileSync(draftPath, JSON.stringify(draft));
     const before = snapshotDataFiles();
     const result = finalizeSweep({ dataDir, draftPath });
     expect(result.ok).toBe(false);
-    expect(result.errors.join("\n")).toContain("evidence");
+    expect(result.errors.join("\n")).toContain("snr");
     expect(snapshotDataFiles()).toEqual(before);
   });
 
@@ -199,7 +209,7 @@ describe("finalize-sweep merge", () => {
           {
             id: existingItem.id,
             patch: {
-              impact: "critical",
+              impact: "seismic",
               explainer: { why_it_matters: "Updated read: capacity now doubles previous guidance, per the company." },
             },
             note: "Company upgraded the expansion figures.",
@@ -219,7 +229,7 @@ describe("finalize-sweep merge", () => {
     const patched = items.items[0]!;
     expect(patched.id).toBe(existingItem.id);
     expect(patched.publishDate).toBe(existingItem.publishDate);
-    expect(patched.impact).toBe("critical");
+    expect(patched.impact).toBe("seismic");
     expect(patched.explainer.why_it_matters).toContain("doubles previous guidance");
     expect(patched.explainer.tagline).toBe(existingItem.explainer.tagline);
   });

@@ -119,7 +119,7 @@ export function headFor(path: string): Head {
     case "tag":
       return {
         title: `#${route.tag} | MCC`,
-        description: `Items tagged ${route.tag} in the MCC feed, each with its source and confidence label.`,
+        description: `Items tagged ${route.tag} in the MCC feed, each with its sources and signal-to-noise score.`,
         canonical,
       };
     case "orbits":

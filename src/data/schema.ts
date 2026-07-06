@@ -26,20 +26,10 @@ export type Category = (typeof CATEGORIES)[number];
 /**
  * Importance, independent of SNR (SNR_SPEC.md §1): seismic = major
  * industry shifts only, notable = matters to anyone tracking the sector,
- * noise = worth logging, not worth a push. The legacy names stay
- * accepted until the slice-3 migration renames the data, then drop.
+ * noise = worth logging, not worth a push.
  */
 export const IMPACTS = ["seismic", "notable", "noise"] as const;
-export const LEGACY_IMPACTS = ["critical", "routine"] as const;
-export type Impact = (typeof IMPACTS)[number] | (typeof LEGACY_IMPACTS)[number];
-
-/**
- * DEPRECATED (SNR_SPEC.md §1): the confidence ladder is replaced by the
- * SNR score. Kept transitionally so pre-migration data and consumers
- * keep working; removed entirely in the slice-3 migration.
- */
-export const CONFIDENCES = ["confirmed", "reported", "signal"] as const;
-export type Confidence = (typeof CONFIDENCES)[number];
+export type Impact = (typeof IMPACTS)[number];
 
 // ------------------------------------------------------------------ snr
 //
@@ -223,21 +213,6 @@ export interface ItemImage {
   origin_url: string;
 }
 
-/**
- * Evidence block for non-confirmed items: who said it, on what basis,
- * and what would confirm or deny it. Required by the sweep prompt for
- * reported and signal items; every statement must come from the linked
- * source, never from model memory.
- */
-export interface Evidence {
-  /** Who made the claim, e.g. "Financial Times" or "@Peter_Beck on X". */
-  said_by: string;
-  /** The stated basis, e.g. "citing 12+ current and former employees". */
-  basis: string;
-  /** What would confirm or deny it, with timing if stated; null if unknown. */
-  confirmation: string | null;
-}
-
 export interface Item {
   /** Format: YYYY-MM-DD-slug, e.g. "2026-07-05-iceye-gen4-order". */
   id: string;
@@ -254,11 +229,9 @@ export interface Item {
   /** Lead source: the best source attached to the item. Required. */
   source_url: string;
   secondary_urls: string[];
-  /** DEPRECATED: replaced by snr; dropped in the slice-3 migration. */
-  confidence: Confidence;
-  /** SNR score 1-5 (SNR_SPEC.md §2). Required once migrated; snr_trace must accompany it. */
-  snr?: SnrValue;
-  snr_trace?: SnrTrace;
+  /** SNR score 1-5 (SNR_SPEC.md §2), with its stored trace (append-only). */
+  snr: SnrValue;
+  snr_trace: SnrTrace;
   /** Every source attached over the card's life, lead source included. */
   sources?: ItemSource[];
   /** True while a same-metric contradiction at equal SNR stands (SNR_SPEC.md §6.4). */
@@ -267,8 +240,6 @@ export interface Item {
   publishDate?: string;
   /** Stamped by scripts/fetch-thumbs.ts, never by the drafting agent. */
   image?: ItemImage | null;
-  /** Required for reported/signal items; absent for confirmed. */
-  evidence?: Evidence | null;
 }
 
 export interface ItemsFile {
