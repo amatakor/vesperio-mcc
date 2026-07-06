@@ -502,3 +502,29 @@ a newer entry if a lesson changes.
   blogs/RSS instead; our fetchable signal channels (site, substack,
   beehiiv, bluesky) are the reliable leg of the pass, X the
   best-effort leg.
+
+## Narrow same-day re-check, 14-source filtered list, ~25 min window (2026-07-06)
+
+- 2026-07-06-GG: A trade outlet can write up a NASA procurement award
+  weeks after the actual event: SpaceNews's July 6 "NASA adds three
+  European firms to the commercial data program" covers CSDA On-Ramp 2
+  vendor additions (Kuva Space, OroraTech, Satlantis) that NASA's own
+  program page (science.nasa.gov) dates to June 23. No prior sweep had
+  surfaced this story under any name, so it is genuinely new discovery
+  today even though the underlying event is 13 days old; this is
+  different from the 2026-07-05-J backfill-window discipline (which
+  governs a deliberately bounded backfill run, not the ordinary
+  twice-daily loop). Dated the item to NASA's stated award date, not
+  the SpaceNews publish date, consistent with existing items like the
+  OHB capital raise (event-dated, published 13 days later). NASA's
+  CSDA program page is a legitimate official_record primary for this
+  program specifically; worth checking directly on future unrestricted
+  runs even when not in a run's named source list.
+- 2026-07-06-HH: Another WebFetch summarizer date trap (see
+  2026-07-06-Q): GovConWire's summarized fetch claimed the CSDA award
+  was announced "Thursday, June 17" but was itself "published June 19"
+  -- internally inconsistent, and it conflicts with NASA's own page
+  (June 23). Did not attach GovConWire as a source over the date
+  doubt; when a summarized trade-press date conflicts with a direct
+  official source's stated date, trust the official source and drop
+  the doubtful one rather than reconciling by guesswork.
