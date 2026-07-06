@@ -34,7 +34,6 @@ const legacyItem = {
   companies: ["TestCo"],
   source_url: "https://example.com/pr",
   secondary_urls: [],
-  confidence: "confirmed",
 };
 
 const validTrace = {
@@ -54,7 +53,6 @@ const validTrace = {
 const snrItem = {
   ...legacyItem,
   id: "2026-07-02-testco-snr",
-  confidence: undefined,
   snr: 4,
   snr_trace: validTrace,
   sources: [
@@ -75,18 +73,14 @@ const snrItem = {
   ],
 };
 
-describe("item: transitional snr / confidence rules", () => {
-  test("legacy item with confidence still validates", () => {
-    expect(itemErrors(legacyItem)).toEqual([]);
-  });
-
-  test("snr item without confidence validates", () => {
+describe("item: snr requirements", () => {
+  test("snr item validates", () => {
     expect(itemErrors(snrItem)).toEqual([]);
   });
 
-  test("item with neither snr nor confidence fails", () => {
-    const errors = itemErrors({ ...legacyItem, confidence: undefined });
-    expect(errors.some((e) => e.includes("needs snr"))).toBe(true);
+  test("item without snr fails", () => {
+    const errors = itemErrors(legacyItem);
+    expect(errors.some((e) => e.includes("snr: required"))).toBe(true);
   });
 
   test("snr without snr_trace fails", () => {
@@ -94,18 +88,9 @@ describe("item: transitional snr / confidence rules", () => {
     expect(errors.some((e) => e.includes("snr_trace"))).toBe(true);
   });
 
-  test("snr_trace without snr fails", () => {
+  test("snr_trace alone does not satisfy the snr requirement", () => {
     const errors = itemErrors({ ...legacyItem, snr_trace: validTrace });
-    expect(errors.some((e) => e.includes("present without snr"))).toBe(true);
-  });
-
-  test("legacy reported item still requires its evidence block", () => {
-    const errors = itemErrors({ ...legacyItem, confidence: "reported" });
-    expect(errors.some((e) => e.includes("evidence"))).toBe(true);
-  });
-
-  test("snr item never requires an evidence block", () => {
-    expect(itemErrors({ ...snrItem, evidence: undefined })).toEqual([]);
+    expect(errors.some((e) => e.includes("snr: required"))).toBe(true);
   });
 
   test("disputed must be boolean", () => {
@@ -125,21 +110,22 @@ describe("item: transitional snr / confidence rules", () => {
   });
 });
 
-describe("item: impact rename", () => {
+describe("item: impact enum", () => {
   test("new names validate", () => {
     for (const impact of ["seismic", "notable", "noise"]) {
-      expect(itemErrors({ ...legacyItem, impact })).toEqual([]);
+      expect(itemErrors({ ...snrItem, impact })).toEqual([]);
     }
   });
 
-  test("legacy names still validate until the migration", () => {
+  test("retired legacy names fail", () => {
     for (const impact of ["critical", "routine"]) {
-      expect(itemErrors({ ...legacyItem, impact })).toEqual([]);
+      const errors = itemErrors({ ...snrItem, impact });
+      expect(errors.some((e) => e.includes(".impact"))).toBe(true);
     }
   });
 
   test("unknown impact fails", () => {
-    const errors = itemErrors({ ...legacyItem, impact: "urgent" });
+    const errors = itemErrors({ ...snrItem, impact: "urgent" });
     expect(errors.some((e) => e.includes(".impact"))).toBe(true);
   });
 });

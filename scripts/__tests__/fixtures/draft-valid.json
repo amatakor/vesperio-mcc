@@ -9,13 +9,27 @@
         "what_happened": "Rocket Lab launched an Electron from Launch Complex 1. The payload reached its target orbit per the company webcast.",
         "why_it_matters": "Dedicated smallsat launch cadence affects EO constellation deployment schedules and rideshare pricing leverage."
       },
-      "tags": ["smallsat-launch"],
+      "tags": [
+        "smallsat-launch"
+      ],
       "category": "launch",
-      "impact": "routine",
-      "companies": ["Rocket Lab"],
+      "impact": "noise",
+      "companies": [
+        "Rocket Lab"
+      ],
       "source_url": "https://example.com/rocket-lab/launch-webcast",
       "secondary_urls": [],
-      "confidence": "confirmed"
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://example.com/rocket-lab/launch-webcast",
+          "reason": "test fixture: official record"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 1
+      }
     }
   ],
   "updates": [],
@@ -29,8 +43,15 @@
     }
   ],
   "sourceHealth": [
-    { "name": "ICEYE", "status": "verified", "note": "First successful fetch." }
+    {
+      "name": "ICEYE",
+      "status": "verified",
+      "note": "First successful fetch."
+    }
   ],
   "summary": "One routine Electron launch logged; one ICEYE lead held pending a primary source.",
-  "coverage": ["launch", "constellation"]
+  "coverage": [
+    "launch",
+    "constellation"
+  ]
 }

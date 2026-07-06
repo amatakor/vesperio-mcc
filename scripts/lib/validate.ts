@@ -7,8 +7,6 @@
 import {
   CATEGORIES,
   IMPACTS,
-  LEGACY_IMPACTS,
-  CONFIDENCES,
   SOURCE_CLASSES,
   SOURCE_VIA,
   SNR_MODIFIER_TYPES,
@@ -250,28 +248,15 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   if (!CATEGORIES.includes(v.category as never)) {
     errors.push(`${path}.category: "${String(v.category)}" not in [${CATEGORIES.join(", ")}]`);
   }
-  // Transitional (until the slice-3 migration): new impact names are
-  // canonical, legacy names still accepted so pre-migration data builds.
-  if (!IMPACTS.includes(v.impact as never) && !LEGACY_IMPACTS.includes(v.impact as never)) {
-    errors.push(
-      `${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}] (legacy: ${LEGACY_IMPACTS.join(", ")})`,
-    );
+  if (!IMPACTS.includes(v.impact as never)) {
+    errors.push(`${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}]`);
   }
 
-  // Transitional: an item carries either an SNR score (new model) or a
-  // legacy confidence tier. snr requires its stored trace.
-  const hasSnr = v.snr !== undefined;
-  if (hasSnr) {
-    if (!isSnrValue(v.snr)) {
-      errors.push(`${path}.snr: must be an integer 1-5`);
-    } else {
-      validateSnrTrace(v.snr_trace, v.snr, `${path}.snr_trace`, errors);
-    }
+  // Every published item carries its SNR score and the stored trace.
+  if (!isSnrValue(v.snr)) {
+    errors.push(`${path}.snr: required integer 1-5`);
   } else {
-    if (v.snr_trace !== undefined) errors.push(`${path}.snr_trace: present without snr`);
-    if (!CONFIDENCES.includes(v.confidence as never)) {
-      errors.push(`${path}: needs snr (1-5, with snr_trace) or a legacy confidence tier`);
-    }
+    validateSnrTrace(v.snr_trace, v.snr, `${path}.snr_trace`, errors);
   }
 
   if (v.sources !== undefined) {
@@ -317,30 +302,6 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
 
   if (v.publishDate !== undefined && !isIsoDatetime(v.publishDate)) {
     errors.push(`${path}.publishDate: must be an ISO datetime when present`);
-  }
-
-  // Legacy rule (dropped with confidence in slice 3): non-confirmed items
-  // carry an evidence block. SNR-scored items explain themselves via the trace.
-  if (!hasSnr && (v.confidence === "reported" || v.confidence === "signal")) {
-    if (!isObj(v.evidence)) {
-      errors.push(`${path}.evidence: required for ${String(v.confidence)} items ({ said_by, basis, confirmation })`);
-    }
-  }
-  if (v.evidence !== undefined && v.evidence !== null) {
-    if (!isObj(v.evidence)) {
-      errors.push(`${path}.evidence: must be null or { said_by, basis, confirmation }`);
-    } else {
-      reqString(v.evidence, "said_by", `${path}.evidence`, errors);
-      reqString(v.evidence, "basis", `${path}.evidence`, errors);
-      if (v.evidence.confirmation !== null && typeof v.evidence.confirmation !== "string") {
-        errors.push(`${path}.evidence.confirmation: must be a string or null`);
-      }
-      checkNoEmDash(
-        typeof v.evidence.basis === "string" ? v.evidence.basis : null,
-        `${path}.evidence.basis`,
-        errors,
-      );
-    }
   }
 
   if (v.image !== undefined && v.image !== null) {

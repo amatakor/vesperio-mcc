@@ -9,18 +9,34 @@
         "what_happened": "This candidate reuses the id of an item that already exists in items.json.",
         "why_it_matters": "Duplicates must be updates, not new items; finalize-sweep must reject this draft."
       },
-      "tags": ["sar"],
+      "tags": [
+        "sar"
+      ],
       "category": "constellation",
       "impact": "notable",
-      "companies": ["ICEYE"],
+      "companies": [
+        "ICEYE"
+      ],
       "source_url": "https://example.com/iceye/press",
       "secondary_urls": [],
-      "confidence": "confirmed"
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://example.com/iceye/press",
+          "reason": "test fixture: official record"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 1
+      }
     }
   ],
   "updates": [],
   "held": [],
   "sourceHealth": [],
   "summary": "A duplicate id drafted as a new item, which must be rejected.",
-  "coverage": ["constellation"]
+  "coverage": [
+    "constellation"
+  ]
 }

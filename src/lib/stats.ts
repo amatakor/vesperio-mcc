@@ -192,25 +192,26 @@ export function computeStats(
     citation: cite(cadenceAnswer, "launch-cadence", asOf),
   });
 
-  // ------------------------------------------------------ confidence mix
-  const byConfidence = new Map<string, number>();
+  // ------------------------------------------------------------ snr mix
+  const bySnr = new Map<string, number>();
   for (const item of real) {
-    byConfidence.set(item.confidence, (byConfidence.get(item.confidence) ?? 0) + 1);
+    const key = `snr ${item.snr}`;
+    bySnr.set(key, (bySnr.get(key) ?? 0) + 1);
   }
-  const confRows = sortDesc([...byConfidence.entries()]);
-  const confirmed = byConfidence.get("confirmed") ?? 0;
-  const confAnswer =
+  const snrRows = sortDesc([...bySnr.entries()]);
+  const high = real.filter((i) => i.snr >= 4).length;
+  const snrAnswer =
     real.length === 0
       ? "No items to grade yet."
-      : `${confirmed} of ${real.length} items (${Math.round((confirmed / real.length) * 100)}%) are confirmed against primary sources; the rest are labelled reported or signal.`;
+      : `${high} of ${real.length} items (${Math.round((high / real.length) * 100)}%) sit at SNR 4 or 5; every item shows the calculation behind its score.`;
   blocks.push({
-    id: "confidence-mix",
-    question: "How much of the feed is confirmed?",
-    answer: confAnswer,
-    rows: confRows,
+    id: "snr-mix",
+    question: "How reliable is the feed?",
+    answer: snrAnswer,
+    rows: snrRows,
     method:
-      "Items per confidence tier. confirmed = the actor itself or an official record; reported = credible trade press, named in the copy; signal = curated voices, flagged unconfirmed.",
-    citation: cite(confAnswer, "confidence-mix", asOf),
+      "Items per signal-to-noise score, all-time. 5 = direct source from the concerned party; 4 = wide reporting or an established aggregator; 3 = a few reputable sources; 2 and 1 = weakly corroborated or single-source claims, published and labelled.",
+    citation: cite(snrAnswer, "snr-mix", asOf),
   });
 
   // -------------------------------------------------------- impact mix

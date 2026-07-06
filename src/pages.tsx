@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   Item,
+  SnrTrace,
   SourcedField,
   TimelineEvent,
   ConstellationProfile,
@@ -21,6 +22,7 @@ import {
   spaceports,
   organizations,
   sweeps,
+  ledgerSources,
   itemsByTag,
   itemsMentioning,
   constellationChildren,
@@ -84,7 +86,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <main>{children}</main>
       <footer className="footer">
         <p>
-          Machine-maintained. Every item links its source and wears its confidence. Missing a
+          Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
           <a href="/about/">Verification policy</a>
         </p>
@@ -109,13 +111,141 @@ const CAT_ABBR: Record<string, string> = {
   "human-spaceflight": "HSF",
 };
 
-function UnverifiedBanner() {
-  return <span className="unverified-banner">unverified</span>;
+/** Banner on card/item media for items at SNR 1-2 (low confidence). */
+function LowSnrBanner() {
+  return <span className="unverified-banner">low snr</span>;
+}
+
+const SNR_LABELS: Record<number, string> = {
+  1: "single source, low confidence",
+  2: "weakly corroborated",
+  3: "a few reputable sources",
+  4: "widely reported",
+  5: "direct source",
+};
+
+const SOURCE_CLASS_LABELS: Record<string, string> = {
+  first_party: "first party",
+  official_record: "official record",
+  computed: "observational data",
+  wire_pr: "press wire",
+  trade: "trade press",
+  mainstream: "mainstream press",
+  whitelist: "signals list",
+  aggregator: "aggregator",
+  informal: "informal",
+};
+
+function signed(n: number): string {
+  return n > 0 ? `+${n}` : String(n);
+}
+
+/** The stored calculation, one row per step; shared by popover and panel. */
+function SnrTraceRows({ trace }: { trace: SnrTrace }) {
+  return (
+    <>
+      <span className="snr-pop-row">
+        <span className="snr-pop-delta">{trace.base.tier}</span>
+        <span>
+          {trace.base.reason}{" "}
+          <a href={trace.base.source} rel="noopener">
+            {hostOf(trace.base.source)}
+          </a>
+        </span>
+      </span>
+      {trace.modifiers.map((m, i) => (
+        <span key={i} className="snr-pop-row">
+          <span className="snr-pop-delta">{signed(m.delta)}</span>
+          <span>
+            {m.reason}
+            {m.source && (
+              <>
+                {" "}
+                <a href={m.source} rel="noopener">
+                  {hostOf(m.source)}
+                </a>
+              </>
+            )}
+          </span>
+        </span>
+      ))}
+      {(trace.history ?? []).length > 0 && (
+        <span className="snr-pop-hist">
+          {(trace.history ?? []).map((h, i) => (
+            <span key={i} className="snr-pop-row">
+              <span className="snr-pop-delta">
+                {h.from}→{h.to}
+              </span>
+              <span>
+                {h.date} · {h.reason}
+              </span>
+            </span>
+          ))}
+        </span>
+      )}
+      <span className="snr-pop-foot">scorer v{trace.scorer_version}</span>
+    </>
+  );
+}
+
+/**
+ * The SNR icon (SNR_SPEC.md §4): 5 ascending bars, N lit, warn-colored
+ * at 1-2 so low confidence is unmissable. With a trace, clicking opens
+ * the stored calculation; the popover renders snr_trace exactly as
+ * stored at scoring time, never a reconstruction.
+ */
+function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compact?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const label = `SNR ${snr}/5: ${SNR_LABELS[snr] ?? ""}`;
+  const bars = (
+    <span className={`snr-bars${snr <= 2 ? " snr-low" : ""}`}>
+      {[1, 2, 3, 4, 5].map((n) => (
+        <span key={n} className={`snr-bar snr-bar-${n}${n <= snr ? " on" : ""}`} />
+      ))}
+    </span>
+  );
+  if (!trace) {
+    return (
+      <span className="snr" title={label}>
+        {bars}
+      </span>
+    );
+  }
+  return (
+    <span className={`snr${compact ? " snr-compact" : ""}`}>
+      <button
+        type="button"
+        className="snr-btn"
+        title={label}
+        aria-expanded={open}
+        onClick={(e) => {
+          e.preventDefault();
+          setOpen(!open);
+        }}
+      >
+        {bars}
+        {!compact && <span className="snr-num">{snr}</span>}
+      </button>
+      {open && (
+        <span className="snr-pop" role="dialog" aria-label="SNR calculation">
+          <span className="snr-pop-head">
+            <span>
+              snr {snr}/5 · {SNR_LABELS[snr]}
+            </span>
+            <button type="button" className="snr-pop-close" onClick={() => setOpen(false)}>
+              ×
+            </button>
+          </span>
+          <SnrTraceRows trace={trace} />
+        </span>
+      )}
+    </span>
+  );
 }
 
 /** Image when the pipeline found one; otherwise a generated text tile. */
 function CardMedia({ item }: { item: Item }) {
-  const unverified = item.confidence !== "confirmed";
+  const low = item.snr <= 2;
   if (item.image) {
     return (
       <a
@@ -124,7 +254,7 @@ function CardMedia({ item }: { item: Item }) {
         onClick={() => markVisited(item.id)}
       >
         <img src={item.image.src} alt="" loading="lazy" />
-        {unverified && <UnverifiedBanner />}
+        {low && <LowSnrBanner />}
       </a>
     );
   }
@@ -136,7 +266,7 @@ function CardMedia({ item }: { item: Item }) {
     >
       <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
       <span className="tile-co">{item.companies[0] ?? item.category}</span>
-      {unverified && <UnverifiedBanner />}
+      {low && <LowSnrBanner />}
     </a>
   );
 }
@@ -149,9 +279,12 @@ function cardTags(item: Item): string[] {
 }
 
 function Card({ item }: { item: Item }) {
-  const sources = 1 + item.secondary_urls.length;
+  const sources = item.sources?.length ?? 1 + item.secondary_urls.length;
   return (
-    <article className={`card card-${item.impact}`} data-item-id={item.id}>
+    <article
+      className={`card card-${item.impact}${item.snr <= 2 ? " card-lowsnr" : ""}`}
+      data-item-id={item.id}
+    >
       <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`}>
@@ -163,9 +296,8 @@ function Card({ item }: { item: Item }) {
           </a>
         ))}
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
-        {item.confidence !== "confirmed" && (
-          <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
-        )}
+        {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        <SnrBars snr={item.snr} trace={item.snr_trace} />
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
@@ -252,8 +384,8 @@ export function HomePage() {
     <Layout>
       <p className="lede">
         The new space economy, tracked by machine: Earth observation, connectivity, launch,
-        commercial human spaceflight. Every item carries a plain-English explainer, its source,
-        and an honest confidence label.
+        commercial human spaceflight. Every item carries a plain-English explainer, its sources,
+        and an honest signal-to-noise score.
       </p>
       <nav className="cat-row">
         {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) => (
@@ -341,7 +473,16 @@ function hostOf(url: string): string {
 }
 
 export function ItemPage({ item }: { item: Item }) {
-  const sources = [item.source_url, ...item.secondary_urls];
+  const srcEntries =
+    item.sources && item.sources.length > 0
+      ? item.sources
+      : [item.source_url, ...item.secondary_urls].map((u) => ({
+          url: u,
+          outlet: hostOf(u),
+          class: "informal" as const,
+          added: item.date,
+          via: "initial" as const,
+        }));
   return (
     <Layout>
       <article className="item-page item-wide">
@@ -351,7 +492,8 @@ export function ItemPage({ item }: { item: Item }) {
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
           </a>
-          <span className={`chip chip-${item.confidence}`}>{item.confidence}</span>
+          {item.disputed && <span className="chip chip-disputed">disputed</span>}
+          <SnrBars snr={item.snr} trace={item.snr_trace} />
           <span className="date">{item.date}</span>
         </div>
         <div className="item-cols">
@@ -360,7 +502,7 @@ export function ItemPage({ item }: { item: Item }) {
               <figure className="item-figure">
                 <div className="item-figure-media">
                   <img src={item.image.src} alt={item.headline} />
-                  {item.confidence !== "confirmed" && <UnverifiedBanner />}
+                  {item.snr <= 2 && <LowSnrBanner />}
                 </div>
                 <figcaption className="dim">
                   <a href={item.image.origin_url} rel="noopener">
@@ -370,16 +512,19 @@ export function ItemPage({ item }: { item: Item }) {
               </figure>
             )}
             <div className="src-band">
-              // sources · {sources.length} outlet{sources.length === 1 ? "" : "s"}
+              // sources · {srcEntries.length} attached
             </div>
             <ol className="src-list">
-              {sources.map((u, i) => (
-                <li key={u}>
-                  <a href={u} rel="noopener">
+              {srcEntries.map((src, i) => (
+                <li key={src.url}>
+                  <a href={src.url} rel="noopener">
                     <span className="src-num">[{i + 1}]</span>
                     <span>
-                      <span className="src-kind">{i === 0 ? "primary source" : "secondary"}</span>
-                      <span className="src-host">{hostOf(u)}</span>
+                      <span className="src-kind">
+                        {SOURCE_CLASS_LABELS[src.class] ?? src.class}
+                        {src.via !== "initial" ? ` · ${src.via}` : ""}
+                      </span>
+                      <span className="src-host">{hostOf(src.url)}</span>
                     </span>
                     <span className="src-arrow">↗</span>
                   </a>
@@ -405,19 +550,19 @@ export function ItemPage({ item }: { item: Item }) {
                 <p>{item.explainer.for_who}</p>
               </section>
             )}
-            {item.evidence && (
-              <section className="panel">
-                <h2>evidence</h2>
-                <dl className="kv">
-                  <dt>Said by</dt>
-                  <dd>{item.evidence.said_by}</dd>
-                  <dt>Basis</dt>
-                  <dd>{item.evidence.basis}</dd>
-                  <dt>What would confirm it</dt>
-                  <dd>{item.evidence.confirmation ?? "not stated"}</dd>
-                </dl>
-              </section>
-            )}
+            <section className="panel">
+              <h2>signal-to-noise</h2>
+              <div className="snr-panel">
+                <SnrBars snr={item.snr} />
+                <span className="snr-panel-label">
+                  {item.snr}/5 · {SNR_LABELS[item.snr]}
+                </span>
+                {item.disputed && <span className="chip chip-disputed">disputed</span>}
+              </div>
+              <div className="snr-trace-inline">
+                <SnrTraceRows trace={item.snr_trace} />
+              </div>
+            </section>
             <section className="panel">
               <h2>quick facts</h2>
               <dl className="kv">
@@ -427,8 +572,8 @@ export function ItemPage({ item }: { item: Item }) {
                 <dd>{item.category}</dd>
                 <dt>Impact</dt>
                 <dd>{item.impact}</dd>
-                <dt>Confidence</dt>
-                <dd>{item.confidence}</dd>
+                <dt>SNR</dt>
+                <dd>{item.snr} / 5</dd>
                 <dt>Event date</dt>
                 <dd>{item.date}</dd>
                 {item.publishDate && (
@@ -527,9 +672,24 @@ function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): 
       <th scope="row">{label}</th>
       <td className={f.value === null ? "empty" : ""}>
         {entityHref ? <a href={entityHref}>{value}</a> : value}
+        {f.disputed && (
+          <span className="disputed-stack">
+            <span className="chip chip-disputed">disputed</span>
+            {f.disputed.competing.map((c, i) => (
+              <span key={i} className="disputed-claim">
+                {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
+                <SnrBars snr={c.snr} compact />{" "}
+                <a href={c.source} rel="noopener">
+                  source
+                </a>{" "}
+                <span className="dim">{c.as_of}</span>
+              </span>
+            ))}
+          </span>
+        )}
       </td>
       <td>{f.as_of ?? ""}</td>
-      <td>
+      <td className="src-cell">
         {f.source ? (
           <a href={f.source} rel="noopener">
             source
@@ -539,6 +699,8 @@ function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): 
         ) : (
           ""
         )}
+        {f.snr !== undefined && <SnrBars snr={f.snr} trace={f.snr_trace} compact />}
+        {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
       </td>
     </tr>
   );
@@ -2134,15 +2296,15 @@ const QA: Array<[string, string]> = [
   ],
   [
     "What counts as a source?",
-    "Every published item links the best available source on a three-tier ladder. confirmed items link a primary source: the actor itself (press release, filing, webcast) or an official record of the event (regulator, court, procurement register, orbital tracking data). reported items are based on credible trade press with named sourcing. signal items are based on posts by hand-picked individuals from the Signals list or named executives of the actor. Anonymous accounts and unattributed rumours are never a basis at any tier.",
+    "Every item accumulates sources over its life and links each one. The best source sets the base of its signal-to-noise score: the actor itself or an official record scores highest, wide reporting and established aggregators next, trade press next, informal posts lowest. Corroboration raises a score; contradiction lowers it. The copy still names who said what: ICEYE says, per the FCC filing, per SpaceNews.",
   ],
   [
-    "What do the confidence labels mean?",
-    "The label states exactly how strong the sourcing is, and the copy never claims more. confirmed: the actor itself or an official record. reported: credible trade press, named in the item (per SpaceNews). signal: a curated voice on social media, named and flagged unconfirmed in the item. When a stronger source appears, the item is upgraded and keeps its address.",
+    "What does the SNR score mean?",
+    "Every item carries a signal-to-noise score from 1 to 5, drawn as bars. 5 is a direct source: the actor itself or an official record. 4 is wide reporting that nothing has contradicted. 3 is a few reputable sources. 2 and 1 are weak corroboration: single sources, early signals, extraordinary claims. Clicking the bars shows the exact calculation, stored when the item was scored: the base source tier and every adjustment since. Scores move when corroboration, contradiction, or uncontested time changes the picture, and every move is logged.",
   ],
   [
     "What happens when a story cannot be verified?",
-    "It is held, not published. A held item costs nothing; a wrong item costs the site its credibility. Missing a story is acceptable, publishing a false one is not.",
+    "It publishes with a low score instead of disappearing. The wide net is deliberate: readers see early signals with the uncertainty made explicit, and the score climbs only when corroboration arrives or the claim survives uncontested. A claim contradicted by a stronger fact is marked disputed and stays visible with both sides shown. Whether the scores are honest is measurable: each claim's score at publication is recorded and compared against how it resolves.",
   ],
   [
     "Are numbers ever estimated?",
@@ -2218,6 +2380,19 @@ export function LogPage() {
               {s.held > 0 && <span className="chip">{s.held} held</span>}
             </div>
             <p>{s.summary}</p>
+            {s.snr_movements && s.snr_movements.length > 0 && (
+              <ul className="snr-moves">
+                {s.snr_movements.map((m) => (
+                  <li key={`${m.id}-${m.to}`}>
+                    <a href={`/item/${m.id}/`}>{m.id}</a>{" "}
+                    <span className={m.to > m.from ? "snr-up" : "snr-down"}>
+                      {m.from}→{m.to}
+                    </span>{" "}
+                    <span className="dim">{m.reason}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className="tag-row">
               {s.coverage.map((c) => (
                 <span key={c} className="chip">
@@ -2228,6 +2403,41 @@ export function LogPage() {
           </section>
         ))
       )}
+      <section className="panel" id="source-ledger">
+        <h2>source ledger</h2>
+        <p className="dim">
+          Rolling per-source reliability record (90-day window): strikes for claims that lost a
+          same-metric contradiction, credits for claims that started low and were later confirmed.
+          Machine-owned, human-audited; demotions and recoveries follow the thresholds in the
+          public spec.
+        </p>
+        {ledgerSources.length === 0 ? (
+          <p className="empty">// no reliability events recorded yet</p>
+        ) : (
+          <table className="profile">
+            <thead>
+              <tr>
+                <th>source</th>
+                <th>strikes</th>
+                <th>credits</th>
+                <th>claims</th>
+                <th>demoted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ledgerSources.map((src) => (
+                <tr key={src.domain}>
+                  <th scope="row">{src.name ?? src.domain}</th>
+                  <td>{src.events.filter((e) => e.kind === "strike").length}</td>
+                  <td>{src.events.filter((e) => e.kind === "credit").length}</td>
+                  <td>{src.claims.length}</td>
+                  <td>{src.class_override ? "yes" : ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
     </Layout>
   );
 }
