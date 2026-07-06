@@ -33,33 +33,50 @@ import { OrbitsStage } from "./orbits/stage";
 
 // ------------------------------------------------------------------ layout
 
-export function Layout({ children }: { children: ReactNode }) {
+const NAV_LINKS: Array<[string, string]> = [
+  ["/", "news"],
+  ["/registry/", "registry"],
+  ["/orbits/", "orbits"],
+  ["/signals/", "signals"],
+  ["/stats/", "stats"],
+  ["/log/", "log"],
+  ["/about/", "about"],
+];
+
+/** Shared site header. `current` marks the active section (aria-current
+ * drives the accent underline); the orbits app frame reuses it so the
+ * masthead holds still across every page. */
+export function Masthead({ current }: { current?: string }) {
+  return (
+    <header className="masthead">
+      <a href="/" className="brand">
+        MCC / MISSION CONTROL CENTER
+      </a>
+      <nav className="nav">
+        {NAV_LINKS.map(([href, label]) => (
+          <a key={href} href={href} aria-current={label === current ? "page" : undefined}>
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+export function Layout({ children, current }: { children: ReactNode; current?: string }) {
   return (
     <div className="shell">
-      <header className="masthead">
-        <a href="/" className="brand">
-          MCC / MISSION CONTROL CENTER
-        </a>
-        <nav className="nav">
-          <a href="/">news</a>
-          <a href="/tag/eo/">eo</a>
-          <a href="/tag/connectivity/">connectivity</a>
-          <a href="/tag/iot/">iot</a>
-          <a href="/tag/launch/">launch</a>
-          <a href="/registry/">registry</a>
-          <a href="/orbits/">orbits</a>
-          <a href="/signals/">signals</a>
-          <a href="/stats/">stats</a>
-          <a href="/log/">log</a>
-          <a href="/about/">about</a>
-        </nav>
-      </header>
+      <Masthead current={current} />
       <main>{children}</main>
       <footer className="footer">
         <p>
           Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
           <a href="/about/">Verification policy</a>
+        </p>
+        <p className="footer-feeds">
+          category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
+          <a href="/tag/iot/">iot</a> · <a href="/tag/launch/">launch</a>
         </p>
       </footer>
     </div>
@@ -615,7 +632,7 @@ export function HomePage() {
   };
 
   return (
-    <Layout>
+    <Layout current="news">
       <div className="filter-bar">
         <button
           type="button"
@@ -671,7 +688,7 @@ export function HomePage() {
 
 export function CategoryPage({ category }: { category: string }) {
   return (
-    <Layout>
+    <Layout current="news">
       <h1 className="page-title">news / {category}</h1>
       <FeedList
         list={items.filter((i) => i.category === category)}
@@ -686,7 +703,7 @@ export function CategoryPage({ category }: { category: string }) {
 
 export function TagPage({ tag }: { tag: string }) {
   return (
-    <Layout>
+    <Layout current="news">
       <h1 className="page-title">#{tag}</h1>
       <FeedList list={itemsByTag(tag)} emptyNote={`No ${tag} items tracked yet.`} />
       <p>
@@ -719,7 +736,7 @@ function hostOf(url: string): string {
 
 export function ItemPage({ item }: { item: Item }) {
   return (
-    <Layout>
+    <Layout current="news">
       <article className="item-page item-wide">
         <div className="item-band">
           <ImpactMeter impact={item.impact} />
@@ -1467,7 +1484,7 @@ export function RegistryIndexPage() {
   const visibleCount = sections.reduce((n, s) => n + s.entries.length, 0);
 
   return (
-    <Layout>
+    <Layout current="registry">
       <div className="reg-head">
         <h1 className="page-title">registry</h1>
         <input
@@ -1884,7 +1901,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   sections.push(["faq", "faq"]);
 
   return (
-    <Layout>
+    <Layout current="registry">
       <div className="registry-profile">
         <Breadcrumbs
           segment={profile.breadcrumbSegment}
@@ -2303,37 +2320,15 @@ function matchesSignalQuery(p: SignalPerson, q: string): boolean {
 
 // ---------------------------------------------------------------- orbits
 
-/** 6A app frame: full-bleed header (brand + nav rows, ORBITS underlined
- * active), the stage filling the viewport, footer rendered by the scene.
- * The old H1 + intro prose are removed on this view per the handoff. */
+/** Orbits app frame: the shared masthead at the shared measure (the
+ * header holds still when entering /orbits), then the stage full-bleed
+ * below it; footer rendered by the scene. */
 export function OrbitsPage() {
-  const links: Array<[string, string]> = [
-    ["/", "news"],
-    ["/tag/eo/", "eo"],
-    ["/tag/connectivity/", "connectivity"],
-    ["/tag/iot/", "iot"],
-    ["/tag/launch/", "launch"],
-    ["/registry/", "registry"],
-    ["/orbits/", "orbits"],
-    ["/signals/", "signals"],
-    ["/stats/", "stats"],
-    ["/log/", "log"],
-    ["/about/", "about"],
-  ];
   return (
     <div>
-      <header className="ohead">
-        <a href="/" className="brand">
-          MCC / MISSION CONTROL CENTER
-        </a>
-        <nav className="nav onav">
-          {links.map(([href, label]) => (
-            <a key={href} href={href} className={label === "orbits" ? "onav-active" : undefined}>
-              {label}
-            </a>
-          ))}
-        </nav>
-      </header>
+      <div className="shell orbits-head-shell">
+        <Masthead current="orbits" />
+      </div>
       <OrbitsStage />
     </div>
   );
@@ -2351,7 +2346,7 @@ export function SignalsPage() {
   const countFor = (b: string) => signals.filter((p) => p.bucket === b).length;
 
   return (
-    <Layout>
+    <Layout current="signals">
       <h1 className="page-title">top signals to follow</h1>
       <p className="dim mono">
         {signals.length} people worth following · curated by role · {whitelisted} on the sourcing
@@ -2439,7 +2434,7 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
   const hero = computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations);
   const blocks = computeStats(items, constellations, vehicles, spaceports, now);
   return (
-    <Layout>
+    <Layout current="stats">
       <h1 className="page-title">stats</h1>
       <p className="lede">
         Live indices computed from MCC data on every build. Each block answers one question,
@@ -2536,7 +2531,7 @@ const QA: Array<[string, string]> = [
 
 export function AboutPage() {
   return (
-    <Layout>
+    <Layout current="about">
       <h1 className="page-title">about</h1>
       <p className="lede">
         MCC tracks the commercial space economy and the events that move it. Coverage of Chinese,
@@ -2576,7 +2571,7 @@ export function LogPage() {
     { added: 0, updated: 0, held: 0 },
   );
   return (
-    <Layout>
+    <Layout current="log">
       <h1 className="page-title">sweep log</h1>
       <p className="lede">
         Every sweep the machine ran, including the quiet ones. No items is a valid result; an
