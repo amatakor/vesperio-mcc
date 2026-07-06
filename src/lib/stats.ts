@@ -78,14 +78,14 @@ export function computeHero(
     }),
   );
   const notableUp = real.filter(
-    (i) => (i.impact === "notable" || i.impact === "critical") && daysAgo(i.date, now) <= 30,
+    (i) => (i.impact === "notable" || i.impact === "seismic") && daysAgo(i.date, now) <= 30,
   ).length;
   const perWeek = last30 > 0 ? Math.round((last30 / 30) * 7 * 10) / 10 : 0;
 
   return {
     sentence:
       `MCC has tracked ${real.length} items from ${sources.size} distinct sources. ` +
-      `${notableUp} notable-or-critical items landed in the last 30 days, ` +
+      `${notableUp} notable-or-seismic items landed in the last 30 days, ` +
       `and the feed is averaging ${perWeek} items per week.`,
     tiles: [
       [String(real.length), "items tracked", "verified, all-time"],
@@ -217,17 +217,17 @@ export function computeStats(
   const byImpact = new Map<string, number>();
   for (const item of real) byImpact.set(item.impact, (byImpact.get(item.impact) ?? 0) + 1);
   const impactRows = sortDesc([...byImpact.entries()]);
-  const critical = byImpact.get("critical") ?? 0;
+  const seismic = byImpact.get("seismic") ?? 0;
   const impactAnswer =
     real.length === 0
       ? "No items to grade yet."
-      : `${critical} of ${real.length} tracked items are rated critical; the bar for interrupting anyone's Monday stays high.`;
+      : `${seismic} of ${real.length} tracked items are rated seismic; the bar for reshaping the industry stays high.`;
   blocks.push({
     id: "impact-mix",
     question: "How big are the stories?",
     answer: impactAnswer,
     rows: impactRows,
-    method: "Items per impact level (critical, notable, routine), all-time.",
+    method: "Items per impact level (seismic, notable, noise), all-time.",
     citation: cite(impactAnswer, "impact-mix", asOf),
   });
 

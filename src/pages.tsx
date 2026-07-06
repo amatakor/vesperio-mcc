@@ -174,7 +174,7 @@ function Card({ item }: { item: Item }) {
         </a>
       </h2>
       <p className="card-tagline">{item.explainer.tagline}</p>
-      {item.impact === "critical" && (
+      {item.impact === "seismic" && (
         <p className="card-extra">{item.explainer.what_happened}</p>
       )}
       <div className="card-foot">
@@ -319,7 +319,7 @@ export function TagPage({ tag }: { tag: string }) {
   );
 }
 
-const IMPACT_LEVEL: Record<string, number> = { critical: 3, notable: 2, routine: 1 };
+const IMPACT_LEVEL: Record<string, number> = { seismic: 3, notable: 2, noise: 1 };
 
 function ImpactMeter({ impact }: { impact: string }) {
   const level = IMPACT_LEVEL[impact] ?? 1;
