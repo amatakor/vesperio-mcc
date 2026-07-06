@@ -17,18 +17,19 @@
       "companies": [
         "Rocket Lab"
       ],
-      "source_url": "https://example.com/rocket-lab/launch-webcast",
+      "source_url": "https://spacenews.com/rocket-lab/launch-report",
       "secondary_urls": [],
-      "snr": 5,
-      "snr_trace": {
-        "base": {
-          "tier": 5,
-          "source": "https://example.com/rocket-lab/launch-webcast",
-          "reason": "test fixture: official record"
-        },
-        "modifiers": [],
-        "final": 5,
-        "scorer_version": 1
+      "scoring": {
+        "sources": [
+          {
+            "url": "https://spacenews.com/rocket-lab/launch-report",
+            "outlet": "SpaceNews",
+            "class": "trade"
+          }
+        ],
+        "extraordinary": false,
+        "crawl": "not_attempted",
+        "whitelist": null
       }
     }
   ],
