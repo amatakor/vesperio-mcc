@@ -188,3 +188,17 @@ a newer entry if a lesson changes.
   contrary to the 07-05 unreachable note; anti-bot walls come and go,
   so collectors should always try the primary site once before falling
   back to trade press.
+
+## Narrow same-day re-check, 12-source filtered list (2026-07-06)
+
+- 2026-07-06-D: iceye.com/press now 301-redirects (bare curl without
+  -L returned 301, not 200); `curl -sL` resolves it cleanly to 200.
+  Use -L by default for iceye.com going forward.
+- 2026-07-06-E: A short same-day re-check window (~15 hours since the
+  last sweep) against the 12-source filtered list again produced
+  mostly unchanged sources (all 6 SEC 8-K feeds, Planet Labs, ICEYE,
+  Rocket Lab, European Spaceflight, Launch Library) plus exactly one
+  fresh SpaceNews item (NASA-SBA capital partnership, published inside
+  the window). Confirms the 07-05-S pattern: a narrow filtered re-check
+  is a legitimate sweep shape and a single-item outcome is normal, not
+  a sign of under-coverage.
