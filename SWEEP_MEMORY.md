@@ -459,6 +459,38 @@ a newer entry if a lesson changes.
   Both added to sources.json and the scheduled set. Try the same
   pattern on other Q4-hosted IR sites before declaring them
   unreachable.
+- 2026-07-06-FF: 14-source narrow re-check, ~8 minutes after a prior
+  sweep that was itself an interactive audit with no fresh discovery.
+  Two lessons:
+  - state.json's `lastSweep` timestamp is not a reliable "already seen"
+    marker when a source was added mid-session: Planet Labs IR was
+    added this session specifically because it had missed the Wolfgang
+    Schmidt/Planet advisory-board release (published 13:00 UTC), but
+    that release still predates the technical lastSweep stamp (17:25
+    UTC) left by an interactive audit pass that never re-walked
+    discovery sources. Judge freshness per-source (was this source
+    actually discovery-swept since the article's pubDate?), not purely
+    against the global lastSweep timestamp, when interactive sessions
+    have advanced that timestamp without doing discovery.
+  - Q4 Inc. IR platforms (investors.planet.com, ir.blacksky.com, etc.)
+    fail the finalize-sweep anti-spoof host check as first_party even
+    though they are genuinely the company's own release: the registry
+    stores the bare marketing domain (`www.planet.com`), and
+    `investors.planet.com` is a sibling subdomain, not a child of
+    `www.planet.com`, so `hostMatches` rejects it (same trap as
+    2026-07-06-W's ULA newsroom case). Don't force first_party (draft
+    gets rejected). Instead find a verbatim wire copy of the same
+    release (StockTitan, GlobeNewswire mirrors, etc. -- confirmed via
+    WebFetch that the mirror is a verbatim Business Wire reprint, not
+    independent reporting) and lead with that as `wire_pr`, linking the
+    company's own IR page in `secondary_urls` (unscored, but still an
+    honest link for readers). A `wire_pr` lead with `found_none` docks
+    to SNR 3, which is the honest outcome when nothing but the same
+    wire text got reposted (financial-news aggregator mirrors of one
+    release are not independent corroboration; SCORER_VERSION v2's
+    "no found_none penalty on direct-source leads" carve-out only
+    covers tier-5 first_party/official_record/computed leads, not
+    wire_pr).
 - 2026-07-06-EE: X posts CAN be verified without API access:
   `cdn.syndication.twimg.com/tweet-result?id=<status_id>&token=a`
   returns the exact text, author, and timestamp of a public post
