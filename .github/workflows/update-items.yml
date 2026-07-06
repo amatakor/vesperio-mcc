@@ -75,6 +75,14 @@ jobs:
             --model claude-sonnet-5
             --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
 
+      - name: Every run must log a sweep entry (zero-add runs included)
+        run: |
+          if git diff --quiet -- src/data/state.json; then
+            echo "::error::The sweep agent finished without writing a sweep entry."
+            echo "::error::Policy: even zero-add runs log their result via finalize-sweep."
+            exit 1
+          fi
+
       - name: Harvest item artwork (og:image or licensed stock)
         run: bun scripts/fetch-thumbs.ts
 
