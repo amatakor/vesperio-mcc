@@ -121,8 +121,11 @@ a:hover {
 .brand {
   color: var(--fg);
   font-weight: 700;
-  font-size: 1.15rem;
+  /* Scales down on narrow viewports so the lockup never wraps to a
+     second line against the accent square. */
+  font-size: clamp(0.82rem, 3.4vw, 1.15rem);
   letter-spacing: 0.06em;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   gap: 0.55rem;
@@ -143,6 +146,7 @@ a:hover {
 
 .nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.4rem;
 }
 .nav a {
@@ -158,39 +162,21 @@ a:hover {
   color: var(--acc);
   border-color: var(--acc);
 }
+.nav a[aria-current="page"] {
+  color: var(--fg);
+  box-shadow: inset 0 -2px var(--acc);
+}
 
 /* ------------------------------------------------------------ orbits */
 
-/* 6A full-bleed header for the /orbits app frame: brand row + nav row,
-   84px tall, hairline bottom border, active tab underlined in accent. */
-.ohead {
-  height: 84px;
-  padding: 14px 24px 0;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* The /orbits app frame shares the standard masthead at the standard
+   measure; only the trailing space is trimmed so the full-bleed stage
+   sits directly under the header rule. */
+.orbits-head-shell {
+  padding-bottom: 0;
 }
-.ohead .brand {
-  font-size: 13px;
-  letter-spacing: 2px;
-}
-.onav {
-  gap: 20px;
-}
-.onav a {
-  padding: 0 0 8px;
-  border: none;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-}
-.onav a:hover {
-  color: var(--fg);
-  border: none;
-}
-.onav a.onav-active {
-  color: var(--fg);
-  box-shadow: inset 0 -2px var(--acc);
+.orbits-head-shell .masthead {
+  margin-bottom: 0;
 }
 
 /* The 3D stage: frameless, as tall as the viewport comfortably allows
@@ -1489,6 +1475,18 @@ table.stat-table td.num {
   font-size: 0.8rem;
 }
 .footer a {
+  color: var(--acc);
+}
+.footer-feeds {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.footer-feeds a {
+  color: var(--dim);
+}
+.footer-feeds a:hover {
   color: var(--acc);
 }
 
