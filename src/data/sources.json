@@ -1,5 +1,5 @@
 {
-  "$comment": "Source registry for mcc.vesperio.ai ingestion agent. status: 'verified' = URL/feed confirmed working by Florian or agent; 'unverified' = drafted from knowledge, must be checked before first run. tier: 1 = primary source (basis for confirmed items), 2 = trade press (basis for reported items, outlet named in the copy; always prefer the primary source when one exists). Signal-tier sourcing is governed by signals.json, not this file. See CLAUDE.md 'The source ladder'.",
+  "$comment": "Source registry for mcc.vesperio.ai ingestion agent. status: 'verified' = URL/feed confirmed working; 'unverified' = drafted from knowledge, must be checked before first run; 'dead' after 3 consecutive failures. tier is legacy metadata (1 = primary-leaning, 2 = press); the SNR model classes each attached source per claim (see CLAUDE.md 'The SNR score' and prompts/update-items.md). Signal-tier sourcing is governed by signals.json, not this file.",
   "version": "0.1",
   "categories": {
     "eo_operators": [
