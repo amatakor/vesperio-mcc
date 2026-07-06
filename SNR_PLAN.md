@@ -32,6 +32,7 @@
 ### A5. Signals promotion thresholds (§7.2)
 - A non-whitelisted source earns a suggestion in `src/data/signals_suggestions.json` when, over a window of **≥30 days**, it produced **≥5 distinct claims that each reached SNR ≥4 through corroboration independent of any whitelist floor**, with zero ledger strikes in the window.
 - The suggestion carries the evidence list (claims, final SNRs, corroborating sources). Agent never writes `signals.json` (unchanged hard rule).
+- Implementation note (engine review fix, 2026-07-06): the ledger qualifies claims by **resolution `confirmed`**, not by publication score. An informal account publishes at 1-2 by definition; "started low, ended confirmed" is exactly the pattern promotion looks for. The resolver marks `confirmed` when a claim reached SNR ≥4 floor-independently or was confirmed first-party.
 
 ### A6. Backfill of existing items (§9)
 - Only 22 published items exist → **re-score all of them through the real engine**, generating genuine `snr_trace` values, rather than a mechanical stamp. The spec mapping (confirmed→5, reported→3, signal→2) is used only as the base-tier prior; existing `secondary_urls` count as corroboration.
@@ -60,10 +61,11 @@
 3. **Modifiers**, each applied at most once (saturation rule):
    - `+1` if ≥2 total distinct sources
    - `+1` if ≥4 total distinct sources
-   - `+1` if any non-trade/mainstream outlet carries it
+   - `+1` if a **non-lead** source is a non-trade/mainstream outlet (pickup = coverage beyond the lead; a lone mainstream source is just tier 3 per the §2 table)
    - `−1` if the corroboration crawl ran and found nothing
    - `+1` reinforcement when a matching later event attaches (per A2)
    - `+1` persistence (per A1)
+   - **Direct-source ceiling (engine review fix, 2026-07-06):** upward modifiers never lift a claim above 4 unless the lead source is tier 5 (first-party, official record, computed) or the whitelist self floor applies. SNR 5 is definitionally a direct source (the §2 table's tier 4 IS "wide reporting"), so no amount of indirect corroboration reaches it. Subsumes the wire-PR cap in B1.
 4. **Distinctness**: sources are deduped by outlet; verbatim wire rewrites collapse to one source. (Deciding "rewrite vs independent report" is agent judgment; the code just counts what the agent attests.)
 5. **Whitelist floor** (§2.2): on-topic factual claims only; third-party reporting floors at 4, concerned party about itself = 5.
 6. Every step appends to `snr_trace`; the trace is stored at scoring time, never reconstructed. Traces are **append-only over the item's life**: later changes (reinforcement, persistence, dispute) append `history` entries `{date, from, to, reason}` and never rewrite earlier entries. Every trace carries a `scorer_version` so future tuning of the math never makes old and new scores silently incomparable.
