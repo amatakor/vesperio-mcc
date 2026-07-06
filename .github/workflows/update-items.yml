@@ -12,7 +12,7 @@
 name: update-items
 
 env:
-  SCHEDULED_SOURCES: "Planet Labs, ICEYE, Rocket Lab, European Spaceflight, SpaceNews, Launch Library 2 (TheSpaceDevs), SEC EDGAR 8-K feed: PL, SEC EDGAR 8-K feed: BKSY, SEC EDGAR 8-K feed: RKLB, SEC EDGAR 8-K feed: SATL, SEC EDGAR 8-K feed: SPIR, SEC EDGAR 8-K feed: ASTS"
+  SCHEDULED_SOURCES: "Planet Labs, Planet Labs IR, ICEYE, Rocket Lab, BlackSky IR, European Spaceflight, SpaceNews, Launch Library 2 (TheSpaceDevs), SEC EDGAR 8-K feed: PL, SEC EDGAR 8-K feed: BKSY, SEC EDGAR 8-K feed: RKLB, SEC EDGAR 8-K feed: SATL, SEC EDGAR 8-K feed: SPIR, SEC EDGAR 8-K feed: ASTS"
 
 on:
   workflow_dispatch:
@@ -66,9 +66,13 @@ jobs:
             src/data/items.json, held.json, state.json, or sources.json
             directly. Do not commit or push; the workflow handles that.
 
-            Source filter for this run (comma-separated names): fetch
-            only these sources, and record source health only for them:
+            Source filter for this run (comma-separated names): walk
+            only these sources for DISCOVERY, and record source health
+            only for them:
             "${{ inputs.source_filter || env.SCHEDULED_SOURCES }}".
+            The filter does NOT constrain the corroboration crawl or
+            the signals pass; both run open-web per
+            prompts/update-items.md.
 
             ${{ inputs.extra_instructions }}
           claude_args: |

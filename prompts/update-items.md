@@ -1,6 +1,6 @@
 ---
 prompt-id: mcc.update-items
-prompt-version: 0.2.0
+prompt-version: 0.3.0
 output-target: src/data/items.json (via scripts/finalize-sweep.ts)
 schema: src/data/schema.ts
 ---
@@ -39,6 +39,22 @@ result when nothing on-scope happened; padding is still the bug.
    out-of-scope candidates silently. Record source health as before
    (first success flips `unverified` to `verified`; third consecutive
    failure flips to `dead` with a dated note and `fail_count`).
+
+   **Signals pass (part of discovery, exempt from the source filter).**
+   Read `src/data/signals.json` (read-only, always). For people with
+   `whitelist: "yes"`, fetch their directly fetchable channels (`site`,
+   `substack`, `beehiiv`, `bluesky`; prefer RSS where the platform
+   provides it) and collect on-scope factual posts newer than
+   `lastSweep` as candidates like any other source. For `x` channels
+   with status `verified_active`, run targeted WebSearch for recent
+   posts by the handle. An X post is usable only when its exact text
+   was actually retrieved this run (a working mirror or syndication
+   rendering of the post); a search-result snippet alone never
+   supports a fact. Budget: at most **15 fetches per sweep** for this
+   pass, rotating through the list so every whitelisted person is
+   covered at least weekly. Channel finds are classed per the
+   whitelist rules in step 6; jokes, opinions, and off-topic posts are
+   discarded silently. You still never edit `signals.json` itself.
 3. **Known to MCC?** Match each candidate against `existing[]` by actor
    and event class:
    - Same event within **7 days** → it is an update, never a new item.
@@ -51,15 +67,24 @@ result when nothing on-scope happened; padding is still the bug.
    - Anything else → a new item, cross-linked in `secondary_urls` when
      an older related item exists.
 4. **Corroboration crawl.** MANDATORY for every NEW candidate: actively
-   search for other coverage of the same claim. Budget: at most **5
-   fetches per event, 40 per sweep**; when two candidates compete,
-   seismic ones get the budget first. The budget covers 8 events per
-   sweep, so `"not_attempted"` is only legal when the draft has more
-   than 8 new items and the budget genuinely ran out; finalize-sweep
-   REJECTS drafts that skip crawls the budget covered. Direct-source
-   leads (first-party, official record, computed) take no penalty when
-   nothing is found, but the crawl still runs: readers get every source
-   that exists attached to the card. Outcomes:
+   search for other coverage of the same claim. The mechanism is
+   **WebSearch, on the open web**: run 1-2 searches per event (actor +
+   the event's distinguishing noun; add the program or contract name
+   when there is one), then fetch the strongest distinct hits. The
+   run's source filter NEVER constrains this step: the filter governs
+   discovery (which feeds you walk for candidates), not corroboration
+   (verifying a claim you already found). Cross-checking the run's own
+   fetched feeds does not count as a search; `found_none` is a claim
+   about the web, not about your source list. Budget: at most **5
+   fetches per event, 40 per sweep** (a WebSearch call counts as one
+   fetch); when two candidates compete, seismic ones get the budget
+   first. The budget covers 8 events per sweep, so `"not_attempted"`
+   is only legal when the draft has more than 8 new items and the
+   budget genuinely ran out; finalize-sweep REJECTS drafts that skip
+   crawls the budget covered. Direct-source leads (first-party,
+   official record, computed) take no penalty when nothing is found,
+   but the crawl still runs: readers get every source that exists
+   attached to the card. Outcomes:
    - Coverage found → attach each additional source to the item's
      `scoring.sources` with `"via": "corroboration"` and set
      `"crawl": "found_some"`.
@@ -191,6 +216,11 @@ An item ships when all are true:
   cancellation, first flight of a new vehicle)
 - `notable`: belongs in their weekly read
 - `noise`: belongs in the record
+Appointments: routine executive hires (CFO, CAO, SVP) stay below the
+inclusion bar, per standing precedent. The exception is a senior
+government or political figure joining a tracked company (board,
+advisory board, executive role): that is a commercial-access signal
+and ships as `notable` (the Wolfgang Schmidt/Planet case).
 When torn between two levels, pick the lower one. Importance and SNR
 are independent axes: a seismic rumour is seismic AND low-SNR, and the
 gate automatically queues seismic items at SNR 1-2 for Florian's
