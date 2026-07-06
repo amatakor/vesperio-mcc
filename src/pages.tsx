@@ -1150,7 +1150,6 @@ interface ProfileMeta {
   affiliation: string | null;
   rows: Array<[string, SourcedField<unknown>]>;
   overview: SourcedField<string>;
-  notes: string | null | undefined;
   href: string;
   siblingsBase: string;
   siblings: Array<{ slug: string; name: string; affiliation: string | null }>;
@@ -1504,7 +1503,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <h2>facts</h2>
           <ProfileTable rows={profile.rows} />
           {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-          {profile.notes && <p className="dim">{profile.notes}</p>}
         </section>
         <ChildConstellationsSection children={children} />
         <HistorySection history={history} />
@@ -1566,7 +1564,6 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     affiliation: profile.operator.value,
     rows,
     overview: profile.overview,
-    notes: profile.notes,
     href: `/registry/constellations/${profile.slug}/`,
     siblingsBase: "/registry/constellations/",
     siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
@@ -1628,7 +1625,6 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     affiliation: profile.provider.value,
     rows,
     overview: profile.overview,
-    notes: profile.notes,
     href: `/registry/vehicles/${profile.slug}/`,
     siblingsBase: "/registry/vehicles/",
     siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
@@ -1671,7 +1667,6 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
     affiliation: profile.operator.value,
     rows,
     overview: profile.overview,
-    notes: profile.notes,
     href: `/registry/spaceports/${profile.slug}/`,
     siblingsBase: "/registry/spaceports/",
     siblings: spaceports
@@ -1720,7 +1715,6 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     affiliation: null,
     rows,
     overview: profile.overview,
-    notes: profile.notes,
     href: `/registry/organizations/${profile.slug}/`,
     siblingsBase: "/registry/organizations/",
     siblings: organizations
