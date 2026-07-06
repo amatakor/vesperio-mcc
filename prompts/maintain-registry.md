@@ -56,3 +56,27 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
 4. Apply changes conservatively: no source, no change.
 5. Run `bun run build`; the check scripts must pass.
 6. Do not commit or push; the workflow handles it.
+
+## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
+
+Every field you fill or refresh carries the SNR its source class earns,
+alongside `source` and `as_of`:
+
+- CelesTrak / Space-Track / Launch Library records: `"snr": 5` (Launch
+  Library reference pages: `"snr": 4`), `"tier": "canonical"`.
+- Gunter's, eoPortal, and other established aggregators: `"snr": 4`,
+  `"tier": "canonical"`.
+- A single reputable press source: `"snr": 3`, `"tier": "provisional"`.
+- Wikipedia and first-party pages (the entity's own site, agency pages
+  for their own programs): NO snr/tier/trace fields at all; the source
+  link is the whole story.
+
+Scored fields also need an `snr_trace`:
+`{ "base": { "tier": N, "source": "<the field's source URL>", "reason": "<one line>" }, "modifiers": [], "final": N, "scorer_version": 1 }`
+with `final` equal to `snr` and to `base.tier`. `check-registry` rejects
+anything inconsistent (provisional must be exactly 3, canonical 4-5).
+
+Never overwrite a filled field with a lower-SNR source; upgrade only.
+A value that contradicts an existing canonical fact is not written: note
+the conflict for Florian instead (same-metric contradictions are his
+queue). Provisional facts never adjudicate anything.

@@ -6,14 +6,14 @@ Editorial and operational policy for this repo. Applies to the scheduled ingesti
 
 A machine-maintained tracker for the new space economy: Earth observation, connectivity, launch, and commercial human spaceflight. Site surfaces:
 
-1. **News**: fresh items twice daily, each with a plain-English explainer, tags, a source link, and a visible confidence label. Plus one prerendered static page per item and one filtered feed page per category (SEO surface).
+1. **News**: fresh items twice daily, each with a plain-English explainer, tags, its sources, and a visible signal-to-noise (SNR) score whose calculation is stored and shown. Plus one prerendered static page per item and one filtered feed page per category (SEO surface).
 2. **Registry**: standardised reference profiles of constellations and launch vehicles. One prerendered static page per entity. Each profile carries key computed figures (launch cadence, sats on orbit, flight record, growth trend) as anchored, citable stat blocks with as-of dates.
 3. **Signals** (influencers): a hand-curated list of people worth following. The agent never edits this section. The list doubles as the whitelist for `signal`-tier sourcing: only people on it (plus named executives of the actor concerned) can be the basis of an item via social posts.
 4. **Stats**: a public page of basic computed indices from our own data (launch cadence by provider, sats on orbit by constellation, items tracked), each stat block with an anchor and a pre-formatted citation string with retrieval date, plus a `/stats.json` endpoint. Deeper cross-cutting indices (contract volume by agency, pricing trends, growth analytics) are reserved for the v2 paid layer and must not appear here.
 5. **Learn**: parked for a later phase. Do not build or scaffold it without explicit instruction.
-6. **Log**: the public sweep changelog, rendered from state.json: every sweep's counters and summary, including zero-add sweeps and why they were quiet. The machine's restraint, visible.
+6. **Log**: the public sweep changelog, rendered from state.json: every sweep's counters, summary, and SNR movements (upgrades, downgrades, disputes), plus the source-reliability ledger, including zero-add sweeps and why they were quiet. The machine's calibration, visible.
 
-The product promise is reliability. A reader should never catch this site claiming more confidence than its source supports. Confirmed means confirmed; everything less is labelled. Missing a story is acceptable; publishing a false one as fact is not.
+The product promise is honest calibration. Nothing on-scope is withheld for sourcing reasons; every item and every scored registry fact carries a visible SNR score (1-5) whose calculation is stored and shown. A reader should never catch this site claiming more confidence than its sources support: the copy attributes every claim, and the score never exaggerates. Publishing an early signal at SNR 1 is the model working; publishing a weak claim dressed as a certainty is the cardinal failure. Whether the scores are honest is itself measured: every claim's score at publication is recorded and compared against how it resolves.
 
 ## Scope
 
@@ -37,44 +37,49 @@ The platform tracks new space events: the commercial space economy and the event
 - Deep space and planetary science missions with no commercial-provider angle
 - Suborbital tourism as routine events (first flights and incidents qualify)
 - Conflict analysis, battlefield OSINT, or claims about how space assets are being used operationally, unless stated by the operator or a government on the record
-- Rumours, personnel gossip, and social media claims from accounts outside the source ladder (not the actor, not a named executive of it, not on the Signals list)
+- Anonymous, unattributable rumours and personnel gossip. Attributable weak sources (an identifiable account, an informal but named outlet) publish at low SNR; sources that cannot be named at all do not publish.
 
 ## Ingestion rules (hard rules, no exceptions)
 
-1. **No source on the ladder, no publish; never overclaim.** Every item links the best available source and carries the confidence tier that source earns (see "The source ladder"). `confirmed` requires a primary source. Tier-2 trade press (SpaceNews, Payload, NASASpaceflight, European Spaceflight, Xinhua) can be the basis of an item at `reported` confidence. Social posts by Signals-list individuals or named executives of the actor can be the basis at `signal` confidence. Every non-confirmed item names its sourcing in the copy ("per SpaceNews", "per @handle on X, unconfirmed"). When a primary source exists, link it and use it; below the signal tier, hold the item.
+1. **Everything on-scope publishes at its honest SNR; the copy never overclaims.** Every item links every source it has and carries the SNR the scoring engine computes (see "The SNR score"). The agent attests judgment inputs (source classes, extraordinary flags, corroboration outcomes); the math is code (`scripts/snr/`, applied by `finalize-sweep`), never the agent's to run by hand. Items whose lead source is not first-party name their sourcing in the headline and copy ("per SpaceNews", "per @handle on X"). When a primary source exists, link it and lead with it. The one thing that still never publishes is a claim that cannot be attributed to anyone.
 2. **Never state a fact that is not in the linked source.** No enrichment from model memory for dates, figures, names, or technical specs. Background context from memory is allowed only in the "why it matters" field and must be framed as context, not news.
 3. **Numbers are copied, not paraphrased.** Resolutions, prices, masses, orbit parameters, contract values: exact figures from the source or omit them.
 4. **Deduplicate before writing.** Check `src/data/items.json` for the same event (same company + same event type within 7 days). Update the existing item rather than creating a duplicate.
-5. **When uncertain, hold.** An item held for one cycle costs nothing. A wrong item costs the site's credibility. Write held items to `src/data/held.json` with a one-line reason for human review.
+5. **held.json is an edit queue, not a sourcing quarantine.** It holds schema conflicts, same-metric contradictions awaiting reconciliation, and open decisions for Florian (including auto-queued seismic items at SNR 2 or below). Weak sourcing is never a reason to hold: that is what a low SNR is for.
 6. **State-media handling.** Facts of record (launch occurred, satellite count) from Chinese state sources are publishable. Claims about performance, commercial success, or intent are labelled "per [source], unverified."
 7. **Never fabricate a URL.** Only link URLs actually fetched during the run.
 
-## The source ladder
+## The SNR score
 
-An item's confidence is set by the best source it has. Three tiers, and the copy never claims more than its tier.
+Every item and every scored registry fact carries an SNR: an integer 1-5, displayed as bars, with the full calculation stored at scoring time (`snr_trace`) and shown on click. SNR_SPEC.md is the governing spec and SNR_PLAN.md the resolved contract; this section is the operating summary.
 
-**`confirmed` requires a primary source.** A primary source is the actor itself or an official record of the event. Concretely:
-1. Statements by the company the item is about: press releases, official newsroom/blog posts, official corporate social accounts, investor relations pages
-2. Regulatory and legal records: FCC/ITU/NOAA filings, SEC filings, court documents, export-control and sanctions notices in official registers
-3. Government and agency statements: contract award notices (SAM.gov, esa-star, TED), official agency press releases, on-the-record statements published by the government itself
-4. Financial disclosures: earnings releases, 8-Ks, investor presentations hosted by the company
-5. Direct observational data: launch webcasts, Space-Track/CelesTrak orbital data, Launch Library records for launch occurrence facts
-6. Recorded first-party statements: earnings call transcripts, executives speaking on stage where a recording or official transcript is linkable
+| SNR | Meaning |
+|---|---|
+| 1 | Low confidence. Single source, rumor, out of pattern, extraordinary claim with little evidence. |
+| 2 | As 1 but with more than one source, OR from a usually-reliable / whitelisted source, OR reinforced by a later matching signal. |
+| 3 | Multiple informal sources, or a few reputable sources (trade press, legacy media, industry-leader accounts). |
+| 4 | Wide reporting (multiple sources, media + social), an established aggregator, or a long-standing uncontested signal. |
+| 5 | Quasi-certainty. A direct source from the concerned party: press release on its own domain, first-party account, official filing, or direct observational data. |
 
-**`reported` allows credible trade press as the basis.** Wire services and trade press (Reuters, SpaceNews, Payload, European Spaceflight, NASASpaceflight) reporting with named sources, direct quotes, or documents they publish. The item names the outlet in the copy ("per SpaceNews"). If the outlet merely relays a company statement, link the company statement instead and confirm. Unnamed-source reporting from these outlets is also `reported`, phrased as such ("Reuters reports, citing unnamed sources").
+**Mechanics (the math is code; agents only attest inputs):**
+- Base tier comes from the lead source's class: first-party / official record / computed data 5, press-wire copy or established aggregator 4, trade or mainstream press 3, whitelisted account 3 (before floors), informal 1. A ledger demotion lowers a trade source to informal.
+- Corroboration raises the score, once per rule: a second distinct source, a fourth, and pickup by a mainstream (non-trade) outlet beyond the lead. Wire rewrites of one story are one source. A corroboration crawl that ran and found nothing costs one level; a crawl that never ran costs nothing.
+- **Direct-source ceiling:** no amount of indirect corroboration reaches 5. Wide reporting IS tier 4; 5 is reserved for direct sources (or the whitelist self-floor, which is a direct source).
+- **Extraordinary claims start at 1** regardless of source count and climb only via corroboration and persistence. Any seismic claim whose lead is below first-party is automatically extraordinary (code-enforced).
+- **Persistence:** 14 uncontested days earn +1, once, never above 4. **Reinforcement:** a matching event within 30 days bumps an SNR 1-2 item by one and attaches its source. **Contradiction** is handled by reconciliation (metric mismatch is annotated, never punished; genuine same-metric conflicts let the higher-SNR side lead, and equals are both marked disputed and queued for Florian).
+- **Anti-spoof:** first-party and official-record classes are accepted only when the URL's domain matches the actor's registry-recorded website or an official register; press-wire copies cap at 4 until the actor's own domain confirms. Fake press releases are a documented attack; the gate rejects misclassification.
+- **Whitelist floor:** a signals.json person (whitelist "yes", verified_active channel, ingest_rules honored) floors an on-topic factual claim at 4 as an observer, 5 when the concerned party speaks about itself. Jokes, opinions, and off-topic posts get no floor.
+- Scores move over an item's life; traces are append-only, every move is logged in the sweep entry and rendered on /log, and each claim's score-at-publication is recorded in the source ledger for calibration.
 
-**`signal` allows curated voices as the basis.** Posts on X or other social platforms by individuals on the Signals whitelist (`whitelist: "yes"` in `src/data/signals.json`, via `verified_active` channels, honoring their `ingest_rules`) or by named executives or officials of the actor, speaking about their own organisation or domain. The item names the account and flags it in the copy ("per @handle on X, unconfirmed"). Everyone outside the ladder (anonymous accounts, random aggregators, forum posts) does not qualify at any tier.
-
-**Upgrade rule.** When a better source appears for a published item, upgrade it via an update: switch source_url to the better source, raise the confidence tier, keep the id.
-
-**Presentation of non-confirmed items.** The sourcing is named in the headline itself ("SpaceNews: ..." for reported, "Per @handle: ..." for signal). Item media carries an UNVERIFIED banner. The item page shows an evidence block: who said it, on what basis (named sources, documents, count of corroborating outlets), and what would confirm or deny it, with the expected timing when the source states one. Announcements of record (a signed contract, a completed launch) should be re-checked against a corporate or official source in the next sweeps and upgraded when possible.
+**Registry facts:** a fact needs SNR ≥ 3 to enter (null-fill only, never a silent overwrite). SNR 3 fields are **provisional** (badged, never adjudicating); SNR 4-5, first-party, Wikipedia, and computed facts are **canonical**. Wikipedia and first-party fields carry no badge and just link their source; computed figures are authoritative only for what they measure ("cataloged on orbit, as_of date") and never contradict "operational" or "announced" claims.
 
 **Edge cases:**
-- State media (Xinhua, TASS) on state programs: primary for facts of record, `reported` for everything else, origin always labelled.
-- Aggregator databases (Gunter's Space Page, NextSpaceflight): reference material for the registry, not a basis for news items. Gunter's terms permit summarization/RAG only with clear attribution and a direct link to the original URL; therefore every registry field based on it carries the exact page URL (deep link, never the homepage) in its `source`, registry pages render a visible attribution notice when Gunter's data is present, and only facts stated on that single page are used (no summing across pages).
-- Leaked documents: out of scope entirely. Hold until officially confirmed or reported so widely the actor responds on record; then the response is the source.
+- State media (Xinhua, TASS) on state programs: facts of record score as official; performance and intent claims are labelled "per [source], unverified" and scored as trade at best.
+- Aggregator databases (Gunter's Space Page, Launch Library): canonical registry references at SNR 4. Gunter's terms still apply unchanged: exact page URL (deep link) in every field's `source`, visible attribution on pages using it, no summing across pages.
+- Leaked documents: still out entirely. Publishable only once the actor or an official record responds; the response is the source.
+- The old primary-source test still decides the first-party class: could the linked source itself be wrong about the fact without the actor or official record being wrong? If yes, it is not first-party.
 
-Test to apply: could the linked source itself be wrong about the fact without the actor or official record being wrong? If yes, it is not primary, and the item cannot be `confirmed`.
+**Source reliability feedback:** `source_ledger.json` (machine-owned, human-audited, rendered on /log) records strikes (claims that lost a same-metric contradiction), credits (claims that started at 1-2 and were later confirmed: early, not wrong), and every claim's calibration record. Repeated strikes demote a source's class inside a rolling 90-day window; demotion decays and confirmed claims win it back. Sources that repeatedly produce floor-independently confirmed claims become entries in `signals_suggestions.json` for Florian's review; the agent never writes `signals.json`.
 
 ## Item format
 
@@ -95,20 +100,24 @@ Each item in `src/data/items.json`:
   "category": "",
   "impact": "",
   "companies": [],
-  "source_url": "primary source, required",
+  "source_url": "lead (best) source, required",
   "secondary_urls": [],
-  "confidence": ""
+  "snr": 0,
+  "snr_trace": {},
+  "sources": []
 }
 ```
 
+`snr`, `snr_trace`, and `sources` are stamped by `finalize-sweep` from the draft's `scoring` block (see prompts/update-items.md); agents never hand-write them.
+
 **Categories** (exactly one): `launch`, `constellation`, `contract`, `procurement`, `regulatory`, `financial`, `product`, `partnership`, `incident`, `geopolitical`, `human-spaceflight`.
 
-**Impact** (exactly one):
-- `critical`: reshapes competitive dynamics (major M&A, operator failure, flagship program cancellation, first flight of a new vehicle)
+**Impact** (exactly one). Importance and SNR are independent axes; a seismic rumour is seismic AND low-SNR, and seismic items at SNR ≤ 2 are auto-queued for Florian while they publish:
+- `seismic`: reshapes competitive dynamics (major M&A, operator failure, flagship program cancellation, first flight of a new vehicle)
 - `notable`: matters to anyone tracking the sector (contract awards, constellation expansions, funding rounds, regulatory grants)
-- `routine`: worth logging, not worth a push (scheduled launch success, minor product update)
+- `noise`: worth logging, not worth a push (scheduled launch success, minor product update)
 
-**Confidence** (exactly one): `confirmed` (primary source: the actor itself or an official record), `reported` (credible trade press with named sourcing; outlet named in the copy), `signal` (Signals-list individual or named executive on social; account named and flagged "unconfirmed" in the copy).
+**SNR** (integer 1-5): computed by the scoring engine, never hand-set. See "The SNR score".
 
 **Tags**: lowercase, reuse existing tags before inventing new ones; newly coined tags are logged in the sweep entry for human review. Four tiers:
 - Domain (every item carries one where applicable): `eo`, `connectivity`, `iot`, `launch`, `human-spaceflight`
@@ -120,7 +129,8 @@ Each item in `src/data/items.json`:
 
 - Plain declarative English. No hype ("game-changing", "revolutionary", "milestone"), no press-release voice.
 - "Why it matters" is written for a commercial director at an operator or reseller, not for space fans. Assume the reader knows what SAR is; tell them what the event changes.
-- Attribute claims: "ICEYE says", "per the FCC filing", "the 8-K states".
+- Attribute claims: "ICEYE says", "per the FCC filing", "the 8-K states". Attribution in copy survives every scoring change; the score never replaces naming who said what.
+- SNR scores statements, not boasts: a first-party superlative ("world's largest constellation") is attributed, never scored or repeated as fact.
 - No em dashes anywhere on the site.
 - Headlines name the actor first: "Firefly wins NASA VADR task order", not "NASA awards task order to Firefly".
 
@@ -142,21 +152,22 @@ Signals avatars follow the same logic via `scripts/fetch-avatars.ts`: the profil
 2. Load `src/data/sources.json`. Fetch each source with `status` of `verified` or `unverified`. On first successful fetch of an `unverified` source, flip it to `verified`; after 3 consecutive failures, flip to `dead` and add a note.
 3. Collect candidate items newer than the last run timestamp in `src/data/state.json`.
 4. Filter against scope. Discard out-of-scope items silently.
-5. For each candidate: verify against a tier-1 source, apply the hard rules, write the item or hold it.
+5. For each candidate, run the master-crawler loop in prompts/update-items.md: known-to-MCC match (7-day dedup, 30-day reinforcement for SNR ≤ 2), corroboration crawl within budget (5 fetches per event, 40 per sweep, seismic first), registry crossfeed check (like-for-like metrics first), honest source classes in the draft's scoring block. `finalize-sweep` computes all scores, applies persistence bumps, records ledger claims, and logs SNR movements.
 6. Run the build (`bun run build`) to confirm the feed parses and the site builds before committing. A commit that breaks the build is worse than a skipped run.
 7. Append new lessons to `SWEEP_MEMORY.md` (source behaviour changes, mistakes caught, judgment calls worth remembering). Keep entries short and dated.
 8. Commit with message `ingest: N new, M updated, K held (YYYY-MM-DD HH:MM UTC)`.
 9. If a run produces zero items, still write and commit the sweep log entry in state.json; the public /log/ page renders it, and a quiet day explained is a trust signal. Feed content is never padded: no items, no filler, on quiet days.
 
-Registry updates run in a separate scheduled workflow (`maintain-registry.yml`), lower cadence (weekly): update factual fields (sats on orbit, flight counts, next flight) from Launch Library and published items only, every change carrying `source` and `as_of`. Never restructure the registry in a scheduled run.
+Registry updates run in a separate scheduled workflow (`maintain-registry.yml`), lower cadence (weekly): update factual fields (sats on orbit, flight counts, next flight) from Launch Library and published items only, every change carrying `source` and `as_of`, plus the SNR fields its class earns (computed 5 canonical; aggregator 4 canonical; a single reputable press source 3 provisional; Wikipedia/first-party unscored). Never restructure the registry in a scheduled run.
 
 ## Registry rules
 
 - Scope (extended 2026-07-05): constellations (EO, connectivity, IoT; fleet-level parents may carry named child constellations via the parent field), orbital launch vehicles, spaceports (grouped by region), and ecosystem organizations (manufacturer, launch-services, in-space-services, ground-segment, institution, finance). One profile per entity, uniform fields per entity type.
-- Registry sourcing (relaxed by Florian, 2026-07-05; news items are NOT affected and keep the full ladder): reference fields (country, founded, focus, status, websites, dates, sensor types, orbits, vehicle specs, timeline events) may cite Wikipedia and reputable publications (SpaceNews, Payload, Via Satellite, Reuters, and peers) in addition to operator/official pages, Gunter's, and Launch Library. Preference order stays: primary > aggregator > Wikipedia/press, and a field is upgraded when a better source is found. What does NOT relax: the value must still be stated by the cited page (no invention, no estimates, no summing), every field still carries source + as_of, and satellite counts prefer primary or CelesTrak-derived figures.
+- Registry sourcing (relaxed by Florian, 2026-07-05; news items are NOT affected and keep the full SNR model): reference fields (country, founded, focus, status, websites, dates, sensor types, orbits, vehicle specs, timeline events) may cite Wikipedia and reputable publications (SpaceNews, Payload, Via Satellite, Reuters, and peers) in addition to operator/official pages, Gunter's, and Launch Library. Preference order stays: primary > aggregator > Wikipedia/press, and a field is upgraded when a better source is found. What does NOT relax: the value must still be stated by the cited page (no invention, no estimates, no summing), every field still carries source + as_of, and satellite counts prefer primary or CelesTrak-derived figures.
 - Operator/company display names are normalized through the curated alias map (src/data/aliases.json); the sourced value in each profile keeps the cited page's wording.
 - No free-form essays, with one exception: a profile may carry a short overview block (2-4 sentences) stored as a sourced field like any other; every claim in it must be backed by that field's source URL and as_of date. Anything the source does not state stays out of the overview.
 - Every field carries a `source` and `as_of` date. Unknown fields stay `null`; never estimate.
+- Two SNR tiers (see "The SNR score"): a fact needs SNR ≥ 3 to enter; SNR 3 fields are provisional (badged, never adjudicating), SNR 4-5 / first-party / Wikipedia / computed facts are canonical. Wikipedia and first-party fields carry no badge. Disputed fields keep both claims visible, each with its own badge.
 - Structural edits (new fields, new entries) happen only via @claude issues reviewed by Florian, never in scheduled runs.
 
 ## Development rules (@claude interactive)
@@ -169,7 +180,7 @@ Registry updates run in a separate scheduled workflow (`maintain-registry.yml`),
 
 ## Things the agent must never do
 
-- Publish from a source outside the ladder, or at a higher confidence than the source earns
+- Misclassify a source class, hand-write an SNR/trace, or claim more certainty in copy than the score supports
 - Invent, estimate, or "recall" numbers, dates, or URLs
 - Edit the Signals/influencers list
 - Widen scope beyond the Scope section without an explicit instruction from Florian
