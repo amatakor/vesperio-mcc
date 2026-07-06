@@ -370,6 +370,10 @@ export interface ConstellationProfile {
   orbits?: ConstellationOrbits | null;
   /** Sourced history timeline; absent until the Task 15 crawl fills it. */
   events?: TimelineEvent[];
+  /** Stock listing of the operator as stated, e.g. "NYSE: PL". */
+  ticker?: SourcedField<string>;
+  /** Chart-provider symbol for the price pipeline, e.g. "PL". */
+  stock_symbol?: string | null;
   /** 2-4 sentence sourced overview; every claim backed by this field's source. */
   overview: SourcedField<string>;
   operator: SourcedField<string>;
@@ -468,6 +472,10 @@ export interface OrgProfile {
   kind: OrgKind;
   /** Sourced history timeline; absent until the Task 15 crawl fills it. */
   events?: TimelineEvent[];
+  /** Stock listing as stated by the source, e.g. "Nasdaq: RKLB". */
+  ticker?: SourcedField<string>;
+  /** Chart-provider symbol for scripts/fetch-stocks.ts, e.g. "RKLB" or "7011.T". */
+  stock_symbol?: string | null;
   /** 2-4 sentence sourced overview. */
   overview: SourcedField<string>;
   country: SourcedField<string>;
