@@ -7,7 +7,15 @@
 import {
   CATEGORIES,
   IMPACTS,
+  LEGACY_IMPACTS,
   CONFIDENCES,
+  SOURCE_CLASSES,
+  SOURCE_VIA,
+  SNR_MODIFIER_TYPES,
+  REGISTRY_FACT_TIERS,
+  LEDGER_EVENT_KINDS,
+  CLAIM_RESOLUTIONS,
+  SUGGESTION_STATUSES,
   SOURCE_STATUSES,
   FEED_TYPES,
   SOURCE_TIERS,
@@ -79,6 +87,117 @@ function reqStringArray(o: Obj, key: string, path: string, errors: string[]): st
   return v as string[];
 }
 
+// ------------------------------------------------------------------ snr
+
+function isSnrValue(v: unknown): v is number {
+  return typeof v === "number" && Number.isInteger(v) && v >= 1 && v <= 5;
+}
+
+/**
+ * Shared by items and registry fields. Enforces the SNR_PLAN.md §B
+ * invariants: valid base, each modifier type at most once (saturation),
+ * and final === clamp(base.tier + sum of deltas, 1, 5) === the stored
+ * snr next to the trace.
+ */
+export function validateSnrTrace(
+  v: unknown,
+  storedSnr: number,
+  path: string,
+  errors: string[],
+): void {
+  if (!isObj(v)) {
+    errors.push(`${path}: required object { base, modifiers, final, scorer_version }`);
+    return;
+  }
+
+  let baseTier: number | null = null;
+  if (!isObj(v.base)) {
+    errors.push(`${path}.base: required { tier, source, reason }`);
+  } else {
+    if (isSnrValue(v.base.tier)) baseTier = v.base.tier;
+    else errors.push(`${path}.base.tier: required integer 1-5`);
+    if (!isHttpUrl(v.base.source)) errors.push(`${path}.base.source: required http(s) URL`);
+    reqString(v.base, "reason", `${path}.base`, errors);
+  }
+
+  let deltaSum = 0;
+  let deltasValid = true;
+  if (!Array.isArray(v.modifiers)) {
+    errors.push(`${path}.modifiers: required array (empty when no modifier applied)`);
+    deltasValid = false;
+  } else {
+    const seen = new Set<string>();
+    v.modifiers.forEach((m, i) => {
+      const p = `${path}.modifiers[${i}]`;
+      if (!isObj(m)) {
+        errors.push(`${p}: must be an object`);
+        deltasValid = false;
+        return;
+      }
+      if (!SNR_MODIFIER_TYPES.includes(m.type as never)) {
+        errors.push(`${p}.type: "${String(m.type)}" not in [${SNR_MODIFIER_TYPES.join(", ")}]`);
+      } else if (seen.has(m.type as string)) {
+        errors.push(`${p}.type: "${String(m.type)}" applied twice; modifiers saturate (SNR_SPEC 2.1)`);
+      } else {
+        seen.add(m.type as string);
+      }
+      if (typeof m.delta === "number" && Number.isInteger(m.delta)) deltaSum += m.delta;
+      else {
+        errors.push(`${p}.delta: required integer`);
+        deltasValid = false;
+      }
+      reqString(m, "reason", p, errors);
+      if (m.source !== undefined && !isHttpUrl(m.source)) {
+        errors.push(`${p}.source: must be an http(s) URL when present`);
+      }
+    });
+  }
+
+  if (!isSnrValue(v.final)) {
+    errors.push(`${path}.final: required integer 1-5`);
+  } else {
+    if (v.final !== storedSnr) {
+      errors.push(`${path}.final: ${v.final} does not match the stored snr ${storedSnr}`);
+    }
+    if (baseTier !== null && deltasValid) {
+      const computed = Math.min(5, Math.max(1, baseTier + deltaSum));
+      if (computed !== v.final) {
+        errors.push(
+          `${path}.final: ${v.final}, but base ${baseTier} with modifier sum ${deltaSum} clamps to ${computed}`,
+        );
+      }
+    }
+  }
+
+  if (
+    typeof v.scorer_version !== "number" ||
+    !Number.isInteger(v.scorer_version) ||
+    v.scorer_version < 1
+  ) {
+    errors.push(`${path}.scorer_version: required positive integer`);
+  }
+
+  if (v.history !== undefined) {
+    if (!Array.isArray(v.history)) {
+      errors.push(`${path}.history: must be an array when present`);
+    } else {
+      v.history.forEach((h, i) => {
+        const p = `${path}.history[${i}]`;
+        if (!isObj(h)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        if (!(typeof h.date === "string" && isValidDate(h.date))) {
+          errors.push(`${p}.date: required YYYY-MM-DD`);
+        }
+        if (!isSnrValue(h.from)) errors.push(`${p}.from: required integer 1-5`);
+        if (!isSnrValue(h.to)) errors.push(`${p}.to: required integer 1-5`);
+        reqString(h, "reason", p, errors);
+      });
+    }
+  }
+}
+
 // ---------------------------------------------------------------- items
 
 export function validateItem(v: unknown, path: string, errors: string[]): void {
@@ -131,17 +250,63 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   if (!CATEGORIES.includes(v.category as never)) {
     errors.push(`${path}.category: "${String(v.category)}" not in [${CATEGORIES.join(", ")}]`);
   }
-  if (!IMPACTS.includes(v.impact as never)) {
-    errors.push(`${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}]`);
+  // Transitional (until the slice-3 migration): new impact names are
+  // canonical, legacy names still accepted so pre-migration data builds.
+  if (!IMPACTS.includes(v.impact as never) && !LEGACY_IMPACTS.includes(v.impact as never)) {
+    errors.push(
+      `${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}] (legacy: ${LEGACY_IMPACTS.join(", ")})`,
+    );
   }
-  if (!CONFIDENCES.includes(v.confidence as never)) {
-    errors.push(`${path}.confidence: "${String(v.confidence)}" not in [${CONFIDENCES.join(", ")}]`);
+
+  // Transitional: an item carries either an SNR score (new model) or a
+  // legacy confidence tier. snr requires its stored trace.
+  const hasSnr = v.snr !== undefined;
+  if (hasSnr) {
+    if (!isSnrValue(v.snr)) {
+      errors.push(`${path}.snr: must be an integer 1-5`);
+    } else {
+      validateSnrTrace(v.snr_trace, v.snr, `${path}.snr_trace`, errors);
+    }
+  } else {
+    if (v.snr_trace !== undefined) errors.push(`${path}.snr_trace: present without snr`);
+    if (!CONFIDENCES.includes(v.confidence as never)) {
+      errors.push(`${path}: needs snr (1-5, with snr_trace) or a legacy confidence tier`);
+    }
+  }
+
+  if (v.sources !== undefined) {
+    if (!Array.isArray(v.sources)) {
+      errors.push(`${path}.sources: must be an array when present`);
+    } else {
+      v.sources.forEach((s, i) => {
+        const p = `${path}.sources[${i}]`;
+        if (!isObj(s)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        if (!isHttpUrl(s.url)) errors.push(`${p}.url: required http(s) URL`);
+        reqString(s, "outlet", p, errors);
+        if (!SOURCE_CLASSES.includes(s.class as never)) {
+          errors.push(`${p}.class: "${String(s.class)}" not in [${SOURCE_CLASSES.join(", ")}]`);
+        }
+        if (!(typeof s.added === "string" && isValidDate(s.added))) {
+          errors.push(`${p}.added: required YYYY-MM-DD`);
+        }
+        if (!SOURCE_VIA.includes(s.via as never)) {
+          errors.push(`${p}.via: "${String(s.via)}" not in [${SOURCE_VIA.join(", ")}]`);
+        }
+      });
+    }
+  }
+
+  if (v.disputed !== undefined && typeof v.disputed !== "boolean") {
+    errors.push(`${path}.disputed: must be a boolean when present`);
   }
 
   reqStringArray(v, "companies", path, errors);
 
   if (!isHttpUrl(v.source_url)) {
-    errors.push(`${path}.source_url: required http(s) URL; no primary source, no publish`);
+    errors.push(`${path}.source_url: required http(s) URL (the lead source)`);
   }
   const secondary = reqStringArray(v, "secondary_urls", path, errors);
   if (secondary !== null) {
@@ -154,8 +319,9 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
     errors.push(`${path}.publishDate: must be an ISO datetime when present`);
   }
 
-  // Non-confirmed items must carry their evidence block; confirmed items need none.
-  if (v.confidence === "reported" || v.confidence === "signal") {
+  // Legacy rule (dropped with confidence in slice 3): non-confirmed items
+  // carry an evidence block. SNR-scored items explain themselves via the trace.
+  if (!hasSnr && (v.confidence === "reported" || v.confidence === "signal")) {
     if (!isObj(v.evidence)) {
       errors.push(`${path}.evidence: required for ${String(v.confidence)} items ({ said_by, basis, confirmation })`);
     }
@@ -257,6 +423,23 @@ export function validateStateFile(data: unknown): string[] {
     }
     reqString(s, "summary", path, errors);
     reqStringArray(s, "coverage", path, errors);
+    if (s.snr_movements !== undefined) {
+      if (!Array.isArray(s.snr_movements)) {
+        errors.push(`${path}.snr_movements: must be an array when present`);
+      } else {
+        s.snr_movements.forEach((m, j) => {
+          const p = `${path}.snr_movements[${j}]`;
+          if (!isObj(m)) {
+            errors.push(`${p}: must be an object`);
+            return;
+          }
+          reqString(m, "id", p, errors);
+          if (!isSnrValue(m.from)) errors.push(`${p}.from: required integer 1-5`);
+          if (!isSnrValue(m.to)) errors.push(`${p}.to: required integer 1-5`);
+          reqString(m, "reason", p, errors);
+        });
+      }
+    }
   });
   return errors;
 }
@@ -418,6 +601,146 @@ export function validateSignalsFile(data: unknown): string[] {
   return errors;
 }
 
+// ------------------------------------------- source ledger / suggestions
+
+export function validateSourceLedgerFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["source_ledger.json: root must be an object"];
+  if (typeof data.version !== "string") errors.push("source_ledger.version: required string");
+  if (data.updated !== null && !isIsoDatetime(data.updated)) {
+    errors.push("source_ledger.updated: must be null or an ISO datetime");
+  }
+  if (!Array.isArray(data.sources)) {
+    errors.push("source_ledger.sources: required array");
+    return errors;
+  }
+  const seen = new Set<string>();
+  data.sources.forEach((s, i) => {
+    const path = `source_ledger.sources[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    const domain = reqString(s, "domain", path, errors);
+    if (domain !== null) {
+      if (seen.has(domain)) errors.push(`${path}.domain: duplicate "${domain}"`);
+      seen.add(domain);
+    }
+    if (s.name !== undefined && typeof s.name !== "string") {
+      errors.push(`${path}.name: must be a string when present`);
+    }
+    if (
+      s.class_override !== undefined &&
+      s.class_override !== null &&
+      !SOURCE_CLASSES.includes(s.class_override as never)
+    ) {
+      errors.push(`${path}.class_override: must be null or one of [${SOURCE_CLASSES.join(", ")}]`);
+    }
+    if (!Array.isArray(s.events)) {
+      errors.push(`${path}.events: required array`);
+    } else {
+      s.events.forEach((e, j) => {
+        const p = `${path}.events[${j}]`;
+        if (!isObj(e)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        if (!(typeof e.date === "string" && isValidDate(e.date))) {
+          errors.push(`${p}.date: required YYYY-MM-DD`);
+        }
+        if (!LEDGER_EVENT_KINDS.includes(e.kind as never)) {
+          errors.push(`${p}.kind: must be one of [${LEDGER_EVENT_KINDS.join(", ")}]`);
+        }
+        reqString(e, "claim", p, errors);
+        reqString(e, "reason", p, errors);
+      });
+    }
+    if (!Array.isArray(s.claims)) {
+      errors.push(`${path}.claims: required array`);
+    } else {
+      s.claims.forEach((c, j) => {
+        const p = `${path}.claims[${j}]`;
+        if (!isObj(c)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        reqString(c, "claim", p, errors);
+        if (!(typeof c.date === "string" && isValidDate(c.date))) {
+          errors.push(`${p}.date: required YYYY-MM-DD`);
+        }
+        if (!isSnrValue(c.snr_at_publication)) {
+          errors.push(`${p}.snr_at_publication: required integer 1-5`);
+        }
+        if (!CLAIM_RESOLUTIONS.includes(c.resolution as never)) {
+          errors.push(`${p}.resolution: must be one of [${CLAIM_RESOLUTIONS.join(", ")}]`);
+        }
+        if (
+          c.resolved_on !== undefined &&
+          !(typeof c.resolved_on === "string" && isValidDate(c.resolved_on))
+        ) {
+          errors.push(`${p}.resolved_on: must be YYYY-MM-DD when present`);
+        }
+      });
+    }
+  });
+  return errors;
+}
+
+export function validateSignalsSuggestionsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["signals_suggestions.json: root must be an object"];
+  if (typeof data.version !== "string") errors.push("signals_suggestions.version: required string");
+  if (!Array.isArray(data.suggestions)) {
+    errors.push("signals_suggestions.suggestions: required array");
+    return errors;
+  }
+  const seen = new Set<string>();
+  data.suggestions.forEach((s, i) => {
+    const path = `signals_suggestions[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    const id = reqString(s, "id", path, errors);
+    if (id !== null) {
+      if (!TAG_RE.test(id)) errors.push(`${path}.id: must be lowercase kebab-case`);
+      if (seen.has(id)) errors.push(`${path}.id: duplicate id "${id}"`);
+      seen.add(id);
+    }
+    reqString(s, "name", path, errors);
+    if (!isHttpUrl(s.channel_url)) errors.push(`${path}.channel_url: required http(s) URL`);
+    if (!(typeof s.proposed_on === "string" && isValidDate(s.proposed_on))) {
+      errors.push(`${path}.proposed_on: required YYYY-MM-DD`);
+    }
+    if (!SUGGESTION_STATUSES.includes(s.status as never)) {
+      errors.push(`${path}.status: must be one of [${SUGGESTION_STATUSES.join(", ")}]`);
+    }
+    if (s.notes !== undefined && typeof s.notes !== "string") {
+      errors.push(`${path}.notes: must be a string when present`);
+    }
+    if (!Array.isArray(s.evidence) || s.evidence.length === 0) {
+      errors.push(`${path}.evidence: required non-empty array`);
+    } else {
+      s.evidence.forEach((e, j) => {
+        const p = `${path}.evidence[${j}]`;
+        if (!isObj(e)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        reqString(e, "claim", p, errors);
+        if (!isSnrValue(e.final_snr)) errors.push(`${p}.final_snr: required integer 1-5`);
+        const urls = reqStringArray(e, "corroborating_sources", p, errors);
+        if (urls !== null) {
+          for (const u of urls) {
+            if (!isHttpUrl(u)) errors.push(`${p}.corroborating_sources: "${u}" is not an http(s) URL`);
+          }
+        }
+      });
+    }
+  });
+  return errors;
+}
+
 // ------------------------------------------------------------- registry
 
 function checkSourcedField(
@@ -455,6 +778,57 @@ function checkSourcedField(
   }
   if (as_of !== null && as_of !== undefined && !(typeof as_of === "string" && isValidDate(as_of))) {
     errors.push(`${path}.${key}.as_of: must be null or YYYY-MM-DD`);
+  }
+
+  // SNR block (SNR_SPEC 2.3/5): absent on Wikipedia/first-party facts;
+  // when present it needs its trace and a tier consistent with the score.
+  if (v.snr !== undefined) {
+    if (!isSnrValue(v.snr)) {
+      errors.push(`${path}.${key}.snr: must be an integer 1-5`);
+    } else {
+      validateSnrTrace(v.snr_trace, v.snr, `${path}.${key}.snr_trace`, errors);
+      if (value === null || value === undefined) {
+        errors.push(`${path}.${key}: snr present on a null value`);
+      }
+      if (v.tier === undefined) {
+        errors.push(`${path}.${key}.tier: required when snr is present`);
+      }
+    }
+  } else if (v.snr_trace !== undefined) {
+    errors.push(`${path}.${key}.snr_trace: present without snr`);
+  }
+  if (v.tier !== undefined) {
+    if (!REGISTRY_FACT_TIERS.includes(v.tier as never)) {
+      errors.push(`${path}.${key}.tier: must be one of [${REGISTRY_FACT_TIERS.join(", ")}]`);
+    } else if (v.snr === undefined) {
+      errors.push(`${path}.${key}.tier: present without snr`);
+    } else if (isSnrValue(v.snr)) {
+      if (v.tier === "provisional" && v.snr !== 3) {
+        errors.push(`${path}.${key}.tier: provisional requires snr 3 exactly (SNR_PLAN A6)`);
+      }
+      if (v.tier === "canonical" && v.snr < 4) {
+        errors.push(`${path}.${key}.tier: canonical requires snr 4-5`);
+      }
+    }
+  }
+  if (v.disputed !== undefined) {
+    if (!isObj(v.disputed) || !Array.isArray(v.disputed.competing)) {
+      errors.push(`${path}.${key}.disputed: must be { competing: [...] }`);
+    } else {
+      v.disputed.competing.forEach((c, i) => {
+        const p = `${path}.${key}.disputed.competing[${i}]`;
+        if (!isObj(c)) {
+          errors.push(`${p}: must be an object`);
+          return;
+        }
+        if (!("value" in c)) errors.push(`${p}.value: required (null allowed)`);
+        if (!isHttpUrl(c.source)) errors.push(`${p}.source: required http(s) URL`);
+        if (!(typeof c.as_of === "string" && isValidDate(c.as_of))) {
+          errors.push(`${p}.as_of: required YYYY-MM-DD`);
+        }
+        if (!isSnrValue(c.snr)) errors.push(`${p}.snr: required integer 1-5`);
+      });
+    }
   }
 }
 

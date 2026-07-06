@@ -23,17 +23,138 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
-export const IMPACTS = ["critical", "notable", "routine"] as const;
-export type Impact = (typeof IMPACTS)[number];
+/**
+ * Importance, independent of SNR (SNR_SPEC.md §1): seismic = major
+ * industry shifts only, notable = matters to anyone tracking the sector,
+ * noise = worth logging, not worth a push. The legacy names stay
+ * accepted until the slice-3 migration renames the data, then drop.
+ */
+export const IMPACTS = ["seismic", "notable", "noise"] as const;
+export const LEGACY_IMPACTS = ["critical", "routine"] as const;
+export type Impact = (typeof IMPACTS)[number] | (typeof LEGACY_IMPACTS)[number];
 
 /**
- * The source ladder, best to weakest. confirmed = primary source
- * (the actor or an official record); reported = credible trade press,
- * outlet named in the copy; signal = Signals-list individual or named
- * executive on social, flagged "unconfirmed" in the copy.
+ * DEPRECATED (SNR_SPEC.md §1): the confidence ladder is replaced by the
+ * SNR score. Kept transitionally so pre-migration data and consumers
+ * keep working; removed entirely in the slice-3 migration.
  */
 export const CONFIDENCES = ["confirmed", "reported", "signal"] as const;
 export type Confidence = (typeof CONFIDENCES)[number];
+
+// ------------------------------------------------------------------ snr
+//
+// Signal-to-noise scoring (SNR_SPEC.md; contract values in SNR_PLAN.md).
+// SNR is an integer 1-5 set by the best attached source and adjusted by
+// the modifiers below. The scoring math lives in scripts/snr/ and is
+// pure code; the judgment inputs (source class, extraordinary flag,
+// contradiction calls) come from the agent. Every score stores its
+// trace at scoring time; traces are append-only over an item's life and
+// never reconstructed on demand.
+
+export const SNR_VALUES = [1, 2, 3, 4, 5] as const;
+export type SnrValue = (typeof SNR_VALUES)[number];
+
+/** Bumped on any change to the scoring math, so audits never compare incomparable scores. */
+export const SCORER_VERSION = 1;
+
+// Contract values, SNR_PLAN.md §A1-A5.
+export const PERSISTENCE_DAYS = 14;
+export const DEDUP_WINDOW_DAYS = 7;
+export const REINFORCEMENT_WINDOW_DAYS = 30;
+/** Reinforcement window applies only to items still at or below this SNR. */
+export const REINFORCEMENT_MAX_SNR = 2;
+export const CORROBORATION_FETCHES_PER_EVENT = 5;
+export const CORROBORATION_FETCHES_PER_SWEEP = 40;
+export const LEDGER_WINDOW_DAYS = 90;
+export const LEDGER_DEMOTION_NET_STRIKES = 3;
+export const LEDGER_DEMOTION_MIN_STRIKE_RATE = 1 / 3;
+export const LEDGER_RECOVERY_NET_CREDITS = 3;
+export const PROMOTION_MIN_CLAIMS = 5;
+export const PROMOTION_WINDOW_DAYS = 30;
+export const PROMOTION_MIN_SNR = 4;
+
+/**
+ * How a source counts toward the base tier. first_party requires the
+ * URL's domain to match the actor's registry-recorded website or a
+ * corporate account in signals.json (anti-spoof, SNR_PLAN.md §B1);
+ * wire_pr copies (BusinessWire, GlobeNewswire, PR Newswire, PRWeb) cap
+ * at 4 until the actor's own domain confirms.
+ */
+export const SOURCE_CLASSES = [
+  "first_party",
+  "official_record",
+  "wire_pr",
+  "trade",
+  "mainstream",
+  "whitelist",
+  "aggregator",
+  "computed",
+  "informal",
+] as const;
+export type SourceClass = (typeof SOURCE_CLASSES)[number];
+
+export const SOURCE_VIA = ["initial", "corroboration", "reinforcement", "upgrade"] as const;
+export type SourceVia = (typeof SOURCE_VIA)[number];
+
+/** One source attached to a card; cards accumulate these over their life. */
+export interface ItemSource {
+  url: string;
+  /** Human-readable outlet or actor name, e.g. "SpaceNews" or "ICEYE". */
+  outlet: string;
+  class: SourceClass;
+  /** YYYY-MM-DD the source attached. */
+  added: string;
+  via: SourceVia;
+}
+
+/**
+ * Modifier vocabulary. Each type applies at most once per claim
+ * (saturation rule, SNR_SPEC.md §2.1); the validator enforces it.
+ */
+export const SNR_MODIFIER_TYPES = [
+  "corroboration_2plus", // +1: two or more distinct sources
+  "corroboration_4plus", // +1: four or more distinct sources
+  "mainstream_pickup", // +1: a non-trade outlet carries the story
+  "corroboration_none", // -1: the crawl ran and found nothing (never applied on budget exhaustion)
+  "reinforcement", // +1: a matching later event attached (SNR_PLAN.md §A2)
+  "persistence", // +1: PERSISTENCE_DAYS uncontested, caps the score at 4
+  "whitelist_floor", // raise to 4 (whitelisted observer) or 5 (actor about itself)
+  "extraordinary", // force to 1: out-of-pattern claim (SNR_PLAN.md §B2 guardrail)
+  "dispute", // -1: lost a same-metric contradiction (SNR_SPEC.md §6)
+] as const;
+export type SnrModifierType = (typeof SNR_MODIFIER_TYPES)[number];
+
+export interface SnrModifier {
+  type: SnrModifierType;
+  delta: number;
+  /** Plain-English line rendered in the trace popover. */
+  reason: string;
+  /** The source that triggered the modifier, when one did. */
+  source?: string;
+}
+
+/** Appended whenever a stored score changes after publication; earlier entries never rewritten. */
+export interface SnrHistoryEntry {
+  /** YYYY-MM-DD of the change. */
+  date: string;
+  from: SnrValue;
+  to: SnrValue;
+  reason: string;
+}
+
+/**
+ * Stored at scoring time and rendered by the SNR popover, never
+ * reconstructed on demand. Invariant (validator-enforced): final equals
+ * clamp(base.tier + sum of modifier deltas, 1, 5); floors and the
+ * extraordinary reset are expressed as deltas so the arithmetic holds.
+ */
+export interface SnrTrace {
+  base: { tier: SnrValue; source: string; reason: string };
+  modifiers: SnrModifier[];
+  final: SnrValue;
+  scorer_version: number;
+  history?: SnrHistoryEntry[];
+}
 
 /**
  * Seed tags in four tiers. Reuse before inventing new ones; new tags
@@ -130,10 +251,18 @@ export interface Item {
   category: Category;
   impact: Impact;
   companies: string[];
-  /** Primary (tier-1) source. Required. */
+  /** Lead source: the best source attached to the item. Required. */
   source_url: string;
   secondary_urls: string[];
+  /** DEPRECATED: replaced by snr; dropped in the slice-3 migration. */
   confidence: Confidence;
+  /** SNR score 1-5 (SNR_SPEC.md §2). Required once migrated; snr_trace must accompany it. */
+  snr?: SnrValue;
+  snr_trace?: SnrTrace;
+  /** Every source attached over the card's life, lead source included. */
+  sources?: ItemSource[];
+  /** True while a same-metric contradiction at equal SNR stands (SNR_SPEC.md §6.4). */
+  disputed?: boolean;
   /** ISO datetime stamped by finalize-sweep, absent in drafts. */
   publishDate?: string;
   /** Stamped by scripts/fetch-thumbs.ts, never by the drafting agent. */
@@ -173,6 +302,8 @@ export interface SweepLogEntry {
   coverage: string[];
   /** Tags coined this sweep that are outside SEED_TAGS and prior items; for human review. */
   new_tags?: string[];
+  /** SNR movements this sweep (upgrades, downgrades, disputes); rendered on /log. */
+  snr_movements?: { id: string; from: SnrValue; to: SnrValue; reason: string }[];
 }
 
 export interface StateFile {
@@ -301,17 +432,119 @@ export interface SignalsFile {
   excluded: SignalExcluded[];
 }
 
+// ------------------------------------------- source ledger / suggestions
+
+export const LEDGER_EVENT_KINDS = ["strike", "credit"] as const;
+export type LedgerEventKind = (typeof LEDGER_EVENT_KINDS)[number];
+
+export const CLAIM_RESOLUTIONS = ["confirmed", "debunked", "unresolved"] as const;
+export type ClaimResolution = (typeof CLAIM_RESOLUTIONS)[number];
+
+/**
+ * One reliability event against a source (SNR_PLAN.md §A4). strike = a
+ * claim downgraded by genuine same-metric contradiction or debunk;
+ * credit = a claim that entered at <=2 and later reached >=4, or was
+ * confirmed first-party ("early, not wrong"). Decisions use only events
+ * inside LEDGER_WINDOW_DAYS.
+ */
+export interface LedgerEvent {
+  /** YYYY-MM-DD. */
+  date: string;
+  kind: LedgerEventKind;
+  /** Item id or "entity-slug.field" the event concerns. */
+  claim: string;
+  reason: string;
+}
+
+/** Calibration record: what we scored at publication vs how it resolved. */
+export interface LedgerClaim {
+  /** Item id or "entity-slug.field". */
+  claim: string;
+  /** YYYY-MM-DD the claim was first scored. */
+  date: string;
+  snr_at_publication: SnrValue;
+  resolution: ClaimResolution;
+  /** YYYY-MM-DD the resolution landed; absent while unresolved. */
+  resolved_on?: string;
+}
+
+export interface LedgerSource {
+  /** Source host, e.g. "spacenews.com"; the ledger key. */
+  domain: string;
+  name?: string;
+  /** Demotion in effect: overrides the source's natural class until recovery; null = none. */
+  class_override?: SourceClass | null;
+  events: LedgerEvent[];
+  claims: LedgerClaim[];
+}
+
+/** source_ledger.json: machine-owned, human-auditable via the report page. */
+export interface SourceLedgerFile {
+  version: string;
+  /** ISO datetime of the last ledger update, null before the first. */
+  updated: string | null;
+  sources: LedgerSource[];
+}
+
+export const SUGGESTION_STATUSES = ["pending", "approved", "rejected"] as const;
+export type SuggestionStatus = (typeof SUGGESTION_STATUSES)[number];
+
+/**
+ * signals_suggestions.json: promotion suggestions only (SNR_PLAN.md §A5).
+ * The agent never writes signals.json; Florian reviews these and edits
+ * it by hand. Evidence claims must have reached PROMOTION_MIN_SNR via
+ * corroboration independent of any whitelist floor.
+ */
+export interface SignalSuggestion {
+  id: string;
+  name: string;
+  channel_url: string;
+  /** YYYY-MM-DD. */
+  proposed_on: string;
+  evidence: { claim: string; final_snr: SnrValue; corroborating_sources: string[] }[];
+  status: SuggestionStatus;
+  notes?: string;
+}
+
+export interface SignalsSuggestionsFile {
+  version: string;
+  suggestions: SignalSuggestion[];
+}
+
 // ------------------------------------------------------------- registry
+
+export const REGISTRY_FACT_TIERS = ["canonical", "provisional"] as const;
+export type RegistryFactTier = (typeof REGISTRY_FACT_TIERS)[number];
+
+/** A competing claim kept visible on a disputed registry fact (SNR_SPEC.md §6). */
+export interface DisputedClaim<T> {
+  value: T | null;
+  source: string;
+  as_of: string;
+  snr: SnrValue;
+}
 
 /**
  * Every registry fact is a SourcedField: value, where it came from, and
  * when it was last verified. Unknown stays null; never estimate.
+ *
+ * SNR (SNR_SPEC.md §2.3, §5): Wikipedia and first-party facts carry no
+ * snr/tier and just link their source; everything else carries both.
+ * provisional = SNR 3 exactly, visible but never adjudicating; canonical
+ * = SNR 4-5. Merge gates are unchanged: null-fill only, one source per
+ * field, never overwrite silently.
  */
 export interface SourcedField<T> {
   value: T | null;
   source: string | null;
   /** YYYY-MM-DD the value was last verified against the source. */
   as_of: string | null;
+  snr?: SnrValue;
+  /** Required whenever snr is present. */
+  snr_trace?: SnrTrace;
+  /** Required whenever snr is present. */
+  tier?: RegistryFactTier;
+  disputed?: { competing: DisputedClaim<T>[] };
 }
 
 /**
