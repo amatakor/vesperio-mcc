@@ -438,3 +438,35 @@ a newer entry if a lesson changes.
   news-adjacent nav link, `/media`, is a static brand/asset kit (logos,
   mission photos, video embeds) with no dated posts at all, not merely
   a stale one.
+
+## Crawl-engine audit with Florian (2026-07-06, interactive)
+
+- 2026-07-06-CC: SUPERSEDES 2026-07-05-J / 2026-07-06-F for the
+  corroboration crawl only. The named-source filter governs DISCOVERY
+  (which feeds you walk for candidates); the corroboration crawl is
+  always open-web via WebSearch, on every run, filtered or not. The
+  old discipline confined corroboration to the run's list, which made
+  `found_none` a claim about ~10 domains instead of about the web: the
+  True Anomaly VICTUS HAZE item took the -1 penalty and published at
+  SNR 2 while space.com coverage existed. Cross-checking the run's own
+  fetched feeds is not a search. The discovery-side rule stands
+  unchanged: do not walk feeds outside the filter for candidates.
+- 2026-07-06-DD: Q4 Inc. investor-relations sites (investors.planet.com,
+  ir.blacksky.com) expose clean RSS at `/rss/pressrelease.aspx` even
+  though their HTML pages 403 plain curl; a browser-like User-Agent is
+  required. These IR feeds carry the real press releases (contract
+  awards, appointments) that the companies' marketing blogs do not.
+  Both added to sources.json and the scheduled set. Try the same
+  pattern on other Q4-hosted IR sites before declaring them
+  unreachable.
+- 2026-07-06-EE: X posts CAN be verified without API access:
+  `cdn.syndication.twimg.com/tweet-result?id=<status_id>&token=a`
+  returns the exact text, author, and timestamp of a public post
+  (verified live this session). Pipeline for the signals pass:
+  WebSearch surfaces an x.com/<handle>/status/<id> URL, the
+  syndication endpoint retrieves the verbatim text, the x.com URL is
+  what the item links. A search-result snippet alone never supports a
+  fact. ai-tldr (the blueprint) skips X entirely and reads people's
+  blogs/RSS instead; our fetchable signal channels (site, substack,
+  beehiiv, bluesky) are the reliable leg of the pass, X the
+  best-effort leg.
