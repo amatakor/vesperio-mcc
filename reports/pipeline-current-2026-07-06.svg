@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 1130" font-family="IBM Plex Mono, Menlo, monospace">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/>
+    </marker>
+    <marker id="arwR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ff2043"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1560" height="1130" fill="#0a0a0a"/>
+
+  <!-- title + legend -->
+  <text x="40" y="52" fill="#f2f2f2" font-size="22" font-weight="700" letter-spacing="2">MCC DATA SOURCING / CURRENT WORKFLOW</text>
+  <text x="40" y="76" fill="#8f8f8f" font-size="12">as implemented 2026-07-06 / three surfaces, three pipelines / friction cases in reports/sourcing-friction-2026-07-06.md</text>
+  <g font-size="11">
+    <rect x="1050" y="34" width="12" height="12" fill="none" stroke="#ffe600"/><text x="1068" y="44" fill="#ffe600">NEWS (ladder, strict)</text>
+    <rect x="1050" y="54" width="12" height="12" fill="none" stroke="#3dff9e"/><text x="1068" y="64" fill="#3dff9e">REGISTRY (relaxed refs)</text>
+    <rect x="1230" y="34" width="12" height="12" fill="none" stroke="#19d9ff"/><text x="1248" y="44" fill="#19d9ff">COMPUTED (machine)</text>
+    <rect x="1230" y="54" width="12" height="12" fill="none" stroke="#ff3dd8" stroke-dasharray="3 2"/><text x="1248" y="64" fill="#ff3dd8">HUMAN (Florian)</text>
+    <line x1="1410" y1="40" x2="1440" y2="40" stroke="#ff2043" marker-end="url(#arwR)"/><text x="1448" y="44" fill="#ff2043">reject / hold</text>
+    <rect x="1410" y="52" width="26" height="14" fill="none" stroke="#f2f2f2" stroke-width="2.5"/><text x="1448" y="63" fill="#f2f2f2">hard gate</text>
+  </g>
+
+  <!-- ============ LANE 1: NEWS ============ -->
+  <rect x="30" y="100" width="1180" height="320" fill="none" stroke="#2e2e2e"/>
+  <text x="46" y="126" fill="#ffe600" font-size="14" font-weight="700" letter-spacing="2">1 / NEWS SWEEP</text>
+  <text x="250" y="126" fill="#8f8f8f" font-size="11">update-items.yml cron 05:00 + 17:00 UTC / promise surface: never overclaim</text>
+
+  <g font-size="11" fill="#f2f2f2">
+    <rect x="46" y="146" width="150" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="56" y="167">read SWEEP_MEMORY</text><text x="56" y="183" fill="#8f8f8f">lessons first</text>
+
+    <rect x="226" y="146" width="170" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="236" y="164">fetch sources.json</text><text x="236" y="178" fill="#8f8f8f">1 ok: unverified→verified</text><text x="236" y="191" fill="#8f8f8f">3 fails→dead</text>
+
+    <rect x="426" y="146" width="160" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="436" y="164">candidates newer</text><text x="436" y="178">than last sweep</text><text x="436" y="191" fill="#8f8f8f">state.json timestamp</text>
+
+    <rect x="616" y="146" width="130" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="626" y="167">scope filter</text><text x="626" y="183" fill="#8f8f8f">CLAUDE.md scope</text>
+
+    <!-- ladder -->
+    <rect x="776" y="140" width="190" height="64" fill="#141414" stroke="#ffe600" stroke-width="2.5"/>
+    <text x="786" y="158" font-weight="700">SOURCE LADDER</text>
+    <text x="786" y="172" fill="#8f8f8f">best source sets the tier;</text>
+    <text x="786" y="185" fill="#8f8f8f">copy never claims more</text>
+    <text x="786" y="198" fill="#8f8f8f">numbers copied, never derived</text>
+
+    <rect x="996" y="118" width="188" height="36" fill="#141414" stroke="#ffe600"/>
+    <text x="1006" y="133">confirmed = primary source</text><text x="1006" y="147" fill="#8f8f8f">actor itself / official record</text>
+    <rect x="996" y="162" width="188" height="36" fill="#141414" stroke="#ffe600"/>
+    <text x="1006" y="177">reported = named trade press</text><text x="1006" y="191" fill="#8f8f8f">"per SpaceNews" in copy</text>
+    <rect x="996" y="206" width="188" height="36" fill="#141414" stroke="#ffe600"/>
+    <text x="1006" y="221">signal = whitelist social</text><text x="1006" y="235" fill="#8f8f8f">"per @handle, unconfirmed"</text>
+
+    <!-- second row -->
+    <rect x="226" y="250" width="180" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="236" y="268">dedup vs items.json</text><text x="236" y="282" fill="#8f8f8f">same actor+event in 7d</text><text x="236" y="295" fill="#8f8f8f">= update, not new item</text>
+
+    <rect x="436" y="250" width="150" height="52" fill="#141414" stroke="#f2f2f2" stroke-width="2.5"/>
+    <text x="446" y="271" font-weight="700">bun run build</text><text x="446" y="287" fill="#8f8f8f">fail = no commit</text>
+
+    <rect x="616" y="250" width="190" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="626" y="268">commit items + sweep log</text><text x="626" y="282" fill="#8f8f8f">zero-add days still logged</text><text x="626" y="295" fill="#8f8f8f">renders on /log/</text>
+
+    <rect x="836" y="250" width="180" height="52" fill="#141414" stroke="#ffe600"/>
+    <text x="846" y="268">images: fetch-thumbs</text><text x="846" y="282" fill="#8f8f8f">og:image → stock map →</text><text x="846" y="295" fill="#8f8f8f">generated text tile</text>
+
+    <!-- holds + upgrade -->
+    <rect x="776" y="330" width="190" height="52" fill="#141414" stroke="#ff2043"/>
+    <text x="786" y="348" fill="#ff2043">below ladder / uncertain</text><text x="786" y="362" fill="#ff2043">→ HOLD: held.json</text><text x="786" y="375" fill="#8f8f8f">one-line reason, human review</text>
+
+    <text x="226" y="348" fill="#8f8f8f">upgrade rule (paper only, nothing schedules it): later sweeps re-check</text>
+    <text x="226" y="362" fill="#8f8f8f">reported/signal items against primary sources → raise tier, keep id</text>
+  </g>
+  <g stroke="#8f8f8f" fill="none" marker-end="url(#arw)">
+    <line x1="196" y1="172" x2="222" y2="172"/>
+    <line x1="396" y1="172" x2="422" y2="172"/>
+    <line x1="586" y1="172" x2="612" y2="172"/>
+    <line x1="746" y1="172" x2="772" y2="172"/>
+    <line x1="966" y1="150" x2="992" y2="138"/>
+    <line x1="966" y1="172" x2="992" y2="180"/>
+    <line x1="966" y1="194" x2="992" y2="222"/>
+    <line x1="316" y1="204" x2="316" y2="246"/>
+    <line x1="406" y1="276" x2="432" y2="276"/>
+    <line x1="586" y1="276" x2="612" y2="276"/>
+    <line x1="806" y1="276" x2="832" y2="276"/>
+  </g>
+  <line x1="871" y1="204" x2="871" y2="326" stroke="#ff2043" fill="none" marker-end="url(#arwR)"/>
+  <text x="680" y="228" fill="#ff2043" font-size="10">out of scope: silent discard</text>
+  <line x1="656" y1="204" x2="656" y2="216" stroke="#ff2043" marker-end="url(#arwR)"/>
+
+  <!-- ============ LANE 2: REGISTRY ============ -->
+  <rect x="30" y="440" width="1180" height="330" fill="none" stroke="#2e2e2e"/>
+  <text x="46" y="466" fill="#3dff9e" font-size="14" font-weight="700" letter-spacing="2">2 / REGISTRY REFERENCE FIELDS + TIMELINES</text>
+  <text x="490" y="466" fill="#8f8f8f" font-size="11">on-demand batch crawls (Task 13 pattern) + weekly cron / relaxed policy: Wikipedia + reputable press citable</text>
+
+  <g font-size="11" fill="#f2f2f2">
+    <rect x="46" y="486" width="160" height="60" fill="#141414" stroke="#3dff9e"/>
+    <text x="56" y="504">gap scan</text><text x="56" y="518" fill="#8f8f8f">nulls, zero-event</text><text x="56" y="531" fill="#8f8f8f">profiles, stale as_of</text><text x="56" y="544" fill="#ff8a00">currently ad hoc</text>
+
+    <rect x="236" y="486" width="200" height="60" fill="#141414" stroke="#3dff9e"/>
+    <text x="246" y="504">Sonnet collectors, waves 3-5</text>
+    <text x="246" y="518" fill="#8f8f8f">rules files handed verbatim</text>
+    <text x="246" y="531" fill="#8f8f8f">candidate JSON to scratch dir</text>
+    <text x="246" y="544" fill="#8f8f8f">Wikipedia = discovery only (events)</text>
+
+    <rect x="466" y="486" width="200" height="60" fill="#141414" stroke="#3dff9e"/>
+    <text x="476" y="504">adversarial verifiers</text>
+    <text x="476" y="518" fill="#8f8f8f">re-fetch EVERY cited URL</text>
+    <text x="476" y="531" fill="#8f8f8f">pass / fix / fail per fact</text>
+    <text x="476" y="544" fill="#8f8f8f">facts, dates, quotes vs live page</text>
+
+    <rect x="696" y="486" width="210" height="60" fill="#141414" stroke="#f2f2f2" stroke-width="2.5"/>
+    <text x="706" y="504" font-weight="700">deterministic merge scripts</text>
+    <text x="706" y="518" fill="#8f8f8f">verdict + fetched-URL allowlist</text>
+    <text x="706" y="531" fill="#8f8f8f">null-fill only, never overwrite</text>
+    <text x="706" y="544" fill="#8f8f8f">dash / date / type / dupe gates</text>
+
+    <rect x="936" y="486" width="180" height="60" fill="#141414" stroke="#3dff9e"/>
+    <text x="946" y="504">orchestrator review</text>
+    <text x="946" y="518" fill="#8f8f8f">editorial judgment:</text>
+    <text x="946" y="531" fill="#8f8f8f">outlet eligibility, semantics</text>
+    <text x="946" y="544" fill="#8f8f8f">(launched vs on-orbit)</text>
+
+    <rect x="466" y="586" width="200" height="46" fill="#141414" stroke="#f2f2f2" stroke-width="2.5"/>
+    <text x="476" y="604" font-weight="700">check-registry + build</text>
+    <text x="476" y="620" fill="#8f8f8f">schema gates fail the build</text>
+
+    <rect x="696" y="586" width="210" height="46" fill="#141414" stroke="#3dff9e"/>
+    <text x="706" y="604">one PR per batch → main</text>
+    <text x="706" y="620" fill="#8f8f8f">squash, merge delegated to Claude</text>
+
+    <rect x="46" y="586" width="390" height="46" fill="#141414" stroke="#3dff9e"/>
+    <text x="56" y="601">weekly cron maintain-registry.yml</text>
+    <text x="56" y="615" fill="#8f8f8f">Launch Library + published items only</text>
+    <text x="56" y="628" fill="#8f8f8f">source + as_of each change, never restructures</text>
+
+    <rect x="936" y="586" width="180" height="46" fill="#141414" stroke="#ff2043"/>
+    <text x="946" y="604" fill="#ff2043">rejects (~50 caught)</text>
+    <text x="946" y="620" fill="#8f8f8f">fabricated quotes, derived</text>
+
+    <text x="46" y="666" fill="#8f8f8f">field rules: value must be STATED on the cited page / one source per field / unknown stays null, never estimated</text>
+    <text x="46" y="682" fill="#8f8f8f">Gunter's: deep links only + visible attribution / no summing across pages / conflicts + open decisions → held for Florian</text>
+    <text x="46" y="708" fill="#ff8a00">known friction: entailment + row-counting banned (pleiades-neo), closed outlet list (Wamda case), verbatim quotes vs summarized fetches,</text>
+    <text x="46" y="724" fill="#ff8a00">anti-bot walls volatile (fcc.gov, rocketlab), one source per field, upgrade/held loops manual — see friction report</text>
+  </g>
+  <g stroke="#8f8f8f" fill="none" marker-end="url(#arw)">
+    <line x1="206" y1="516" x2="232" y2="516"/>
+    <line x1="436" y1="516" x2="462" y2="516"/>
+    <line x1="666" y1="516" x2="692" y2="516"/>
+    <line x1="906" y1="516" x2="932" y2="516"/>
+    <path d="M966,546 L966,566 L566,566 L566,582" stroke-dasharray="4 3"/>
+    <line x1="666" y1="609" x2="692" y2="609"/>
+  </g>
+  <line x1="1060" y1="546" x2="1060" y2="582" stroke="#ff2043" marker-end="url(#arwR)"/>
+
+  <!-- ============ LANE 3: COMPUTED ============ -->
+  <rect x="30" y="790" width="1180" height="200" fill="none" stroke="#2e2e2e"/>
+  <text x="46" y="816" fill="#19d9ff" font-size="14" font-weight="700" letter-spacing="2">3 / COMPUTED FIGURES</text>
+  <text x="320" y="816" fill="#8f8f8f" font-size="11">machine-owned, self-sourced, no crawling / cheapest surface to extend</text>
+
+  <g font-size="11" fill="#f2f2f2">
+    <rect x="46" y="836" width="250" height="60" fill="#141414" stroke="#19d9ff"/>
+    <text x="56" y="854">CelesTrak element sets, 2x daily</text>
+    <text x="56" y="868" fill="#8f8f8f">update-orbits.yml commits elements +</text>
+    <text x="56" y="881" fill="#8f8f8f">exact query URL + fetched_at</text>
+
+    <rect x="326" y="836" width="230" height="60" fill="#141414" stroke="#19d9ff"/>
+    <text x="336" y="854">compute-fleet-counts.ts</text>
+    <text x="336" y="868" fill="#8f8f8f">sats_active_verified per constellation</text>
+    <text x="336" y="881" fill="#8f8f8f">source = query URL, machine-owned</text>
+
+    <rect x="586" y="836" width="250" height="60" fill="#141414" stroke="#19d9ff"/>
+    <text x="596" y="854">render-time fleet sums (PR #65)</text>
+    <text x="596" y="868" fill="#8f8f8f">parent = sum of children, "computed"</text>
+    <text x="596" y="881" fill="#8f8f8f">only when EVERY child has the value</text>
+
+    <rect x="866" y="836" width="250" height="60" fill="#141414" stroke="#19d9ff"/>
+    <text x="876" y="854">stats.json + /stats/ + orbits HUD</text>
+    <text x="876" y="868" fill="#8f8f8f">anchored stat blocks, citation strings</text>
+    <text x="876" y="881" fill="#8f8f8f">LL2 + SATCAT weekly figures</text>
+
+    <rect x="46" y="916" width="250" height="46" fill="#141414" stroke="#19d9ff"/>
+    <text x="56" y="934">fetch-stocks.ts daily</text>
+    <text x="56" y="950" fill="#8f8f8f">Yahoo chart endpoint → 6mo SVG charts</text>
+  </g>
+  <g stroke="#8f8f8f" fill="none" marker-end="url(#arw)">
+    <line x1="296" y1="866" x2="322" y2="866"/>
+    <line x1="556" y1="866" x2="582" y2="866"/>
+    <line x1="836" y1="866" x2="862" y2="866"/>
+  </g>
+
+  <!-- ============ HUMAN COLUMN ============ -->
+  <rect x="1240" y="100" width="290" height="890" fill="none" stroke="#ff3dd8" stroke-dasharray="5 4"/>
+  <text x="1256" y="126" fill="#ff3dd8" font-size="14" font-weight="700" letter-spacing="2">FLORIAN OWNS</text>
+  <g font-size="11" fill="#f2f2f2">
+    <rect x="1256" y="146" width="258" height="46" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="164">signals.json whitelist</text><text x="1266" y="180" fill="#8f8f8f">agent NEVER edits / still empty</text>
+    <rect x="1256" y="204" width="258" height="46" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="222">held.json review</text><text x="1266" y="238" fill="#8f8f8f">no schedule; items age silently</text>
+    <rect x="1256" y="262" width="258" height="46" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="280">scope changes</text><text x="1266" y="296" fill="#8f8f8f">CLAUDE.md scope section</text>
+    <rect x="1256" y="320" width="258" height="46" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="338">structural / schema edits</text><text x="1266" y="354" fill="#8f8f8f">never in scheduled runs</text>
+    <rect x="1256" y="378" width="258" height="46" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="396">outlet list + policy relaxations</text><text x="1266" y="412" fill="#8f8f8f">e.g. 2026-07-05 registry relax</text>
+    <rect x="1256" y="436" width="258" height="58" fill="#141414" stroke="#ff3dd8"/>
+    <text x="1266" y="454">open decisions in queue:</text>
+    <text x="1266" y="470" fill="#8f8f8f">EUR price field / crewed-vehicles</text>
+    <text x="1266" y="484" fill="#8f8f8f">basket / MHI founding / entailment</text>
+
+    <text x="1256" y="530" fill="#8f8f8f">data stores:</text>
+    <g fill="#8f8f8f">
+      <text x="1256" y="550">items.json / held.json</text>
+      <text x="1256" y="566">state.json (sweep log)</text>
+      <text x="1256" y="582">sources.json / signals.json</text>
+      <text x="1256" y="598">registry/*/*.json (139)</text>
+      <text x="1256" y="614">public/data/orbits/elements-*</text>
+      <text x="1256" y="630">SWEEP_MEMORY.md (lessons)</text>
+      <text x="1256" y="646">prompts/crawl/RULES-*.md</text>
+    </g>
+
+    <text x="1256" y="686" fill="#8f8f8f">baselines 2026-07-06:</text>
+    <g fill="#8f8f8f">
+      <text x="1256" y="706">139 profiles / 81% fields filled</text>
+      <text x="1256" y="722">261 documented nulls</text>
+      <text x="1256" y="738">55/139 with history timelines</text>
+      <text x="1256" y="754">~20 feed items / 2 sweeps daily</text>
+    </g>
+  </g>
+</svg>
