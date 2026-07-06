@@ -3,15 +3,18 @@
  *
  * Reads sweep-draft.json from the repo root, validates every part of it
  * against the schema and the mechanically checkable hard rules, and only
- * if EVERYTHING passes: stamps publish dates, merges into items.json /
- * held.json / sources.json / state.json, and deletes the draft.
+ * if EVERYTHING passes: scores new items through the SNR engine, stamps
+ * publish dates, applies update bumps and the automatic persistence pass,
+ * records calibration claims in the source ledger, merges into
+ * items.json / held.json / sources.json / state.json / source_ledger.json,
+ * and deletes the draft.
  *
  * On any rejection it exits non-zero with a precise reason and leaves
  * every data file untouched. The agent must fix the draft and rerun;
  * there is no bypass.
  */
 
-import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
+import { readFileSync, writeFileSync, unlinkSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type {
   Item,
@@ -19,21 +22,67 @@ import type {
   HeldFile,
   StateFile,
   SourcesFile,
+  SourceLedgerFile,
+  LedgerSource,
   SweepLogEntry,
+  ItemSource,
+  SourceClass,
+  SnrValue,
 } from "../src/data/schema";
-import { CATEGORIES, SOURCE_STATUSES, SEED_TAGS } from "../src/data/schema";
+import {
+  CATEGORIES,
+  SOURCE_STATUSES,
+  SEED_TAGS,
+  SOURCE_CLASSES,
+  PERSISTENCE_DAYS,
+} from "../src/data/schema";
 import {
   validateItem,
   validateItemsFile,
   validateHeldFile,
   validateStateFile,
   validateSourcesFile,
+  validateSourceLedgerFile,
 } from "./lib/validate";
+import { scoreClaim } from "./snr/score";
+import { applyModifier, daysBetween } from "./snr/match";
+import { recordClaim } from "./snr/ledger";
+
+/** The scoring block the agent supplies on each new item (contract §1). */
+interface DraftScoringSource {
+  url: string;
+  outlet: string;
+  class: string;
+  via?: string;
+}
+interface DraftScoring {
+  sources: DraftScoringSource[];
+  extraordinary: boolean;
+  crawl: string;
+  whitelist: "self" | "observer" | null;
+}
+
+/** One attachment on an update (contract §2). */
+interface DraftAttach {
+  url: string;
+  outlet: string;
+  class: string;
+  via: string;
+}
+
+type BumpType =
+  | "reinforcement"
+  | "corroboration_2plus"
+  | "corroboration_4plus"
+  | "mainstream_pickup"
+  | null;
 
 interface DraftUpdate {
   id: string;
   patch: Record<string, unknown>;
   note: string;
+  attach?: DraftAttach[];
+  bump?: BumpType;
 }
 
 interface DraftHeld {
@@ -72,6 +121,7 @@ export interface FinalizeResult {
 }
 
 type Obj = Record<string, unknown>;
+type SnrMovement = { id: string; from: SnrValue; to: SnrValue; reason: string };
 
 function isObj(v: unknown): v is Obj {
   return typeof v === "object" && v !== null && !Array.isArray(v);
@@ -94,6 +144,155 @@ function readJson(path: string, label: string, errors: string[]): unknown {
   } catch (e) {
     errors.push(`${label}: invalid JSON (${e instanceof Error ? e.message : String(e)})`);
     return undefined;
+  }
+}
+
+// ------------------------------------------------------- anti-spoof hosts
+
+/** Fixed official hosts (SNR_PLAN.md §B1). Any *.gov host also passes. */
+const FIXED_OFFICIAL_HOSTS = new Set([
+  "sec.gov",
+  "fcc.gov",
+  "sam.gov",
+  "ted.europa.eu",
+  "esa.int",
+  "nasa.gov",
+  "noaa.gov",
+  "itu.int",
+  "unoosa.org",
+  "europa.eu",
+]);
+
+/** Hosts whose data may be classed "computed" (SNR_PLAN.md §B1). */
+const COMPUTED_HOSTS = new Set([
+  "celestrak.org",
+  "space-track.org",
+  "ll.thespacedevs.com",
+  "thespacedevs.com",
+]);
+
+const REGISTRY_SUBDIRS = ["constellations", "organizations", "spaceports", "vehicles"] as const;
+
+/** Lowercased hostname of a URL, or null when it does not parse. */
+function hostOf(url: string): string | null {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+/** True when `host` equals or is a subdomain of `base`. */
+function hostMatches(host: string, base: string): boolean {
+  return host === base || host.endsWith("." + base);
+}
+
+/**
+ * Collect every hostname declared in a registry profile's `website`
+ * SourcedField, across all registry subdirectories under `dataDir`. When
+ * the registry dir is absent (test data dirs), returns an empty set: the
+ * fixed official list and *.gov rule still apply.
+ */
+function loadRegistryHosts(dataDir: string): Set<string> {
+  const hosts = new Set<string>();
+  const registryDir = join(dataDir, "registry");
+  for (const sub of REGISTRY_SUBDIRS) {
+    let entries: string[];
+    try {
+      entries = readdirSync(join(registryDir, sub));
+    } catch {
+      continue;
+    }
+    for (const name of entries) {
+      if (!name.endsWith(".json")) continue;
+      let profile: unknown;
+      try {
+        profile = JSON.parse(readFileSync(join(registryDir, sub, name), "utf8"));
+      } catch {
+        continue;
+      }
+      if (!isObj(profile) || !isObj(profile.website)) continue;
+      const value = (profile.website as Obj).value;
+      if (typeof value !== "string") continue;
+      const h = hostOf(value);
+      if (h) hosts.add(h);
+    }
+  }
+  return hosts;
+}
+
+/**
+ * Anti-spoof gate (SNR_PLAN.md §B1). A first_party / official_record URL
+ * passes only when its host matches a registry website host, the fixed
+ * official list, or any *.gov host. A computed URL passes only on the
+ * fixed computed-data hosts. Every other class passes unconditionally
+ * (the honesty burden is on the two direct-source classes).
+ */
+function isOfficialHost(url: string, cls: string, registryHosts: Set<string>): boolean {
+  const host = hostOf(url);
+  if (host === null) return false;
+  if (cls === "first_party" || cls === "official_record") {
+    if (host.endsWith(".gov")) return true;
+    if (FIXED_OFFICIAL_HOSTS.has(host)) return true;
+    for (const base of FIXED_OFFICIAL_HOSTS) {
+      if (hostMatches(host, base)) return true;
+    }
+    for (const base of registryHosts) {
+      if (hostMatches(host, base)) return true;
+    }
+    return false;
+  }
+  if (cls === "computed") {
+    for (const base of COMPUTED_HOSTS) {
+      if (hostMatches(host, base)) return true;
+    }
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Validate the shape of one source-like entry (scoring.sources or
+ * update.attach). Pushes precise errors; the anti-spoof reclassify hint
+ * is emitted for direct-source classes that fail isOfficialHost.
+ */
+function validateSourceEntry(
+  s: unknown,
+  path: string,
+  viaAllowed: readonly string[],
+  registryHosts: Set<string>,
+  errors: string[],
+): void {
+  if (!isObj(s)) {
+    errors.push(`${path}: must be an object { url, outlet, class, via }`);
+    return;
+  }
+  const urlOk = typeof s.url === "string" && /^https?:\/\//.test(s.url);
+  if (!urlOk) errors.push(`${path}.url: required http(s) URL`);
+  if (typeof s.outlet !== "string" || s.outlet.trim() === "") {
+    errors.push(`${path}.outlet: required non-empty string`);
+  }
+  const cls = s.class;
+  if (!SOURCE_CLASSES.includes(cls as never)) {
+    errors.push(`${path}.class: "${String(cls)}" not in [${SOURCE_CLASSES.join(", ")}]`);
+  }
+  if (s.via !== undefined && !viaAllowed.includes(s.via as string)) {
+    errors.push(`${path}.via: "${String(s.via)}" not in [${viaAllowed.join(", ")}]`);
+  }
+  // Anti-spoof only meaningful once url and class parsed.
+  if (urlOk && typeof cls === "string" && SOURCE_CLASSES.includes(cls as never)) {
+    if (
+      (cls === "first_party" || cls === "official_record" || cls === "computed") &&
+      !isOfficialHost(s.url as string, cls, registryHosts)
+    ) {
+      const hint =
+        cls === "computed"
+          ? "reclassify (only celestrak.org, space-track.org, thespacedevs.com are computed)"
+          : "reclassify (wire_pr / trade / informal)";
+      errors.push(
+        `${path}: host of "${String(s.url)}" is not an official ${cls} host; ${hint}`,
+      );
+    }
   }
 }
 
@@ -128,17 +327,20 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const heldPath = join(opts.dataDir, "held.json");
   const statePath = join(opts.dataDir, "state.json");
   const sourcesPath = join(opts.dataDir, "sources.json");
+  const ledgerPath = join(opts.dataDir, "source_ledger.json");
 
   const itemsData = readJson(itemsPath, "items.json", errors);
   const heldData = readJson(heldPath, "held.json", errors);
   const stateData = readJson(statePath, "state.json", errors);
   const sourcesData = readJson(sourcesPath, "sources.json", errors);
+  const ledgerData = readJson(ledgerPath, "source_ledger.json", errors);
   if (errors.length > 0) return fail(errors);
 
   errors.push(...validateItemsFile(itemsData));
   errors.push(...validateHeldFile(heldData));
   errors.push(...validateStateFile(stateData));
   errors.push(...validateSourcesFile(sourcesData));
+  errors.push(...validateSourceLedgerFile(ledgerData));
   if (errors.length > 0) {
     return fail(errors.map((e) => `pre-existing data invalid, refusing to merge: ${e}`));
   }
@@ -147,18 +349,76 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const held = heldData as HeldFile;
   const state = stateData as StateFile;
   const sources = sourcesData as SourcesFile;
+  const ledger = ledgerData as SourceLedgerFile;
 
   const existingIds = new Set(items.items.map((i) => i.id));
+  const registryHosts = loadRegistryHosts(opts.dataDir);
 
-  // ---- validate newItems -------------------------------------------------
+  const movements: SnrMovement[] = [];
+  const autoHeld: DraftHeld[] = [];
+
+  // ---- validate + score newItems ----------------------------------------
+  // Each new item arrives with a `scoring` block instead of snr/snr_trace/
+  // sources; finalize validates the block, applies the deterministic
+  // guardrails, scores it, and stamps the results.
   const draftIds = new Set<string>();
+  const stampedNew: Item[] = [];
   draft.newItems.forEach((raw, i) => {
     const path = `newItems[${i}]`;
-    validateItem(raw, path, errors);
-    if (!isObj(raw)) return;
+    if (!isObj(raw)) {
+      errors.push(`${path}: item must be an object`);
+      return;
+    }
+
+    // The stamped fields must not be pre-set (same style as publishDate).
+    for (const banned of ["snr", "snr_trace", "sources"]) {
+      if (raw[banned] !== undefined) {
+        errors.push(`${path}.${banned}: must not be set in a draft; finalize-sweep stamps it from scoring`);
+      }
+    }
     if (raw.publishDate !== undefined) {
       errors.push(`${path}.publishDate: must not be set in a draft; finalize-sweep stamps it`);
     }
+
+    // The scoring block is required and shaped.
+    const scoringRaw = raw.scoring;
+    if (!isObj(scoringRaw)) {
+      errors.push(`${path}.scoring: required object { sources, extraordinary, crawl, whitelist }`);
+      return;
+    }
+    const scoring = scoringRaw as unknown as DraftScoring;
+    if (!Array.isArray(scoring.sources) || scoring.sources.length === 0) {
+      errors.push(`${path}.scoring.sources: required non-empty array (lead first)`);
+    }
+    if (typeof scoring.extraordinary !== "boolean") {
+      errors.push(`${path}.scoring.extraordinary: required boolean`);
+    }
+    if (!["found_none", "found_some", "not_attempted"].includes(scoring.crawl as string)) {
+      errors.push(`${path}.scoring.crawl: must be one of [found_none, found_some, not_attempted]`);
+    }
+    if (
+      scoring.whitelist !== null &&
+      scoring.whitelist !== "self" &&
+      scoring.whitelist !== "observer"
+    ) {
+      errors.push(`${path}.scoring.whitelist: must be "self", "observer", or null`);
+    }
+    if (Array.isArray(scoring.sources)) {
+      scoring.sources.forEach((s, j) => {
+        validateSourceEntry(s, `${path}.scoring.sources[${j}]`, ["initial", "corroboration"], registryHosts, errors);
+      });
+      // Lead url must equal source_url.
+      const lead = scoring.sources[0];
+      if (isObj(lead) && typeof lead.url === "string" && typeof raw.source_url === "string") {
+        if (lead.url !== raw.source_url) {
+          errors.push(
+            `${path}.scoring.sources[0].url: lead source "${lead.url}" must equal item.source_url "${raw.source_url}"`,
+          );
+        }
+      }
+    }
+
+    // id uniqueness (mirrors the prior behaviour).
     if (typeof raw.id === "string") {
       if (existingIds.has(raw.id)) {
         errors.push(`${path}.id: "${raw.id}" already exists in items.json (duplicate)`);
@@ -168,9 +428,62 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       }
       draftIds.add(raw.id);
     }
+
+    if (errors.length > 0) return; // don't score against a malformed block
+
+    // Deterministic extraordinary guardrail (SNR_PLAN §B2).
+    const leadClass = scoring.sources[0]!.class as SourceClass;
+    let extraordinary = scoring.extraordinary;
+    if (
+      raw.impact === "seismic" &&
+      !["first_party", "official_record", "computed"].includes(leadClass)
+    ) {
+      extraordinary = true;
+    }
+
+    const mappedSources: ItemSource[] = scoring.sources.map((s) => ({
+      url: s.url,
+      outlet: s.outlet,
+      class: s.class as SourceClass,
+      added: today,
+      via: (s.via ?? "initial") as ItemSource["via"],
+    }));
+
+    const result = scoreClaim({
+      sources: mappedSources,
+      extraordinary,
+      crawl: scoring.crawl as "found_none" | "found_some" | "not_attempted",
+      whitelist: scoring.whitelist,
+      reinforced: false,
+      persisted: false,
+      disputeDowngrade: false,
+    });
+
+    const stamped: Item = {
+      ...(raw as unknown as Item),
+      snr: result.snr,
+      snr_trace: result.trace,
+      sources: mappedSources,
+      publishDate: nowIso,
+    };
+    delete (stamped as unknown as Obj).scoring;
+
+    const before = errors.length;
+    validateItem(stamped, `${path} (after scoring)`, errors);
+    if (errors.length !== before) return;
+
+    // Seismic low-SNR review queue (SNR_PLAN §7.4): still publishes.
+    if (stamped.impact === "seismic" && stamped.snr <= 2) {
+      autoHeld.push({
+        candidate: { id: stamped.id, headline: stamped.headline },
+        reason: "review: seismic at SNR <= 2, published wide-net; needs Florian (SNR_PLAN 7.4)",
+      });
+    }
+
+    stampedNew.push(stamped);
   });
 
-  // ---- validate updates ---------------------------------------------------
+  // ---- validate + apply updates ------------------------------------------
   const patchedItems = new Map<string, Item>();
   draft.updates.forEach((u, i) => {
     const path = `updates[${i}]`;
@@ -191,19 +504,89 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     }
     if ("id" in u.patch) errors.push(`${path}.patch: changing an item id is not allowed`);
     if ("publishDate" in u.patch) errors.push(`${path}.patch: publishDate is stamped, not patched`);
-    if (errors.length > 0 && !isObj(u.patch)) return;
+
+    // attach shape (validated whether or not there's a bump).
+    if (u.attach !== undefined && !Array.isArray(u.attach)) {
+      errors.push(`${path}.attach: must be an array when present`);
+    }
+    const attach = Array.isArray(u.attach) ? u.attach : [];
+    attach.forEach((a, j) => {
+      validateSourceEntry(a, `${path}.attach[${j}]`, ["corroboration", "upgrade"], registryHosts, errors);
+    });
+    const validBumps = [
+      "reinforcement",
+      "corroboration_2plus",
+      "corroboration_4plus",
+      "mainstream_pickup",
+    ];
+    if (u.bump !== undefined && u.bump !== null && !validBumps.includes(u.bump)) {
+      errors.push(`${path}.bump: "${String(u.bump)}" not in [${validBumps.join(", ")}]`);
+    }
+
+    if (errors.length > 0) return;
 
     const current = items.items.find((it) => it.id === u.id)!;
+    // Start from any earlier patch of the same item in this run.
+    const base = patchedItems.get(u.id) ?? current;
     const patch = u.patch as Obj;
+
+    // Merge sources: append each attach not already present by url.
+    const existingSources: ItemSource[] = (base.sources ?? []).slice();
+    const existingUrls = new Set(existingSources.map((s) => s.url));
+    const newSecondary = base.secondary_urls.slice();
+    for (const a of attach) {
+      if (!existingUrls.has(a.url)) {
+        existingSources.push({
+          url: a.url,
+          outlet: a.outlet,
+          class: a.class as SourceClass,
+          added: today,
+          via: a.via as ItemSource["via"],
+        });
+        existingUrls.add(a.url);
+      }
+      if (a.url !== base.source_url && !newSecondary.includes(a.url)) {
+        newSecondary.push(a.url);
+      }
+    }
+
     const merged: Item = {
-      ...current,
+      ...base,
       ...(patch as Partial<Item>),
       id: current.id,
       publishDate: current.publishDate,
       explainer: isObj(patch.explainer)
-        ? { ...current.explainer, ...(patch.explainer as Partial<Item["explainer"]>) }
-        : current.explainer,
+        ? { ...base.explainer, ...(patch.explainer as Partial<Item["explainer"]>) }
+        : base.explainer,
+      sources: existingSources.length > 0 ? existingSources : base.sources,
+      secondary_urls: newSecondary,
     };
+
+    // bump: apply the modifier to the (possibly already-patched) trace.
+    if (u.bump) {
+      const bumpSource = attach.length > 0 ? attach[0]!.url : undefined;
+      let newTrace;
+      try {
+        newTrace = applyModifier(
+          merged.snr_trace,
+          { type: u.bump, delta: 1, reason: u.note, ...(bumpSource ? { source: bumpSource } : {}) },
+          today,
+        );
+      } catch (e) {
+        errors.push(`${path}.bump: ${e instanceof Error ? e.message : String(e)}`);
+        return;
+      }
+      const from = merged.snr;
+      if (newTrace !== merged.snr_trace) {
+        // Real movement (applyModifier returns the same object on a no-op).
+        merged.snr = newTrace.final;
+        merged.snr_trace = newTrace;
+        if (newTrace.final !== from) {
+          movements.push({ id: merged.id, from, to: newTrace.final, reason: u.note });
+        }
+      }
+    }
+
     const before = errors.length;
     validateItem(merged, `${path} (after patch)`, errors);
     if (errors.length === before) patchedItems.set(u.id, merged);
@@ -250,18 +633,48 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   if (errors.length > 0) return fail(errors);
 
   // ---- everything valid: build new file contents in memory -----------------
-  const stampedItems = (draft.newItems as Item[]).map((item) => ({
-    ...item,
-    publishDate: nowIso,
-  }));
-  const nextItems: ItemsFile = {
-    items: [...items.items.map((it) => patchedItems.get(it.id) ?? it), ...stampedItems],
-  };
+  const mergedExisting = items.items.map((it) => patchedItems.get(it.id) ?? it);
+  let nextItemsList = [...mergedExisting, ...stampedNew];
+
+  // Automatic persistence pass (SNR_PLAN §A1): over ALL next items, an
+  // item still below 4, not disputed, with no persistence modifier yet,
+  // published >= PERSISTENCE_DAYS before today, gets +1 (caps 4). The
+  // clock starts at FIRST PUBLICATION, not the event date: a
+  // late-discovered old event has not survived any exposure yet.
+  nextItemsList = nextItemsList.map((it) => {
+    if (it.disputed) return it;
+    if (it.snr >= 4) return it;
+    if (it.snr_trace.modifiers.some((m) => m.type === "persistence")) return it;
+    const publishedOn = (it.publishDate ?? it.date).slice(0, 10);
+    if (daysBetween(publishedOn, today) < PERSISTENCE_DAYS) return it;
+    const newTrace = applyModifier(
+      it.snr_trace,
+      {
+        type: "persistence",
+        delta: 1,
+        reason: "survived uncontested past the persistence window (caps at 4)",
+      },
+      today,
+    );
+    if (newTrace === it.snr_trace) return it; // no-op (ceiling)
+    if (newTrace.final !== it.snr) {
+      movements.push({
+        id: it.id,
+        from: it.snr,
+        to: newTrace.final,
+        reason: "persistence: survived uncontested past the window",
+      });
+    }
+    return { ...it, snr: newTrace.final, snr_trace: newTrace };
+  });
+
+  const nextItems: ItemsFile = { items: nextItemsList };
 
   const nextHeld: HeldFile = {
     held: [
       ...held.held,
       ...draft.held.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
+      ...autoHeld.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
     ],
   };
 
@@ -269,17 +682,47 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   // logged for human review; inventing tags is allowed, silently is not.
   const knownTags = new Set<string>([...SEED_TAGS, ...items.items.flatMap((it) => it.tags)]);
   const newTags = [
-    ...new Set(stampedItems.flatMap((it) => it.tags).filter((t) => !knownTags.has(t))),
+    ...new Set(stampedNew.flatMap((it) => it.tags).filter((t) => !knownTags.has(t))),
   ].sort();
+
+  // ---- ledger: record a calibration claim per stamped NEW item ------------
+  const nextLedger: SourceLedgerFile = structuredClone(ledger);
+  const ledgerByDomain = new Map<string, LedgerSource>(
+    nextLedger.sources.map((s) => [s.domain, s]),
+  );
+  for (const item of stampedNew) {
+    const lead = item.sources![0]!;
+    const domain = hostOf(lead.url);
+    if (domain === null) continue;
+    let source = ledgerByDomain.get(domain);
+    if (source === undefined) {
+      source = { domain, events: [], claims: [] };
+      ledgerByDomain.set(domain, source);
+      nextLedger.sources.push(source);
+    }
+    const updated = recordClaim(source, {
+      claim: item.id,
+      date: today,
+      snr_at_publication: item.snr,
+      resolution: "unresolved",
+    });
+    // recordClaim returns a new object; swap it into the list in place.
+    const idx = nextLedger.sources.indexOf(source);
+    nextLedger.sources[idx] = updated;
+    ledgerByDomain.set(domain, updated);
+    source = updated;
+  }
+  nextLedger.updated = nowIso;
 
   const logEntry: SweepLogEntry = {
     at: nowIso,
-    added: stampedItems.length,
+    added: stampedNew.length,
     updated: draft.updates.length,
-    held: draft.held.length,
+    held: draft.held.length + autoHeld.length,
     summary: draft.summary,
     coverage: draft.coverage,
     ...(newTags.length > 0 ? { new_tags: newTags } : {}),
+    ...(movements.length > 0 ? { snr_movements: movements } : {}),
   };
   const nextState: StateFile = {
     lastSweep: nowIso,
@@ -305,6 +748,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     ...validateHeldFile(nextHeld),
     ...validateStateFile(nextState),
     ...validateSourcesFile(nextSources),
+    ...validateSourceLedgerFile(nextLedger),
   ];
   if (finalErrors.length > 0) {
     return fail(finalErrors.map((e) => `post-merge validation failed, nothing written: ${e}`));
@@ -317,14 +761,15 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   write(heldPath, nextHeld);
   write(statePath, nextState);
   write(sourcesPath, nextSources);
+  write(ledgerPath, nextLedger);
   unlinkSync(opts.draftPath);
 
   return {
     ok: true,
     errors: [],
-    added: stampedItems.length,
+    added: stampedNew.length,
     updated: draft.updates.length,
-    held: draft.held.length,
+    held: draft.held.length + autoHeld.length,
   };
 }
 
