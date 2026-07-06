@@ -528,3 +528,36 @@ a newer entry if a lesson changes.
   doubt; when a summarized trade-press date conflicts with a direct
   official source's stated date, trust the official source and drop
   the doubtful one rather than reconciling by guesswork.
+
+## Narrow same-day re-check, 14-source filtered list, ~2.5hr window (2026-07-06)
+
+- 2026-07-06-II: A same-story development inside the 7-day dedup window
+  is an `update`, not a new item, even when it carries substantial new
+  facts of its own: Iridium's July 6 completion of its Aireon buyout
+  (~$367M for the remaining 61%) is a real, citable fact, but it is a
+  development on the same M&A story as the June 29 Rocket Lab/Iridium
+  acquisition item, seven days out. Patched the existing item's
+  `what_happened` (full replacement text, since `explainer` sub-fields
+  are shallow-merged by finalize-sweep, not appended) and attached
+  SpaceNews via `attach` with no `bump` -- the new source supports a
+  new fact, not corroboration of the original claim, so a score bump
+  would misrepresent what actually moved.
+- 2026-07-06-JJ: Confirms 2026-07-06-L: cross-checking existing items
+  against this run's own fetched feeds (not just new candidates) again
+  found free corroboration already sitting unused -- except this time
+  it turned out a prior run earlier today had already attached both
+  (Isar/Planet Germany and Latitude/Oman already carry European
+  Spaceflight as a source). Worth checking the item's current `sources`
+  array before treating a same-story hit in a feed as a fresh attach;
+  otherwise the cross-check just re-verifies work already done.
+- 2026-07-06-KK: A trade-press article synthesizing a company
+  spokesperson's conference remarks (Blue Origin's John Couluris on
+  Blue Moon production, via SpaceNews, sourced from an ostensibly
+  public conference) can still legitimately cost a corroboration
+  level: WebSearch found only older, less-detailed coverage of Blue
+  Origin's lunar lander program, nothing matching this run's specific
+  claims (seven vehicles in production, the Q1 2027 slip for
+  "Endurance"). `found_none` is honest here even though the underlying
+  event (a public conference statement) feels like it should be
+  widely covered -- "feels like it should be corroborated" is not the
+  same as a search actually finding corroboration.
