@@ -10,7 +10,7 @@
 import { describe, expect, test } from "bun:test";
 import { scoreClaim, BASE_TIER_BY_CLASS } from "../snr/score";
 import type { ScoreInput } from "../snr/score";
-import { matchDecision, applyHistory, rescoreWithFinal, daysBetween } from "../snr/match";
+import { matchDecision, applyHistory, applyModifier, daysBetween } from "../snr/match";
 import {
   windowEvents,
   windowClaims,
@@ -62,34 +62,34 @@ function traceErrors(trace: SnrTrace, snr: number): string[] {
 // ---------------------------------------------------------- base tiers
 
 describe("scoreClaim base tiers", () => {
-  // A single mainstream source triggers mainstream_pickup (+1), so its
-  // final differs from its base; every other class scores at base when
-  // alone. The base.tier is asserted for all; final only where it holds.
-  const cases: Array<[SourceClass, number, boolean]> = [
-    ["first_party", 5, true],
-    ["official_record", 5, true],
-    ["computed", 5, true],
-    ["wire_pr", 4, true],
-    ["aggregator", 4, true],
-    ["trade", 3, true],
-    ["mainstream", 3, false],
-    ["whitelist", 3, true],
-    ["informal", 1, true],
+  // Every class scores at its base when alone; mainstream_pickup only
+  // fires for coverage BEYOND the lead, so a lone mainstream source is
+  // just base 3.
+  const cases: Array<[SourceClass, number]> = [
+    ["first_party", 5],
+    ["official_record", 5],
+    ["computed", 5],
+    ["wire_pr", 4],
+    ["aggregator", 4],
+    ["trade", 3],
+    ["mainstream", 3],
+    ["whitelist", 3],
+    ["informal", 1],
   ];
-  for (const [cls, tier, finalIsBase] of cases) {
+  for (const [cls, tier] of cases) {
     test(`${cls} -> base ${tier}`, () => {
       const { snr, trace } = scoreClaim(baseInput({ sources: [src(cls)] }));
       expect(trace.base.tier).toBe(tier as never);
-      if (finalIsBase) expect(snr).toBe(tier as never);
+      expect(snr).toBe(tier as never);
       expect(traceErrors(trace, snr)).toEqual([]);
     });
   }
 
-  test("lone mainstream source: base 3 + mainstream_pickup = 4", () => {
+  test("lone mainstream source gets no pickup bonus (pickup = beyond the lead)", () => {
     const { snr, trace } = scoreClaim(baseInput({ sources: [src("mainstream")] }));
     expect(trace.base.tier).toBe(3 as never);
-    expect(snr).toBe(4 as never);
-    expect(trace.modifiers.map((m) => m.type)).toEqual(["mainstream_pickup"]);
+    expect(snr).toBe(3 as never);
+    expect(trace.modifiers).toEqual([]);
   });
 
   test("BASE_TIER_BY_CLASS matches the fixed contract map", () => {
@@ -124,22 +124,34 @@ describe("corroboration modifiers", () => {
     expect(traceErrors(trace, snr)).toEqual([]);
   });
 
-  test("4+ sources add both corroboration bumps, saturating at 5", () => {
+  test("4+ sources add both corroboration bumps below the ceiling", () => {
     const { snr, trace } = scoreClaim(
       baseInput({
-        sources: [src("trade", 1), src("trade", 2), src("trade", 3), src("trade", 4)],
+        sources: [src("informal", 1), src("informal", 2), src("informal", 3), src("informal", 4)],
       }),
     );
-    // base 3 + 1 (2plus) + 1 (4plus) = 5
-    expect(snr).toBe(5 as never);
+    // base 1 + 1 (2plus) + 1 (4plus) = 3
+    expect(snr).toBe(3 as never);
     const types = trace.modifiers.map((m) => m.type);
     expect(types).toContain("corroboration_2plus");
     expect(types).toContain("corroboration_4plus");
     expect(traceErrors(trace, snr)).toEqual([]);
   });
 
+  test("a trade lead with 4+ sources stops at the direct-source ceiling (4)", () => {
+    const { snr, trace } = scoreClaim(
+      baseInput({
+        sources: [src("trade", 1), src("trade", 2), src("trade", 3), src("trade", 4)],
+      }),
+    );
+    // base 3 + 1 (2plus) = 4; the 4plus bump would exceed the ceiling and is skipped
+    expect(snr).toBe(4 as never);
+    expect(trace.modifiers.map((m) => m.type)).toEqual(["corroboration_2plus"]);
+    expect(traceErrors(trace, snr)).toEqual([]);
+  });
+
   test("each corroboration type fires at most once", () => {
-    const many = Array.from({ length: 8 }, (_, i) => src("trade", i));
+    const many = Array.from({ length: 8 }, (_, i) => src("informal", i));
     const { trace } = scoreClaim(baseInput({ sources: many }));
     const twoPlus = trace.modifiers.filter((m) => m.type === "corroboration_2plus");
     const fourPlus = trace.modifiers.filter((m) => m.type === "corroboration_4plus");
@@ -147,12 +159,12 @@ describe("corroboration modifiers", () => {
     expect(fourPlus.length).toBe(1);
   });
 
-  test("mainstream pickup adds +1 when a mainstream source is present", () => {
+  test("mainstream pickup adds +1 when a non-lead source is mainstream", () => {
     const { snr, trace } = scoreClaim(
-      baseInput({ sources: [src("trade", 1), src("mainstream", 2)] }),
+      baseInput({ sources: [src("informal", 1), src("mainstream", 2)] }),
     );
-    // base 3 + 1 (2plus) + 1 (mainstream) = 5
-    expect(snr).toBe(5 as never);
+    // base 1 + 1 (2plus) + 1 (mainstream pickup) = 3
+    expect(snr).toBe(3 as never);
     expect(trace.modifiers.map((m) => m.type)).toContain("mainstream_pickup");
     expect(traceErrors(trace, snr)).toEqual([]);
   });
@@ -305,21 +317,21 @@ describe("whitelist floor", () => {
   });
 });
 
-// ---------------------------------------------------------------- wire_pr cap
+// ------------------------------------------------------ direct-source ceiling
 
-describe("wire_pr cap", () => {
+describe("direct-source ceiling (SNR 5 requires a direct source)", () => {
   test("wire_pr with corroboration caps at 4", () => {
     const { snr, trace } = scoreClaim(
       baseInput({
         sources: [src("wire_pr", 1), src("trade", 2), src("trade", 3), src("mainstream", 4)],
       }),
     );
-    // base 4, all upward climbs clamp to the wire_pr ceiling 4
+    // base 4, all upward climbs clamp to the ceiling 4
     expect(snr).toBe(4 as never);
     expect(traceErrors(trace, snr)).toEqual([]);
   });
 
-  test("wire_pr self-floor overrides the cap to 5", () => {
+  test("wire_pr self-floor overrides the ceiling to 5", () => {
     const { snr, trace } = scoreClaim(
       baseInput({
         sources: [src("wire_pr", 1), src("trade", 2)],
@@ -331,11 +343,45 @@ describe("wire_pr cap", () => {
     expect(traceErrors(trace, snr)).toEqual([]);
   });
 
-  test("non-wire lead can climb past 4 to 5", () => {
-    const { snr } = scoreClaim(
-      baseInput({ sources: [src("trade", 1), src("trade", 2), src("mainstream", 3)] }),
+  test("no indirect lead reaches 5, however wide the reporting", () => {
+    const { snr, trace } = scoreClaim(
+      baseInput({
+        sources: [
+          src("trade", 1),
+          src("trade", 2),
+          src("mainstream", 3),
+          src("trade", 4),
+          src("mainstream", 5),
+        ],
+        reinforced: true,
+        persisted: true,
+      }),
     );
-    // base 3 + 1 (2plus) + 1 (mainstream) = 5
+    // base 3 + 1 (2plus) = 4; 4plus, pickup, reinforcement, persistence
+    // are all skipped at the ceiling: wide reporting IS tier 4
+    expect(snr).toBe(4 as never);
+    expect(traceErrors(trace, snr)).toEqual([]);
+  });
+
+  test("a direct-source lead keeps its 5", () => {
+    const { snr } = scoreClaim(
+      baseInput({ sources: [src("first_party", 1), src("trade", 2)] }),
+    );
+    expect(snr).toBe(5 as never);
+  });
+
+  test("an extraordinary claim with a direct-source lead can climb back to 5", () => {
+    const many = [
+      src("first_party", 1),
+      src("trade", 2),
+      src("trade", 3),
+      src("mainstream", 4),
+    ];
+    const { snr } = scoreClaim(
+      baseInput({ sources: many, extraordinary: true, reinforced: true }),
+    );
+    // reset 1, +1 (2plus), +1 (4plus), +1 (pickup), +1 (reinforcement) = 5;
+    // allowed because the lead IS the concerned party
     expect(snr).toBe(5 as never);
   });
 });
@@ -412,7 +458,7 @@ describe("matchDecision windows", () => {
   });
 });
 
-describe("applyHistory / rescoreWithFinal are non-mutating", () => {
+describe("applyHistory / applyModifier are non-mutating and invariant-safe", () => {
   const trace: SnrTrace = {
     base: { tier: 3, source: "https://spacenews.com/x", reason: "trade" },
     modifiers: [{ type: "corroboration_2plus", delta: 1, reason: "two sources" }],
@@ -433,16 +479,79 @@ describe("applyHistory / rescoreWithFinal are non-mutating", () => {
     expect(next.modifiers).not.toBe(trace.modifiers);
   });
 
-  test("rescoreWithFinal records from/to and updates final", () => {
-    const next = rescoreWithFinal(trace, 5, "2026-07-15", "reinforced");
-    expect(next.final).toBe(5 as never);
+  test("applyModifier appends the modifier, recomputes final, records history", () => {
+    const next = applyModifier(
+      trace,
+      { type: "dispute", delta: -1, reason: "lost a same-metric contradiction" },
+      "2026-07-15",
+    );
+    // base 3 + 1 - 1 = 3
+    expect(next.final).toBe(3 as never);
+    expect(next.modifiers.length).toBe(2);
     expect(next.history?.[0]).toEqual({
       date: "2026-07-15",
       from: 4,
-      to: 5,
-      reason: "reinforced",
+      to: 3,
+      reason: "lost a same-metric contradiction",
     });
     expect(trace.final).toBe(4 as never);
+    expect(trace.modifiers.length).toBe(1);
+    // the result still satisfies the validator invariant
+    expect(traceErrors(next, next.final)).toEqual([]);
+  });
+
+  test("applyModifier throws on a saturated modifier type", () => {
+    expect(() =>
+      applyModifier(
+        trace,
+        { type: "corroboration_2plus", delta: 1, reason: "again" },
+        "2026-07-15",
+      ),
+    ).toThrow(/saturate/);
+  });
+
+  test("applyModifier honors the direct-source ceiling: upward no-op at 4", () => {
+    // trace is base 3 (trade) already at 4; reinforcement cannot lift an
+    // indirect lead to 5, so the trace comes back unchanged
+    const next = applyModifier(
+      trace,
+      { type: "reinforcement", delta: 1, reason: "matching event attached" },
+      "2026-07-15",
+    );
+    expect(next).toBe(trace);
+  });
+
+  test("applyModifier lets a direct-source lead climb to 5", () => {
+    const direct: SnrTrace = {
+      base: { tier: 5, source: "https://testco.example/pr", reason: "first-party" },
+      modifiers: [{ type: "extraordinary", delta: -4, reason: "out of pattern" }],
+      final: 1,
+      scorer_version: 1,
+    };
+    const next = applyModifier(
+      direct,
+      { type: "corroboration_2plus", delta: 1, reason: "second source" },
+      "2026-07-15",
+    );
+    expect(next.final).toBe(2 as never);
+    expect(traceErrors(next, next.final)).toEqual([]);
+  });
+
+  test("applyModifier caps persistence at 4 even for direct-source leads", () => {
+    const direct: SnrTrace = {
+      base: { tier: 5, source: "https://testco.example/pr", reason: "first-party" },
+      modifiers: [{ type: "extraordinary", delta: -4, reason: "out of pattern" }],
+      final: 1,
+      scorer_version: 1,
+    };
+    let t = applyModifier(direct, { type: "corroboration_2plus", delta: 1, reason: "x" }, "2026-07-10");
+    t = applyModifier(t, { type: "corroboration_4plus", delta: 1, reason: "x" }, "2026-07-11");
+    t = applyModifier(t, { type: "persistence", delta: 1, reason: "uncontested" }, "2026-07-25");
+    expect(t.final).toBe(4 as never);
+    const final = t;
+    expect(() =>
+      applyModifier(final, { type: "persistence", delta: 1, reason: "again" }, "2026-08-10"),
+    ).toThrow(/saturate/);
   });
 
   test("appends to existing history without rewriting", () => {
@@ -735,11 +844,28 @@ describe("promotionCandidates requires all three criteria", () => {
     expect(promotionCandidates([s], today)).toEqual([]);
   });
 
-  test("a claim below SNR 4 does not count", () => {
+  test("an unresolved claim does not count", () => {
     const s = claimsSpanning();
-    s.claims[2] = { claim: "c3", date: "2026-06-10", snr_at_publication: 3, resolution: "confirmed" };
+    s.claims[2] = { claim: "c3", date: "2026-06-10", snr_at_publication: 4, resolution: "unresolved" };
     // now only 4 qualifying claims
     expect(promotionCandidates([s], today)).toEqual([]);
+  });
+
+  test("claims published low but later confirmed qualify (the whole point)", () => {
+    // an informal account publishes at 1-2; promotion must still see it
+    // once its claims resolve confirmed via floor-independent corroboration
+    const s = ledgerSource({
+      claims: [
+        { claim: "c1", date: "2026-05-25", snr_at_publication: 1, resolution: "confirmed", resolved_on: "2026-06-05" },
+        { claim: "c2", date: "2026-06-01", snr_at_publication: 2, resolution: "confirmed", resolved_on: "2026-06-10" },
+        { claim: "c3", date: "2026-06-10", snr_at_publication: 2, resolution: "confirmed", resolved_on: "2026-06-20" },
+        { claim: "c4", date: "2026-06-20", snr_at_publication: 1, resolution: "confirmed", resolved_on: "2026-06-28" },
+        { claim: "c5", date: "2026-06-25", snr_at_publication: 2, resolution: "confirmed", resolved_on: "2026-06-30" },
+      ],
+    });
+    const out = promotionCandidates([s], today);
+    expect(out.length).toBe(1);
+    expect(out[0]?.claims.length).toBe(5);
   });
 
   test("a strike in window disqualifies", () => {

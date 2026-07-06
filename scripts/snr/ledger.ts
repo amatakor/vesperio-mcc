@@ -23,7 +23,6 @@ import {
   LEDGER_RECOVERY_NET_CREDITS,
   PROMOTION_MIN_CLAIMS,
   PROMOTION_WINDOW_DAYS,
-  PROMOTION_MIN_SNR,
 } from "../../src/data/schema";
 
 function daysAgo(date: string, today: string): number {
@@ -187,12 +186,16 @@ export interface PromotionCandidate {
 /**
  * Signals promotion candidates (SNR_PLAN.md §A5). A source qualifies when
  * ALL THREE hold within the window:
- *   - at least PROMOTION_MIN_CLAIMS distinct claims,
- *   - the claims span at least PROMOTION_WINDOW_DAYS (earliest to latest),
- *   - each qualifying claim reached final SNR >= PROMOTION_MIN_SNR,
- * AND zero strikes in the window. Only claims at or above the SNR floor
- * count toward the min-claims and span checks (the floor-independent
- * corroboration is the caller's attestation via snr_at_publication).
+ *   - at least PROMOTION_MIN_CLAIMS distinct qualifying claims,
+ *   - the qualifying claims span at least PROMOTION_WINDOW_DAYS,
+ *   - zero strikes in the window.
+ * A claim qualifies by RESOLUTION, not by its publication score: it must
+ * have resolved "confirmed" (the resolver marks confirmed when the claim
+ * reached PROMOTION_MIN_SNR via floor-independent corroboration, or was
+ * confirmed first-party). Filtering on snr_at_publication would exclude
+ * exactly the sources promotion exists for: informal accounts publish at
+ * 1-2 by definition, and "started low, ended confirmed" is the credit
+ * pattern we are looking for.
  */
 export function promotionCandidates(
   sources: LedgerSource[],
@@ -202,7 +205,7 @@ export function promotionCandidates(
   for (const source of sources) {
     if (countStrikes(windowEvents(source, today)) > 0) continue;
     const windowed = windowClaims(source, today);
-    const qualifying = windowed.filter((c) => c.snr_at_publication >= PROMOTION_MIN_SNR);
+    const qualifying = windowed.filter((c) => c.resolution === "confirmed");
     const distinct = new Set(qualifying.map((c) => c.claim));
     if (distinct.size < PROMOTION_MIN_CLAIMS) continue;
     const days = qualifying.map((c) => Date.parse(c.date + "T00:00:00Z"));

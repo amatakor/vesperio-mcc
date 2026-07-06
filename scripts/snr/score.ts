@@ -33,8 +33,17 @@ export const BASE_TIER_BY_CLASS: Record<SourceClass, SnrValue> = {
   informal: 1,
 };
 
-/** The wire-PR anti-spoof cap (SNR_PLAN.md §B1): press-wire hosts cap at 4. */
-const WIRE_PR_CAP = 4;
+/**
+ * The direct-source ceiling (SNR_SPEC.md §2 table): SNR 5 means "direct
+ * source from the concerned party", so a claim whose lead source is not
+ * tier 5 (first_party / official_record / computed) cannot climb above 4
+ * via corroboration, reinforcement, or persistence, however wide the
+ * reporting; the table's tier 4 IS "wide reporting". This subsumes the
+ * wire_pr anti-spoof cap (SNR_PLAN.md §B1). Only the whitelist self
+ * floor lifts past it, because the actor speaking about itself is a
+ * direct source.
+ */
+const INDIRECT_CEILING = 4;
 
 export interface ScoreInput {
   /**
@@ -80,15 +89,16 @@ function clamp(n: number): SnrValue {
  * Conceptual order (each step clamps into [1,5], and each modifier's
  * emitted delta is the difference between the running subtotal before
  * and after that step, so the deltas sum exactly to the final):
- *   1. base tier (lead source class -> BASE_TIER_BY_CLASS), wire_pr cap
+ *   1. base tier (lead source class -> BASE_TIER_BY_CLASS)
  *   2. extraordinary: reset subtotal to 1
- *   3. corroboration_2plus / corroboration_4plus / mainstream_pickup
+ *   3. corroboration_2plus / corroboration_4plus / mainstream_pickup,
+ *      all capped by the direct-source ceiling
  *   4. corroboration_none (only when crawl === "found_none")
- *   5. reinforcement
+ *   5. reinforcement (ceiling-capped)
  *   6. persistence (never above 4)
  *   7. dispute
  *   8. whitelist_floor (applied last; lifts to 4 observer / 5 self;
- *      the self floor overrides the wire_pr cap)
+ *      the self floor is the one way past the direct-source ceiling)
  */
 export function scoreClaim(input: ScoreInput): ScoreResult {
   const lead = input.sources[0];
@@ -123,14 +133,13 @@ export function scoreClaim(input: ScoreInput): ScoreResult {
   };
 
   const distinct = input.sources.length;
-  const hasMainstream = input.sources.some((s) => s.class === "mainstream");
+  // Pickup means coverage beyond the lead: a lone mainstream lead is
+  // "a few reputable sources" (tier 3, spec §2 table), not a bonus.
+  const pickup = input.sources.slice(1).find((s) => s.class === "mainstream");
 
-  // 1. Wire-PR anti-spoof cap (SNR_PLAN.md §B1): a wire_pr lead cannot
-  //    climb above 4 via corroboration/reinforcement/persistence until
-  //    the actor's own domain confirms. Only the whitelist self-floor
-  //    (step 8) may override it. Upward climbs are clamped to this
-  //    ceiling; downgrades and the self-floor bypass it.
-  const climbCeiling = naturalClass === "wire_pr" ? WIRE_PR_CAP : 5;
+  // 1. Direct-source ceiling (see INDIRECT_CEILING above): upward climbs
+  //    are clamped to it; downgrades and the self-floor bypass it.
+  const climbCeiling = baseTier >= 5 ? 5 : INDIRECT_CEILING;
   const up = (n: number): number => Math.min(climbCeiling, clamp(n));
 
   // 2. Extraordinary reset: force the pre-corroboration subtotal to 1.
@@ -153,13 +162,12 @@ export function scoreClaim(input: ScoreInput): ScoreResult {
       `${distinct} distinct sources (>=4)`,
     );
   }
-  if (hasMainstream) {
-    const src = input.sources.find((s) => s.class === "mainstream");
+  if (pickup !== undefined) {
     push(
       "mainstream_pickup",
       up(subtotal + 1),
       "picked up by a mainstream (non-trade) outlet",
-      src?.url,
+      pickup.url,
     );
   }
 
