@@ -178,7 +178,8 @@ function SnrTraceRows({ trace }: { trace: SnrTrace }) {
  * stored at scoring time, never a reconstruction.
  */
 function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compact?: boolean }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // pinned by click
+  const [hover, setHover] = useState(false); // transient, hover-to-peek
   const label = `SNR ${snr}/5: ${SNR_LABELS[snr] ?? ""}`;
   const bars = (
     <span className={`snr-bars snr-c${snr}`}>
@@ -195,12 +196,17 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
     );
   }
   return (
-    <span className={`snr${compact ? " snr-compact" : ""}`} onClick={(e) => e.stopPropagation()}>
+    <span
+      className={`snr${compact ? " snr-compact" : ""}`}
+      onClick={(e) => e.stopPropagation()}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
       <button
         type="button"
         className="snr-btn"
-        title={label}
         aria-expanded={open}
+        aria-label={label}
         onClick={(e) => {
           e.preventDefault();
           setOpen(!open);
@@ -209,7 +215,7 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
         {bars}
         {!compact && <span className="snr-num">{snr}</span>}
       </button>
-      {open && (
+      {(open || hover) && (
         <span className="snr-pop" role="dialog" aria-label="SNR calculation">
           <span className="snr-pop-head">
             <span>
@@ -713,19 +719,6 @@ export function TagPage({ tag }: { tag: string }) {
   );
 }
 
-const IMPACT_LEVEL: Record<string, number> = { seismic: 3, notable: 2, noise: 1 };
-
-function ImpactMeter({ impact }: { impact: string }) {
-  const level = IMPACT_LEVEL[impact] ?? 1;
-  return (
-    <span className={`meter meter-${impact}`} aria-label={`impact: ${impact}`}>
-      {[0, 1, 2].map((i) => (
-        <span key={i} className={`meter-cell${i < level ? " on" : ""}`} />
-      ))}
-    </span>
-  );
-}
-
 function hostOf(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");
@@ -739,7 +732,6 @@ export function ItemPage({ item }: { item: Item }) {
     <Layout current="news">
       <article className="item-page item-wide">
         <div className="item-band">
-          <ImpactMeter impact={item.impact} />
           <span className="band-impact">{item.impact}</span>
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
