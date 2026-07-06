@@ -232,7 +232,13 @@ function loadRegistryHosts(dataDir: string): Set<string> {
       const value = (profile.website as Obj).value;
       if (typeof value !== "string") continue;
       const h = hostOf(value);
-      if (h) hosts.add(h);
+      // Registry website fields record display URLs, usually www-prefixed.
+      // The actor's domain is the registrable apex, so a www. host is
+      // reduced to it: investors.planet.com and newsroom.ulalaunch.com are
+      // the same actor as www.planet.com / www.ulalaunch.com. Hosts with
+      // any other subdomain are kept verbatim (a site hosted on a shared
+      // platform must not whitelist the whole platform).
+      if (h) hosts.add(h.replace(/^www\./, ""));
     }
   }
   return hosts;
