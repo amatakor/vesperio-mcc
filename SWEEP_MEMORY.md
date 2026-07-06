@@ -171,3 +171,20 @@ a newer entry if a lesson changes.
 - 2026-07-05-U: Concurrency: ~25 simultaneous agents triggered server-side
   API rate limiting that killed nearly a whole fan-out. Keep waves at 3-5
   agents; forbid sub-agent spawning in collector prompts explicitly.
+
+## Timeline batch, fleet/IoT constellations (2026-07-06)
+
+- 2026-07-06-A: Verifier gap: adversarial verifiers checked facts, dates,
+  and quotes against live pages but did not check OUTLET ELIGIBILITY, so
+  Wamda and Startup Daily events (not on the trade-press list) passed
+  verification and had to be caught in orchestrator editorial review.
+  Verify prompts must name the closed outlet list explicitly.
+- 2026-07-06-B: Batch targeting: assign crawl entities from the
+  missing-data scan, not from a domain listing; kineis and astrocast
+  already had events (deep crawl 07-05) and two agents collected and
+  verified them for nothing. merge-events.ts's already-has-events guard
+  caught it, but the tokens were spent.
+- 2026-07-06-C: kineis.com and astrocast.com WERE reachable this run,
+  contrary to the 07-05 unreachable note; anti-bot walls come and go,
+  so collectors should always try the primary site once before falling
+  back to trade press.
