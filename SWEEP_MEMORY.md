@@ -202,3 +202,59 @@ a newer entry if a lesson changes.
   the window). Confirms the 07-05-S pattern: a narrow filtered re-check
   is a legitimate sweep shape and a single-item outcome is normal, not
   a sign of under-coverage.
+
+## 8-day backfill, 9-source filtered list (2026-07-06)
+
+- 2026-07-06-F: Re-slipped on the 07-05-J filtered-run discipline before
+  catching it: briefly tried fetching gao.gov, nasa.gov, spaceforce.mil,
+  and rocketlabusa.com for corroboration/upgrade on a run explicitly
+  restricted to 9 named sources. All four 404/403'd anyway (no harm
+  done), but the rule stands and nearly got broken: on a named-source-
+  filtered run, do not fetch ANY domain outside the list, even to
+  upgrade an existing trade-sourced claim to first_party/official_record.
+  Cap classification at what the named sources themselves support.
+- 2026-07-06-G: NASASpaceflight is usable on filtered runs but not the
+  obvious way: the WebFetch tool 403s on both nasaspaceflight.com/feed/
+  and every individual article page under /2026/MM/<slug>/. `curl` with
+  a descriptive User-Agent fetches the RSS feed cleanly (200), and its
+  `content:encoded` field carries the FULL article HTML (not just the
+  truncated `description` teaser) -- so the article-page block can be
+  bypassed entirely by reading the RSS payload instead of the article
+  URL. Flipped from unverified to verified on this basis.
+- 2026-07-06-H: CNES's configured URL (presse.cnes.fr/fr) now 301s to
+  cnes.fr/presse; fetches cleanly there (same pattern as iceye.com's
+  redirect, 07-06-D). Xinhua's configured tech/index.htm path 404s but
+  the bare homepage (english.news.cn) loads and surfaces space
+  headlines. CASC (english.spacechina.com) fetched cleanly on first try
+  this run, flipped to verified. DLR's nachrichten page is a client-
+  rendered "Loading" shell with no headlines in the fetched HTML on
+  both WebFetch and curl, same failure mode as starlink.com/spacex.com;
+  one documented failure so far, not yet flipped to dead.
+- 2026-07-06-I: Chinese constellation-buildout launches (SpaceSail/G60
+  Polar Group #13 and #14, two Long March launches four days apart)
+  and a Haiyang-series government ocean-monitoring satellite launch
+  were all confirmed via Launch Library and CASC but treated as
+  routine cadence, not itemized -- same standard already applied to
+  routine Starlink launches, kept even-handed across US and Chinese
+  megaconstellation cadence per CLAUDE.md's equal-weight instruction.
+- 2026-07-06-J: Scope judgment call flagged to `held` rather than
+  silently discarded or silently published: a Space Force/L3Harris
+  mobile satellite-jamming system (Meadowlands), on-the-record from
+  Space Force but substantively a battlefield electronic-warfare
+  story (named a live Middle East application) rather than core new-
+  space-economy news. Held is the right bucket for a genuine scope
+  question, not a sourcing-quality problem.
+- 2026-07-06-K: Explainer taglines packed with attribution phrasing
+  ("Per X, actor did Y...") plus a real figure routinely blew the
+  140-char cap; six of nine new items needed a tagline trim after
+  finalize-sweep rejected them one at a time. Draft taglines noticeably
+  shorter (under ~130 chars) the first time to avoid a slow
+  reject-edit-rerun loop.
+- 2026-07-06-L: Two existing single-source items each turned out to
+  already have a second trade outlet covering the same story sitting
+  unused in this run's other filtered feeds (Latitude/Oman also in
+  European Spaceflight; NASA lunar-lander awards also in NASASpaceflight,
+  with a direct Lori Glaze quote the SpaceNews lead lacked). Cross-
+  checking every existing item's story against ALL fetched sources this
+  run, not just matching candidates to existing items, found two free
+  SNR-raising corroboration attaches.
