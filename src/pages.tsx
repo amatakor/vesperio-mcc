@@ -111,11 +111,6 @@ const CAT_ABBR: Record<string, string> = {
   "human-spaceflight": "HSF",
 };
 
-/** Banner on card/item media for items at SNR 1-2 (low confidence). */
-function LowSnrBanner() {
-  return <span className="unverified-banner">low snr</span>;
-}
-
 const SNR_LABELS: Record<number, string> = {
   1: "single source, low confidence",
   2: "weakly corroborated",
@@ -245,7 +240,6 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
 
 /** Image when the pipeline found one; otherwise a generated text tile. */
 function CardMedia({ item }: { item: Item }) {
-  const low = item.snr <= 2;
   if (item.image) {
     return (
       <a
@@ -254,7 +248,6 @@ function CardMedia({ item }: { item: Item }) {
         onClick={() => markVisited(item.id)}
       >
         <img src={item.image.src} alt="" loading="lazy" />
-        {low && <LowSnrBanner />}
       </a>
     );
   }
@@ -266,35 +259,19 @@ function CardMedia({ item }: { item: Item }) {
     >
       <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
       <span className="tile-co">{item.companies[0] ?? item.category}</span>
-      {low && <LowSnrBanner />}
     </a>
   );
-}
-
-/** Up to 2 tags, domain tags preferred first. */
-function cardTags(item: Item): string[] {
-  const domain = item.tags.filter((t) => (DOMAIN_TAGS as readonly string[]).includes(t));
-  const rest = item.tags.filter((t) => !(DOMAIN_TAGS as readonly string[]).includes(t));
-  return [...domain, ...rest].slice(0, 2);
 }
 
 function Card({ item }: { item: Item }) {
   const sources = item.sources?.length ?? 1 + item.secondary_urls.length;
   return (
-    <article
-      className={`card card-${item.impact}${item.snr <= 2 ? " card-lowsnr" : ""}`}
-      data-item-id={item.id}
-    >
+    <article className={`card card-${item.impact}`} data-item-id={item.id}>
       <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`}>
           {item.category}
         </a>
-        {cardTags(item).map((t) => (
-          <a key={t} className="chip chip-tag" href={`/tag/${t}/`}>
-            #{t}
-          </a>
-        ))}
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
         <SnrBars snr={item.snr} trace={item.snr_trace} />
@@ -502,7 +479,6 @@ export function ItemPage({ item }: { item: Item }) {
               <figure className="item-figure">
                 <div className="item-figure-media">
                   <img src={item.image.src} alt={item.headline} />
-                  {item.snr <= 2 && <LowSnrBanner />}
                 </div>
                 <figcaption className="dim">
                   <a href={item.image.origin_url} rel="noopener">

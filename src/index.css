@@ -531,6 +531,13 @@ a.card-tile:hover .tile-cat {
   border-color: var(--acc-ink);
   color: var(--acc-ink);
 }
+/* On the yellow seismic card the global chip hover (yellow text) would
+   vanish into the background; invert to a dark fill instead. */
+.card-seismic a.chip:hover {
+  background: var(--acc-ink);
+  border-color: var(--acc-ink);
+  color: var(--acc);
+}
 .card-seismic .chip-seismic {
   background: var(--alert);
   border-color: var(--alert);
@@ -1711,19 +1718,6 @@ a.sig-card:hover .sig-p-x {
 }
 .profile .src-cell .snr {
   margin-left: 8px;
-}
-/* Seismic + low SNR: huge if true, barely sourced; the doubt must be
-   unmissable at seismic display size (SNR_SPEC.md §7.4). */
-.card-lowsnr .card-media .unverified-banner {
-  background: var(--warn);
-  color: #0a0a0a;
-}
-.card-seismic.card-lowsnr {
-  border-color: var(--warn);
-}
-.card-seismic.card-lowsnr .card-media .unverified-banner {
-  font-size: 0.95rem;
-  padding: 4px 12px;
 }
 .snr-moves {
   list-style: none;
