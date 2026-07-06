@@ -457,6 +457,14 @@ export function ItemPage({ item }: { item: Item }) {
 
 // --------------------------------------------------------------- registry
 
+/** Registry profile hrefs by entity name, for linking provider/operator values. */
+const ORG_HREF_BY_NAME = new Map(
+  organizations.map((o) => [o.name.toLowerCase(), `/registry/organizations/${o.slug}/`]),
+);
+
+/** Facts-table rows whose string value names another registry entity. */
+const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
+
 function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
   const value =
     f.value === null || f.value === undefined
@@ -464,10 +472,16 @@ function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
       : Array.isArray(f.value)
         ? f.value.join(", ")
         : String(f.value);
+  const entityHref =
+    ENTITY_ROW_LABELS.has(label) && typeof f.value === "string"
+      ? ORG_HREF_BY_NAME.get(f.value.toLowerCase())
+      : undefined;
   return (
     <tr key={label}>
       <th scope="row">{label}</th>
-      <td className={f.value === null ? "empty" : ""}>{value}</td>
+      <td className={f.value === null ? "empty" : ""}>
+        {entityHref ? <a href={entityHref}>{value}</a> : value}
+      </td>
       <td>{f.as_of ?? ""}</td>
       <td>
         {f.source ? (
