@@ -161,7 +161,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent. | [2026-07-05] The /updates/ listing page now fetches cleanly via curl with a descriptive User-Agent (real headlines and dates), reversing the prior 403. Individual article pages, however, are gated by a Cloudflare JS challenge (403 via both WebFetch and curl) -- listing metadata alone isn't enough to verify facts for publication; see held item. | [2026-07-05] The /updates/ listing page fetches cleanly via curl with a descriptive User-Agent (same behavior as last run). Individual article pages are still gated by a Cloudflare JS challenge, but the Rocket Lab/Iridium deal referenced in the listing was independently confirmed this run via Rocket Lab's own 8-K exhibit on SEC EDGAR, so the listing-vs-article gap no longer blocks that story. | [2026-07-05] The /updates/ listing again fetches cleanly via curl with a descriptive User-Agent and lists the VICTUS HAZE Puma and Synspective StriX-10 launches, but individual article pages remain Cloudflare-gated (same as prior runs). VICTUS HAZE was independently confirmed via Launch Library's mission description instead. | [2026-07-05] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published from the RKLB 8-K). No new dated entries since. | [2026-07-06] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published). No new dated entries. | [2026-07-06] [2026-07-06] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published). No new dated entries since last sweep.",
+        "notes": "Also SEC (RKLB). Domain changed from rocketlabusa.com in 2025, verify. | [2026-07-05] HTTP 403 Forbidden on two attempts; site may be blocking the fetch tool's user agent. | [2026-07-05] The /updates/ listing page now fetches cleanly via curl with a descriptive User-Agent (real headlines and dates), reversing the prior 403. Individual article pages, however, are gated by a Cloudflare JS challenge (403 via both WebFetch and curl) -- listing metadata alone isn't enough to verify facts for publication; see held item. | [2026-07-05] The /updates/ listing page fetches cleanly via curl with a descriptive User-Agent (same behavior as last run). Individual article pages are still gated by a Cloudflare JS challenge, but the Rocket Lab/Iridium deal referenced in the listing was independently confirmed this run via Rocket Lab's own 8-K exhibit on SEC EDGAR, so the listing-vs-article gap no longer blocks that story. | [2026-07-05] The /updates/ listing again fetches cleanly via curl with a descriptive User-Agent and lists the VICTUS HAZE Puma and Synspective StriX-10 launches, but individual article pages remain Cloudflare-gated (same as prior runs). VICTUS HAZE was independently confirmed via Launch Library's mission description instead. | [2026-07-05] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published from the RKLB 8-K). No new dated entries since. | [2026-07-06] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published). No new dated entries. | [2026-07-06] [2026-07-06] The /updates/ listing fetches cleanly via curl with a descriptive User-Agent; most recent entry still the July 3 Iridium acquisition post (already published). No new dated entries since last sweep. | [2026-07-06] /updates/ listing fetched cleanly via curl; most recent entry still the July 3 Iridium acquisition post (already published). Nothing new inside the 2026-06-29 backfill window; June 22-26 entries (VICTUS HAZE launch record, NASA Sun/Earth mission selection, Synspective 10th launch) predate the window.",
         "fail_count": 0
       },
       {
@@ -172,8 +172,9 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "FR originals sometimes richer than EN."
+        "status": "verified",
+        "notes": "FR originals sometimes richer than EN. | [2026-07-06] Configured /press-releases/ path 404s. The root domain loads cleanly and links to the real newsroom at newsroom.arianespace.com, which also fetched cleanly. Most recent entry there (Ariane 6/Amazon Leo 36-satellite launch) is dated June 17, 2026, predating the window. No candidate. Recommend updating the stored URL to newsroom.arianespace.com.",
+        "fail_count": 0
       },
       {
         "name": "Firefly Aerospace",
@@ -183,7 +184,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] fireflyspace.com/news/ fetched cleanly. Most recent post (June 30, 2026) was a $144 million NASA CLPS contract for a sixth Blue Ghost lunar mission, shipped as a new item."
       },
       {
         "name": "Blue Origin",
@@ -194,7 +197,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "New Glenn ramp relevant to EO rideshare economics."
+        "notes": "New Glenn ramp relevant to EO rideshare economics. | [2026-07-06] blueorigin.com/news returned HTTP 429 on every attempt this run (three tries, different User-Agent strings each time). Consistent with prior 429 notes; first documented failure logged against this source's fail counter.",
+        "fail_count": 1
       },
       {
         "name": "ULA",
@@ -204,7 +208,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] Configured /about/news path is a stale archive (article dates 2019-2023, not a live feed). The real newsroom is newsroom.ulalaunch.com, which fetched cleanly with real 2026 releases. Its July 2 release (Atlas V Leo 8) confirms the same launch as the already-published SpaceNews item but is hosted on a subdomain (newsroom.ulalaunch.com) that does not match the registry's recorded website host (www.ulalaunch.com), so it could not be attached as first_party without failing the anti-spoof gate; not attached this run. Recommend updating the stored URL to newsroom.ulalaunch.com and, on the next registry structural touch, storing ULA's website as the bare apex domain so both subdomains match."
       },
       {
         "name": "ISRO",
@@ -215,7 +221,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story."
+        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story. | [2026-07-06] Every path tried this run (Press_Release.html, PressReleases.html/htm, PressRelease.html, press-release, News.html) 404'd. Press.html returned 200 but is a stale archive with dates only through July 2025, not a live feed. No candidate; still no working current URL found for this source.",
+        "fail_count": 1
       },
       {
         "name": "JAXA / MHI",
@@ -226,7 +233,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "H3 program."
+        "notes": "H3 program. | [2026-07-06] global.jaxa.jp/press/ redirects to /press/2026/, which returned HTTP 403 on both attempts this run. First documented failure for this source.",
+        "fail_count": 1
       },
       {
         "name": "Isar Aerospace",
@@ -236,8 +244,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Spectrum program; key EU small-launch story."
+        "status": "verified",
+        "notes": "Spectrum program; key EU small-launch story. | [2026-07-06] Configured /news path 404s. The real newsroom is isaraerospace.com/newsroom, linked from the homepage's 'Newsroom' card rather than the top nav. Its July 2 release is Isar's own press release for the Planet Labs Germany Spectrum launch deal already published from European Spaceflight/SpaceNews; used to upgrade that item's lead source to first-party. Recommend updating the stored URL to isaraerospace.com/newsroom.",
+        "fail_count": 0
       },
       {
         "name": "Rocket Factory Augsburg",
@@ -247,7 +256,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] Configured /news/ path 404s. /presskit is a static press-kit page (last modified 2023), not a news feed. /media loads a post-grid with headlines but no visible dates in the listing; opened the top-listed story directly ('RFA ships stages to SaxaVord Spaceport') and its datePublished is March 6, 2026, predating the window. Listing order is not confirmed chronological (same trap as Umbra, 2026-07-06-S); no candidate found. Recommend finding RFA's actual dated press-release URL structure at the next structural touch."
       },
       {
         "name": "Stoke Space",
@@ -257,8 +268,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Nova; full-reuse angle."
+        "status": "verified",
+        "notes": "Nova; full-reuse angle. | [2026-07-06] Configured /updates/ path 404s; the real path is /news/ (linked from the primary nav), which fetched cleanly with real dated posts. Most recent (June 26, 2026, NASA reusable re-entry partnership) predates the 2026-06-29 window. No candidate. Recommend updating the stored URL to stokespace.com/news/.",
+        "fail_count": 0
       }
     ],
     "launch_tracking": [
@@ -571,7 +583,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Sparse. Availability/pricing changes also surface via FCC filings."
+        "notes": "Sparse. Availability/pricing changes also surface via FCC filings. | [2026-07-06] starlink.com/updates returns HTTP 200 but is an unrendered app shell (a JSON config blob, no article markup), the same failure mode already documented for spacex.com/updates. First documented failure for this specific source entry.",
+        "fail_count": 1
       },
       {
         "name": "AST SpaceMobile News",
@@ -582,7 +595,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Direct-to-device leader. Also SEC (ASTS)."
+        "notes": "Direct-to-device leader. Also SEC (ASTS). | [2026-07-06] ast-science.com/news/ fetched cleanly (200) but returns a client-rendered app shell with no extractable article links or dates in the fetched HTML. First documented failure this run.",
+        "fail_count": 1
       },
       {
         "name": "Eutelsat Group (OneWeb) Press",
@@ -592,7 +606,9 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "unverified",
+        "fail_count": 1,
+        "notes": "[2026-07-06] Configured media-center.html path 404s. Tried en/press-releases.html and en/group/newsroom.html (both 404) and found the real nav-linked path at eutelsat.com/media-press/media-centre, which returns 200 but is a client-rendered shell with no article dates or links in the fetched HTML. First documented failure at the corrected URL; recommend updating the stored URL to media-press/media-centre pending a JS-capable fetch."
       },
       {
         "name": "Amazon / Project Kuiper News",
@@ -602,7 +618,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] Fetched cleanly. The only entry inside the window (July 2, 2026) is a general 'ways Amazon is investing in Florida' community/jobs post that only tags Amazon Leo/Project Kuiper among several topics, not a discrete Kuiper news event; excluded as off-topic thought-leadership content, same pattern as Planet's Pulse blog (2026-07-05 note)."
       },
       {
         "name": "SES Press Releases",
@@ -612,8 +630,9 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "MEO (O3b mPOWER) + GEO."
+        "status": "verified",
+        "notes": "MEO (O3b mPOWER) + GEO. | [2026-07-06] Fetched cleanly; most recent release June 17, 2026, predating the 2026-06-29 window. No candidate.",
+        "fail_count": 0
       },
       {
         "name": "Telesat News",
@@ -623,8 +642,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Lightspeed LEO."
+        "status": "verified",
+        "notes": "Lightspeed LEO. | [2026-07-06] Fetched cleanly at the configured /press/ URL. One release inside the window (July 2, 2026): Telesat donating Telstar 19 VANTAGE capacity to Top Comunications for Venezuela earthquake recovery, shipped as a new item.",
+        "fail_count": 0
       }
     ],
     "human_spaceflight": [
@@ -636,7 +656,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] Fetched cleanly; most recent post June 23, 2026, predating the window. No candidate."
       },
       {
         "name": "Vast News",
@@ -647,7 +669,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Haven-1 / CLD race."
+        "notes": "Haven-1 / CLD race. | [2026-07-06] Configured /news path 404s. The root domain loads; its only news-adjacent nav link is /media, a brand/media-asset kit page (logos, mission images, video links) with no press-release listing or dates. No working news feed URL found this run.",
+        "fail_count": 1
       },
       {
         "name": "Sierra Space News",
@@ -657,7 +680,9 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "fail_count": 0,
+        "notes": "[2026-07-06] Fetched cleanly. Two posts inside/near the window (June 30 and June 22, 2026) are both routine executive-appointment announcements (CFO, SVP Government Relations), below the notability bar, consistent with prior CFO/CAO appointment exclusions elsewhere in this project. No candidate."
       }
     ],
     "iot_rf_operators": [

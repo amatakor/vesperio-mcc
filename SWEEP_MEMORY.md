@@ -366,3 +366,75 @@ a newer entry if a lesson changes.
   silent discard, per the 2026-07-06-J precedent -- genuine scope
   uncertainty belongs in the edit queue, not a unilateral call either
   way.
+
+## Launch + connectivity + human-spaceflight newsroom backfill, part B, 19-source filtered list (2026-07-06)
+
+- 2026-07-06-V: Configured newsroom URLs were wrong or stale for over
+  half this run's sources, and the real path was consistently one hop
+  away rather than unreachable outright: ULA's `/about/news` is a
+  frozen Sitefinity archive (dates 2019-2023) while the live newsroom
+  is `newsroom.ulalaunch.com` (a separate HubSpot property linked from
+  the page, not discoverable by guessing paths on ulalaunch.com
+  itself); Isar Aerospace's real feed is `/newsroom` (linked from a
+  homepage card, "News & Press Releases"), not `/news`; Stoke Space's
+  is `/news/` (primary nav), not `/updates/`; Arianespace's is
+  `newsroom.arianespace.com`, not `/press-releases/` on the main
+  domain. Pattern: when a configured news path 404s, fetch the site
+  root and grep its nav/homepage links for news-shaped hrefs before
+  concluding the source is unreachable -- the working URL is usually
+  linked from somewhere on the domain even when the guessed path isn't
+  it.
+- 2026-07-06-W: Anti-spoof host matching is exact-subdomain, not
+  same-registrable-domain: `hostMatches` only accepts `host === base`
+  or `host.endsWith("." + base)`, so a registry `website` value of
+  `https://www.ulalaunch.com` does NOT cover `newsroom.ulalaunch.com`
+  (neither is a subdomain of the other) even though both are
+  legitimately ULA's own web presence. Attaching ULA's own newsroom
+  release as `first_party` this run would have failed finalize-sweep's
+  validation for exactly this reason; left it unattached rather than
+  misclassify it as something lesser. If a company's real newsroom
+  lives on a different subdomain than its registered `website` value,
+  either store the bare apex domain (e.g. `ulalaunch.com`, no `www.`)
+  in the registry so both subdomains satisfy `hostMatches`, or accept
+  that first-party sources on that subdomain can't be attached until
+  the registry is touched structurally.
+- 2026-07-06-X: A first-party release can confirm the underlying facts
+  of an existing item (launch date, satellite count) without
+  supporting every claim in that item's headline. ULA's own July 2
+  release confirmed the Atlas V Leo 8 launch details but never said
+  "final Atlas V mission" -- that framing was SpaceNews' reporting, and
+  the headline already attributes it ("SpaceNews: ..."). Swapping the
+  lead source to ULA's page would have orphaned the headline's central
+  claim from its source. Lesson: before promoting a new source to lead
+  for an upgrade, check it actually supports the specific claim the
+  headline/copy leans on, not just the general topic of the item.
+- 2026-07-06-Y: Company "news" pages tagged with a constellation/product
+  name are not always about that product: Amazon's aboutamazon.com
+  page tags general corporate posts (jobs, fulfillment centers, local
+  investment) with "Amazon Leo"/"Project Kuiper" alongside many other
+  topics whenever a Kuiper facility or hire is mentioned in passing.
+  The one item inside this run's window ("5 ways Amazon is investing
+  in Florida") was pure community/jobs content, not a discrete Kuiper
+  event -- same exclusion logic as Planet's Pulse blog and Synspective's
+  thought-leadership posts. Check what the post is actually about, not
+  just its tag list, before treating a tag match as a candidate.
+- 2026-07-06-Z: Listing widgets without visible dates need their top
+  article opened directly to get a real `datePublished`, and "top of
+  the list" still isn't guaranteed to be the most recent (re-affirms
+  2026-07-06-S's Umbra finding): Rocket Factory Augsburg's `/media`
+  post-grid had no dates in the listing at all; opening the top-listed
+  story directly showed a March 2026 `datePublished`, outside this
+  run's window, despite being visually first.
+- 2026-07-06-AA: Several sources in this list are React/Next.js/Angular
+  SPA shells that return HTTP 200 with real byte counts but zero
+  extractable article markup: AST SpaceMobile News (ast-science.com),
+  Eutelsat's actual media-centre page (once found), and starlink.com
+  itself (as distinct from spacex.com, already dead) all hit this
+  failure mode this run. A 200 status and non-trivial page size is not
+  proof of usable content; check for actual article links/dates before
+  counting a fetch as a success.
+- 2026-07-06-BB: Vast Space has no working press-release feed
+  discoverable from its own site this run: `/news` 404s and the only
+  news-adjacent nav link, `/media`, is a static brand/asset kit (logos,
+  mission photos, video embeds) with no dated posts at all, not merely
+  a stale one.
