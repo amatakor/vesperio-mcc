@@ -278,3 +278,46 @@ a newer entry if a lesson changes.
   updates[].rescore (full scoring block, re-bases the trace, history
   preserved), not bump: bump cannot raise the base tier or correct a
   wrong crawl outcome.
+
+## Regulatory/financial/procurement backfill, 14-source filtered list (2026-07-06)
+
+- 2026-07-06-M: fcc.report/IBFS (the FCC IBFS entry in sources.json)
+  loads cleanly (200) on the front page, the Filing-List.rss feed, and
+  the SAT/ filing-type sublist, but every single filing across all
+  three views is dated 2020-2023, even though the RSS channel's own
+  pubDate claims today. This mirror looks like a static/stale snapshot,
+  not a live feed; do not treat a clean 200 from this domain as proof
+  of current data, always spot-check the actual filing dates returned.
+- 2026-07-06-N: Several government/agency source URLs in sources.json
+  have moved and 404 at the configured path, but resolve one hop away:
+  NOAA CRSRA (nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs)
+  404s; nesdis.noaa.gov/CRSRA 301-redirects cleanly to space.commerce.gov's
+  Office of Space Commerce pages. EUSPA procurement
+  (euspa.europa.eu/opportunities/procurement) 301-redirects to
+  opportunities/procurement-grants/procurement. NGA
+  (nga.mil/news/press_releases.html) 404s; nga.mil/news/ client-redirects
+  to news/News.html, which links news/Contract_Announcements.html (the
+  actually useful page: dated commercial-imagery contract awards
+  including Maxar, BlackSky, Planet Labs Federal). Worth updating the
+  stored URLs to the working ones next time sources.json structure is
+  touched.
+- 2026-07-06-O: SAM.gov (sam.gov/search/) and ESA's esa-star
+  (esastar-publication-ext.sso.esa.int/) both return only an unrendered
+  Angular app shell via plain fetch/curl, no listing data in the HTML.
+  SAM.gov's own source notes say it needs the free API with a key,
+  which no run has had yet; esa-star is the same failure mode. Neither
+  is usable for discovery without a JS-capable fetch or a keyed API
+  path.
+- 2026-07-06-P: ITU's configured SNL URL (itu.int/ITU-R/space/snl/)
+  301-redirects to a WordPress "Space Networks Regulatory Hub" landing
+  page that fetches cleanly but is a portal to lookup tools and reports,
+  not a dated filing list. Confirms the existing sources.json note
+  ("clunky, phase-2 hardening target") rather than superseding it.
+- 2026-07-06-Q: On this run all 6 SEC EDGAR 8-K feeds, FCC IBFS, FCC
+  Daily Digest, ITU SNL, NOAA CRSRA, SAM.gov, esa-star, EUSPA
+  procurement, and NGA were checked against a 2026-06-29 backfill window
+  and none had anything dated inside it: a genuinely quiet sweep across
+  an entirely regulatory/financial/procurement source list, distinct
+  from the trade-press-heavy runs that usually produce a few items.
+  Zero items is the correct outcome here, not a sign the sources were
+  under-searched.

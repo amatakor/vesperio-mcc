@@ -303,8 +303,8 @@
         "cadence": "daily",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "fcc.report is an unofficial but scrapeable mirror; official IBFS search is licensing.fcc.gov and painful. Constellation modifications show up here months before press releases. Differentiator source."
+        "status": "verified",
+        "notes": "fcc.report is an unofficial but scrapeable mirror; official IBFS search is licensing.fcc.gov and painful. Constellation modifications show up here months before press releases. Differentiator source. | [2026-07-06] First fetch of fcc.report/IBFS/ this project: loads cleanly (200) including the Filing-List.rss feed and the SAT/ filing-type sublist, but every listed filing across all three views is dated 2020-2023 despite the RSS channel's own pubDate claiming today. This mirror appears to serve a static/stale snapshot rather than live IBFS data; not usable for current-filing discovery as configured. No candidate."
       },
       {
         "name": "FCC Daily Digest",
@@ -314,7 +314,9 @@
         "cadence": "daily",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "unverified",
+        "fail_count": 1,
+        "notes": "[2026-07-06] curl (descriptive User-Agent, 20s timeout) timed out with no response, consistent with fcc.gov being blocked from this fetch environment before. First documented failure for this source; not yet flipping to dead (needs 3 consecutive)."
       },
       {
         "name": "ITU Space Network filings (SNL)",
@@ -324,8 +326,8 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Clunky. Treat as phase-2 hardening target, not day-one."
+        "status": "verified",
+        "notes": "Clunky. Treat as phase-2 hardening target, not day-one. | [2026-07-06] www.itu.int/ITU-R/space/snl/ 301-redirects to a WordPress 'Space Networks Regulatory Hub' portal page that fetches cleanly. It is a landing/tools hub (links to online lookup tools and reports), not a dated filing list, so no filings were extractable this way. Matches the existing note that this source is clunky; first clean fetch, flipped to verified. No candidate."
       },
       {
         "name": "NOAA CRSRA (US remote sensing licenses)",
@@ -335,8 +337,8 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "License grants/modifications reveal US EO operator capability plans early (resolution, NEI waivers). URL may have moved; confirm during recon."
+        "status": "verified",
+        "notes": "License grants/modifications reveal US EO operator capability plans early (resolution, NEI waivers). URL may have moved; confirm during recon. | [2026-07-06] Configured URL (nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs) now 404s. nesdis.noaa.gov/CRSRA 301-redirects cleanly to space.commerce.gov's Commercial Remote Sensing Regulatory Affairs pages (Office of Space Commerce). Checked the Mission Authorization news category there; most recent post is April 2, 2026, predating this run's window (2026-06-29). No dated license-grant log found, only static regulatory-info pages. Recommend updating the stored URL to nesdis.noaa.gov/CRSRA. No candidate."
       }
     ],
     "financial": [
@@ -348,7 +350,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "EDGAR atom feeds are reliable and free. Requires User-Agent header. One entry per ticker. | [2026-07-05] 403 without a User-Agent header, succeeds with one set (per existing note); most recent PL 8-K filed 2026-06-05, outside freshness window. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-06-05, outside the freshness window. | [2026-07-05] Most recent filing (2026-06-05, items 1.01/9.01) covers a $1.5B ATM equity distribution agreement, used as the confirmed-tier basis for this run's Planet Labs item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing.",
+        "notes": "EDGAR atom feeds are reliable and free. Requires User-Agent header. One entry per ticker. | [2026-07-05] 403 without a User-Agent header, succeeds with one set (per existing note); most recent PL 8-K filed 2026-06-05, outside freshness window. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-06-05, outside the freshness window. | [2026-07-05] Most recent filing (2026-06-05, items 1.01/9.01) covers a $1.5B ATM equity distribution agreement, used as the confirmed-tier basis for this run's Planet Labs item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-05 ATM offering 8-K (already published). No new filing inside the 2026-06-29 window.",
         "fail_count": 0
       },
       {
@@ -359,7 +361,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-22, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-22, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing."
       },
       {
         "name": "SEC EDGAR 8-K feed: RKLB",
@@ -370,7 +372,7 @@
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-05] First successful fetch (curl with a descriptive User-Agent, no 403). Most recent filing is a June 29, 2026 8-K (items 1.01/7.01/9.01) containing the Rocket Lab-Iridium merger agreement and joint press release, used as the primary source for a confirmed item this run. | [2026-07-05] Refetched cleanly. The 2026-06-05 filing (item 5.02) is a routine Chief Accounting Officer appointment, below the notability bar; no candidate beyond the already-published Iridium acquisition. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing."
+        "notes": "[2026-07-05] First successful fetch (curl with a descriptive User-Agent, no 403). Most recent filing is a June 29, 2026 8-K (items 1.01/7.01/9.01) containing the Rocket Lab-Iridium merger agreement and joint press release, used as the primary source for a confirmed item this run. | [2026-07-05] Refetched cleanly. The 2026-06-05 filing (item 5.02) is a routine Chief Accounting Officer appointment, below the notability bar; no candidate beyond the already-published Iridium acquisition. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-29 Iridium merger 8-K (already published). No new filing."
       },
       {
         "name": "SEC EDGAR 8-K feed: SATL",
@@ -380,7 +382,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-08 filing (item 5.02) is an amicable CFO transition and the 2026-06-04 filing is a routine shareholder-vote result; neither clears the notability bar for a backfill item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-08 filing (item 5.02) is an amicable CFO transition and the 2026-06-04 filing is a routine shareholder-vote result; neither clears the notability bar for a backfill item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing."
       },
       {
         "name": "SEC EDGAR 8-K feed: SPIR",
@@ -390,7 +392,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-29, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-29, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing."
       },
       {
         "name": "SEC EDGAR 8-K feed: ASTS",
@@ -400,7 +402,7 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-15 filing (item 5.07) is routine annual-meeting voting results; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-06-12, below the notability bar. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-15 filing (item 5.07) is routine annual-meeting voting results; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-06-12, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent 8-K item still the 2026-06-15 routine annual-meeting voting-results filing. Company-info metadata shows a formerly-names entry dated 2026-07-02 with no corresponding 8-K in the feed explaining it; not reportable without a linked source stating the underlying fact. No new filing."
       }
     ],
     "procurement": [
@@ -413,7 +415,7 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Free API with key. Filter by NAICS 517410/336414 and keyword sets. Phase in after core news loop works."
+        "notes": "Free API with key. Filter by NAICS 517410/336414 and keyword sets. Phase in after core news loop works. | [2026-07-06] sam.gov/search/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML); the source's own notes say it needs the free API with a key, which this run does not have. No candidate; needs the keyed API path to be usable."
       },
       {
         "name": "ESA Open Invitations (esa-star)",
@@ -423,7 +425,8 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "unverified",
+        "notes": "[2026-07-06] esastar-publication-ext.sso.esa.int/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML), same failure mode as SAM.gov. No candidate."
       },
       {
         "name": "EUSPA procurement",
@@ -433,7 +436,8 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified"
+        "status": "verified",
+        "notes": "[2026-07-06] Configured URL (euspa.europa.eu/opportunities/procurement) 301-redirects to opportunities/procurement-grants/procurement, which fetches cleanly and lists ongoing/planned procurements. Checked the Space Traffic Coordination Platform (STCP) planned-procurement entry specifically; its post date is 16 March 2026, predating this run's window. No procurement inside the 2026-06-29 window. Recommend updating the stored URL to the post-redirect path."
       },
       {
         "name": "NGA / NRO public announcements",
@@ -443,8 +447,8 @@
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Commercial imagery contract news (EOCL-type). High relevance to EO revenue picture."
+        "status": "verified",
+        "notes": "Commercial imagery contract news (EOCL-type). High relevance to EO revenue picture. | [2026-07-06] Configured URL (nga.mil/news/press_releases.html) 404s. nga.mil/news/ resolves via a client-side redirect to news/News.html, which links a Contract_Announcements.html page that fetches cleanly and lists dated commercial-imagery contract awards (Maxar, BlackSky, Planet Labs Federal all appear in the Luno B IDIQ, Jan 15 2025). Most recent entry is December 31, 2025 (GDTS IV to Raytheon), predating this run's window. Recommend updating the stored URL to nga.mil/news/Contract_Announcements.html. No candidate."
       }
     ],
     "non_english": [
