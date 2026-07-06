@@ -1,6 +1,11 @@
-# News sweep, twice daily. Cron enabled 2026-07-05 after Task 5
-# acceptance: four supervised sweeps, zero factual errors, Florian
-# signed off on every published item.
+# News sweep. Cron enabled 2026-07-05 after Task 5 acceptance: four
+# supervised sweeps, zero factual errors, Florian signed off on every
+# published item.
+#
+# TEMPORARY (2026-07-06): running HOURLY during the first few days to
+# gather scoring/signals data for engine tuning. REVERT TO TWICE DAILY
+# AT LAUNCH by restoring the commented `0 5,17 * * *` line in `schedule`
+# below and removing the hourly line.
 #
 # Scheduled runs currently use the cautious source set below (soft
 # launch per Florian's 2b decision); remove the fallback list in
@@ -30,7 +35,11 @@ on:
         required: false
         default: ""
   schedule:
-    - cron: "0 5,17 * * *"
+    # Tuning period: hourly at :17 (top-of-hour is GitHub's most congested
+    # slot and drops runs, so offset). Restore the twice-daily line below
+    # at launch.
+    - cron: "17 * * * *"
+    # - cron: "0 5,17 * * *"   # launch cadence: twice daily, 05:00/17:00 UTC
 
 concurrency:
   group: data-writes
