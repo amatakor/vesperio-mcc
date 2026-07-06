@@ -1,0 +1,26 @@
+name: update-stocks
+
+on:
+  schedule:
+    # Daily after US market close (22:30 UTC).
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stocks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Fetch daily closes for listed registry entities
+        run: bun scripts/fetch-stocks.ts
+      - name: Commit refreshed series
+        run: |
+          git config user.name "mcc-stocks-bot"
+          git config user.email "actions@github.com"
+          git add public/data/stocks/
+          git diff --cached --quiet && echo "no changes" || git commit -m "stocks: daily close refresh"
+          git push

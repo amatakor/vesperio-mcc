@@ -26,6 +26,7 @@ import {
   constellationChildren,
 } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
+import aliases from "./data/aliases.json";
 import { OrbitsStage } from "./orbits/stage";
 
 /** sessionStorage key set on card-link click, read once on the next mount. */
@@ -462,6 +463,29 @@ const ORG_HREF_BY_NAME = new Map(
   organizations.map((o) => [o.name.toLowerCase(), `/registry/organizations/${o.slug}/`]),
 );
 
+/**
+ * Curated alias map (src/data/aliases.json): unifies display names and
+ * browser grouping for companies that sources phrase differently. The
+ * sourced value inside each profile keeps the cited page's wording.
+ */
+const CANONICAL_BY_ALIAS = new Map<string, { name: string; org?: string }>();
+for (const e of aliases.entities) {
+  CANONICAL_BY_ALIAS.set(e.name.toLowerCase(), e);
+  for (const a of e.aliases) CANONICAL_BY_ALIAS.set(a.toLowerCase(), e);
+}
+
+function canonicalName(v: string): string {
+  return CANONICAL_BY_ALIAS.get(v.toLowerCase())?.name ?? v;
+}
+
+function entityHrefFor(v: string): string | undefined {
+  const canon = CANONICAL_BY_ALIAS.get(v.toLowerCase());
+  if (canon?.org) return `/registry/organizations/${canon.org}/`;
+  return (
+    ORG_HREF_BY_NAME.get((canon?.name ?? v).toLowerCase()) ?? ORG_HREF_BY_NAME.get(v.toLowerCase())
+  );
+}
+
 /** Facts-table rows whose string value names another registry entity. */
 const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
 
@@ -474,7 +498,7 @@ function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
         : String(f.value);
   const entityHref =
     ENTITY_ROW_LABELS.has(label) && typeof f.value === "string"
-      ? ORG_HREF_BY_NAME.get(f.value.toLowerCase())
+      ? entityHrefFor(f.value)
       : undefined;
   return (
     <tr key={label}>
@@ -595,9 +619,9 @@ function constellationEntries(): RegEntry[] {
     name: c.name,
     kind: c.domain === "eo" ? ("eo" as const) : c.domain === "iot" ? ("iot" as const) : ("connectivity" as const),
     href: `/registry/constellations/${c.slug}/`,
-    group: c.operator.value ?? "Operator unconfirmed",
+    group: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
     parent: c.parent ?? null,
-    affiliation: c.operator.value ?? "Operator unconfirmed",
+    affiliation: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
     figure:
       c.sats_active_verified.value !== null
         ? `${c.sats_active_verified.value} tracked on orbit`
@@ -916,7 +940,8 @@ function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
       {sel && children.length > 0 && (
         <div className="reg-pane reg-ents">
           <div className="reg-pane-head">
-            {sel.name} constellations <span className="dim">{children.length}</span>
+            <a href={sel.href}>{sel.name}</a> constellations{" "}
+            <span className="dim">{children.length}</span>
           </div>
           {children.map((c) => (
             <RegRow
@@ -1097,6 +1122,8 @@ interface ProfileMeta {
   history?: TimelineEvent[];
   /** Dim methodology note under the facts table. */
   tableNote?: string | null;
+  /** Stock ticker for listed entities; renders the stock section. */
+  stockTicker?: SourcedField<string> | null;
 }
 
 function Breadcrumbs({
@@ -1206,6 +1233,65 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
           </a>
         ))}
       </div>
+    </section>
+  );
+}
+
+/** Six-month close-price chart for listed entities; data via the Stooq pipeline. */
+function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<string> }) {
+  const [series, setSeries] = useState<Array<[string, number]> | null>(null);
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    fetch(`/data/stocks/${slug}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d) => setSeries(d.closes))
+      .catch(() => setFailed(true));
+  }, [slug]);
+  if (!ticker.value) return null;
+  const W = 640;
+  const H = 160;
+  const PAD = 6;
+  let chart: ReactNode = null;
+  if (series && series.length > 1) {
+    const vals = series.map(([, c]) => c);
+    const min = Math.min(...vals);
+    const max = Math.max(...vals);
+    const span = max - min || 1;
+    const pts = series
+      .map(([, c], i) => {
+        const x = PAD + (i / (series.length - 1)) * (W - 2 * PAD);
+        const y = H - PAD - ((c - min) / span) * (H - 2 * PAD);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+    const first = vals[0]!;
+    const last = vals[vals.length - 1]!;
+    const up = last >= first;
+    chart = (
+      <>
+        <svg viewBox={`0 0 ${W} ${H}`} className="stock-chart" role="img" aria-label="6 month close prices">
+          <polyline points={pts} fill="none" stroke="currentColor" strokeWidth="2" />
+        </svg>
+        <p className="dim mono stock-meta">
+          {series[0]![0]} to {series[series.length - 1]![0]} | last close {last.toFixed(2)} |{" "}
+          {up ? "+" : ""}{(((last - first) / first) * 100).toFixed(1)}% over period | market data: Yahoo Finance,
+          end of day
+        </p>
+      </>
+    );
+  } else if (failed) {
+    chart = <p className="dim">No price series available yet; the daily pipeline fills it.</p>;
+  }
+  return (
+    <section id="stock" className="panel">
+      <h2>stock</h2>
+      <p>
+        {ticker.value}{" "}
+        <a href={ticker.source ?? undefined} rel="noopener" className="dim">
+          (source, as of {ticker.as_of})
+        </a>
+      </p>
+      {chart}
     </section>
   );
 }
@@ -1321,6 +1407,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const history = profile.history ?? [];
   const sections: Array<[string, string]> = [["facts", "facts"]];
   if (history.length > 0) sections.push(["history", "history"]);
+  if (profile.stockTicker?.value) sections.push(["stock", "stock"]);
   if (children.length > 0) sections.push(["constellations", "constellations"]);
   if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
@@ -1377,6 +1464,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         </section>
         <ChildConstellationsSection children={children} />
         <HistorySection history={history} />
+        {profile.stockTicker?.value && (
+          <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+        )}
         <VehicleRosterSection roster={roster} />
         <EventsSection profile={profile} />
         <RelatedSection profile={profile} related={related} prev={prev} next={next} />
@@ -1438,6 +1528,7 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
     breadcrumbSegment: "constellations",
     history: profile.events ?? [],
+    stockTicker: profile.ticker ?? null,
     tableNote:
       profile.sats_active_verified.value !== null
         ? "sats active (verified) counts objects currently tracked in CelesTrak's catalog for this constellation. It is a tracking count, not an operator claim about satellite health."
@@ -1595,6 +1686,7 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     faq,
     vehicleRoster,
     history: profile.events ?? [],
+    stockTicker: profile.ticker ?? null,
   };
   return <ProfilePage profile={meta} />;
 }

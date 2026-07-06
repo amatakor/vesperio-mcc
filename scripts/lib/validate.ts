@@ -767,6 +767,13 @@ export function validateRegistryProfile(
     errors.push(`${path}.notes: must be null or a string when present`);
   }
 
+  if (data.ticker !== undefined) {
+    checkSourcedField(data as Obj, "ticker", "string", path, errors);
+  }
+  if (data.stock_symbol !== undefined && data.stock_symbol !== null && typeof data.stock_symbol !== "string") {
+    errors.push(`${path}.stock_symbol: must be null or a string when present`);
+  }
+
   if (expectedType === "constellation") {
     if (!CONSTELLATION_DOMAINS.includes(data.domain as never)) {
       errors.push(`${path}.domain: must be one of [${CONSTELLATION_DOMAINS.join(", ")}]`);
