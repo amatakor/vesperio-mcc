@@ -807,6 +807,13 @@ table.stat-table td {
   padding: 0.45rem 0.6rem;
   text-align: left;
   vertical-align: top;
+  /* Long unbreakable values (URLs) must wrap, not push the table past its panel. */
+  overflow-wrap: anywhere;
+}
+/* Dates and source links stay on one line; the value column absorbs the wrap. */
+table.profile td:nth-child(3),
+table.profile td:nth-child(4) {
+  white-space: nowrap;
 }
 table.profile thead th {
   color: var(--dim);
