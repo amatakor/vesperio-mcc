@@ -381,7 +381,9 @@ function Card({
         <p className="card-extra">{item.explainer.what_happened}</p>
       )}
       <div className="card-foot">
-        <span className="card-companies">{item.companies.join(" · ")}</span>
+        <span className="card-companies" title={item.companies.join(" · ")}>
+          {item.companies.join(" · ")}
+        </span>
         <span className="card-sources">
           {sources} source{sources === 1 ? "" : "s"}
         </span>
@@ -2263,7 +2265,9 @@ function followerBadge(person: SignalPerson): string | null {
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
-  x: "twitter/x",
+  // The X glyph already sits in the chip; "twitter/x" next to it read
+  // "X TWITTER/X" (Florian 2026-07-07).
+  x: "twitter",
   youtube: "youtube",
   bluesky: "bluesky",
   linkedin: "linkedin",
@@ -2525,7 +2529,7 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
         return (
           <section key={b.id} id={b.id} className="stat-block">
             <h2>
-              <a href={`#${b.id}`}>#</a> {b.question}
+              <a href={`#${b.id}`}>{"//"}</a> {b.question}
             </h2>
             <p className="stat-answer">{b.answer}</p>
             {b.rows.length === 0 ? (
@@ -2658,7 +2662,15 @@ export function LogPage() {
               <span className="chip">~{s.updated}</span>
               {s.held > 0 && <span className="chip">{s.held} held</span>}
             </div>
-            <p>{s.summary}</p>
+            <p className="sweep-summary">{s.summary}</p>
+            {s.signals && (
+              <p className="sweep-signals mono dim" title={s.signals.note}>
+                signals pass: {s.signals.checked} channel{s.signals.checked === 1 ? "" : "s"}{" "}
+                checked · {s.signals.x_attempted} X handle
+                {s.signals.x_attempted === 1 ? "" : "s"} searched
+                <span className="sweep-signals-note"> · {s.signals.note}</span>
+              </p>
+            )}
             {s.snr_movements && s.snr_movements.length > 0 && (
               <ul className="snr-moves">
                 {s.snr_movements.map((m) => (

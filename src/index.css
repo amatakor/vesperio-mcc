@@ -95,6 +95,13 @@ a:hover {
   color: var(--acc);
 }
 
+/* Keyboard focus, sitewide (2026-07-07 audit: the stylesheet had one
+   :focus rule). Accent ring, mouse clicks unaffected. */
+:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
 .shell {
   max-width: 76rem;
   margin: 0 auto;
@@ -1508,6 +1515,23 @@ table.stat-table td.num {
 }
 .footer-feeds a:hover {
   color: var(--acc);
+}
+
+/* ---------------------------------------------------------------- log */
+
+/* Sweep summaries were running the full 1176px panel (~150 chars a
+   line); cap them at the reading measure the item pages use. */
+.sweep-summary {
+  max-width: 80ch;
+}
+.sweep-signals {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  max-width: 80ch;
+}
+.sweep-signals-note {
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 /* ------------------------------------------------------------ signals */
