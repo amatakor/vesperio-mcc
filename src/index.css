@@ -1375,15 +1375,11 @@ a.sig-card:hover .sig-p-x {
   margin-top: 0.75rem;
 }
 .reg-browser-4 {
-  grid-template-columns: 11rem 13rem 13rem 1fr;
-}
-.reg-browser-5 {
-  grid-template-columns: 10rem 12rem 12rem 13rem 1fr;
+  grid-template-columns: 11rem 15rem 15rem 1fr;
 }
 @media (max-width: 60rem) {
   .reg-browser,
-  .reg-browser-4,
-  .reg-browser-5 {
+  .reg-browser-4 {
     grid-template-columns: 1fr;
   }
   .reg-pane {
@@ -1432,7 +1428,7 @@ a.sig-card:hover .sig-p-x {
 }
 .reg-row.selected {
   background: var(--panel);
-  border-left-color: var(--acc);
+  border-left-color: var(--reg-acc, var(--acc));
 }
 .reg-row-name {
   overflow: hidden;
@@ -1449,7 +1445,23 @@ a.sig-card:hover .sig-p-x {
   color: var(--dim);
 }
 .reg-row.selected .reg-chev {
-  color: var(--acc);
+  color: var(--reg-acc, var(--acc));
+}
+/* Company/fleet profile button pinned at the top of an entity pane. */
+.reg-profile-link {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--reg-acc, var(--acc));
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  border-left: 3px solid var(--reg-acc, var(--acc));
+}
+.reg-profile-link:hover {
+  background: var(--panel);
 }
 
 .reg-preview {
@@ -1463,11 +1475,11 @@ a.sig-card:hover .sig-p-x {
   color: var(--fg);
 }
 .reg-card:hover {
-  border-color: var(--acc);
+  border-color: var(--reg-acc, var(--acc));
   color: var(--fg);
 }
 .reg-card:hover .reg-open {
-  color: var(--acc);
+  color: var(--reg-acc, var(--acc));
 }
 .reg-snippet {
   font-family: var(--sans);
@@ -1481,7 +1493,7 @@ a.sig-card:hover .sig-p-x {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--acc);
+  color: var(--reg-acc, var(--acc));
 }
 .reg-footnote {
   font-size: 0.8rem;
