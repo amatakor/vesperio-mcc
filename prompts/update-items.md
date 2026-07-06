@@ -41,20 +41,30 @@ result when nothing on-scope happened; padding is still the bug.
    failure flips to `dead` with a dated note and `fail_count`).
 
    **Signals pass (part of discovery, exempt from the source filter).**
-   Read `src/data/signals.json` (read-only, always). For people with
-   `whitelist: "yes"`, fetch their directly fetchable channels (`site`,
-   `substack`, `beehiiv`, `bluesky`; prefer RSS where the platform
-   provides it) and collect on-scope factual posts newer than
-   `lastSweep` as candidates like any other source. For `x` channels
-   with status `verified_active`, run targeted WebSearch for recent
-   posts by the handle. An X post is usable only when its exact text
-   was actually retrieved this run (a working mirror or syndication
-   rendering of the post); a search-result snippet alone never
-   supports a fact. Budget: at most **15 fetches per sweep** for this
-   pass, rotating through the list so every whitelisted person is
-   covered at least weekly. Channel finds are classed per the
+   Run `bun scripts/signals-context.ts`. It prints
+   `{ lastSweep, fetchable[], xSearch[], fetchableCount, xCount }` from
+   `signals.json` (read-only; you never edit it). The `fetchable`
+   channels (`site`, `substack`, `beehiiv`, `bluesky`) are the reliable
+   leg and are MANDATORY: fetch each one (use its `rss` when present)
+   and collect on-scope factual posts newer than `lastSweep` as
+   candidates like any other source. The `xSearch` handles are the
+   best-effort leg: run targeted WebSearch for recent posts, and note
+   that an X post is usable only when its exact text was actually
+   retrieved this run via the public syndication endpoint
+   (`https://cdn.syndication.twimg.com/tweet-result?id=<status_id>&token=a`
+   returns a post's verbatim text) or another working rendering; a
+   search snippet alone never supports a fact. Budget: at most **15
+   fetches per sweep**; if `fetchableCount` exceeds what the budget
+   allows, rotate so every fetchable channel is covered at least
+   weekly and say so in the note. Channel finds are classed per the
    whitelist rules in step 6; jokes, opinions, and off-topic posts are
-   discarded silently. You still never edit `signals.json` itself.
+   discarded silently. Record the outcome in the draft's `signalsPass`
+   block (required whenever `fetchableCount > 0`): `checked` = the
+   fetchable channel URLs you fetched this run, `xAttempted` = how many
+   X handles you searched, `note` = one line on what was found (or why
+   `checked` is empty: rotation, all unreachable). finalize-sweep
+   rejects a draft that omits it or lists a URL that is not a fetchable
+   channel.
 3. **Known to MCC?** Match each candidate against `existing[]` by actor
    and event class:
    - Same event within **7 days** → it is an update, never a new item.
@@ -165,6 +175,11 @@ result when nothing on-scope happened; padding is still the bug.
      ],
      "held": [ { "candidate": { }, "reason": "edit-queue reason, one line" } ],
      "sourceHealth": [ { "name": "...", "status": "verified|dead", "note": "..." } ],
+     "signalsPass": {
+       "checked": ["https://spacepolicyonline.com/feed/"],
+       "xAttempted": 6,
+       "note": "3 fetchable channels checked, nothing new in window; searched 6 X handles, no on-scope first-party post retrievable"
+     },
      "summary": "1-2 sentence sweep summary",
      "coverage": ["launch", "regulatory"]
    }
