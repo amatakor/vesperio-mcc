@@ -258,3 +258,23 @@ a newer entry if a lesson changes.
   checking every existing item's story against ALL fetched sources this
   run, not just matching candidates to existing items, found two free
   SNR-raising corroboration attaches.
+
+## 2026-07-06-D (supervised review of the first SNR backfill run)
+- Report-based stories (GAO, NASA OIG, regulator or agency reports): the
+  document IS the story. The primary document is on a .gov domain by
+  definition and its identifier is usually named inside the article you
+  are reading (GAO-26-108457 was in the SpaceNews text). Find it, attach
+  it as official_record via corroboration, set crawl found_some. Marking
+  a document-based story "found_none" is almost always wrong: it scored
+  two items at SNR 2 that belonged at 4, both corrected same day.
+- "found_none" is a claim you searched and found nothing; it costs the
+  item a level, so it must be earned by an actual search per event, not
+  asserted batch-wide.
+- Do not date-prefix your sourceHealth notes; finalize-sweep stamps
+  [YYYY-MM-DD] itself and the 12:27 run produced doubled dates.
+- Fill coverage with the categories genuinely searched; the 12:27 and
+  12:46 runs left it empty, which makes zero-add sweeps unauditable.
+- When a better source class appears for a published item, use
+  updates[].rescore (full scoring block, re-bases the trace, history
+  preserved), not bump: bump cannot raise the base tier or correct a
+  wrong crawl outcome.
