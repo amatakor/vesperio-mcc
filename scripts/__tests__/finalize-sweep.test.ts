@@ -106,7 +106,7 @@ function baseNewItem(overrides: Record<string, unknown> = {}): Record<string, un
         { url: "https://spacenews.com/rocket-lab/launch-report", outlet: "SpaceNews", class: "trade" },
       ],
       extraordinary: false,
-      crawl: "not_attempted",
+      crawl: "found_none",
       whitelist: null,
     },
     ...overrides,
@@ -236,7 +236,7 @@ describe("finalize-sweep rejections", () => {
     item.scoring = {
       sources: [{ url: "https://randomblog.example/iceye", outlet: "Random Blog", class: "first_party" }],
       extraordinary: false,
-      crawl: "not_attempted",
+      crawl: "found_none",
       whitelist: null,
     };
     writeDraft({ newItems: [item] });
@@ -299,10 +299,10 @@ describe("finalize-sweep merge", () => {
     expect(items.items).toHaveLength(2);
     const added = items.items.find((i) => i.id === "2026-07-04-rocket-lab-electron-eo-launch")!;
     expect(added.publishDate).toBe("2026-07-05T05:00:00.000Z");
-    // A single trade lead scores base tier 3, no modifiers.
-    expect(added.snr).toBe(3);
+    // A single trade lead whose crawl found nothing: base 3 - 1 = 2.
+    expect(added.snr).toBe(2);
     expect(added.snr_trace.base.tier).toBe(3);
-    expect(added.snr_trace.modifiers).toEqual([]);
+    expect(added.snr_trace.modifiers.map((m) => m.type)).toEqual(["corroboration_none"]);
     expect(added.sources).toHaveLength(1);
     expect(added.sources![0]!.via).toBe("initial");
     expect(added.sources![0]!.added).toBe("2026-07-05");
@@ -329,7 +329,7 @@ describe("finalize-sweep merge", () => {
     expect(src).toBeDefined();
     expect(src.claims).toHaveLength(1);
     expect(src.claims[0]!.claim).toBe("2026-07-04-rocket-lab-electron-eo-launch");
-    expect(src.claims[0]!.snr_at_publication).toBe(3);
+    expect(src.claims[0]!.snr_at_publication).toBe(2);
     expect(src.claims[0]!.resolution).toBe("unresolved");
     expect(ledger.updated).toBe("2026-07-05T05:00:00.000Z");
 
@@ -341,15 +341,18 @@ describe("finalize-sweep merge", () => {
     item.scoring = {
       sources: [{ url: "https://www.nasa.gov/press/artemis-award", outlet: "NASA", class: "official_record" }],
       extraordinary: false,
-      crawl: "not_attempted",
+      crawl: "found_none",
       whitelist: null,
     };
     writeDraft({ newItems: [item] });
     const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-07-05T05:00:00.000Z") });
     expect(result.errors).toEqual([]);
     const added = readItems().items.find((i) => i.source_url.includes("nasa.gov"))!;
+    // Direct-source leads are exempt from the found_none penalty: the
+    // filing proves its own statement (scorer v2).
     expect(added.snr).toBe(5);
     expect(added.snr_trace.base.tier).toBe(5);
+    expect(added.snr_trace.modifiers.some((m) => m.type === "corroboration_none")).toBe(false);
   });
 
   test("the seismic guardrail forces extraordinary, landing the score at 1", () => {
@@ -449,6 +452,34 @@ describe("finalize-sweep merge", () => {
     expect(patched.snr_trace.modifiers.some((m) => m.type === "reinforcement")).toBe(false);
     const state = readState();
     expect(state.sweeps[0]!.snr_movements).toBeUndefined();
+  });
+
+  test("crawl not_attempted is rejected when the budget covered the event", () => {
+    const item = baseNewItem();
+    (item.scoring as { crawl: string }).crawl = "not_attempted";
+    writeDraft({ newItems: [item] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("not_attempted");
+    expect(result.errors.join("\n")).toContain("at most 0 may skip");
+  });
+
+  test("crawl not_attempted is allowed only for genuine budget overflow", () => {
+    // 9 items vs a budget that covers 8: exactly one may skip.
+    const items = Array.from({ length: 9 }, (_, i) => {
+      const it = baseNewItem({
+        id: `2026-07-04-rocket-lab-item-${i}`,
+        source_url: `https://spacenews.com/rocket-lab/report-${i}`,
+      });
+      (it.scoring as { sources: { url: string }[] }).sources[0]!.url =
+        `https://spacenews.com/rocket-lab/report-${i}`;
+      return it;
+    });
+    (items[8]!.scoring as { crawl: string }).crawl = "not_attempted";
+    writeDraft({ newItems: items });
+    const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-07-05T05:00:00.000Z") });
+    expect(result.errors).toEqual([]);
+    expect(result.added).toBe(9);
   });
 
   test("a new item with an old event date gets NO immediate persistence bump", () => {

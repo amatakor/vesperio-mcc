@@ -171,8 +171,12 @@ export function scoreClaim(input: ScoreInput): ScoreResult {
     );
   }
 
-  // 4. Nothing-found penalty: only when the crawl actually ran.
-  if (input.crawl === "found_none") {
+  // 4. Nothing-found penalty: only when the crawl actually ran, and only
+  //    for indirect leads. We score "the actor stated this" (SNR_PLAN
+  //    §B7), and a direct source proves its own statement: silence from
+  //    other outlets does not weaken a press release or an official
+  //    filing. It does weaken second-hand reporting.
+  if (input.crawl === "found_none" && baseTier < 5) {
     push("corroboration_none", clamp(subtotal - 1), "corroboration crawl ran and found nothing");
   }
 

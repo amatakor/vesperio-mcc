@@ -50,10 +50,16 @@ result when nothing on-scope happened; padding is still the bug.
      reinforcement: `updates[].attach` plus `bump: "reinforcement"`.
    - Anything else → a new item, cross-linked in `secondary_urls` when
      an older related item exists.
-4. **Corroboration crawl.** For each NEW candidate, actively search for
-   other coverage of the same claim. Budget: at most **5 fetches per
-   event, 40 per sweep**; when two candidates compete, seismic ones get
-   the budget first. Outcomes:
+4. **Corroboration crawl.** MANDATORY for every NEW candidate: actively
+   search for other coverage of the same claim. Budget: at most **5
+   fetches per event, 40 per sweep**; when two candidates compete,
+   seismic ones get the budget first. The budget covers 8 events per
+   sweep, so `"not_attempted"` is only legal when the draft has more
+   than 8 new items and the budget genuinely ran out; finalize-sweep
+   REJECTS drafts that skip crawls the budget covered. Direct-source
+   leads (first-party, official record, computed) take no penalty when
+   nothing is found, but the crawl still runs: readers get every source
+   that exists attached to the card. Outcomes:
    - Coverage found → attach each additional source to the item's
      `scoring.sources` with `"via": "corroboration"` and set
      `"crawl": "found_some"`.
@@ -190,7 +196,9 @@ review while they publish.
   run. Never write `snr`, `snr_trace`, or `sources` yourself.
 - One story rewritten by five outlets is one source, not five.
 - `found_none` means you searched and found nothing, never that you
-  ran out of budget.
+  ran out of budget. `not_attempted` is only legal past the 8-event
+  budget; the gate rejects anything else. A one-source card for a story
+  other outlets covered is a defect (the Telesat Venezuela case).
 - Do not commit or push; the workflow handles it.
 - Do not edit the Signals data, registry entries, or site code in a
   sweep. Promotion-worthy sources go to `signals_suggestions.json`

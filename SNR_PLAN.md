@@ -20,6 +20,8 @@
 - **5 fetches per event**, early exit once SNR reaches 5.
 - **40 corroboration fetches per sweep** total; seismic candidates go first in the queue.
 - Calibration rule: the "nothing found → −1" penalty applies **only when the crawl actually ran** for that event. Budget exhaustion is not evidence of absence; the trace then records `corroboration: not attempted (budget)` and no penalty.
+- **Budget honesty gate (review fix, 2026-07-06):** finalize-sweep rejects drafts claiming `not_attempted` for events the budget covered (at most `max(0, N − 8)` skips for N new items). Found via the Telesat Venezuela case: agents were skipping crawls that had budget, leaving one-source cards for widely covered stories.
+- **Direct-source exemption (review fix, 2026-07-06, scorer v2):** `found_none` no longer docks a claim whose lead is tier 5 (first-party, official record, computed). We score "the actor stated this" (B7), and a press release proves its own statement whether or not anyone reposts it; silence only weakens second-hand reporting. The crawl still runs on direct-source items so found coverage attaches for readers.
 
 ### A4. Source ledger decay / thresholds (§7.1)
 - Store: `src/data/source_ledger.json`. Rolling **90-day window**; events older than 90 days are ignored for decisions (kept for audit until pruned at 365 days).

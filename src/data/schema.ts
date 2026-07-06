@@ -44,8 +44,13 @@ export type Impact = (typeof IMPACTS)[number];
 export const SNR_VALUES = [1, 2, 3, 4, 5] as const;
 export type SnrValue = (typeof SNR_VALUES)[number];
 
-/** Bumped on any change to the scoring math, so audits never compare incomparable scores. */
-export const SCORER_VERSION = 1;
+/**
+ * Bumped on any change to the scoring math, so audits never compare
+ * incomparable scores. v2 (2026-07-06): the found_none penalty no longer
+ * applies to direct-source leads (tier 5 base); a press release or filing
+ * proves its own statement whether or not anyone reposts it (SNR_PLAN B7).
+ */
+export const SCORER_VERSION = 2;
 
 // Contract values, SNR_PLAN.md §A1-A5.
 export const PERSISTENCE_DAYS = 14;
