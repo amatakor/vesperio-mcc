@@ -29,7 +29,34 @@ import {
 } from "./lib/data";
 import { computeHero, computeStats } from "./lib/stats";
 import aliases from "./data/aliases.json";
+import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
+
+// -------------------------------------------------------- registry logos
+
+const LOGO_BY_SLUG: Record<string, { file: string; origin: string }> = (
+  registryLogos as { logos: Record<string, { file: string; origin: string }> }
+).logos;
+
+/** Entity mark: the favicon fetched from the entity's own recorded
+ * website (scripts/fetch-logos.ts), or a generated initials tile when
+ * none is fetchable. Decorative; the name is always alongside. */
+function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?: "lg" }) {
+  const logo = LOGO_BY_SLUG[slug];
+  const cls = `reg-logo${size === "lg" ? " reg-logo-lg" : ""}`;
+  if (logo) return <img className={cls} src={logo.file} alt="" loading="lazy" />;
+  const initials = name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0] ?? "")
+    .join("")
+    .toUpperCase();
+  return (
+    <span className={`${cls} reg-logo-tile`} aria-hidden="true">
+      {initials}
+    </span>
+  );
+}
 
 // ------------------------------------------------------------------ layout
 
@@ -883,13 +910,22 @@ function fleetSum(
   return { value: sum, source: null, as_of: asOf };
 }
 
-function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): ReactNode {
+function fieldRow(
+  label: string,
+  f: SourcedField<unknown>,
+  computed?: boolean,
+  showAsOf = true,
+): ReactNode {
   const value =
     f.value === null || f.value === undefined
       ? "unknown"
-      : Array.isArray(f.value)
-        ? f.value.join(", ")
-        : String(f.value);
+      : typeof f.value === "boolean"
+        ? f.value
+          ? "yes"
+          : "no"
+        : Array.isArray(f.value)
+          ? f.value.join(", ")
+          : String(f.value);
   const entityHref =
     ENTITY_ROW_LABELS.has(label) && typeof f.value === "string"
       ? entityHrefFor(f.value)
@@ -915,7 +951,7 @@ function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): 
           </span>
         )}
       </td>
-      <td>{f.as_of ?? ""}</td>
+      {showAsOf && <td>{f.as_of ?? ""}</td>}
       <td className="src-cell">
         {f.source ? (
           <a href={f.source} rel="noopener">
@@ -936,18 +972,28 @@ function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): 
 type ProfileRow = [string, SourcedField<unknown>] | [string, SourcedField<unknown>, "computed"];
 
 function ProfileTable({ rows }: { rows: ProfileRow[] }) {
+  // When every dated field shares one as-of date, the column is noise:
+  // collapse it into a single line under the table (2026-07-07 audit).
+  const dates = new Set(rows.map(([, f]) => f.as_of).filter((d): d is string => !!d));
+  const showAsOf = dates.size > 1;
+  const soleDate = dates.size === 1 ? [...dates][0] : null;
   return (
-    <table className="profile">
-      <thead>
-        <tr>
-          <th>field</th>
-          <th>value</th>
-          <th>as of</th>
-          <th>source</th>
-        </tr>
-      </thead>
-      <tbody>{rows.map(([label, f, computed]) => fieldRow(label, f, computed === "computed"))}</tbody>
-    </table>
+    <>
+      <table className="profile">
+        <thead>
+          <tr>
+            <th>field</th>
+            <th>value</th>
+            {showAsOf && <th>as of</th>}
+            <th>source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([label, f, computed]) => fieldRow(label, f, computed === "computed", showAsOf))}
+        </tbody>
+      </table>
+      {soleDate && <p className="dim table-asof">all fields as of {soleDate}</p>}
+    </>
   );
 }
 
@@ -1142,6 +1188,7 @@ function RegPreviewCard({ entry, extraChips }: { entry: RegEntry; extraChips?: R
   return (
     <>
       <div className="reg-pane-head">
+        <RegistryLogo slug={entry.slug} name={entry.name} />
         {entry.name}
         <span className="dim"> / {entry.affiliation}</span>
       </div>
@@ -1421,6 +1468,12 @@ interface RegSection {
   heading: string;
   tagline: string;
   entries: RegEntry[];
+  /** Noun for the pane grouping (providers, operators, regions...); the
+   * heading badge then reads "N entities · M noun" so it reconciles
+   * with the pane header counts (2026-07-07 audit). */
+  groupNoun: string;
+  /** Noun for the entries themselves ("vehicles", "constellations"). */
+  entryNoun: string;
 }
 
 /** Registry index: four stacked sections, one shared search and filter set. */
@@ -1452,24 +1505,32 @@ export function RegistryIndexPage() {
       heading: "launch service providers",
       tagline: "Who flies, and on what.",
       entries: launchEntries,
+      groupNoun: "providers",
+      entryNoun: "vehicles",
     },
     {
       id: "constellations",
       heading: "constellations",
       tagline: "What is up, who owns it.",
       entries: constellationEntriesVisible,
+      groupNoun: "operators",
+      entryNoun: "constellations",
     },
     {
       id: "spaceports",
       heading: "spaceports",
       tagline: "Where it leaves the ground.",
       entries: spaceportEntriesVisible,
+      groupNoun: "regions",
+      entryNoun: "sites",
     },
     {
       id: "ecosystem",
       heading: "ecosystem",
       tagline: "Everyone else who moves the market.",
       entries: orgEntriesVisible,
+      groupNoun: "kinds",
+      entryNoun: "organizations",
     },
   ];
 
@@ -1512,7 +1573,10 @@ export function RegistryIndexPage() {
             <section key={s.id} className="signal-section reg-section">
               <h2 className="signal-heading">
                 <span>
-                  {s.heading} <span className="badge-acc">{s.entries.length}</span>
+                  {s.heading} <span className="badge-acc">{s.entries.length}</span>{" "}
+                  <span className="dim reg-groupline">
+                    {s.entryNoun} · {new Set(s.entries.map((e) => e.group)).size} {s.groupNoun}
+                  </span>
                 </span>
                 <span className="sig-tagline">{s.tagline}</span>
               </h2>
@@ -1900,12 +1964,13 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           name={profile.name}
           parentLink={profile.parentLink}
         />
-        <h1 className="page-title">
+        <h1 className="page-title profile-title">
+          <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
           {profile.name} <span className="dim">/ {profile.typeLabel}</span>
         </h1>
         {profile.overview.value && (
           <>
-            <p className="tagline-acc">{profile.overview.value}</p>
+            <p className="overview-block">{profile.overview.value}</p>
             <p className="dim source-line">
               <a href={profile.overview.source ?? undefined} rel="noopener">
                 (source, as of {profile.overview.as_of})
@@ -1913,25 +1978,34 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
             </p>
           </>
         )}
-        <OnThisPageToc sections={sections} />
-        <section id="facts" className="panel">
-          <h2>facts</h2>
-          <ProfileTable rows={profile.rows} />
-          {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-        </section>
-        <ChildConstellationsSection children={children} />
-        <HistorySection history={history} />
-        {profile.stockTicker?.value && (
-          <StockSection slug={profile.slug} ticker={profile.stockTicker} />
-        )}
-        <VehicleRosterSection roster={roster} />
-        <EventsSection profile={profile} />
-        <RelatedSection profile={profile} related={related} prev={prev} next={next} />
-        {hasSources && <SourcesSection rows={profile.rows} />}
-        <FaqSection items={profile.faq} />
-        <p>
-          <a href="/registry/">Back to the registry</a>
-        </p>
+        {/* Two columns on wide screens (2026-07-07 design pass): the
+            reading flow left, wayfinding (toc / related / sources) in a
+            sticky rail right. One column below 64rem, original order. */}
+        <div className="profile-cols">
+          <div className="profile-main">
+            <section id="facts" className="panel">
+              <h2>facts</h2>
+              <ProfileTable rows={profile.rows} />
+              {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
+            </section>
+            <ChildConstellationsSection children={children} />
+            <HistorySection history={history} />
+            {profile.stockTicker?.value && (
+              <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+            )}
+            <VehicleRosterSection roster={roster} />
+            <EventsSection profile={profile} />
+            <FaqSection items={profile.faq} />
+            <p>
+              <a href="/registry/">Back to the registry</a>
+            </p>
+          </div>
+          <aside className="profile-rail">
+            <OnThisPageToc sections={sections} />
+            <RelatedSection profile={profile} related={related} prev={prev} next={next} />
+            {hasSources && <SourcesSection rows={profile.rows} />}
+          </aside>
+        </div>
       </div>
     </Layout>
   );
