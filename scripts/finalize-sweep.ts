@@ -111,6 +111,13 @@ interface Draft {
   newItems: unknown[];
   updates: DraftUpdate[];
   held: DraftHeld[];
+  /**
+   * Exact candidate.headline strings of held entries this draft resolves
+   * (removes from the queue). Used when a decision: publish entry is
+   * drafted as a real item, or when an entry is otherwise settled by
+   * this sweep. Unknown headlines reject the draft.
+   */
+  resolveHeld?: string[];
   sourceHealth: DraftSourceHealth[];
   summary: string;
   coverage: string[];
@@ -704,6 +711,24 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     if (errors.length === before) patchedItems.set(u.id, merged);
   });
 
+  // ---- validate resolveHeld ------------------------------------------------
+  const resolveHeld = draft.resolveHeld ?? [];
+  if (draft.resolveHeld !== undefined && !Array.isArray(draft.resolveHeld)) {
+    errors.push("draft.resolveHeld: must be an array of candidate.headline strings when present");
+  } else {
+    const queued = new Set(
+      held.held.map((h) => {
+        const c = h.candidate as Obj;
+        return typeof c.headline === "string" ? c.headline : "";
+      }),
+    );
+    resolveHeld.forEach((headline, i) => {
+      if (typeof headline !== "string" || !queued.has(headline)) {
+        errors.push(`resolveHeld[${i}]: no held entry with candidate.headline "${String(headline)}"`);
+      }
+    });
+  }
+
   // ---- validate held ------------------------------------------------------
   draft.held.forEach((h, i) => {
     const path = `held[${i}]`;
@@ -782,9 +807,13 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
   const nextItems: ItemsFile = { items: nextItemsList };
 
+  const resolved = new Set(resolveHeld);
   const nextHeld: HeldFile = {
     held: [
-      ...held.held,
+      ...held.held.filter((h) => {
+        const c = h.candidate as Obj;
+        return !(typeof c.headline === "string" && resolved.has(c.headline));
+      }),
       ...draft.held.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
       ...autoHeld.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
     ],
