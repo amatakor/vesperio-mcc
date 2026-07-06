@@ -807,8 +807,32 @@ table.stat-table td {
   padding: 0.45rem 0.6rem;
   text-align: left;
   vertical-align: top;
-  /* Long unbreakable values (URLs) must wrap, not push the table past its panel. */
+}
+/* Long unbreakable values (URLs) must wrap, not push the table past its
+   panel. Values only: field-name headers must never break mid-word. The
+   width hint hands the value column the slack so prose does not get
+   squeezed into single-character lines on narrow screens. */
+table.profile td,
+table.stat-table td {
   overflow-wrap: anywhere;
+}
+table.profile td:nth-child(2) {
+  width: 60%;
+}
+/* Narrow screens: shrink the date and source columns so the value column
+   keeps readable line lengths instead of one-character-per-line breaks. */
+@media (max-width: 40rem) {
+  table.profile th,
+  table.profile td {
+    padding: 0.35rem 0.4rem;
+    font-size: 0.78rem;
+  }
+  table.profile td:nth-child(3),
+  table.profile td:nth-child(4),
+  table.profile thead th:nth-child(3),
+  table.profile thead th:nth-child(4) {
+    font-size: 0.65rem;
+  }
 }
 /* Dates and source links stay on one line; the value column absorbs the wrap. */
 table.profile td:nth-child(3),
