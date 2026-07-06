@@ -454,6 +454,27 @@ describe("finalize-sweep merge", () => {
     expect(state.sweeps[0]!.snr_movements).toBeUndefined();
   });
 
+  test("resolveHeld removes a queued entry by exact headline", () => {
+    // Seed a held entry, then resolve it in a follow-up draft.
+    writeDraft({
+      held: [{ candidate: { headline: "Queued rumour about ICEYE" }, reason: "scope call" }],
+    });
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
+    expect(readHeld().held).toHaveLength(1);
+
+    writeDraft({ resolveHeld: ["Queued rumour about ICEYE"] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.errors).toEqual([]);
+    expect(readHeld().held).toHaveLength(0);
+  });
+
+  test("resolveHeld with an unknown headline rejects the draft", () => {
+    writeDraft({ resolveHeld: ["No such entry"] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain('no held entry with candidate.headline "No such entry"');
+  });
+
   test("crawl not_attempted is rejected when the budget covered the event", () => {
     const item = baseNewItem();
     (item.scoring as { crawl: string }).crawl = "not_attempted";

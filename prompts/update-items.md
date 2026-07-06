@@ -148,6 +148,13 @@ result when nothing on-scope happened; padding is still the bug.
    same-metric contradictions, and open editorial decisions for Florian.
    Never hold an item just because its sourcing is weak; that is what
    low SNR is for.
+
+   Check the queue for rulings: a held entry carrying
+   `decision: { verdict: "publish" }` has been approved by Florian. Draft
+   it as a new item THIS SWEEP (normal copy rules, honest scoring block,
+   corroboration crawl included) and list its exact candidate.headline in
+   the draft's top-level `"resolveHeld": [...]` so the entry leaves the
+   queue in the same merge. Never resolve an entry without a decision.
 8. **Finalize.** Run `bun scripts/finalize-sweep.ts`. It computes each
    item's SNR and trace from your scoring block (the math is code, your
    inputs are attested judgment), verifies first-party domains, applies

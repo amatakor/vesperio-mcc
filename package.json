@@ -12,7 +12,8 @@
     "check:orbits": "bun scripts/check-orbits.ts",
     "test": "bun test scripts",
     "build": "bun run typecheck && bun run check:feed && bun run check:registry && bun run check:signals && bun run check:orbits && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && bun scripts/prerender.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "review": "bun scripts/review-queue.ts"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
