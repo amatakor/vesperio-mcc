@@ -253,7 +253,11 @@ export function HudColumn({
       <div className="hud">
         <div className="hud-module">
           <div className="hud-label">SATELLITES TRACKED</div>
-          <Lcd className="lcd-big" value={tracked.toLocaleString("en-US")} />
+          {/* Site mono, not the LCD face (Florian 2026-07-07): the
+              count must render with every glyph the data can produce
+              and never fall back to tofu boxes. The T-minus clock
+              keeps the LCD look. */}
+          <span className="count-big">{tracked.toLocaleString("en-US")}</span>
         </div>
       </div>
       {stats && (
