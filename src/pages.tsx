@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   Item,
@@ -30,35 +30,6 @@ import {
 import { computeHero, computeStats } from "./lib/stats";
 import aliases from "./data/aliases.json";
 import { OrbitsStage } from "./orbits/stage";
-
-/** sessionStorage key set on card-link click, read once on the next mount. */
-const LAST_ITEM_KEY = "mcc:last-item";
-
-function markVisited(id: string) {
-  try {
-    sessionStorage.setItem(LAST_ITEM_KEY, id);
-  } catch {
-    // sessionStorage unavailable (e.g. private mode); visited-highlight is best-effort.
-  }
-}
-
-/** Reads and clears the last-visited item id, then scrolls its card into view. */
-function useVisitedHighlight() {
-  useEffect(() => {
-    let id: string | null = null;
-    try {
-      id = sessionStorage.getItem(LAST_ITEM_KEY);
-      if (id) sessionStorage.removeItem(LAST_ITEM_KEY);
-    } catch {
-      return;
-    }
-    if (!id) return;
-    const el = document.querySelector(`[data-item-id="${CSS.escape(id)}"]`);
-    if (!el) return;
-    el.classList.add("card-visited");
-    el.scrollIntoView({ block: "center" });
-  }, []);
-}
 
 // ------------------------------------------------------------------ layout
 
@@ -184,7 +155,7 @@ function SnrTraceRows({ trace }: { trace: SnrTrace }) {
 }
 
 /**
- * The SNR icon (SNR_SPEC.md §4): 5 ascending bars, N lit, warn-colored
+ * The SNR icon (SNR_SPEC.md §4): 5 flat squares, N lit, warn-colored
  * at 1-2 so low confidence is unmissable. With a trace, clicking opens
  * the stored calculation; the popover renders snr_trace exactly as
  * stored at scoring time, never a reconstruction.
@@ -193,21 +164,21 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
   const [open, setOpen] = useState(false);
   const label = `SNR ${snr}/5: ${SNR_LABELS[snr] ?? ""}`;
   const bars = (
-    <span className={`snr-bars${snr <= 2 ? " snr-low" : ""}`}>
+    <span className={`snr-bars snr-c${snr}`}>
       {[1, 2, 3, 4, 5].map((n) => (
-        <span key={n} className={`snr-bar snr-bar-${n}${n <= snr ? " on" : ""}`} />
+        <span key={n} className={`snr-bar${n <= snr ? " on" : ""}`} />
       ))}
     </span>
   );
   if (!trace) {
     return (
-      <span className="snr" title={label}>
+      <span className={`snr${compact ? " snr-compact" : ""}`} title={label}>
         {bars}
       </span>
     );
   }
   return (
-    <span className={`snr${compact ? " snr-compact" : ""}`}>
+    <span className={`snr${compact ? " snr-compact" : ""}`} onClick={(e) => e.stopPropagation()}>
       <button
         type="button"
         className="snr-btn"
@@ -238,49 +209,122 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
   );
 }
 
-/** Image when the pipeline found one; otherwise a generated text tile. */
+/** Image when the pipeline found one; otherwise a generated text tile.
+    The SNR squares sit bottom-left over the media, passive on cards;
+    the stored calculation opens in the item modal and item page. */
 function CardMedia({ item }: { item: Item }) {
+  const snr = (
+    <span className="card-snr">
+      <SnrBars snr={item.snr} />
+    </span>
+  );
   if (item.image) {
     return (
-      <a
-        href={`/item/${item.id}/`}
-        className="card-media"
-        onClick={() => markVisited(item.id)}
-      >
+      <div className="card-media">
         <img src={item.image.src} alt="" loading="lazy" />
-      </a>
+        {snr}
+      </div>
     );
   }
   return (
-    <a
-      href={`/item/${item.id}/`}
-      className="card-media card-tile"
-      onClick={() => markVisited(item.id)}
-    >
+    <div className="card-media card-tile">
       <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
       <span className="tile-co">{item.companies[0] ?? item.category}</span>
-    </a>
+      {snr}
+    </div>
   );
 }
 
-function Card({ item }: { item: Item }) {
+/** Assigns every card a column span (3-6) so each grid row fills all
+    12 columns exactly: widths follow a 4/3/5 rotation for variety and
+    bend when needed so a row's leftover is never an unfillable sliver.
+    A seismic card reserves 4 columns on its own row and the next
+    (it spans two rows in CSS). */
+const CARD_W_CYCLE = [4, 3, 5, 4, 5, 3];
+
+function computeCardWidths(list: Item[]): number[] {
+  const widths: number[] = [];
+  let cyc = 0;
+  // Free columns in the row currently being filled. Seismic cards are
+  // pinned to columns 9-12 in CSS, so the space beside them is always
+  // the contiguous left part of the row; shadow counts how many
+  // upcoming rows are narrowed to 8 columns by a seismic block.
+  let rem = 12;
+  let shadow = 0;
+  const rowDone = () => {
+    if (shadow > 0) {
+      rem = 8;
+      shadow--;
+    } else {
+      rem = 12;
+    }
+  };
+  for (const item of list) {
+    if (item.impact === "seismic") {
+      widths.push(4);
+      if (rem >= 4) {
+        // Takes the right end of this row plus the next row's right end.
+        rem -= 4;
+        shadow = 1;
+      } else {
+        // Row's rightmost columns are gone; the block starts on the
+        // next two rows, and the small gap here is filled below.
+        shadow = 2;
+      }
+      if (rem === 0) rowDone();
+      continue;
+    }
+    const pref = CARD_W_CYCLE[cyc++ % 6]!;
+    let w = Math.min(rem, 4);
+    for (const c of [pref, pref + 1, pref - 1, rem]) {
+      if (c >= 3 && c <= 6 && c <= rem && (rem - c === 0 || rem - c >= 3)) {
+        w = c;
+        break;
+      }
+    }
+    widths.push(w);
+    rem -= w;
+    if (rem === 0) rowDone();
+  }
+  return widths;
+}
+
+/** A feed card. The whole card opens the item modal; the headline and
+    details keep real /item/ hrefs for crawlers and middle-click.
+    width comes from the row packer; pos rotates thumbnail heights. */
+function Card({
+  item,
+  pos,
+  width,
+  onOpen,
+}: {
+  item: Item;
+  pos: number;
+  width: number;
+  onOpen: (item: Item) => void;
+}) {
   const sources = item.sources?.length ?? 1 + item.secondary_urls.length;
+  const open = (e: ReactMouseEvent) => {
+    e.preventDefault();
+    onOpen(item);
+  };
   return (
-    <article className={`card card-${item.impact}`} data-item-id={item.id}>
+    <article
+      className={`card card-${item.impact} card-w${width} media-v${pos % 3}`}
+      data-item-id={item.id}
+      onClick={open}
+    >
       <CardMedia item={item} />
       <div className="card-meta">
-        <a className="chip" href={`/news/${item.category}/`}>
+        <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
         </a>
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
-        <SnrBars snr={item.snr} trace={item.snr_trace} />
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
-        <a href={`/item/${item.id}/`} onClick={() => markVisited(item.id)}>
-          {item.headline}
-        </a>
+        <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
       <p className="card-tagline">{item.explainer.tagline}</p>
       {item.impact === "seismic" && (
@@ -291,7 +335,7 @@ function Card({ item }: { item: Item }) {
         <span className="card-sources">
           {sources} source{sources === 1 ? "" : "s"}
         </span>
-        <a className="card-details" href={`/item/${item.id}/`} onClick={() => markVisited(item.id)}>
+        <a className="card-details" href={`/item/${item.id}/`}>
           details →
         </a>
       </div>
@@ -299,16 +343,199 @@ function Card({ item }: { item: Item }) {
   );
 }
 
-/** Renders the card grid with no visited-highlight wiring of its own. */
-function FeedListBare({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
+/** Card grid plus the item modal. Opening an item pushes /item/{id}/
+    onto history so the URL is shareable; back (or close) returns to
+    the feed. Direct visits to /item/ URLs get the prerendered page. */
+function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  useEffect(() => {
+    function onPop(e: PopStateEvent) {
+      const s = e.state as { mccItem?: string } | null;
+      setOpenId(s?.mccItem ?? null);
+    }
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const open = (item: Item) => {
+    setOpenId(item.id);
+    history.pushState({ mccItem: item.id }, "", `/item/${item.id}/`);
+  };
+  const close = () => {
+    const s = history.state as { mccItem?: string } | null;
+    if (s?.mccItem) history.back();
+    else setOpenId(null);
+  };
+
+  // Fall back to the full corpus so the modal survives filter changes.
+  const openItem = openId
+    ? (list.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null)
+    : null;
+
+  const cardWidths = useMemo(() => computeCardWidths(list), [list]);
+
   if (list.length === 0) return <p className="empty">{emptyNote}</p>;
-  return <div className="cards">{list.map((i) => <Card key={i.id} item={i} />)}</div>;
+  return (
+    <>
+      <div className="cards">
+        {list.map((i, n) => (
+          <Card key={i.id} item={i} pos={n} width={cardWidths[n]!} onOpen={open} />
+        ))}
+      </div>
+      {openItem && <ItemModal item={openItem} onClose={close} />}
+    </>
+  );
 }
 
-/** FeedListBare plus the visited-highlight mount effect, for pages with a fixed list. */
-function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
-  useVisitedHighlight();
-  return <FeedListBare list={list} emptyNote={emptyNote} />;
+/** Attached sources, with a fallback for items predating the sources block. */
+function srcEntriesOf(item: Item) {
+  return item.sources && item.sources.length > 0
+    ? item.sources
+    : [item.source_url, ...item.secondary_urls].map((u) => ({
+        url: u,
+        outlet: hostOf(u),
+        class: "informal" as const,
+        added: item.date,
+        via: "initial" as const,
+      }));
+}
+
+function SourceList({ item }: { item: Item }) {
+  return (
+    <ol className="src-list">
+      {srcEntriesOf(item).map((src, i) => (
+        <li key={src.url}>
+          <a href={src.url} rel="noopener">
+            <span className="src-num">[{i + 1}]</span>
+            <span>
+              <span className="src-kind">
+                {SOURCE_CLASS_LABELS[src.class] ?? src.class}
+                {src.via !== "initial" ? ` · ${src.via}` : ""}
+              </span>
+              <span className="src-host">{hostOf(src.url)}</span>
+            </span>
+            <span className="src-arrow">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** In-feed item overlay: band with impact and SNR, media and sources
+    left, explainer right. Esc, the close button, and the backdrop all
+    close it; the full prerendered page stays one click away. */
+function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.documentElement.style.overflow = prev;
+    };
+  }, [onClose]);
+  return (
+    <div
+      className="modal-backdrop"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <article
+        className="item-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.headline}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className={`modal-band modal-band-${item.impact}`}>
+          <SnrBars snr={item.snr} trace={item.snr_trace} />
+          <span className="band-impact">{item.impact}</span>
+          <a className="chip" href={`/news/${item.category}/`}>
+            {item.category}
+          </a>
+          {item.disputed && <span className="chip chip-disputed">disputed</span>}
+          <span className="date">{item.date}</span>
+          <button type="button" className="modal-close" onClick={onClose}>
+            × esc
+          </button>
+        </div>
+        <div className="modal-body">
+          <div className="modal-left">
+            {item.image ? (
+              <>
+                <div className="modal-media">
+                  <img src={item.image.src} alt={item.headline} />
+                </div>
+                <p className="modal-credit">
+                  <a href={item.image.origin_url} rel="noopener">
+                    {item.image.credit}
+                  </a>
+                </p>
+              </>
+            ) : (
+              <div className="modal-media card-tile modal-tile">
+                <span className="tile-cat">
+                  {CAT_ABBR[item.category] ?? item.category.toUpperCase()}
+                </span>
+                <span className="tile-co">{item.companies[0] ?? item.category}</span>
+              </div>
+            )}
+            <div className="src-band">
+              // sources · {srcEntriesOf(item).length} attached
+            </div>
+            <SourceList item={item} />
+          </div>
+          <div className="modal-right">
+            <h2 className="modal-title">{item.headline}</h2>
+            <p className="actor">{item.companies.join(" · ") || item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
+            <section className="panel">
+              <h2>what happened</h2>
+              <p>{item.explainer.what_happened}</p>
+            </section>
+            <section className="panel">
+              <h2>why it matters</h2>
+              <p>{item.explainer.why_it_matters}</p>
+            </section>
+            {item.explainer.for_who && (
+              <section className="panel">
+                <h2>for who</h2>
+                <p>{item.explainer.for_who}</p>
+              </section>
+            )}
+            <section className="panel">
+              <h2>signal-to-noise</h2>
+              <div className="snr-panel">
+                <SnrBars snr={item.snr} />
+                <span className="snr-panel-label">
+                  {item.snr}/5 · {SNR_LABELS[item.snr]}
+                </span>
+              </div>
+              <div className="snr-trace-inline">
+                <SnrTraceRows trace={item.snr_trace} />
+              </div>
+            </section>
+            <div className="tag-row">
+              {item.tags.map((t) => (
+                <a key={t} className="chip chip-tag" href={`/tag/${t}/`}>
+                  #{t}
+                </a>
+              ))}
+            </div>
+            <p>
+              <a href={`/item/${item.id}/`}>full page →</a>
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
 }
 
 function matchesQuery(item: Item, q: string): boolean {
@@ -318,12 +545,21 @@ function matchesQuery(item: Item, q: string): boolean {
   return haystack.includes(q);
 }
 
+/** Active feed filter: one category or one domain tag at a time. */
+type FeedFilter = { kind: "cat" | "tag"; value: string } | null;
+
 export function HomePage() {
   const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState<FeedFilter>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     function onKeydown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        return;
+      }
       if (e.key !== "/") return;
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;
@@ -336,7 +572,12 @@ export function HomePage() {
   }, []);
 
   const q = query.trim().toLowerCase();
-  const shown = useMemo(() => (q === "" ? items : items.filter((i) => matchesQuery(i, q))), [q]);
+  const shown = useMemo(() => {
+    let list = items;
+    if (filter?.kind === "cat") list = list.filter((i) => i.category === filter.value);
+    if (filter?.kind === "tag") list = list.filter((i) => i.tags.includes(filter.value));
+    return q === "" ? list : list.filter((i) => matchesQuery(i, q));
+  }, [q, filter]);
 
   const catCounts = useMemo(() => {
     const m = new Map<string, number>();
@@ -355,30 +596,36 @@ export function HomePage() {
     return m;
   }, []);
 
-  useVisitedHighlight();
+  const pick = (next: FeedFilter) => {
+    setFilter(next);
+    setMenuOpen(false);
+  };
+  const chip = (kind: "cat" | "tag", value: string, count: number) => {
+    const active = filter?.kind === kind && filter.value === value;
+    return (
+      <button
+        key={value}
+        type="button"
+        className={`cat-chip${active ? " active" : ""}`}
+        onClick={() => pick(active ? null : { kind, value })}
+      >
+        {value} <span className="count">{count}</span>
+      </button>
+    );
+  };
 
   return (
     <Layout>
-      <p className="lede">
-        The new space economy, tracked by machine: Earth observation, connectivity, launch,
-        commercial human spaceflight. Every item carries a plain-English explainer, its sources,
-        and an honest signal-to-noise score.
-      </p>
-      <nav className="cat-row">
-        {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) => (
-          <a key={c} href={`/news/${c}/`}>
-            {c} <span className="count">{catCounts.get(c) ?? 0}</span>
-          </a>
-        ))}
-      </nav>
-      <nav className="cat-row domain-row">
-        {DOMAIN_TAGS.map((t) => (
-          <a key={t} href={`/tag/${t}/`}>
-            {t} <span className="count">{domainCounts.get(t) ?? 0}</span>
-          </a>
-        ))}
-      </nav>
       <div className="filter-bar">
+        <button
+          type="button"
+          className={`cat-btn${menuOpen ? " open" : ""}`}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          categories <span className="cat-btn-sel">{filter ? filter.value : "all"}</span>{" "}
+          <span className="cat-btn-arrow">{menuOpen ? "▴" : "▾"}</span>
+        </button>
         <input
           ref={inputRef}
           type="text"
@@ -391,11 +638,32 @@ export function HomePage() {
         <span className="filter-tally mono">
           {shown.length} / {items.length}
         </span>
+        {menuOpen && (
+          <div className="cat-panel">
+            <p className="cat-panel-label">category</p>
+            <div className="cat-panel-group">
+              <button
+                type="button"
+                className={`cat-chip${filter === null ? " active" : ""}`}
+                onClick={() => pick(null)}
+              >
+                all <span className="count">{items.length}</span>
+              </button>
+              {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) =>
+                chip("cat", c, catCounts.get(c) ?? 0),
+              )}
+            </div>
+            <p className="cat-panel-label">domain</p>
+            <div className="cat-panel-group">
+              {DOMAIN_TAGS.map((t) => chip("tag", t, domainCounts.get(t) ?? 0))}
+            </div>
+          </div>
+        )}
       </div>
-      {q !== "" && shown.length === 0 ? (
+      {(q !== "" || filter) && shown.length === 0 ? (
         <p className="empty">// no items match: adjust filters</p>
       ) : (
-        <FeedListBare list={shown} emptyNote="No items yet. The first sweep has not run." />
+        <FeedList list={shown} emptyNote="No items yet. The first sweep has not run." />
       )}
     </Layout>
   );
@@ -450,16 +718,6 @@ function hostOf(url: string): string {
 }
 
 export function ItemPage({ item }: { item: Item }) {
-  const srcEntries =
-    item.sources && item.sources.length > 0
-      ? item.sources
-      : [item.source_url, ...item.secondary_urls].map((u) => ({
-          url: u,
-          outlet: hostOf(u),
-          class: "informal" as const,
-          added: item.date,
-          via: "initial" as const,
-        }));
   return (
     <Layout>
       <article className="item-page item-wide">
@@ -488,25 +746,9 @@ export function ItemPage({ item }: { item: Item }) {
               </figure>
             )}
             <div className="src-band">
-              // sources · {srcEntries.length} attached
+              // sources · {srcEntriesOf(item).length} attached
             </div>
-            <ol className="src-list">
-              {srcEntries.map((src, i) => (
-                <li key={src.url}>
-                  <a href={src.url} rel="noopener">
-                    <span className="src-num">[{i + 1}]</span>
-                    <span>
-                      <span className="src-kind">
-                        {SOURCE_CLASS_LABELS[src.class] ?? src.class}
-                        {src.via !== "initial" ? ` · ${src.via}` : ""}
-                      </span>
-                      <span className="src-host">{hostOf(src.url)}</span>
-                    </span>
-                    <span className="src-arrow">↗</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
+            <SourceList item={item} />
           </div>
           <div className="item-main">
             <h1 className="page-title">{item.headline}</h1>

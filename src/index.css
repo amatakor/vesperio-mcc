@@ -4,6 +4,21 @@
    body copy, boxed uppercase chips, no border-radius, no transform
    hovers. Palette set by Florian 2026-07-05: copy ai-tldr's scheme. */
 
+/* Self-hosted variable fonts (latin subset), ai-tldr's pairing:
+   JetBrains Mono for structure, Inter for body copy. */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin-wght.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
   --bg: #0a0a0a;
   --panel: #141414;
@@ -13,8 +28,8 @@
   --acc: #ffe600;
   --acc-ink: #0a0a0a; /* text on solid accent */
   --alert: #ff2043; /* critical/seismic chip + failed-launch marks */
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --sans: -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: "Inter", -apple-system, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
 
   /* 6A chrome tokens (Orbits design handoff, 2026-07-06). */
   --panel-dark: #0d0f12; /* rail, VIEW cluster, overlay fills */
@@ -40,6 +55,15 @@
   --neon-hsf: #ffb054;
   --neon-nav: #d9e6ff;
   --neon-reserve: #b18cff;
+
+  /* SNR ramp (Florian, 2026-07-06): neon red, orange, blue, green,
+     magenta for 1-5; unlit squares are solid gray. */
+  --snr-1: #ff2043;
+  --snr-2: #ff8a00;
+  --snr-3: #19d9ff;
+  --snr-4: #2bff6a;
+  --snr-5: #ff3dd8;
+  --snr-off: #3d3d3d;
 }
 
 * {
@@ -296,37 +320,98 @@ a.chip:hover {
 
 /* -------------------------------------------------------------- feed */
 
-.cat-row {
+/* Collapsible categories menu, anchored to the filter bar. */
+.cat-btn {
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cat-btn:hover,
+.cat-btn.open {
+  border-color: var(--acc);
+}
+.cat-btn-sel {
+  background: var(--acc);
+  color: var(--acc-ink);
+  font-weight: 800;
+  padding: 0.05rem 0.35rem;
+}
+.cat-btn-arrow {
+  color: var(--dim);
+  font-size: 0.6rem;
+}
+.cat-panel {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 2px);
+  left: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 0.75rem;
+  min-width: min(24rem, 92vw);
+  max-width: min(46rem, 92vw);
+}
+.cat-panel-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0.2rem 0 0.4rem;
+}
+.cat-panel-label + .cat-panel-label {
+  margin-top: 0.75rem;
+}
+.cat-panel-group {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  padding: 0.75rem 0 1.25rem;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
-.cat-row a {
-  color: var(--dim);
+.cat-chip {
   border: 1px solid var(--line);
-  padding: 0.2rem 0.55rem;
+  background: none;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.5rem;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  cursor: pointer;
 }
-.cat-row a:hover {
-  color: var(--acc);
+.cat-chip:hover {
   border-color: var(--acc);
+  color: var(--acc);
 }
-.cat-row .count {
+.cat-chip .count {
   color: var(--dim);
   font-weight: 400;
+  background: var(--track);
+  padding: 0 0.25rem;
 }
-.cat-row a:hover .count {
+.cat-chip.active {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--acc-ink);
+}
+.cat-chip.active .count {
+  background: var(--acc-ink);
   color: var(--acc);
-}
-.domain-row {
-  padding-top: 0;
 }
 
 /* -------------------------------------------------------------- filter */
@@ -334,8 +419,10 @@ a.chip:hover {
 .filter-bar {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.6rem;
+  position: relative;
 }
 .filter-input {
   flex: 1;
@@ -360,39 +447,97 @@ a.chip:hover {
   white-space: nowrap;
 }
 
+/* Flush card plate: 12-col grid, zero gap, 1px borders collapsed via
+   negative margins. Every card in a row stretches to the row height;
+   width varies by impact (ai-tldr's span scheme, measured live). The
+   thumbnail height is fixed per impact class (wider card, taller
+   thumb), copy is content-sized, and the footer pins to the card
+   bottom; leftover space sits between tagline and footer. */
 .cards {
-  columns: 20rem;
-  column-gap: 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(18rem, auto);
+  grid-auto-flow: dense;
+  gap: 0;
+  margin-top: 0.75rem;
 }
 
 .card {
   border: 1px solid var(--line);
   background: var(--bg);
-  padding: 1rem 1.1rem 0.8rem;
-  display: block;
-  width: 100%;
-  break-inside: avoid;
-  margin-bottom: 0.6rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  cursor: pointer;
+  margin: -1px 0 0 -1px;
+  grid-column: span 4;
 }
 .card:hover {
-  border-color: var(--dim);
+  background: var(--panel);
 }
-.card.card-visited {
-  outline: 2px solid var(--acc);
-  outline-offset: -2px;
+/* Position-rotated widths (card-w* from feed order): consecutive
+   trios sum to 12 columns, so rows always fill. */
+.card-w3 {
+  grid-column: span 3;
 }
-.card.card-seismic.card-visited {
-  outline-color: var(--alert);
+.card-w4 {
+  grid-column: span 4;
+}
+.card-w5 {
+  grid-column: span 5;
+}
+.card-w6 {
+  grid-column: span 6;
+}
+/* Seismic block: two rows tall, pinned to the right edge so the free
+   space beside it stays contiguous for the row packer. */
+.card-seismic {
+  grid-column: 9 / span 4;
+  grid-row: span 2;
+}
+@media (max-width: 64rem) {
+  .card,
+  .card-w3,
+  .card-w4,
+  .card-w5,
+  .card-w6,
+  .card-seismic {
+    grid-column: span 6;
+  }
+}
+@media (max-width: 40rem) {
+  .card,
+  .card-w3,
+  .card-w4,
+  .card-w5,
+  .card-w6,
+  .card-seismic {
+    grid-column: span 12;
+  }
 }
 
-/* Full-bleed media strip at the top of a card; image or generated tile. */
+/* Media strip at the top of a card, image or generated tile. Fixed
+   per card but staggered across the feed (media-v* from the item id),
+   so neighbouring thumbnails differ in height the way ai-tldr's mixed
+   card types do; seismic overrides with its tall strip below. */
 .card-media {
   display: block;
   position: relative;
-  aspect-ratio: 16 / 9;
-  margin: -1rem -1.1rem 0.8rem;
+  flex: none;
+  height: 12.5rem;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
+}
+.media-v0 .card-media {
+  height: 10rem;
+}
+.media-v1 .card-media {
+  height: 12.5rem;
+}
+.media-v2 .card-media {
+  height: 15rem;
 }
 .card-media img {
   width: 100%;
@@ -407,6 +552,17 @@ a.chip:hover {
   justify-content: center;
   gap: 0.2rem;
   padding: 1rem 1.1rem;
+}
+
+/* SNR squares over the media, bottom-left, on a dark backing. */
+.card-snr {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  background: rgba(10, 10, 10, 0.88);
+  padding: 0.28rem 0.32rem;
+  display: inline-flex;
+  line-height: 0;
 }
 .tile-cat {
   font-family: var(--mono);
@@ -474,13 +630,16 @@ a.card-tile:hover .tile-cat {
 .feed-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  align-items: baseline;
-  font-size: 0.7rem;
+  gap: 0.4rem;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.64rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--dim);
-  margin-bottom: 0.6rem;
+}
+.card-meta {
+  padding: 0.75rem 0.9rem 0;
 }
 .card-meta .date {
   margin-left: auto;
@@ -488,10 +647,12 @@ a.card-tile:hover .tile-cat {
 
 .card-headline {
   font-family: var(--mono);
-  font-size: 1.12rem;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+  margin: 0.5rem 0.9rem 0;
 }
 .card-headline a {
   color: var(--fg);
@@ -501,20 +662,44 @@ a.card-tile:hover .tile-cat {
 }
 
 .card-tagline {
-  color: var(--dim);
-  font-size: 0.9rem;
-  margin: 0 0 1rem;
+  font-family: var(--sans);
+  color: var(--fg);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin: 0.4rem 0.9rem 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Critical items shout: full accent card, extra body. Masonry columns
-   mean cards no longer span tracks; critical cards stay tall instead. */
+/* Critical items shout: full accent card spanning two rows, bigger
+   type, extra body, black media strip. */
 .card-seismic {
   background: var(--acc);
   border-color: var(--acc);
   color: var(--acc-ink);
 }
 .card-seismic:hover {
+  background: var(--acc);
   border-color: var(--acc-ink);
+}
+.card-seismic .card-media {
+  height: 18.75rem;
+  background: var(--acc-ink);
+  border-bottom-color: var(--acc-ink);
+}
+.card-seismic .card-tile {
+  background: var(--acc-ink);
+}
+.card-seismic .card-headline {
+  font-size: 1.55rem;
+  line-height: 1.05;
+}
+.card-seismic .card-tagline {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  -webkit-line-clamp: 4;
 }
 .card-seismic .card-headline a,
 .card-seismic .card-tagline,
@@ -543,9 +728,6 @@ a.card-tile:hover .tile-cat {
   border-color: var(--alert);
   color: #fff;
 }
-.card-seismic .card-media {
-  border-bottom-color: rgba(10, 10, 10, 0.25);
-}
 .card-seismic .card-foot {
   border-top-color: rgba(10, 10, 10, 0.35);
   color: rgba(10, 10, 10, 0.6);
@@ -554,7 +736,8 @@ a.card-tile:hover .tile-cat {
   font-family: var(--sans);
   color: var(--acc-ink);
   font-size: 0.9rem;
-  margin: -0.4rem 0 1rem;
+  line-height: 1.5;
+  margin: 0.1rem 0.9rem 0.75rem;
 }
 .card:not(.card-seismic) .card-extra {
   color: var(--dim);
@@ -563,15 +746,26 @@ a.card-tile:hover .tile-cat {
 .card-foot {
   margin-top: auto;
   border-top: 1px solid var(--line);
-  padding-top: 0.55rem;
+  padding: 0.5rem 0.9rem 0.7rem;
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   align-items: baseline;
-  font-size: 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.64rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--dim);
+  min-width: 0;
+}
+.card-foot .card-companies {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-sources,
+.card-details {
+  white-space: nowrap;
 }
 .card-companies {
   color: var(--fg);
@@ -738,6 +932,156 @@ a.card-tile:hover .tile-cat {
   flex-wrap: wrap;
   gap: 0.4rem;
   margin: 1.1rem 0;
+}
+
+/* --------------------------------------------------------- item modal
+   Card click opens the item over the feed instead of navigating; the
+   static /item/ page remains the SEO/deep-link surface. */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overscroll-behavior: contain;
+}
+.item-modal {
+  background: var(--bg);
+  border: 2px solid var(--line);
+  width: min(96vw, 72rem);
+  max-height: min(90svh, 55rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: auto;
+}
+.modal-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 2px solid var(--line);
+  padding: 0.5rem 0.6rem 0.5rem 0.9rem;
+  flex: none;
+  box-shadow: inset 5px 0 0 var(--fg);
+}
+.modal-band-seismic {
+  box-shadow: inset 5px 0 0 var(--alert);
+}
+.modal-band-notable {
+  box-shadow: inset 5px 0 0 var(--acc);
+}
+.modal-band .date {
+  margin-left: auto;
+  color: var(--dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+.modal-close {
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+}
+.modal-close:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.modal-body {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.modal-left {
+  border-right: 2px solid var(--line);
+  background: var(--panel-dark);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.modal-media {
+  position: relative;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.modal-media img {
+  width: 100%;
+  display: block;
+}
+.modal-tile {
+  min-height: 9rem;
+}
+.modal-credit {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--dim);
+  padding: 0.35rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.modal-credit a {
+  color: var(--dim);
+}
+.modal-credit a:hover {
+  color: var(--acc);
+}
+.modal-left .src-band {
+  padding: 0.55rem 0.9rem;
+  letter-spacing: 0.16em;
+}
+.modal-left .src-list {
+  border: 0;
+  margin: 0;
+}
+.modal-left .src-list li + li {
+  border-top: 1px solid var(--line);
+}
+.modal-right {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.1rem 1.4rem;
+  min-width: 0;
+}
+.modal-title {
+  font-family: var(--mono);
+  font-weight: 800;
+  font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  margin: 0 0 0.4rem;
+}
+.item-modal .panel h2::before {
+  content: "// ";
+}
+@media (max-width: 52rem) {
+  .modal-backdrop {
+    padding: 0.75rem;
+  }
+  .modal-body {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .modal-left {
+    border-right: 0;
+    border-bottom: 2px solid var(--line);
+    overflow-y: visible;
+  }
+  .modal-right {
+    overflow-y: visible;
+  }
 }
 
 .item-page h1 {
@@ -1587,28 +1931,33 @@ a.sig-card:hover .sig-p-x {
   padding: 0 2px;
   cursor: pointer;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 4px;
   font: inherit;
   color: inherit;
 }
+/* Five flat squares, N lit, coloured by the score on the red-to-green
+   ramp; unlit squares stay visible as solid gray. */
 .snr-bars {
   display: inline-flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 2px;
 }
 .snr-bar {
-  width: 3px;
-  background: var(--track);
+  width: 9px;
+  height: 9px;
+  background: var(--snr-off);
   display: inline-block;
 }
-.snr-bar-1 { height: 4px; }
-.snr-bar-2 { height: 6px; }
-.snr-bar-3 { height: 8px; }
-.snr-bar-4 { height: 10px; }
-.snr-bar-5 { height: 12px; }
-.snr-bar.on { background: var(--acc); }
-.snr-low .snr-bar.on { background: var(--warn); }
+.snr-c1 .snr-bar.on { background: var(--snr-1); }
+.snr-c2 .snr-bar.on { background: var(--snr-2); }
+.snr-c3 .snr-bar.on { background: var(--snr-3); }
+.snr-c4 .snr-bar.on { background: var(--snr-4); }
+.snr-c5 .snr-bar.on { background: var(--snr-5); }
+.snr-compact .snr-bar {
+  width: 7px;
+  height: 7px;
+}
 .snr-num {
   font-family: var(--mono);
   font-size: 0.7rem;
