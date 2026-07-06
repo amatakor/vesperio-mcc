@@ -2107,28 +2107,38 @@
       "companies": [
         "Planet Labs"
       ],
-      "source_url": "https://www.stocktitan.net/news/PL/wolfgang-schmidt-former-head-of-german-chancellery-joins-planet-s-m5auioi9r7wd.html",
+      "source_url": "https://investors.planet.com/news/news-details/2026/Wolfgang-Schmidt-Former-Head-of-German-Chancellery-Joins-Planets-European-Advisory-Board/default.aspx",
       "secondary_urls": [
-        "https://investors.planet.com/news/news-details/2026/Wolfgang-Schmidt-Former-Head-of-German-Chancellery-Joins-Planets-European-Advisory-Board/default.aspx"
+        "https://investors.planet.com/news/news-details/2026/Wolfgang-Schmidt-Former-Head-of-German-Chancellery-Joins-Planets-European-Advisory-Board/default.aspx",
+        "https://www.stocktitan.net/news/PL/wolfgang-schmidt-former-head-of-german-chancellery-joins-planet-s-m5auioi9r7wd.html"
       ],
-      "snr": 3,
+      "snr": 5,
       "snr_trace": {
         "base": {
-          "tier": 4,
-          "source": "https://www.stocktitan.net/news/PL/wolfgang-schmidt-former-head-of-german-chancellery-joins-planet-s-m5auioi9r7wd.html",
-          "reason": "base tier 4 from lead source class \"wire_pr\" (Business Wire (via StockTitan))"
+          "tier": 5,
+          "source": "https://investors.planet.com/news/news-details/2026/Wolfgang-Schmidt-Former-Head-of-German-Chancellery-Joins-Planets-European-Advisory-Board/default.aspx",
+          "reason": "base tier 5 from lead source class \"first_party\" (Planet Labs)"
         },
-        "modifiers": [
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2,
+        "history": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "date": "2026-07-06",
+            "from": 3,
+            "to": 5,
+            "reason": "Anti-spoof gate fix (PR #82): investors.planet.com now verifies as Planet's own domain, so the item's lead upgrades from the Business Wire copy (StockTitan) to Planet's own IR release, which the sweep had already found and linked but could not class first_party under the old exact-subdomain check. Crawl outcome corrected from found_none to found_some: the wire copy is the corroborating second source."
           }
-        ],
-        "final": 3,
-        "scorer_version": 2
+        ]
       },
       "sources": [
+        {
+          "url": "https://investors.planet.com/news/news-details/2026/Wolfgang-Schmidt-Former-Head-of-German-Chancellery-Joins-Planets-European-Advisory-Board/default.aspx",
+          "outlet": "Planet Labs",
+          "class": "first_party",
+          "added": "2026-07-06",
+          "via": "initial"
+        },
         {
           "url": "https://www.stocktitan.net/news/PL/wolfgang-schmidt-former-head-of-german-chancellery-joins-planet-s-m5auioi9r7wd.html",
           "outlet": "Business Wire (via StockTitan)",
