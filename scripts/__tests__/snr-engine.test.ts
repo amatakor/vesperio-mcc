@@ -181,6 +181,15 @@ describe("corroboration_none penalty", () => {
     expect(traceErrors(trace, snr)).toEqual([]);
   });
 
+  test("NOT applied to direct-source leads (the filing proves its own statement)", () => {
+    const { snr, trace } = scoreClaim(
+      baseInput({ sources: [src("first_party")], crawl: "found_none" }),
+    );
+    expect(snr).toBe(5 as never);
+    expect(trace.modifiers.some((m) => m.type === "corroboration_none")).toBe(false);
+    expect(traceErrors(trace, snr)).toEqual([]);
+  });
+
   test("NOT applied when crawl not_attempted", () => {
     const { snr, trace } = scoreClaim(baseInput({ crawl: "not_attempted" }));
     expect(snr).toBe(3 as never);

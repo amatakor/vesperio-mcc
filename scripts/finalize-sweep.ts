@@ -35,6 +35,8 @@ import {
   SEED_TAGS,
   SOURCE_CLASSES,
   PERSISTENCE_DAYS,
+  CORROBORATION_FETCHES_PER_EVENT,
+  CORROBORATION_FETCHES_PER_SWEEP,
 } from "../src/data/schema";
 import {
   validateItem,
@@ -371,6 +373,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   // guardrails, scores it, and stamps the results.
   const draftIds = new Set<string>();
   const stampedNew: Item[] = [];
+  let crawlSkips = 0;
   draft.newItems.forEach((raw, i) => {
     const path = `newItems[${i}]`;
     if (!isObj(raw)) {
@@ -404,6 +407,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     if (!["found_none", "found_some", "not_attempted"].includes(scoring.crawl as string)) {
       errors.push(`${path}.scoring.crawl: must be one of [found_none, found_some, not_attempted]`);
     }
+    if (scoring.crawl === "not_attempted") crawlSkips++;
     if (
       scoring.whitelist !== null &&
       scoring.whitelist !== "self" &&
@@ -490,6 +494,23 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
     stampedNew.push(stamped);
   });
+
+  // ---- corroboration-budget honesty gate ----------------------------------
+  // "not_attempted" is only legal for events the sweep budget could not
+  // cover. The budget covers floor(40 / 5) = 8 events per sweep; a draft
+  // with N new items may skip at most max(0, N - 8) of them. Anything more
+  // means searches that could have run were not run: do them and file
+  // found_some or found_none per event.
+  const crawlCapacity = Math.floor(CORROBORATION_FETCHES_PER_SWEEP / CORROBORATION_FETCHES_PER_EVENT);
+  const allowedSkips = Math.max(0, draft.newItems.length - crawlCapacity);
+  if (crawlSkips > allowedSkips) {
+    errors.push(
+      `newItems: ${crawlSkips} item(s) claim crawl "not_attempted", but the sweep budget ` +
+        `(${CORROBORATION_FETCHES_PER_SWEEP} fetches at ${CORROBORATION_FETCHES_PER_EVENT}/event) covers ` +
+        `${crawlCapacity} events, so at most ${allowedSkips} may skip. Run the corroboration crawl ` +
+        `for the rest and set found_some or found_none honestly.`,
+    );
+  }
 
   // ---- validate + apply updates ------------------------------------------
   const patchedItems = new Map<string, Item>();
