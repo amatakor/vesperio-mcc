@@ -1,7 +1,9 @@
 # Orbits data refresh, every 12 hours, offset from the news sweeps.
 # Fully deterministic (no agent): fetches CelesTrak element sets and the
-# Launch Library 2 spaceport stats into public/data/orbits/, gates on the
-# full build, and commits. ORBITS_SPEC.md 5.1/5.2 are the contract.
+# Launch Library 2 spaceport stats into public/data/orbits/, recomputes
+# sats_active_verified on the registry constellation profiles from the
+# fresh element sets, gates on the full build, and commits.
+# ORBITS_SPEC.md 5.1/5.2 are the contract.
 #
 # Politeness: CelesTrak updates at most every 2 hours and asks users not
 # to poll faster; LL2's free tier allows 15 requests/hour and this run
@@ -39,6 +41,9 @@ jobs:
       - name: Fetch orbital elements (CelesTrak)
         run: bun scripts/orbits/fetch-elements.ts
 
+      - name: Recompute verified fleet counts from element sets
+        run: bun scripts/compute-fleet-counts.ts
+
       - name: Fetch spaceports (Launch Library 2)
         run: bun scripts/orbits/fetch-spaceports.ts
 
@@ -54,13 +59,13 @@ jobs:
         run: |
           set -euo pipefail
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git diff --quiet -- public/data/orbits; then
+          if git diff --quiet -- public/data/orbits src/data/registry/constellations; then
             echo "No orbits data changes; nothing to commit."
             exit 0
           fi
           git config user.name "mcc-orbits-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add public/data/orbits
+          git add public/data/orbits src/data/registry/constellations
           git commit -m "orbits: data refresh ($(date -u '+%Y-%m-%d %H:%M UTC'))"
           # main may have moved during the run; these commits touch only
           # data files, so a rebase is clean or fails loudly.
