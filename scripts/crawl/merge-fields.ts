@@ -23,7 +23,8 @@ const TYPES: Record<string, { dir: string; fields: Record<string, Kind> }> = {
     dir: "constellations",
     fields: {
       overview: "string", operator: "string", country: "string",
-      sensor_types: "string[]", sats_on_orbit: "number", sats_planned: "number",
+      sensor_types: "string[]", sats_launched_total: "number",
+      sats_active_claimed: "number", sats_planned: "number",
       orbit: "string", first_launch_date: "string", latest_launch_date: "string",
       status: "string", website: "string",
     },
