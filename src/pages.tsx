@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   Item,
@@ -673,6 +673,16 @@ const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
   ["institutions", "institutions", (e) => e.kind === "org" && e.group === "institution"],
 ];
 
+/** Operator/provider display name -> organization profile URL, for the company profile button. */
+const ORG_HREF = new Map(organizations.map((o) => [o.name, `/registry/organizations/${o.slug}/`]));
+
+/** Registry selection accents follow the Orbits domain palette. */
+const DOMAIN_ACCENT: Record<string, string> = {
+  eo: "var(--neon-eo)",
+  connectivity: "var(--neon-connectivity)",
+  iot: "var(--neon-iot)",
+};
+
 function matchesRegQuery(e: RegEntry, q: string): boolean {
   return [e.name, e.affiliation, e.slug].join(" ").toLowerCase().includes(q);
 }
@@ -750,11 +760,16 @@ function PaneBrowser({
   groupLabel,
   groupDisplay = (name) => name,
   entityAside,
+  groupProfileHref,
+  accent,
 }: {
   entries: RegEntry[];
   groupLabel: string;
   groupDisplay?: (name: string) => string;
   entityAside: (e: RegEntry) => ReactNode;
+  /** Profile URL for a group (e.g. a provider's organization page); renders the company profile button. */
+  groupProfileHref?: (group: string) => string | null;
+  accent?: string;
 }) {
   const [selGroup, setSelGroup] = useState<string | null>(null);
   const [selSlug, setSelSlug] = useState<string | null>(null);
@@ -768,9 +783,13 @@ function PaneBrowser({
   const group = groups.find(([name]) => name === selGroup) ?? groups[0];
   const groupEntries = (group ? group[1] : []).slice().sort((a, b) => a.name.localeCompare(b.name));
   const sel = groupEntries.find((e) => e.slug === selSlug) ?? groupEntries[0];
+  const profileHref = group ? (groupProfileHref?.(group[0]) ?? null) : null;
 
   return (
-    <div className="reg-browser">
+    <div
+      className="reg-browser"
+      style={accent ? ({ "--reg-acc": accent } as CSSProperties) : undefined}
+    >
       <div className="reg-pane reg-ops">
         <div className="reg-pane-head">
           {groupLabel} <span className="dim">{groups.length}</span>
@@ -790,6 +809,11 @@ function PaneBrowser({
       </div>
       <div className="reg-pane reg-ents">
         <div className="reg-pane-head">{group ? groupDisplay(group[0]) : ""}</div>
+        {profileHref && (
+          <a className="reg-profile-link" href={profileHref}>
+            company profile &rarr;
+          </a>
+        )}
         {groupEntries.map((e) => (
           <RegRow
             key={e.slug}
@@ -807,16 +831,25 @@ function PaneBrowser({
 
 const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connectivity", iot: "iot" };
 
+/** Operator pane node: a fleet parent (Planet, Sentinel) or a plain operator name. */
+interface OpNode {
+  key: string;
+  label: string;
+  /** Company/fleet profile URL for the fleet pane's header button. */
+  profileHref: string | null;
+  entries: RegEntry[];
+}
+
 /**
- * Constellation section browser: domain -> operator -> constellation, with
- * a fourth pane for named sub-constellations (e.g. Planet's SkySat,
- * SuperDove, Pelican, Tanager) when the selected entry has children.
+ * Constellation section browser: domain -> operator -> fleet. A fleet parent
+ * (e.g. Planet, Sentinel) is itself the operator-level row: its children list
+ * directly in the fleet pane and the parent profile becomes the company
+ * profile button at the top of that pane, so no redundant middle column.
  */
 function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
   const [selDomain, setSelDomain] = useState<string | null>(null);
   const [selOp, setSelOp] = useState<string | null>(null);
   const [selSlug, setSelSlug] = useState<string | null>(null);
-  const [selChild, setSelChild] = useState<string | null>(null);
 
   const byDomain = new Map<string, RegEntry[]>();
   for (const e of entries) byDomain.set(e.kind, [...(byDomain.get(e.kind) ?? []), e]);
@@ -827,26 +860,53 @@ function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
   const domain = domains.find(([d]) => d === selDomain) ?? domains[0];
   const domainEntries = domain ? domain[1] : [];
 
-  const byOp = new Map<string, RegEntry[]>();
-  for (const e of domainEntries) byOp.set(e.group, [...(byOp.get(e.group) ?? []), e]);
-  const operators = [...byOp.entries()].sort(
-    (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
-  );
-  const op = operators.find(([name]) => name === selOp) ?? operators[0];
+  const inDomain = new Map(domainEntries.map((e) => [e.slug, e]));
+  const nodes = new Map<string, OpNode>();
+  const nodeFor = (key: string, label: string, profileHref: string | null): OpNode => {
+    let n = nodes.get(key);
+    if (!n) {
+      n = { key, label, profileHref, entries: [] };
+      nodes.set(key, n);
+    }
+    return n;
+  };
+  // Fleet parents read as operators in their pane, so the suffix is noise there.
+  const opLabel = (name: string) => name.replace(/\s*\(fleet\)$/i, "");
+  for (const e of domainEntries) {
+    if (entries.some((c) => c.parent === e.slug)) {
+      // Fleet parent: owns an operator row; children fill its fleet pane.
+      const n = nodeFor(e.slug, opLabel(e.name), e.href);
+      n.label = opLabel(e.name);
+      n.profileHref = e.href;
+    } else if (e.parent && inDomain.has(e.parent)) {
+      const p = inDomain.get(e.parent)!;
+      nodeFor(e.parent, opLabel(p.name), p.href).entries.push(e);
+    } else {
+      // Standalone constellation (or orphaned child under search filters).
+      nodeFor(`op:${e.group}`, e.group, ORG_HREF.get(e.group) ?? null).entries.push(e);
+    }
+  }
+  // A parent whose children are all filtered out still previews itself.
+  for (const n of nodes.values()) {
+    if (n.entries.length === 0 && inDomain.has(n.key)) n.entries.push(inDomain.get(n.key)!);
+  }
+  const operators = [...nodes.values()].sort((a, b) => {
+    const aUnk = a.label === "Operator unconfirmed" ? 1 : 0;
+    const bUnk = b.label === "Operator unconfirmed" ? 1 : 0;
+    return aUnk - bUnk || b.entries.length - a.entries.length || a.label.localeCompare(b.label);
+  });
 
-  // The constellation pane lists only top-level entries (no parent).
-  const topLevel = (op ? op[1] : [])
-    .filter((e) => !e.parent)
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const sel = topLevel.find((e) => e.slug === selSlug) ?? topLevel[0];
+  const op = operators.find((n) => n.key === selOp) ?? operators[0];
+  const fleet = (op ? op.entries : []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  const sel = fleet.find((e) => e.slug === selSlug) ?? fleet[0];
 
-  const children = sel ? entries.filter((e) => e.parent === sel.slug).sort((a, b) => a.name.localeCompare(b.name)) : [];
-  const child = children.find((e) => e.slug === selChild) ?? undefined;
-  const preview = child ?? sel;
+  const accent = domain ? DOMAIN_ACCENT[domain[0]] : undefined;
 
   return (
-    <div className={`reg-browser ${children.length > 0 ? "reg-browser-5" : "reg-browser-4"}`}>
+    <div
+      className="reg-browser reg-browser-4"
+      style={accent ? ({ "--reg-acc": accent } as CSSProperties) : undefined}
+    >
       <div className="reg-pane reg-ops">
         <div className="reg-pane-head">
           domain <span className="dim">{domains.length}</span>
@@ -861,7 +921,6 @@ function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
               setSelDomain(d);
               setSelOp(null);
               setSelSlug(null);
-              setSelChild(null);
             }}
           />
         ))}
@@ -870,52 +929,39 @@ function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
         <div className="reg-pane-head">
           operator <span className="dim">{operators.length}</span>
         </div>
-        {operators.map(([name, list]) => (
+        {operators.map((n) => (
           <RegRow
-            key={name}
-            label={name}
-            aside={list.length}
-            selected={!!op && name === op[0]}
+            key={n.key}
+            label={n.label}
+            aside={n.entries.length}
+            selected={!!op && n.key === op.key}
             onClick={() => {
-              setSelOp(name);
+              setSelOp(n.key);
               setSelSlug(null);
-              setSelChild(null);
             }}
           />
         ))}
       </div>
       <div className="reg-pane reg-ents">
-        <div className="reg-pane-head">{op ? op[0] : ""}</div>
-        {topLevel.map((e) => (
+        <div className="reg-pane-head">
+          {op ? op.label : ""} <span className="dim">{fleet.length}</span>
+        </div>
+        {op?.profileHref && (
+          <a className="reg-profile-link" href={op.profileHref}>
+            company profile &rarr;
+          </a>
+        )}
+        {fleet.map((e) => (
           <RegRow
             key={e.slug}
             label={e.name}
             aside={KIND_LABEL[e.kind]}
             selected={!!sel && e.slug === sel.slug}
-            onClick={() => {
-              setSelSlug(e.slug);
-              setSelChild(null);
-            }}
+            onClick={() => setSelSlug(e.slug)}
           />
         ))}
       </div>
-      {sel && children.length > 0 && (
-        <div className="reg-pane reg-ents">
-          <div className="reg-pane-head">
-            {sel.name} constellations <span className="dim">{children.length}</span>
-          </div>
-          {children.map((c) => (
-            <RegRow
-              key={c.slug}
-              label={c.name}
-              aside="constellation"
-              selected={!!child && c.slug === child.slug}
-              onClick={() => setSelChild(c.slug)}
-            />
-          ))}
-        </div>
-      )}
-      <div className="reg-pane reg-preview">{preview && <RegPreviewCard entry={preview} />}</div>
+      <div className="reg-pane reg-preview">{sel && <RegPreviewCard entry={sel} />}</div>
     </div>
   );
 }
@@ -1025,6 +1071,7 @@ export function RegistryIndexPage() {
                   entries={s.entries}
                   groupLabel="provider"
                   entityAside={() => "vehicle"}
+                  groupProfileHref={(p) => ORG_HREF.get(p) ?? null}
                 />
               )}
               {s.id === "constellations" && <ConstellationBrowser entries={s.entries} />}
@@ -1034,6 +1081,7 @@ export function RegistryIndexPage() {
                   groupLabel="region"
                   groupDisplay={(r) => REGION_LABEL[r] ?? r}
                   entityAside={() => "site"}
+                  accent="var(--neon-reserve)"
                 />
               )}
               {s.id === "ecosystem" && (

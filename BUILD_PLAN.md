@@ -347,3 +347,16 @@ only contains active vehicles. Two parts:
 Accept when: the tracked LSPs' rosters include their retired orbital
 vehicles with sourced status; provider pages render the roster;
 check-registry passes.
+
+## Backlog noted 2026-07-06 (Florian)
+
+Parked items, in his words, to be specced before work starts:
+
+- **Stock ticker / chart styling.** The live tickers and daily stock
+  charts on company profiles need a styling and UX pass. Not urgent.
+- **News engine rework.** Revise the scraping / aggregator / news
+  collection approach from a different angle: the current rules are
+  too strict and are not helping the project. Needs a sit-down on
+  what to relax and how, without giving up the no-overclaim promise.
+- **Menu and taxonomy review.** Review the site menu structure and
+  the tags / categories system together.
