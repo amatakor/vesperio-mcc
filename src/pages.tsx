@@ -489,7 +489,29 @@ function entityHrefFor(v: string): string | undefined {
 /** Facts-table rows whose string value names another registry entity. */
 const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
 
-function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
+/**
+ * Fleet-level display sum of a count field across sub-constellations.
+ * Rendered as a computed figure, never stored: the sourced per-child
+ * values remain the citable atoms. Null unless every child carries the
+ * value; a partial sum shown as a fleet total would be wrong.
+ */
+function fleetSum(
+  children: ConstellationProfile[],
+  field: "sats_launched_total" | "sats_active_claimed" | "sats_active_verified",
+): SourcedField<number> | null {
+  if (children.length === 0) return null;
+  let sum = 0;
+  let asOf: string | null = null;
+  for (const c of children) {
+    const f = c[field];
+    if (f.value === null || f.value === undefined) return null;
+    sum += f.value;
+    if (f.as_of && (!asOf || f.as_of > asOf)) asOf = f.as_of;
+  }
+  return { value: sum, source: null, as_of: asOf };
+}
+
+function fieldRow(label: string, f: SourcedField<unknown>, computed?: boolean): ReactNode {
   const value =
     f.value === null || f.value === undefined
       ? "unknown"
@@ -512,6 +534,8 @@ function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
           <a href={f.source} rel="noopener">
             source
           </a>
+        ) : computed ? (
+          <span className="dim">computed</span>
         ) : (
           ""
         )}
@@ -520,7 +544,9 @@ function fieldRow(label: string, f: SourcedField<unknown>): ReactNode {
   );
 }
 
-function ProfileTable({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
+type ProfileRow = [string, SourcedField<unknown>] | [string, SourcedField<unknown>, "computed"];
+
+function ProfileTable({ rows }: { rows: ProfileRow[] }) {
   return (
     <table className="profile">
       <thead>
@@ -531,7 +557,7 @@ function ProfileTable({ rows }: { rows: Array<[string, SourcedField<unknown>]> }
           <th>source</th>
         </tr>
       </thead>
-      <tbody>{rows.map(([label, f]) => fieldRow(label, f))}</tbody>
+      <tbody>{rows.map(([label, f, computed]) => fieldRow(label, f, computed === "computed"))}</tbody>
     </table>
   );
 }
@@ -541,7 +567,7 @@ function ProfileTable({ rows }: { rows: Array<[string, SourcedField<unknown>]> }
  * attribution and a direct link to the original URL; render both
  * whenever any field on the profile cites it.
  */
-function GuntersAttribution({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
+function GuntersAttribution({ rows }: { rows: ProfileRow[] }) {
   const pages = [
     ...new Set(
       rows
@@ -1148,7 +1174,7 @@ interface ProfileMeta {
   typeLabel: string;
   /** operator (constellation) or provider (vehicle) value, for related/events matching. */
   affiliation: string | null;
-  rows: Array<[string, SourcedField<unknown>]>;
+  rows: ProfileRow[];
   overview: SourcedField<string>;
   href: string;
   siblingsBase: string;
@@ -1380,7 +1406,7 @@ function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: 
   );
 }
 
-function SourcesSection({ rows }: { rows: Array<[string, SourcedField<unknown>]> }) {
+function SourcesSection({ rows }: { rows: ProfileRow[] }) {
   const byUrl = new Map<string, string[]>();
   for (const [label, f] of rows) {
     if (!f.source) continue;
@@ -1523,13 +1549,26 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
 }
 
 export function ConstellationPage({ profile }: { profile: ConstellationProfile }) {
-  const rows: Array<[string, SourcedField<unknown>]> = [
+  const childProfiles = constellationChildren(profile.slug);
+  // Fleet parents show the sum of their sub-constellations' counts when the
+  // parent field itself is unsourced, marked computed in the source column.
+  const countRow = (
+    label: string,
+    field: "sats_launched_total" | "sats_active_claimed" | "sats_active_verified",
+  ): ProfileRow => {
+    if (profile[field].value === null) {
+      const sum = fleetSum(childProfiles, field);
+      if (sum) return [label, sum, "computed"];
+    }
+    return [label, profile[field]];
+  };
+  const rows: ProfileRow[] = [
     ["operator", profile.operator],
     ["country", profile.country],
     ["sensor types", profile.sensor_types],
-    ["sats launched (total)", profile.sats_launched_total],
-    ["sats active (claimed)", profile.sats_active_claimed],
-    ["sats active (verified)", profile.sats_active_verified],
+    countRow("sats launched (total)", "sats_launched_total"),
+    countRow("sats active (claimed)", "sats_active_claimed"),
+    countRow("sats active (verified)", "sats_active_verified"),
     ["sats planned", profile.sats_planned],
     ["orbit", profile.orbit],
     ["first launch", profile.first_launch_date],
@@ -1555,8 +1594,9 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
       render: (v) => `${profile.name} first launched on ${v as string}.`,
     },
   ];
-  const children = constellationChildren(profile.slug);
+  const children = childProfiles;
   const parent = profile.parent ? constellations.find((c) => c.slug === profile.parent) : undefined;
+  const hasComputedRow = rows.some((r) => r[2] === "computed");
   const meta: ProfileMeta = {
     slug: profile.slug,
     name: profile.name,
@@ -1571,9 +1611,16 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     history: profile.events ?? [],
     stockTicker: profile.ticker ?? null,
     tableNote:
-      profile.sats_active_verified.value !== null
-        ? "sats active (verified) counts objects currently tracked in CelesTrak's catalog for this constellation. It is a tracking count, not an operator claim about satellite health."
-        : null,
+      [
+        profile.sats_active_verified.value !== null || hasComputedRow
+          ? "sats active (verified) counts objects currently tracked in CelesTrak's catalog for this constellation. It is a tracking count, not an operator claim about satellite health."
+          : null,
+        hasComputedRow
+          ? "Rows marked computed are the sum of the sub-constellations listed below; each sub-constellation page carries its own sourced figure."
+          : null,
+      ]
+        .filter(Boolean)
+        .join(" ") || null,
     faq,
     parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
     children: children.map((c) => ({ slug: c.slug, name: c.name })),
