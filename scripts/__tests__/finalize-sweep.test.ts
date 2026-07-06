@@ -245,6 +245,40 @@ describe("finalize-sweep rejections", () => {
     expect(result.errors.join("\n")).toContain("reclassify");
   });
 
+  test("first_party on a sibling subdomain of a www-recorded registry website is accepted", () => {
+    // The registry stores display URLs (www.planet.com); the actor's
+    // domain is the apex, so investors.planet.com is the same actor.
+    // Regression: the Wolfgang Schmidt item led with a wire copy because
+    // the gate rejected Planet's own IR subdomain.
+    const regDir = join(dataDir, "registry", "constellations");
+    mkdirSync(regDir, { recursive: true });
+    writeFileSync(
+      join(regDir, "planet.json"),
+      JSON.stringify({
+        name: "Planet (fleet)",
+        website: { value: "https://www.planet.com/", source: "https://www.planet.com/company/", as_of: "2026-07-05" },
+      }),
+    );
+    const url = "https://investors.planet.com/news/news-details/2026/some-release/default.aspx";
+    const item = baseNewItem({
+      id: "2026-07-04-planet-first-party-test",
+      source_url: url,
+      companies: ["Planet Labs"],
+      scoring: {
+        sources: [{ url, outlet: "Planet Labs", class: "first_party" }],
+        extraordinary: false,
+        crawl: "found_none",
+        whitelist: null,
+      },
+    });
+    writeDraft({ newItems: [item] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const merged = readItems().items.find((it) => it.id === "2026-07-04-planet-first-party-test")!;
+    expect(merged.snr).toBe(5);
+    expect(merged.snr_trace.base.tier).toBe(5);
+  });
+
   test("a bump on a saturated modifier is rejected", () => {
     // Give the existing item a reinforcement modifier, then bump it again.
     const items = readItems();
