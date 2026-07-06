@@ -143,3 +143,31 @@ a newer entry if a lesson changes.
   except one fresh SpaceNews story, and zero items shipped. A quiet
   sweep with a documented scope call is a valid outcome, not a gap in
   coverage.
+
+## Deep registry crawl (2026-07-05, second session)
+
+- 2026-07-05-Q: WebFetch returns summarized page text; "verbatim" quotes
+  drawn from it can be paraphrase. Verification must re-check against the
+  live page, and collectors must not trust the summarizer's wording for
+  quote fields (this systematically broke Sentinel operator quotes).
+- 2026-07-05-R: More collector traps that recur: byline-relative dates
+  ("yesterday", "today") are not calendar dates; press-release publication
+  dates are not always the event date; state-media pages often state only
+  a weekday, day precision needs the dateline to corroborate; "optical"
+  must not be asserted when a page only says panchromatic/multispectral;
+  " (per [outlet])" belongs only on true trade-press citations, not a
+  company's own release.
+- 2026-07-05-S: Fetchable-outlet map for this network: Payload, Via
+  Satellite, The Register, TechCrunch (mostly), Reuters (sometimes),
+  IonQ/Amazon newsrooms, telesat.com, capellaspace.com, astroscale.com,
+  isaraerospace.com, rfa.space, stokespace.com, fireflyspace.com load;
+  blueorigin.com 429s; rocketlabusa/corp.com, spaceforce.mil, SEC EDGAR,
+  fcc.gov, pib.gov.in 403/timeout; spacenews.com 429s under load;
+  businesswire times out; ghgsat.com/he360.com/oqtec unreachable.
+- 2026-07-05-T: Launch Library /2.3.0/agencies/ records (founding_year,
+  description, country, info_url) are an eligible structured-data source
+  that fills org fields when corporate sites block fetchers; featured=true
+  returns the majors in one request.
+- 2026-07-05-U: Concurrency: ~25 simultaneous agents triggered server-side
+  API rate limiting that killed nearly a whole fan-out. Keep waves at 3-5
+  agents; forbid sub-agent spawning in collector prompts explicitly.
