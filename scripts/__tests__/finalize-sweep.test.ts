@@ -451,11 +451,27 @@ describe("finalize-sweep merge", () => {
     expect(state.sweeps[0]!.snr_movements).toBeUndefined();
   });
 
-  test("persistence auto-bumps a 15-day-old snr-3 item once, and never above 4", () => {
-    // Rewrite the existing item as a 15-day-old SNR-3 (trade) item.
+  test("a new item with an old event date gets NO immediate persistence bump", () => {
+    // The persistence clock runs from publication, not the event date: a
+    // late-discovered 20-day-old event has not survived any exposure yet.
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.newItems[0].date = "2026-06-15";
+    draft.newItems[0].id = "2026-06-15-rocket-lab-electron-eo-launch";
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const now = new Date("2026-07-05T05:00:00.000Z");
+    const result = finalizeSweep({ dataDir, draftPath, now });
+    expect(result.ok).toBe(true);
+    const items = readItems();
+    const added = items.items.find((i) => i.id === "2026-06-15-rocket-lab-electron-eo-launch")!;
+    expect(added.snr_trace.modifiers.some((m) => m.type === "persistence")).toBe(false);
+  });
+
+  test("persistence auto-bumps an item published 15 days ago, once, never above 4", () => {
+    // Rewrite the existing item as a 15-days-published SNR-3 (trade) item.
     const items = readItems();
     const it = items.items[0]!;
     it.date = "2026-06-20";
+    it.publishDate = "2026-06-20T05:00:00.000Z"; // the persistence clock runs from publication
     it.snr = 3;
     it.snr_trace = {
       base: { tier: 3, source: it.source_url, reason: "trade base" },

@@ -638,12 +638,15 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
   // Automatic persistence pass (SNR_PLAN §A1): over ALL next items, an
   // item still below 4, not disputed, with no persistence modifier yet,
-  // whose event date is >= PERSISTENCE_DAYS before today, gets +1 (caps 4).
+  // published >= PERSISTENCE_DAYS before today, gets +1 (caps 4). The
+  // clock starts at FIRST PUBLICATION, not the event date: a
+  // late-discovered old event has not survived any exposure yet.
   nextItemsList = nextItemsList.map((it) => {
     if (it.disputed) return it;
     if (it.snr >= 4) return it;
     if (it.snr_trace.modifiers.some((m) => m.type === "persistence")) return it;
-    if (daysBetween(it.date, today) < PERSISTENCE_DAYS) return it;
+    const publishedOn = (it.publishDate ?? it.date).slice(0, 10);
+    if (daysBetween(publishedOn, today) < PERSISTENCE_DAYS) return it;
     const newTrace = applyModifier(
       it.snr_trace,
       {
