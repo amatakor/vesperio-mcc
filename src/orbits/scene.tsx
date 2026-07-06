@@ -433,7 +433,12 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  const [zoomStep, setZoomStep] = useState(0);
+  // Default zoom differs by frame (Florian 2026-07-07): the wide HUD
+  // state opens one step closer, the narrow panel state one step wider.
+  const defaultZoomFor = (isWide: boolean) => (isWide ? 1 : -1);
+  const [zoomStep, setZoomStep] = useState(() =>
+    defaultZoomFor(window.matchMedia("(min-width: 1281px)").matches),
+  );
   const [resetNonce, setResetNonce] = useState(0);
   // Wide screens keep the globe fitted between the floating panels even
   // though the canvas itself runs full-bleed underneath them; on every
@@ -483,6 +488,14 @@ export default function Scene() {
     const q = new URLSearchParams(window.location.search).get("constellation");
     return q && catalogBySlug.has(q) ? q : null;
   });
+  // Load state (Florian 2026-07-07): the full satellite cloud PLUS the
+  // ISS orbit focused. This is the only state where focus and cloud
+  // combine (no dimming); the first explicit focus, pick, or layer
+  // change leaves it for the normal exclusive-focus behaviour. A deep
+  // link supersedes it.
+  const [bootIss, setBootIss] = useState(
+    () => !new URLSearchParams(window.location.search).get("constellation"),
+  );
   const [selection, setSelection] = useState<Selection | null>(null);
   const selectionRef = useRef<Selection | null>(null);
   selectionRef.current = selection;
@@ -623,6 +636,7 @@ export default function Scene() {
 
   const pickSat = useCallback(
     (sat: PickedSat) => {
+      setBootIss(false);
       setSelection({ kind: "sat", sat });
       setWatch(null);
       setArc(null);
@@ -658,6 +672,7 @@ export default function Scene() {
   // Toggling a fleet parent toggles all of its child layers together.
   const toggleConstellation = useCallback(
     (slug: string) => {
+      setBootIss(false);
       const slugs = expandHighlight(slug);
       if (slugs.length === 0) return;
       const anyOn = slugs.some((s) => enabled.has(s));
@@ -696,6 +711,7 @@ export default function Scene() {
   // Highlighting a constellation force-enables its layers: a selection
   // and an unchecked box cannot coexist.
   const selectConstellation = useCallback((slug: string | null) => {
+    setBootIss(false);
     setSelectedConstellation(slug);
     if (slug) {
       const slugs = expandHighlight(slug);
@@ -713,6 +729,10 @@ export default function Scene() {
     // Run once on mount for the ?constellation= deep link.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // The effective focus: an explicit selection, or the ISS at boot
+  // (the load state keeps the cloud undimmed; see bootIss above).
+  const shellFocus = selectedConstellation ?? (bootIss ? "iss" : null);
 
   // Rail model, nested like the Registry (fleet parents with children).
   const staleHoursOf = (fetchedAt: string | null): number | null => {
@@ -732,7 +752,7 @@ export default function Scene() {
       child,
       count: s.count,
       cloudOn: enabled.has(e.slug),
-      focused: selectedConstellation === e.slug,
+      focused: shellFocus === e.slug,
       status: s.status,
       staleHours: s.status === "stale" ? staleHoursOf(s.fetchedAt) : null,
       collapsed: false,
@@ -761,7 +781,7 @@ export default function Scene() {
         child: false,
         count: counts.length > 0 ? counts.reduce((a, b) => a + b, 0) : null,
         cloudOn: children.some((c) => c.cloudOn),
-        focused: selectedConstellation === node.entry.slug,
+        focused: shellFocus === node.entry.slug,
         status: children.some((c) => c.status === "loading")
           ? "loading"
           : children.some((c) => c.status === "stale")
@@ -807,10 +827,15 @@ export default function Scene() {
 
   // An explicit constellation focus restricts picking to its layers
   // (Florian 2026-07-06: no more stray Starlink hits under focus).
-  const pickSlugs = useMemo(
-    () => (selectedConstellation ? new Set(expandHighlight(selectedConstellation)) : null),
-    [selectedConstellation],
-  );
+  // Without a focus, connectivity layers are not pickable at all
+  // (Florian 2026-07-07): Starlink's ~10k points otherwise win every
+  // near-miss against the constellation the user is aiming at.
+  const pickSlugs = useMemo(() => {
+    if (selectedConstellation) return new Set(expandHighlight(selectedConstellation));
+    return new Set(
+      orbitCatalog.filter((e) => e.category !== "connectivity").map((e) => e.slug),
+    );
+  }, [selectedConstellation]);
 
   // A selected fleet parent highlights all of its child layers.
   const highlightSlugs = useMemo(() => {
@@ -822,11 +847,12 @@ export default function Scene() {
     return base && base.length > 0 ? new Set(base) : null;
   }, [selectedConstellation, selection]);
 
-  // Orbit shells: every orbit of an explicitly selected constellation.
+  // Orbit shells: every orbit of the effective focus (explicit
+  // selection, or the ISS load state with the cloud intact).
   const shells = useMemo(() => {
-    if (!selectedConstellation) return [];
+    if (!shellFocus) return [];
     const now = new Date();
-    return expandHighlight(selectedConstellation)
+    return expandHighlight(shellFocus)
       .filter((s) => enabled.has(s))
       .flatMap((s) => {
         const recs = recordsRef.current.get(s) ?? [];
@@ -841,7 +867,7 @@ export default function Scene() {
       });
     // layout signals fresh records having arrived for enabled slugs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedConstellation, enabled, layout, colorBySlug, colors.accent]);
+  }, [shellFocus, enabled, layout, colorBySlug, colors.accent]);
 
   // Camera fit: the globe plus generous air for the LEO cloud, widened
   // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
@@ -1007,16 +1033,17 @@ export default function Scene() {
         clearSelection();
       } else if (e.key === "r" || e.key === "R") {
         setResetNonce((n) => n + 1);
-        setZoomStep(0);
+        setZoomStep(defaultZoomFor(window.matchMedia("(min-width: 1281px)").matches));
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clearSelection]);
 
   const onReset = () => {
     setResetNonce((n) => n + 1);
-    setZoomStep(0);
+    setZoomStep(defaultZoomFor(wide));
   };
 
   return (

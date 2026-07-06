@@ -226,7 +226,15 @@ export function Satellites({
         const g = new THREE.BufferGeometry();
         g.setAttribute("position", new THREE.BufferAttribute(view, 3));
         g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
-        return { slug: seg.entry.slug, geometry: g, color: colorBySlug.get(seg.entry.slug) ?? "#ffffff" };
+        return {
+          slug: seg.entry.slug,
+          geometry: g,
+          // Structural glyphs (the ISS) render grey, not their category
+          // neon (Florian 2026-07-07); data points keep the palette.
+          color: GLYPH_SLUGS.has(seg.entry.slug)
+            ? "#8f8f8f"
+            : colorBySlug.get(seg.entry.slug) ?? "#ffffff",
+        };
       });
   }, [geometry, plan, colorBySlug, highlightSlugs]);
   useEffect(() => () => highlights.forEach((h) => h.geometry.dispose()), [highlights]);

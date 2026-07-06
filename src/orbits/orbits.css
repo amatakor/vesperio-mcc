@@ -203,11 +203,21 @@
   font-size: 0.62em;
   padding: 0 2px;
 }
-.lcd-big {
-  font-size: 48px;
-}
 .lcd-clock {
   font-size: 17px;
+}
+
+/* The tracked count in the site mono (Florian 2026-07-07): tabular
+   figures so the digits do not shuffle as the count moves. */
+.count-big {
+  display: block;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: var(--acc);
 }
 
 /* The countdown links to the mission's feed item or vehicle profile. */
@@ -879,8 +889,8 @@
   .hud-module {
     padding: 9px 0;
   }
-  .lcd-big {
-    font-size: 36px;
+  .count-big {
+    font-size: 34px;
   }
   .hud + .hud .hud-module {
     padding: 10px 0;
