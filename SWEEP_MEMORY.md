@@ -321,3 +321,48 @@ a newer entry if a lesson changes.
   from the trade-press-heavy runs that usually produce a few items.
   Zero items is the correct outcome here, not a sign the sources were
   under-searched.
+
+## EO + IoT operator newsroom backfill, part A, 19-source filtered list (2026-07-06)
+
+- 2026-07-06-R: jl1.cn (CGSTL/Chang Guang) was reachable this run and
+  surfaced a real financial story: a nearly-5-billion-yuan equity round
+  (长发集团/Changfa Group + 陆石投资/Lushi Investment co-leading). Chinese
+  proper nouns from a summarizing fetch tool are a hallucination risk;
+  asked the tool a second time for the raw Chinese characters verbatim
+  (not translated) and published both the English gloss and the Chinese
+  characters side by side rather than trusting a single pass's
+  transliteration. Worth doing for any Chinese financial/personnel
+  figure going forward.
+- 2026-07-06-S: Several company "news" listing pages are not honest
+  first-party sources even when the company's own domain returns 200:
+  Satellogic's /news/ entry for its SpaceKnow partnership 302-redirects
+  in full to payloadspace.com (the story only exists as a Payload
+  exclusive, Satellogic's site is just a link-out). On a named-source-
+  filtered run this makes the story unusable (Payload isn't on the
+  list) even though the discovery path was 100% inside the allowed
+  list; don't publish content that lives on a redirected-to domain
+  outside the run's scope. Re-affirms 2026-07-06-F.
+  Umbra's /press-releases/ listing is also not chronological: the
+  top-listed story checked out to December 2025 when opened directly.
+  Never assume listing order equals recency for either page shape;
+  open the actual article and read its stated date.
+  Precise working paths found this run (update sources.json next
+  structural touch): BlackSky at /news/ not /newsroom/; Capella at
+  /news not /press-releases; Spire dated content at /press-media/ not
+  /press-releases/; Unseenlabs redirects .space -> .com/en/news/;
+  Maxar/Vantor's blog page only returns nav/footer to the fetch tool,
+  needs a category-filtered URL or different approach next time.
+- 2026-07-06-T: Astrocast's root domain loads but its "Latest News"
+  widget shows stale 2022-2023 items regardless of window; both /news
+  and /news/ 404. OQ Technology and GHGSat remained unreachable across
+  every path tried (footer/nav-only content or a near-empty unrendered
+  shell); GHGSat and HawkEye 360 (403, consistent with 2026-07-05-O)
+  and OQ Technology all logged as first documented failures this run,
+  not yet dead.
+- 2026-07-06-U: A defence-industrial MoU from an allowed source
+  (Airbus/Brave1, Ukrainian defence innovation) that names no specific
+  space technology and centers on battlefield-tech acceleration in an
+  active conflict went to `held` as a scope question rather than a
+  silent discard, per the 2026-07-06-J precedent -- genuine scope
+  uncertainty belongs in the edit queue, not a unilateral call either
+  way.
