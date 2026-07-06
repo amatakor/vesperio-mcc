@@ -83,6 +83,14 @@ interface DraftUpdate {
   note: string;
   attach?: DraftAttach[];
   bump?: BumpType;
+  /**
+   * Full re-score (the upgrade path, SNR_SPEC "upgrade rule"): replaces
+   * the item's scoring inputs and re-bases the trace, e.g. when a better
+   * source class is found or a prior crawl outcome was wrong. Mutually
+   * exclusive with bump. Prior trace history is preserved and the move
+   * is appended to it.
+   */
+  rescore?: DraftScoring;
 }
 
 interface DraftHeld {
@@ -522,6 +530,30 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     if (u.bump !== undefined && u.bump !== null && !validBumps.includes(u.bump)) {
       errors.push(`${path}.bump: "${String(u.bump)}" not in [${validBumps.join(", ")}]`);
     }
+    if (u.rescore !== undefined) {
+      if (u.bump) errors.push(`${path}: bump and rescore are mutually exclusive`);
+      if (!isObj(u.rescore)) {
+        errors.push(`${path}.rescore: must be a scoring object { sources, extraordinary, crawl, whitelist }`);
+      } else {
+        const r = u.rescore as unknown as DraftScoring;
+        if (!Array.isArray(r.sources) || r.sources.length === 0) {
+          errors.push(`${path}.rescore.sources: required non-empty array (lead first)`);
+        } else {
+          r.sources.forEach((sc, j) => {
+            validateSourceEntry(sc, `${path}.rescore.sources[${j}]`, ["initial", "corroboration", "upgrade"], registryHosts, errors);
+          });
+        }
+        if (typeof r.extraordinary !== "boolean") {
+          errors.push(`${path}.rescore.extraordinary: required boolean`);
+        }
+        if (!["found_none", "found_some", "not_attempted"].includes(r.crawl as string)) {
+          errors.push(`${path}.rescore.crawl: must be one of [found_none, found_some, not_attempted]`);
+        }
+        if (r.whitelist !== null && r.whitelist !== "self" && r.whitelist !== "observer") {
+          errors.push(`${path}.rescore.whitelist: must be "self", "observer", or null`);
+        }
+      }
+    }
 
     if (errors.length > 0) return;
 
@@ -584,6 +616,65 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         if (newTrace.final !== from) {
           movements.push({ id: merged.id, from, to: newTrace.final, reason: u.note });
         }
+      }
+    }
+
+    // rescore: re-base the whole trace (the upgrade path). The lead of
+    // the new scoring must equal the item's (possibly patched) lead.
+    if (u.rescore !== undefined && isObj(u.rescore)) {
+      const r = u.rescore as unknown as DraftScoring;
+      const lead = r.sources[0]!;
+      if (lead.url !== merged.source_url) {
+        errors.push(
+          `${path}.rescore.sources[0].url: lead "${lead.url}" must equal item.source_url "${merged.source_url}" (patch it first when upgrading the lead)`,
+        );
+        return;
+      }
+      let extraordinary = r.extraordinary;
+      if (
+        merged.impact === "seismic" &&
+        !["first_party", "official_record", "computed"].includes(lead.class)
+      ) {
+        extraordinary = true;
+      }
+      // Preserve original attachment dates/via for urls already on the item.
+      const prior = new Map((merged.sources ?? []).map((sc) => [sc.url, sc]));
+      const rescored: ItemSource[] = r.sources.map((sc) => {
+        const existing = prior.get(sc.url);
+        return {
+          url: sc.url,
+          outlet: sc.outlet,
+          class: sc.class as SourceClass,
+          added: existing?.added ?? today,
+          via: (existing?.via ?? sc.via ?? "initial") as ItemSource["via"],
+        };
+      });
+      const result = scoreClaim({
+        sources: rescored,
+        extraordinary,
+        crawl: r.crawl as "found_none" | "found_some" | "not_attempted",
+        whitelist: r.whitelist,
+        reinforced: false,
+        persisted: false,
+        disputeDowngrade: false,
+      });
+      const from = merged.snr;
+      const history = [
+        ...(merged.snr_trace.history ?? []),
+        ...(result.snr !== from
+          ? [{ date: today, from, to: result.snr, reason: u.note }]
+          : []),
+      ];
+      merged.snr = result.snr;
+      merged.snr_trace = history.length > 0 ? { ...result.trace, history } : result.trace;
+      merged.sources = rescored;
+      for (const sc of rescored) {
+        if (sc.url !== merged.source_url && !merged.secondary_urls.includes(sc.url)) {
+          merged.secondary_urls.push(sc.url);
+        }
+      }
+      if (result.snr !== from) {
+        movements.push({ id: merged.id, from, to: result.snr, reason: u.note });
       }
     }
 
