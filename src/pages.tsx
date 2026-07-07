@@ -156,7 +156,7 @@ function signed(n: number): string {
 }
 
 /** The stored calculation, one row per step; shared by popover and panel. */
-function SnrTraceRows({ trace }: { trace: SnrTrace }) {
+function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed?: boolean }) {
   return (
     <>
       <span className="snr-pop-row">
@@ -184,7 +184,7 @@ function SnrTraceRows({ trace }: { trace: SnrTrace }) {
           </span>
         </span>
       ))}
-      {(trace.history ?? []).length > 0 && (
+      {!condensed && (trace.history ?? []).length > 0 && (
         <span className="snr-pop-hist">
           {(trace.history ?? []).map((h, i) => (
             <span key={i} className="snr-pop-row">
@@ -216,28 +216,35 @@ const SNR_WORDS: Record<number, string> = {
  * The SNR mark: five phosphor-green LED cells in a recessed bezel, N
  * lit = score N (design handoff 2026-07-07). Sizes: compact (tables),
  * card (feed), hero (item page, adds numeral + word). With a trace it
- * is a button that opens the stored calculation (the popover renders
- * snr_trace exactly as stored, never reconstructed); without one it is
- * a static readout (feed cards, whose click opens the item instead).
+ * shows the stored calculation (rendered from snr_trace exactly as
+ * stored, never reconstructed). On interactive surfaces it is a button:
+ * click pins the popover. On a feed card (onCard) it peeks a condensed
+ * popover on hover instead, fixed-positioned so it escapes the card's
+ * overflow, and the click falls through to open the item.
  */
 function SnrLed({
   snr,
   trace,
   size = "card",
+  onCard = false,
 }: {
   snr: number;
   trace?: SnrTrace;
   size?: "compact" | "card" | "hero";
+  onCard?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
+  const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
+  const rootRef = useRef<HTMLSpanElement>(null);
   const v = Math.max(1, Math.min(5, Math.round(snr)));
   const word = SNR_WORDS[v] ?? "";
   const interactive = !!trace;
+  const clickable = interactive && !onCard;
   const cells = (
     <span
       className="snr-led-bezel"
-      {...(interactive
+      {...(clickable
         ? {
             role: "button",
             tabIndex: 0,
@@ -263,12 +270,32 @@ function SnrLed({
       ))}
     </span>
   );
+  const showPop = interactive && (onCard ? hover : open || hover);
   return (
     <span
+      ref={rootRef}
       className={`snr-led snr-led-${size}`}
       data-interactive={interactive ? "true" : undefined}
-      onClick={interactive ? (e) => e.stopPropagation() : undefined}
-      onMouseEnter={interactive ? () => setHover(true) : undefined}
+      onClick={clickable ? (e) => e.stopPropagation() : undefined}
+      onMouseEnter={
+        interactive
+          ? () => {
+              if (onCard) {
+                const r = rootRef.current?.querySelector(".snr-led-bezel")?.getBoundingClientRect();
+                if (r) {
+                  const W = 304;
+                  const below = r.bottom + 6;
+                  const flipUp = below + 300 > window.innerHeight;
+                  setFixedPos({
+                    top: flipUp ? Math.max(8, r.top - 306) : below,
+                    left: Math.max(8, Math.min(r.left, window.innerWidth - W - 8)),
+                  });
+                }
+              }
+              setHover(true);
+            }
+          : undefined
+      }
       onMouseLeave={interactive ? () => setHover(false) : undefined}
     >
       {cells}
@@ -281,29 +308,40 @@ function SnrLed({
           <span className="snr-led-word">{word}</span>
         </>
       )}
-      {interactive && (
+      {clickable && (
         <span className="snr-led-caret" aria-hidden="true">
           ↳
         </span>
       )}
-      {interactive && (open || hover) && (
-        <span className="snr-pop" role="dialog" aria-label="SNR calculation">
+      {showPop && (
+        <span
+          className={`snr-pop${onCard ? " snr-pop-card" : ""}`}
+          role="dialog"
+          aria-label="SNR calculation"
+          style={
+            onCard && fixedPos
+              ? { position: "fixed", top: fixedPos.top, left: fixedPos.left }
+              : undefined
+          }
+        >
           <span className="snr-pop-head">
             <span>
               snr {v}/5 · {SNR_LABELS[v]}
             </span>
-            <button
-              type="button"
-              className="snr-pop-close"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpen(false);
-              }}
-            >
-              ×
-            </button>
+            {!onCard && (
+              <button
+                type="button"
+                className="snr-pop-close"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(false);
+                }}
+              >
+                ×
+              </button>
+            )}
           </span>
-          <SnrTraceRows trace={trace} />
+          <SnrTraceRows trace={trace} condensed={onCard} />
         </span>
       )}
     </span>
@@ -375,7 +413,7 @@ function Card({
         <p className="card-extra">{item.explainer.what_happened}</p>
       )}
       <div className="card-foot">
-        <SnrLed snr={item.snr} />
+        <SnrLed snr={item.snr} trace={item.snr_trace} onCard />
         <span className="card-foot-div" aria-hidden="true" />
         <span className="card-companies" title={item.companies.join(" · ")}>
           {item.companies.join(" · ")}

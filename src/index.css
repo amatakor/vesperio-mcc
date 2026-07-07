@@ -525,7 +525,7 @@ a.chip:hover {
    bottom; leftover space sits between tagline and footer. */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
   grid-auto-flow: dense;
   align-items: start;
   /* Fallback before the JS masonry packs (also the no-JS state): cards are
@@ -2279,6 +2279,13 @@ a.sig-card:hover .sig-p-x {
   letter-spacing: normal;
   white-space: normal;
   font-weight: 400;
+}
+/* On a feed card the popover is fixed-positioned (escapes .card overflow) and
+   condensed: narrower, smaller, and it floats above the feed. */
+.snr-pop-card {
+  width: 19rem;
+  font-size: 0.66rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
 }
 .snr-pop-head {
   display: flex;
