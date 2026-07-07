@@ -67,6 +67,15 @@
   --snr-5: #2bff6a;
   --snr-off: #3d3d3d;
 
+  /* SNR LED mark (design handoff 2026-07-07): phosphor-green ramp by
+     cell position, dim -> bright, OKLCH hue 148. Deliberately close to
+     the EO neon; reserved for the SNR mark, not reused elsewhere. */
+  --led-1: oklch(0.46 0.11 148);
+  --led-2: oklch(0.57 0.143 148);
+  --led-3: oklch(0.68 0.175 148);
+  --led-4: oklch(0.79 0.208 148);
+  --led-5: oklch(0.9 0.24 148);
+
   /* Motion (2026-07-07 sleek pass). Color/border/shadow only, never
      transform (house rule). Short + eased reads as considered, not
      animated. */
@@ -820,9 +829,19 @@ a.card-tile:hover .tile-cat {
   border-color: var(--alert);
   color: #fff;
 }
+/* Seismic cards are all-yellow, but green-on-yellow clashes, so the
+   footer becomes a dark bar (full card width) carrying the green mark
+   on dark like every other card (design handoff 2026-07-07). */
 .card-seismic .card-foot {
-  border-top-color: rgba(10, 10, 10, 0.35);
-  color: rgba(10, 10, 10, 0.6);
+  background: #0c0c0c;
+  border-top: 1px solid #1f1f1f;
+  color: var(--dim);
+}
+.card-seismic .card-foot .card-companies {
+  color: var(--dim);
+}
+.card-seismic .card-foot .card-details {
+  color: var(--acc);
 }
 .card-extra {
   font-family: var(--sans);
@@ -835,13 +854,15 @@ a.card-tile:hover .tile-cat {
   color: var(--dim);
 }
 
+/* Footer holds the SNR mark (source-provenance line), a divider, the
+   companies, the source count, and Details (pushed right). */
 .card-foot {
   margin-top: auto;
   border-top: 1px solid var(--line);
   padding: 0.5rem 0.9rem 0.7rem;
   display: flex;
-  gap: 0.8rem;
-  align-items: baseline;
+  gap: 8px;
+  align-items: center;
   font-family: var(--mono);
   font-size: 0.64rem;
   font-weight: 700;
@@ -849,6 +870,12 @@ a.card-tile:hover .tile-cat {
   letter-spacing: 0.1em;
   color: var(--dim);
   min-width: 0;
+}
+.card-foot-div {
+  width: 1px;
+  align-self: stretch;
+  background: #2a2a2a;
+  flex: 0 0 auto;
 }
 .card-foot .card-companies {
   overflow: hidden;
@@ -864,6 +891,9 @@ a.card-tile:hover .tile-cat {
 }
 .card-sources {
   font-weight: 400;
+}
+.card-details {
+  margin-left: auto;
 }
 .card-details {
   margin-left: auto;
@@ -893,21 +923,6 @@ a.card-tile:hover .tile-cat {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-}
-/* SNR on the item band reads as one labeled unit, not a loose digit
-   after the squares (2026-07-07 audit). */
-.band-snr {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.band-snr-label {
-  font-family: var(--mono);
-  font-weight: 700;
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--dim);
 }
 .item-band .date {
   margin-left: auto;
@@ -2142,47 +2157,103 @@ a.sig-card:hover .sig-p-x {
 /* ------------------------------------------------------------------ snr
    Signal-to-noise bars, trace popover, disputed/provisional tags
    (SNR_SPEC.md §4/§5, house rules: no radius, no transform hovers). */
-.snr {
+/* SNR LED mark (design handoff 2026-07-07): five phosphor-green cells
+   in a recessed bezel, N lit = score N; ramp by cell position. Click
+   opens the stored trace (reuses .snr-pop below). */
+.snr-led {
   position: relative;
   display: inline-flex;
   align-items: center;
-}
-.snr-btn {
-  background: none;
-  border: 0;
-  padding: 0 2px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font: inherit;
-  color: inherit;
-}
-/* Five flat squares, N lit, coloured by the score on the red-to-green
-   ramp; unlit squares stay visible as solid gray. */
-.snr-bars {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-.snr-bar {
-  width: 9px;
-  height: 9px;
-  background: var(--snr-off);
-  display: inline-block;
-}
-.snr-c1 .snr-bar.on { background: var(--snr-1); }
-.snr-c2 .snr-bar.on { background: var(--snr-2); }
-.snr-c3 .snr-bar.on { background: var(--snr-3); }
-.snr-c4 .snr-bar.on { background: var(--snr-4); }
-.snr-c5 .snr-bar.on { background: var(--snr-5); }
-.snr-compact .snr-bar {
-  width: 7px;
-  height: 7px;
-}
-.snr-num {
+  gap: 12px;
+  vertical-align: middle;
   font-family: var(--mono);
-  font-size: 0.7rem;
+}
+.snr-led-hero {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+.snr-led-bezel {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  background: #070707;
+  border: 1px solid #242424;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.snr-led[data-interactive="true"] .snr-led-bezel {
+  cursor: pointer;
+}
+.snr-led-bezel:hover,
+.snr-led-bezel:focus-visible {
+  border-color: #5c5c5c;
+}
+.snr-led-bezel:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+.snr-led-cell {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  background: color-mix(in oklab, var(--c) 9%, #060606);
+}
+.snr-led-cell:nth-child(1) { --c: var(--led-1); }
+.snr-led-cell:nth-child(2) { --c: var(--led-2); }
+.snr-led-cell:nth-child(3) { --c: var(--led-3); }
+.snr-led-cell:nth-child(4) { --c: var(--led-4); }
+.snr-led-cell:nth-child(5) { --c: var(--led-5); }
+.snr-led-cell.lit {
+  background: var(--c);
+  box-shadow: 0 0 6px var(--c), 0 0 2px var(--c);
+}
+/* compact (k .72): registry + disputed cells */
+.snr-led-compact .snr-led-bezel { gap: 2px; padding: 2px; }
+.snr-led-compact .snr-led-cell { width: 9px; height: 9px; }
+.snr-led-compact .snr-led-cell.lit { box-shadow: 0 0 4px var(--c), 0 0 1px var(--c); }
+/* hero (k 2.1): item page panel, with numeral + word */
+.snr-led-hero .snr-led-bezel { gap: 6px; padding: 6px; }
+.snr-led-hero .snr-led-cell { width: 27px; height: 27px; }
+.snr-led-hero .snr-led-cell.lit { box-shadow: 0 0 13px var(--c), 0 0 4px var(--c); }
+.snr-led-caret {
+  position: absolute;
+  left: 100%;
+  margin-left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: 12px;
+  color: var(--led-5);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.snr-led:hover .snr-led-caret {
+  opacity: 1;
+}
+.snr-led-compact .snr-led-caret {
+  display: none;
+}
+.snr-led-num {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--led-5);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 12px color-mix(in oklab, var(--led-5) 70%, transparent);
+}
+.snr-led-slash {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6a6a6a;
+}
+.snr-led-word {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--dim);
 }
 .snr-pop {
@@ -2257,12 +2328,8 @@ a.sig-card:hover .sig-p-x {
 .snr-panel {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.snr-panel-label {
-  font-family: var(--mono);
-  font-size: 0.8rem;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 .chip-disputed {
   border-color: var(--warn);
@@ -2287,7 +2354,7 @@ a.sig-card:hover .sig-p-x {
   font-size: 0.85em;
   margin-top: 2px;
 }
-.profile .src-cell .snr {
+.profile .src-cell .snr-led {
   margin-left: 8px;
 }
 .snr-moves {

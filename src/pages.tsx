@@ -1,4 +1,9 @@
-import type { CSSProperties, MouseEvent as ReactMouseEvent, ReactNode } from "react";
+import type {
+  CSSProperties,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  ReactNode,
+} from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type {
   Item,
@@ -198,57 +203,100 @@ function SnrTraceRows({ trace }: { trace: SnrTrace }) {
   );
 }
 
+/** Confidence word per score (SNR mark handoff 2026-07-07). */
+const SNR_WORDS: Record<number, string> = {
+  1: "SINGLE SOURCE",
+  2: "CORROBORATED",
+  3: "MULTI-SOURCE",
+  4: "WIDELY REPORTED",
+  5: "FIRST-PARTY",
+};
+
 /**
- * The SNR icon (SNR_SPEC.md §4): 5 flat squares, N lit, warn-colored
- * at 1-2 so low confidence is unmissable. With a trace, clicking opens
- * the stored calculation; the popover renders snr_trace exactly as
- * stored at scoring time, never a reconstruction.
+ * The SNR mark: five phosphor-green LED cells in a recessed bezel, N
+ * lit = score N (design handoff 2026-07-07). Sizes: compact (tables),
+ * card (feed), hero (item page, adds numeral + word). With a trace it
+ * is a button that opens the stored calculation (the popover renders
+ * snr_trace exactly as stored, never reconstructed); without one it is
+ * a static readout (feed cards, whose click opens the item instead).
  */
-function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compact?: boolean }) {
-  const [open, setOpen] = useState(false); // pinned by click
-  const [hover, setHover] = useState(false); // transient, hover-to-peek
-  const label = `SNR ${snr}/5: ${SNR_LABELS[snr] ?? ""}`;
-  const bars = (
-    <span className={`snr-bars snr-c${snr}`}>
-      {[1, 2, 3, 4, 5].map((n) => (
-        <span key={n} className={`snr-bar${n <= snr ? " on" : ""}`} />
+function SnrLed({
+  snr,
+  trace,
+  size = "card",
+}: {
+  snr: number;
+  trace?: SnrTrace;
+  size?: "compact" | "card" | "hero";
+}) {
+  const [open, setOpen] = useState(false);
+  const v = Math.max(1, Math.min(5, Math.round(snr)));
+  const word = SNR_WORDS[v] ?? "";
+  const interactive = !!trace;
+  const cells = (
+    <span
+      className="snr-led-bezel"
+      {...(interactive
+        ? {
+            role: "button",
+            tabIndex: 0,
+            "aria-expanded": open,
+            "aria-label": `SNR ${v} of 5, ${word.toLowerCase()}. Click for the calculation.`,
+            title: `SNR ${v}/5 · ${word} — click for calculation`,
+            onClick: (e: ReactMouseEvent) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(!open);
+            },
+            onKeyDown: (e: ReactKeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setOpen(!open);
+              }
+            },
+          }
+        : { "aria-label": `SNR ${v} of 5, ${word.toLowerCase()}`, title: `SNR ${v}/5 · ${word}` })}
+    >
+      {[1, 2, 3, 4, 5].map((i) => (
+        <span key={i} className={`snr-led-cell${i <= v ? " lit" : ""}`} />
       ))}
     </span>
   );
-  if (!trace) {
-    return (
-      <span className={`snr${compact ? " snr-compact" : ""}`} title={label}>
-        {bars}
-      </span>
-    );
-  }
   return (
     <span
-      className={`snr${compact ? " snr-compact" : ""}`}
-      onClick={(e) => e.stopPropagation()}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      className={`snr-led snr-led-${size}`}
+      data-interactive={interactive ? "true" : undefined}
+      onClick={interactive ? (e) => e.stopPropagation() : undefined}
     >
-      <button
-        type="button"
-        className="snr-btn"
-        aria-expanded={open}
-        aria-label={label}
-        onClick={(e) => {
-          e.preventDefault();
-          setOpen(!open);
-        }}
-      >
-        {bars}
-        {!compact && <span className="snr-num">{snr}</span>}
-      </button>
-      {(open || hover) && (
+      {cells}
+      {size === "hero" && (
+        <>
+          <span className="snr-led-num">
+            {v}
+            <span className="snr-led-slash">/5</span>
+          </span>
+          <span className="snr-led-word">{word}</span>
+        </>
+      )}
+      {interactive && (
+        <span className="snr-led-caret" aria-hidden="true">
+          ↳
+        </span>
+      )}
+      {interactive && open && (
         <span className="snr-pop" role="dialog" aria-label="SNR calculation">
           <span className="snr-pop-head">
             <span>
-              snr {snr}/5 · {SNR_LABELS[snr]}
+              snr {v}/5 · {SNR_LABELS[v]}
             </span>
-            <button type="button" className="snr-pop-close" onClick={() => setOpen(false)}>
+            <button
+              type="button"
+              className="snr-pop-close"
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+              }}
+            >
               ×
             </button>
           </span>
@@ -359,9 +407,6 @@ function Card({
     >
       <CardMedia item={item} />
       <div className="card-meta">
-        <span className="card-snr">
-          <SnrBars snr={item.snr} />
-        </span>
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
         </a>
@@ -377,6 +422,8 @@ function Card({
         <p className="card-extra">{item.explainer.what_happened}</p>
       )}
       <div className="card-foot">
+        <SnrLed snr={item.snr} />
+        <span className="card-foot-div" aria-hidden="true" />
         <span className="card-companies" title={item.companies.join(" · ")}>
           {item.companies.join(" · ")}
         </span>
@@ -502,7 +549,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`modal-band modal-band-${item.impact}`}>
-          <SnrBars snr={item.snr} trace={item.snr_trace} />
+          <SnrLed snr={item.snr} trace={item.snr_trace} />
           <span className="band-impact">{item.impact}</span>
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
@@ -560,10 +607,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             <section className="panel">
               <h2>signal-to-noise</h2>
               <div className="snr-panel">
-                <SnrBars snr={item.snr} />
-                <span className="snr-panel-label">
-                  {item.snr}/5 · {SNR_LABELS[item.snr]}
-                </span>
+                <SnrLed snr={item.snr} size="hero" />
               </div>
               <div className="snr-trace-inline">
                 <SnrTraceRows trace={item.snr_trace} />
@@ -762,10 +806,7 @@ export function ItemPage({ item }: { item: Item }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
-          <span className="band-snr">
-            <span className="band-snr-label">snr</span>
-            <SnrBars snr={item.snr} trace={item.snr_trace} />
-          </span>
+          <SnrLed snr={item.snr} trace={item.snr_trace} />
           <span className="date">{item.date}</span>
         </div>
         <div className="item-cols">
@@ -808,10 +849,7 @@ export function ItemPage({ item }: { item: Item }) {
             <section className="panel">
               <h2>signal-to-noise</h2>
               <div className="snr-panel">
-                <SnrBars snr={item.snr} />
-                <span className="snr-panel-label">
-                  {item.snr}/5 · {SNR_LABELS[item.snr]}
-                </span>
+                <SnrLed snr={item.snr} size="hero" />
                 {item.disputed && <span className="chip chip-disputed">disputed</span>}
               </div>
               <div className="snr-trace-inline">
@@ -942,7 +980,7 @@ function fieldRow(
             {f.disputed.competing.map((c, i) => (
               <span key={i} className="disputed-claim">
                 {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
-                <SnrBars snr={c.snr} compact />{" "}
+                <SnrLed snr={c.snr} size="compact" />{" "}
                 <a href={c.source} rel="noopener">
                   source
                 </a>{" "}
@@ -963,7 +1001,7 @@ function fieldRow(
         ) : (
           ""
         )}
-        {f.snr !== undefined && <SnrBars snr={f.snr} trace={f.snr_trace} compact />}
+        {f.snr !== undefined && <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />}
         {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
       </td>
     </tr>
