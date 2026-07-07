@@ -45,10 +45,23 @@ import {
   validateStateFile,
   validateSourcesFile,
   validateSourceLedgerFile,
+  validateRegistryCandidatesFile,
 } from "./lib/validate";
 import { scoreClaim } from "./snr/score";
 import { applyModifier, daysBetween } from "./snr/match";
 import { recordClaim } from "./snr/ledger";
+import {
+  loadRegistryIndex,
+  matchCompanies,
+  validateFact,
+  decideFact,
+} from "./lib/crossfeed";
+import type {
+  CrossfeedFact,
+  CrossfeedActionKind,
+  QueueCandidate,
+  RegistryCandidatesFile,
+} from "./lib/crossfeed";
 import { fetchableSignalChannels } from "./lib/signals";
 import type { SignalsFile } from "../src/data/schema";
 
@@ -455,6 +468,9 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
   const existingIds = new Set(items.items.map((i) => i.id));
   const registryHosts = loadRegistryHosts(opts.dataDir);
+  const registryIndex = loadRegistryIndex(opts.dataDir);
+  /** Crossfeed queue entries collected from this draft's accepted items. */
+  const queueAdds: QueueCandidate[] = [];
 
   const movements: SnrMovement[] = [];
   const autoHeld: DraftHeld[] = [];
@@ -572,6 +588,89 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     };
     delete (stamped as unknown as Obj).scoring;
 
+    // ---- registry crossfeed (SNR_SPEC §6, SNR_PLAN §7.3) -------------------
+    // The agent attests extracted facts + the like-for-like judgment in a
+    // crossfeed block; the outcomes are computed by reconcile() and queued
+    // for the weekly registry run. The gate mirrors the corroboration one:
+    // an item whose companies map to registry entities and that scored at
+    // the SNR >= 3 entry bar must carry the block (empty facts + a note is
+    // an honest answer; silence is not).
+    const itemQueue: QueueCandidate[] = [];
+    const crossfeedRaw = raw.crossfeed;
+    if (crossfeedRaw !== undefined) {
+      if (!isObj(crossfeedRaw) || !Array.isArray((crossfeedRaw as Obj).facts)) {
+        errors.push(`${path}.crossfeed: must be { facts: [...], note? }`);
+      } else {
+        const cf = crossfeedRaw as unknown as { facts: unknown[]; note?: unknown };
+        if (cf.facts.length === 0 && (typeof cf.note !== "string" || cf.note.trim() === "")) {
+          errors.push(
+            `${path}.crossfeed: empty facts requires a note saying why the item carries no like-for-like registry metric`,
+          );
+        }
+        const disputeFacts: { fact: CrossfeedFact; action: CrossfeedActionKind }[] = [];
+        cf.facts.forEach((rawFact, j) => {
+          const v = validateFact(rawFact, registryIndex, `${path}.crossfeed.facts[${j}]`);
+          errors.push(...v.errors);
+          if (v.fact === undefined || v.entity === undefined) return;
+          const action = decideFact(v.fact, v.entity, stamped.snr);
+          itemQueue.push({
+            id: `${stamped.id}:${v.fact.entity_slug}.${v.fact.field}`,
+            item_id: stamped.id,
+            entity_slug: v.fact.entity_slug,
+            entity_type: v.entity.entityType,
+            field: v.fact.field,
+            value: v.fact.value,
+            metric: v.fact.metric,
+            same_metric: v.fact.same_metric,
+            item_snr: stamped.snr,
+            source_url: stamped.source_url,
+            action,
+            proposed_on: today,
+            status: "pending",
+          });
+          if (action === "downgrade_incoming" || action === "both_disputed_queue") {
+            disputeFacts.push({ fact: v.fact, action });
+          }
+        });
+        if (disputeFacts.length > 0) {
+          // A genuine same-metric conflict with a canonical fact: the
+          // higher-SNR registry side leads, the item takes the dispute
+          // downgrade (the math is scoreClaim's, not ours) and is marked.
+          const disputedResult = scoreClaim({
+            sources: mappedSources,
+            extraordinary,
+            crawl: scoring.crawl as "found_none" | "found_some" | "not_attempted",
+            whitelist: scoring.whitelist,
+            reinforced: false,
+            persisted: false,
+            disputeDowngrade: true,
+          });
+          stamped.snr = disputedResult.snr;
+          stamped.snr_trace = disputedResult.trace;
+          stamped.disputed = true;
+          for (const d of disputeFacts) {
+            if (d.action === "both_disputed_queue") {
+              autoHeld.push({
+                candidate: { id: stamped.id, headline: stamped.headline },
+                reason: `crossfeed: same-metric SNR tie with ${d.fact.entity_slug}.${d.fact.field}; both sides marked disputed, Florian adjudicates (SNR_SPEC 6)`,
+              });
+            }
+          }
+        }
+      }
+    } else {
+      const matched = matchCompanies(registryIndex, stamped.companies);
+      if (stamped.snr >= 3 && matched.length > 0) {
+        errors.push(
+          `${path}: item companies map to registry entit${matched.length === 1 ? "y" : "ies"} ` +
+            `[${matched.join(", ")}] and the item scored SNR ${stamped.snr} (>= 3), but the draft ` +
+            `carries no crossfeed block. Attest the like-for-like check: crossfeed: { facts: [...] } ` +
+            `or crossfeed: { facts: [], note: "why no registry metric is touched" }.`,
+        );
+      }
+    }
+    delete (stamped as unknown as Obj).crossfeed;
+
     const before = errors.length;
     validateItem(stamped, `${path} (after scoring)`, errors);
     if (errors.length !== before) return;
@@ -584,6 +683,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       });
     }
 
+    queueAdds.push(...itemQueue);
     stampedNew.push(stamped);
   });
 
@@ -969,6 +1069,25 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     }
   }
 
+  // ---- registry crossfeed queue (consumed by maintain-registry) ------------
+  // Entries are appended here and removed ONLY by the weekly registry run
+  // when it consumes them; a pending entry re-proposed by a later sweep
+  // keeps its original record (dedup by id).
+  const queuePath = join(opts.dataDir, "registry-candidates.json");
+  let queueFile: RegistryCandidatesFile;
+  try {
+    queueFile = JSON.parse(readFileSync(queuePath, "utf8")) as RegistryCandidatesFile;
+  } catch {
+    queueFile = { version: "0.1", candidates: [] };
+  }
+  const queueIds = new Set(queueFile.candidates.map((c) => c.id));
+  const nextQueue: RegistryCandidatesFile = {
+    $comment:
+      "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
+    version: queueFile.version,
+    candidates: [...queueFile.candidates, ...queueAdds.filter((c) => !queueIds.has(c.id))],
+  };
+
   // ---- defence in depth: the results must themselves validate --------------
   const finalErrors = [
     ...validateItemsFile(nextItems),
@@ -976,6 +1095,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     ...validateStateFile(nextState),
     ...validateSourcesFile(nextSources),
     ...validateSourceLedgerFile(nextLedger),
+    ...validateRegistryCandidatesFile(nextQueue),
   ];
   if (finalErrors.length > 0) {
     return fail(finalErrors.map((e) => `post-merge validation failed, nothing written: ${e}`));
@@ -989,6 +1109,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   write(statePath, nextState);
   write(sourcesPath, nextSources);
   write(ledgerPath, nextLedger);
+  write(queuePath, nextQueue);
   unlinkSync(opts.draftPath);
 
   return {
