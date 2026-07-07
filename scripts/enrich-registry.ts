@@ -167,7 +167,7 @@ async function fetchLl2(): Promise<Ll2Bulk> {
   }
   await pause(4000);
 
-  const nextUrl = `${LL2}/launch/upcoming/?limit=100&mode=list`;
+  const nextUrl = `${LL2}/launch/upcoming/?limit=100`;
   const nextRes = await fetchJson(nextUrl);
   const nextByConfig = new Map<number, string>();
   for (const l of (nextRes.results as Obj[]) ?? []) {
@@ -180,7 +180,7 @@ async function fetchLl2(): Promise<Ll2Bulk> {
   }
   await pause(4000);
 
-  const lastUrl = `${LL2}/launch/previous/?limit=100&mode=list`;
+  const lastUrl = `${LL2}/launch/previous/?limit=100`;
   const lastRes = await fetchJson(lastUrl);
   const lastByConfig = new Map<number, string>();
   for (const l of (lastRes.results as Obj[]) ?? []) {
