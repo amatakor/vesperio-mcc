@@ -1,5 +1,5 @@
 {
-  "$comment": "Source registry for mcc.vesperio.ai ingestion agent. status: 'verified' = URL/feed confirmed working; 'unverified' = drafted from knowledge, must be checked before first run; 'dead' after 3 consecutive failures. tier is legacy metadata (1 = primary-leaning, 2 = press); the SNR model classes each attached source per claim (see CLAUDE.md 'The SNR score' and prompts/update-items.md). Signal-tier sourcing is governed by signals.json, not this file.",
+  "$comment": "Source registry for mcc.vesperio.ai ingestion. status: 'verified' = URL/feed confirmed working; 'unverified' = drafted from knowledge, must be checked before first run; 'dead' after 3 consecutive failures (fail_count is maintained in code by scripts/harvest.ts for feed sources). feed_type rss_atom/api_json sources are fetched deterministically by scripts/harvest.ts into src/data/candidates.json before the sweep agent runs; html sources are fetched by the agent; a fetch_note marks a source our tools cannot read (JS shell, bot-block, stale mirror), which both the harvester and the agent skip. tier is legacy metadata (1 = primary-leaning, 2 = press); the SNR model classes each attached source per claim (see CLAUDE.md 'The SNR score' and prompts/update-items.md). Signal-tier sourcing is governed by signals.json, not this file.",
   "version": "0.1",
   "categories": {
     "eo_operators": [
@@ -18,7 +18,7 @@
       {
         "name": "Planet Labs IR",
         "url": "https://investors.planet.com/rss/pressrelease.aspx",
-        "feed_type": "rss",
+        "feed_type": "rss_atom",
         "rss": "https://investors.planet.com/rss/pressrelease.aspx",
         "cadence": "weekly",
         "language": "en",
@@ -30,7 +30,7 @@
       {
         "name": "BlackSky IR",
         "url": "https://ir.blacksky.com/rss/pressrelease.aspx",
-        "feed_type": "rss",
+        "feed_type": "rss_atom",
         "rss": "https://ir.blacksky.com/rss/pressrelease.aspx",
         "cadence": "weekly",
         "language": "en",
@@ -53,25 +53,25 @@
       },
       {
         "name": "BlackSky",
-        "url": "https://www.blacksky.com/newsroom/",
+        "url": "https://blacksky.com/company/news/",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Also SEC (BKSY). | [2026-07-06] Configured URL (blacksky.com/newsroom/) 404s; blacksky.com/news/ (301 to http://blacksky.com/news/) loads a real dated listing. Most recent post June 9, 2026, outside the window. No candidate. Recommend updating stored URL."
+        "notes": "Also SEC (BKSY). | [2026-07-06] Configured URL (blacksky.com/newsroom/) 404s; blacksky.com/news/ (301 to http://blacksky.com/news/) loads a real dated listing. Most recent post June 9, 2026, outside the window. No candidate. Recommend updating stored URL. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.blacksky.com/newsroom/) failed or moved."
       },
       {
-        "name": "Maxar Intelligence",
-        "url": "https://www.maxar.com/press-releases",
+        "name": "Vantor (ex-Maxar Intelligence)",
+        "url": "https://www.vantor.com/company/news-bureau/",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Private (Advent), no SEC filings. | [2026-07-06] maxar.com/press-releases 301-redirects to vantor.com/blog/ (Vantor rebrand, consistent with 2026-07-05-P). Page loads (200) but the fetch tool only surfaced nav/footer, not the dated post listing; no candidate confirmed either way. Needs a differently-shaped fetch (e.g. a category-filtered URL) next time."
+        "notes": "Private (Advent), no SEC filings. | [2026-07-06] maxar.com/press-releases 301-redirects to vantor.com/blog/ (Vantor rebrand, consistent with 2026-07-05-P). Page loads (200) but the fetch tool only surfaced nav/footer, not the dated post listing; no candidate confirmed either way. Needs a differently-shaped fetch (e.g. a category-filtered URL) next time. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.maxar.com/press-releases) failed or moved. | [2026-07-08] Maxar rebranded to Vantor (SWEEP_MEMORY 2026-07-05-P); maxar.com redirects to vantor.com."
       },
       {
         "name": "Airbus Defence and Space",
@@ -97,14 +97,14 @@
       },
       {
         "name": "Capella Space",
-        "url": "https://www.capellaspace.com/press-releases",
+        "url": "https://www.capellaspace.com/news",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-06] Configured URL (/press-releases) 404s; /news loads a real dated listing. Most recent posts (IonQ/InSAR service) dated May 4, 2026, outside the window. No candidate. Recommend updating stored URL."
+        "notes": "[2026-07-06] Configured URL (/press-releases) 404s; /news loads a real dated listing. Most recent posts (IonQ/InSAR service) dated May 4, 2026, outside the window. No candidate. Recommend updating stored URL. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.capellaspace.com/press-releases) failed or moved."
       },
       {
         "name": "Umbra",
@@ -120,13 +120,14 @@
       {
         "name": "Synspective",
         "url": "https://synspective.com/news/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://synspective.com/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "JP company, EN site available. | [2026-07-06] Fetched cleanly. Two posts inside the window: a July 1 executive-appointments notice (below the notability bar) and a June 30 'SAR view of Denver' post (thought-leadership/product blog, same pattern as Planet's Pulse content, not a discrete news event). No candidate."
+        "notes": "JP company, EN site available. | [2026-07-06] Fetched cleanly. Two posts inside the window: a July 1 executive-appointments notice (below the notability bar) and a June 30 'SAR view of Denver' post (thought-leadership/product blog, same pattern as Planet's Pulse content, not a discrete news event). No candidate. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on.",
+        "fail_count": 0
       },
       {
         "name": "Pixxel",
@@ -149,18 +150,31 @@
         "tier": 1,
         "status": "unverified",
         "notes": "GHG monitoring niche. | [2026-07-06] en/newsroom/ returns HTTP 200 but only ~10KB of unrendered shell content via both curl and the fetch tool; no headlines or dates extractable. First documented failure this run.",
-        "fail_count": 1
+        "fail_count": 1,
+        "fetch_note": "Unreachable by our fetch tools across every path tried (403 / near-empty unrendered shell; SWEEP_MEMORY 2026-07-05-O, 2026-07-06-T). Needs JS rendering. Stories arrive via trade/wire coverage."
       },
       {
         "name": "Spire Global",
-        "url": "https://spire.com/press-releases/",
+        "url": "https://spire.com/press-media/",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "RF/weather, adjacent to EO. Also SEC (SPIR). | [2026-07-06] Configured /press-releases/ path lacks dates; /press-media/ loads a real dated listing. Most recent post June 24, 2026 (Vandenberg satellite delivery), outside the window. No candidate. Recommend updating stored URL."
+        "notes": "RF/weather, adjacent to EO. Also SEC (SPIR). | [2026-07-06] Configured /press-releases/ path lacks dates; /press-media/ loads a real dated listing. Most recent post June 24, 2026 (Vandenberg satellite delivery), outside the window. No candidate. Recommend updating stored URL. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://spire.com/press-releases/) failed or moved."
+      },
+      {
+        "name": "Spire Global IR",
+        "url": "https://ir.spire.com/news-events/press-releases/",
+        "feed_type": "rss_atom",
+        "rss": "https://ir.spire.com/news-events/press-releases/rss",
+        "cadence": "monthly",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Equisolve IR feed, verified live (newest entry 2026-06-24).",
+        "fail_count": 0
       }
     ],
     "launch_providers": [
@@ -174,7 +188,8 @@
         "tier": 1,
         "status": "dead",
         "notes": "Sparse official comms. Launch cadence better tracked via Launch Library API. | [2026-07-05] Standard fetch returned only the page header (JS-rendered, no article content) on two attempts; needs a JS-capable fetch or an alternate feed. | [2026-07-05] Fetched again (both WebFetch and curl with descriptive User-Agent); still only the Angular app shell with no article markup, no content extractable. One more consecutive failure flips this to dead. | [2026-07-05] Third consecutive failure. Both WebFetch and curl with a descriptive User-Agent return only the Angular app shell (no article markup); flipping to dead per the 3-failure rule. Re-verify manually if the site changes to a server-rendered news page.",
-        "fail_count": 3
+        "fail_count": 3,
+        "fetch_note": "spacex.com/updates is an unrendered Angular shell to every fetch tool (3 consecutive failures, flipped dead 2026-07-05). Needs JS rendering. SpaceX events arrive via LL2, trade press, and wires."
       },
       {
         "name": "Rocket Lab",
@@ -190,27 +205,27 @@
       },
       {
         "name": "Arianespace",
-        "url": "https://www.arianespace.com/press-releases/",
+        "url": "https://newsroom.arianespace.com/",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "FR originals sometimes richer than EN. | [2026-07-06] Configured /press-releases/ path 404s. The root domain loads cleanly and links to the real newsroom at newsroom.arianespace.com, which also fetched cleanly. Most recent entry there (Ariane 6/Amazon Leo 36-satellite launch) is dated June 17, 2026, predating the window. No candidate. Recommend updating the stored URL to newsroom.arianespace.com.",
+        "notes": "FR originals sometimes richer than EN. | [2026-07-06] Configured /press-releases/ path 404s. The root domain loads cleanly and links to the real newsroom at newsroom.arianespace.com, which also fetched cleanly. Most recent entry there (Ariane 6/Amazon Leo 36-satellite launch) is dated June 17, 2026, predating the window. No candidate. Recommend updating the stored URL to newsroom.arianespace.com. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.arianespace.com/press-releases/) failed or moved.",
         "fail_count": 0
       },
       {
         "name": "Firefly Aerospace",
         "url": "https://fireflyspace.com/news/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://fireflyspace.com/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-06] fireflyspace.com/news/ fetched cleanly. Most recent post (June 30, 2026) was a $144 million NASA CLPS contract for a sixth Blue Ghost lunar mission, shipped as a new item."
+        "notes": "[2026-07-06] fireflyspace.com/news/ fetched cleanly. Most recent post (June 30, 2026) was a $144 million NASA CLPS contract for a sixth Blue Ghost lunar mission, shipped as a new item. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on."
       },
       {
         "name": "Blue Origin",
@@ -226,7 +241,7 @@
       },
       {
         "name": "ULA",
-        "url": "https://www.ulalaunch.com/about/news",
+        "url": "https://newsroom.ulalaunch.com/",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
@@ -234,47 +249,47 @@
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-06] Configured /about/news path is a stale archive (article dates 2019-2023, not a live feed). The real newsroom is newsroom.ulalaunch.com, which fetched cleanly with real 2026 releases. Its July 2 release (Atlas V Leo 8) confirms the same launch as the already-published SpaceNews item but is hosted on a subdomain (newsroom.ulalaunch.com) that does not match the registry's recorded website host (www.ulalaunch.com), so it could not be attached as first_party without failing the anti-spoof gate; not attached this run. Recommend updating the stored URL to newsroom.ulalaunch.com and, on the next registry structural touch, storing ULA's website as the bare apex domain so both subdomains match."
+        "notes": "[2026-07-06] Configured /about/news path is a stale archive (article dates 2019-2023, not a live feed). The real newsroom is newsroom.ulalaunch.com, which fetched cleanly with real 2026 releases. Its July 2 release (Atlas V Leo 8) confirms the same launch as the already-published SpaceNews item but is hosted on a subdomain (newsroom.ulalaunch.com) that does not match the registry's recorded website host (www.ulalaunch.com), so it could not be attached as first_party without failing the anti-spoof gate; not attached this run. Recommend updating the stored URL to newsroom.ulalaunch.com and, on the next registry structural touch, storing ULA's website as the bare apex domain so both subdomains match. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.ulalaunch.com/about/news) failed or moved. | [2026-07-08] ulalaunch.com/about/news is a frozen 2019-2023 Sitefinity archive; the live newsroom is this separate HubSpot property (SWEEP_MEMORY 2026-07-06-V)."
       },
       {
         "name": "ISRO",
-        "url": "https://www.isro.gov.in/Press_Release.html",
+        "url": "https://www.isro.gov.in/Press.html",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story. | [2026-07-06] Every path tried this run (Press_Release.html, PressReleases.html/htm, PressRelease.html, press-release, News.html) 404'd. Press.html returned 200 but is a stale archive with dates only through July 2025, not a live feed. No candidate; still no working current URL found for this source.",
+        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story. | [2026-07-06] Every path tried this run (Press_Release.html, PressReleases.html/htm, PressRelease.html, press-release, News.html) 404'd. Press.html returned 200 but is a stale archive with dates only through July 2025, not a live feed. No candidate; still no working current URL found for this source. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.isro.gov.in/Press_Release.html) failed or moved.",
         "fail_count": 1
       },
       {
         "name": "JAXA / MHI",
         "url": "https://global.jaxa.jp/press/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://global.jaxa.jp/rss/press.rdf",
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "H3 program. | [2026-07-06] global.jaxa.jp/press/ redirects to /press/2026/, which returned HTTP 403 on both attempts this run. First documented failure for this source.",
-        "fail_count": 1
+        "status": "verified",
+        "notes": "H3 program. | [2026-07-06] global.jaxa.jp/press/ redirects to /press/2026/, which returned HTTP 403 on both attempts this run. First documented failure for this source. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on. | [2026-07-08] RSS 1.0/RDF feed without per-item dates; the harvester derives entry dates from the press-release URL slugs. | [2026-07-07] harvest: first successful fetch, flipped to verified.",
+        "fail_count": 0
       },
       {
         "name": "Isar Aerospace",
-        "url": "https://www.isaraerospace.com/news",
+        "url": "https://isaraerospace.com/newsroom",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Spectrum program; key EU small-launch story. | [2026-07-06] Configured /news path 404s. The real newsroom is isaraerospace.com/newsroom, linked from the homepage's 'Newsroom' card rather than the top nav. Its July 2 release is Isar's own press release for the Planet Labs Germany Spectrum launch deal already published from European Spaceflight/SpaceNews; used to upgrade that item's lead source to first-party. Recommend updating the stored URL to isaraerospace.com/newsroom.",
+        "notes": "Spectrum program; key EU small-launch story. | [2026-07-06] Configured /news path 404s. The real newsroom is isaraerospace.com/newsroom, linked from the homepage's 'Newsroom' card rather than the top nav. Its July 2 release is Isar's own press release for the Planet Labs Germany Spectrum launch deal already published from European Spaceflight/SpaceNews; used to upgrade that item's lead source to first-party. Recommend updating the stored URL to isaraerospace.com/newsroom. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.isaraerospace.com/news) failed or moved.",
         "fail_count": 0
       },
       {
         "name": "Rocket Factory Augsburg",
-        "url": "https://www.rfa.space/news/",
+        "url": "https://www.rfa.space/media/",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
@@ -282,18 +297,18 @@
         "tier": 1,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-06] Configured /news/ path 404s. /presskit is a static press-kit page (last modified 2023), not a news feed. /media loads a post-grid with headlines but no visible dates in the listing; opened the top-listed story directly ('RFA ships stages to SaxaVord Spaceport') and its datePublished is March 6, 2026, predating the window. Listing order is not confirmed chronological (same trap as Umbra, 2026-07-06-S); no candidate found. Recommend finding RFA's actual dated press-release URL structure at the next structural touch."
+        "notes": "[2026-07-06] Configured /news/ path 404s. /presskit is a static press-kit page (last modified 2023), not a news feed. /media loads a post-grid with headlines but no visible dates in the listing; opened the top-listed story directly ('RFA ships stages to SaxaVord Spaceport') and its datePublished is March 6, 2026, predating the window. Listing order is not confirmed chronological (same trap as Umbra, 2026-07-06-S); no candidate found. Recommend finding RFA's actual dated press-release URL structure at the next structural touch. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.rfa.space/news/) failed or moved. | [2026-07-08] rfa.space/feed/ exists and parses but its newest entry is 2026-03-06 (company posts rarely); left as an HTML source under the 30-day feed-freshness rule."
       },
       {
         "name": "Stoke Space",
-        "url": "https://www.stokespace.com/updates/",
+        "url": "https://www.stokespace.com/news/",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Nova; full-reuse angle. | [2026-07-06] Configured /updates/ path 404s; the real path is /news/ (linked from the primary nav), which fetched cleanly with real dated posts. Most recent (June 26, 2026, NASA reusable re-entry partnership) predates the 2026-06-29 window. No candidate. Recommend updating the stored URL to stokespace.com/news/.",
+        "notes": "Nova; full-reuse angle. | [2026-07-06] Configured /updates/ path 404s; the real path is /news/ (linked from the primary nav), which fetched cleanly with real dated posts. Most recent (June 26, 2026, NASA reusable re-entry partnership) predates the 2026-06-29 window. No candidate. Recommend updating the stored URL to stokespace.com/news/. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.stokespace.com/updates/) failed or moved.",
         "fail_count": 0
       }
     ],
@@ -342,7 +357,8 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "fcc.report is an unofficial but scrapeable mirror; official IBFS search is licensing.fcc.gov and painful. Constellation modifications show up here months before press releases. Differentiator source. | [2026-07-06] First fetch of fcc.report/IBFS/ this project: loads cleanly (200) including the Filing-List.rss feed and the SAT/ filing-type sublist, but every listed filing across all three views is dated 2020-2023 despite the RSS channel's own pubDate claiming today. This mirror appears to serve a static/stale snapshot rather than live IBFS data; not usable for current-filing discovery as configured. No candidate."
+        "notes": "fcc.report is an unofficial but scrapeable mirror; official IBFS search is licensing.fcc.gov and painful. Constellation modifications show up here months before press releases. Differentiator source. | [2026-07-06] First fetch of fcc.report/IBFS/ this project: loads cleanly (200) including the Filing-List.rss feed and the SAT/ filing-type sublist, but every listed filing across all three views is dated 2020-2023 despite the RSS channel's own pubDate claiming today. This mirror appears to serve a static/stale snapshot rather than live IBFS data; not usable for current-filing discovery as configured. No candidate.",
+        "fetch_note": "BANNED until independently re-verified live: fcc.report is a third-party mirror that serves 2020-2023 filings with a current pubDate (SWEEP_MEMORY 2026-07-06-M). A clean 200 from this domain is not proof of current data. Regulatory flow comes from the Federal Register API sources instead."
       },
       {
         "name": "FCC Daily Digest",
@@ -354,7 +370,8 @@
         "tier": 1,
         "status": "unverified",
         "fail_count": 1,
-        "notes": "[2026-07-06] curl (descriptive User-Agent, 20s timeout) timed out with no response, consistent with fcc.gov being blocked from this fetch environment before. First documented failure for this source; not yet flipping to dead (needs 3 consecutive)."
+        "notes": "[2026-07-06] curl (descriptive User-Agent, 20s timeout) timed out with no response, consistent with fcc.gov being blocked from this fetch environment before. First documented failure for this source; not yet flipping to dead (needs 3 consecutive).",
+        "fetch_note": "fcc.gov consistently times out / refuses connections from our fetch environments (SWEEP_MEMORY 2026-07-05-O; re-confirmed 2026-07-08). FCC actions arrive via the Federal Register API: FCC source."
       },
       {
         "name": "ITU Space Network filings (SNL)",
@@ -369,14 +386,51 @@
       },
       {
         "name": "NOAA CRSRA (US remote sensing licenses)",
-        "url": "https://www.nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs",
-        "feed_type": "html",
-        "rss": null,
+        "url": "https://space.commerce.gov/regulations/commercial-remote-sensing-regulatory-affairs/",
+        "feed_type": "rss_atom",
+        "rss": "https://space.commerce.gov/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "License grants/modifications reveal US EO operator capability plans early (resolution, NEI waivers). URL may have moved; confirm during recon. | [2026-07-06] Configured URL (nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs) now 404s. nesdis.noaa.gov/CRSRA 301-redirects cleanly to space.commerce.gov's Commercial Remote Sensing Regulatory Affairs pages (Office of Space Commerce). Checked the Mission Authorization news category there; most recent post is April 2, 2026, predating this run's window (2026-06-29). No dated license-grant log found, only static regulatory-info pages. Recommend updating the stored URL to nesdis.noaa.gov/CRSRA. No candidate."
+        "notes": "License grants/modifications reveal US EO operator capability plans early (resolution, NEI waivers). URL may have moved; confirm during recon. | [2026-07-06] Configured URL (nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs) now 404s. nesdis.noaa.gov/CRSRA 301-redirects cleanly to space.commerce.gov's Commercial Remote Sensing Regulatory Affairs pages (Office of Space Commerce). Checked the Mission Authorization news category there; most recent post is April 2, 2026, predating this run's window (2026-06-29). No dated license-grant log found, only static regulatory-info pages. Recommend updating the stored URL to nesdis.noaa.gov/CRSRA. No candidate. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.nesdis.noaa.gov/about/commercial-remote-sensing-regulatory-affairs) failed or moved. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on. | [2026-07-08] nesdis.noaa.gov path 404s and redirects here (SWEEP_MEMORY 2026-07-06-N). The feed is the Office of Space Commerce site-wide WordPress feed.",
+        "fail_count": 0
+      },
+      {
+        "name": "Federal Register API: FCC",
+        "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=20&order=newest&conditions%5Bagencies%5D%5B%5D=federal-communications-commission",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official Federal Register JSON API filtered to FCC documents; official_record tier when the document is the story. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Federal Register API: NOAA",
+        "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=20&order=newest&conditions%5Bagencies%5D%5B%5D=national-oceanic-and-atmospheric-administration",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official Federal Register JSON API filtered to NOAA documents; official_record tier when the document is the story. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Federal Register API: FAA",
+        "url": "https://www.federalregister.gov/api/v1/documents.json?per_page=20&order=newest&conditions%5Bagencies%5D%5B%5D=federal-aviation-administration",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official Federal Register JSON API filtered to FAA documents; official_record tier when the document is the story. Verified live.",
+        "fail_count": 0
       }
     ],
     "financial": [
@@ -399,7 +453,8 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-22, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Fetched cleanly; latest filing May 22, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing May 22, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-22, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-22. No new filing. | [2026-07-06] Fetched cleanly; latest filing May 22, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing May 22, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 22. No new filing.",
+        "fail_count": 0
       },
       {
         "name": "SEC EDGAR 8-K feed: RKLB",
@@ -420,7 +475,8 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-08 filing (item 5.02) is an amicable CFO transition and the 2026-06-04 filing is a routine shareholder-vote result; neither clears the notability bar for a backfill item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Fetched cleanly; latest filing June 8, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing June 8, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-08 filing (item 5.02) is an amicable CFO transition and the 2026-06-04 filing is a routine shareholder-vote result; neither clears the notability bar for a backfill item. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-08 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-06] Fetched cleanly; latest filing June 8, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing June 8, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 8 CFO transition 8-K, below the notability bar. No new filing.",
+        "fail_count": 0
       },
       {
         "name": "SEC EDGAR 8-K feed: SPIR",
@@ -430,7 +486,8 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-29, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Fetched cleanly; latest filing May 29, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing May 29, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. Most recent filing is 2026-05-29, outside the 30-day backfill window; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still 2026-05-29. No new filing. | [2026-07-06] Fetched cleanly; latest filing May 29, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing May 29, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still May 29. No new filing.",
+        "fail_count": 0
       },
       {
         "name": "SEC EDGAR 8-K feed: ASTS",
@@ -440,7 +497,92 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-15 filing (item 5.07) is routine annual-meeting voting results; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-06-12, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent 8-K item still the 2026-06-15 routine annual-meeting voting-results filing. Company-info metadata shows a formerly-names entry dated 2026-07-02 with no corresponding 8-K in the feed explaining it; not reportable without a linked source stating the underlying fact. No new filing. | [2026-07-06] Timed out on first attempt (curl exit 28), succeeded on retry; latest filing June 12, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing June 15, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing."
+        "notes": "[2026-07-05] First successful fetch this run. The 2026-06-15 filing (item 5.07) is routine annual-meeting voting results; no candidate. | [2026-07-05] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] Re-fetched cleanly; most recent filing still the 2026-06-15 routine annual-meeting voting-results 8-K. No new filing. | [2026-07-06] [2026-07-06] Re-fetched cleanly; most recent filing still 2026-06-12, below the notability bar. No new filing. | [2026-07-06] Re-fetched cleanly; most recent 8-K item still the 2026-06-15 routine annual-meeting voting-results filing. Company-info metadata shows a formerly-names entry dated 2026-07-02 with no corresponding 8-K in the feed explaining it; not reportable without a linked source stating the underlying fact. No new filing. | [2026-07-06] Timed out on first attempt (curl exit 28), succeeded on retry; latest filing June 12, no new filing. | [2026-07-06] Atom feed fetched cleanly; most recent filing June 15, 2026, before this run's window. No candidate. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing. | [2026-07-07] Atom feed fetched cleanly; most recent filing still the June 15 annual-meeting voting-results 8-K. No new filing.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: VSAT",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=VSAT&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=VSAT&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: IRDM",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=IRDM&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=IRDM&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: GSAT",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=GSAT&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=GSAT&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: SATS",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=SATS&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=SATS&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: LUNR",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001844452&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001844452&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live. The LUNR ticker does not resolve on EDGAR; the URL uses CIK 0001844452, confirmed as Intuitive Machines, Inc. by the feed's own conformed-name.",
+        "fail_count": 0
+      },
+      {
+        "name": "SEC EDGAR 8-K feed: RDW",
+        "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=RDW&type=8-K&output=atom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=RDW&type=8-K&output=atom",
+        "cadence": "event-driven",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Redwire IR",
+        "url": "https://ir.rdw.com/news-events/press-releases/",
+        "feed_type": "rss_atom",
+        "rss": "https://ir.rdw.com/news-events/press-releases/rss",
+        "cadence": "monthly",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Equisolve IR feed (ir.redwirespace.com redirects here), verified live (newest entry 2026-06-30).",
+        "fail_count": 0
       }
     ],
     "procurement": [
@@ -453,7 +595,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Free API with key. Filter by NAICS 517410/336414 and keyword sets. Phase in after core news loop works. | [2026-07-06] sam.gov/search/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML); the source's own notes say it needs the free API with a key, which this run does not have. No candidate; needs the keyed API path to be usable."
+        "notes": "Free API with key. Filter by NAICS 517410/336414 and keyword sets. Phase in after core news loop works. | [2026-07-06] sam.gov/search/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML); the source's own notes say it needs the free API with a key, which this run does not have. No candidate; needs the keyed API path to be usable.",
+        "fetch_note": "sam.gov/search returns an unrendered Angular shell; usable only via the keyed API, which no run has credentials for (SWEEP_MEMORY 2026-07-06-O)."
       },
       {
         "name": "ESA Open Invitations (esa-star)",
@@ -464,29 +607,30 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "[2026-07-06] esastar-publication-ext.sso.esa.int/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML), same failure mode as SAM.gov. No candidate."
+        "notes": "[2026-07-06] esastar-publication-ext.sso.esa.int/ returns only an unrendered Angular app shell (200, no listing data in the fetched HTML), same failure mode as SAM.gov. No candidate.",
+        "fetch_note": "esastar-publication-ext.sso.esa.int returns an unrendered Angular shell with no listing data (SWEEP_MEMORY 2026-07-06-O). Needs JS rendering."
       },
       {
         "name": "EUSPA procurement",
-        "url": "https://www.euspa.europa.eu/opportunities/procurement",
+        "url": "https://www.euspa.europa.eu/opportunities/procurement-grants/procurement",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "[2026-07-06] Configured URL (euspa.europa.eu/opportunities/procurement) 301-redirects to opportunities/procurement-grants/procurement, which fetches cleanly and lists ongoing/planned procurements. Checked the Space Traffic Coordination Platform (STCP) planned-procurement entry specifically; its post date is 16 March 2026, predating this run's window. No procurement inside the 2026-06-29 window. Recommend updating the stored URL to the post-redirect path."
+        "notes": "[2026-07-06] Configured URL (euspa.europa.eu/opportunities/procurement) 301-redirects to opportunities/procurement-grants/procurement, which fetches cleanly and lists ongoing/planned procurements. Checked the Space Traffic Coordination Platform (STCP) planned-procurement entry specifically; its post date is 16 March 2026, predating this run's window. No procurement inside the 2026-06-29 window. Recommend updating the stored URL to the post-redirect path. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.euspa.europa.eu/opportunities/procurement) failed or moved."
       },
       {
         "name": "NGA / NRO public announcements",
-        "url": "https://www.nga.mil/news/press_releases.html",
+        "url": "https://www.nga.mil/news/Contract_Announcements.html",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "Commercial imagery contract news (EOCL-type). High relevance to EO revenue picture. | [2026-07-06] Configured URL (nga.mil/news/press_releases.html) 404s. nga.mil/news/ resolves via a client-side redirect to news/News.html, which links a Contract_Announcements.html page that fetches cleanly and lists dated commercial-imagery contract awards (Maxar, BlackSky, Planet Labs Federal all appear in the Luno B IDIQ, Jan 15 2025). Most recent entry is December 31, 2025 (GDTS IV to Raytheon), predating this run's window. Recommend updating the stored URL to nga.mil/news/Contract_Announcements.html. No candidate."
+        "notes": "Commercial imagery contract news (EOCL-type). High relevance to EO revenue picture. | [2026-07-06] Configured URL (nga.mil/news/press_releases.html) 404s. nga.mil/news/ resolves via a client-side redirect to news/News.html, which links a Contract_Announcements.html page that fetches cleanly and lists dated commercial-imagery contract awards (Maxar, BlackSky, Planet Labs Federal all appear in the Luno B IDIQ, Jan 15 2025). Most recent entry is December 31, 2025 (GDTS IV to Raytheon), predating this run's window. Recommend updating the stored URL to nga.mil/news/Contract_Announcements.html. No candidate. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.nga.mil/news/press_releases.html) failed or moved. | [2026-07-08] Contract announcements page carries the dated commercial-imagery awards (Maxar/Vantor, BlackSky, Planet Labs Federal); the old press_releases.html 404s (SWEEP_MEMORY 2026-07-06-N)."
       }
     ],
     "non_english": [
@@ -539,22 +683,34 @@
       },
       {
         "name": "Xinhua tech/space (EN)",
-        "url": "https://english.news.cn/tech/index.htm",
+        "url": "https://english.news.cn/tech.htm",
         "feed_type": "html",
         "rss": null,
         "cadence": "daily",
         "language": "en",
         "tier": 2,
         "status": "unverified",
-        "notes": "Fallback when CGSTL/CASC sites are unreachable from outside China. State media: label origin on items, treat launch facts as reliable, framing as not. | [2026-07-06] Configured URL (english.news.cn/tech/index.htm) 404s; the bare homepage (english.news.cn) loads and surfaces space headlines instead. Both space headlines visible this run (Tianwen-2 arrival, Long March-8A SpaceSail launch) were already covered via CASC and Launch Library and evaluated (excluded/routine). Source URL likely needs correcting to the homepage or an /indepth section path.",
+        "notes": "Fallback when CGSTL/CASC sites are unreachable from outside China. State media: label origin on items, treat launch facts as reliable, framing as not. | [2026-07-06] Configured URL (english.news.cn/tech/index.htm) 404s; the bare homepage (english.news.cn) loads and surfaces space headlines instead. Both space headlines visible this run (Tianwen-2 arrival, Long March-8A SpaceSail launch) were already covered via CASC and Launch Library and evaluated (excluded/routine). Source URL likely needs correcting to the homepage or an /indepth section path. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://english.news.cn/tech/index.htm) failed or moved. | [2026-07-08] Xinhua's English RSS endpoints are abandoned (newest items 2017-2018); HTML page fetch only.",
         "fail_count": 1
+      },
+      {
+        "name": "CGTN Tech-Sci",
+        "url": "https://www.cgtn.com/sci-tech",
+        "feed_type": "rss_atom",
+        "rss": "https://www.cgtn.com/subscribe/rss/section/tech-sci.xml",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. State media: facts of record publishable per CLAUDE.md; performance/intent claims labelled \"per CGTN, unverified\". Verified live.",
+        "fail_count": 0
       }
     ],
     "aggregators_crosscheck": [
       {
         "name": "SpaceNews",
         "url": "https://spacenews.com/feed/",
-        "feed_type": "rss",
+        "feed_type": "rss_atom",
         "cadence": "daily",
         "language": "en",
         "tier": 2,
@@ -565,19 +721,19 @@
       {
         "name": "Payload",
         "url": "https://payloadspace.com/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://payloadspace.com/feed/",
         "cadence": "daily",
         "language": "en",
         "tier": 2,
         "status": "verified",
         "fail_count": 0,
-        "notes": "[2026-07-06] First clean fetch this run (WebFetch on the homepage 404'd; falling back to a direct crawl of the site's article list worked). Used as the trade-tier basis for three new items (True Anomaly/VICTUS HAZE, Austria/R-Space, Lunar Forge); flipped from unverified to verified."
+        "notes": "[2026-07-06] First clean fetch this run (WebFetch on the homepage 404'd; falling back to a direct crawl of the site's article list worked). Used as the trade-tier basis for three new items (True Anomaly/VICTUS HAZE, Austria/R-Space, Lunar Forge); flipped from unverified to verified. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on."
       },
       {
         "name": "European Spaceflight",
         "url": "https://europeanspaceflight.com/feed/",
-        "feed_type": "rss",
+        "feed_type": "rss_atom",
         "cadence": "daily",
         "language": "en",
         "tier": 2,
@@ -588,13 +744,49 @@
       {
         "name": "NASASpaceflight",
         "url": "https://www.nasaspaceflight.com/feed/",
-        "feed_type": "rss",
+        "feed_type": "rss_atom",
         "cadence": "daily",
         "language": "en",
         "tier": 2,
         "status": "verified",
         "fail_count": 0,
         "notes": "[2026-07-06] First clean fetch this run: the WebFetch tool 403s on this domain's RSS feed and on every individual article page (both WebFetch and curl), but curl with a descriptive User-Agent fetches the RSS feed cleanly and its content:encoded field carries full article HTML, bypassing the article-page block. Used for corroboration on three existing/updated items and the Swift reboost item; flipped from unverified to verified."
+      },
+      {
+        "name": "SpaceflightNow",
+        "url": "https://spaceflightnow.com/",
+        "feed_type": "rss_atom",
+        "rss": "https://spaceflightnow.com/feed/",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Via Satellite",
+        "url": "https://www.satellitetoday.com/",
+        "feed_type": "rss_atom",
+        "rss": "https://www.satellitetoday.com/feed/",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "SpacePolicyOnline",
+        "url": "https://spacepolicyonline.com/",
+        "feed_type": "rss_atom",
+        "rss": "https://spacepolicyonline.com/feed/",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
+        "fail_count": 0
       }
     ],
     "connectivity_operators": [
@@ -608,23 +800,24 @@
         "tier": 1,
         "status": "unverified",
         "notes": "Sparse. Availability/pricing changes also surface via FCC filings. | [2026-07-06] starlink.com/updates returns HTTP 200 but is an unrendered app shell (a JSON config blob, no article markup), the same failure mode already documented for spacex.com/updates. First documented failure for this specific source entry.",
-        "fail_count": 1
+        "fail_count": 1,
+        "fetch_note": "starlink.com is a JS app with no server-rendered content (SWEEP_MEMORY 2026-07-05-O). Starlink events arrive via LL2, FCC/Federal Register, and trade press."
       },
       {
         "name": "AST SpaceMobile News",
         "url": "https://ast-science.com/news/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://ast-science.com/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Direct-to-device leader. Also SEC (ASTS). | [2026-07-06] ast-science.com/news/ fetched cleanly (200) but returns a client-rendered app shell with no extractable article links or dates in the fetched HTML. First documented failure this run.",
-        "fail_count": 1
+        "status": "verified",
+        "notes": "Direct-to-device leader. Also SEC (ASTS). | [2026-07-06] ast-science.com/news/ fetched cleanly (200) but returns a client-rendered app shell with no extractable article links or dates in the fetched HTML. First documented failure this run. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on. | [2026-07-07] harvest: first successful fetch, flipped to verified.",
+        "fail_count": 0
       },
       {
         "name": "Eutelsat Group (OneWeb) Press",
-        "url": "https://www.eutelsat.com/en/group/media-center.html",
+        "url": "https://www.eutelsat.com/media-press/media-centre",
         "feed_type": "html",
         "rss": null,
         "cadence": "weekly",
@@ -632,7 +825,7 @@
         "tier": 1,
         "status": "unverified",
         "fail_count": 1,
-        "notes": "[2026-07-06] Configured media-center.html path 404s. Tried en/press-releases.html and en/group/newsroom.html (both 404) and found the real nav-linked path at eutelsat.com/media-press/media-centre, which returns 200 but is a client-rendered shell with no article dates or links in the fetched HTML. First documented failure at the corrected URL; recommend updating the stored URL to media-press/media-centre pending a JS-capable fetch."
+        "notes": "[2026-07-06] Configured media-center.html path 404s. Tried en/press-releases.html and en/group/newsroom.html (both 404) and found the real nav-linked path at eutelsat.com/media-press/media-centre, which returns 200 but is a client-rendered shell with no article dates or links in the fetched HTML. First documented failure at the corrected URL; recommend updating the stored URL to media-press/media-centre pending a JS-capable fetch. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.eutelsat.com/en/group/media-center.html) failed or moved."
       },
       {
         "name": "Amazon / Project Kuiper News",
@@ -686,14 +879,14 @@
       },
       {
         "name": "Vast News",
-        "url": "https://www.vastspace.com/news",
+        "url": "https://www.vastspace.com/updates",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "Haven-1 / CLD race. | [2026-07-06] Configured /news path 404s. The root domain loads; its only news-adjacent nav link is /media, a brand/media-asset kit page (logos, mission images, video links) with no press-release listing or dates. No working news feed URL found this run.",
+        "notes": "Haven-1 / CLD race. | [2026-07-06] Configured /news path 404s. The root domain loads; its only news-adjacent nav link is /media, a brand/media-asset kit page (logos, mission images, video links) with no press-release listing or dates. No working news feed URL found this run. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.vastspace.com/news) failed or moved.",
         "fail_count": 1
       },
       {
@@ -713,35 +906,38 @@
       {
         "name": "Kineis",
         "url": "https://www.kineis.com/en/news/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://www.kineis.com/en/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "IoT constellation, France. Added with the 2026-07-05 scope extension. | [2026-07-06] Fetched cleanly; most recent post June 26, 2026 (ITU membership), outside the window. No candidate."
+        "notes": "IoT constellation, France. Added with the 2026-07-05 scope extension. | [2026-07-06] Fetched cleanly; most recent post June 26, 2026 (ITU membership), outside the window. No candidate. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on.",
+        "fail_count": 0
       },
       {
         "name": "Astrocast",
-        "url": "https://www.astrocast.com/news/",
+        "url": "https://www.astrocast.com/",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "IoT constellation, Switzerland. Added with the 2026-07-05 scope extension. | [2026-07-06] Configured /news/ path 404s; the bare root domain loads (200) but its 'Latest News' widget only surfaces stale 2022-2023 items, not a current feed. No candidate confirmed; recommend finding the actual current news/press URL for this domain."
+        "notes": "IoT constellation, Switzerland. Added with the 2026-07-05 scope extension. | [2026-07-06] Configured /news/ path 404s; the bare root domain loads (200) but its 'Latest News' widget only surfaces stale 2022-2023 items, not a current feed. No candidate confirmed; recommend finding the actual current news/press URL for this domain. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.astrocast.com/news/) failed or moved.",
+        "fetch_note": "No working news listing: /news and /news/ 404, the homepage 'Latest News' widget shows 2022-2023 items, and /feed/'s newest entry is 2024-04 (SWEEP_MEMORY 2026-07-06-T; re-confirmed 2026-07-08)."
       },
       {
         "name": "Myriota",
         "url": "https://myriota.com/news/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "rss_atom",
+        "rss": "https://myriota.com/feed/",
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "IoT constellation, Australia. Added with the 2026-07-05 scope extension. | [2026-07-06] Fetched cleanly; two posts inside the window (hybrid satellite/cellular IoT launch July 1, One-Tank Pulse relaunch June 30) shipped as new items."
+        "notes": "IoT constellation, Australia. Added with the 2026-07-05 scope extension. | [2026-07-06] Fetched cleanly; two posts inside the window (hybrid satellite/cellular IoT launch July 1, One-Tank Pulse relaunch June 30) shipped as new items. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on.",
+        "fail_count": 0
       },
       {
         "name": "OQ Technology",
@@ -753,18 +949,19 @@
         "tier": 1,
         "status": "unverified",
         "notes": "IoT constellation, Luxembourg. Added with the 2026-07-05 scope extension. | [2026-07-06] Every path tried (oqtec.com/news, /news/, www and bare domain, and the homepage) returned only footer/nav/contact content via the fetch tool; no article headlines or dates extractable. First documented failure this run.",
-        "fail_count": 1
+        "fail_count": 1,
+        "fetch_note": "Unreachable across every path tried (footer/nav-only content or near-empty unrendered shell; SWEEP_MEMORY 2026-07-06-T)."
       },
       {
         "name": "Unseenlabs",
-        "url": "https://unseenlabs.space/news/",
+        "url": "https://unseenlabs.com/en/news/",
         "feed_type": "html",
         "rss": null,
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "RF-sensing constellation, France. RF sensing is EO per the classification rule. | [2026-07-06] unseenlabs.space/news/ 301-redirects to unseenlabs.com/en/news/, which loads a real dated listing. Most recent post June 23, 2026, outside the window. No candidate. Recommend updating stored URL to the .com domain."
+        "notes": "RF-sensing constellation, France. RF sensing is EO per the classification rule. | [2026-07-06] unseenlabs.space/news/ 301-redirects to unseenlabs.com/en/news/, which loads a real dated listing. Most recent post June 23, 2026, outside the window. No candidate. Recommend updating stored URL to the .com domain. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://unseenlabs.space/news/) failed or moved."
       },
       {
         "name": "HawkEye 360",
@@ -776,7 +973,70 @@
         "tier": 1,
         "status": "unverified",
         "notes": "RF-sensing constellation, USA. RF sensing is EO per the classification rule. | [2026-07-06] he360.com/newsroom/ returns HTTP 403 Forbidden, consistent with prior memory notes (2026-07-05-O). First documented failure this run.",
-        "fail_count": 1
+        "fail_count": 1,
+        "fetch_note": "Consistent 403 to every fetch tool (SWEEP_MEMORY 2026-07-05-O, 2026-07-06-T). Needs JS rendering or an allowlisted client."
+      }
+    ],
+    "agencies": [
+      {
+        "name": "ESA TopNews",
+        "url": "https://www.esa.int/Newsroom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.esa.int/rssfeed/TopNews",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
+      },
+      {
+        "name": "ESA Space Transportation",
+        "url": "https://www.esa.int/Newsroom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.esa.int/rssfeed/Enabling_Support/Space_Transportation",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
+      },
+      {
+        "name": "ESA Observing the Earth",
+        "url": "https://www.esa.int/Newsroom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.esa.int/rssfeed/Applications/Observing_the_Earth",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
+      },
+      {
+        "name": "ESA Navigation",
+        "url": "https://www.esa.int/Newsroom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.esa.int/rssfeed/Applications/Navigation",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
+      },
+      {
+        "name": "ESA Human and Robotic Exploration",
+        "url": "https://www.esa.int/Newsroom",
+        "feed_type": "rss_atom",
+        "rss": "https://www.esa.int/rssfeed/Science_Exploration/Human_and_Robotic_Exploration",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 1,
+        "status": "verified",
+        "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
       }
     ]
   }

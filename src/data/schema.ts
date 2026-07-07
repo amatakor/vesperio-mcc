@@ -334,6 +334,13 @@ export interface Source {
   notes?: string;
   /** Consecutive fetch failures; 3 flips the source to dead. */
   fail_count?: number;
+  /**
+   * Present when the source cannot be read by our fetch tools (JS-rendered
+   * shell, hard bot-block, or a mirror serving stale data). Explains why.
+   * The harvester and the sweep agent skip fetching sources that carry this
+   * field; the entry stays registered so the story arrives via other routes.
+   */
+  fetch_note?: string;
 }
 
 export interface SourcesFile {

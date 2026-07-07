@@ -2,30 +2,25 @@
 # supervised sweeps, zero factual errors, Florian signed off on every
 # published item.
 #
-# TEMPORARY (2026-07-06): running HOURLY during the first few days to
-# gather scoring/signals data for engine tuning. REVERT TO TWICE DAILY
-# AT LAUNCH by restoring the commented `0 5,17 * * *` line in `schedule`
-# below and removing the hourly line.
-#
-# Scheduled runs currently use the cautious source set below (soft
-# launch per Florian's 2b decision); remove the fallback list in
-# SCHEDULED_SOURCES to go to the full source list.
+# Launch cadence (2026-07-08): twice daily. The deterministic harvester
+# (scripts/harvest.ts) runs before the agent and fills
+# src/data/candidates.json from every feed-capable source, so scheduled
+# runs walk the FULL source list; the old 14-source soft-launch
+# allowlist is retired. The sweep window is the full gap since the last
+# sweep (the harvester queues entries back to lastSweep minus 48h).
 #
 # Requires the CLAUDE_CODE_OAUTH_TOKEN repo secret (claude setup-token)
 # and the Claude GitHub App installed on this repo.
 
 name: update-items
 
-env:
-  SCHEDULED_SOURCES: "Planet Labs, Planet Labs IR, ICEYE, Rocket Lab, BlackSky IR, European Spaceflight, SpaceNews, Launch Library 2 (TheSpaceDevs), SEC EDGAR 8-K feed: PL, SEC EDGAR 8-K feed: BKSY, SEC EDGAR 8-K feed: RKLB, SEC EDGAR 8-K feed: SATL, SEC EDGAR 8-K feed: SPIR, SEC EDGAR 8-K feed: ASTS"
-
 on:
   workflow_dispatch:
     inputs:
       source_filter:
         description: >-
-          Comma-separated source names to fetch. Empty = the scheduled
-          default set (SCHEDULED_SOURCES above).
+          Comma-separated source names to fetch. Empty = the full
+          source list (normal scheduled behavior).
         required: false
         default: ""
       extra_instructions:
@@ -35,11 +30,7 @@ on:
         required: false
         default: ""
   schedule:
-    # Tuning period: hourly at :17 (top-of-hour is GitHub's most congested
-    # slot and drops runs, so offset). Restore the twice-daily line below
-    # at launch.
-    - cron: "17 * * * *"
-    # - cron: "0 5,17 * * *"   # launch cadence: twice daily, 05:00/17:00 UTC
+    - cron: "0 5,17 * * *"   # launch cadence: twice daily, 05:00/17:00 UTC
 
 concurrency:
   group: data-writes
@@ -63,6 +54,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Harvest feed sources into the candidate queue (deterministic, pre-agent)
+        run: bun scripts/harvest.ts
+
       - name: Run the sweep agent
         uses: anthropics/claude-code-action@v1
         with:
@@ -75,10 +69,13 @@ jobs:
             src/data/items.json, held.json, state.json, or sources.json
             directly. Do not commit or push; the workflow handles that.
 
-            Source filter for this run (comma-separated names): walk
-            only these sources for DISCOVERY, and record source health
-            only for them:
-            "${{ inputs.source_filter || env.SCHEDULED_SOURCES }}".
+            Source filter for this run (comma-separated names, empty =
+            the full source list): walk only these sources for
+            DISCOVERY, and record source health only for them:
+            "${{ inputs.source_filter }}".
+            The deterministic harvester has already filled
+            src/data/candidates.json from every feed-capable source;
+            consume that queue first per prompts/update-items.md.
             The filter does NOT constrain the corroboration crawl or
             the signals pass; both run open-web per
             prompts/update-items.md.

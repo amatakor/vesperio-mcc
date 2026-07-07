@@ -33,12 +33,32 @@ result when nothing on-scope happened; padding is still the bug.
 1. **Briefing.** Run `bun scripts/sweep-context.ts`. It prints
    `{ now, lastSweep, feedSize, existing[] }` where `existing[i]` is
    `{ id, normId, source_url, headline }`.
-2. **Discovery.** Work through `src/data/sources.json`: fetch every
-   source with status `verified` or `unverified`, collect candidates
-   newer than `lastSweep`, filter against the CLAUDE.md scope, discard
-   out-of-scope candidates silently. Record source health as before
-   (first success flips `unverified` to `verified`; third consecutive
-   failure flips to `dead` with a dated note and `fail_count`).
+2. **Discovery.** The window is always the full gap since `lastSweep`;
+   never narrow it to a fixed number of hours. Two legs, in order:
+
+   **Queue first.** Read `src/data/candidates.json`. The deterministic
+   harvester (`scripts/harvest.ts`, runs before you) has already fetched
+   every feed-capable source (feed_type `rss_atom` / `api_json`) and
+   normalized the entries. Work through the queue: filter against the
+   CLAUDE.md scope, discard out-of-scope candidates silently. Each
+   entry's `raw_excerpt` is verbatim feed text: quoted numbers and
+   figures must come from `raw_excerpt` or from a direct fetch of the
+   entry's source page, NEVER from a WebFetch summary (summaries
+   paraphrase; paraphrased numbers are fabrication risks). When the
+   excerpt is too thin to draft from, fetch the entry's URL directly.
+   Do not re-fetch feeds the harvester already covered; its per-source
+   results are in the queue file's `health` block, and it maintains
+   `fail_count`/status flips for feed sources in code.
+
+   **Direct fetch for HTML-only sources.** Then work through
+   `src/data/sources.json` and fetch only the sources with feed_type
+   `html`, status `verified` or `unverified`, and NO `fetch_note`
+   (a `fetch_note` marks a source our tools cannot read: JS shells,
+   hard bot-blocks, stale mirrors; skip those without burning fetches).
+   Collect candidates newer than `lastSweep`, same scope filter. Record
+   source health for the sources YOU fetched, as before (first success
+   flips `unverified` to `verified`; third consecutive failure flips to
+   `dead` with a dated note and `fail_count`).
 
    **Signals pass (part of discovery, exempt from the source filter).**
    Run `bun scripts/signals-context.ts`. It prints
