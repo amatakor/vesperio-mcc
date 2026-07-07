@@ -886,6 +886,21 @@ a.card-tile:hover .tile-cat {
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }
+/* SNR on the item band reads as one labeled unit, not a loose digit
+   after the squares (2026-07-07 audit). */
+.band-snr {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.band-snr-label {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+}
 .item-band .date {
   margin-left: auto;
   color: var(--dim);
@@ -904,15 +919,27 @@ a.card-tile:hover .tile-cat {
     grid-template-columns: 1fr;
   }
 }
+/* Desktop: the image + sources column tracks the article instead of
+   leaving a tall void beside a long story (2026-07-07 audit). */
+@media (min-width: 52rem) {
+  .item-side {
+    position: sticky;
+    top: var(--sp-4);
+    align-self: start;
+  }
+}
 
+/* Sources header: accent-on-dark, not a solid-yellow fill that
+   out-shouted the headline (2026-07-07). Reads like the // section
+   headers; the list below supplies its own box. */
 .src-band {
-  background: var(--acc);
-  color: var(--acc-ink);
+  color: var(--acc);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.1em;
-  padding: 0.4rem 0.6rem;
+  padding: 0 0 var(--sp-1);
+  border-bottom: 1px solid var(--line);
 }
 .src-list {
   list-style: none;
@@ -990,6 +1017,16 @@ a.card-tile:hover .tile-cat {
   border-top: 0;
   margin-top: 0.25rem;
   padding-top: 0;
+}
+
+/* Item page reads as one column: sections divided by a top hairline
+   and the // header, not fenced in full boxes (2026-07-07 audit). The
+   modal keeps its boxes; /log and other .panel users are untouched. */
+.item-main .panel {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: var(--sp-4) 0 0;
+  margin: 0 0 var(--sp-5);
 }
 
 .tag-row {

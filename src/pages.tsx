@@ -766,7 +766,10 @@ export function ItemPage({ item }: { item: Item }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
-          <SnrBars snr={item.snr} trace={item.snr_trace} />
+          <span className="band-snr">
+            <span className="band-snr-label">snr</span>
+            <SnrBars snr={item.snr} trace={item.snr_trace} />
+          </span>
           <span className="date">{item.date}</span>
         </div>
         <div className="item-cols">
