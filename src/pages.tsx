@@ -230,6 +230,7 @@ function SnrLed({
   size?: "compact" | "card" | "hero";
 }) {
   const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
   const v = Math.max(1, Math.min(5, Math.round(snr)));
   const word = SNR_WORDS[v] ?? "";
   const interactive = !!trace;
@@ -267,6 +268,8 @@ function SnrLed({
       className={`snr-led snr-led-${size}`}
       data-interactive={interactive ? "true" : undefined}
       onClick={interactive ? (e) => e.stopPropagation() : undefined}
+      onMouseEnter={interactive ? () => setHover(true) : undefined}
+      onMouseLeave={interactive ? () => setHover(false) : undefined}
     >
       {cells}
       {size === "hero" && (
@@ -283,7 +286,7 @@ function SnrLed({
           ↳
         </span>
       )}
-      {interactive && open && (
+      {interactive && (open || hover) && (
         <span className="snr-pop" role="dialog" aria-label="SNR calculation">
           <span className="snr-pop-head">
             <span>
@@ -427,11 +430,8 @@ function Card({
         <span className="card-companies" title={item.companies.join(" · ")}>
           {item.companies.join(" · ")}
         </span>
-        <span className="card-sources">
-          {sources} source{sources === 1 ? "" : "s"}
-        </span>
         <a className="card-details" href={`/item/${item.id}/`}>
-          details →
+          {sources} source{sources === 1 ? "" : "s"} →
         </a>
       </div>
     </article>
