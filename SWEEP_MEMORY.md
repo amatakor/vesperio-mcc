@@ -606,6 +606,40 @@ a newer entry if a lesson changes.
   Read what a candidate first-party source actually confirms, not just
   whether it's topically about the same partnership.
 
+## Narrow same-day re-check, 14-source filtered list, ~1.5hr window (2026-07-07)
+
+- 2026-07-07-K: A brand-new actor with no registry entry at all (Orbit
+  Fab, an in-space-services company) hits the anti-spoof gate harder
+  than the known ULA/Q4-IR subdomain cases: `loadRegistryHosts` only
+  populates from existing profiles under `src/data/registry/`, so a
+  company that has never been added has literally no host to match,
+  and classing its own newsroom page `first_party` gets a hard
+  rejection with no workaround (no wire mirror exists either, since
+  it's not a wire-distributed release). Confirmed the correct handling
+  is the same as the 2026-07-06-W ULA case: lead with the trade source
+  that IS gate-safe (SpaceNews), link the company's own release in
+  `secondary_urls` (unscored but honest), and mark `crawl: "found_some"`
+  since a genuine independent confirmation was actually found and
+  linked, even though it can't be scored as a second `scoring.sources`
+  entry. This is distinct from `found_none`, which should be reserved
+  for when nothing beyond the lead (or only duplicate wire copies of
+  the same release) turns up -- conflating the two would either
+  overstate or understate confidence. `found_none` was the right call
+  the same run for a different item (Rocket Lab's VICTUS HAZE
+  mission-success release, where a WebSearch corroboration crawl found
+  only wire duplicates of the identical GlobeNewswire text -- StockTitan,
+  Manila Times, Investing.com -- which per the "one story, one source"
+  rule count as zero independent corroboration).
+- 2026-07-07-L: rocketlabcorp.com/updates/ surfaces new entries same-day
+  (a "Rocket Lab Delivers Mission Success for Space Force" post dated
+  July 7 appeared within an hour of the prior sweep, which had checked
+  the same page and seen only the July 3 Iridium post); individual
+  article pages remain Cloudflare-gated (403) as in every prior run, but
+  the story was fully verifiable via a verbatim GlobeNewswire mirror
+  (stocktitan.net), cross-checked against a second independent mirror
+  (Manila Times, explicitly tagged "globenewswire") for consistency
+  before treating the wire text as reliable.
+
 ## Narrow same-day re-check, 14-source filtered list, ~3.2hr window (2026-07-07)
 
 - 2026-07-07-E: SUPERSEDES 2026-07-06-FF / W for Q4 Inc. IR platforms.
