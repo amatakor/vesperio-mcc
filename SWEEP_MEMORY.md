@@ -588,3 +588,20 @@ a newer entry if a lesson changes.
   leaves untracked files sitting in `git status` afterward since they
   can't be removed. Harmless since the sweep never commits, but worth
   knowing before assuming a scratch file can be deleted once read.
+
+## Narrow same-day re-check, 14-source filtered list, ~3.5hr window (2026-07-07)
+
+- 2026-07-07-D: A company's own press release confirming an earlier-stage
+  agreement (Isar Aerospace's May 26 first-party page announcing a
+  "Letter of Intent" with Maritime Launch Services for Spaceport Nova
+  Scotia) does not corroborate a later trade-press report of the firm
+  contract that followed it. SpaceNews's July 7 story ("Isar Aerospace
+  signs agreement for Canadian launch site") carries concrete new terms
+  the LOI page never states ($3.75M/quarter, 10-year term, two 5-year
+  options) -- the corroboration crawl (WebSearch, several angles) found
+  only the May 26 LOI coverage repeated everywhere, nothing matching the
+  July 7 contract's specific figures, so it correctly scored
+  `crawl: "found_none"` (trade base tier 3, -1 to SNR 2) rather than
+  treating the LOI page as if it corroborated the newer, firmer claim.
+  Read what a candidate first-party source actually confirms, not just
+  whether it's topically about the same partnership.
