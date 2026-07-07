@@ -565,6 +565,8 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
     const stamped: Item = {
       ...(raw as unknown as Item),
+      // kind defaults to "event"; commentary must be declared explicitly.
+      kind: (raw.kind ?? "event") as Item["kind"],
       snr: result.snr,
       snr_trace: result.trace,
       sources: mappedSources,

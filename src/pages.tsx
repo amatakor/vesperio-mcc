@@ -403,6 +403,7 @@ function Card({
         </a>
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
@@ -572,6 +573,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <span className="date">{item.date}</span>
           <button type="button" className="modal-close" onClick={onClose}>
             × esc
@@ -793,6 +795,25 @@ export function CategoryPage({ category }: { category: string }) {
   );
 }
 
+export function KindPage({ kind }: { kind: string }) {
+  return (
+    <Layout current="news">
+      <h1 className="page-title">news / {kind}</h1>
+      <p className="lede">
+        Takes and analysis from named voices, visibly tagged. The SNR scores the attribution
+        (this person said this), never the opinion. Commentary never feeds the Registry.
+      </p>
+      <FeedList
+        list={items.filter((i) => i.kind === kind)}
+        emptyNote="No commentary tracked yet."
+      />
+      <p>
+        <a href="/">All news</a>
+      </p>
+    </Layout>
+  );
+}
+
 export function TagPage({ tag }: { tag: string }) {
   return (
     <Layout current="news">
@@ -823,6 +844,7 @@ export function ItemPage({ item }: { item: Item }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <SnrLed snr={item.snr} trace={item.snr_trace} />
           <span className="date">{item.date}</span>
         </div>
@@ -868,6 +890,7 @@ export function ItemPage({ item }: { item: Item }) {
               <div className="snr-panel">
                 <SnrLed snr={item.snr} size="hero" />
                 {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
               </div>
               <div className="snr-trace-inline">
                 <SnrTraceRows trace={item.snr_trace} />

@@ -28,6 +28,17 @@ export type Category = (typeof CATEGORIES)[number];
  * industry shifts only, notable = matters to anyone tracking the sector,
  * noise = worth logging, not worth a push.
  */
+/**
+ * Item kinds (audit Phase 4, 2026-07-08). "event": something happened;
+ * the default, and the only kind that can feed the registry or reinforce
+ * other items. "commentary": a whitelisted person or named outlet/author
+ * takes a position; the SNR scores the attribution ("this person said
+ * this"), never the opinion's truth, the tagline quotes or tightly
+ * paraphrases the take with attribution, and impact caps at "notable".
+ */
+export const ITEM_KINDS = ["event", "commentary"] as const;
+export type ItemKind = (typeof ITEM_KINDS)[number];
+
 export const IMPACTS = ["seismic", "notable", "noise"] as const;
 export type Impact = (typeof IMPACTS)[number];
 
@@ -241,6 +252,8 @@ export interface Item {
   /** Max 90 chars, factual, actor first, no hype verbs. */
   headline: string;
   explainer: Explainer;
+  /** "event" (default) or "commentary"; see ITEM_KINDS. */
+  kind: ItemKind;
   /** Lowercase; reuse SEED_TAGS before inventing new ones. */
   tags: string[];
   category: Category;

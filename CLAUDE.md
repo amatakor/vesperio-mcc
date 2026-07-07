@@ -96,6 +96,7 @@ Each item in `src/data/items.json`:
     "why_it_matters": "2-4 sentences. The industry read: who this affects and how. This is the product; write it with judgment, not filler.",
     "for_who": "Optional. Who should care most, e.g. 'EO resellers', 'rideshare customers'."
   },
+  "kind": "event",
   "tags": [],
   "category": "",
   "impact": "",
@@ -112,10 +113,12 @@ Each item in `src/data/items.json`:
 
 **Categories** (exactly one): `launch`, `constellation`, `contract`, `procurement`, `regulatory`, `financial`, `product`, `partnership`, `incident`, `geopolitical`, `human-spaceflight`.
 
+**Kind** (exactly one, default `event`): `event` is something that happened. `commentary` is a take, analysis, or position from a named voice, visibly tagged as commentary on cards and item pages. Commentary rules: the source must be a signals.json whitelisted person or a named outlet/author (anonymous takes never publish); the tagline quotes or tightly paraphrases the take with attribution; `what_happened` states who said what, where; `why_it_matters` may engage with the argument. The SNR scores the attribution ("this person said this"), never the opinion's truth; whitelist floors apply as observers. Commentary never feeds the registry and never reinforces factual items. Impact for commentary caps at `notable`.
+
 **Impact** (exactly one). Importance and SNR are independent axes; a seismic rumour is seismic AND low-SNR, and seismic items at SNR ≤ 2 are auto-queued for Florian while they publish:
 - `seismic`: reshapes competitive dynamics (major M&A, operator failure, flagship program cancellation, first flight of a new vehicle)
-- `notable`: matters to anyone tracking the sector (contract awards, constellation expansions, funding rounds, regulatory grants). Routine executive hires stay below the inclusion bar, but a senior government or political figure joining a tracked company (board or advisory role) is notable: it signals commercial access.
-- `noise`: worth logging, not worth a push (scheduled launch success, minor product update)
+- `notable`: a commercial director at an operator or reseller would plausibly act on it or brief their team on it. Examples: a contract award with a stated value; a funding round; a regulatory grant that changes what an operator may sell. Routine executive hires stay below the inclusion bar, but a senior government or political figure joining a tracked company (board or advisory role) is notable: it signals commercial access.
+- `noise`: worth logging, not worth a push. Examples: a scheduled launch succeeding on schedule; a routine product update; a minor partnership without stated money, capacity, or regulatory effect. Routine product updates, minor partnerships, and scheduled successes default here, however long the press release.
 
 **SNR** (integer 1-5): computed by the scoring engine, never hand-set. See "The SNR score".
 
@@ -130,6 +133,7 @@ Each item in `src/data/items.json`:
 - Plain declarative English. No hype ("game-changing", "revolutionary", "milestone"), no press-release voice.
 - "Why it matters" is written for a commercial director at an operator or reseller, not for space fans. Assume the reader knows what SAR is; tell them what the event changes.
 - Attribute claims: "ICEYE says", "per the FCC filing", "the 8-K states". Attribution in copy survives every scoring change; the score never replaces naming who said what.
+- Commentary items attribute the take in the tagline itself ("Per @handle: ..."), and the copy never presents the opinion as the site's own read; "why it matters" may engage with the argument, attributed.
 - SNR scores statements, not boasts: a first-party superlative ("world's largest constellation") is attributed, never scored or repeated as fact.
 - No em dashes anywhere on the site.
 - Headlines name the actor first: "Firefly wins NASA VADR task order", not "NASA awards task order to Firefly".

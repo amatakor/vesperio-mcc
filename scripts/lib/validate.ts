@@ -6,6 +6,7 @@
 
 import {
   CATEGORIES,
+  ITEM_KINDS,
   IMPACTS,
   SOURCE_CLASSES,
   SOURCE_VIA,
@@ -250,6 +251,13 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   }
   if (!IMPACTS.includes(v.impact as never)) {
     errors.push(`${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}]`);
+  }
+  if (!ITEM_KINDS.includes(v.kind as never)) {
+    errors.push(`${path}.kind: "${String(v.kind)}" not in [${ITEM_KINDS.join(", ")}]`);
+  }
+  // Commentary is a take, not an event; it never interrupts anyone's Monday.
+  if (v.kind === "commentary" && v.impact === "seismic") {
+    errors.push(`${path}.impact: commentary caps at "notable"; a seismic take is still just a take`);
   }
 
   // Every published item carries its SNR score and the stored trace.
