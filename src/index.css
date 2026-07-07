@@ -628,15 +628,13 @@ a.chip:hover {
   padding: 1rem 1.1rem;
 }
 
-/* SNR squares over the media, bottom-left, on a dark backing. */
+/* SNR squares in the card meta row beside the chips (2026-07-07 audit:
+   moved off the photo, where they vanished on light images). The date
+   pushes to the right, so the SNR trails the chip group. */
 .card-snr {
-  position: absolute;
-  left: 0.5rem;
-  bottom: 0.5rem;
-  background: rgba(10, 10, 10, 0.88);
-  padding: 0.28rem 0.32rem;
   display: inline-flex;
   line-height: 0;
+  margin-left: 0.15rem;
 }
 .tile-cat {
   font-family: var(--mono);

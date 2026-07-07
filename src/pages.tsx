@@ -263,16 +263,10 @@ function SnrBars({ snr, trace, compact }: { snr: number; trace?: SnrTrace; compa
     The SNR squares sit bottom-left over the media, passive on cards;
     the stored calculation opens in the item modal and item page. */
 function CardMedia({ item }: { item: Item }) {
-  const snr = (
-    <span className="card-snr">
-      <SnrBars snr={item.snr} />
-    </span>
-  );
   if (item.image) {
     return (
       <div className={`card-media${item.image.fit === "contain" ? " card-media-contain" : ""}`}>
         <img src={item.image.src} alt="" loading="lazy" />
-        {snr}
       </div>
     );
   }
@@ -280,7 +274,6 @@ function CardMedia({ item }: { item: Item }) {
     <div className="card-media card-tile">
       <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
       <span className="tile-co">{item.companies[0] ?? item.category}</span>
-      {snr}
     </div>
   );
 }
@@ -371,6 +364,9 @@ function Card({
         </a>
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        <span className="card-snr">
+          <SnrBars snr={item.snr} />
+        </span>
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
