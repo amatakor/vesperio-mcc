@@ -496,6 +496,17 @@ a.chip:hover {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+/* Narrow: the count wraps under the search rather than crushing it
+   against the viewport edge (2026-07-07 audit). */
+@media (max-width: 40rem) {
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+  .filter-tally {
+    width: 100%;
+    text-align: right;
+  }
+}
 
 /* Flush card plate: 12-col grid, zero gap, 1px borders collapsed via
    negative margins. Every card in a row stretches to the row height;
@@ -2031,14 +2042,14 @@ a.sig-card:hover .sig-p-x {
 /* Entity marks: the entity's own favicon, or an initials tile. Square
    per house rules, hairline box so light marks read on dark. */
 .reg-logo {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.4rem;
+  height: 1.4rem;
   object-fit: contain;
   border: 1px solid var(--line);
   background: var(--panel-dark, #111);
-  padding: 1px;
-  vertical-align: -0.25em;
-  margin-right: 0.45rem;
+  padding: 2px;
+  vertical-align: -0.32em;
+  margin-right: 0.5rem;
   flex: none;
 }
 .reg-logo-tile {
@@ -2052,9 +2063,9 @@ a.sig-card:hover .sig-p-x {
   letter-spacing: 0;
 }
 .reg-logo-lg {
-  width: 1.6rem;
-  height: 1.6rem;
-  vertical-align: -0.3em;
+  width: 1.9rem;
+  height: 1.9rem;
+  vertical-align: -0.36em;
 }
 .reg-logo-lg.reg-logo-tile {
   font-size: 0.62rem;
