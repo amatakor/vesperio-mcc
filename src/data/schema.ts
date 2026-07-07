@@ -216,6 +216,14 @@ export interface ItemImage {
   credit: string;
   /** Where the image came from (source article or license page). */
   origin_url: string;
+  /**
+   * How the image fills its box. Absent = "cover" (photos: fill and
+   * crop the edges). "contain" is stamped by fetch-thumbs for square,
+   * small sources (logos), which are shown whole on a neutral tile
+   * instead of scaled up until they crop. Computed from dimensions,
+   * never hand-set.
+   */
+  fit?: "contain";
 }
 
 export interface Item {

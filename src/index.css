@@ -518,6 +518,13 @@ a.chip:hover {
   .card-seismic {
     grid-column: span 12;
   }
+  /* Single column: the desktop masonry height rotation (media-v0/1/2)
+     just reads as ragged, so every non-seismic card gets one aspect
+     ratio. Seismic keeps its tall hero strip. */
+  .card:not(.card-seismic) .card-media {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
 }
 
 /* Media strip at the top of a card, image or generated tile. Fixed
@@ -546,6 +553,16 @@ a.chip:hover {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+/* Logo-shaped sources (fetch-thumbs sets image.fit): shown whole on a
+   neutral tile instead of scaled up until they crop. */
+.card-media-contain {
+  background: var(--panel);
+}
+.card-media-contain img {
+  object-fit: contain;
+  padding: 0.9rem;
+  box-sizing: border-box;
 }
 .card-tile {
   background: var(--panel);
@@ -615,6 +632,16 @@ a.card-tile:hover .tile-cat {
   width: 100%;
   display: block;
   border: 1px solid var(--line);
+}
+/* Logo sources: contained on a tile rather than a full-width square. */
+.item-figure-media.media-contain {
+  background: var(--panel);
+}
+.item-figure-media.media-contain img {
+  height: 12rem;
+  object-fit: contain;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .item-figure figcaption {
   font-family: var(--sans);
@@ -1003,6 +1030,12 @@ a.card-tile:hover .tile-cat {
 .modal-media img {
   width: 100%;
   display: block;
+}
+.modal-media.media-contain img {
+  height: 12rem;
+  object-fit: contain;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 .modal-tile {
   min-height: 9rem;
