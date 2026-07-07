@@ -118,6 +118,18 @@ function fitForLocalSrc(src: string): "contain" | undefined {
   }
 }
 
+/** Reads the on-disk file for a re-hosted image src and returns its pixel size,
+    so the card can size its media box to the image's own aspect ratio (shown
+    whole, never cropped). Any local /img/ path, stock images included. */
+function dimsForLocalSrc(src: string): { w: number; h: number } | null {
+  if (!src.startsWith("/img/")) return null;
+  try {
+    return imageSize(readFileSync(join("public", src)));
+  } catch {
+    return null;
+  }
+}
+
 function findMetaImage(html: string): string | null {
   for (const prop of ["og:image", "twitter:image"]) {
     const re = new RegExp(
@@ -223,6 +235,11 @@ async function main(): Promise<void> {
     if (image) {
       const fit = fitForLocalSrc(image.src);
       if (fit) image.fit = fit;
+      const dims = dimsForLocalSrc(image.src);
+      if (dims) {
+        image.width = dims.w;
+        image.height = dims.h;
+      }
     }
 
     item.image = image; // may be null: generated tile, and we stop retrying
@@ -234,6 +251,7 @@ async function main(): Promise<void> {
   // re-evaluates each item's re-hosted file and only rewrites on a real
   // change, so a settled feed produces no diff.
   let refit = 0;
+  let sized = 0;
   for (const item of data.items) {
     if (!item.image) continue;
     const want = fitForLocalSrc(item.image.src);
@@ -242,12 +260,18 @@ async function main(): Promise<void> {
       else delete item.image.fit;
       refit++;
     }
+    const dims = dimsForLocalSrc(item.image.src);
+    if (dims && (item.image.width !== dims.w || item.image.height !== dims.h)) {
+      item.image.width = dims.w;
+      item.image.height = dims.h;
+      sized++;
+    }
   }
 
-  if (stamped > 0 || refit > 0) {
+  if (stamped > 0 || refit > 0 || sized > 0) {
     writeFileSync(itemsPath, JSON.stringify(data, null, 2) + "\n");
   }
-  console.log(`fetch-thumbs: ${stamped} item(s) stamped, ${refit} refit`);
+  console.log(`fetch-thumbs: ${stamped} item(s) stamped, ${refit} refit, ${sized} sized`);
 }
 
 await main();
