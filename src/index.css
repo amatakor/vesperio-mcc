@@ -525,11 +525,18 @@ a.chip:hover {
    bottom; leftover space sits between tagline and footer. */
 .cards {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(18rem, auto);
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
   grid-auto-flow: dense;
+  align-items: start;
+  /* Fallback before the JS masonry packs (also the no-JS state): cards are
+     content-sized, not stretched, so nothing crops and no gap opens under short
+     copy. .is-packed switches to a 1px row unit the script spans each card over. */
+  grid-auto-rows: min-content;
   gap: 0;
   margin-top: 0.75rem;
+}
+.cards.is-packed {
+  grid-auto-rows: 1px;
 }
 
 .card {
@@ -543,7 +550,6 @@ a.chip:hover {
   position: relative;
   cursor: pointer;
   margin: -1px 0 0 -1px;
-  grid-column: span 4;
 }
 /* Hover inverts the card to a light panel with dark copy (ai-tldr style) rather
    than a frame. z-index lifts it above -1px-margin neighbors so its light edge
@@ -563,53 +569,9 @@ a.chip:hover {
   border-color: var(--bg);
   color: var(--bg);
 }
-/* Position-rotated widths (card-w* from feed order): consecutive
-   trios sum to 12 columns, so rows always fill. */
-.card-w3 {
-  grid-column: span 3;
-}
-.card-w4 {
-  grid-column: span 4;
-}
-.card-w5 {
-  grid-column: span 5;
-}
-.card-w6 {
-  grid-column: span 6;
-}
-/* Seismic block: two rows tall, pinned to the right edge so the free
-   space beside it stays contiguous for the row packer. */
-.card-seismic {
-  grid-column: 9 / span 4;
-  grid-row: span 2;
-}
-@media (max-width: 64rem) {
-  .card,
-  .card-w3,
-  .card-w4,
-  .card-w5,
-  .card-w6,
-  .card-seismic {
-    grid-column: span 6;
-  }
-}
-@media (max-width: 40rem) {
-  .card,
-  .card-w3,
-  .card-w4,
-  .card-w5,
-  .card-w6,
-  .card-seismic {
-    grid-column: span 12;
-  }
-  /* Single column: the desktop masonry height rotation (media-v0/1/2)
-     just reads as ragged, so every non-seismic card gets one aspect
-     ratio. Seismic keeps its tall hero strip. */
-  .card:not(.card-seismic) .card-media {
-    height: auto;
-    aspect-ratio: 16 / 10;
-  }
-}
+/* Every card spans one auto-fill track (see .cards): the responsive column count
+   comes from the minmax() min width, and the row-span masonry packs the varying
+   heights with no gaps. Seismic is set apart by its yellow fill, not its width. */
 
 /* Media strip at the top of a card, image or generated tile. Fixed
    per card but staggered across the feed (media-v* from the item id),
@@ -619,18 +581,12 @@ a.chip:hover {
   display: block;
   position: relative;
   flex: none;
-  height: 12.5rem;
+  /* The image's own aspect ratio (set inline from stored dimensions) makes the
+     frame match the photo, so object-fit:cover shows it WHOLE, never cropped.
+     3/2 is the default for tiles and images without stored dimensions. */
+  aspect-ratio: 3 / 2;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
-}
-.media-v0 .card-media {
-  height: 10rem;
-}
-.media-v1 .card-media {
-  height: 12.5rem;
-}
-.media-v2 .card-media {
-  height: 15rem;
 }
 .card-media img {
   width: 100%;
@@ -641,6 +597,9 @@ a.chip:hover {
 /* Logo-shaped sources (fetch-thumbs sets image.fit): shown whole on a
    neutral tile instead of scaled up until they crop. */
 .card-media-contain {
+  /* Logos sit on a fixed neutral tile (not their own, often-square ratio) so the
+     feed's logo cards stay a consistent shape. */
+  aspect-ratio: 3 / 2;
   background: var(--panel);
 }
 .card-media-contain img {
@@ -770,6 +729,10 @@ a.card-tile:hover .tile-cat {
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
   margin: var(--sp-2) var(--sp-3) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .card-headline a {
   color: var(--fg);

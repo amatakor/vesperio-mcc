@@ -315,8 +315,15 @@ function SnrLed({
     the stored calculation opens in the item modal and item page. */
 function CardMedia({ item }: { item: Item }) {
   if (item.image) {
+    const contain = item.image.fit === "contain";
+    // The image's own ratio makes the frame match the photo, so it is shown
+    // whole (never cropped). Logos keep the fixed contain tile.
+    const style =
+      !contain && item.image.width && item.image.height
+        ? { aspectRatio: `${item.image.width} / ${item.image.height}` }
+        : undefined;
     return (
-      <div className={`card-media${item.image.fit === "contain" ? " card-media-contain" : ""}`}>
+      <div className={`card-media${contain ? " card-media-contain" : ""}`} style={style}>
         <img src={item.image.src} alt="" loading="lazy" />
       </div>
     );
@@ -329,72 +336,15 @@ function CardMedia({ item }: { item: Item }) {
   );
 }
 
-/** Assigns every card a column span (3-6) so each grid row fills all
-    12 columns exactly: widths follow a 4/3/5 rotation for variety and
-    bend when needed so a row's leftover is never an unfillable sliver.
-    A seismic card reserves 4 columns on its own row and the next
-    (it spans two rows in CSS). */
-const CARD_W_CYCLE = [4, 3, 5, 4, 5, 3];
-
-function computeCardWidths(list: Item[]): number[] {
-  const widths: number[] = [];
-  let cyc = 0;
-  // Free columns in the row currently being filled. Seismic cards are
-  // pinned to columns 9-12 in CSS, so the space beside them is always
-  // the contiguous left part of the row; shadow counts how many
-  // upcoming rows are narrowed to 8 columns by a seismic block.
-  let rem = 12;
-  let shadow = 0;
-  const rowDone = () => {
-    if (shadow > 0) {
-      rem = 8;
-      shadow--;
-    } else {
-      rem = 12;
-    }
-  };
-  for (const item of list) {
-    if (item.impact === "seismic") {
-      widths.push(4);
-      if (rem >= 4) {
-        // Takes the right end of this row plus the next row's right end.
-        rem -= 4;
-        shadow = 1;
-      } else {
-        // Row's rightmost columns are gone; the block starts on the
-        // next two rows, and the small gap here is filled below.
-        shadow = 2;
-      }
-      if (rem === 0) rowDone();
-      continue;
-    }
-    const pref = CARD_W_CYCLE[cyc++ % 6]!;
-    let w = Math.min(rem, 4);
-    for (const c of [pref, pref + 1, pref - 1, rem]) {
-      if (c >= 3 && c <= 6 && c <= rem && (rem - c === 0 || rem - c >= 3)) {
-        w = c;
-        break;
-      }
-    }
-    widths.push(w);
-    rem -= w;
-    if (rem === 0) rowDone();
-  }
-  return widths;
-}
-
 /** A feed card. The whole card opens the item modal; the headline and
-    details keep real /item/ hrefs for crawlers and middle-click.
-    width comes from the row packer; pos rotates thumbnail heights. */
+    details keep real /item/ hrefs for crawlers and middle-click. Cards are a
+    uniform width (one auto-fill column); their varying heights drive the
+    masonry. */
 function Card({
   item,
-  pos,
-  width,
   onOpen,
 }: {
   item: Item;
-  pos: number;
-  width: number;
   onOpen: (item: Item) => void;
 }) {
   const sources = item.sources?.length ?? 1 + item.secondary_urls.length;
@@ -404,7 +354,7 @@ function Card({
   };
   return (
     <article
-      className={`card card-${item.impact} card-w${width} media-v${pos % 3}`}
+      className={`card card-${item.impact}`}
       data-item-id={item.id}
       onClick={open}
     >
@@ -453,6 +403,37 @@ function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
+  // Content-sized masonry: give each card a row-span equal to its own measured
+  // height so the feed packs with no gaps (images are shown whole, so card
+  // heights vary). Runs after mount; the CSS fallback handles no-JS.
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const pack = () => {
+      grid.classList.add("is-packed");
+      const cards = Array.from(grid.children) as HTMLElement[];
+      for (const c of cards) c.style.gridRowEnd = "";
+      const heights = cards.map((c) => c.getBoundingClientRect().height);
+      cards.forEach((c, i) => {
+        c.style.gridRowEnd = `span ${Math.max(1, Math.ceil(heights[i]!))}`;
+      });
+    };
+    let raf = 0;
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(pack);
+    };
+    pack();
+    window.addEventListener("resize", schedule);
+    const t = setTimeout(pack, 300); // re-pack after late reflow (fonts, etc.)
+    return () => {
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
+  }, [list]);
+
   const open = (item: Item) => {
     setOpenId(item.id);
     history.pushState({ mccItem: item.id }, "", `/item/${item.id}/`);
@@ -468,14 +449,12 @@ function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
     ? (list.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null)
     : null;
 
-  const cardWidths = useMemo(() => computeCardWidths(list), [list]);
-
   if (list.length === 0) return <p className="empty">{emptyNote}</p>;
   return (
     <>
-      <div className="cards">
-        {list.map((i, n) => (
-          <Card key={i.id} item={i} pos={n} width={cardWidths[n]!} onOpen={open} />
+      <div className="cards" ref={gridRef}>
+        {list.map((i) => (
+          <Card key={i.id} item={i} onOpen={open} />
         ))}
       </div>
       {openItem && <ItemModal item={openItem} onClose={close} />}
