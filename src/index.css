@@ -66,6 +66,12 @@
   --snr-4: #3d7bff;
   --snr-5: #2bff6a;
   --snr-off: #3d3d3d;
+
+  /* Motion (2026-07-07 sleek pass). Color/border/shadow only, never
+     transform (house rule). Short + eased reads as considered, not
+     animated. */
+  --dur-fast: 120ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
 * {
@@ -93,6 +99,37 @@ a {
 }
 a:hover {
   color: var(--acc);
+}
+
+/* Subtle hover/focus easing on interactive surfaces (2026-07-07). No
+   transform, per house rules; color, border, and shadow only. */
+a,
+button,
+.card,
+.chip,
+.nav a,
+.reg-card,
+input,
+.filter-input,
+.sig-tab {
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  a,
+  button,
+  .card,
+  .chip,
+  .nav a,
+  .reg-card,
+  input,
+  .filter-input,
+  .sig-tab {
+    transition: none;
+  }
 }
 
 /* Keyboard focus, sitewide (2026-07-07 audit: the stylesheet had one
