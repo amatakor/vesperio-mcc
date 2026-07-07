@@ -66,6 +66,39 @@
   --snr-4: #3d7bff;
   --snr-5: #2bff6a;
   --snr-off: #3d3d3d;
+
+  /* SNR LED mark (design handoff 2026-07-07): phosphor-green ramp by
+     cell position, dim -> bright, OKLCH hue 148. Deliberately close to
+     the EO neon; reserved for the SNR mark, not reused elsewhere. */
+  --led-1: oklch(0.46 0.11 148);
+  --led-2: oklch(0.57 0.143 148);
+  --led-3: oklch(0.68 0.175 148);
+  --led-4: oklch(0.79 0.208 148);
+  --led-5: oklch(0.9 0.24 148);
+
+  /* Motion (2026-07-07 sleek pass). Color/border/shadow only, never
+     transform (house rule). Short + eased reads as considered, not
+     animated. */
+  --dur-fast: 120ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Type scale (2026-07-07). Whole pixels at the 16px root so the core
+     text ladder stops rendering on sub-pixel boundaries; ~1.25 step. */
+  --fs-xs: 0.6875rem; /* 11px */
+  --fs-sm: 0.8125rem; /* 13px */
+  --fs-base: 0.9375rem; /* 15px */
+  --fs-md: 1.125rem; /* 18px */
+  --fs-lg: 1.5rem; /* 24px */
+  --fs-xl: 1.75rem; /* 28px */
+
+  /* Spacing scale, 4px base (2026-07-07). Adopted in the high-traffic
+     components; the long tail migrates opportunistically. */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
 }
 
 * {
@@ -77,7 +110,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: var(--fs-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -93,6 +126,37 @@ a {
 }
 a:hover {
   color: var(--acc);
+}
+
+/* Subtle hover/focus easing on interactive surfaces (2026-07-07). No
+   transform, per house rules; color, border, and shadow only. */
+a,
+button,
+.card,
+.chip,
+.nav a,
+.reg-card,
+input,
+.filter-input,
+.sig-tab {
+  transition:
+    color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  a,
+  button,
+  .card,
+  .chip,
+  .nav a,
+  .reg-card,
+  input,
+  .filter-input,
+  .sig-tab {
+    transition: none;
+  }
 }
 
 /* Keyboard focus, sitewide (2026-07-07 audit: the stylesheet had one
@@ -232,11 +296,11 @@ a:hover {
 }
 
 .page-title {
-  font-size: 1.7rem;
+  font-size: var(--fs-xl);
   line-height: 1.2;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  margin: 0.5rem 0 0.75rem;
+  margin: var(--sp-2) 0 var(--sp-3);
 }
 
 .dim {
@@ -441,6 +505,17 @@ a.chip:hover {
   font-size: 0.8rem;
   white-space: nowrap;
 }
+/* Narrow: the count wraps under the search rather than crushing it
+   against the viewport edge (2026-07-07 audit). */
+@media (max-width: 40rem) {
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+  .filter-tally {
+    width: 100%;
+    text-align: right;
+  }
+}
 
 /* Flush card plate: 12-col grid, zero gap, 1px borders collapsed via
    negative margins. Every card in a row stretches to the row height;
@@ -573,13 +648,10 @@ a.chip:hover {
   padding: 1rem 1.1rem;
 }
 
-/* SNR squares over the media, bottom-left, on a dark backing. */
+/* SNR squares lead the card meta row, before the chips (Florian
+   2026-07-07); moved off the photo where they vanished on light
+   images. Row gap handles the spacing. */
 .card-snr {
-  position: absolute;
-  left: 0.5rem;
-  bottom: 0.5rem;
-  background: rgba(10, 10, 10, 0.88);
-  padding: 0.28rem 0.32rem;
   display: inline-flex;
   line-height: 0;
 }
@@ -676,12 +748,12 @@ a.card-tile:hover .tile-cat {
 
 .card-headline {
   font-family: var(--mono);
-  font-size: 1.15rem;
+  font-size: var(--fs-md);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
-  margin: 0.5rem 0.9rem 0;
+  margin: var(--sp-2) var(--sp-3) 0;
 }
 .card-headline a {
   color: var(--fg);
@@ -693,9 +765,9 @@ a.card-tile:hover .tile-cat {
 .card-tagline {
   font-family: var(--sans);
   color: var(--fg);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
   line-height: 1.45;
-  margin: 0.4rem 0.9rem 0.75rem;
+  margin: var(--sp-1) var(--sp-3) var(--sp-3);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -757,9 +829,19 @@ a.card-tile:hover .tile-cat {
   border-color: var(--alert);
   color: #fff;
 }
+/* Seismic cards are all-yellow, but green-on-yellow clashes, so the
+   footer becomes a dark bar (full card width) carrying the green mark
+   on dark like every other card (design handoff 2026-07-07). */
 .card-seismic .card-foot {
-  border-top-color: rgba(10, 10, 10, 0.35);
-  color: rgba(10, 10, 10, 0.6);
+  background: #0c0c0c;
+  border-top: 1px solid #1f1f1f;
+  color: var(--dim);
+}
+.card-seismic .card-foot .card-companies {
+  color: var(--dim);
+}
+.card-seismic .card-foot .card-details {
+  color: var(--acc);
 }
 .card-extra {
   font-family: var(--sans);
@@ -772,13 +854,15 @@ a.card-tile:hover .tile-cat {
   color: var(--dim);
 }
 
+/* Footer holds the SNR mark (source-provenance line), a divider, the
+   companies, the source count, and Details (pushed right). */
 .card-foot {
   margin-top: auto;
   border-top: 1px solid var(--line);
   padding: 0.5rem 0.9rem 0.7rem;
   display: flex;
-  gap: 0.8rem;
-  align-items: baseline;
+  gap: 8px;
+  align-items: center;
   font-family: var(--mono);
   font-size: 0.64rem;
   font-weight: 700;
@@ -786,6 +870,12 @@ a.card-tile:hover .tile-cat {
   letter-spacing: 0.1em;
   color: var(--dim);
   min-width: 0;
+}
+.card-foot-div {
+  width: 1px;
+  align-self: stretch;
+  background: #2a2a2a;
+  flex: 0 0 auto;
 }
 .card-foot .card-companies {
   overflow: hidden;
@@ -801,6 +891,9 @@ a.card-tile:hover .tile-cat {
 }
 .card-sources {
   font-weight: 400;
+}
+.card-details {
+  margin-left: auto;
 }
 .card-details {
   margin-left: auto;
@@ -849,15 +942,27 @@ a.card-tile:hover .tile-cat {
     grid-template-columns: 1fr;
   }
 }
+/* Desktop: the image + sources column tracks the article instead of
+   leaving a tall void beside a long story (2026-07-07 audit). */
+@media (min-width: 52rem) {
+  .item-side {
+    position: sticky;
+    top: var(--sp-4);
+    align-self: start;
+  }
+}
 
+/* Sources header: accent-on-dark, not a solid-yellow fill that
+   out-shouted the headline (2026-07-07). Reads like the // section
+   headers; the list below supplies its own box. */
 .src-band {
-  background: var(--acc);
-  color: var(--acc-ink);
+  color: var(--acc);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   letter-spacing: 0.1em;
-  padding: 0.4rem 0.6rem;
+  padding: 0 0 var(--sp-1);
+  border-bottom: 1px solid var(--line);
 }
 .src-list {
   list-style: none;
@@ -935,6 +1040,16 @@ a.card-tile:hover .tile-cat {
   border-top: 0;
   margin-top: 0.25rem;
   padding-top: 0;
+}
+
+/* Item page reads as one column: sections divided by a top hairline
+   and the // header, not fenced in full boxes (2026-07-07 audit). The
+   modal keeps its boxes; /log and other .panel users are untouched. */
+.item-main .panel {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: var(--sp-4) 0 0;
+  margin: 0 0 var(--sp-5);
 }
 
 .tag-row {
@@ -1941,14 +2056,14 @@ a.sig-card:hover .sig-p-x {
 /* Entity marks: the entity's own favicon, or an initials tile. Square
    per house rules, hairline box so light marks read on dark. */
 .reg-logo {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.4rem;
+  height: 1.4rem;
   object-fit: contain;
   border: 1px solid var(--line);
   background: var(--panel-dark, #111);
-  padding: 1px;
-  vertical-align: -0.25em;
-  margin-right: 0.45rem;
+  padding: 2px;
+  vertical-align: -0.32em;
+  margin-right: 0.5rem;
   flex: none;
 }
 .reg-logo-tile {
@@ -1962,9 +2077,9 @@ a.sig-card:hover .sig-p-x {
   letter-spacing: 0;
 }
 .reg-logo-lg {
-  width: 1.6rem;
-  height: 1.6rem;
-  vertical-align: -0.3em;
+  width: 1.9rem;
+  height: 1.9rem;
+  vertical-align: -0.36em;
 }
 .reg-logo-lg.reg-logo-tile {
   font-size: 0.62rem;
@@ -2042,47 +2157,103 @@ a.sig-card:hover .sig-p-x {
 /* ------------------------------------------------------------------ snr
    Signal-to-noise bars, trace popover, disputed/provisional tags
    (SNR_SPEC.md §4/§5, house rules: no radius, no transform hovers). */
-.snr {
+/* SNR LED mark (design handoff 2026-07-07): five phosphor-green cells
+   in a recessed bezel, N lit = score N; ramp by cell position. Click
+   opens the stored trace (reuses .snr-pop below). */
+.snr-led {
   position: relative;
   display: inline-flex;
   align-items: center;
-}
-.snr-btn {
-  background: none;
-  border: 0;
-  padding: 0 2px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font: inherit;
-  color: inherit;
-}
-/* Five flat squares, N lit, coloured by the score on the red-to-green
-   ramp; unlit squares stay visible as solid gray. */
-.snr-bars {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-.snr-bar {
-  width: 9px;
-  height: 9px;
-  background: var(--snr-off);
-  display: inline-block;
-}
-.snr-c1 .snr-bar.on { background: var(--snr-1); }
-.snr-c2 .snr-bar.on { background: var(--snr-2); }
-.snr-c3 .snr-bar.on { background: var(--snr-3); }
-.snr-c4 .snr-bar.on { background: var(--snr-4); }
-.snr-c5 .snr-bar.on { background: var(--snr-5); }
-.snr-compact .snr-bar {
-  width: 7px;
-  height: 7px;
-}
-.snr-num {
+  gap: 12px;
+  vertical-align: middle;
   font-family: var(--mono);
-  font-size: 0.7rem;
+}
+.snr-led-hero {
+  flex-wrap: wrap;
+  row-gap: 6px;
+}
+.snr-led-bezel {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  background: #070707;
+  border: 1px solid #242424;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.snr-led[data-interactive="true"] .snr-led-bezel {
+  cursor: pointer;
+}
+.snr-led-bezel:hover,
+.snr-led-bezel:focus-visible {
+  border-color: #5c5c5c;
+}
+.snr-led-bezel:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+.snr-led-cell {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  background: color-mix(in oklab, var(--c) 9%, #060606);
+}
+.snr-led-cell:nth-child(1) { --c: var(--led-1); }
+.snr-led-cell:nth-child(2) { --c: var(--led-2); }
+.snr-led-cell:nth-child(3) { --c: var(--led-3); }
+.snr-led-cell:nth-child(4) { --c: var(--led-4); }
+.snr-led-cell:nth-child(5) { --c: var(--led-5); }
+.snr-led-cell.lit {
+  background: var(--c);
+  box-shadow: 0 0 6px var(--c), 0 0 2px var(--c);
+}
+/* compact (k .72): registry + disputed cells */
+.snr-led-compact .snr-led-bezel { gap: 2px; padding: 2px; }
+.snr-led-compact .snr-led-cell { width: 9px; height: 9px; }
+.snr-led-compact .snr-led-cell.lit { box-shadow: 0 0 4px var(--c), 0 0 1px var(--c); }
+/* hero (k 2.1): item page panel, with numeral + word */
+.snr-led-hero .snr-led-bezel { gap: 6px; padding: 6px; }
+.snr-led-hero .snr-led-cell { width: 27px; height: 27px; }
+.snr-led-hero .snr-led-cell.lit { box-shadow: 0 0 13px var(--c), 0 0 4px var(--c); }
+.snr-led-caret {
+  position: absolute;
+  left: 100%;
+  margin-left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: 12px;
+  color: var(--led-5);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.snr-led:hover .snr-led-caret {
+  opacity: 1;
+}
+.snr-led-compact .snr-led-caret {
+  display: none;
+}
+.snr-led-num {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--led-5);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 12px color-mix(in oklab, var(--led-5) 70%, transparent);
+}
+.snr-led-slash {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6a6a6a;
+}
+.snr-led-word {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--dim);
 }
 .snr-pop {
@@ -2157,12 +2328,8 @@ a.sig-card:hover .sig-p-x {
 .snr-panel {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.snr-panel-label {
-  font-family: var(--mono);
-  font-size: 0.8rem;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 .chip-disputed {
   border-color: var(--warn);
@@ -2187,7 +2354,7 @@ a.sig-card:hover .sig-p-x {
   font-size: 0.85em;
   margin-top: 2px;
 }
-.profile .src-cell .snr {
+.profile .src-cell .snr-led {
   margin-left: 8px;
 }
 .snr-moves {
