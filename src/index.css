@@ -72,6 +72,24 @@
      animated. */
   --dur-fast: 120ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Type scale (2026-07-07). Whole pixels at the 16px root so the core
+     text ladder stops rendering on sub-pixel boundaries; ~1.25 step. */
+  --fs-xs: 0.6875rem; /* 11px */
+  --fs-sm: 0.8125rem; /* 13px */
+  --fs-base: 0.9375rem; /* 15px */
+  --fs-md: 1.125rem; /* 18px */
+  --fs-lg: 1.5rem; /* 24px */
+  --fs-xl: 1.75rem; /* 28px */
+
+  /* Spacing scale, 4px base (2026-07-07). Adopted in the high-traffic
+     components; the long tail migrates opportunistically. */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
 }
 
 * {
@@ -83,7 +101,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--mono);
-  font-size: 15px;
+  font-size: var(--fs-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
@@ -269,11 +287,11 @@ input,
 }
 
 .page-title {
-  font-size: 1.7rem;
+  font-size: var(--fs-xl);
   line-height: 1.2;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  margin: 0.5rem 0 0.75rem;
+  margin: var(--sp-2) 0 var(--sp-3);
 }
 
 .dim {
@@ -713,12 +731,12 @@ a.card-tile:hover .tile-cat {
 
 .card-headline {
   font-family: var(--mono);
-  font-size: 1.15rem;
+  font-size: var(--fs-md);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
-  margin: 0.5rem 0.9rem 0;
+  margin: var(--sp-2) var(--sp-3) 0;
 }
 .card-headline a {
   color: var(--fg);
@@ -730,9 +748,9 @@ a.card-tile:hover .tile-cat {
 .card-tagline {
   font-family: var(--sans);
   color: var(--fg);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
   line-height: 1.45;
-  margin: 0.4rem 0.9rem 0.75rem;
+  margin: var(--sp-1) var(--sp-3) var(--sp-3);
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
