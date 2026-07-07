@@ -270,7 +270,7 @@ function CardMedia({ item }: { item: Item }) {
   );
   if (item.image) {
     return (
-      <div className="card-media">
+      <div className={`card-media${item.image.fit === "contain" ? " card-media-contain" : ""}`}>
         <img src={item.image.src} alt="" loading="lazy" />
         {snr}
       </div>
@@ -521,7 +521,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           <div className="modal-left">
             {item.image ? (
               <>
-                <div className="modal-media">
+                <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
                   <img src={item.image.src} alt={item.headline} />
                 </div>
                 <p className="modal-credit">
@@ -773,7 +773,7 @@ export function ItemPage({ item }: { item: Item }) {
           <div className="item-side">
             {item.image && (
               <figure className="item-figure">
-                <div className="item-figure-media">
+                <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
                   <img src={item.image.src} alt={item.headline} />
                 </div>
                 <figcaption className="dim">
