@@ -224,6 +224,13 @@ export interface ItemImage {
    * never hand-set.
    */
   fit?: "contain";
+  /**
+   * Intrinsic pixel dimensions, stamped by scripts/fetch-thumbs.ts from the
+   * on-disk file. Lets the card size its media box to the image's own aspect
+   * ratio so it is shown whole (never cropped). Absent for legacy entries.
+   */
+  width?: number;
+  height?: number;
 }
 
 export interface Item {
