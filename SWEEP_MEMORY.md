@@ -561,3 +561,30 @@ a newer entry if a lesson changes.
   event (a public conference statement) feels like it should be
   widely covered -- "feels like it should be corroborated" is not the
   same as a search actually finding corroboration.
+
+## Narrow same-day re-check, 14-source filtered list, ~99min window (2026-07-07)
+
+- 2026-07-07-A: `signalsPass.checked` must list the fetchable channel's
+  exact `url` field from signals-context.ts, not a derived variant: for
+  Andrew Parsonson's substack channel the whitelisted `url` is
+  `https://europeanspaceflight.substack.com` (no `/feed`), even though the
+  channel also carries an `rss` field
+  (`https://europeanspaceflight.substack.com/feed`) that is what actually
+  gets fetched. Listing the `/feed` URL got the whole draft rejected
+  ("not a fetchable whitelisted signal channel"); finalize-sweep matches
+  on the bare `url`, not the `rss` variant. Use `url` verbatim in
+  `checked` regardless of which field you actually fetched.
+- 2026-07-07-B: europeanspaceflight.substack.com/feed hit a Cloudflare
+  "Just a moment..." challenge page via curl (no article content), same
+  failure mode as other Cloudflare-gated sources; europeanspaceflight.com's
+  own WordPress RSS feed (already a discovery source in this run's filter)
+  remains the reliable way to get Andrew Parsonson's content, so the
+  substack channel added little beyond what the site feed already covers.
+- 2026-07-07-C: This session's sandbox blocks `rm` and `mkdir` entirely,
+  even for paths inside the repo working directory (not just outside it).
+  Scratch fetch files written for discovery (curl output saved to disk to
+  inspect) cannot be cleaned up mid-run; writing them to the repo root
+  works fine (unlike a fresh subdirectory, which `mkdir` also blocks) but
+  leaves untracked files sitting in `git status` afterward since they
+  can't be removed. Harmless since the sweep never commits, but worth
+  knowing before assuming a scratch file can be deleted once read.
