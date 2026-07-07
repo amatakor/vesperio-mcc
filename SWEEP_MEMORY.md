@@ -605,3 +605,33 @@ a newer entry if a lesson changes.
   treating the LOI page as if it corroborated the newer, firmer claim.
   Read what a candidate first-party source actually confirms, not just
   whether it's topically about the same partnership.
+
+## Narrow same-day re-check, 14-source filtered list, ~3.2hr window (2026-07-07)
+
+- 2026-07-07-E: SUPERSEDES 2026-07-06-FF / W for Q4 Inc. IR platforms.
+  PR #82 fixed the anti-spoof gate's registry-host loader
+  (scripts/finalize-sweep.ts loadRegistryHosts): it now strips a leading
+  `www.` from each registry `website` value before comparing, so
+  `investors.planet.com` and `ir.blacksky.com` correctly match as the
+  same actor as `www.planet.com` / `www.blacksky.com` (subdomain-of-apex,
+  not sibling-subdomain-of-www). Confirmed live this run: Planet's IR
+  release for the Pelican-11 launch classed `first_party` and passed the
+  gate cleanly, with the StockTitan/Business Wire mirror attached as a
+  genuine second source (`via: corroboration`, `found_some`) exactly
+  like the already-corrected Wolfgang Schmidt item's trace shows. Stop
+  routing Q4 IR releases through a wire_pr workaround; try first_party
+  first and only fall back if the gate actually rejects it.
+- 2026-07-07-F: A WebFetch search-summary date can be wrong even when
+  the underlying source is fine: StockTitan's fetched summary claimed
+  the Pelican-11 release was "July 6 at 11:33 AM" while Planet's own IR
+  RSS pubDate (05:33 AM ET / 09:33 UTC July 7) and the Transporter-17
+  launch time itself (net 07:12 UTC July 7) make July 7 the only
+  internally consistent date. Trusted the first-party timestamp per the
+  standing 2026-07-06-HH precedent.
+- 2026-07-07-G: A WebSearch hit can resurface an old, differently-dated
+  press release under an almost-identical title: ICEYE's March 2025
+  "...introduces its new Generation 4 satellite" release (Transporter-13)
+  reads like a match for today's "ICEYE launches four new satellites
+  aboard Transporter-17" story but is a different event over a year
+  earlier. Always open and check the publication date of a same-titled
+  search hit before treating it as today's story or as corroboration.
