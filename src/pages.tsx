@@ -359,14 +359,14 @@ function Card({
     >
       <CardMedia item={item} />
       <div className="card-meta">
+        <span className="card-snr">
+          <SnrBars snr={item.snr} />
+        </span>
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
         </a>
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
-        <span className="card-snr">
-          <SnrBars snr={item.snr} />
-        </span>
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
