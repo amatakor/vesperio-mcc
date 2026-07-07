@@ -789,6 +789,164 @@ describe("signals-pass gate", () => {
   });
 });
 
+describe("ledger demotion live (effectiveClass in the scoring path)", () => {
+  function seedLedgerOverride(): void {
+    const ledger: SourceLedgerFile = {
+      version: "0.1",
+      updated: null,
+      sources: [
+        { domain: "spacenews.com", class_override: "informal", events: [], claims: [] },
+      ],
+    };
+    writeFileSync(join(dataDir, "source_ledger.json"), JSON.stringify(ledger, null, 2));
+  }
+
+  /** Demotion earned by events: 3 strikes against 3 windowed claims (rate 1 >= 1/3). */
+  function seedLedgerStrikes(): void {
+    const d = (daysAgo: number): string =>
+      new Date(Date.now() - daysAgo * 86_400_000).toISOString().slice(0, 10);
+    const ledger: SourceLedgerFile = {
+      version: "0.1",
+      updated: null,
+      sources: [
+        {
+          domain: "spacenews.com",
+          events: [
+            { date: d(10), kind: "strike", claim: "a", reason: "test strike" },
+            { date: d(8), kind: "strike", claim: "b", reason: "test strike" },
+            { date: d(5), kind: "strike", claim: "c", reason: "test strike" },
+          ],
+          claims: [
+            { claim: "a", date: d(20), snr_at_publication: 3, resolution: "debunked" },
+            { claim: "b", date: d(18), snr_at_publication: 3, resolution: "debunked" },
+            { claim: "c", date: d(15), snr_at_publication: 3, resolution: "debunked" },
+          ],
+        },
+      ],
+    };
+    writeFileSync(join(dataDir, "source_ledger.json"), JSON.stringify(ledger, null, 2));
+  }
+
+  test("a stored class_override scores the source at the demoted tier", () => {
+    seedLedgerOverride();
+    writeDraft({ newItems: [baseNewItem()] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const item = readItems().items.find((i) => i.id === baseNewItem().id)!;
+    // trade would base at 3 (minus crawl found_none = 2); demoted informal
+    // bases at 1 and cannot go below it.
+    expect(item.sources![0]!.class).toBe("informal");
+    expect(item.snr_trace.base.tier).toBe(1);
+    expect(item.snr).toBe(1);
+  });
+
+  test("a demotion earned by windowed strikes lowers a trade source to informal", () => {
+    seedLedgerStrikes();
+    writeDraft({ newItems: [baseNewItem()] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const item = readItems().items.find((i) => i.id === baseNewItem().id)!;
+    expect(item.sources![0]!.class).toBe("informal");
+    expect(item.snr).toBe(1);
+  });
+
+  test("an undemoted source is untouched (control)", () => {
+    writeDraft({ newItems: [baseNewItem()] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const item = readItems().items.find((i) => i.id === baseNewItem().id)!;
+    expect(item.sources![0]!.class).toBe("trade");
+    expect(item.snr_trace.base.tier).toBe(3);
+    expect(item.snr).toBe(2); // trade 3, crawl found_none -1
+  });
+
+  test("demotion only lowers trade: an informal source under strikes is unchanged", () => {
+    seedLedgerStrikes();
+    const item = baseNewItem();
+    (item.scoring as { sources: { class: string }[] }).sources[0]!.class = "informal";
+    writeDraft({ newItems: [item] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const stamped = readItems().items.find((i) => i.id === item.id)!;
+    expect(stamped.sources![0]!.class).toBe("informal");
+  });
+});
+
+describe("dedup-as-code gate (matchDecision in finalize)", () => {
+  /** Same company + category as the existing ICEYE item, 2 days later. */
+  function collidingItem(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+    return baseNewItem({
+      id: "2026-07-03-iceye-finland-sar-expansion-two",
+      date: "2026-07-03",
+      headline: "ICEYE adds a second Gen4 SAR production line in Finland",
+      explainer: {
+        tagline: "ICEYE says it will add a second Gen4 line.",
+        what_happened: "ICEYE announced additional production capacity. The plan was published on its press page.",
+        why_it_matters: "More SAR production capacity changes reseller delivery timelines across the market.",
+      },
+      tags: ["sar", "europe"],
+      category: "constellation",
+      companies: ["ICEYE"],
+      ...overrides,
+    });
+  }
+
+  test("a new item matching an existing one inside the 7-day window is rejected", () => {
+    writeDraft({ newItems: [collidingItem()] });
+    const before = snapshotDataFiles();
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("same-event match");
+    expect(result.errors.join("\n")).toContain(existingItem.id);
+    expect(snapshotDataFiles()).toEqual(before);
+  });
+
+  test("an attested distinct event (dedup_distinct) passes and the field is stripped", () => {
+    writeDraft({
+      newItems: [
+        collidingItem({
+          dedup_distinct: [
+            { id: existingItem.id, reason: "second production line, distinct announcement per ICEYE" },
+          ],
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const stamped = readItems().items.find(
+      (i) => i.id === "2026-07-03-iceye-finland-sar-expansion-two",
+    )!;
+    expect((stamped as unknown as Record<string, unknown>).dedup_distinct).toBeUndefined();
+  });
+
+  test("an ack without a reason does not pass the gate", () => {
+    writeDraft({
+      newItems: [collidingItem({ dedup_distinct: [{ id: existingItem.id, reason: " " }] })],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("same-event match");
+  });
+
+  test("same company + category outside the 7-day window is not gated", () => {
+    writeDraft({
+      newItems: [
+        collidingItem({ id: "2026-06-20-iceye-finland-sar-earlier-event", date: "2026-06-20" }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
+
+  test("different company inside the window is not gated", () => {
+    writeDraft({
+      newItems: [collidingItem({ companies: ["Umbra"], id: "2026-07-03-umbra-sar-expansion" })],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
+});
+
 describe("sweep-context", () => {
   test("prints now, lastSweep, feedSize, and existing with normId", () => {
     const ctx = buildSweepContext(dataDir, new Date("2026-07-05T05:00:00.000Z"));

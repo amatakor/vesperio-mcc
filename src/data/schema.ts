@@ -64,6 +64,8 @@ export const LEDGER_WINDOW_DAYS = 90;
 export const LEDGER_DEMOTION_NET_STRIKES = 3;
 export const LEDGER_DEMOTION_MIN_STRIKE_RATE = 1 / 3;
 export const LEDGER_RECOVERY_NET_CREDITS = 3;
+/** A claim must be at least this old before resolve-claims examines it. */
+export const CLAIM_RESOLUTION_MIN_AGE_DAYS = 14;
 export const PROMOTION_MIN_CLAIMS = 5;
 export const PROMOTION_WINDOW_DAYS = 30;
 export const PROMOTION_MIN_SNR = 4;
@@ -435,7 +437,12 @@ export interface SignalsFile {
 export const LEDGER_EVENT_KINDS = ["strike", "credit"] as const;
 export type LedgerEventKind = (typeof LEDGER_EVENT_KINDS)[number];
 
-export const CLAIM_RESOLUTIONS = ["confirmed", "debunked", "unresolved"] as const;
+/**
+ * "expired": the claim sat unresolved past LEDGER_WINDOW_DAYS with no
+ * deterministic signal either way. It is closed so the resolver stops
+ * re-examining it; calibration reporting counts it with unresolved.
+ */
+export const CLAIM_RESOLUTIONS = ["confirmed", "debunked", "unresolved", "expired"] as const;
 export type ClaimResolution = (typeof CLAIM_RESOLUTIONS)[number];
 
 /**
