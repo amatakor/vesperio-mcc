@@ -563,12 +563,6 @@ a.chip:hover {
   border-color: var(--bg);
   color: var(--bg);
 }
-/* Only the copy inverts; the footer stays dark so the SNR mark keeps its
-   context (per Florian). Give it an explicit dark bg since the card bg is
-   now light. Its own text/mark colours are already light, so they hold. */
-.card:not(.card-seismic):hover .card-foot {
-  background: var(--bg);
-}
 /* Position-rotated widths (card-w* from feed order): consecutive
    trios sum to 12 columns, so rows always fill. */
 .card-w3 {
@@ -881,6 +875,9 @@ a.card-tile:hover .tile-cat {
 .card-foot {
   margin-top: auto;
   border-top: 1px solid var(--line);
+  /* Always opaque + dark so the hover inversion of the copy above never bleeds
+     through it (the transparent-to-dark transition was the white flash). */
+  background: var(--bg);
   padding: 0.5rem 0.9rem 0.7rem;
   display: flex;
   gap: 8px;
@@ -2196,18 +2193,18 @@ a.sig-card:hover .sig-p-x {
   align-items: center;
   gap: 2px;
   padding: 3px;
-  background: linear-gradient(180deg, #060608, #131317);
+  background: #17171c;
   border: 1px solid #000;
   box-sizing: border-box;
   position: relative;
-  /* Recessed physical LED module: a deep inner top shadow sinks the cells into
-     a well, a faint inner bottom light reflects up, and a crisp outer bottom
-     highlight makes the module read as raised off the surface. No hover
-     animation on the frame (per Florian); the cells light up instead. */
+  /* Raised physical chip: a light top inner bevel + a dark bottom inner edge
+     read as three-dimensional, and a soft drop shadow floats it off the card.
+     Lighter than the card so the module is actually visible. No hover animation
+     (per Florian); only the cells light up. */
   box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.95),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.06);
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.75),
+    0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .snr-led[data-interactive="true"] .snr-led-bezel {
   cursor: pointer;
