@@ -1,26 +1,59 @@
 /**
  * Item artwork pipeline, deterministic, no LLM. For every item without
- * an image field:
+ * an image field (or listed via --redo):
  *
- *   1. Fetch the item's own source_url page and use its og:image /
- *      twitter:image (the image the publisher designates for link
- *      previews), re-hosted under public/img/items/{id}.{ext} with a
- *      credit naming the source host and a link to the source page.
- *   2. Otherwise fall back to the curated freely licensed stock map in
+ *   1. Rank ALL the item's sources press-first (trade > mainstream >
+ *      aggregator > informal > first-party > official record): editorial
+ *      artwork beats press-release and filing pages (Florian, 2026-07-08).
+ *      Social platform pages never contribute their own og:image (it is a
+ *      profile picture); a Bluesky post instead resolves to the article it
+ *      embeds, via the public API, and that page joins the candidates.
+ *      PDFs are skipped.
+ *   2. Fetch each candidate page's og:image / twitter:image in rank order.
+ *      Reject junk (tiny images, banner/skyscraper ad shapes). Prefer the
+ *      first photo; a logo-shaped image is kept only as a fallback if no
+ *      candidate yields a photo.
+ *   3. Otherwise fall back to the curated freely licensed stock map in
  *      src/data/stock-images.json, keyed by source hostname suffix.
- *   3. Otherwise stamp image: null; the site renders a generated tile.
+ *   4. Otherwise stamp image: null; the site renders a generated tile.
  *
+ * Credit always names the page the image actually came from.
  * Never image search, never generated imagery, never agency seals.
  * Runs in the sweep workflow between the agent and the build.
+ *
+ * Usage: bun scripts/fetch-thumbs.ts [--redo id1,id2,...]
+ *   --redo deletes the listed items' downloaded files and re-decides their
+ *   image from scratch (also re-decides items currently stamped null).
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
 
 const UA = "MCC-Vesperio thumbnail fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 3 * 1024 * 1024;
 const OUT_DIR = "public/img/items";
+
+/** Image sanity gates: reject favicons/trackers and banner/skyscraper ad
+    shapes. Applied only when the header yields dimensions. */
+const MIN_DIMENSION = 200;
+const MAX_ASPECT = 3; // reject wider than 3:1 or taller than 1:3
+
+/** Social platforms whose own og:image is branding, never event artwork. */
+const SOCIAL_HOSTS = ["bsky.app", "twitter.com", "x.com", "youtube.com", "youtu.be", "linkedin.com", "facebook.com", "t.me"];
+
+/** Press-first candidate order (Florian, 2026-07-08): trade press artwork
+    over press releases and investor-relations pages, filings last. A source
+    class not listed ranks with informal. */
+const CLASS_RANK: Record<string, number> = {
+  trade: 0,
+  mainstream: 1,
+  aggregator: 2,
+  informal: 3,
+  social_resolved: 3, // article a whitelisted post links to
+  first_party: 4,
+  official_record: 5,
+};
 
 interface StockMap {
   by_domain: Record<string, ItemImage>;
@@ -158,7 +191,90 @@ async function fetchText(url: string): Promise<string | null> {
   }
 }
 
-async function downloadImage(url: string, id: string): Promise<string | null> {
+function hostOf(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
+
+function isSocial(url: string): boolean {
+  const h = hostOf(url);
+  return h !== null && SOCIAL_HOSTS.some((s) => h === s || h.endsWith("." + s));
+}
+
+/** A Bluesky post's own og:image is the author's avatar; the artwork lives on
+    the article the post embeds. Resolve that article via the public API. */
+async function resolveBskyArticle(postUrl: string): Promise<string | null> {
+  const m = postUrl.match(/bsky\.app\/profile\/([^/]+)\/post\/([^/?#]+)/);
+  if (!m) return null;
+  const at = `at://${m[1]}/app.bsky.feed.post/${m[2]}`;
+  try {
+    const res = await fetch(
+      `https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=${encodeURIComponent(at)}&depth=0`,
+      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) },
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      thread?: { post?: { record?: { embed?: { external?: { uri?: string } } } } };
+    };
+    const uri = data.thread?.post?.record?.embed?.external?.uri;
+    return uri && /^https?:\/\//i.test(uri) ? uri : null;
+  } catch {
+    return null;
+  }
+}
+
+interface Candidate {
+  url: string;
+  rank: number;
+}
+
+/** All of an item's source pages, press first, social resolved to the page
+    it links, PDFs and unresolved social pages dropped. */
+async function candidatesFor(item: {
+  source_url: string;
+  secondary_urls?: string[];
+  sources?: { url: string; class: string }[];
+}): Promise<Candidate[]> {
+  const entries: { url: string; cls: string }[] =
+    item.sources && item.sources.length > 0
+      ? item.sources.map((s) => ({ url: s.url, cls: s.class }))
+      : [item.source_url, ...(item.secondary_urls ?? [])].map((u, i) => ({
+          url: u,
+          cls: i === 0 ? "first_party" : "informal",
+        }));
+
+  const seen = new Set<string>();
+  const out: Candidate[] = [];
+  for (const e of entries) {
+    let url = e.url;
+    let cls = e.cls;
+    if (isSocial(url)) {
+      const article = url.includes("bsky.app/") ? await resolveBskyArticle(url) : null;
+      if (!article || isSocial(article)) continue; // platform og:image is branding, never artwork
+      url = article;
+      cls = "social_resolved";
+    }
+    if (/\.pdf(?:[?#]|$)/i.test(url)) continue; // no og:image in a PDF
+    if (seen.has(url)) continue;
+    seen.add(url);
+    out.push({ url, rank: CLASS_RANK[cls] ?? CLASS_RANK.informal! });
+  }
+  return out.sort((a, b) => a.rank - b.rank);
+}
+
+interface Download {
+  src: string;
+  file: string;
+  dim: { w: number; h: number } | null;
+}
+
+/** Download an og:image; reject unknown formats, oversized payloads, tiny
+    images, and ad shapes (banners/skyscrapers). Writes {id}.{ext}; the
+    caller cleans up rejected/unused files. */
+async function downloadImage(url: string, id: string): Promise<Download | null> {
   try {
     const res = await fetch(url, {
       headers: { "User-Agent": UA },
@@ -171,10 +287,16 @@ async function downloadImage(url: string, id: string): Promise<string | null> {
     if (!ext) return null;
     const buf = new Uint8Array(await res.arrayBuffer());
     if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) return null;
+    const dim = imageSize(buf);
+    if (dim) {
+      if (Math.min(dim.w, dim.h) < MIN_DIMENSION) return null; // favicon/tracker
+      const aspect = dim.w / dim.h;
+      if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) return null; // ad banner shape
+    }
     mkdirSync(OUT_DIR, { recursive: true });
     const file = `${id}.${ext}`;
     writeFileSync(join(OUT_DIR, file), buf);
-    return `/img/items/${file}`;
+    return { src: `/img/items/${file}`, file, dim };
   } catch {
     return null;
   }
@@ -193,10 +315,71 @@ function stockFor(sourceUrl: string, stock: StockMap): ItemImage | null {
   return null;
 }
 
+/** Walk the ranked candidates; first photo wins, a logo-shaped image is held
+    as fallback only. Every trial file except the winner's is deleted. */
+async function imageFromSources(
+  item: { id: string; source_url: string; secondary_urls?: string[]; sources?: { url: string; class: string }[] },
+): Promise<ItemImage | null> {
+  const written = new Set<string>();
+  let logoFallback: (ItemImage & { file: string }) | null = null;
+
+  const finish = (winner: (ItemImage & { file: string }) | null): ItemImage | null => {
+    for (const f of written) {
+      if (!winner || f !== winner.file) rmSync(join(OUT_DIR, f), { force: true });
+    }
+    if (!winner) return null;
+    const { file: _file, ...img } = winner;
+    return img;
+  };
+
+  for (const cand of await candidatesFor(item)) {
+    const html = await fetchText(cand.url);
+    const metaImage = html ? findMetaImage(html) : null;
+    if (!metaImage) continue;
+    const dl = await downloadImage(metaImage, item.id);
+    if (!dl) continue;
+    written.add(dl.file);
+    const host = hostOf(cand.url) ?? cand.url;
+    const img: ItemImage & { file: string } = {
+      src: dl.src,
+      credit: `Image: ${host}`,
+      origin_url: cand.url,
+      file: dl.file,
+    };
+    if (fitFor(dl.dim)) {
+      // Logo-shaped: usable, but keep looking for a real photo first.
+      if (!logoFallback) logoFallback = img;
+      continue;
+    }
+    return finish(img);
+  }
+  return finish(logoFallback);
+}
+
 async function main(): Promise<void> {
   const itemsPath = "src/data/items.json";
   const data = JSON.parse(readFileSync(itemsPath, "utf8")) as ItemsFile;
   const stock = JSON.parse(readFileSync("src/data/stock-images.json", "utf8")) as StockMap;
+
+  // --redo id1,id2,...: forget these items' current decision and files.
+  const redoArg = process.argv.find((a) => a.startsWith("--redo"));
+  const redoIds = new Set(
+    (redoArg?.includes("=") ? redoArg.split("=")[1]! : process.argv[process.argv.indexOf("--redo") + 1] ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
+  for (const id of redoIds) {
+    const item = data.items.find((i) => i.id === id);
+    if (!item) {
+      console.warn(`--redo: no item ${id}`);
+      continue;
+    }
+    delete (item as { image?: unknown }).image;
+    for (const f of readdirSync(OUT_DIR)) {
+      if (f.startsWith(id + ".")) rmSync(join(OUT_DIR, f), { force: true });
+    }
+  }
 
   let stamped = 0;
   for (const item of data.items) {
@@ -204,6 +387,7 @@ async function main(): Promise<void> {
 
     let image: ItemImage | null = null;
 
+    // A file dropped in by hand keeps working as a manual override.
     const existing = ["jpg", "png", "webp", "gif"]
       .map((e) => `${item.id}.${e}`)
       .find((f) => existsSync(join(OUT_DIR, f)));
@@ -215,21 +399,7 @@ async function main(): Promise<void> {
       };
     }
 
-    if (!image) {
-      const html = await fetchText(item.source_url);
-      const metaImage = html ? findMetaImage(html) : null;
-      if (metaImage) {
-        const src = await downloadImage(metaImage, item.id);
-        if (src) {
-          image = {
-            src,
-            credit: `Image: ${new URL(item.source_url).hostname}`,
-            origin_url: item.source_url,
-          };
-        }
-      }
-    }
-
+    if (!image) image = await imageFromSources(item);
     if (!image) image = stockFor(item.source_url, stock);
 
     if (image) {
@@ -244,7 +414,7 @@ async function main(): Promise<void> {
 
     item.image = image; // may be null: generated tile, and we stop retrying
     stamped++;
-    console.log(`${item.id}: ${image ? image.src : "no image, tile"}`);
+    console.log(`${item.id}: ${image ? `${image.src} (from ${image.origin_url ?? "stock"})` : "no image, tile"}`);
   }
 
   // Backfill fit on images stamped before this pass existed. Idempotent:
