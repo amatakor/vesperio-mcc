@@ -465,6 +465,9 @@ export function validateSourcesFile(data: unknown): string[] {
       ) {
         errors.push(`${path}.fail_count: must be a non-negative integer when present`);
       }
+      if (src.fetch_note !== undefined && (typeof src.fetch_note !== "string" || src.fetch_note.length === 0)) {
+        errors.push(`${path}.fetch_note: must be a non-empty string when present`);
+      }
     });
   }
   return errors;
