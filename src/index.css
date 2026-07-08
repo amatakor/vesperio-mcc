@@ -564,7 +564,8 @@ a.chip:hover {
 }
 
 .card {
-  border: 1px solid var(--line);
+  /* White card lines (Florian, 2026-07-08): frame and internal separators. */
+  border: 1px solid var(--fg);
   background: var(--bg);
   padding: 0;
   display: flex;
@@ -609,7 +610,7 @@ a.chip:hover {
      frame match the photo, so object-fit:cover shows it WHOLE, never cropped.
      3/2 is the default for tiles and images without stored dimensions. */
   aspect-ratio: 3 / 2;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--fg);
   overflow: hidden;
 }
 .card-media img {
@@ -785,10 +786,10 @@ a.card-tile:hover .tile-cat {
    type, extra body, black media strip. */
 .card-seismic {
   background: var(--acc);
-  /* Yellow fill, but the same --line border as every other card: a yellow
+  /* Yellow fill, but the same white border as every other card: a yellow
      border framed the dark media strip and dark footer and read as a stray
      yellow outline against the feed (Florian, 2026-07-08). */
-  border-color: var(--line);
+  border-color: var(--fg);
   color: var(--acc-ink);
 }
 .card-seismic:hover {
@@ -868,11 +869,11 @@ a.card-tile:hover .tile-cat {
    companies, the source count, and Details (pushed right). */
 .card-foot {
   margin-top: auto;
-  border-top: 1px solid var(--line);
-  /* Solid panel bar, opaque: page-black padding here read as a gap under every
-     card (Florian, 2026-07-08), and opacity kept the hover inversion of the
-     copy above from bleeding through (the transparent-to-dark white flash). */
-  background: var(--panel);
+  /* Same surface as the copy section, separated by white lines instead of a
+     panel tint (Florian, 2026-07-08). Kept opaque so the hover inversion of
+     the copy above never bleeds through (the transparent-to-dark white
+     flash). */
+  background: var(--bg);
   padding: 0.5rem var(--sp-3);
   display: flex;
   gap: 8px;
