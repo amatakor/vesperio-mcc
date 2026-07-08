@@ -855,3 +855,25 @@ a newer entry if a lesson changes.
   sources list, and SNR trace. 38 published headlines were migrated
   clean (scripts/migrations/2026-07-08-headline-attribution.ts) and the
   prompt + CLAUDE.md now say so explicitly.
+
+## 30-day backfill run (2026-07-08, interactive, BACKFILL_PLAN.md)
+
+- 2026-07-08-C2: Google News RSS redirect URLs (news.google.com/rss/articles/...)
+  no longer resolve server-side at all (JS batchexecute interstitial; curl -sIL
+  returns the same URL). Re-locate the publisher URL via WebSearch or direct
+  fetch; never cite the redirect. scripts/backfill-harvest.ts scopes the query
+  feeds with after:/before: operators for windowed harvests.
+- 2026-07-08-D2: Cloudflare-blocked this run: investors.planet.com,
+  ir.blacksky.com (blacksky.com worked), spacewatch.global, yourstory.com,
+  ir.spacex.com, raksha-anirveda article pages, news9live (nav shell).
+  Worked cleanly: iceye.com/newsroom/press-releases (not /press), space42.ai
+  /en/press-release/..., dhruvaspace.com, spacebel.com (needs -k, self-signed
+  TLS), remondo.com, neworbit.space (text inside Next.js hydration JSON),
+  fireflyspace.com, synspective.com, axelspace.com, zdnet.co.kr, thelec.net.
+- 2026-07-08-E2: A backfilled old event does NOT earn the persistence bump at
+  merge: the clock starts at publishDate by design (SNR_PLAN A1), whatever the
+  event date. Expect no immediate movements from backfills.
+- 2026-07-08-F2: Non-US government domains (canada.ca, asc-csa.gc.ca,
+  inspace.gov.in) cannot pass the anti-spoof gate as official_record (not .gov,
+  not in the fixed list, no registry profile). Lead with gate-safe trade and
+  link the government page unscored, per the 2026-07-07-K pattern.
