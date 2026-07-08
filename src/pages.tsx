@@ -1962,51 +1962,257 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
   );
 }
 
-/** Six-month close-price chart for listed entities; data via the Yahoo Finance pipeline (scripts/fetch-stocks.ts). */
+/** Close-price chart for listed entities; ~2y series via the Yahoo Finance pipeline
+ * (scripts/fetch-stocks.ts), sliced client-side by the 1M/6M/1Y/ALL toggle.
+ * Hand-rolled SVG: labeled Y gridlines in real currency, dated X ticks, a
+ * pointer/touch crosshair readout, and padded normalization so amplitude reads. */
+type StockRangeKey = "1M" | "6M" | "1Y" | "ALL";
+const STOCK_RANGES: Array<{ key: StockRangeKey; days: number }> = [
+  { key: "1M", days: 31 },
+  { key: "6M", days: 186 },
+  { key: "1Y", days: 372 },
+  { key: "ALL", days: Infinity },
+];
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+  JPY: "¥",
+  CAD: "C$",
+  AUD: "A$",
+  SEK: "kr ",
+  NOK: "kr ",
+};
+function stockCurrencyPrefix(code: string | null): string {
+  if (!code) return "";
+  return CURRENCY_SYMBOLS[code] ?? `${code} `;
+}
+/** 3-4 evenly-rounded gridline values spanning [lo, hi]. */
+function stockNiceTicks(lo: number, hi: number, count: number): number[] {
+  const range = hi - lo;
+  if (!(range > 0)) return [lo];
+  const rawStep = range / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const norm = rawStep / mag;
+  const step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
+  const start = Math.ceil(lo / step) * step;
+  const ticks: number[] = [];
+  for (let v = start; v <= hi + step * 1e-6; v += step) ticks.push(Number(v.toFixed(6)));
+  return ticks;
+}
+function stockDecimals(step: number): number {
+  if (step >= 10) return 0;
+  if (step >= 1) return 1;
+  return 2;
+}
+
 function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<string> }) {
-  const [series, setSeries] = useState<Array<[string, number]> | null>(null);
+  const [data, setData] = useState<{ closes: Array<[string, number]>; currency: string | null } | null>(null);
   const [failed, setFailed] = useState(false);
+  const [range, setRange] = useState<StockRangeKey>("6M");
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   useEffect(() => {
     fetch(`/data/stocks/${slug}.json`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((d) => setSeries(d.closes))
+      .then((d) => setData({ closes: d.closes, currency: d.currency ?? null }))
       .catch(() => setFailed(true));
   }, [slug]);
-  if (!ticker.value) return null;
+
+  // Geometry (viewBox units); CSS scales the SVG to container width.
   const W = 640;
-  const H = 160;
-  const PAD = 6;
+  const H = 210;
+  const ML = 48; // room for Y labels
+  const MR = 12;
+  const MT = 12;
+  const MB = 22; // room for X labels
+  const plotL = ML;
+  const plotR = W - MR;
+  const plotT = MT;
+  const plotB = H - MB;
+  const plotW = plotR - plotL;
+  const plotH = plotB - plotT;
+
+  const closes = data?.closes ?? null;
+
+  // Which range buttons to show: skip any whose window duplicates a shorter one.
+  const rangeButtons = useMemo(() => {
+    if (!closes || closes.length < 2) return [] as Array<{ key: StockRangeKey; len: number }>;
+    const lastDate = new Date(closes[closes.length - 1]![0]).getTime();
+    const seen = new Set<number>();
+    const out: Array<{ key: StockRangeKey; len: number }> = [];
+    for (const r of STOCK_RANGES) {
+      const cutoff = r.days === Infinity ? -Infinity : lastDate - r.days * 86400000;
+      const len = closes.filter(([d]) => new Date(d).getTime() >= cutoff).length;
+      if (len < 2 || seen.has(len)) continue;
+      seen.add(len);
+      out.push({ key: r.key, len });
+    }
+    return out;
+  }, [closes]);
+
+  // Effective range: fall back to the largest visible window if the pick is hidden.
+  const effRange: StockRangeKey =
+    rangeButtons.find((b) => b.key === range)?.key ?? rangeButtons[rangeButtons.length - 1]?.key ?? "ALL";
+
+  const sliced = useMemo(() => {
+    if (!closes || closes.length < 2) return [] as Array<[string, number]>;
+    const def = STOCK_RANGES.find((r) => r.key === effRange)!;
+    if (def.days === Infinity) return closes;
+    const cutoff = new Date(closes[closes.length - 1]![0]).getTime() - def.days * 86400000;
+    return closes.filter(([d]) => new Date(d).getTime() >= cutoff);
+  }, [closes, effRange]);
+
   let chart: ReactNode = null;
-  if (series && series.length > 1) {
-    const vals = series.map(([, c]) => c);
-    const min = Math.min(...vals);
-    const max = Math.max(...vals);
-    const span = max - min || 1;
-    const pts = series
-      .map(([, c], i) => {
-        const x = PAD + (i / (series.length - 1)) * (W - 2 * PAD);
-        const y = H - PAD - ((c - min) / span) * (H - 2 * PAD);
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      })
-      .join(" ");
+  if (sliced.length > 1) {
+    const n = sliced.length;
+    const vals = sliced.map(([, c]) => c);
+    const dmin = Math.min(...vals);
+    const dmax = Math.max(...vals);
+    const pad = (dmax - dmin || dmax || 1) * 0.08;
+    const lo = dmin - pad;
+    const hi = dmax + pad;
+    const span = hi - lo || 1;
+    const cur = stockCurrencyPrefix(data?.currency ?? null);
+
+    const x = (i: number) => plotL + (i / (n - 1)) * plotW;
+    const y = (c: number) => plotT + ((hi - c) / span) * plotH;
+
+    const line = sliced.map(([, c], i) => `${x(i).toFixed(1)},${y(c).toFixed(1)}`).join(" ");
+
+    const ticks = stockNiceTicks(lo, hi, 4).filter((t) => t >= lo && t <= hi);
+    const step = ticks.length > 1 ? ticks[1]! - ticks[0]! : span;
+    const dec = stockDecimals(step);
+
+    // ~4 date ticks across the window.
+    const xtCount = Math.min(4, n);
+    const longWindow = (STOCK_RANGES.find((r) => r.key === effRange)!.days ?? Infinity) > 300 || effRange === "ALL";
+    const fmtDate = (iso: string) => (longWindow ? iso.slice(0, 7) : iso.slice(5));
+    const xTicks = Array.from({ length: xtCount }, (_, k) => Math.round((k / (xtCount - 1 || 1)) * (n - 1)));
+
     const first = vals[0]!;
-    const last = vals[vals.length - 1]!;
+    const last = vals[n - 1]!;
     const up = last >= first;
+    const pct = first ? ((last - first) / first) * 100 : 0;
+
+    const hIdx = hoverIdx == null ? null : Math.max(0, Math.min(n - 1, hoverIdx));
+    const hPoint = hIdx == null ? null : sliced[hIdx]!;
+
+    const onMove = (clientX: number) => {
+      const svg = svgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      if (rect.width === 0) return;
+      const vx = ((clientX - rect.left) / rect.width) * W;
+      const frac = (vx - plotL) / plotW;
+      setHoverIdx(Math.max(0, Math.min(n - 1, Math.round(frac * (n - 1)))));
+    };
+
     chart = (
       <>
-        <svg viewBox={`0 0 ${W} ${H}`} className="stock-chart" role="img" aria-label="6 month close prices">
-          <polyline points={pts} fill="none" stroke="currentColor" strokeWidth="2" />
-        </svg>
-        <p className="dim mono stock-meta">
-          {series[0]![0]} to {series[series.length - 1]![0]} | last close {last.toFixed(2)} |{" "}
-          {up ? "+" : ""}{(((last - first) / first) * 100).toFixed(1)}% over period | market data: Yahoo Finance,
-          end of day
-        </p>
+        <div className="stock-head">
+          <span className="stock-last mono">
+            {cur}
+            {last.toFixed(2)}
+          </span>
+          <span className={`stock-chg mono ${up ? "up" : "down"}`}>
+            {up ? "+" : ""}
+            {pct.toFixed(1)}%
+          </span>
+          <span className="stock-attr dim mono">market data: Yahoo Finance, end of day</span>
+        </div>
+        <div className="sig-tabs stock-tabs">
+          {rangeButtons.map((b) => (
+            <button
+              key={b.key}
+              type="button"
+              className={`sig-tab${b.key === effRange ? " active" : ""}`}
+              aria-pressed={b.key === effRange}
+              onClick={() => {
+                setRange(b.key);
+                setHoverIdx(null);
+              }}
+            >
+              {b.key}
+            </button>
+          ))}
+        </div>
+        <div className="stock-chart-wrap">
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${W} ${H}`}
+            className="stock-chart"
+            role="img"
+            aria-label={`${effRange} close prices, last ${cur}${last.toFixed(2)}`}
+            onPointerMove={(e) => onMove(e.clientX)}
+            onPointerDown={(e) => onMove(e.clientX)}
+            onPointerLeave={() => setHoverIdx(null)}
+          >
+            {/* Y gridlines + labels */}
+            {ticks.map((t) => {
+              const gy = y(t);
+              return (
+                <g key={`y${t}`}>
+                  <line x1={plotL} y1={gy} x2={plotR} y2={gy} stroke="var(--line)" strokeWidth="1" />
+                  <text x={plotL - 6} y={gy + 3} textAnchor="end" className="stock-axis-label">
+                    {cur}
+                    {t.toFixed(dec)}
+                  </text>
+                </g>
+              );
+            })}
+            {/* X ticks */}
+            {xTicks.map((i, k) => (
+              <text
+                key={`x${i}`}
+                x={x(i)}
+                y={H - 6}
+                textAnchor={k === 0 ? "start" : k === xTicks.length - 1 ? "end" : "middle"}
+                className="stock-axis-label"
+              >
+                {fmtDate(sliced[i]![0])}
+              </text>
+            ))}
+            {/* price line */}
+            <polyline points={line} fill="none" stroke="var(--fg)" strokeWidth="1.5" />
+            {/* crosshair */}
+            {hIdx != null && hPoint && (
+              <g>
+                <line
+                  x1={x(hIdx)}
+                  y1={plotT}
+                  x2={x(hIdx)}
+                  y2={plotB}
+                  stroke="var(--acc)"
+                  strokeWidth="1"
+                />
+                <circle cx={x(hIdx)} cy={y(hPoint[1])} r="3" fill="var(--acc)" />
+                <text
+                  x={x(hIdx) < W / 2 ? x(hIdx) + 6 : x(hIdx) - 6}
+                  y={plotT + 10}
+                  textAnchor={x(hIdx) < W / 2 ? "start" : "end"}
+                  className="stock-readout"
+                >
+                  {hPoint[0]}  {cur}
+                  {hPoint[1].toFixed(2)}
+                </text>
+              </g>
+            )}
+          </svg>
+        </div>
       </>
     );
-  } else if (failed) {
-    chart = <p className="dim">No price series available yet; the daily pipeline fills it.</p>;
+  } else if (failed || (data && (!closes || closes.length < 2))) {
+    chart = (
+      <div className="stock-chart-wrap stock-empty">
+        <p className="dim">No price series available yet; the daily pipeline fills it.</p>
+      </div>
+    );
+  } else {
+    chart = <div className="stock-chart-wrap" />;
   }
+
+  if (!ticker.value) return null;
   return (
     <section id="stock" className="panel">
       <h2>stock</h2>

@@ -1,9 +1,11 @@
 /**
- * Fetches ~6 months of daily closes for every registry profile carrying a
+ * Fetches ~2 years of daily closes for every registry profile carrying a
  * stock_symbol, writing public/data/stocks/<slug>.json for the profile-page
  * chart. Run daily by cron. Provider: Yahoo Finance chart endpoint (JSON,
- * end-of-day granularity at range=6mo/interval=1d); attribution rendered
- * in the UI.
+ * end-of-day granularity at range=2y/interval=1d); the chart slices this
+ * series client-side for its 1M/6M/1Y/ALL range toggle. Attribution rendered
+ * in the UI. Output schema is unchanged (fetched_at, source, provider,
+ * currency, symbol, closes:[[date,close]]).
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -25,7 +27,7 @@ for (const dir of ["organizations", "constellations"]) {
 mkdirSync(OUT, { recursive: true });
 let ok = 0;
 for (const t of targets) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t.symbol)}?range=6mo&interval=1d`;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t.symbol)}?range=2y&interval=1d`;
   try {
     const res = await fetch(url, { headers: { "user-agent": UA } });
     if (!res.ok) {

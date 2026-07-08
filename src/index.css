@@ -2243,9 +2243,25 @@ a.sig-card:hover .sig-p-x {
 }
 .timeline li > span + span { display: block; max-width: 62ch; }
 
-/* Stock section: 6-month close chart (data: Stooq) */
-.stock-chart { width: 100%; max-width: 640px; height: auto; color: var(--acc); border: 1px solid var(--line); background: var(--panel); }
-.stock-meta { font-size: 12px; letter-spacing: 0.04em; }
+/* Stock section: close-price chart with range toggle (data: Yahoo Finance) */
+.stock-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.6rem 0 0.5rem; }
+.stock-last { font-size: 1.35rem; font-weight: 700; color: var(--fg); letter-spacing: 0.02em; }
+.stock-chg { font-size: 0.9rem; font-weight: 700; color: var(--fg); }
+.stock-chg.down { color: var(--dim); }
+.stock-attr { font-size: 12px; letter-spacing: 0.04em; margin-left: auto; }
+.stock-tabs { margin-bottom: 0.5rem; }
+.stock-chart-wrap { min-height: 220px; }
+.stock-empty { display: flex; align-items: center; }
+.stock-chart {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  touch-action: pan-y;
+}
+.stock-axis-label { fill: var(--dim); font-family: var(--mono); font-size: 10px; letter-spacing: 0.02em; }
+.stock-readout { fill: var(--acc); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; }
 
 /* ------------------------------------------------------------------ snr
    Signal-to-noise bars, trace popover, disputed/provisional tags
