@@ -40,17 +40,22 @@ jobs:
         # are listed in this step's log for Florian / the agent.
         run: bun scripts/resolve-claims.ts
 
+      - name: Deterministic registry enrichment (null-fill from LL2/CelesTrak/GCAT)
+        run: bun scripts/enrich-registry.ts
+
       - name: Run the registry maintenance agent
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Read CLAUDE.md (Registry rules) and prompts/maintain-registry.md
-            in full, then execute the maintenance procedure exactly. Update
+            in full, then execute the maintenance procedure exactly:
+            consume src/data/registry-candidates.json first, then update
             factual fields on existing profiles only, every change with a
             fresh source URL and as_of date; touch nothing outside
-            src/data/registry/ and public/data/orbits/facilities.json. Do
-            not commit or push; the workflow handles that.
+            src/data/registry/, public/data/orbits/facilities.json, and
+            the crossfeed queue file. Do not commit or push; the workflow
+            handles that.
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
@@ -66,13 +71,13 @@ jobs:
           # The Claude action swaps git credentials for its own short-lived
           # app token; point the remote back at the workflow token to push.
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git diff --quiet -- src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json; then
+          if git diff --quiet -- src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json; then
             echo "No registry or ledger changes; nothing to commit."
             exit 0
           fi
           git config user.name "mcc-registry-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json
+          git add src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json
           git commit -m "registry: maintenance update ($(date -u '+%Y-%m-%d %H:%M UTC'))"
           # main may have moved during the run; registry commits touch only
           # data files, so a rebase is clean or fails loudly.

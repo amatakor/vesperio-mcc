@@ -41,21 +41,44 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
 - Add, remove, rename, or restructure profiles or fields. Those changes
   go through reviewed PRs opened by Florian.
 - Estimate, interpolate, or carry a number forward without re-verifying.
-- Touch anything outside `src/data/registry/` and
-  `public/data/orbits/facilities.json`. The other files under
-  `public/data/orbits/` belong to the deterministic update-orbits
-  workflow; never edit them.
+- Touch anything outside `src/data/registry/`,
+  `public/data/orbits/facilities.json`, and the crossfeed queue
+  `src/data/registry-candidates.json` (which you consume, step 1). The
+  other files under `public/data/orbits/` belong to the deterministic
+  update-orbits workflow; never edit them.
 
 ## Procedure
 
-1. List profiles: `ls src/data/registry/constellations src/data/registry/vehicles`.
-2. Pull current launch/orbit facts from the Launch Library API first;
-   it covers most vehicle and launch-count fields in one pass.
-3. For constellation fields the API does not cover, check the operator's
+1. **Consume the crossfeed queue FIRST.** Read
+   `src/data/registry-candidates.json` (written by finalize-sweep from
+   attested facts on scored news items). For every entry, do exactly one
+   of these, then REMOVE the entry from the queue (entries leave the
+   queue only by being consumed):
+   - Land it: for `null_fill` and `flag_refresh` entries, verify the
+     item's source URL still states the value, then write the field with
+     that URL as `source`, today's `as_of`, and the SNR its class earns
+     (see below). `flag_refresh` means the news claim outranked the
+     stored fact; refresh the field from the stronger source.
+   - Reject it: when the source no longer states the value, the value
+     fails the field's shape, or the metric does not truly match. Record
+     one line per rejection in your run summary with the reason.
+   - Queue it for Florian: `both_disputed_queue` entries and anything
+     genuinely ambiguous become a `held.json`-style note in your run
+     summary; for a disputed fact, add the competing claim to the
+     field's `disputed.competing` list instead of overwriting.
+   - `annotate_mismatch`, `below_entry_bar`, and `no_registry_change`
+     entries are informational: consume them (remove from the queue),
+     no registry write.
+2. List profiles: `ls src/data/registry/constellations src/data/registry/vehicles`.
+3. Pull current launch/orbit facts from the Launch Library API first;
+   it covers most vehicle and launch-count fields in one pass. (The
+   deterministic `scripts/enrich-registry.ts` step has already run
+   before you; do not repeat its null-fills, work on what it left.)
+4. For constellation fields the API does not cover, check the operator's
    own site and recent items in `src/data/items.json`.
-4. Apply changes conservatively: no source, no change.
-5. Run `bun run build`; the check scripts must pass.
-6. Do not commit or push; the workflow handles it.
+5. Apply changes conservatively: no source, no change.
+6. Run `bun run build`; the check scripts must pass.
+7. Do not commit or push; the workflow handles it.
 
 ## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
 

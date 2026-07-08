@@ -1083,6 +1083,26 @@ function GuntersAttribution({ rows }: { rows: ProfileRow[] }) {
   );
 }
 
+/**
+ * GCAT is CC-BY; the license requires visible attribution wherever its
+ * data renders. Exact string per the enrichment contract.
+ */
+function GcatAttribution({ rows }: { rows: ProfileRow[] }) {
+  const cited = rows.some(
+    ([, f]) => typeof f.source === "string" && f.source.includes("planet4589.org"),
+  );
+  if (!cited) return null;
+  return (
+    <p className="dim attribution">
+      Includes{" "}
+      <a href="https://planet4589.org/space/gcat/" rel="noopener">
+        data from GCAT (J. McDowell, planet4589.org/space/gcat)
+      </a>
+      , CC-BY.
+    </p>
+  );
+}
+
 type EntityKind = "eo" | "connectivity" | "iot" | "vehicle" | "spaceport" | "org";
 
 interface RegEntry {
@@ -1944,6 +1964,7 @@ function SourcesSection({ rows }: { rows: ProfileRow[] }) {
         ))}
       </ol>
       <GuntersAttribution rows={rows} />
+      <GcatAttribution rows={rows} />
     </section>
   );
 }

@@ -126,16 +126,26 @@ result when nothing on-scope happened; padding is still the bug.
    Sources are distinct only if independent: wire rewrites and
    syndicated copies of one story count as ONE source. Do not stack
    near-identical URLs to farm corroboration.
-5. **Registry crossfeed check.** For each claim that touches a registry
-   fact (counts, statuses, dates), compare like-for-like FIRST:
-   cataloged-on-orbit, operates, launched, and announced are different
-   metrics, and computed/orbital figures are authoritative ONLY for
-   "cataloged on orbit, as_of date" — they never contradict
-   "operational" or "announced" claims. On a genuine same-metric
-   contradiction with a registry fact: state the tension explicitly in
-   the item copy (attributing both sides) and add an edit-queue entry
-   to `held` describing the conflict for Florian. Do not silently pick
-   a side; automated dispute mechanics land with the registry sink.
+5. **Registry crossfeed check (attested, code-enforced).** For each NEW
+   item whose claims touch a registry fact (counts, statuses, dates,
+   figures on a constellation/vehicle/spaceport/organization profile),
+   compare like-for-like FIRST: cataloged-on-orbit, operates, launched,
+   and announced are different metrics, and computed/orbital figures are
+   authoritative ONLY for "cataloged on orbit, as_of date" (they never
+   contradict "operational" or "announced" claims;
+   `sats_active_verified` is machine-computed and never crossfed).
+
+   You attest the extraction and the like-for-like judgment in a
+   `crossfeed` block on the item (see the draft format below); the
+   deterministic gate runs `reconcile()` on your inputs, writes the
+   outcomes to `src/data/registry-candidates.json` for the weekly
+   registry run, applies the dispute downgrade when a canonical fact
+   wins, and queues genuine ties for Florian. The gate REJECTS a draft
+   whose item companies map to registry entities at SNR >= 3 with no
+   crossfeed block: an honest "no like-for-like metric in this item" is
+   `"crossfeed": { "facts": [], "note": "..." }`, silence is not. On a
+   genuine same-metric contradiction, still state the tension in the
+   item copy, attributing both sides; the score math is the gate's.
 6. **Classify sources honestly.** Every source you attach carries a
    `class`; the deterministic gate scores from it, so misclassification
    is the cardinal sin of this pipeline:
@@ -181,6 +191,18 @@ result when nothing on-scope happened; padding is still the bug.
            "extraordinary": false,
            "crawl": "found_some|found_none|not_attempted",
            "whitelist": null
+         },
+         "crossfeed": {
+           "facts": [
+             {
+               "entity_slug": "iceye",
+               "field": "sats_launched_total",
+               "value": 52,
+               "metric": "cumulative ICEYE satellites launched, as stated by the operator",
+               "same_metric": true
+             }
+           ],
+           "note": "required when facts is empty: why no registry metric is touched"
          }
        }
      ],
