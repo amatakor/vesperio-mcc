@@ -77,10 +77,15 @@ result when nothing on-scope happened; padding is still the bug.
    fetches per sweep**; if `fetchableCount` exceeds what the budget
    allows, rotate so every fetchable channel is covered at least
    weekly and say so in the note. Channel finds are classed per the
-   whitelist rules in step 6. Factual claims draft as events; a
-   substantive take or analysis from a whitelisted person may draft as
-   a commentary item (see Commentary below). Jokes and off-topic posts
-   are discarded silently. Record the outcome in the draft's `signalsPass`
+   whitelist rules in step 6. Factual claims draft as events. A
+   substantive on-scope take, analysis, or video from a whitelisted
+   person's channel drafts as a commentary item BY DEFAULT (Florian,
+   2026-07-08): do not skip it for being opinion; that is what the
+   commentary kind is for. For video channels, draft from the video's
+   title and description as published (never assert what is said in
+   the video beyond what the title/description state; "discusses X" is
+   honest). Only jokes, one-liners, reposts, and off-topic content are
+   discarded silently. Record the outcome in the draft's `signalsPass`
    block (required whenever `fetchableCount > 0`): `checked` = the
    fetchable channel URLs you fetched this run, `xAttempted` = how many
    X handles you searched, `note` = one line on what was found (or why
@@ -105,6 +110,12 @@ result when nothing on-scope happened; padding is still the bug.
    run. Publishing an early signal at SNR 1-2 with honest scoring is
    the model working; the gate is attribution, not confidence. Low-SNR
    items from this pass are a feature, not a defect.
+   If discovery (or the queue) surfaces an important event, one that
+   would class notable or seismic, whose event date predates the sweep
+   window, do NOT drop it as stale (Florian, 2026-07-08): chase the
+   original event, find a dateable fetchable source, and publish it
+   dated on the actual event date. Dedup and corroboration rules apply
+   as usual.
 
    **Google News queue entries (mainstream trigger).** The harvester
    queues entries from Google News query feeds (sources.json category

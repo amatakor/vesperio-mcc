@@ -883,3 +883,13 @@ a newer entry if a lesson changes.
   exclusion for constellation programs (science-only missions stay out).
   The IRIDE held entry carries decision.verdict=publish; the next sweep
   drafts it per prompts/update-items.md step 7.
+- 2026-07-08-H2: Ruling (Florian): substantive on-scope posts/videos from
+  whitelisted signals channels (Bluesky, YouTube, sites) publish as commentary
+  items by default; do not hold them to a news-event bar. Video items draft
+  from title+description only, never asserted video content.
+- 2026-07-08-I2: Ruling (Florian): an important (notable/seismic) event that
+  discovery surfaces but whose date predates the sweep window is chased and
+  published on its actual event date, not dropped as stale. FIRST APPLICATION,
+  standing task for the next sweep: the Airbus/Thales/Leonardo "Project Bromo"
+  space merger and OHB's antitrust opposition have never been covered; chase
+  the announcement and the opposition as dateable events.
