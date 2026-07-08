@@ -700,3 +700,34 @@ a newer entry if a lesson changes.
   and `public/img/items` explicitly (never `-A`), so untracked scratch
   fetch files at the repo root are never staged or committed. Safe to
   leave them; no cleanup action is possible or needed.
+
+## Narrow same-day re-check, 14-source filtered list, ~3.4hr window (2026-07-08)
+
+- 2026-07-08-A: A second new-actor-not-in-registry case (confirms
+  2026-07-07-K, this time on the D-Orbit side of a two-party deal):
+  ArkEdge Space's own July 8 press release
+  (arkedgespace.com/en/news/2026-07-08_d-orbit) confirms and adds detail
+  to SpaceNews's D-Orbit/ArkEdge ION-carrier launch contract story, but
+  ArkEdge has no registry profile, so `loadRegistryHosts` has nothing to
+  match `arkedgespace.com` against and classing it `first_party` would
+  hard-reject the draft even though it's genuinely the concerned party's
+  own domain. Followed the 2026-07-07-K pattern exactly: led with
+  SpaceNews (trade, gate-safe), linked ArkEdge's release in
+  `secondary_urls` (unscored but honest), and set `crawl: "found_some"`
+  since real independent confirmation was found and linked, distinct
+  from `found_none`. D-Orbit itself IS in the registry
+  (`dorbit.website` = dorbit.space) but that's irrelevant here since the
+  candidate first-party URL is ArkEdge's domain, not D-Orbit's -- the
+  gate matches per-URL host, not per-item "is either party registered."
+- 2026-07-08-B: Confirms 2026-07-06-GG's dating convention on a second
+  case: SpaceNews's July 8 writeup of Skyroot's Vikram-1 launch window
+  was itself new discovery today (first time any run's source list
+  carried it), but the underlying announcement was made July 2 and
+  independently wire-reported by PTI the same day (picked up verbatim
+  by theprint.in, business-standard.com, and several other Indian
+  outlets -- all one source under the wire-rewrite rule). Dated the
+  item to the July 2 announcement date, not the July 8 SpaceNews publish
+  date, and attached the PTI/ThePrint copy as a second, genuinely
+  independent `mainstream`-class source for corroboration (SpaceNews's
+  piece carried fresh, un-wired CEO/SVP quotes not in the PTI text, so
+  it wasn't a pure rewrite of the same story).
