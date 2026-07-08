@@ -838,3 +838,20 @@ a newer entry if a lesson changes.
   frozen archive. Always fetch the exact URL stored in sources.json first
   before concluding a source needs a path fix; don't guess a plausible
   path and treat a wrong guess as evidence of a source problem.
+
+## Deep-sweep corrections (2026-07-08)
+
+- 2026-07-08-A: Corroboration crawls MUST include the exact headline as
+  a quoted search phrase. The NSSL Lane 1 item shipped with found_none
+  (SNR 2) while Inside Defense and Aviation Week both covered the story
+  and a quoted-title Google search surfaced them instantly; Florian
+  caught it from a screenshot. found_none is a claim a reader can
+  falsify in 20 seconds; earn it. Also: check candidates.json for the
+  same story from other outlets before crawling the open web at all;
+  the Google News query feeds routinely carry one event from several
+  publishers.
+- 2026-07-08-B: Outlet names never lead a headline ("SpaceNews: ...").
+  Cards display events, not articles; attribution lives in the copy,
+  sources list, and SNR trace. 38 published headlines were migrated
+  clean (scripts/migrations/2026-07-08-headline-attribution.ts) and the
+  prompt + CLAUDE.md now say so explicitly.

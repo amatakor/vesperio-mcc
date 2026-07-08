@@ -151,9 +151,20 @@ result when nothing on-scope happened; padding is still the bug.
      an older related item exists.
 4. **Corroboration crawl.** MANDATORY for every NEW candidate: actively
    search for other coverage of the same claim. The mechanism is
-   **WebSearch, on the open web**: run 1-2 searches per event (actor +
-   the event's distinguishing noun; add the program or contract name
-   when there is one), then fetch the strongest distinct hits. The
+   **WebSearch, on the open web**: run AT LEAST 2 searches per event,
+   and one of them MUST be the item's headline (or the source's own
+   headline) as an exact quoted phrase; add actor + the event's
+   distinguishing noun and the program or contract name as variants.
+   Then fetch the strongest distinct hits. Also check the
+   candidates.json queue itself for the same story from other outlets
+   before concluding anything: the Google News feeds routinely carry
+   one event from several publishers, and queue corroboration is free.
+   The bar for "found_none": a reader repeating your quoted-headline
+   search 20 seconds later must find nothing you did not. A found_none
+   that a trivial search contradicts is a published falsehood about
+   the web and the exact failure the calibration ledger exists to
+   catch (the 2026-07-08 NSSL Lane 1 case: two majors covered it,
+   the item shipped claiming none did). The
    run's source filter NEVER constrains this step: the filter governs
    discovery (which feeds you walk for candidates), not corroboration
    (verifying a claim you already found). Cross-checking the run's own
@@ -338,8 +349,10 @@ An item ships when all are true:
   in a linked source; numbers copied exactly or omitted
 - The copy attributes claims ("ICEYE says", "per the FCC filing",
   "per SpaceNews", "per @handle on X") and never claims more certainty
-  than the sources support. When the lead is not first-party, the
-  headline names the sourcing ("SpaceNews: ...", "Per @handle: ...")
+  than the sources support. The HEADLINE never names the outlet
+  (Florian, 2026-07-08): cards display events, not articles; keep the
+  headline actor-first and put the attribution in the tagline or
+  what_happened when the lead is not first-party
 - New information, not a rewrite of an existing item (use `updates` for
   developments on an existing story)
 - A commercial director at an operator, reseller, or investor would
