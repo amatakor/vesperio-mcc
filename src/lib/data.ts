@@ -17,6 +17,8 @@ import type {
   OrgProfile,
 } from "../data/schema";
 import { DOMAIN_TAGS } from "../data/schema";
+import { calibration } from "../../scripts/snr/ledger";
+import type { CalibrationBucket } from "../../scripts/snr/ledger";
 import itemsJson from "../data/items.json";
 import signalsJson from "../data/signals.json";
 import stateJson from "../data/state.json";
@@ -34,6 +36,13 @@ export const signalAvatars: Record<string, string> = signalAvatarsJson as Record
 
 export const ledgerSources: LedgerSource[] = (sourceLedgerJson as unknown as SourceLedgerFile)
   .sources;
+
+/**
+ * Calibration report for /log (SNR_PLAN §A4): score-at-publication vs how
+ * each claim resolved. Computed by the same pure function the scoring
+ * engine's tests exercise; scripts/snr/ledger.ts has no runtime deps.
+ */
+export const calibrationBuckets: CalibrationBucket[] = calibration(ledgerSources);
 
 export const sweeps: SweepLogEntry[] = (stateJson as StateFile).sweeps
   .slice()

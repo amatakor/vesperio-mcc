@@ -28,6 +28,7 @@ import {
   organizations,
   sweeps,
   ledgerSources,
+  calibrationBuckets,
   itemsByTag,
   itemsMentioning,
   constellationChildren,
@@ -2777,6 +2778,48 @@ export function LogPage() {
                   <td>{src.events.filter((e) => e.kind === "credit").length}</td>
                   <td>{src.claims.length}</td>
                   <td>{src.class_override ? "yes" : ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+      <section className="panel" id="calibration">
+        <h2>calibration</h2>
+        <p className="dim">
+          Whether the scores are honest is itself measured: every claim records its SNR at
+          publication and how it later resolved. Confirmed means the claim reached SNR 4+
+          independent of any whitelist floor, or a direct source landed; debunked means it lost a
+          same-metric contradiction. Unresolved counts include claims still maturing and claims
+          expired without a signal either way.
+        </p>
+        {calibrationBuckets.length === 0 ? (
+          <p className="empty">// no scored claims recorded yet</p>
+        ) : (
+          <table className="profile">
+            <thead>
+              <tr>
+                <th>published at</th>
+                <th>claims</th>
+                <th>confirmed</th>
+                <th>debunked</th>
+                <th>unresolved</th>
+              </tr>
+            </thead>
+            <tbody>
+              {calibrationBuckets.map((b) => (
+                <tr key={b.snr}>
+                  <th scope="row">SNR {b.snr}</th>
+                  <td>{b.total}</td>
+                  <td>
+                    {b.confirmed}
+                    {b.confirmed > 0 && ` (${Math.round((b.confirmed / b.total) * 100)}%)`}
+                  </td>
+                  <td>
+                    {b.debunked}
+                    {b.debunked > 0 && ` (${Math.round((b.debunked / b.total) * 100)}%)`}
+                  </td>
+                  <td>{b.unresolved}</td>
                 </tr>
               ))}
             </tbody>

@@ -35,6 +35,7 @@ import {
   SEED_TAGS,
   SOURCE_CLASSES,
   PERSISTENCE_DAYS,
+  DEDUP_WINDOW_DAYS,
   CORROBORATION_FETCHES_PER_EVENT,
   CORROBORATION_FETCHES_PER_SWEEP,
 } from "../src/data/schema";
@@ -47,8 +48,8 @@ import {
   validateSourceLedgerFile,
 } from "./lib/validate";
 import { scoreClaim } from "./snr/score";
-import { applyModifier, daysBetween } from "./snr/match";
-import { recordClaim } from "./snr/ledger";
+import { applyModifier, daysBetween, matchDecision } from "./snr/match";
+import { recordClaim, effectiveClass } from "./snr/ledger";
 import { fetchableSignalChannels } from "./lib/signals";
 import type { SignalsFile } from "../src/data/schema";
 
@@ -456,6 +457,17 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const existingIds = new Set(items.items.map((i) => i.id));
   const registryHosts = loadRegistryHosts(opts.dataDir);
 
+  // Ledger demotion live (SNR_SPEC §7.1): every attested class is resolved
+  // through effectiveClass() before it scores, so "a ledger demotion lowers
+  // a trade source to informal" (CLAUDE.md) is enforced by code, not prose.
+  // With no live demotion the natural class passes through unchanged.
+  const ledgerLookup = new Map<string, LedgerSource>(ledger.sources.map((s) => [s.domain, s]));
+  const resolveClass = (url: string, natural: SourceClass): SourceClass => {
+    const domain = hostOf(url);
+    const entry = domain !== null ? ledgerLookup.get(domain) : undefined;
+    return entry === undefined ? natural : effectiveClass(natural, entry, today);
+  };
+
   const movements: SnrMovement[] = [];
   const autoHeld: DraftHeld[] = [];
 
@@ -533,6 +545,52 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       draftIds.add(raw.id);
     }
 
+    // ---- dedup-as-code gate (SNR_PLAN §A2) --------------------------------
+    // matchDecision() owns the window arithmetic the agent used to re-derive
+    // in prose. A NEW item that shares a company and category with an
+    // existing item inside DEDUP_WINDOW_DAYS is presumed to be the same
+    // event and must be drafted as an update. Distinct events do legally
+    // share company+category inside the window (two Starlink launches in a
+    // week), so the draft may attest that explicitly per matched item with
+    // dedup_distinct: [{ id, reason }]; unattested matches reject.
+    if (
+      typeof raw.date === "string" &&
+      typeof raw.category === "string" &&
+      Array.isArray(raw.companies)
+    ) {
+      const companies = (raw.companies as unknown[])
+        .filter((c): c is string => typeof c === "string")
+        .map((c) => c.toLowerCase());
+      const ackList = Array.isArray(raw.dedup_distinct)
+        ? (raw.dedup_distinct as unknown[])
+        : raw.dedup_distinct !== undefined
+          ? [raw.dedup_distinct]
+          : [];
+      const acked = (id: string): boolean =>
+        ackList.some(
+          (a) =>
+            isObj(a) &&
+            a.id === id &&
+            typeof a.reason === "string" &&
+            a.reason.trim() !== "",
+        );
+      for (const ex of items.items) {
+        if (ex.category !== raw.category) continue;
+        if (!ex.companies.some((c) => companies.includes(c.toLowerCase()))) continue;
+        if (matchDecision({ id: ex.id, date: ex.date, snr: ex.snr }, raw.date) !== "same_event") {
+          continue;
+        }
+        if (!acked(ex.id)) {
+          errors.push(
+            `${path}: same-event match with existing "${ex.id}" (shared company, category ` +
+              `"${ex.category}", within ${DEDUP_WINDOW_DAYS} days). Draft it as an updates[] entry ` +
+              `(attach/bump), or, if it is genuinely a distinct event, attest that with ` +
+              `dedup_distinct: [{ "id": "${ex.id}", "reason": "..." }] on the item.`,
+          );
+        }
+      }
+    }
+
     if (errors.length > 0) return; // don't score against a malformed block
 
     // Deterministic extraordinary guardrail (SNR_PLAN §B2).
@@ -548,7 +606,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     const mappedSources: ItemSource[] = scoring.sources.map((s) => ({
       url: s.url,
       outlet: s.outlet,
-      class: s.class as SourceClass,
+      class: resolveClass(s.url, s.class as SourceClass),
       added: today,
       via: (s.via ?? "initial") as ItemSource["via"],
     }));
@@ -571,6 +629,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       publishDate: nowIso,
     };
     delete (stamped as unknown as Obj).scoring;
+    delete (stamped as unknown as Obj).dedup_distinct;
 
     const before = errors.length;
     validateItem(stamped, `${path} (after scoring)`, errors);
@@ -684,7 +743,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         existingSources.push({
           url: a.url,
           outlet: a.outlet,
-          class: a.class as SourceClass,
+          class: resolveClass(a.url, a.class as SourceClass),
           added: today,
           via: a.via as ItemSource["via"],
         });
@@ -757,7 +816,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         return {
           url: sc.url,
           outlet: sc.outlet,
-          class: sc.class as SourceClass,
+          class: resolveClass(sc.url, sc.class as SourceClass),
           added: existing?.added ?? today,
           via: (existing?.via ?? sc.via ?? "initial") as ItemSource["via"],
         };
