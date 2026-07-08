@@ -42,6 +42,7 @@ function makeItem(over: Partial<Item> & { snrOver?: SnrValue; modifiers?: SnrMod
       what_happened: "TestCo announced a thing. The announcement is linked.",
       why_it_matters: "Things change markets; resellers care about this one.",
     },
+    kind: "event",
     tags: ["eo"],
     category: "constellation",
     impact: "notable",

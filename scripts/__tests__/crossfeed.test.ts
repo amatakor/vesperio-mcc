@@ -332,7 +332,9 @@ describe("finalize-sweep crossfeed wiring", () => {
           crawl: "found_none",
           whitelist: null,
         },
-        dedup_distinct: undefined,
+        dedup_distinct: [
+          { id: "2026-07-04-iceye-gen4-order", reason: "distinct follow-up event for the integration test" },
+        ],
       }),
     ]);
     const second = finalizeSweep({ dataDir, draftPath });
