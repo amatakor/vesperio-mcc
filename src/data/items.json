@@ -3063,8 +3063,11 @@
         "Impulse Space"
       ],
       "source_url": "https://spacenews.com/space-force-adds-relativity-impulse-space-to-national-security-launch-program/",
-      "secondary_urls": [],
-      "snr": 2,
+      "secondary_urls": [
+        "https://insidedefense.com/insider/two-companies-join-roster-available-space-force-launch-providers",
+        "https://aviationweek.com/space/launch-vehicles-propulsion/impulse-space-relativity-join-nssl-phase-3-lane-1-contract"
+      ],
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -3073,13 +3076,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-08",
+            "from": 2,
+            "to": 4,
+            "reason": "Corroboration correction (Florian caught the found_none error): Inside Defense and Aviation Week both cover the NSSL Lane 1 additions; the original crawl missed them. Rescored with crawl found_some and both trade sources attached."
+          }
+        ]
       },
       "sources": [
         {
@@ -3088,6 +3099,20 @@
           "class": "trade",
           "added": "2026-07-08",
           "via": "initial"
+        },
+        {
+          "url": "https://insidedefense.com/insider/two-companies-join-roster-available-space-force-launch-providers",
+          "outlet": "Inside Defense",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://aviationweek.com/space/launch-vehicles-propulsion/impulse-space-relativity-join-nssl-phase-3-lane-1-contract",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-08T10:03:10.953Z",
