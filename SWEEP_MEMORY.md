@@ -877,3 +877,9 @@ a newer entry if a lesson changes.
   inspace.gov.in) cannot pass the anti-spoof gate as official_record (not .gov,
   not in the fixed list, no registry profile). Lead with gate-safe trade and
   link the government page unscored, per the 2026-07-07-K pattern.
+- 2026-07-08-G2: Scope ruling (Florian): government-owned and sovereign
+  constellation programs (IRIDE) are IN scope; publish the program fact with
+  the commercial read. Supersedes the 2026-07-05-Q institutional-program
+  exclusion for constellation programs (science-only missions stay out).
+  The IRIDE held entry carries decision.verdict=publish; the next sweep
+  drafts it per prompts/update-items.md step 7.
