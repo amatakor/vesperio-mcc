@@ -770,3 +770,71 @@ a newer entry if a lesson changes.
   today. Always open the actual article and check its dateline before
   treating a search hit as this window's news, especially for
   headline-shaped "big number" stories that read as evergreen.
+
+## Deep sweep, ~3h43m gap, escalated mode "deep" (2026-07-08)
+
+- 2026-07-08-F: A general-purpose research agent (no web access, reading
+  only candidates.json) is an effective way to triage a ~5,000-line
+  harvester queue dominated by SpaceX stock/IPO clickbait: it produced a
+  clean story-level shortlist in one pass. But it only had a partial
+  "already known to MCC" list (the first ~200 lines of sweep-context
+  output), so several of its "new" candidates (Simera Sense, Orbit Fab,
+  Isar/Nova-Scotia, RFA ONE window, Apolink, the Rocket Lab rideshare-panic
+  piece, NASA CSDA, Wolfgang Schmidt) turned out to already be published
+  under different slugs. Always cross-check a shortlisting agent's output
+  against the FULL existing[] id list (`grep -o '"id": "[^"]*"'` on
+  sweep-context.ts output) before drafting, not just the subset quoted in
+  its prompt.
+- 2026-07-08-G: SpaceX's July FCC filing for a 100,000-satellite Gen3
+  Starlink shell (docket SAT-LOA-20260630-00264) had, as of this sweep,
+  no coverage at all from SpaceNews, Payload, or Via Satellite (checked
+  Via Satellite's own July connectivity archive directly: not there) --
+  only secondary tech/finance blogs (Converge Digest, TradingKey,
+  NextBigFuture, wccftech, basenor) had it, all independently citing the
+  same filing number and specs. Published anyway at informal-tier per
+  CLAUDE.md's "early signal at low SNR is the model working," rather than
+  holding for weak sourcing (hard rule: weak sourcing is never a hold
+  reason). The FCC's own ICFS portal (fccprod.servicenowservices.com/icfs)
+  is a JS shell to plain fetch, same failure mode as SAM.gov/esa-star;
+  not usable as a direct check even with the exact filing number in hand.
+- 2026-07-08-H: A scope judgment call, first time this exact shape came
+  up: NATO's "HALO" hybrid-satellite-constellation announcement (8 allies,
+  NATO Summit Defence Industry Forum) is institutions networking their
+  OWN sovereign military satellites, with explicitly zero commercial
+  vendor named in either source checked (Via Satellite said so directly).
+  Held rather than published, following the 2026-07-06 Italy IRIDE
+  precedent: a government/institutional space program without a stated
+  commercial-operator angle is a scope question even when it's clearly
+  newsworthy and multi-sourced.
+- 2026-07-08-I: One registry crossfeed nuance worth remembering: a new
+  satellite GENERATION launching (Unseenlabs' first Gen 2 satellite,
+  BRO-31) is not a same-metric update to an existing `sats_active_claimed`
+  count when the company hasn't itself restated a new total including it
+  -- crossfeed facts stayed empty with a note rather than inventing an
+  incremented count. Similarly, a brand-new FCC filing proposing a
+  separate future satellite shell (SpaceX Gen3, 100,000 sats) against an
+  existing `sats_planned` registry value (Starlink's current 29,988) is
+  `same_metric: false`, not a contradiction -- it's a distinct, unadjudicated
+  proposal, not a restatement of the authorized total.
+- 2026-07-08-J: YouTube RSS feeds (`youtube.com/feeds/videos.xml?channel_id=...`)
+  have a channel-level `<published>` tag (the channel's creation date, often
+  10+ years old) BEFORE the first `<entry>`; a naive `grep -o '<published>...'`
+  grabs that stale date instead of the latest video's. Grep for `<entry>`
+  blocks or just read enough of the file to reach the first per-video
+  `<published>` tag (appears after each video's own `<title>`).
+- 2026-07-08-K: The Bluesky public API's `getAuthorFeed` response embeds
+  MULTIPLE `createdAt` timestamps per feed item (the post's own, plus any
+  quoted/embedded post's, in unpredictable order), so a flat
+  `grep -o '"createdAt":"[^"]*"'` over raw JSON does not reliably surface
+  the top post's actual timestamp -- it can return an embedded quote's much
+  older date first. Treat grep-scraped Bluesky timestamps as indicative,
+  not authoritative, for accounts with reposts/quote-posts; a proper JSON
+  parse (or reading the feed via a script) would be needed to get this
+  right mechanically.
+- 2026-07-08-L: Confirms 2026-07-06-V's lesson on a new pair of sources:
+  Pixxel's configured source URL (pixxel.space/newsroom) and ULA's
+  (newsroom.ulalaunch.com) were BOTH already correct in sources.json --
+  my own guessed alternate paths (/updates, /about/news) 404'd or hit the
+  frozen archive. Always fetch the exact URL stored in sources.json first
+  before concluding a source needs a path fix; don't guess a plausible
+  path and treat a wrong guess as evidence of a source problem.
