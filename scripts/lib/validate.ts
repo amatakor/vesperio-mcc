@@ -423,6 +423,21 @@ export function validateStateFile(data: unknown): string[] {
         reqString(s.signals as Record<string, unknown>, "note", p, errors);
       }
     }
+    if (s.discovery !== undefined) {
+      const p = `${path}.discovery`;
+      if (!isObj(s.discovery)) {
+        errors.push(`${p}: must be an object when present`);
+      } else {
+        const q = (s.discovery as Record<string, unknown>).queries;
+        if (typeof q !== "number" || !Number.isInteger(q) || q < 0) {
+          errors.push(`${p}.queries: required non-negative integer`);
+        }
+        reqString(s.discovery as Record<string, unknown>, "note", p, errors);
+      }
+    }
+    if (s.mode !== undefined && s.mode !== "deep") {
+      errors.push(`${path}.mode: must be "deep" when present`);
+    }
   });
   return errors;
 }

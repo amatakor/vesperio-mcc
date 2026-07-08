@@ -2760,6 +2760,7 @@ export function LogPage() {
               <span className={`chip${s.added > 0 ? " chip-notable" : ""}`}>+{s.added}</span>
               <span className="chip">~{s.updated}</span>
               {s.held > 0 && <span className="chip">{s.held} held</span>}
+              {s.mode === "deep" && <span className="chip chip-deep">deep sweep</span>}
             </div>
             <p className="sweep-summary">{s.summary}</p>
             {s.signals && (
@@ -2768,6 +2769,12 @@ export function LogPage() {
                 checked · {s.signals.x_attempted} X handle
                 {s.signals.x_attempted === 1 ? "" : "s"} searched
                 <span className="sweep-signals-note"> · {s.signals.note}</span>
+              </p>
+            )}
+            {s.discovery && (
+              <p className="sweep-signals mono dim" title={s.discovery.note}>
+                discovery pass: {s.discovery.queries} quer{s.discovery.queries === 1 ? "y" : "ies"}
+                <span className="sweep-signals-note"> · {s.discovery.note}</span>
               </p>
             )}
             {s.snr_movements && s.snr_movements.length > 0 && (

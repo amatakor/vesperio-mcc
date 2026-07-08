@@ -211,7 +211,19 @@ describe("finalize-sweep crossfeed wiring", () => {
   function writeDraft(items: Record<string, unknown>[]): void {
     writeFileSync(
       draftPath,
-      JSON.stringify({ newItems: items, updates: [], held: [], sourceHealth: [], summary: "t", coverage: ["constellation"] }),
+      JSON.stringify({
+        newItems: items,
+        updates: [],
+        held: [],
+        sourceHealth: [],
+        summary: "t",
+        coverage: ["constellation"],
+        discoveryPass: {
+          queries: ["a", "b", "c", "d", "e", "f"].map((x) => `test query ${x}`),
+          found: 0,
+          note: "crossfeed test default",
+        },
+      }),
     );
   }
   function readQueue(): RegistryCandidatesFile {
