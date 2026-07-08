@@ -2205,8 +2205,10 @@
         "Blue Origin"
       ],
       "source_url": "https://spacenews.com/blue-origin-continues-work-on-lunar-landers-during-recovery-from-new-glenn-explosion/",
-      "secondary_urls": [],
-      "snr": 2,
+      "secondary_urls": [
+        "https://satnews.com/2026/07/06/blue-origin-insulates-lunar-landers-from-launch-pad-recovery-fallout/"
+      ],
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -2215,13 +2217,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-08",
+            "from": 2,
+            "to": 4,
+            "reason": "Corroboration correction (found_none was wrong): SatNews independently reports the same seven-lander Blue Moon production figure from the July 6 Spacetide talk. Rescored found_some."
+          }
+        ]
       },
       "sources": [
         {
@@ -2230,6 +2240,13 @@
           "class": "trade",
           "added": "2026-07-06",
           "via": "initial"
+        },
+        {
+          "url": "https://satnews.com/2026/07/06/blue-origin-insulates-lunar-landers-from-launch-pad-recovery-fallout/",
+          "outlet": "SatNews",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-06T21:08:23.883Z",
@@ -2264,32 +2281,21 @@
         "Isar Aerospace",
         "Maritime Launch Services"
       ],
-      "source_url": "https://spacenews.com/isar-aerospace-signs-agreement-for-canadian-launch-site/",
+      "source_url": "https://isaraerospace.com/press/sovereign-space-access-for-germany-and-canada-isar-aerospace-and-maritime-launch-services-sign-contract-to-advance-orbital-launch-capability-from-spaceport-nova-scotia",
       "secondary_urls": [
         "https://isaraerospace.com/press/isar-aerospace-partners-with-maritime-launch-services-for-orbital-launch-readiness-from-nova-scotia",
-        "https://europeanspaceflight.com/isar-aerospace-signs-us112-5m-deal-for-dedicated-launch-site-in-canada/"
+        "https://europeanspaceflight.com/isar-aerospace-signs-us112-5m-deal-for-dedicated-launch-site-in-canada/",
+        "https://www.theglobeandmail.com/business/article-maritime-launch-services-isar-aerospace-nova-scotia-space-launch-pad/"
       ],
-      "snr": 3,
+      "snr": 5,
       "snr_trace": {
         "base": {
-          "tier": 3,
-          "source": "https://spacenews.com/isar-aerospace-signs-agreement-for-canadian-launch-site/",
-          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+          "tier": 5,
+          "source": "https://isaraerospace.com/press/sovereign-space-access-for-germany-and-canada-isar-aerospace-and-maritime-launch-services-sign-contract-to-advance-orbital-launch-capability-from-spaceport-nova-scotia",
+          "reason": "base tier 5 from lead source class \"first_party\" (Isar Aerospace)"
         },
-        "modifiers": [
-          {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
-          },
-          {
-            "type": "corroboration_2plus",
-            "delta": 1,
-            "reason": "European Spaceflight (Andrew Parsonson) independently reported the same July 7 agreement with matching deal terms ($3.75M/quarter, 10-year term, two 5-year options, $112.5M initial commitment) -- a second, distinct outlet confirming the story SpaceNews first reported. Corrects this morning's found_none corroboration outcome now that genuine independent coverage exists.",
-            "source": "https://europeanspaceflight.com/isar-aerospace-signs-us112-5m-deal-for-dedicated-launch-site-in-canada/"
-          }
-        ],
-        "final": 3,
+        "modifiers": [],
+        "final": 5,
         "scorer_version": 2,
         "history": [
           {
@@ -2297,15 +2303,21 @@
             "from": 2,
             "to": 3,
             "reason": "European Spaceflight (Andrew Parsonson) independently reported the same July 7 agreement with matching deal terms ($3.75M/quarter, 10-year term, two 5-year options, $112.5M initial commitment) -- a second, distinct outlet confirming the story SpaceNews first reported. Corrects this morning's found_none corroboration outcome now that genuine independent coverage exists."
+          },
+          {
+            "date": "2026-07-08",
+            "from": 3,
+            "to": 5,
+            "reason": "Corroboration correction and source upgrade (found_none was wrong): Isar's own press release confirms the deal first-party, with European Spaceflight and The Globe and Mail independently reporting the terms. Lead upgraded to first-party."
           }
         ]
       },
       "sources": [
         {
-          "url": "https://spacenews.com/isar-aerospace-signs-agreement-for-canadian-launch-site/",
-          "outlet": "SpaceNews",
-          "class": "trade",
-          "added": "2026-07-07",
+          "url": "https://isaraerospace.com/press/sovereign-space-access-for-germany-and-canada-isar-aerospace-and-maritime-launch-services-sign-contract-to-advance-orbital-launch-capability-from-spaceport-nova-scotia",
+          "outlet": "Isar Aerospace",
+          "class": "first_party",
+          "added": "2026-07-08",
           "via": "initial"
         },
         {
@@ -2313,6 +2325,13 @@
           "outlet": "European Spaceflight",
           "class": "trade",
           "added": "2026-07-07",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.theglobeandmail.com/business/article-maritime-launch-services-isar-aerospace-nova-scotia-space-launch-pad/",
+          "outlet": "The Globe and Mail",
+          "class": "mainstream",
+          "added": "2026-07-08",
           "via": "corroboration"
         }
       ],
@@ -2832,32 +2851,50 @@
       "secondary_urls": [
         "https://rocketlabcorp.com/updates/rocket-lab-delivers-mission-success-for-space-force-completes-historic-launch-and-on-orbit-satellite-tracking-mission-in-record-time/",
         "https://ll.thespacedevs.com/2.2.0/launch/04154b70-045b-4e3a-bb5a-e5436091ba37/",
-        "https://payloadspace.com/true-anomaly-approaches-images-rocket-lab-craft/"
+        "https://payloadspace.com/true-anomaly-approaches-images-rocket-lab-craft/",
+        "https://defensescoop.com/2026/06/23/space-force-victus-haze-launch-rocket-lab/",
+        "https://www.space.com/space-exploration/launches-spacecraft/1-private-spacecraft-intercepts-another-on-space-forces-groundbreaking-victus-haze-mission"
       ],
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
           "source": "https://www.stocktitan.net/news/RKLB/rocket-lab-delivers-mission-success-for-space-force-completes-h1r3xjm3z5j9.html",
-          "reason": "base tier 4 from lead source class \"wire_pr\" (GlobeNewswire (via StockTitan))"
+          "reason": "base tier 4 from lead source class \"wire_pr\" (StockTitan (Rocket Lab release))"
         },
-        "modifiers": [
+        "modifiers": [],
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "date": "2026-07-08",
+            "from": 3,
+            "to": 4,
+            "reason": "Corroboration correction (found_none was wrong): Defense Scoop and Space.com both cover the VICTUS HAZE mission and its on-orbit maneuvers. Rescored found_some with both attached."
           }
-        ],
-        "final": 3,
-        "scorer_version": 2
+        ]
       },
       "sources": [
         {
           "url": "https://www.stocktitan.net/news/RKLB/rocket-lab-delivers-mission-success-for-space-force-completes-h1r3xjm3z5j9.html",
-          "outlet": "GlobeNewswire (via StockTitan)",
+          "outlet": "StockTitan (Rocket Lab release)",
           "class": "wire_pr",
           "added": "2026-07-07",
           "via": "initial"
+        },
+        {
+          "url": "https://defensescoop.com/2026/06/23/space-force-victus-haze-launch-rocket-lab/",
+          "outlet": "DefenseScoop",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.space.com/space-exploration/launches-spacecraft/1-private-spacecraft-intercepts-another-on-space-forces-groundbreaking-victus-haze-mission",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-07-07T23:26:13.596Z",
@@ -3964,6 +4001,117 @@
         "width": 1600,
         "height": 961
       }
+    },
+    {
+      "id": "2026-07-07-nato-halo-satellite-constellation",
+      "date": "2026-07-07",
+      "headline": "Eight NATO allies launch HALO military satellite constellation initiative",
+      "explainer": {
+        "tagline": "Eight NATO members will network their sovereign military satellites into a shared hybrid constellation.",
+        "what_happened": "Denmark, Canada, Finland, Germany, Norway, the Netherlands, Sweden and Turkey launched HALO (Hybrid Alliance Layered Operations in Space) at the NATO summit in Ankara on July 7, per NATO's statement. The initiative integrates the allies' sovereign, nationally owned military satellites into a networked constellation for communications, intelligence and missile tracking; NATO Deputy Secretary-General Radmila Sekerinska announced the eight-nation effort.",
+        "why_it_matters": "HALO is a government-owned program, not a commercial award, but it sets the interoperability architecture that commercial operators and manufacturers will be asked to plug into and bid against. For vendors selling into allied defense space, it signals sovereign demand shifting from siloed national fleets toward shared, resilient networks, the direction commercial constellations are already moving."
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "NATO"
+      ],
+      "source_url": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
+      "secondary_urls": [
+        "https://www.nato.int/en/news-and-events/articles/news/2026/07/07/nato-allies-join-forces-to-develop-high-end-space-capabilities"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
+          "reason": "base tier 3 from lead source class \"trade\" (Defense News)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
+          "outlet": "Defense News",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.satellitetoday.com/government-military/2026/07/07/nato-allies-plan-hybrid-halo-constellation/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-07-08T11:14:57.543Z"
+    },
+    {
+      "id": "2026-07-06-australia-queensland-space-debris-spheres",
+      "date": "2026-07-06",
+      "headline": "Australian Space Agency identifies Queensland beach spheres as rocket debris",
+      "explainer": {
+        "tagline": "The Australian Space Agency says metal spheres found on a Queensland beach are debris from a foreign rocket body.",
+        "what_happened": "Metal spheres about twice the size of a basketball washed up at Forrest Beach in Queensland, Australia. The Australian Space Agency said the objects appear to be pressure vessels from a space launch vehicle and are consistent with debris from a foreign rocket body that recently re-entered the atmosphere, per Space.com. Crews in protective suits recovered the spheres, which Queensland emergency responders assessed as safe.",
+        "why_it_matters": "Uncontrolled reentry debris is a growing liability question as launch cadence rises: no operator has been identified, but tracing recovered hardware to a rocket body is how deorbit-compliance and liability claims begin. For operators and insurers, each recovered fragment is a reminder that reentry survivability and casualty risk are regulatory and reputational exposures, not engineering footnotes."
+      },
+      "tags": [
+        "launch"
+      ],
+      "category": "incident",
+      "impact": "notable",
+      "companies": [],
+      "source_url": "https://www.space.com/space-exploration/launches-spacecraft/unidentified-metal-spheres-found-on-australian-beach-are-debris-from-a-foreign-rocket-body-space-agency-says",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.space.com/space-exploration/launches-spacecraft/unidentified-metal-spheres-found-on-australian-beach-are-debris-from-a-foreign-rocket-body-space-agency-says",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Space.com)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.space.com/space-exploration/launches-spacecraft/unidentified-metal-spheres-found-on-australian-beach-are-debris-from-a-foreign-rocket-body-space-agency-says",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "initial"
+        },
+        {
+          "url": "https://gizmodo.com/mysterious-metal-spheres-found-on-australia-beach-may-have-come-from-space-2000782314",
+          "outlet": "Gizmodo",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-07-08T11:14:57.543Z"
     }
   ]
 }
