@@ -327,6 +327,10 @@ mechanical and by you where editorial:
 
 - Source: a signals.json whitelisted person, or a named outlet/author.
   Anonymous takes never publish, at any SNR.
+- Analyst research notes / price targets on a tracked company (e.g. a
+  bank's SpaceX secondary-market valuation, a broker downgrade) are
+  commentary, not a `financial` event: attribute the call in the
+  tagline ("Per Morgan Stanley: ..."), never state the target as fact.
 - The tagline quotes the take or tightly paraphrases it WITH attribution
   ("Per @handle: ..."). `what_happened` states who said what, where, and
   when. `why_it_matters` may engage with the argument on the merits.
