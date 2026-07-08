@@ -3,9 +3,56 @@
   "configurations": [
     {
       "name": "mcc-dev",
-      "runtimeExecutable": "/opt/homebrew/bin/bun",
-      "runtimeArgs": ["run", "dev"],
-      "autoPort": true
+      "runtimeExecutable": "/Users/florianwardell/.bun/bin/bun",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3000",
+        "--strictPort"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "mcc-preview",
+      "runtimeExecutable": "/Users/florianwardell/.bun/bin/bun",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3100",
+        "--strictPort"
+      ],
+      "port": 3100
+    },
+    {
+      "name": "mcc-verify",
+      "runtimeExecutable": "/Users/florianwardell/.bun/bin/bun",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3220",
+        "--strictPort"
+      ],
+      "port": 3220
+    },
+    {
+      "name": "audit-preview-all",
+      "runtimeExecutable": "/Users/florianwardell/.bun/bin/bun",
+      "runtimeArgs": [
+        "--cwd=/Users/florianwardell/Documents/Claude/Vesperio/.wt/preview",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3300",
+        "--strictPort"
+      ],
+      "port": 3300
     }
   ]
 }
