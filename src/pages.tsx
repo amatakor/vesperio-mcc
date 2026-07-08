@@ -28,6 +28,7 @@ import {
   organizations,
   sweeps,
   ledgerSources,
+  calibrationBuckets,
   itemsByTag,
   itemsMentioning,
   constellationChildren,
@@ -403,6 +404,7 @@ function Card({
         </a>
         <span className={`chip chip-${item.impact}`}>{item.impact}</span>
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
@@ -572,6 +574,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <span className="date">{item.date}</span>
           <button type="button" className="modal-close" onClick={onClose}>
             × esc
@@ -793,6 +796,25 @@ export function CategoryPage({ category }: { category: string }) {
   );
 }
 
+export function KindPage({ kind }: { kind: string }) {
+  return (
+    <Layout current="news">
+      <h1 className="page-title">news / {kind}</h1>
+      <p className="lede">
+        Takes and analysis from named voices, visibly tagged. The SNR scores the attribution
+        (this person said this), never the opinion. Commentary never feeds the Registry.
+      </p>
+      <FeedList
+        list={items.filter((i) => i.kind === kind)}
+        emptyNote="No commentary tracked yet."
+      />
+      <p>
+        <a href="/">All news</a>
+      </p>
+    </Layout>
+  );
+}
+
 export function TagPage({ tag }: { tag: string }) {
   return (
     <Layout current="news">
@@ -823,6 +845,7 @@ export function ItemPage({ item }: { item: Item }) {
             {item.category}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <SnrLed snr={item.snr} trace={item.snr_trace} />
           <span className="date">{item.date}</span>
         </div>
@@ -868,6 +891,7 @@ export function ItemPage({ item }: { item: Item }) {
               <div className="snr-panel">
                 <SnrLed snr={item.snr} size="hero" />
                 {item.disputed && <span className="chip chip-disputed">disputed</span>}
+        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
               </div>
               <div className="snr-trace-inline">
                 <SnrTraceRows trace={item.snr_trace} />
@@ -1078,6 +1102,26 @@ function GuntersAttribution({ rows }: { rows: ProfileRow[] }) {
           </a>
         </span>
       ))}
+    </p>
+  );
+}
+
+/**
+ * GCAT is CC-BY; the license requires visible attribution wherever its
+ * data renders. Exact string per the enrichment contract.
+ */
+function GcatAttribution({ rows }: { rows: ProfileRow[] }) {
+  const cited = rows.some(
+    ([, f]) => typeof f.source === "string" && f.source.includes("planet4589.org"),
+  );
+  if (!cited) return null;
+  return (
+    <p className="dim attribution">
+      Includes{" "}
+      <a href="https://planet4589.org/space/gcat/" rel="noopener">
+        data from GCAT (J. McDowell, planet4589.org/space/gcat)
+      </a>
+      , CC-BY.
     </p>
   );
 }
@@ -1943,6 +1987,7 @@ function SourcesSection({ rows }: { rows: ProfileRow[] }) {
         ))}
       </ol>
       <GuntersAttribution rows={rows} />
+      <GcatAttribution rows={rows} />
     </section>
   );
 }
@@ -2777,6 +2822,48 @@ export function LogPage() {
                   <td>{src.events.filter((e) => e.kind === "credit").length}</td>
                   <td>{src.claims.length}</td>
                   <td>{src.class_override ? "yes" : ""}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+      <section className="panel" id="calibration">
+        <h2>calibration</h2>
+        <p className="dim">
+          Whether the scores are honest is itself measured: every claim records its SNR at
+          publication and how it later resolved. Confirmed means the claim reached SNR 4+
+          independent of any whitelist floor, or a direct source landed; debunked means it lost a
+          same-metric contradiction. Unresolved counts include claims still maturing and claims
+          expired without a signal either way.
+        </p>
+        {calibrationBuckets.length === 0 ? (
+          <p className="empty">// no scored claims recorded yet</p>
+        ) : (
+          <table className="profile">
+            <thead>
+              <tr>
+                <th>published at</th>
+                <th>claims</th>
+                <th>confirmed</th>
+                <th>debunked</th>
+                <th>unresolved</th>
+              </tr>
+            </thead>
+            <tbody>
+              {calibrationBuckets.map((b) => (
+                <tr key={b.snr}>
+                  <th scope="row">SNR {b.snr}</th>
+                  <td>{b.total}</td>
+                  <td>
+                    {b.confirmed}
+                    {b.confirmed > 0 && ` (${Math.round((b.confirmed / b.total) * 100)}%)`}
+                  </td>
+                  <td>
+                    {b.debunked}
+                    {b.debunked > 0 && ` (${Math.round((b.debunked / b.total) * 100)}%)`}
+                  </td>
+                  <td>{b.unresolved}</td>
                 </tr>
               ))}
             </tbody>

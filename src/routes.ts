@@ -24,6 +24,7 @@ export type Route =
   | { page: "item"; id: string }
   | { page: "category"; category: string }
   | { page: "tag"; tag: string }
+  | { page: "kind"; kind: string }
   | { page: "orbits" }
   | { page: "registry" }
   | { page: "constellation"; slug: string }
@@ -81,6 +82,12 @@ export function matchRoute(pathname: string): Route {
   const org = p.match(/^\/registry\/organizations\/([^/]+)\/$/);
   if (org) return orgBySlug(org[1]!) ? { page: "org", slug: org[1]! } : { page: "not-found" };
 
+  const kind = p.match(/^\/kind\/([^/]+)\/$/);
+  if (kind) {
+    // Only commentary gets a filtered page; /kind/event/ would be the whole feed.
+    return kind[1] === "commentary" ? { page: "kind", kind: kind[1] } : { page: "not-found" };
+  }
+
   const tag = p.match(/^\/tag\/([^/]+)\/$/);
   if (tag) {
     return allTags.includes(tag[1]!) ? { page: "tag", tag: tag[1]! } : { page: "not-found" };
@@ -120,6 +127,13 @@ export function headFor(path: string): Head {
       return {
         title: `#${route.tag} | MCC`,
         description: `Items tagged ${route.tag} in the MCC feed, each with its sources and signal-to-noise score.`,
+        canonical,
+      };
+    case "kind":
+      return {
+        title: "commentary | MCC",
+        description:
+          "Takes and analysis from named, whitelisted voices in the new space economy. Scored for attribution, visibly tagged as commentary.",
         canonical,
       };
     case "orbits":
@@ -211,6 +225,7 @@ export function listRoutes(): string[] {
     "/about/",
     "/log/",
     ...CATEGORIES.map((c) => `/news/${c}/`),
+    "/kind/commentary/",
     ...items.map((i) => `/item/${i.id}/`),
     ...constellations.map((c) => `/registry/constellations/${c.slug}/`),
     ...vehicles.map((v) => `/registry/vehicles/${v.slug}/`),

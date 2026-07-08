@@ -8,6 +8,7 @@ import {
   validateSourcesFile,
   validateSourceLedgerFile,
   validateSignalsSuggestionsFile,
+  validateRegistryCandidatesFile,
 } from "./lib/validate";
 
 const errors: string[] = [];
@@ -29,5 +30,8 @@ if (ledger !== undefined) errors.push(...validateSourceLedgerFile(ledger));
 
 const suggestions = loadJson("src/data/signals_suggestions.json", errors);
 if (suggestions !== undefined) errors.push(...validateSignalsSuggestionsFile(suggestions));
+
+const registryCandidates = loadJson("src/data/registry-candidates.json", errors);
+if (registryCandidates !== undefined) errors.push(...validateRegistryCandidatesFile(registryCandidates));
 
 report("check-feed", errors);

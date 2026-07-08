@@ -28,6 +28,17 @@ export type Category = (typeof CATEGORIES)[number];
  * industry shifts only, notable = matters to anyone tracking the sector,
  * noise = worth logging, not worth a push.
  */
+/**
+ * Item kinds (audit Phase 4, 2026-07-08). "event": something happened;
+ * the default, and the only kind that can feed the registry or reinforce
+ * other items. "commentary": a whitelisted person or named outlet/author
+ * takes a position; the SNR scores the attribution ("this person said
+ * this"), never the opinion's truth, the tagline quotes or tightly
+ * paraphrases the take with attribution, and impact caps at "notable".
+ */
+export const ITEM_KINDS = ["event", "commentary"] as const;
+export type ItemKind = (typeof ITEM_KINDS)[number];
+
 export const IMPACTS = ["seismic", "notable", "noise"] as const;
 export type Impact = (typeof IMPACTS)[number];
 
@@ -64,6 +75,8 @@ export const LEDGER_WINDOW_DAYS = 90;
 export const LEDGER_DEMOTION_NET_STRIKES = 3;
 export const LEDGER_DEMOTION_MIN_STRIKE_RATE = 1 / 3;
 export const LEDGER_RECOVERY_NET_CREDITS = 3;
+/** A claim must be at least this old before resolve-claims examines it. */
+export const CLAIM_RESOLUTION_MIN_AGE_DAYS = 14;
 export const PROMOTION_MIN_CLAIMS = 5;
 export const PROMOTION_WINDOW_DAYS = 30;
 export const PROMOTION_MIN_SNR = 4;
@@ -241,6 +254,8 @@ export interface Item {
   /** Max 90 chars, factual, actor first, no hype verbs. */
   headline: string;
   explainer: Explainer;
+  /** "event" (default) or "commentary"; see ITEM_KINDS. */
+  kind: ItemKind;
   /** Lowercase; reuse SEED_TAGS before inventing new ones. */
   tags: string[];
   category: Category;
@@ -334,6 +349,13 @@ export interface Source {
   notes?: string;
   /** Consecutive fetch failures; 3 flips the source to dead. */
   fail_count?: number;
+  /**
+   * Present when the source cannot be read by our fetch tools (JS-rendered
+   * shell, hard bot-block, or a mirror serving stale data). Explains why.
+   * The harvester and the sweep agent skip fetching sources that carry this
+   * field; the entry stays registered so the story arrives via other routes.
+   */
+  fetch_note?: string;
 }
 
 export interface SourcesFile {
@@ -435,7 +457,12 @@ export interface SignalsFile {
 export const LEDGER_EVENT_KINDS = ["strike", "credit"] as const;
 export type LedgerEventKind = (typeof LEDGER_EVENT_KINDS)[number];
 
-export const CLAIM_RESOLUTIONS = ["confirmed", "debunked", "unresolved"] as const;
+/**
+ * "expired": the claim sat unresolved past LEDGER_WINDOW_DAYS with no
+ * deterministic signal either way. It is closed so the resolver stops
+ * re-examining it; calibration reporting counts it with unresolved.
+ */
+export const CLAIM_RESOLUTIONS = ["confirmed", "debunked", "unresolved", "expired"] as const;
 export type ClaimResolution = (typeof CLAIM_RESOLUTIONS)[number];
 
 /**

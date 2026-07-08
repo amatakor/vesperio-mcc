@@ -33,12 +33,32 @@ result when nothing on-scope happened; padding is still the bug.
 1. **Briefing.** Run `bun scripts/sweep-context.ts`. It prints
    `{ now, lastSweep, feedSize, existing[] }` where `existing[i]` is
    `{ id, normId, source_url, headline }`.
-2. **Discovery.** Work through `src/data/sources.json`: fetch every
-   source with status `verified` or `unverified`, collect candidates
-   newer than `lastSweep`, filter against the CLAUDE.md scope, discard
-   out-of-scope candidates silently. Record source health as before
-   (first success flips `unverified` to `verified`; third consecutive
-   failure flips to `dead` with a dated note and `fail_count`).
+2. **Discovery.** The window is always the full gap since `lastSweep`;
+   never narrow it to a fixed number of hours. Two legs, in order:
+
+   **Queue first.** Read `src/data/candidates.json`. The deterministic
+   harvester (`scripts/harvest.ts`, runs before you) has already fetched
+   every feed-capable source (feed_type `rss_atom` / `api_json`) and
+   normalized the entries. Work through the queue: filter against the
+   CLAUDE.md scope, discard out-of-scope candidates silently. Each
+   entry's `raw_excerpt` is verbatim feed text: quoted numbers and
+   figures must come from `raw_excerpt` or from a direct fetch of the
+   entry's source page, NEVER from a WebFetch summary (summaries
+   paraphrase; paraphrased numbers are fabrication risks). When the
+   excerpt is too thin to draft from, fetch the entry's URL directly.
+   Do not re-fetch feeds the harvester already covered; its per-source
+   results are in the queue file's `health` block, and it maintains
+   `fail_count`/status flips for feed sources in code.
+
+   **Direct fetch for HTML-only sources.** Then work through
+   `src/data/sources.json` and fetch only the sources with feed_type
+   `html`, status `verified` or `unverified`, and NO `fetch_note`
+   (a `fetch_note` marks a source our tools cannot read: JS shells,
+   hard bot-blocks, stale mirrors; skip those without burning fetches).
+   Collect candidates newer than `lastSweep`, same scope filter. Record
+   source health for the sources YOU fetched, as before (first success
+   flips `unverified` to `verified`; third consecutive failure flips to
+   `dead` with a dated note and `fail_count`).
 
    **Signals pass (part of discovery, exempt from the source filter).**
    Run `bun scripts/signals-context.ts`. It prints
@@ -57,14 +77,30 @@ result when nothing on-scope happened; padding is still the bug.
    fetches per sweep**; if `fetchableCount` exceeds what the budget
    allows, rotate so every fetchable channel is covered at least
    weekly and say so in the note. Channel finds are classed per the
-   whitelist rules in step 6; jokes, opinions, and off-topic posts are
-   discarded silently. Record the outcome in the draft's `signalsPass`
+   whitelist rules in step 6. Factual claims draft as events; a
+   substantive take or analysis from a whitelisted person may draft as
+   a commentary item (see Commentary below). Jokes and off-topic posts
+   are discarded silently. Record the outcome in the draft's `signalsPass`
    block (required whenever `fetchableCount > 0`): `checked` = the
    fetchable channel URLs you fetched this run, `xAttempted` = how many
    X handles you searched, `note` = one line on what was found (or why
    `checked` is empty: rotation, all unreachable). finalize-sweep
    rejects a draft that omits it or lists a URL that is not a fetchable
    channel.
+   **Discovery pass (open web, after the source list).** Run 3-5
+   WebSearch queries this sweep for on-scope stories the source list
+   missed. Rotate across the scope categories sweep to sweep so every
+   area gets coverage weekly: EO / connectivity / IoT / launch /
+   regulatory / financial, and include China, India, and Japan terms in
+   the rotation (e.g. "Chinese commercial launch", "ISRO contract",
+   "JAXA commercial"). Candidates found here follow the normal pipeline
+   (scope filter, dedup, corroboration, honest classes). When a story
+   leads to an outlet or feed not in sources.json, add it as a new
+   source with status "unverified" so the harvester picks it up next
+   run. Publishing an early signal at SNR 1-2 with honest scoring is
+   the model working; the gate is attribution, not confidence. Low-SNR
+   items from this pass are a feature, not a defect.
+
 3. **Known to MCC?** Match each candidate against `existing[]` by actor
    and event class:
    - Same event within **7 days** → it is an update, never a new item.
@@ -106,16 +142,26 @@ result when nothing on-scope happened; padding is still the bug.
    Sources are distinct only if independent: wire rewrites and
    syndicated copies of one story count as ONE source. Do not stack
    near-identical URLs to farm corroboration.
-5. **Registry crossfeed check.** For each claim that touches a registry
-   fact (counts, statuses, dates), compare like-for-like FIRST:
-   cataloged-on-orbit, operates, launched, and announced are different
-   metrics, and computed/orbital figures are authoritative ONLY for
-   "cataloged on orbit, as_of date" — they never contradict
-   "operational" or "announced" claims. On a genuine same-metric
-   contradiction with a registry fact: state the tension explicitly in
-   the item copy (attributing both sides) and add an edit-queue entry
-   to `held` describing the conflict for Florian. Do not silently pick
-   a side; automated dispute mechanics land with the registry sink.
+5. **Registry crossfeed check (attested, code-enforced).** For each NEW
+   item whose claims touch a registry fact (counts, statuses, dates,
+   figures on a constellation/vehicle/spaceport/organization profile),
+   compare like-for-like FIRST: cataloged-on-orbit, operates, launched,
+   and announced are different metrics, and computed/orbital figures are
+   authoritative ONLY for "cataloged on orbit, as_of date" (they never
+   contradict "operational" or "announced" claims;
+   `sats_active_verified` is machine-computed and never crossfed).
+
+   You attest the extraction and the like-for-like judgment in a
+   `crossfeed` block on the item (see the draft format below); the
+   deterministic gate runs `reconcile()` on your inputs, writes the
+   outcomes to `src/data/registry-candidates.json` for the weekly
+   registry run, applies the dispute downgrade when a canonical fact
+   wins, and queues genuine ties for Florian. The gate REJECTS a draft
+   whose item companies map to registry entities at SNR >= 3 with no
+   crossfeed block: an honest "no like-for-like metric in this item" is
+   `"crossfeed": { "facts": [], "note": "..." }`, silence is not. On a
+   genuine same-metric contradiction, still state the tension in the
+   item copy, attributing both sides; the score math is the gate's.
 6. **Classify sources honestly.** Every source you attach carries a
    `class`; the deterministic gate scores from it, so misclassification
    is the cardinal sin of this pipeline:
@@ -149,6 +195,7 @@ result when nothing on-scope happened; padding is still the bug.
          "date": "YYYY-MM-DD",
          "headline": "...",
          "explainer": { "tagline": "...", "what_happened": "...", "why_it_matters": "..." },
+         "kind": "event|commentary (omit for event; see Commentary below)",
          "tags": [], "category": "...", "impact": "seismic|notable|noise",
          "companies": [],
          "source_url": "lead source, must equal scoring.sources[0].url",
@@ -161,6 +208,18 @@ result when nothing on-scope happened; padding is still the bug.
            "extraordinary": false,
            "crawl": "found_some|found_none|not_attempted",
            "whitelist": null
+         },
+         "crossfeed": {
+           "facts": [
+             {
+               "entity_slug": "iceye",
+               "field": "sats_launched_total",
+               "value": 52,
+               "metric": "cumulative ICEYE satellites launched, as stated by the operator",
+               "same_metric": true
+             }
+           ],
+           "note": "required when facts is empty: why no registry metric is touched"
          }
        }
      ],
@@ -207,6 +266,26 @@ result when nothing on-scope happened; padding is still the bug.
    worth remembering), append a short dated entry to `SWEEP_MEMORY.md`.
    Skip routine runs.
 
+## Commentary items (kind: "commentary")
+
+A take, analysis, or position from a named voice is publishable as a
+first-class feed item, visibly tagged. Rules, enforced by the gate where
+mechanical and by you where editorial:
+
+- Source: a signals.json whitelisted person, or a named outlet/author.
+  Anonymous takes never publish, at any SNR.
+- The tagline quotes the take or tightly paraphrases it WITH attribution
+  ("Per @handle: ..."). `what_happened` states who said what, where, and
+  when. `why_it_matters` may engage with the argument on the merits.
+- SNR scores the attribution ("this person said this"), never the
+  opinion's truth. Whitelist floors apply as observers. Corroboration
+  means confirming the person actually said it, not agreeing with it.
+- Commentary never feeds the registry crossfeed and never reinforces or
+  corroborates a factual (event) item. An opinion repeated is still one
+  opinion.
+- Impact caps at `notable` (the gate rejects seismic commentary).
+- Category: use the category the take is about.
+
 ## Inclusion bar
 
 An item ships when all are true:
@@ -226,20 +305,34 @@ An item ships when all are true:
 
 ## Importance calibration (impact field)
 
+The test for `notable` is concrete: would a commercial director at an
+operator, reseller, or investor plausibly ACT on this or brief their
+team on it? If nobody changes a plan, a price, or a pitch because of
+it, it is `noise`. When torn between two levels, pick the lower one.
+
 - `seismic`: reshapes competitive dynamics; you would interrupt
-  someone's Monday for this (major M&A, operator failure, flagship
-  cancellation, first flight of a new vehicle)
-- `notable`: belongs in their weekly read
-- `noise`: belongs in the record
-Appointments: routine executive hires (CFO, CAO, SVP) stay below the
-inclusion bar, per standing precedent. The exception is a senior
-government or political figure joining a tracked company (board,
-advisory board, executive role): that is a commercial-access signal
-and ships as `notable` (the Wolfgang Schmidt/Planet case).
-When torn between two levels, pick the lower one. Importance and SNR
-are independent axes: a seismic rumour is seismic AND low-SNR, and the
-gate automatically queues seismic items at SNR 1-2 for Florian's
-review while they publish.
+  someone's Monday for this. Examples: a major M&A between tracked
+  operators (Rocket Lab/Iridium); an operator failure or bankruptcy;
+  the first flight of a new orbital vehicle.
+- `notable`: a commercial director would act on it or brief on it.
+  Examples: a contract award with a stated value; a funding round; a
+  regulatory grant or denial that changes what an operator may sell
+  (an FCC license modification, a NOAA imaging waiver); a
+  constellation-scale change (a batch order, a new generation
+  announced with numbers). A senior government or political figure
+  joining a tracked company (board or advisory) stays notable: it is a
+  commercial-access signal (the Wolfgang Schmidt/Planet case).
+- `noise`: belongs in the record, not the push. Examples: a scheduled
+  launch succeeding on schedule; a routine product update or minor
+  partnership without stated money, capacity, or regulatory effect; a
+  routine executive hire (CFO, CAO, SVP), which stays below the
+  inclusion bar entirely per standing precedent.
+
+Default for routine product updates, minor partnerships, and scheduled
+successes is `noise`, even when the press release is long. Importance
+and SNR are independent axes: a seismic rumour is seismic AND low-SNR,
+and the gate automatically queues seismic items at SNR 1-2 for
+Florian's review while they publish.
 
 ## Hard reminders
 

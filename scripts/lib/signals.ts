@@ -14,7 +14,13 @@ import type { SignalsFile } from "../../src/data/schema";
  * fetch tools and only reachable best-effort via WebSearch plus the public
  * syndication endpoint, so it is never part of the enforced "reliable leg".
  */
-export const FETCHABLE_CHANNEL_TYPES = new Set(["site", "substack", "beehiiv", "bluesky"]);
+/**
+ * youtube (audit Phase 4, 2026-07-08): fetched via the keyless per-channel
+ * feed https://www.youtube.com/feeds/videos.xml?channel_id=<ID>, recorded
+ * in the channel's `rss` field. A youtube channel without an rss value is
+ * not yet fetchable and stays out of the enforced leg.
+ */
+export const FETCHABLE_CHANNEL_TYPES = new Set(["site", "substack", "beehiiv", "bluesky", "youtube"]);
 
 export interface FetchableSignalChannel {
   personId: string;
@@ -52,6 +58,9 @@ export function fetchableSignalChannels(signals: SignalsFile): FetchableSignalCh
     for (const c of p.channels) {
       if (c.status !== "verified_active") continue;
       if (!FETCHABLE_CHANNEL_TYPES.has(c.type)) continue;
+      // youtube is fetchable only through its feed URL; without one the
+      // watch page is a JS shell our tools cannot read.
+      if (c.type === "youtube" && !c.rss) continue;
       out.push({
         personId: p.id,
         name: p.name,

@@ -6,6 +6,7 @@
 
 import {
   CATEGORIES,
+  ITEM_KINDS,
   IMPACTS,
   SOURCE_CLASSES,
   SOURCE_VIA,
@@ -251,6 +252,13 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   if (!IMPACTS.includes(v.impact as never)) {
     errors.push(`${path}.impact: "${String(v.impact)}" not in [${IMPACTS.join(", ")}]`);
   }
+  if (!ITEM_KINDS.includes(v.kind as never)) {
+    errors.push(`${path}.kind: "${String(v.kind)}" not in [${ITEM_KINDS.join(", ")}]`);
+  }
+  // Commentary is a take, not an event; it never interrupts anyone's Monday.
+  if (v.kind === "commentary" && v.impact === "seismic") {
+    errors.push(`${path}.impact: commentary caps at "notable"; a seismic take is still just a take`);
+  }
 
   // Every published item carries its SNR score and the stored trace.
   if (!isSnrValue(v.snr)) {
@@ -464,6 +472,9 @@ export function validateSourcesFile(data: unknown): string[] {
         (typeof src.fail_count !== "number" || !Number.isInteger(src.fail_count) || src.fail_count < 0)
       ) {
         errors.push(`${path}.fail_count: must be a non-negative integer when present`);
+      }
+      if (src.fetch_note !== undefined && (typeof src.fetch_note !== "string" || src.fetch_note.length === 0)) {
+        errors.push(`${path}.fetch_note: must be a non-empty string when present`);
       }
     });
   }
@@ -1172,5 +1183,60 @@ export function validateRegistryProfile(
     for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
     checkTimeline(data, path, errors);
   }
+  return errors;
+}
+
+// ------------------------------------------------- registry crossfeed queue
+
+const CROSSFEED_ACTIONS = [
+  "annotate_mismatch",
+  "downgrade_incoming",
+  "flag_refresh",
+  "both_disputed_queue",
+  "no_registry_change",
+  "null_fill",
+  "below_entry_bar",
+] as const;
+
+/** registry-candidates.json: the crossfeed queue finalize-sweep writes. */
+export function validateRegistryCandidatesFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["registry-candidates.json: root must be an object"];
+  if (typeof data.version !== "string") errors.push("registry-candidates.version: required string");
+  if (!Array.isArray(data.candidates)) {
+    errors.push("registry-candidates.candidates: required array");
+    return errors;
+  }
+  const seen = new Set<string>();
+  data.candidates.forEach((c, i) => {
+    const path = `registry-candidates[${i}]`;
+    if (!isObj(c)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    const id = reqString(c, "id", path, errors);
+    if (id !== null) {
+      if (seen.has(id)) errors.push(`${path}.id: duplicate "${id}"`);
+      seen.add(id);
+    }
+    reqString(c, "item_id", path, errors);
+    reqString(c, "entity_slug", path, errors);
+    reqString(c, "field", path, errors);
+    reqString(c, "metric", path, errors);
+    if (!["constellation", "vehicle", "spaceport", "organization"].includes(c.entity_type as string)) {
+      errors.push(`${path}.entity_type: must be a registry entity type`);
+    }
+    if (c.value === undefined || c.value === null) errors.push(`${path}.value: required`);
+    if (typeof c.same_metric !== "boolean") errors.push(`${path}.same_metric: required boolean`);
+    if (!isSnrValue(c.item_snr)) errors.push(`${path}.item_snr: required integer 1-5`);
+    if (!isHttpUrl(c.source_url)) errors.push(`${path}.source_url: required http(s) URL`);
+    if (!CROSSFEED_ACTIONS.includes(c.action as never)) {
+      errors.push(`${path}.action: must be one of [${CROSSFEED_ACTIONS.join(", ")}]`);
+    }
+    if (!(typeof c.proposed_on === "string" && isValidDate(c.proposed_on))) {
+      errors.push(`${path}.proposed_on: required YYYY-MM-DD`);
+    }
+    if (c.status !== "pending") errors.push(`${path}.status: must be "pending" while queued`);
+  });
   return errors;
 }
