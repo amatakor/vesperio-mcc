@@ -422,9 +422,9 @@ export default function Scene() {
       accent: token(RESERVE_TOKEN),
       alert: token("--alert"),
       acc: token("--acc"),
-      // Neon mint-green of the SNR mark, for the spaceport activity ripple
-      // (Florian 2026-07-08).
-      ripple: token("--snr-5"),
+      // Neon mint-green of the LIVE lamp, for the spaceport activity ripple
+      // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
+      ripple: token("--live"),
       fg: token("--fg"),
     }),
     [],

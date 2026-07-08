@@ -56,16 +56,10 @@
   --neon-nav: #d9e6ff;
   --neon-reserve: #b18cff;
 
-  /* SNR ramp (Florian, 2026-07-06 design pass): red, orange, yellow,
-     blue, green for 1-5. Warm means caution, cool means corroborated;
-     3 deliberately shares the accent yellow (Florian's call). The old
-     cyan/magenta values collided with the domain neons. */
-  --snr-1: #ff2043;
-  --snr-2: #ff8a00;
-  --snr-3: #ffe600;
-  --snr-4: #3d7bff;
-  --snr-5: #2bff6a;
-  --snr-off: #3d3d3d;
+  /* Source/citation link ink (registry v2, 2026-07-09): source links
+     are plumbing, not calls to action. Desaturated steel keeps them
+     legible without competing with the SNR LED or the accent. */
+  --ink-link: #93a4b5;
 
   /* SNR LED mark (design handoff 2026-07-07): phosphor-green ramp by
      cell position, dim -> bright, OKLCH hue 148. Deliberately close to
@@ -1426,6 +1420,13 @@ table.profile td.empty {
 }
 table.profile a {
   color: var(--acc);
+}
+/* Source citations sit 8px from the SNR LED; muted ink keeps the
+   green ramp as the only signal color in that cell. Entity cross-links
+   in the value column stay accent: they are navigation. */
+table.profile td.src-cell a,
+.disputed-claim a {
+  color: var(--ink-link);
 }
 
 /* Registry profile page: breadcrumbs, on-this-page TOC, events, related,

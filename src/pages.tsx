@@ -1365,11 +1365,19 @@ const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
   ["institutions", "institutions", (e) => e.kind === "org" && e.group === "institution"],
 ];
 
-/** Registry selection accents follow the Orbits domain palette. */
+/** Registry selection accents follow the Orbits domain palette. All four
+    sections carry a deliberate accent (registry v2: launch and ecosystem
+    hues pending Florian's palette sign-off, values from the existing neon
+    set so nothing new enters the palette). */
 const DOMAIN_ACCENT: Record<string, string> = {
   eo: "var(--neon-eo)",
   connectivity: "var(--neon-connectivity)",
   iot: "var(--neon-iot)",
+};
+const SECTION_ACCENT: Record<string, string> = {
+  launch: "var(--neon-hsf)",
+  spaceports: "var(--neon-reserve)",
+  ecosystem: "var(--neon-nav)",
 };
 
 function matchesRegQuery(e: RegEntry, q: string): boolean {
@@ -1779,6 +1787,7 @@ export function RegistryIndexPage() {
                   groupLabel="provider"
                   entityAside={() => "vehicle"}
                   groupProfileHref={(p) => entityHrefFor(p) ?? null}
+                  accent={SECTION_ACCENT.launch}
                 />
               )}
               {s.id === "constellations" && <ConstellationBrowser entries={s.entries} />}
@@ -1788,7 +1797,7 @@ export function RegistryIndexPage() {
                   groupLabel="region"
                   groupDisplay={(r) => REGION_LABEL[r] ?? r}
                   entityAside={() => "site"}
-                  accent="var(--neon-reserve)"
+                  accent={SECTION_ACCENT.spaceports}
                 />
               )}
               {s.id === "ecosystem" && (
@@ -1797,6 +1806,7 @@ export function RegistryIndexPage() {
                   groupLabel="kind"
                   groupDisplay={(k) => ORG_KIND_LABEL[k] ?? k}
                   entityAside={() => "organization"}
+                  accent={SECTION_ACCENT.ecosystem}
                 />
               )}
             </section>
@@ -1952,7 +1962,7 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
   );
 }
 
-/** Six-month close-price chart for listed entities; data via the Stooq pipeline. */
+/** Six-month close-price chart for listed entities; data via the Yahoo Finance pipeline (scripts/fetch-stocks.ts). */
 function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<string> }) {
   const [series, setSeries] = useState<Array<[string, number]> | null>(null);
   const [failed, setFailed] = useState(false);
