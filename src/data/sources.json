@@ -127,7 +127,7 @@
         "tier": 1,
         "status": "verified",
         "notes": "JP company, EN site available. | [2026-07-06] Fetched cleanly. Two posts inside the window: a July 1 executive-appointments notice (below the notability bar) and a June 30 'SAR view of Denver' post (thought-leadership/product blog, same pattern as Planet's Pulse content, not a discrete news event). No candidate. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on.",
-        "fail_count": 0
+        "fail_count": 1
       },
       {
         "name": "Pixxel",
@@ -236,8 +236,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "New Glenn ramp relevant to EO rideshare economics. | [2026-07-06] blueorigin.com/news returned HTTP 429 on every attempt this run (three tries, different User-Agent strings each time). Consistent with prior 429 notes; first documented failure logged against this source's fail counter.",
-        "fail_count": 1
+        "notes": "New Glenn ramp relevant to EO rideshare economics. | [2026-07-06] blueorigin.com/news returned HTTP 429 on every attempt this run (three tries, different User-Agent strings each time). Consistent with prior 429 notes; first documented failure logged against this source's fail counter. | [2026-07-08] blueorigin.com/news returned HTTP 429 again this run, consistent with prior documented failures; second consecutive failure logged, not yet at the 3-fail dead threshold.",
+        "fail_count": 2
       },
       {
         "name": "ULA",
@@ -260,8 +260,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story. | [2026-07-06] Every path tried this run (Press_Release.html, PressReleases.html/htm, PressRelease.html, press-release, News.html) 404'd. Press.html returned 200 but is a stale archive with dates only through July 2025, not a live feed. No candidate; still no working current URL found for this source. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.isro.gov.in/Press_Release.html) failed or moved.",
-        "fail_count": 1
+        "notes": "PSLV/SSLV rideshare pricing pressure is a recurring story. | [2026-07-06] Every path tried this run (Press_Release.html, PressReleases.html/htm, PressRelease.html, press-release, News.html) 404'd. Press.html returned 200 but is a stale archive with dates only through July 2025, not a live feed. No candidate; still no working current URL found for this source. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.isro.gov.in/Press_Release.html) failed or moved. | [2026-07-08] isro.gov.in/Press.html returns HTTP 200 but all dated content in the fetched HTML is from 2025; no 2026 headlines present, so not usable for current discovery this run.",
+        "fail_count": 2
       },
       {
         "name": "JAXA / MHI",
@@ -333,8 +333,8 @@
         "cadence": "continuous",
         "language": "en",
         "tier": 2,
-        "status": "unverified",
-        "notes": "Best free satellite/payload encyclopedia. Registry reference source, never a news basis. Terms: summarization/RAG only with clear attribution and a direct link to the exact page; cite deep-link URLs in registry source fields, never sum counts across pages."
+        "status": "verified",
+        "notes": "Best free satellite/payload encyclopedia. Registry reference source, never a news basis. Terms: summarization/RAG only with clear attribution and a direct link to the exact page; cite deep-link URLs in registry source fields, never sum counts across pages. | [2026-07-08] space.skyrocket.de root loads cleanly (200) with real page content; first successful fetch this run, flipped from unverified."
       },
       {
         "name": "NextSpaceflight",
@@ -344,7 +344,8 @@
         "cadence": "continuous",
         "language": "en",
         "tier": 2,
-        "status": "unverified"
+        "status": "verified",
+        "notes": "[2026-07-08] nextspaceflight.com/launches/ loads cleanly (200) with real title and dated launch content; first successful fetch this run, flipped from unverified."
       }
     ],
     "regulatory": [
@@ -678,8 +679,8 @@
         "language": "de",
         "tier": 1,
         "status": "unverified",
-        "fail_count": 1,
-        "notes": "[2026-07-06] Both the configured URL and an /en/latest/news guess return only a client-side-rendered \"Loading\" shell with no headlines in the fetched HTML, on both WebFetch and curl. Needs an RSS/JSON endpoint or a different fetch approach to be usable; first documented failure, not yet flipped to dead."
+        "fail_count": 2,
+        "notes": "[2026-07-06] Both the configured URL and an /en/latest/news guess return only a client-side-rendered \"Loading\" shell with no headlines in the fetched HTML, on both WebFetch and curl. Needs an RSS/JSON endpoint or a different fetch approach to be usable; first documented failure, not yet flipped to dead. | [2026-07-08] dlr.de/de/aktuelles/nachrichten returns HTTP 200 but the fetched HTML is still a client-rendered shell with no article markup (only social-share link titles), same failure mode documented 2026-07-06. Second documented failure."
       },
       {
         "name": "Xinhua tech/space (EN)",
@@ -690,8 +691,8 @@
         "language": "en",
         "tier": 2,
         "status": "unverified",
-        "notes": "Fallback when CGSTL/CASC sites are unreachable from outside China. State media: label origin on items, treat launch facts as reliable, framing as not. | [2026-07-06] Configured URL (english.news.cn/tech/index.htm) 404s; the bare homepage (english.news.cn) loads and surfaces space headlines instead. Both space headlines visible this run (Tianwen-2 arrival, Long March-8A SpaceSail launch) were already covered via CASC and Launch Library and evaluated (excluded/routine). Source URL likely needs correcting to the homepage or an /indepth section path. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://english.news.cn/tech/index.htm) failed or moved. | [2026-07-08] Xinhua's English RSS endpoints are abandoned (newest items 2017-2018); HTML page fetch only.",
-        "fail_count": 1
+        "notes": "Fallback when CGSTL/CASC sites are unreachable from outside China. State media: label origin on items, treat launch facts as reliable, framing as not. | [2026-07-06] Configured URL (english.news.cn/tech/index.htm) 404s; the bare homepage (english.news.cn) loads and surfaces space headlines instead. Both space headlines visible this run (Tianwen-2 arrival, Long March-8A SpaceSail launch) were already covered via CASC and Launch Library and evaluated (excluded/routine). Source URL likely needs correcting to the homepage or an /indepth section path. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://english.news.cn/tech/index.htm) failed or moved. | [2026-07-08] Xinhua's English RSS endpoints are abandoned (newest items 2017-2018); HTML page fetch only. | [2026-07-08] english.news.cn/tech.htm returns HTTP 200 but the fetched HTML carries only nav-category links, no dated headlines or article content this run.",
+        "fail_count": 2
       },
       {
         "name": "CGTN Tech-Sci",
@@ -824,8 +825,8 @@
         "language": "en",
         "tier": 1,
         "status": "unverified",
-        "fail_count": 1,
-        "notes": "[2026-07-06] Configured media-center.html path 404s. Tried en/press-releases.html and en/group/newsroom.html (both 404) and found the real nav-linked path at eutelsat.com/media-press/media-centre, which returns 200 but is a client-rendered shell with no article dates or links in the fetched HTML. First documented failure at the corrected URL; recommend updating the stored URL to media-press/media-centre pending a JS-capable fetch. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.eutelsat.com/en/group/media-center.html) failed or moved."
+        "fail_count": 2,
+        "notes": "[2026-07-06] Configured media-center.html path 404s. Tried en/press-releases.html and en/group/newsroom.html (both 404) and found the real nav-linked path at eutelsat.com/media-press/media-centre, which returns 200 but is a client-rendered shell with no article dates or links in the fetched HTML. First documented failure at the corrected URL; recommend updating the stored URL to media-press/media-centre pending a JS-capable fetch. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.eutelsat.com/en/group/media-center.html) failed or moved. | [2026-07-08] eutelsat.com/media-press/media-centre returns HTTP 200 but is a client-rendered shell (empty heading tags, no article text), consistent with the 2026-07-06-AA finding."
       },
       {
         "name": "Amazon / Project Kuiper News",
@@ -885,8 +886,8 @@
         "cadence": "monthly",
         "language": "en",
         "tier": 1,
-        "status": "unverified",
-        "notes": "Haven-1 / CLD race. | [2026-07-06] Configured /news path 404s. The root domain loads; its only news-adjacent nav link is /media, a brand/media-asset kit page (logos, mission images, video links) with no press-release listing or dates. No working news feed URL found this run. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.vastspace.com/news) failed or moved.",
+        "status": "verified",
+        "notes": "Haven-1 / CLD race. | [2026-07-06] Configured /news path 404s. The root domain loads; its only news-adjacent nav link is /media, a brand/media-asset kit page (logos, mission images, video links) with no press-release listing or dates. No working news feed URL found this run. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.vastspace.com/news) failed or moved. | [2026-07-08] vastspace.com/updates loads cleanly (200) with real title and dated content; first successful fetch this run, flipped from unverified.",
         "fail_count": 1
       },
       {

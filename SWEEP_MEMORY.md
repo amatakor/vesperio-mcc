@@ -731,3 +731,42 @@ a newer entry if a lesson changes.
   independent `mainstream`-class source for corroboration (SpaceNews's
   piece carried fresh, un-wired CEO/SVP quotes not in the PTI text, so
   it wasn't a pure rewrite of the same story).
+
+## Unrestricted full-source-list re-check, ~1h47m window (2026-07-08)
+
+- 2026-07-08-C: The harvester's `candidates.json` `window_start` can be
+  wider than the actual `lastSweep` gap (this run: window_start two
+  days back, but state.json's lastSweep was only ~1h47m prior) -- treat
+  `window_start` as an upper bound on the queue, not the true window;
+  filter candidates against the real `lastSweep` timestamp from
+  `sweep-context.ts`, not the harvester file's own stamp.
+  A 200 HTTP status is still not proof of usable content on a plain
+  fetch, confirmed on several previously-unverified HTML sources this
+  run: DLR (dlr.de/de/aktuelles/nachrichten) and Eutelsat
+  (eutelsat.com/media-press/media-centre) both returned 200 with only
+  empty client-rendered shell markup (no article text, same failure
+  mode as 2026-07-06-AA/H); ISRO (isro.gov.in/Press.html) returned 200
+  with real listing content but every date on the page was still 2025,
+  nothing from 2026, so it doesn't actually serve current data despite
+  being reachable; Xinhua's configured tech.htm path returned 200 with
+  only nav-category links, no headlines. None of these were flipped to
+  verified on the strength of a 200 alone. Conversely, Gunter's Space
+  Page, NextSpaceflight, and Vast News (vastspace.com/updates) all
+  returned 200 with genuine dated/titled content on first fetch this
+  run and were flipped unverified -> verified.
+- 2026-07-08-D: Bluesky posts are checkable without the bsky.app JS
+  shell: `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=5`
+  returns each account's recent posts with exact `createdAt` timestamps
+  via plain curl, no auth needed. Used this to clear all 9 Bluesky
+  signals channels (Langbroek, Henry, Farrar, Berger, Foust,
+  SpacePolicyOnline, Zak, A. Jones, Parsonson) in one pass each --
+  faster and more reliable than trying to render bsky.app itself.
+- 2026-07-08-E: A generic open-web discovery search can resurface old,
+  already-widely-covered news dressed as a fresh hit: WebSearch for
+  "satellite constellation contract announcement July 8 2026" surfaced
+  Rocket Lab's $816M SDA missile-tracking contract (actually announced
+  2025-12-19) and Amazon's $11.57B Globalstar acquisition (actually
+  announced 2026-04-14) with no date qualifier distinguishing them from
+  today. Always open the actual article and check its dateline before
+  treating a search hit as this window's news, especially for
+  headline-shaped "big number" stories that read as evergreen.
