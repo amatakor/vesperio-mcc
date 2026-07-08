@@ -22,7 +22,7 @@ import type {
   OrgProfile,
   SignalPerson,
 } from "./data/schema";
-import { CATEGORIES, DOMAIN_TAGS } from "./data/schema";
+import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
 import {
   items,
   signals,
@@ -1253,6 +1253,12 @@ function GcatAttribution({ rows }: { rows: ProfileRow[] }) {
 
 type EntityKind = "eo" | "connectivity" | "iot" | "vehicle" | "spaceport" | "org";
 
+/** One headline figure on a preview card: an uppercase micro-label and a mono value. */
+interface RegSpec {
+  label: string;
+  value: string;
+}
+
 interface RegEntry {
   slug: string;
   name: string;
@@ -1263,14 +1269,15 @@ interface RegEntry {
   /** Sub-grouping for constellations (fleet parent slug); null otherwise. */
   parent: string | null;
   affiliation: string;
-  figure: string | null;
-  figure2: string | null;
   status: string | null;
-  firstDate: string | null;
   asOf: string | null;
   snippet: string | null;
   sensors: string[];
   reusable: boolean | null;
+  /** Normalized short launch-vehicle class (heavy-lift, medium-lift, ...); null for non-vehicles or unclassifiable. */
+  vehicleClass: string | null;
+  /** Two or three headline specs, only for fields the profile states. */
+  specs: RegSpec[];
 }
 
 const KIND_LABEL: Record<EntityKind, string> = {
@@ -1299,103 +1306,194 @@ const ORG_KIND_LABEL: Record<string, string> = {
   finance: "finance",
 };
 
+const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connectivity", iot: "iot" };
+
+/** Collapse a free-text vehicle_class value to a short lift-class label; null when the source states no class we recognise. */
+function normVehicleClass(raw: string | null): string | null {
+  if (!raw) return null;
+  const s = raw.toLowerCase();
+  if (s.includes("super") && s.includes("heavy")) return "super-heavy";
+  if (s.includes("heavy")) return "heavy-lift";
+  if (s.includes("medium")) return "medium-lift";
+  if (s.includes("small")) return "small-lift";
+  return null;
+}
+
+/** Status strings are free text; treat these phrasings as operational. */
+function isOperational(status: string | null): boolean {
+  return status !== null && /oper|active|in service|in operation|commercial|deployed|widespread|in use/i.test(status);
+}
+function isRetired(status: string | null): boolean {
+  return status !== null && /retired/i.test(status);
+}
+
 function constellationEntries(): RegEntry[] {
-  return constellations.map((c) => ({
-    slug: c.slug,
-    name: c.name,
-    kind: c.domain === "eo" ? ("eo" as const) : c.domain === "iot" ? ("iot" as const) : ("connectivity" as const),
-    href: `/registry/constellations/${c.slug}/`,
-    group: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
-    parent: c.parent ?? null,
-    affiliation: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
-    figure:
-      c.sats_active_verified.value !== null
-        ? `${c.sats_active_verified.value} tracked on orbit`
-        : c.sats_active_claimed.value !== null
-          ? `${c.sats_active_claimed.value} on orbit (claimed)`
-          : null,
-    figure2: null,
-    status: c.status.value,
-    firstDate: c.first_launch_date.value,
-    asOf: c.operator.as_of,
-    snippet: c.overview.value,
-    sensors: c.sensor_types.value ?? [],
-    reusable: null,
-  }));
+  return constellations.map((c) => {
+    const kind =
+      c.domain === "eo" ? ("eo" as const) : c.domain === "iot" ? ("iot" as const) : ("connectivity" as const);
+    const specs: RegSpec[] = [];
+    if (c.sats_active_verified.value !== null)
+      specs.push({ label: "on orbit", value: String(c.sats_active_verified.value) });
+    else if (c.sats_launched_total.value !== null)
+      specs.push({ label: "launched", value: String(c.sats_launched_total.value) });
+    if (c.resolution_m?.value != null) specs.push({ label: "resolution", value: `${c.resolution_m.value} m` });
+    specs.push({ label: "domain", value: DOMAIN_LABEL[kind] ?? kind });
+    return {
+      slug: c.slug,
+      name: c.name,
+      kind,
+      href: `/registry/constellations/${c.slug}/`,
+      group: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
+      parent: c.parent ?? null,
+      affiliation: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
+      status: c.status.value,
+      asOf: c.operator.as_of,
+      snippet: c.overview.value,
+      sensors: c.sensor_types.value ?? [],
+      reusable: null,
+      vehicleClass: null,
+      specs,
+    };
+  });
 }
 
 function vehicleEntries(): RegEntry[] {
-  return vehicles.map((v) => ({
-    slug: v.slug,
-    name: v.name,
-    kind: "vehicle" as const,
-    href: `/registry/vehicles/${v.slug}/`,
-    group: v.provider.value ?? "Provider unconfirmed",
-    parent: null,
-    affiliation: v.provider.value ?? "Provider unconfirmed",
-    figure: v.flights_total.value !== null ? `${v.flights_total.value} flights` : null,
-    figure2: null,
-    status: v.status.value,
-    firstDate: v.first_flight_date.value,
-    asOf: v.provider.as_of,
-    snippet: v.overview.value,
-    sensors: [],
-    reusable: v.reusable.value,
-  }));
+  return vehicles.map((v) => {
+    const specs: RegSpec[] = [];
+    if (v.payload_leo_kg.value !== null)
+      specs.push({ label: "leo payload", value: `${v.payload_leo_kg.value.toLocaleString()} kg` });
+    if (v.flights_total.value !== null)
+      specs.push({
+        label: "flights",
+        value:
+          v.flights_successful.value !== null
+            ? `${v.flights_successful.value}/${v.flights_total.value}`
+            : String(v.flights_total.value),
+      });
+    if (v.reusable.value !== null) specs.push({ label: "reusable", value: v.reusable.value ? "yes" : "no" });
+    return {
+      slug: v.slug,
+      name: v.name,
+      kind: "vehicle" as const,
+      href: `/registry/vehicles/${v.slug}/`,
+      group: v.provider.value ?? "Provider unconfirmed",
+      parent: null,
+      affiliation: v.provider.value ?? "Provider unconfirmed",
+      status: v.status.value,
+      asOf: v.provider.as_of,
+      snippet: v.overview.value,
+      sensors: [],
+      reusable: v.reusable.value,
+      vehicleClass: normVehicleClass(v.vehicle_class.value),
+      specs,
+    };
+  });
 }
 
 function spaceportEntries(): RegEntry[] {
-  return spaceports.map((s) => ({
-    slug: s.slug,
-    name: s.name,
-    kind: "spaceport" as const,
-    href: `/registry/spaceports/${s.slug}/`,
-    group: s.region,
-    parent: null,
-    affiliation: s.operator.value ?? "Operator unconfirmed",
-    figure: s.launches_total.value !== null ? `${s.launches_total.value} launches hosted` : null,
-    figure2: s.country.value,
-    status: s.status.value,
-    firstDate: s.first_launch_date.value,
-    asOf: s.launches_total.as_of,
-    snippet: s.overview.value,
-    sensors: [],
-    reusable: null,
-  }));
+  return spaceports.map((s) => {
+    const specs: RegSpec[] = [];
+    if (s.launches_total.value !== null) specs.push({ label: "launches", value: String(s.launches_total.value) });
+    if (s.country.value) specs.push({ label: "country", value: s.country.value });
+    return {
+      slug: s.slug,
+      name: s.name,
+      kind: "spaceport" as const,
+      href: `/registry/spaceports/${s.slug}/`,
+      group: s.region,
+      parent: null,
+      affiliation: s.operator.value ?? "Operator unconfirmed",
+      status: s.status.value,
+      asOf: s.launches_total.as_of,
+      snippet: s.overview.value,
+      sensors: [],
+      reusable: null,
+      vehicleClass: null,
+      specs,
+    };
+  });
 }
 
 function orgEntries(): RegEntry[] {
-  return organizations.map((o) => ({
-    slug: o.slug,
-    name: o.name,
-    kind: "org" as const,
-    href: `/registry/organizations/${o.slug}/`,
-    group: o.kind,
-    parent: null,
-    affiliation: o.kind,
-    figure: o.founded.value !== null ? `founded ${o.founded.value}` : null,
-    figure2: o.country.value,
-    status: o.status.value,
-    firstDate: null,
-    asOf: o.focus.as_of,
-    snippet: o.overview.value ?? o.focus.value,
-    sensors: [],
-    reusable: null,
-  }));
+  return organizations.map((o) => {
+    const specs: RegSpec[] = [];
+    if (o.founded.value !== null) specs.push({ label: "founded", value: String(o.founded.value) });
+    if (o.country.value) specs.push({ label: "country", value: o.country.value });
+    specs.push({ label: "kind", value: ORG_KIND_LABEL[o.kind] ?? o.kind });
+    return {
+      slug: o.slug,
+      name: o.name,
+      kind: "org" as const,
+      href: `/registry/organizations/${o.slug}/`,
+      group: o.kind,
+      parent: null,
+      affiliation: o.kind,
+      status: o.status.value,
+      asOf: o.focus.as_of,
+      snippet: o.overview.value ?? o.focus.value,
+      sensors: [],
+      reusable: null,
+      vehicleClass: null,
+      specs,
+    };
+  });
 }
 
-/** Shared attribute filters, applied across all four sections at once. */
-const REG_FILTERS: Array<[string, string, (e: RegEntry) => boolean]> = [
-  ["eo", "eo", (e) => e.kind === "eo"],
-  ["connectivity", "connectivity", (e) => e.kind === "connectivity"],
-  ["vehicles", "vehicles", (e) => e.kind === "vehicle"],
-  ["sar", "sar", (e) => e.sensors.includes("sar")],
-  ["optical", "optical", (e) => e.sensors.includes("optical")],
-  ["reusable", "reusable", (e) => e.reusable === true],
-  ["operational", "operational", (e) => e.status !== null],
-  ["iot", "iot", (e) => e.kind === "iot"],
-  ["institutions", "institutions", (e) => e.kind === "org" && e.group === "institution"],
-];
+/**
+ * A section-scoped filter chip: a labelled predicate. Each section derives its
+ * own chip set from its own entries (so no chip is ever dead) and holds its own
+ * active-chip state, so a filter in one section can never empty another.
+ */
+interface RegFilterDef {
+  id: string;
+  label: string;
+  test: (e: RegEntry) => boolean;
+}
+
+function constellationFilters(entries: RegEntry[]): RegFilterDef[] {
+  const defs: RegFilterDef[] = [];
+  for (const k of ["eo", "connectivity", "iot"] as const)
+    if (entries.some((e) => e.kind === k))
+      defs.push({ id: `domain:${k}`, label: k, test: (e) => e.kind === k });
+  for (const m of ["sar", "optical", "hyperspectral", "rf"])
+    if (entries.some((e) => e.sensors.includes(m)))
+      defs.push({ id: `mod:${m}`, label: m, test: (e) => e.sensors.includes(m) });
+  if (entries.some((e) => isOperational(e.status)))
+    defs.push({ id: "status:op", label: "operational", test: (e) => isOperational(e.status) });
+  return defs;
+}
+
+function vehicleFilters(entries: RegEntry[]): RegFilterDef[] {
+  const defs: RegFilterDef[] = [];
+  for (const c of ["super-heavy", "heavy-lift", "medium-lift", "small-lift"])
+    if (entries.some((e) => e.vehicleClass === c))
+      defs.push({ id: `class:${c}`, label: c, test: (e) => e.vehicleClass === c });
+  if (entries.some((e) => e.reusable === true))
+    defs.push({ id: "reusable", label: "reusable", test: (e) => e.reusable === true });
+  if (entries.some((e) => isOperational(e.status)))
+    defs.push({ id: "status:op", label: "operational", test: (e) => isOperational(e.status) });
+  if (entries.some((e) => isRetired(e.status)))
+    defs.push({ id: "status:retired", label: "retired", test: (e) => isRetired(e.status) });
+  return defs;
+}
+
+function spaceportFilters(entries: RegEntry[]): RegFilterDef[] {
+  const defs: RegFilterDef[] = [];
+  for (const r of Object.keys(REGION_LABEL))
+    if (entries.some((e) => e.group === r))
+      defs.push({ id: `region:${r}`, label: REGION_LABEL[r], test: (e) => e.group === r });
+  if (entries.some((e) => isOperational(e.status)))
+    defs.push({ id: "status:op", label: "operational", test: (e) => isOperational(e.status) });
+  return defs;
+}
+
+function orgFilters(entries: RegEntry[]): RegFilterDef[] {
+  const defs: RegFilterDef[] = [];
+  for (const k of ORG_KINDS)
+    if (entries.some((e) => e.group === k))
+      defs.push({ id: `kind:${k}`, label: ORG_KIND_LABEL[k] ?? k, test: (e) => e.group === k });
+  return defs;
+}
 
 /** Registry selection accents follow the Orbits domain palette. All four
     sections carry a deliberate accent (registry v2: launch and ecosystem
@@ -1416,8 +1514,14 @@ function matchesRegQuery(e: RegEntry, q: string): boolean {
   return [e.name, e.affiliation, e.slug].join(" ").toLowerCase().includes(q);
 }
 
-/** Preview card shared by every section's third (or fourth) pane. */
-function RegPreviewCard({ entry, extraChips }: { entry: RegEntry; extraChips?: ReactNode }) {
+/** Preview card shared by every section's last pane: logo, name, status, and a
+ * dense spec grid of only the figures the underlying profile actually states. */
+function RegPreviewCard({ entry }: { entry: RegEntry }) {
+  const status = isOperational(entry.status)
+    ? "operational"
+    : entry.status && entry.status.length <= 24
+      ? entry.status
+      : null;
   return (
     <>
       <div className="reg-pane-head">
@@ -1428,31 +1532,38 @@ function RegPreviewCard({ entry, extraChips }: { entry: RegEntry; extraChips?: R
       <a className="reg-card" href={entry.href}>
         <div className="card-meta">
           <span className="chip chip-notable">{KIND_LABEL[entry.kind]}</span>
-          {entry.status && <span className="chip">{entry.status}</span>}
+          {status && <span className="chip">{status}</span>}
           {entry.asOf && <span className="date">{entry.asOf}</span>}
         </div>
         <h3 className="sig-name">{entry.name}</h3>
+        {entry.specs.length > 0 && (
+          <dl className="reg-specs">
+            {entry.specs.map((s) => (
+              <div key={s.label} className="reg-spec">
+                <dt>{s.label}</dt>
+                <dd className="mono">{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         {entry.snippet ? (
           <p className="reg-snippet">
-            {entry.snippet.length > 260 ? entry.snippet.slice(0, 260) + "..." : entry.snippet}
+            {entry.snippet.length > 220 ? entry.snippet.slice(0, 220) + "..." : entry.snippet}
           </p>
         ) : (
           <p className="reg-snippet dim">
             No sourced overview yet. Unknowns stay unknown rather than estimated.
           </p>
         )}
-        <div className="tag-row">
-          {entry.figure && <span className="chip sig-tag">{entry.figure}</span>}
-          {entry.figure2 && <span className="chip sig-tag">{entry.figure2}</span>}
-          {entry.firstDate && <span className="chip sig-tag">first: {entry.firstDate}</span>}
-          {entry.sensors.map((s) => (
-            <span key={s} className="chip sig-tag">
-              {s}
-            </span>
-          ))}
-          {entry.reusable === true && <span className="chip sig-tag">reusable</span>}
-          {extraChips}
-        </div>
+        {entry.sensors.length > 0 && (
+          <div className="tag-row">
+            {entry.sensors.map((s) => (
+              <span key={s} className="chip sig-tag">
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
         <span className="reg-open">facts, events &amp; sources &rarr;</span>
       </a>
     </>
@@ -1480,67 +1591,186 @@ function RegRow({
   );
 }
 
+/** A group-pane node: a provider/region/kind, or a constellation operator
+ * (which may be a fleet parent whose children fill the entity pane). */
+interface GroupNode {
+  key: string;
+  label: string;
+  /** Company/fleet profile URL for the entity pane's header button. */
+  profileHref: string | null;
+  entries: RegEntry[];
+}
+
+/** Builds the default group pane: one node per e.group, biggest first. */
+function simpleGroups(
+  display: (name: string) => string,
+  profileHref: (group: string) => string | null,
+): (scoped: RegEntry[]) => GroupNode[] {
+  return (scoped) => {
+    const byGroup = new Map<string, RegEntry[]>();
+    for (const e of scoped) byGroup.set(e.group, [...(byGroup.get(e.group) ?? []), e]);
+    return [...byGroup.entries()]
+      .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+      .map(([name, list]) => ({
+        key: name,
+        label: display(name),
+        profileHref: profileHref(name),
+        entries: list,
+      }));
+  };
+}
+
 /**
- * Reusable two-level pane browser: group -> entity -> preview. Used by the
- * launch providers, spaceports, and ecosystem sections. Constellations get
- * a bespoke browser below because it can grow a fourth pane.
+ * Builds the constellation operator pane. A fleet parent (Planet, Sentinel) is
+ * itself the operator row: its children list in the entity pane and the parent
+ * profile becomes the company-profile button, so no redundant column. `scoped`
+ * is the entries within the selected domain; `all` is every constellation entry
+ * (needed to detect fleet parents whose children may be filtered out).
+ */
+function constellationGroups(scoped: RegEntry[], all: RegEntry[]): GroupNode[] {
+  const inScope = new Map(scoped.map((e) => [e.slug, e]));
+  const nodes = new Map<string, GroupNode>();
+  const nodeFor = (key: string, label: string, profileHref: string | null): GroupNode => {
+    let n = nodes.get(key);
+    if (!n) {
+      n = { key, label, profileHref, entries: [] };
+      nodes.set(key, n);
+    }
+    return n;
+  };
+  // Fleet parents read as operators in their pane, so the suffix is noise there.
+  const opLabel = (name: string) => name.replace(/\s*\(fleet\)$/i, "");
+  for (const e of scoped) {
+    if (all.some((c) => c.parent === e.slug)) {
+      // Fleet parent: owns an operator row; children fill its entity pane.
+      const n = nodeFor(e.slug, opLabel(e.name), e.href);
+      n.label = opLabel(e.name);
+      n.profileHref = e.href;
+    } else if (e.parent && inScope.has(e.parent)) {
+      const p = inScope.get(e.parent)!;
+      nodeFor(e.parent, opLabel(p.name), p.href).entries.push(e);
+    } else {
+      // Standalone constellation (or orphaned child under search filters).
+      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? null).entries.push(e);
+    }
+  }
+  // A parent whose children are all filtered out still previews itself.
+  for (const n of nodes.values()) {
+    if (n.entries.length === 0 && inScope.has(n.key)) n.entries.push(inScope.get(n.key)!);
+  }
+  return [...nodes.values()].sort((a, b) => {
+    const aUnk = a.label === "Operator unconfirmed" ? 1 : 0;
+    const bUnk = b.label === "Operator unconfirmed" ? 1 : 0;
+    return aUnk - bUnk || b.entries.length - a.entries.length || a.label.localeCompare(b.label);
+  });
+}
+
+/** Optional leading pane (constellations: domain). */
+interface SuperGroupConfig {
+  label: string;
+  keyOf: (e: RegEntry) => string;
+  order: string[];
+  display: (k: string) => string;
+  accent?: (k: string) => string | undefined;
+}
+
+/**
+ * The one registry browser, used by every section. Three panes (group ->
+ * entity -> preview) by default; constellations pass an optional leading
+ * super-group pane (domain -> operator -> fleet -> preview). Same visual
+ * grammar throughout: reg-pane-head, RegRow, selection accents.
  */
 function PaneBrowser({
   entries,
+  superGroup,
   groupLabel,
-  groupDisplay = (name) => name,
+  groupsFor,
   entityAside,
-  groupProfileHref,
   accent,
 }: {
   entries: RegEntry[];
+  superGroup?: SuperGroupConfig;
   groupLabel: string;
-  groupDisplay?: (name: string) => string;
+  groupsFor: (scoped: RegEntry[], all: RegEntry[]) => GroupNode[];
   entityAside: (e: RegEntry) => ReactNode;
-  /** Profile URL for a group (e.g. a provider's organization page); renders the company profile button. */
-  groupProfileHref?: (group: string) => string | null;
   accent?: string;
 }) {
+  const [selSuper, setSelSuper] = useState<string | null>(null);
   const [selGroup, setSelGroup] = useState<string | null>(null);
   const [selSlug, setSelSlug] = useState<string | null>(null);
 
-  const byGroup = new Map<string, RegEntry[]>();
-  for (const e of entries) byGroup.set(e.group, [...(byGroup.get(e.group) ?? []), e]);
-  const groups = [...byGroup.entries()].sort(
-    (a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]),
-  );
+  let supers: Array<[string, RegEntry[]]> = [];
+  let scoped = entries;
+  let curSuper: string | null = null;
+  if (superGroup) {
+    const bySuper = new Map<string, RegEntry[]>();
+    for (const e of entries) {
+      const k = superGroup.keyOf(e);
+      bySuper.set(k, [...(bySuper.get(k) ?? []), e]);
+    }
+    supers = superGroup.order
+      .filter((k) => (bySuper.get(k) ?? []).length > 0)
+      .map((k) => [k, bySuper.get(k)!] as [string, RegEntry[]]);
+    const cur = supers.find(([k]) => k === selSuper) ?? supers[0];
+    curSuper = cur ? cur[0] : null;
+    scoped = cur ? cur[1] : [];
+  }
 
-  const group = groups.find(([name]) => name === selGroup) ?? groups[0];
-  const groupEntries = (group ? group[1] : []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  const groups = groupsFor(scoped, entries);
+  const group = groups.find((g) => g.key === selGroup) ?? groups[0];
+  const groupEntries = (group ? group.entries : []).slice().sort((a, b) => a.name.localeCompare(b.name));
   const sel = groupEntries.find((e) => e.slug === selSlug) ?? groupEntries[0];
-  const profileHref = group ? (groupProfileHref?.(group[0]) ?? null) : null;
+
+  const acc = superGroup && curSuper ? (superGroup.accent?.(curSuper) ?? accent) : accent;
 
   return (
     <div
-      className="reg-browser"
-      style={accent ? ({ "--reg-acc": accent } as CSSProperties) : undefined}
+      className={`reg-browser${superGroup ? " reg-browser-4" : ""}`}
+      style={acc ? ({ "--reg-acc": acc } as CSSProperties) : undefined}
     >
+      {superGroup && (
+        <div className="reg-pane reg-ops">
+          <div className="reg-pane-head">
+            {superGroup.label} <span className="dim">{supers.length}</span>
+          </div>
+          {supers.map(([k, list]) => (
+            <RegRow
+              key={k}
+              label={superGroup.display(k)}
+              aside={list.length}
+              selected={k === curSuper}
+              onClick={() => {
+                setSelSuper(k);
+                setSelGroup(null);
+                setSelSlug(null);
+              }}
+            />
+          ))}
+        </div>
+      )}
       <div className="reg-pane reg-ops">
         <div className="reg-pane-head">
           {groupLabel} <span className="dim">{groups.length}</span>
         </div>
-        {groups.map(([name, list]) => (
+        {groups.map((g) => (
           <RegRow
-            key={name}
-            label={groupDisplay(name)}
-            aside={list.length}
-            selected={!!group && name === group[0]}
+            key={g.key}
+            label={g.label}
+            aside={g.entries.length}
+            selected={!!group && g.key === group.key}
             onClick={() => {
-              setSelGroup(name);
+              setSelGroup(g.key);
               setSelSlug(null);
             }}
           />
         ))}
       </div>
       <div className="reg-pane reg-ents">
-        <div className="reg-pane-head">{group ? groupDisplay(group[0]) : ""}</div>
-        {profileHref && (
-          <a className="reg-profile-link" href={profileHref}>
+        <div className="reg-pane-head">
+          {group ? group.label : ""} <span className="dim">{groupEntries.length}</span>
+        </div>
+        {group?.profileHref && (
+          <a className="reg-profile-link" href={group.profileHref}>
             company profile &rarr;
           </a>
         )}
@@ -1559,159 +1789,30 @@ function PaneBrowser({
   );
 }
 
-const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connectivity", iot: "iot" };
-
-/** Operator pane node: a fleet parent (Planet, Sentinel) or a plain operator name. */
-interface OpNode {
-  key: string;
-  label: string;
-  /** Company/fleet profile URL for the fleet pane's header button. */
-  profileHref: string | null;
-  entries: RegEntry[];
-}
-
-/**
- * Constellation section browser: domain -> operator -> fleet. A fleet parent
- * (e.g. Planet, Sentinel) is itself the operator-level row: its children list
- * directly in the fleet pane and the parent profile becomes the company
- * profile button at the top of that pane, so no redundant middle column.
- */
-function ConstellationBrowser({ entries }: { entries: RegEntry[] }) {
-  const [selDomain, setSelDomain] = useState<string | null>(null);
-  const [selOp, setSelOp] = useState<string | null>(null);
-  const [selSlug, setSelSlug] = useState<string | null>(null);
-
-  const byDomain = new Map<string, RegEntry[]>();
-  for (const e of entries) byDomain.set(e.kind, [...(byDomain.get(e.kind) ?? []), e]);
-  const domains = (["eo", "connectivity", "iot"] as const)
-    .filter((d) => (byDomain.get(d) ?? []).length > 0)
-    .map((d) => [d, byDomain.get(d) ?? []] as [string, RegEntry[]]);
-
-  const domain = domains.find(([d]) => d === selDomain) ?? domains[0];
-  const domainEntries = domain ? domain[1] : [];
-
-  const inDomain = new Map(domainEntries.map((e) => [e.slug, e]));
-  const nodes = new Map<string, OpNode>();
-  const nodeFor = (key: string, label: string, profileHref: string | null): OpNode => {
-    let n = nodes.get(key);
-    if (!n) {
-      n = { key, label, profileHref, entries: [] };
-      nodes.set(key, n);
-    }
-    return n;
-  };
-  // Fleet parents read as operators in their pane, so the suffix is noise there.
-  const opLabel = (name: string) => name.replace(/\s*\(fleet\)$/i, "");
-  for (const e of domainEntries) {
-    if (entries.some((c) => c.parent === e.slug)) {
-      // Fleet parent: owns an operator row; children fill its fleet pane.
-      const n = nodeFor(e.slug, opLabel(e.name), e.href);
-      n.label = opLabel(e.name);
-      n.profileHref = e.href;
-    } else if (e.parent && inDomain.has(e.parent)) {
-      const p = inDomain.get(e.parent)!;
-      nodeFor(e.parent, opLabel(p.name), p.href).entries.push(e);
-    } else {
-      // Standalone constellation (or orphaned child under search filters).
-      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? null).entries.push(e);
-    }
-  }
-  // A parent whose children are all filtered out still previews itself.
-  for (const n of nodes.values()) {
-    if (n.entries.length === 0 && inDomain.has(n.key)) n.entries.push(inDomain.get(n.key)!);
-  }
-  const operators = [...nodes.values()].sort((a, b) => {
-    const aUnk = a.label === "Operator unconfirmed" ? 1 : 0;
-    const bUnk = b.label === "Operator unconfirmed" ? 1 : 0;
-    return aUnk - bUnk || b.entries.length - a.entries.length || a.label.localeCompare(b.label);
-  });
-
-  const op = operators.find((n) => n.key === selOp) ?? operators[0];
-  const fleet = (op ? op.entries : []).slice().sort((a, b) => a.name.localeCompare(b.name));
-  const sel = fleet.find((e) => e.slug === selSlug) ?? fleet[0];
-
-  const accent = domain ? DOMAIN_ACCENT[domain[0]] : undefined;
-
-  return (
-    <div
-      className="reg-browser reg-browser-4"
-      style={accent ? ({ "--reg-acc": accent } as CSSProperties) : undefined}
-    >
-      <div className="reg-pane reg-ops">
-        <div className="reg-pane-head">
-          domain <span className="dim">{domains.length}</span>
-        </div>
-        {domains.map(([d, list]) => (
-          <RegRow
-            key={d}
-            label={DOMAIN_LABEL[d] ?? d}
-            aside={list.length}
-            selected={!!domain && d === domain[0]}
-            onClick={() => {
-              setSelDomain(d);
-              setSelOp(null);
-              setSelSlug(null);
-            }}
-          />
-        ))}
-      </div>
-      <div className="reg-pane reg-ops">
-        <div className="reg-pane-head">
-          operator <span className="dim">{operators.length}</span>
-        </div>
-        {operators.map((n) => (
-          <RegRow
-            key={n.key}
-            label={n.label}
-            aside={n.entries.length}
-            selected={!!op && n.key === op.key}
-            onClick={() => {
-              setSelOp(n.key);
-              setSelSlug(null);
-            }}
-          />
-        ))}
-      </div>
-      <div className="reg-pane reg-ents">
-        <div className="reg-pane-head">
-          {op ? op.label : ""} <span className="dim">{fleet.length}</span>
-        </div>
-        {op?.profileHref && (
-          <a className="reg-profile-link" href={op.profileHref}>
-            company profile &rarr;
-          </a>
-        )}
-        {fleet.map((e) => (
-          <RegRow
-            key={e.slug}
-            label={e.name}
-            aside={KIND_LABEL[e.kind]}
-            selected={!!sel && e.slug === sel.slug}
-            onClick={() => setSelSlug(e.slug)}
-          />
-        ))}
-      </div>
-      <div className="reg-pane reg-preview">{sel && <RegPreviewCard entry={sel} />}</div>
-    </div>
-  );
-}
-
 interface RegSection {
   id: string;
   heading: string;
   tagline: string;
-  entries: RegEntry[];
   /** Noun for the pane grouping (providers, operators, regions...); the
-   * heading badge then reads "N entities · M noun" so it reconciles
+   * heading badge then reads "N entries · M noun" so it reconciles
    * with the pane header counts (2026-07-07 audit). */
   groupNoun: string;
   /** Noun for the entries themselves ("vehicles", "constellations"). */
   entryNoun: string;
+  /** Every entry in scope for this section (before text/chip filtering). */
+  base: RegEntry[];
+  /** Chip set, derived from base so no chip is ever dead. */
+  filters: RegFilterDef[];
+  /** Renders the section's browser for the finally-filtered entries. */
+  browser: (entries: RegEntry[]) => ReactNode;
 }
 
-/** Registry index: four stacked sections, one shared search and filter set. */
+/** Registry index: four stacked sections. Text search is global; each section
+ * carries its own chip set and its own active-chip state, so a filter in one
+ * section can never touch another. */
 export function RegistryIndexPage() {
-  const [filter, setFilter] = useState<string | null>(null);
+  // Per-section active chip; a section id maps to its active filter id or null.
+  const [chip, setChip] = useState<Record<string, string | null>>({});
   const [query, setQuery] = useState("");
 
   const allConstellations = useMemo(constellationEntries, []);
@@ -1724,50 +1825,90 @@ export function RegistryIndexPage() {
   );
 
   const q = query.trim().toLowerCase();
-  const active = REG_FILTERS.find(([id]) => id === filter);
-  const passes = (e: RegEntry) => (!active || active[2](e)) && (q === "" || matchesRegQuery(e, q));
+  const textPass = (e: RegEntry) => q === "" || matchesRegQuery(e, q);
 
-  const launchEntries = allVehicles.filter(passes);
-  const constellationEntriesVisible = allConstellations.filter(passes);
-  const spaceportEntriesVisible = allSpaceports.filter(passes);
-  const orgEntriesVisible = allOrgs.filter(passes);
+  const domainSuper: SuperGroupConfig = {
+    label: "domain",
+    keyOf: (e) => e.kind,
+    order: ["eo", "connectivity", "iot"],
+    display: (k) => DOMAIN_LABEL[k] ?? k,
+    accent: (k) => DOMAIN_ACCENT[k],
+  };
 
   const sections: RegSection[] = [
     {
       id: "launch",
       heading: "launch service providers",
       tagline: "Who flies, and on what.",
-      entries: launchEntries,
       groupNoun: "providers",
       entryNoun: "vehicles",
+      base: allVehicles,
+      filters: vehicleFilters(allVehicles),
+      browser: (ents) => (
+        <PaneBrowser
+          entries={ents}
+          groupLabel="provider"
+          groupsFor={simpleGroups((n) => n, (g) => entityHrefFor(g) ?? null)}
+          entityAside={() => "vehicle"}
+          accent={SECTION_ACCENT.launch}
+        />
+      ),
     },
     {
       id: "constellations",
       heading: "constellations",
       tagline: "What is up, who owns it.",
-      entries: constellationEntriesVisible,
       groupNoun: "operators",
       entryNoun: "constellations",
+      base: allConstellations,
+      filters: constellationFilters(allConstellations),
+      browser: (ents) => (
+        <PaneBrowser
+          entries={ents}
+          superGroup={domainSuper}
+          groupLabel="operator"
+          groupsFor={constellationGroups}
+          entityAside={(e) => KIND_LABEL[e.kind]}
+        />
+      ),
     },
     {
       id: "spaceports",
       heading: "spaceports",
       tagline: "Where it leaves the ground.",
-      entries: spaceportEntriesVisible,
       groupNoun: "regions",
       entryNoun: "sites",
+      base: allSpaceports,
+      filters: spaceportFilters(allSpaceports),
+      browser: (ents) => (
+        <PaneBrowser
+          entries={ents}
+          groupLabel="region"
+          groupsFor={simpleGroups((r) => REGION_LABEL[r] ?? r, () => null)}
+          entityAside={() => "site"}
+          accent={SECTION_ACCENT.spaceports}
+        />
+      ),
     },
     {
       id: "ecosystem",
       heading: "ecosystem",
       tagline: "Everyone else who moves the market.",
-      entries: orgEntriesVisible,
       groupNoun: "kinds",
       entryNoun: "organizations",
+      base: allOrgs,
+      filters: orgFilters(allOrgs),
+      browser: (ents) => (
+        <PaneBrowser
+          entries={ents}
+          groupLabel="kind"
+          groupsFor={simpleGroups((k) => ORG_KIND_LABEL[k] ?? k, () => null)}
+          entityAside={() => "organization"}
+          accent={SECTION_ACCENT.ecosystem}
+        />
+      ),
     },
   ];
-
-  const visibleCount = sections.reduce((n, s) => n + s.entries.length, 0);
 
   return (
     <Layout current="registry">
@@ -1786,65 +1927,45 @@ export function RegistryIndexPage() {
           <strong>{new Set(all.map((e) => e.affiliation)).size}</strong> operators
         </span>
       </div>
-      <div className="sig-tabs reg-chips">
-        {REG_FILTERS.map(([id, label]) => (
-          <button
-            key={id}
-            className={`sig-tab${filter === id ? " active" : ""}`}
-            onClick={() => setFilter(filter === id ? null : id)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      {visibleCount === 0 ? (
-        <p className="empty">// nothing matches: adjust filters</p>
-      ) : (
-        sections.map((s) => {
-          if (s.entries.length === 0) return null;
-          return (
-            <section key={s.id} className="signal-section reg-section">
-              <h2 className="signal-heading">
-                <span>
-                  {s.heading} <span className="badge-acc">{s.entries.length}</span>{" "}
-                  <span className="dim reg-groupline">
-                    {s.entryNoun} · {new Set(s.entries.map((e) => e.group)).size} {s.groupNoun}
-                  </span>
+      {sections.map((s) => {
+        const activeId = chip[s.id] ?? null;
+        const activeDef = s.filters.find((f) => f.id === activeId) ?? null;
+        const visible = s.base.filter((e) => textPass(e) && (!activeDef || activeDef.test(e)));
+        const groupCount = new Set(visible.map((e) => e.group)).size;
+        return (
+          <section key={s.id} className="signal-section reg-section">
+            <h2 className="signal-heading">
+              <span>
+                {s.heading} <span className="badge-acc">{visible.length}</span>{" "}
+                <span className="dim reg-groupline">
+                  {s.entryNoun} · {groupCount} {s.groupNoun}
                 </span>
-                <span className="sig-tagline">{s.tagline}</span>
-              </h2>
-              {s.id === "launch" && (
-                <PaneBrowser
-                  entries={s.entries}
-                  groupLabel="provider"
-                  entityAside={() => "vehicle"}
-                  groupProfileHref={(p) => entityHrefFor(p) ?? null}
-                  accent={SECTION_ACCENT.launch}
-                />
-              )}
-              {s.id === "constellations" && <ConstellationBrowser entries={s.entries} />}
-              {s.id === "spaceports" && (
-                <PaneBrowser
-                  entries={s.entries}
-                  groupLabel="region"
-                  groupDisplay={(r) => REGION_LABEL[r] ?? r}
-                  entityAside={() => "site"}
-                  accent={SECTION_ACCENT.spaceports}
-                />
-              )}
-              {s.id === "ecosystem" && (
-                <PaneBrowser
-                  entries={s.entries}
-                  groupLabel="kind"
-                  groupDisplay={(k) => ORG_KIND_LABEL[k] ?? k}
-                  entityAside={() => "organization"}
-                  accent={SECTION_ACCENT.ecosystem}
-                />
-              )}
-            </section>
-          );
-        })
-      )}
+              </span>
+              <span className="sig-tagline">{s.tagline}</span>
+            </h2>
+            {s.filters.length > 0 && (
+              <div className="sig-tabs reg-chips reg-section-chips">
+                {s.filters.map((f) => (
+                  <button
+                    key={f.id}
+                    className={`sig-tab${activeId === f.id ? " active" : ""}`}
+                    onClick={() =>
+                      setChip((c) => ({ ...c, [s.id]: activeId === f.id ? null : f.id }))
+                    }
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {visible.length === 0 ? (
+              <p className="empty">// nothing matches this filter</p>
+            ) : (
+              s.browser(visible)
+            )}
+          </section>
+        );
+      })}
       <p className="dim reg-footnote">
         A registry of constellations, launch vehicles, spaceports, and the wider ecosystem. Pick
         a group, then an entity, to open its profile; every figure carries its source and as-of

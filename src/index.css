@@ -2172,6 +2172,10 @@ a.sig-card:hover .sig-p-x {
 .reg-chips {
   margin-bottom: 0.75rem;
 }
+/* Per-section chip row: sits between the section heading and its browser. */
+.reg-section-chips {
+  margin: 0.6rem 0 0;
+}
 
 .reg-section {
   margin-top: 1.5rem;
@@ -2336,6 +2340,36 @@ a.sig-card:hover .sig-p-x {
 }
 .reg-card:hover .reg-open {
   color: var(--reg-acc, var(--acc));
+}
+/* Preview-card spec grid: uppercase micro-labels over mono figures,
+   hairline-divided cells, only the fields the profile actually states. */
+.reg-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: 1px;
+  margin: 0.7rem 0 0.2rem;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.reg-spec {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.6rem;
+  background: var(--bg);
+}
+.reg-spec dt {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+}
+.reg-spec dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--fg);
 }
 .reg-snippet {
   font-family: var(--sans);
