@@ -904,3 +904,70 @@ a newer entry if a lesson changes.
   Redwire ATM piece named in the report; if independent, correct
   2026-06-09-redwire-500m-atm corroboration to found_some (no score change
   expected). Remove this task by completing it; log both movements.
+
+## Narrow same-day re-check, unfiltered full source list, ~4h38m window (2026-07-08)
+
+- 2026-07-08-M: TASK 2026-07-08-J2 COMPLETE. Fetched FODNews's Zhuque-2E page:
+  independently cites the Space-Track.org advisory and secures its own named
+  McKnight/Jim Shell quotes (not a rewrite of Ars Technica); rescored
+  2026-06-15-zhuque-2e-upper-stage-breakup found_none -> found_some, SNR 2 -> 4.
+  Fetched the Investing.com Redwire ATM piece: confirmed NOT independent (the
+  page's own footer says "generated with the support of AI" from the filing
+  text, no original reporting) -- left 2026-06-09-redwire-500m-atm unchanged,
+  matching the "no score change expected" prediction. Both halves of the
+  standing task are now closed; remove if it resurfaces in a stale copy of
+  this file.
+- 2026-07-08-N: WebFetch flatly refuses arstechnica.com this run ("Claude Code
+  is unable to fetch from arstechnica.com" -- a tool-level block, not a site
+  fetch failure/403/timeout). The harvester's candidates.json raw_excerpt for
+  the same URL was substantial and verbatim (City Labs BOHR orbit-altitude and
+  payload-count detail came from it), and per prompts/update-items.md the
+  queue's raw_excerpt is a legitimate source text on its own; used it directly
+  as the corroboration source without a second fetch attempt. Worth knowing
+  before burning a WebFetch retry on this domain again.
+- 2026-07-08-O: Bluesky public API field path, precise this time (supersedes
+  the grep-based approach in 2026-07-08-K for single-post checks): each feed
+  item is `.feed[].post.record.{createdAt,text}`, NOT `.feed[].post.{...}`
+  (the top-level `post` object has no `text`/`createdAt` of its own; those
+  live one level down in `record`). `jq -c '.feed[].post.record | {createdAt,
+  text}'` on `getAuthorFeed?actor=<handle>&limit=5` gives clean, reliable
+  per-post timestamps -- no quote-embed ambiguity for a plain author-feed
+  read (that ambiguity was specific to grepping raw JSON, not to the API
+  itself). Cleared 9 signals Bluesky accounts this way in one pass each.
+- 2026-07-08-P: A whitelisted signals person's Bluesky post about a THIRD
+  PARTY's news (Andrew Parsonson posting that Loft Orbital awarded MaiaSpace a
+  launch contract, with no accompanying article fetchable this run --
+  europeanspaceflight.com 403'd on every path tried, and the story was too
+  fresh for search indexing) is still draftable as a full event item on the
+  post's text alone: class whitelist, scoring.whitelist "observer", crawl
+  found_none is honest and costs nothing net because whitelist_floor applies
+  last and lifts to 4 regardless of the corroboration_none -1 (confirmed live:
+  base would-be 1 (informal, no direct source) - 1 (found_none) + 2
+  (whitelist_floor lift to 4) = 4). Don't skip a whitelisted signal just
+  because the linked article isn't independently fetchable this run.
+- 2026-07-08-Q: Non-US government press-office domains keep failing the
+  anti-spoof gate as official_record, confirmed on a new one: pm.gc.ca (Office
+  of the Prime Minister of Canada) independently confirmed Telesat's Arctic
+  ESCP-P announcement in a same-day release, but is neither a .gov host nor in
+  FIXED_OFFICIAL_HOSTS nor a registry-recorded website. Same handling as the
+  2026-07-08-F2 canada.ca/asc-csa.gc.ca/inspace.gov.in cases: led with
+  Telesat's own first_party release, linked pm.gc.ca unscored in
+  secondary_urls, and still credited crawl: "found_some" since genuine
+  independent confirmation was found and linked (2026-07-07-K pattern).
+- 2026-07-08-R: Two new trade-class sources worth remembering for
+  connectivity/launch-regulatory stories: Fierce Network (fierce-network.com,
+  established telecom trade press, ran original analyst commentary on
+  SpaceX's Gen3 FCC filing, not a rewrite) and SatNews (satnews.com,
+  long-running satellite-industry trade outlet, cross-links its own prior
+  coverage). Using Fierce Network as the new lead upgraded
+  2026-06-30-spacex-gen3-fcc-filing from informal-tier (SNR 2) to trade-tier
+  (SNR 4) via the rescore/upgrade path -- worth checking these two before
+  accepting an informal-blog-only sourcing situation as final on a filing
+  story. FODNews (fodnews.com) is the equivalent for orbital-debris/reentry
+  stories (see 2026-07-08-M).
+- 2026-07-08-S: A held entry with decision.verdict "publish" is not
+  automatically dated to its held-candidate date: IRIDE's candidate.date was
+  2026-07-06 (the article's publish date) but the article itself stated the
+  marketplace actually went live 2026-07-01; drafted and published dated
+  2026-07-01 per the 2026-07-06-GG event-date-over-publish-date convention,
+  reusing the id slug format YYYY-MM-DD-actor-slug with the corrected date.

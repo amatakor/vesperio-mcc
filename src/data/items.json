@@ -566,7 +566,9 @@
         "Vantor"
       ],
       "source_url": "https://spacenews.com/vantor-offers-up-to-date-imagery-with-worldview-3d/",
-      "secondary_urls": [],
+      "secondary_urls": [
+        "https://www.space.com/space-exploration/satellites/this-is-the-future-of-spatial-intelligence-vantor-unveils-stunning-3d-satellite-views-of-earth-photos"
+      ],
       "publishDate": "2026-07-05T08:57:40.592Z",
       "image": {
         "src": "/img/items/2026-07-01-vantor-worldview-3d.png",
@@ -575,16 +577,31 @@
         "width": 879,
         "height": 651
       },
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
           "source": "https://spacenews.com/vantor-offers-up-to-date-imagery-with-worldview-3d/",
           "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
         },
-        "modifiers": [],
-        "final": 3,
-        "scorer_version": 1
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "Space.com published an independent July 8 piece on WorldView 3D with its own reporting (Yulin Naval Base and Hoover Dam image examples, its own author byline) beyond SpaceNews's original July 1 story; attached as corroboration.",
+            "source": "https://www.space.com/space-exploration/satellites/this-is-the-future-of-spatial-intelligence-vantor-unveils-stunning-3d-satellite-views-of-earth-photos"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 1,
+        "history": [
+          {
+            "date": "2026-07-08",
+            "from": 3,
+            "to": 4,
+            "reason": "Space.com published an independent July 8 piece on WorldView 3D with its own reporting (Yulin Naval Base and Hoover Dam image examples, its own author byline) beyond SpaceNews's original July 1 story; attached as corroboration."
+          }
+        ]
       },
       "sources": [
         {
@@ -593,6 +610,13 @@
           "class": "trade",
           "added": "2026-07-01",
           "via": "initial"
+        },
+        {
+          "url": "https://www.space.com/space-exploration/satellites/this-is-the-future-of-spatial-intelligence-vantor-unveils-stunning-3d-satellite-views-of-earth-photos",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "corroboration"
         }
       ],
       "kind": "event"
@@ -3351,7 +3375,7 @@
       "headline": "City Labs launches BOHR, first commercial nuclear-powered satellite",
       "explainer": {
         "tagline": "City Labs flew BOHR, calling it the first commercial nuclear-powered satellite, on SpaceX's Transporter-17 rideshare.",
-        "what_happened": "City Labs' BOHR cubesat launched aboard SpaceX's Transporter-17 rideshare mission on July 7, which the company and Payload describe as the first commercial nuclear-powered satellite and first nuclear cubesat. BOHR demonstrates City Labs' NanoTritium betavoltaic technology, generating continuous electrical current from the natural beta decay of tritium rather than from sunlight. The FAA issued an affirmative payload authorization for the mission on September 30, 2025.",
+        "what_happened": "City Labs' BOHR cubesat launched aboard SpaceX's Transporter-17 rideshare mission on July 7 alongside 80 other payloads, released into an orbit between 350 and 400 miles (nearly 600 km) altitude, per Ars Technica, which the company and Payload describe as the first commercial nuclear-powered satellite and first nuclear cubesat. BOHR demonstrates City Labs' NanoTritium betavoltaic technology, generating continuous electrical current from the natural beta decay of tritium rather than from sunlight. The FAA issued an affirmative payload authorization for the mission on September 30, 2025.",
         "why_it_matters": "A power source independent of sunlight could keep small satellites or subsystems running through eclipse periods, in permanently shadowed regions, or on multi-decade missions without the mass and complexity of a radioisotope thermoelectric generator. It is a single-mission demonstration rather than a flight-proven product line, but it sets a regulatory and technical precedent for commercial nuclear power sources in orbit."
       },
       "kind": "event",
@@ -3364,7 +3388,8 @@
       "source_url": "https://payloadspace.com/transporter-17-sends-the-first-commercial-nuclear-sat-to-orbit/",
       "secondary_urls": [
         "https://www.space.com/space-exploration/launches-spacecraft/spacex-just-launched-the-1st-ever-nuclear-powered-commercial-satellite",
-        "https://newatlas.com/space-systems/worlds-first-commercial-nuclear-powered-payload-orbit/"
+        "https://newatlas.com/space-systems/worlds-first-commercial-nuclear-powered-payload-orbit/",
+        "https://arstechnica.com/space/2026/07/miami-based-city-labs-achieves-a-first-for-commercial-nuclear-power-in-space/"
       ],
       "snr": 4,
       "snr_trace": {
@@ -3401,6 +3426,13 @@
         {
           "url": "https://newatlas.com/space-systems/worlds-first-commercial-nuclear-powered-payload-orbit/",
           "outlet": "New Atlas",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://arstechnica.com/space/2026/07/miami-based-city-labs-achieves-a-first-for-commercial-nuclear-power-in-space/",
+          "outlet": "Ars Technica",
           "class": "mainstream",
           "added": "2026-07-08",
           "via": "corroboration"
@@ -3948,29 +3980,46 @@
       "companies": [
         "SpaceX"
       ],
-      "source_url": "https://convergedigest.com/spacex-seeks-fcc-approval-for-100000-satellite-gen3-network-built-for-ai-scale-connectivity/",
+      "source_url": "https://www.fierce-network.com/broadband/spacex-files-fcc-request-100000-starlink-satellites",
       "secondary_urls": [
         "https://www.tradingkey.com/analysis/stocks/us-stocks/262018024-spacex-spcx-gen3-ai-tradingkey",
-        "https://www.nextbigfuture.com/2026/07/spacex-files-with-fcc-for-100000-v3-satellite-constellation-to-100x-bandwidth.html"
+        "https://www.nextbigfuture.com/2026/07/spacex-files-with-fcc-for-100000-v3-satellite-constellation-to-100x-bandwidth.html",
+        "https://convergedigest.com/spacex-seeks-fcc-approval-for-100000-satellite-gen3-network-built-for-ai-scale-connectivity/",
+        "https://satnews.com/2026/07/08/spacex-files-fcc-application-for-100000-third-generation-starlink-satellites/"
       ],
-      "snr": 2,
+      "snr": 4,
       "snr_trace": {
         "base": {
-          "tier": 1,
-          "source": "https://convergedigest.com/spacex-seeks-fcc-approval-for-100000-satellite-gen3-network-built-for-ai-scale-connectivity/",
-          "reason": "base tier 1 from lead source class \"informal\" (Converge Digest)"
+          "tier": 3,
+          "source": "https://www.fierce-network.com/broadband/spacex-files-fcc-request-100000-starlink-satellites",
+          "reason": "base tier 3 from lead source class \"trade\" (Fierce Network)"
         },
         "modifiers": [
           {
             "type": "corroboration_2plus",
             "delta": 1,
-            "reason": "3 distinct sources (>=2)"
+            "reason": "5 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-08",
+            "from": 2,
+            "to": 4,
+            "reason": "Fierce Network, an established telecom trade outlet, published independent reporting on the same filing (docket SAT-LOA-20260630-00264) with original analyst commentary (MTN Consulting, BNP Paribas) not present in the original informal-tier sources; promoting it to lead upgrades the base tier from informal to trade. Also found SatNews's independent coverage (long-running satellite-industry trade outlet, cross-links its own prior coverage, no rewrite indicators) as further corroboration. Rescoring per the upgrade path since the lead source and its class both change."
+          }
+        ]
       },
       "sources": [
+        {
+          "url": "https://www.fierce-network.com/broadband/spacex-files-fcc-request-100000-starlink-satellites",
+          "outlet": "Fierce Network",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "initial"
+        },
         {
           "url": "https://convergedigest.com/spacex-seeks-fcc-approval-for-100000-satellite-gen3-network-built-for-ai-scale-connectivity/",
           "outlet": "Converge Digest",
@@ -3989,6 +4038,13 @@
           "url": "https://www.nextbigfuture.com/2026/07/spacex-files-with-fcc-for-100000-v3-satellite-constellation-to-100x-bandwidth.html",
           "outlet": "NextBigFuture",
           "class": "informal",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://satnews.com/2026/07/08/spacex-files-fcc-application-for-100000-third-generation-starlink-satellites/",
+          "outlet": "SatNews",
+          "class": "trade",
           "added": "2026-07-08",
           "via": "corroboration"
         }
@@ -4058,7 +4114,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T11:14:57.543Z"
+      "publishDate": "2026-07-08T11:14:57.543Z",
+      "image": null
     },
     {
       "id": "2026-07-06-australia-queensland-space-debris-spheres",
@@ -4111,7 +4168,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T11:14:57.543Z"
+      "publishDate": "2026-07-08T11:14:57.543Z",
+      "image": {
+        "src": "/img/items/2026-07-06-australia-queensland-space-debris-spheres.jpg",
+        "credit": "Image: www.space.com",
+        "origin_url": "https://www.space.com/space-exploration/launches-spacecraft/unidentified-metal-spheres-found-on-australian-beach-are-debris-from-a-foreign-rocket-body-space-agency-says",
+        "width": 2000,
+        "height": 1125
+      }
     },
     {
       "id": "2026-07-07-spacex-nasdaq-100-inclusion",
@@ -4176,7 +4240,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T11:28:52.789Z"
+      "publishDate": "2026-07-08T11:28:52.789Z",
+      "image": {
+        "src": "/img/items/2026-07-07-spacex-nasdaq-100-inclusion.jpg",
+        "credit": "Image: www.fool.com",
+        "origin_url": "https://www.fool.com/investing/2026/07/08/spacex-officially-joined-the-nasdaq-100-and-receiv/",
+        "width": 1200,
+        "height": 800
+      }
     },
     {
       "id": "2026-07-07-spacex-wall-street-price-targets",
@@ -4231,7 +4302,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T11:28:52.789Z"
+      "publishDate": "2026-07-08T11:28:52.789Z",
+      "image": {
+        "src": "/img/items/2026-07-07-spacex-wall-street-price-targets.jpg",
+        "credit": "Image: finance.yahoo.com",
+        "origin_url": "https://finance.yahoo.com/markets/stocks/article/spacex-snags-street-high-300-price-target-from-morgan-stanley-as-rocket-company-enters-nasdaq-100-160316317.html",
+        "width": 1200,
+        "height": 675
+      }
     },
     {
       "id": "2026-06-12-spacex-nasdaq-ipo",
@@ -4292,7 +4370,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-09-iceye-series-f-450m",
@@ -4347,7 +4432,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-09-iceye-series-f-450m.webp",
+        "credit": "Image: www.iceye.com",
+        "origin_url": "https://www.iceye.com/newsroom/press-releases/iceye-leads-a-new-era-of-sovereign-intelligence-from-space-with-1b-funding-round",
+        "width": 1900,
+        "height": 1267
+      }
     },
     {
       "id": "2026-06-09-space42-foresight-full-operation",
@@ -4403,7 +4495,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-09-space42-foresight-full-operation.jpg",
+        "credit": "Image: www.zawya.com",
+        "origin_url": "https://www.zawya.com/en/press-release/companies-news/space42-expands-earth-observation-capabilities-as-three-foresight-satellites-enter-full-operation-v1kjmp9x",
+        "width": 898,
+        "height": 600
+      }
     },
     {
       "id": "2026-06-10-spire-diehl-defence-mou",
@@ -4458,7 +4557,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-10-spire-diehl-defence-mou.jpg",
+        "credit": "Image: ir.spire.com",
+        "origin_url": "https://ir.spire.com/news-events/press-releases/detail/302/spire-global-and-diehl-defence-sign-agreement-to-advance",
+        "width": 1200,
+        "height": 627
+      }
     },
     {
       "id": "2026-06-09-blacksky-nro-aros-modification",
@@ -4520,7 +4626,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-09-blacksky-nro-aros-modification.png",
+        "credit": "Image: blacksky.com",
+        "origin_url": "https://blacksky.com/press-releases/blacksky-awarded-nro-contract-modification-to-accelerate-development-of-aros-as-critical-commercial-alternative-for-foundation-imaging/",
+        "width": 1600,
+        "height": 900
+      }
     },
     {
       "id": "2026-06-11-csa-radarsat-plus-ground-contracts",
@@ -4583,7 +4696,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-11-csa-radarsat-plus-ground-contracts.jpg",
+        "credit": "Image: spaceq.ca",
+        "origin_url": "https://spaceq.ca/canada-awards-2-4-million-for-ground-control-systems-to-be-used-by-radarsat-earth-observation-satellites/",
+        "width": 660,
+        "height": 330
+      }
     },
     {
       "id": "2026-06-10-inspace-lvm3-technology-transfer",
@@ -4629,7 +4749,8 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": null
     },
     {
       "id": "2026-06-12-jaxa-h3-30s-first-flight",
@@ -4692,7 +4813,15 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-12-jaxa-h3-30s-first-flight.png",
+        "credit": "Image: global.jaxa.jp",
+        "origin_url": "https://global.jaxa.jp/press/2026/06/20260612-1_e.html",
+        "fit": "contain",
+        "width": 200,
+        "height": 200
+      }
     },
     {
       "id": "2026-06-09-nasa-artemis-iii-crew-parmitano",
@@ -4746,7 +4875,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": null
     },
     {
       "id": "2026-06-09-osc-tracss-national-government-accounts",
@@ -4798,7 +4928,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": null
     },
     {
       "id": "2026-06-08-quantum-space-spac-merger",
@@ -4852,7 +4983,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-10-satsure-inspace-taf-grant",
@@ -4899,7 +5037,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-10-satsure-inspace-taf-grant.png",
+        "credit": "Image: whbl.com",
+        "origin_url": "https://whbl.com/2026/06/11/indias-satsure-bags-2-6-million-grant-to-build-ai-powered-earth-observation-models/",
+        "width": 600,
+        "height": 315
+      }
     },
     {
       "id": "2026-06-11-saipan-reentry-debris",
@@ -4955,7 +5100,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-11-saipan-reentry-debris.jpg",
+        "credit": "Image: www.rnz.co.nz",
+        "origin_url": "https://www.rnz.co.nz/news/pacific/598010/space-debris-confirmed-as-source-of-object-seen-over-saipan",
+        "width": 1200,
+        "height": 630
+      }
     },
     {
       "id": "2026-06-10-starbase-land-swap-lawsuit",
@@ -5014,7 +5166,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-10-starbase-land-swap-lawsuit.jpg",
+        "credit": "Image: www.texastribune.org",
+        "origin_url": "https://www.texastribune.org/2026/06/11/environmental-groups-sue-to-stop-spacex-land-deal/",
+        "width": 945,
+        "height": 630
+      }
     },
     {
       "id": "2026-06-08-spacex-b1067-35th-flight",
@@ -5073,7 +5232,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-08-spacex-b1067-35th-flight.jpg",
+        "credit": "Image: www.space.com",
+        "origin_url": "https://www.space.com/space-exploration/launches-spacecraft/spacex-starlink-10-35-b1067-ccsfs-asog",
+        "width": 1920,
+        "height": 1080
+      }
     },
     {
       "id": "2026-06-10-esa-ec-isos-declaration-eross-sc",
@@ -5136,7 +5302,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-10-esa-ec-isos-declaration-eross-sc.jpg",
+        "credit": "Image: www.esa.int",
+        "origin_url": "https://www.esa.int/Space_Safety/Clean_Space/Boosting_European_leadership_in_in-space_operations_and_services",
+        "width": 1920,
+        "height": 1270
+      }
     },
     {
       "id": "2026-06-11-rafael-reflex-vhr2c-partnership",
@@ -5192,7 +5365,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-11-rafael-reflex-vhr2c-partnership.jpg",
+        "credit": "Image: www.asdnews.com",
+        "origin_url": "https://www.asdnews.com/news/defense/2026/06/11/rafael-reflex-aerospace-announce-strategic-partnership-at-ila-berlin-2026",
+        "width": 1200,
+        "height": 900
+      }
     },
     {
       "id": "2026-06-09-redwire-500m-atm",
@@ -5235,7 +5415,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-05-amazon-leo-fcc-milestone-waiver",
@@ -5296,7 +5483,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": null
     },
     {
       "id": "2026-06-08-neworbit-series-a",
@@ -5357,7 +5545,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T12:35:18.519Z"
+      "publishDate": "2026-07-08T12:35:18.519Z",
+      "image": {
+        "src": "/img/items/2026-06-08-neworbit-series-a.jpg",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/uk-startup-neworbit-raises-18-5-million-in-series-a-round/",
+        "width": 879,
+        "height": 494
+      }
     },
     {
       "id": "2026-06-16-spacex-cursor-acquisition",
@@ -5418,7 +5613,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-19-mda-blue-canyon-acquisition",
@@ -5473,7 +5675,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-16-dawn-aerospace-series-b",
@@ -5531,7 +5740,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-16-dawn-aerospace-series-b.jpg",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/dawn-aerospace-raises-25-million/",
+        "width": 2090,
+        "height": 1253
+      }
     },
     {
       "id": "2026-06-19-gate-space-eic-funding",
@@ -5590,7 +5806,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-19-gate-space-eic-funding.jpg",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/austrian-propulsion-startup-joins-sovereign-space-funding-surge/",
+        "width": 2560,
+        "height": 1707
+      }
     },
     {
       "id": "2026-06-17-bezos-earth-fund-firesat-grant",
@@ -5639,7 +5862,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-17-bezos-earth-fund-firesat-grant.jpg",
+        "credit": "Image: www.satellitetoday.com",
+        "origin_url": "https://www.satellitetoday.com/finance/2026/06/17/bezos-earth-fund-invests-in-firesat-constellation-build-out/",
+        "width": 1024,
+        "height": 873
+      }
     },
     {
       "id": "2026-06-17-ast-bluebird-8-10-launch",
@@ -5701,7 +5931,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": null
     },
     {
       "id": "2026-06-15-zhuque-2e-upper-stage-breakup",
@@ -5724,8 +5955,10 @@
         "Landspace"
       ],
       "source_url": "https://arstechnica.com/space/2026/06/a-chinese-rocket-breaks-apart-dangerously-close-to-the-starlink-constellation/",
-      "secondary_urls": [],
-      "snr": 2,
+      "secondary_urls": [
+        "https://fodnews.com/zhuque-2e-upper-stage-breakup-starlink-iss-debris/"
+      ],
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -5734,13 +5967,21 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-07-08",
+            "from": 2,
+            "to": 4,
+            "reason": "Standing task from the 2026-07-08 found_none audit (SWEEP_MEMORY 2026-07-08-J2, reports/found-none-audit-2026-07-08.md): fetched FODNews's page and confirmed it independently cites the US Space Force/space-track.org fragmentation advisory and secures its own named quotes from Darren McKnight (LeoLabs) and Jim Shell, distinct from a rewrite of Ars Technica. Correcting the crawl outcome from found_none to found_some via the upgrade path."
+          }
+        ]
       },
       "sources": [
         {
@@ -5749,9 +5990,23 @@
           "class": "mainstream",
           "added": "2026-07-08",
           "via": "initial"
+        },
+        {
+          "url": "https://fodnews.com/zhuque-2e-upper-stage-breakup-starlink-iss-debris/",
+          "outlet": "FODNews",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-15-zhuque-2e-upper-stage-breakup.jpg",
+        "credit": "Image: arstechnica.com",
+        "origin_url": "https://arstechnica.com/space/2026/06/a-chinese-rocket-breaks-apart-dangerously-close-to-the-starlink-constellation/",
+        "width": 1152,
+        "height": 648
+      }
     },
     {
       "id": "2026-06-19-spacex-nrol-179",
@@ -5811,7 +6066,8 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": null
     },
     {
       "id": "2026-06-19-jio-sovereign-leo-evaluation",
@@ -5871,7 +6127,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-19-jio-sovereign-leo-evaluation.jpg",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/indias-jio-lays-out-sovereign-leo-constellation-plan-ahead-of-ipo/",
+        "width": 2560,
+        "height": 1707
+      }
     },
     {
       "id": "2026-06-19-siis-spaceeye-t-lease",
@@ -5932,7 +6195,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-19-siis-spaceeye-t-lease.png",
+        "credit": "Image: zdnet.co.kr",
+        "origin_url": "https://zdnet.co.kr/view/?no=20260619190004",
+        "width": 640,
+        "height": 360
+      }
     },
     {
       "id": "2026-06-16-kai-remondo-mou",
@@ -5979,7 +6249,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-16-kai-remondo-mou.png",
+        "credit": "Image: www.thelec.net",
+        "origin_url": "https://www.thelec.net/news/articleView.html?idxno=11385",
+        "width": 600,
+        "height": 384
+      }
     },
     {
       "id": "2026-06-16-drc-spacebel-rdcsat",
@@ -6040,7 +6317,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-16-drc-spacebel-rdcsat.jpg",
+        "credit": "Image: www.rtbf.be",
+        "origin_url": "https://www.rtbf.be/article/l-entreprise-liegeoise-spacebel-signe-un-contrat-pour-fournir-un-satellite-a-la-rdc-c-est-une-grande-fierte-et-un-aboutissement-11742502",
+        "width": 1920,
+        "height": 1078
+      }
     },
     {
       "id": "2026-06-19-texas-supreme-court-boca-chica-beach",
@@ -6099,7 +6383,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-19-texas-supreme-court-boca-chica-beach.jpg",
+        "credit": "Image: www.texastribune.org",
+        "origin_url": "https://www.texastribune.org/2026/06/19/texas-spacex-elon-musk-boca-chica-beach-supreme-court/",
+        "width": 945,
+        "height": 630
+      }
     },
     {
       "id": "2026-06-15-astrobotic-griffin-unveiling",
@@ -6145,7 +6436,8 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": null
     },
     {
       "id": "2026-06-15-axelspace-nsg-up42",
@@ -6192,7 +6484,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-15-axelspace-nsg-up42.jpg",
+        "credit": "Image: www.axelspace.com",
+        "origin_url": "https://www.axelspace.com/news/partnership_nsgup42/",
+        "width": 1200,
+        "height": 630
+      }
     },
     {
       "id": "2026-06-17-ariane-6-va269-p160c",
@@ -6243,7 +6542,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:17:31.115Z"
+      "publishDate": "2026-07-08T13:17:31.115Z",
+      "image": {
+        "src": "/img/items/2026-06-17-ariane-6-va269-p160c.jpg",
+        "credit": "Image: www.esa.int",
+        "origin_url": "https://www.esa.int/Enabling_Support/Space_Transportation/Ariane/Ariane_6_launches_with_more_powerful_boosters_a_new_record_for_Europe",
+        "width": 1920,
+        "height": 1924
+      }
     },
     {
       "id": "2026-06-23-spacex-starfall-demo",
@@ -6286,7 +6592,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-23-spacex-starfall-demo.jpg",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/spacex-launches-secretive-starfall-reentry-demo-mission/",
+        "width": 2560,
+        "height": 1707
+      }
     },
     {
       "id": "2026-06-23-spacex-25b-bond-offering",
@@ -6339,7 +6652,14 @@
           "via": "corroboration"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/stock/sec-headquarters.jpg",
+        "credit": "U.S. Securities and Exchange Commission headquarters. Photo: AgnosticPreachersKid, CC BY-SA 3.0, via Wikimedia Commons",
+        "origin_url": "https://commons.wikimedia.org/wiki/File:U.S._Securities_and_Exchange_Commission_headquarters.JPG",
+        "width": 960,
+        "height": 989
+      }
     },
     {
       "id": "2026-06-24-spacex-starmind-name",
@@ -6382,7 +6702,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-24-spacex-starmind-name.jpg",
+        "credit": "Image: www.space.com",
+        "origin_url": "https://www.space.com/space-exploration/launches-spacecraft/another-star-is-born-spacex-names-ai-megaconstellation-starmind",
+        "width": 2000,
+        "height": 1125
+      }
     },
     {
       "id": "2026-06-26-starlink-us-mobile-plan",
@@ -6426,7 +6753,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-26-starlink-us-mobile-plan.jpg",
+        "credit": "Image: arstechnica.com",
+        "origin_url": "https://arstechnica.com/space/2026/06/spacex-plans-to-launch-starlink-mobile-service-in-the-us/",
+        "width": 1024,
+        "height": 648
+      }
     },
     {
       "id": "2026-06-22-spacesail-fundraising-round",
@@ -6471,7 +6805,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-22-spacesail-fundraising-round.jpg",
+        "credit": "Image: wtvbam.com",
+        "origin_url": "https://wtvbam.com/2026/06/22/chinas-starlink-rival-launches-new-fundraising-round-state-media-says/",
+        "width": 800,
+        "height": 533
+      }
     },
     {
       "id": "2026-06-26-synspective-strix-10",
@@ -6518,7 +6859,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-26-synspective-strix-10.png",
+        "credit": "Image: synspective.com",
+        "origin_url": "https://synspective.com/press-release/2026/10th_launch/",
+        "width": 1920,
+        "height": 1080
+      }
     },
     {
       "id": "2026-06-25-firefly-acquires-space-ng",
@@ -6562,7 +6910,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:33:24.135Z"
+      "publishDate": "2026-07-08T13:33:24.135Z",
+      "image": {
+        "src": "/img/items/2026-06-25-firefly-acquires-space-ng.png",
+        "credit": "Image: fireflyspace.com",
+        "origin_url": "https://fireflyspace.com/news/firefly-aerospace-acquires-space-ng-to-advance-future-of-autonomous-space-operations/",
+        "width": 1024,
+        "height": 597
+      }
     },
     {
       "id": "2026-06-30-mda-radarsat-replenishment-contract",
@@ -6607,7 +6962,14 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:37:07.854Z"
+      "publishDate": "2026-07-08T13:37:07.854Z",
+      "image": {
+        "src": "/img/items/2026-06-30-mda-radarsat-replenishment-contract.jpg",
+        "credit": "Image: spaceq.ca",
+        "origin_url": "https://spaceq.ca/mda-space-moves-to-build-phase-with-688m-radarsat-replenishment-satellite-contract-award/",
+        "width": 1920,
+        "height": 1080
+      }
     },
     {
       "id": "2026-06-30-agnikul-iceye-india-sar-mou",
@@ -6653,7 +7015,295 @@
           "via": "initial"
         }
       ],
-      "publishDate": "2026-07-08T13:37:07.854Z"
+      "publishDate": "2026-07-08T13:37:07.854Z",
+      "image": {
+        "src": "/img/items/2026-06-30-agnikul-iceye-india-sar-mou.jpg",
+        "credit": "Image: www.bisinfotech.com",
+        "origin_url": "https://www.bisinfotech.com/agnikul-iceye-collaborate-to-advance-sar-satellite-technology/",
+        "width": 770,
+        "height": 515
+      }
+    },
+    {
+      "id": "2026-07-08-blue-origin-10b-funding-round",
+      "date": "2026-07-08",
+      "headline": "Blue Origin raises $10 billion in first outside funding round",
+      "explainer": {
+        "tagline": "Per the New York Times, Blue Origin is raising $10B at a $130B valuation from Coatue and Bezos, its first outside funding.",
+        "what_happened": "Blue Origin is raising $10 billion in its first-ever outside funding round, valuing the company at $130 billion, according to the New York Times. Per TechCrunch and Forbes, Coatue Management is expected to invest about $4 billion and Jeff Bezos about $2 billion, with other investors accounting for the remainder; Blue Origin did not respond to Forbes' request for comment.",
+        "why_it_matters": "Blue Origin has been funded almost entirely by Bezos himself since 2000; opening the cap table for the first time, weeks after New Glenn's May pre-launch testing explosion and on the heels of SpaceX's own Nasdaq listing, signals the scale of capital the launch and lunar-lander business now needs and gives outside investors a direct stake in SpaceX's closest competitor.",
+        "for_who": "Space investors, launch and lunar-lander competitors"
+      },
+      "kind": "event",
+      "tags": [
+        "launch",
+        "funding"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "Blue Origin"
+      ],
+      "source_url": "https://techcrunch.com/2026/07/08/blue-origin-reportedly-raising-10b-at-130b-valuation/",
+      "secondary_urls": [
+        "https://www.forbes.com/sites/tylerroush/2026/07/08/jeff-bezos-blue-origin-valued-at-130-billion-after-first-fundraising-round/"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://techcrunch.com/2026/07/08/blue-origin-reportedly-raising-10b-at-130b-valuation/",
+          "reason": "base tier 3 from lead source class \"mainstream\" (TechCrunch)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/07/08/blue-origin-reportedly-raising-10b-at-130b-valuation/",
+          "outlet": "TechCrunch",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.forbes.com/sites/tylerroush/2026/07/08/jeff-bezos-blue-origin-valued-at-130-billion-after-first-fundraising-round/",
+          "outlet": "Forbes",
+          "class": "mainstream",
+          "added": "2026-07-08",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-07-08T18:36:33.025Z",
+      "image": {
+        "src": "/img/items/2026-07-08-blue-origin-10b-funding-round.jpg",
+        "credit": "Image: techcrunch.com",
+        "origin_url": "https://techcrunch.com/2026/07/08/blue-origin-reportedly-raising-10b-at-130b-valuation/",
+        "width": 1200,
+        "height": 909
+      }
+    },
+    {
+      "id": "2026-07-08-iceye-germany-entity-ceo",
+      "date": "2026-07-08",
+      "headline": "ICEYE establishes German entity, names Philipp Herkelmann country CEO",
+      "explainer": {
+        "tagline": "ICEYE formally established a German entity in Berlin and Munich, naming Philipp Herkelmann CEO of ICEYE Germany.",
+        "what_happened": "ICEYE has formally established a German entity, based in Berlin and Munich, and named Philipp Herkelmann as CEO of ICEYE Germany, per the company's press release. The release states the move deepens ICEYE's partnership with Rheinmetall through the Rheinmetall ICEYE Space Solutions (RISS) joint venture, that seven European governments have procured sovereign satellite systems from ICEYE to date, and that ICEYE now employs over 1,000 people globally.",
+        "why_it_matters": "A dedicated German subsidiary and country CEO gives ICEYE a formal footprint in Europe's largest defense market as the Rheinmetall RISS joint venture scales sovereign satellite programs, positioning ICEYE to compete more directly for German government imagery and intelligence contracts.",
+        "for_who": "EO resellers and government imagery customers in Germany"
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "sar",
+        "europe"
+      ],
+      "category": "partnership",
+      "impact": "noise",
+      "companies": [
+        "ICEYE",
+        "Rheinmetall"
+      ],
+      "source_url": "https://www.iceye.com/newsroom/press-releases/iceye-establishes-german-entity-and-appoints-country-ceo-to-advance-europes-sovereign-intelligence-capability?hsLang=en",
+      "secondary_urls": [],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.iceye.com/newsroom/press-releases/iceye-establishes-german-entity-and-appoints-country-ceo-to-advance-europes-sovereign-intelligence-capability?hsLang=en",
+          "reason": "base tier 5 from lead source class \"first_party\" (ICEYE)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.iceye.com/newsroom/press-releases/iceye-establishes-german-entity-and-appoints-country-ceo-to-advance-europes-sovereign-intelligence-capability?hsLang=en",
+          "outlet": "ICEYE",
+          "class": "first_party",
+          "added": "2026-07-08",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-07-08T18:36:33.025Z",
+      "image": null
+    },
+    {
+      "id": "2026-07-08-telesat-lightspeed-canada-arctic-escp-p",
+      "date": "2026-07-08",
+      "headline": "Telesat Lightspeed wins Canadian Arctic military connectivity deal",
+      "explainer": {
+        "tagline": "Canada's Armed Forces picked Telesat Lightspeed for secure Arctic military satellite connectivity under ESCP-P.",
+        "what_happened": "Telesat Lightspeed reached an agreement in principle with Canada's Defence Investment Agency to provide secure Military Ka-band connectivity to the Canadian Armed Forces across the Arctic, from 65 to 90 degrees North latitude, under the Enhanced Satellite Communications Project - Polar (ESCP-P), per Telesat's press release. Deliverables include user terminals, ground and control infrastructure, and training and support services; Telesat expects a definitive contract within weeks. The agreement builds on a Strategic Partnership Agreement Canada announced with Telesat and MDA Space in late 2025, and Telesat says it does not affect Lightspeed's Q1 2028 global service timeline.",
+        "why_it_matters": "A NATO government committing to Telesat Lightspeed for a defense-grade Arctic network signals sovereign defense procurement is becoming a core Lightspeed revenue line rather than a side bet, and gives Telesat a reference win to point to against Starlink and OneWeb/Eutelsat in other government tenders.",
+        "for_who": "Government satcom resellers, defense connectivity competitors"
+      },
+      "kind": "event",
+      "tags": [
+        "connectivity"
+      ],
+      "category": "procurement",
+      "impact": "notable",
+      "companies": [
+        "Telesat"
+      ],
+      "source_url": "https://www.telesat.com/press/canadian-armed-forces-selects-telesat-lightspeed/",
+      "secondary_urls": [
+        "https://www.pm.gc.ca/en/news/news-releases/2026/07/08/prime-minister-carney-secures-new-defence-partnerships-2026-nato"
+      ],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.telesat.com/press/canadian-armed-forces-selects-telesat-lightspeed/",
+          "reason": "base tier 5 from lead source class \"first_party\" (Telesat)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.telesat.com/press/canadian-armed-forces-selects-telesat-lightspeed/",
+          "outlet": "Telesat",
+          "class": "first_party",
+          "added": "2026-07-08",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-07-08T18:36:33.025Z",
+      "image": {
+        "src": "/img/items/2026-07-08-telesat-lightspeed-canada-arctic-escp-p.png",
+        "credit": "Image: www.telesat.com",
+        "origin_url": "https://www.telesat.com/press/canadian-armed-forces-selects-telesat-lightspeed/",
+        "width": 800,
+        "height": 418
+      }
+    },
+    {
+      "id": "2026-07-08-loft-orbital-maiaspace-launch-contract",
+      "date": "2026-07-08",
+      "headline": "Loft Orbital awards MaiaSpace multi-launch contract",
+      "explainer": {
+        "tagline": "Per Andrew Parsonson on Bluesky, Loft Orbital signed MaiaSpace for multiple launches starting 2028.",
+        "what_happened": "US-based Loft Orbital has awarded a multi-launch contract to MaiaSpace, with flights expected to begin in 2028, per Andrew Parsonson of European Spaceflight on Bluesky. Parsonson's post links to a European Spaceflight article; no contract value, launch count, or payload details were available at drafting time.",
+        "why_it_matters": "Loft Orbital's shared-satellite-bus business depends on frequent, flexible rideshare access; a multi-launch commitment to MaiaSpace's still-pre-flight Maia rocket gives the French newcomer a customer of record ahead of its planned 2027 debut and gives Loft Orbital a European launch option alongside its existing suppliers.",
+        "for_who": "Rideshare customers, European launch competitors"
+      },
+      "kind": "event",
+      "tags": [
+        "launch",
+        "europe",
+        "rideshare"
+      ],
+      "category": "contract",
+      "impact": "noise",
+      "companies": [
+        "Loft Orbital",
+        "MaiaSpace"
+      ],
+      "source_url": "https://bsky.app/profile/andrewparsonson.bsky.social/post/3mq5fdqxvpc2d",
+      "secondary_urls": [],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://bsky.app/profile/andrewparsonson.bsky.social/post/3mq5fdqxvpc2d",
+          "reason": "base tier 3 from lead source class \"whitelist\" (Andrew Parsonson (European Spaceflight))"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "whitelist_floor",
+            "delta": 2,
+            "reason": "whitelist floor: whitelisted observer (4)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://bsky.app/profile/andrewparsonson.bsky.social/post/3mq5fdqxvpc2d",
+          "outlet": "Andrew Parsonson (European Spaceflight)",
+          "class": "whitelist",
+          "added": "2026-07-08",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-07-08T18:36:33.025Z",
+      "image": {
+        "src": "/img/items/2026-07-08-loft-orbital-maiaspace-launch-contract.webp",
+        "credit": "Image: bsky.app",
+        "origin_url": "https://bsky.app/profile/andrewparsonson.bsky.social/post/3mq5fdqxvpc2d",
+        "fit": "contain",
+        "width": 128,
+        "height": 128
+      }
+    },
+    {
+      "id": "2026-07-01-italy-iride-eo-service-online",
+      "date": "2026-07-01",
+      "headline": "Italy brings IRIDE Earth observation service online",
+      "explainer": {
+        "tagline": "Italy's IRIDE Earth observation marketplace went live July 1 for government users, with commercial access planned later.",
+        "what_happened": "Italy's IRIDE Earth observation marketplace went live for government users on July 1, per European Spaceflight, covering civil protection, security and defense, and public administration users; Italian space agency ASI says commercial registration will be enabled in the future. Only the 15-satellite HEO multispectral constellation is operational so far, across three launches; the planned EUR1.1 billion, 68-satellite, six-constellation buildout is being progressively transferred from ESA to ASI.",
+        "why_it_matters": "IRIDE is a government-owned constellation program, but its EUR1.1 billion scale and stated future commercial registration make it a market EO resellers and operators will need to watch as ASI takes over management from ESA; a marketplace that opens to commercial users would compete with, or create new distribution paths for, existing EO providers in Italy.",
+        "for_who": "EO resellers and operators active in Italy and Europe"
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "europe"
+      ],
+      "category": "constellation",
+      "impact": "notable",
+      "companies": [
+        "ASI"
+      ],
+      "source_url": "https://europeanspaceflight.com/italy-brings-iride-earth-observation-service-online/",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://europeanspaceflight.com/italy-brings-iride-earth-observation-service-online/",
+          "reason": "base tier 3 from lead source class \"trade\" (European Spaceflight)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://europeanspaceflight.com/italy-brings-iride-earth-observation-service-online/",
+          "outlet": "European Spaceflight",
+          "class": "trade",
+          "added": "2026-07-08",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-07-08T18:36:33.025Z",
+      "image": null
     }
   ]
 }
