@@ -610,7 +610,6 @@ a.chip:hover {
      frame match the photo, so object-fit:cover shows it WHOLE, never cropped.
      3/2 is the default for tiles and images without stored dimensions. */
   aspect-ratio: 3 / 2;
-  border-bottom: 1px solid var(--fg);
   overflow: hidden;
 }
 .card-media img {
@@ -869,11 +868,10 @@ a.card-tile:hover .tile-cat {
    companies, the source count, and Details (pushed right). */
 .card-foot {
   margin-top: auto;
-  /* Same surface as the copy section, separated by white lines instead of a
-     panel tint (Florian, 2026-07-08). Kept opaque so the hover inversion of
-     the copy above never bleeds through (the transparent-to-dark white
-     flash). */
-  background: var(--bg);
+  /* Solid panel bar (Florian, 2026-07-08, reverting the same-as-copy try).
+     Kept opaque so the hover inversion of the copy above never bleeds
+     through (the transparent-to-dark white flash). */
+  background: var(--panel);
   padding: 0.5rem var(--sp-3);
   display: flex;
   gap: 8px;
