@@ -17,6 +17,7 @@ import {
   urlDate,
   sweepMode,
   deepWindowStart,
+  overrideWindowStart,
   parseBlueskyPosts,
 } from "../harvest";
 import type { Candidate } from "../harvest";
@@ -381,6 +382,28 @@ describe("sweepMode (deep-sweep fallback)", () => {
 describe("deepWindowStart", () => {
   test("seven days back from now", () => {
     expect(deepWindowStart(new Date("2026-07-08T12:00:00Z"))).toBe("2026-07-01T12:00:00.000Z");
+  });
+});
+
+describe("overrideWindowStart (HARVEST_WINDOW_DAYS)", () => {
+  const now = new Date("2026-07-08T12:00:00Z");
+
+  test("unset or empty means no override", () => {
+    expect(overrideWindowStart(undefined, now)).toBeNull();
+    expect(overrideWindowStart("", now)).toBeNull();
+    expect(overrideWindowStart("  ", now)).toBeNull();
+  });
+
+  test("a positive integer wins as N days back from now", () => {
+    expect(overrideWindowStart("30", now)).toBe("2026-06-08T12:00:00.000Z");
+    expect(overrideWindowStart("7", now)).toBe("2026-07-01T12:00:00.000Z");
+  });
+
+  test("garbage aborts instead of silently harvesting the wrong window", () => {
+    expect(() => overrideWindowStart("thirty", now)).toThrow();
+    expect(() => overrideWindowStart("0", now)).toThrow();
+    expect(() => overrideWindowStart("-3", now)).toThrow();
+    expect(() => overrideWindowStart("2.5", now)).toThrow();
   });
 });
 

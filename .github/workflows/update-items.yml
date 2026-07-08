@@ -36,6 +36,13 @@ on:
           consecutive zero-add sweeps.
         required: false
         default: ""
+      harvest_window_days:
+        description: >-
+          Explicit harvest window in days back from now (positive
+          integer). Wins over both normal and deep windows; for
+          backfill runs. Empty = automatic.
+        required: false
+        default: ""
   schedule:
     - cron: "0 5,17 * * *"   # launch cadence: twice daily, 05:00/17:00 UTC
 
@@ -64,6 +71,7 @@ jobs:
       - name: Harvest feed sources into the candidate queue (deterministic, pre-agent)
         env:
           FORCE_DEEP: ${{ inputs.force_deep }}
+          HARVEST_WINDOW_DAYS: ${{ inputs.harvest_window_days }}
         run: bun scripts/harvest.ts
 
       - name: Run the sweep agent

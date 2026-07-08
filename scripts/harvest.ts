@@ -350,6 +350,23 @@ export function deepWindowStart(now: Date): string {
   return new Date(now.getTime() - DEEP_WINDOW_DAYS * 86_400_000).toISOString();
 }
 
+/**
+ * HARVEST_WINDOW_DAYS override (BACKFILL_PLAN.md, 2026-07-08): an explicit
+ * window of whole days back from now, winning over both the normal
+ * (lastSweep-48h) and deep (7-day) windows. Backfill runs need weeks.
+ * Unset or empty means no override; anything else must parse as a
+ * positive integer, or the run aborts rather than silently harvesting
+ * the wrong window.
+ */
+export function overrideWindowStart(raw: string | undefined, now: Date): string | null {
+  if (raw === undefined || raw.trim() === "") return null;
+  const days = Number(raw);
+  if (!Number.isInteger(days) || days <= 0) {
+    throw new Error(`HARVEST_WINDOW_DAYS must be a positive integer, got "${raw}"`);
+  }
+  return new Date(now.getTime() - days * 86_400_000).toISOString();
+}
+
 // ------------------------------------------------------------ IO main
 
 async function fetchSource(url: string): Promise<{ status: number; text: string }> {
@@ -392,8 +409,14 @@ async function main(): Promise<void> {
     process.env.FORCE_DEEP === "1" || process.env.FORCE_DEEP === "true"
       ? "deep"
       : sweepMode(state.sweeps);
-  const cutoff = mode === "deep" ? deepWindowStart(now) : windowStart(state.lastSweep, now);
-  if (mode === "deep") {
+  const override = overrideWindowStart(process.env.HARVEST_WINDOW_DAYS, now);
+  const cutoff =
+    override ?? (mode === "deep" ? deepWindowStart(now) : windowStart(state.lastSweep, now));
+  if (override !== null) {
+    console.log(
+      `harvest: HARVEST_WINDOW_DAYS=${process.env.HARVEST_WINDOW_DAYS} override, window widened to ${cutoff}`,
+    );
+  } else if (mode === "deep") {
     console.log(
       `harvest: DEEP SWEEP (${process.env.FORCE_DEEP ? "forced" : `${DEEP_SWEEP_AFTER_ZERO_STREAK} consecutive zero-add sweeps`}), window widened to ${cutoff}`,
     );
