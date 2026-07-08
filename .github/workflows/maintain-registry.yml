@@ -1,4 +1,4 @@
-# Registry maintenance, weekly. Cron enabled 2026-07-05 alongside the
+# Registry maintenance, twice weekly (Mon+Thu 06:00 UTC; Florian, 2026-07-08). Cron enabled 2026-07-05 alongside the
 # news sweep after Task 5 acceptance.
 #
 # Requires the CLAUDE_CODE_OAUTH_TOKEN repo secret (claude setup-token)
@@ -9,7 +9,7 @@ name: maintain-registry
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 6 * * 1"
+    - cron: "0 6 * * 1,4"
 
 concurrency:
   group: data-writes
