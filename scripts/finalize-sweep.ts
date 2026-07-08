@@ -163,6 +163,15 @@ interface Draft {
    * the corroboration crawl's honest "not_attempted".
    */
   signalsPass?: { checked: string[]; xAttempted: number; note: string };
+  /**
+   * Discovery-pass attestation (audit follow-up, 2026-07-08): the open-web
+   * searches this sweep actually ran. Required on EVERY sweep; the 6-query
+   * minimum enforces the coverage matrix in prompts/update-items.md
+   * (launch, financial, incident/regulatory, non-US, plus rotating slots).
+   * Deep sweeps run 10-12. Mirrors the signals-pass gate: a skipped or
+   * thin discovery pass is a rejection, not a silent gap.
+   */
+  discoveryPass?: { queries: string[]; found: number; note: string };
 }
 
 export interface FinalizeOptions {
@@ -436,6 +445,40 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       }
     }
   }
+  // ---- discovery-pass gate --------------------------------------------------
+  // Open-web discovery was pure prose and got skipped or run thin (the
+  // 2026-07-08 05:47 sweep ran 4 vague queries while real stories sat on
+  // Google News). Same medicine as the signals pass: attest what ran.
+  const DISCOVERY_MIN_QUERIES = 6;
+  let discoverySummary: SweepLogEntry["discovery"] | undefined;
+  {
+    const dp = draft.discoveryPass;
+    if (!isObj(dp)) {
+      errors.push(
+        `draft.discoveryPass: required object { queries: string[], found: number, note } on every ` +
+          `sweep. Run the discovery pass per prompts/update-items.md (at least ${DISCOVERY_MIN_QUERIES} ` +
+          `queries covering the matrix: launch, financial, incident/regulatory, non-US) and report it.`,
+      );
+    } else {
+      if (!Array.isArray(dp.queries) || dp.queries.some((q) => typeof q !== "string" || q.trim() === "")) {
+        errors.push("draft.discoveryPass.queries: required array of non-empty query strings");
+      } else if (dp.queries.length < DISCOVERY_MIN_QUERIES) {
+        errors.push(
+          `draft.discoveryPass.queries: ${dp.queries.length} queries, minimum ${DISCOVERY_MIN_QUERIES}. ` +
+            `The coverage matrix (launch, financial, incident/regulatory, non-US) plus rotating slots is not optional.`,
+        );
+      }
+      if (typeof dp.found !== "number" || !Number.isInteger(dp.found) || dp.found < 0) {
+        errors.push("draft.discoveryPass.found: required non-negative integer (candidates the searches surfaced)");
+      }
+      if (typeof dp.note !== "string" || dp.note.trim() === "") {
+        errors.push("draft.discoveryPass.note: required non-empty string (what was searched and what came of it)");
+      }
+      if (errors.length === 0) {
+        discoverySummary = { queries: dp.queries.length, note: dp.note.trim() };
+      }
+    }
+  }
   if (errors.length > 0) return fail(errors);
 
   // ---- load current data files ------------------------------------------
@@ -466,6 +509,18 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const state = stateData as StateFile;
   const sources = sourcesData as SourcesFile;
   const ledger = ledgerData as SourceLedgerFile;
+
+  // Deep-sweep mode is the harvester's code decision, carried by the queue
+  // file; absent file (test dataDirs) means normal. Never from the draft.
+  let harvestMode: "normal" | "deep" = "normal";
+  try {
+    const queue = JSON.parse(
+      readFileSync(join(opts.dataDir, "candidates.json"), "utf8"),
+    ) as { mode?: unknown };
+    if (queue.mode === "deep") harvestMode = "deep";
+  } catch {
+    // no queue file: normal
+  }
 
   const existingIds = new Set(items.items.map((i) => i.id));
   const registryHosts = loadRegistryHosts(opts.dataDir);
@@ -1111,6 +1166,8 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     ...(newTags.length > 0 ? { new_tags: newTags } : {}),
     ...(movements.length > 0 ? { snr_movements: movements } : {}),
     ...(signalsSummary !== undefined ? { signals: signalsSummary } : {}),
+    ...(discoverySummary !== undefined ? { discovery: discoverySummary } : {}),
+    ...(harvestMode === "deep" ? { mode: "deep" as const } : {}),
   };
   const nextState: StateFile = {
     lastSweep: nowIso,

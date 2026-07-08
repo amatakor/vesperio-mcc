@@ -317,6 +317,20 @@ export interface SweepLogEntry {
    * to check; makes a skipped pass visible on /log instead of silent.
    */
   signals?: { checked: number; x_attempted: number; note: string };
+  /**
+   * Discovery-pass outcome (audit follow-up, 2026-07-08): how many
+   * open-web searches ran and one line on what they surfaced. Required
+   * on every sweep via the draft's discoveryPass block; makes a skipped
+   * or thin discovery pass visible on /log instead of silent.
+   */
+  discovery?: { queries: number; note: string };
+  /**
+   * Present only on deep sweeps: the automatic escalation after
+   * consecutive zero-add sweeps (7-day window, full signals pass,
+   * widened discovery). Stamped from the harvester's mode decision,
+   * never from the agent.
+   */
+  mode?: "deep";
 }
 
 export interface StateFile {

@@ -87,19 +87,56 @@ result when nothing on-scope happened; padding is still the bug.
    `checked` is empty: rotation, all unreachable). finalize-sweep
    rejects a draft that omits it or lists a URL that is not a fetchable
    channel.
-   **Discovery pass (open web, after the source list).** Run 3-5
-   WebSearch queries this sweep for on-scope stories the source list
-   missed. Rotate across the scope categories sweep to sweep so every
-   area gets coverage weekly: EO / connectivity / IoT / launch /
-   regulatory / financial, and include China, India, and Japan terms in
-   the rotation (e.g. "Chinese commercial launch", "ISRO contract",
-   "JAXA commercial"). Candidates found here follow the normal pipeline
+   **Discovery pass (open web, after the source list; ATTESTED AND
+   GATED).** Run at least **6-8 WebSearch queries** this sweep for
+   on-scope stories the source list missed. Every sweep's queries must
+   cover the full matrix, at least one query each from:
+   (1) launch/vehicle, (2) financial (funding, valuation, M&A,
+   bankruptcy), (3) incident/debris/regulatory, (4) non-US (rotate
+   China / India / Japan / Europe terms), plus 2-4 rotating free
+   slots. Record the pass in the draft's `discoveryPass` block
+   (queries actually run, verbatim; how many candidates they surfaced;
+   one line on the outcome). finalize-sweep REJECTS a draft without it
+   or with fewer than 6 queries; a thin discovery pass is a rejection,
+   not a silent gap. Candidates found here follow the normal pipeline
    (scope filter, dedup, corroboration, honest classes). When a story
    leads to an outlet or feed not in sources.json, add it as a new
    source with status "unverified" so the harvester picks it up next
    run. Publishing an early signal at SNR 1-2 with honest scoring is
    the model working; the gate is attribution, not confidence. Low-SNR
    items from this pass are a feature, not a defect.
+
+   **Google News queue entries (mainstream trigger).** The harvester
+   queues entries from Google News query feeds (sources.json category
+   mainstream_triggers). Their URLs are news.google.com REDIRECTS and
+   their titles end with " - Outlet". Before drafting from one: follow
+   the redirect (curl -sIL or fetch) to the PUBLISHER page, fetch that
+   page, and use the publisher URL as the lead source, classed by the
+   publisher's domain (mainstream / trade / first_party per the normal
+   rules). news.google.com is NEVER cited as a source. Several query
+   feeds may carry the same story: one story, one candidate (the
+   wire-rewrite rule applies).
+
+   **Bluesky search queue entries (open social discovery).** The
+   harvester also queues recent Bluesky posts matching fixed keyword
+   searches. raw_excerpt is the verbatim post text. A post from a
+   non-whitelisted account is an attributable `informal` source
+   (publishable at its honest low SNR, "per @handle on Bluesky");
+   whitelisted authors keep their floors per the normal rules. Jokes,
+   opinions without a factual claim, and off-topic posts are discarded
+   silently; a substantive take from a whitelisted person may draft as
+   commentary.
+
+   **Deep sweep (mode: "deep" in candidates.json).** The harvester
+   escalates automatically after 2 consecutive zero-add sweeps (or a
+   forced run): the queue then covers 7 DAYS, not the normal gap.
+   When the mode is deep: re-examine the ENTIRE queue including
+   candidates earlier sweeps dismissed (dedup against `existing[]`
+   still applies); check EVERY fetchable signals channel (budget
+   lifted to 30 fetches, no rotation skips); run 10-12 discovery
+   queries covering the whole matrix at once; and name the deep sweep
+   and its trigger in the draft summary. Quiet honesty is unchanged: a
+   deep sweep that finds nothing ships zero items and says so.
 
 3. **Known to MCC?** Match each candidate against `existing[]` by actor
    and event class:
@@ -238,6 +275,11 @@ result when nothing on-scope happened; padding is still the bug.
        "checked": ["https://spacepolicyonline.com/feed/"],
        "xAttempted": 6,
        "note": "3 fetchable channels checked, nothing new in window; searched 6 X handles, no on-scope first-party post retrievable"
+     },
+     "discoveryPass": {
+       "queries": ["spacex launch this week", "space company funding round", "satellite incident debris", "china commercial launch", "earth observation contract award", "launch vehicle test failure"],
+       "found": 2,
+       "note": "matrix covered; 2 candidates surfaced (both already known to MCC)"
      },
      "summary": "1-2 sentence sweep summary",
      "coverage": ["launch", "regulatory"]

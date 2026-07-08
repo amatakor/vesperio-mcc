@@ -124,6 +124,18 @@ function writeDraft(body: Record<string, unknown>): void {
       sourceHealth: [],
       summary: "test sweep",
       coverage: ["launch"],
+      discoveryPass: {
+        queries: [
+          "rocket launch this week",
+          "space company funding round",
+          "satellite incident",
+          "china commercial launch",
+          "earth observation contract",
+          "spacex starlink news",
+        ],
+        found: 0,
+        note: "test default: matrix covered, nothing new surfaced",
+      },
       ...body,
     }),
   );
@@ -726,6 +738,11 @@ describe("finalize-sweep merge", () => {
         sourceHealth: [],
         summary: "Updated the ICEYE expansion item with new figures.",
         coverage: ["constellation"],
+        discoveryPass: {
+          queries: ["a", "b", "c", "d", "e", "f"].map((x) => `test query ${x}`),
+          found: 0,
+          note: "inline test draft: matrix covered",
+        },
       }),
     );
     const result = finalizeSweep({ dataDir, draftPath });
@@ -994,5 +1011,67 @@ describe("sweep-context", () => {
         headline: existingItem.headline,
       },
     ]);
+  });
+});
+
+describe("discovery-pass gate", () => {
+  test("a draft without discoveryPass is rejected", () => {
+    writeDraft({ discoveryPass: undefined });
+    const before = snapshotDataFiles();
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("discoveryPass: required");
+    expect(snapshotDataFiles()).toEqual(before);
+  });
+
+  test("fewer than 6 queries is rejected", () => {
+    writeDraft({
+      discoveryPass: { queries: ["one", "two", "three"], found: 0, note: "too thin" },
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("minimum 6");
+  });
+
+  test("a valid pass lands in the sweep log entry", () => {
+    writeDraft({});
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const entry = readState().sweeps.at(-1)!;
+    expect(entry.discovery).toEqual({
+      queries: 6,
+      note: "test default: matrix covered, nothing new surfaced",
+    });
+  });
+});
+
+describe("deep-sweep mode stamping", () => {
+  test("mode deep in candidates.json lands on the log entry", () => {
+    writeFileSync(
+      join(dataDir, "candidates.json"),
+      JSON.stringify({ $comment: "t", generated_at: "2026-07-08T05:00:00Z", window_start: "2026-07-01T05:00:00Z", mode: "deep", health: [], candidates: [] }),
+    );
+    writeDraft({});
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readState().sweeps.at(-1)!.mode).toBe("deep");
+  });
+
+  test("normal mode leaves the entry unmarked", () => {
+    writeFileSync(
+      join(dataDir, "candidates.json"),
+      JSON.stringify({ $comment: "t", generated_at: "2026-07-08T05:00:00Z", window_start: "2026-07-06T05:00:00Z", mode: "normal", health: [], candidates: [] }),
+    );
+    writeDraft({});
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readState().sweeps.at(-1)!.mode).toBeUndefined();
+  });
+
+  test("absent candidates.json means normal (test dataDirs keep working)", () => {
+    writeDraft({});
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readState().sweeps.at(-1)!.mode).toBeUndefined();
   });
 });

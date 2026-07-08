@@ -15,6 +15,9 @@ import {
   isHarvestable,
   urlHash,
   urlDate,
+  sweepMode,
+  deepWindowStart,
+  parseBlueskyPosts,
 } from "../harvest";
 import type { Candidate } from "../harvest";
 import type { Source } from "../../src/data/schema";
@@ -332,5 +335,95 @@ describe("isHarvestable", () => {
 
   test("sources marked unfetchable via fetch_note are skipped", () => {
     expect(isHarvestable(src({ fetch_note: "JS-rendered shell, unreachable without a browser" }))).toBe(false);
+  });
+});
+
+describe("sweepMode (deep-sweep fallback)", () => {
+  const entry = (added: number, mode?: "deep") => ({
+    at: "2026-07-08T05:00:00.000Z",
+    added,
+    updated: 0,
+    held: 0,
+    summary: "s",
+    coverage: ["launch"],
+    ...(mode ? { mode } : {}),
+  });
+
+  test("two consecutive zero-add sweeps trigger deep", () => {
+    expect(sweepMode([entry(2), entry(0), entry(0)])).toBe("deep");
+  });
+
+  test("a single zero stays normal", () => {
+    expect(sweepMode([entry(2), entry(0)])).toBe("normal");
+  });
+
+  test("an added item resets the streak", () => {
+    expect(sweepMode([entry(0), entry(0), entry(3), entry(0)])).toBe("normal");
+  });
+
+  test("cooldown: a prior deep sweep resets the streak even at zero", () => {
+    expect(sweepMode([entry(0), entry(0), entry(0, "deep")])).toBe("normal");
+    // two fresh zeros after the deep one re-trigger
+    expect(sweepMode([entry(0, "deep"), entry(0), entry(0)])).toBe("deep");
+  });
+
+  test("short history stays normal", () => {
+    expect(sweepMode([])).toBe("normal");
+    expect(sweepMode([entry(0)])).toBe("normal");
+  });
+
+  test("threshold is configurable", () => {
+    expect(sweepMode([entry(0), entry(0), entry(0)], 3)).toBe("deep");
+    expect(sweepMode([entry(0), entry(0)], 3)).toBe("normal");
+  });
+});
+
+describe("deepWindowStart", () => {
+  test("seven days back from now", () => {
+    expect(deepWindowStart(new Date("2026-07-08T12:00:00Z"))).toBe("2026-07-01T12:00:00.000Z");
+  });
+});
+
+describe("parseBlueskyPosts (searchPosts shape)", () => {
+  const PAYLOAD = JSON.stringify({
+    posts: [
+      {
+        uri: "at://did:plc:abc123/app.bsky.feed.post/3mq4rofcbts2p",
+        author: { handle: "reporter.bsky.social", displayName: "A Reporter" },
+        record: {
+          text: "SpaceX just launched 27 satellites, per the webcast. Cost: $67 million.",
+          createdAt: "2026-07-07T18:00:00.000Z",
+        },
+        indexedAt: "2026-07-07T18:00:05.000Z",
+      },
+      { uri: "at://did:plc:x/app.bsky.feed.post/", author: {}, record: {} },
+    ],
+  });
+
+  test("maps posts to web URLs with verbatim text and dates", () => {
+    const direct = parseBlueskyPosts(JSON.parse(PAYLOAD).posts);
+    const entries = parseJsonApi(PAYLOAD);
+    expect(entries).toEqual(direct);
+    expect(entries.length).toBe(1);
+    expect(entries[0]!.url).toBe("https://bsky.app/profile/reporter.bsky.social/post/3mq4rofcbts2p");
+    expect(entries[0]!.title).toBe("@reporter.bsky.social on Bluesky");
+    expect(entries[0]!.published_at).toBe("2026-07-07T18:00:05.000Z");
+    expect(entries[0]!.raw_excerpt).toContain("$67 million");
+  });
+
+  test("unknown shapes still return []", () => {
+    expect(parseJsonApi('{"data": []}')).toEqual([]);
+  });
+});
+
+describe("Google News RSS entries", () => {
+  const GN = `<rss version="2.0"><channel><title>"spacex" - Google News</title><item><title>SpaceX just launched the 1st-ever nuclear-powered commercial satellite - Space</title><link>https://news.google.com/rss/articles/CBMiabc?oc=5</link><pubDate>Mon, 07 Jul 2026 14:00:00 GMT</pubDate><description>&lt;a href="https://www.space.com/x"&gt;SpaceX just launched...&lt;/a&gt;</description></item></channel></rss>`;
+
+  test("harvested verbatim: redirect link kept, outlet suffix kept (resolution is the agent's step)", () => {
+    const entries = parseFeed(GN);
+    expect(entries.length).toBe(1);
+    expect(entries[0]!.url).toContain("news.google.com/rss/articles/");
+    expect(entries[0]!.title).toContain(" - Space");
+    expect(entries[0]!.published_at).toBe("2026-07-07T14:00:00.000Z");
   });
 });

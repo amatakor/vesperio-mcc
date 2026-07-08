@@ -126,8 +126,8 @@
         "language": "en",
         "tier": 1,
         "status": "verified",
-        "notes": "JP company, EN site available. | [2026-07-06] Fetched cleanly. Two posts inside the window: a July 1 executive-appointments notice (below the notability bar) and a June 30 'SAR view of Denver' post (thought-leadership/product blog, same pattern as Planet's Pulse content, not a discrete news event). No candidate. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on.",
-        "fail_count": 1
+        "notes": "JP company, EN site available. | [2026-07-06] Fetched cleanly. Two posts inside the window: a July 1 executive-appointments notice (below the notability bar) and a June 30 'SAR view of Denver' post (thought-leadership/product blog, same pattern as Planet's Pulse content, not a discrete news event). No candidate. | [2026-07-08] Feed verified live (Phase 1.2); harvested deterministically by scripts/harvest.ts from now on. | [2026-07-08] harvest: fetch recovered, fail_count reset.",
+        "fail_count": 0
       },
       {
         "name": "Pixxel",
@@ -788,6 +788,30 @@
         "status": "verified",
         "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Verified live.",
         "fail_count": 0
+      },
+      {
+        "name": "Space.com",
+        "url": "https://www.space.com/",
+        "feed_type": "rss_atom",
+        "rss": "https://www.space.com/feeds.xml",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added after the 2026-07-08 coverage-gap review (the nuclear-satellite miss): was never a source. High volume, much out of scope (astronomy, entertainment); the scope filter handles that. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Ars Technica space",
+        "url": "https://arstechnica.com/space/",
+        "feed_type": "rss_atom",
+        "rss": "https://arstechnica.com/space/feed/",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added after the 2026-07-08 coverage-gap review. Verified live.",
+        "fail_count": 0
       }
     ],
     "connectivity_operators": [
@@ -1037,6 +1061,118 @@
         "tier": 1,
         "status": "verified",
         "notes": "[2026-07-08] Added in the audit Phase 1 feed conversion. Official ESA programme feed, verified live. (The Telecommunications_Integrated_Applications feed also parses but its newest entry was >30 days old; excluded under the freshness rule, revisit if cadence picks up.)",
+        "fail_count": 0
+      }
+    ],
+    "mainstream_triggers": [
+      {
+        "name": "Google News: launch",
+        "url": "https://news.google.com/rss/search?q=spacex%20OR%20starlink%20OR%20%22rocket%20launch%22&hl=en-US&gl=US&ceid=US:en",
+        "feed_type": "rss_atom",
+        "rss": "https://news.google.com/rss/search?q=spacex%20OR%20starlink%20OR%20%22rocket%20launch%22&hl=en-US&gl=US&ceid=US:en",
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream media must be a discovery trigger. Launch/vehicle trigger. Entry URLs are news.google.com redirects; the agent resolves to the publisher and never cites google (prompts/update-items.md). Florian ruled 2026-07-08 that MCC is personal and non-commercial so Google News RSS terms permit this use; REVISIT before any paid layer launches. Verified live (75 items).",
+        "fail_count": 0
+      },
+      {
+        "name": "Google News: EO + connectivity",
+        "url": "https://news.google.com/rss/search?q=%22satellite%20constellation%22%20OR%20%22earth%20observation%22&hl=en-US&gl=US&ceid=US:en",
+        "feed_type": "rss_atom",
+        "rss": "https://news.google.com/rss/search?q=%22satellite%20constellation%22%20OR%20%22earth%20observation%22&hl=en-US&gl=US&ceid=US:en",
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream media must be a discovery trigger. EO/connectivity trigger. Entry URLs are news.google.com redirects; the agent resolves to the publisher and never cites google (prompts/update-items.md). Florian ruled 2026-07-08 that MCC is personal and non-commercial so Google News RSS terms permit this use; REVISIT before any paid layer launches. Verified live (75 items).",
+        "fail_count": 0
+      },
+      {
+        "name": "Google News: space finance",
+        "url": "https://news.google.com/rss/search?q=%22space%20company%22%20OR%20%22space%20industry%22%20funding%20OR%20valuation%20OR%20acquisition&hl=en-US&gl=US&ceid=US:en",
+        "feed_type": "rss_atom",
+        "rss": "https://news.google.com/rss/search?q=%22space%20company%22%20OR%20%22space%20industry%22%20funding%20OR%20valuation%20OR%20acquisition&hl=en-US&gl=US&ceid=US:en",
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream media must be a discovery trigger. Mainstream-first financial trigger (the 2026-07-08 Morgan Stanley/CNBC miss). Entry URLs are news.google.com redirects; the agent resolves to the publisher and never cites google (prompts/update-items.md). Florian ruled 2026-07-08 that MCC is personal and non-commercial so Google News RSS terms permit this use; REVISIT before any paid layer launches. Verified live (75 items).",
+        "fail_count": 0
+      },
+      {
+        "name": "Google News: incidents + regulation",
+        "url": "https://news.google.com/rss/search?q=%22space%20debris%22%20OR%20%22satellite%20incident%22%20OR%20%22space%20regulation%22&hl=en-US&gl=US&ceid=US:en",
+        "feed_type": "rss_atom",
+        "rss": "https://news.google.com/rss/search?q=%22space%20debris%22%20OR%20%22satellite%20incident%22%20OR%20%22space%20regulation%22&hl=en-US&gl=US&ceid=US:en",
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream media must be a discovery trigger. Incident trigger (the 2026-07-08 Australia debris miss). Entry URLs are news.google.com redirects; the agent resolves to the publisher and never cites google (prompts/update-items.md). Florian ruled 2026-07-08 that MCC is personal and non-commercial so Google News RSS terms permit this use; REVISIT before any paid layer launches. Verified live (75 items).",
+        "fail_count": 0
+      },
+      {
+        "name": "Google News: non-US space",
+        "url": "https://news.google.com/rss/search?q=%22china%20space%22%20OR%20isro%20OR%20%22jaxa%20launch%22&hl=en-US&gl=US&ceid=US:en",
+        "feed_type": "rss_atom",
+        "rss": "https://news.google.com/rss/search?q=%22china%20space%22%20OR%20isro%20OR%20%22jaxa%20launch%22&hl=en-US&gl=US&ceid=US:en",
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream media must be a discovery trigger. Equal-weight non-US trigger. Entry URLs are news.google.com redirects; the agent resolves to the publisher and never cites google (prompts/update-items.md). Florian ruled 2026-07-08 that MCC is personal and non-commercial so Google News RSS terms permit this use; REVISIT before any paid layer launches. Verified live (75 items).",
+        "fail_count": 0
+      },
+      {
+        "name": "BBC science and environment",
+        "url": "https://www.bbc.com/news/science_and_environment",
+        "feed_type": "rss_atom",
+        "rss": "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml",
+        "cadence": "daily",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Added per Florian: mainstream trigger. Broad science feed; the scope filter discards non-space content. Verified live (42 items).",
+        "fail_count": 0
+      }
+    ],
+    "social_discovery": [
+      {
+        "name": "Bluesky search: spacex launch",
+        "url": "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=spacex%20launch&sort=latest&limit=25",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Open Bluesky keyword discovery (free public API, no auth; NOTE api.bsky.app works, public.api.bsky.app 403s our fetches). Posts from non-whitelisted accounts are informal-class candidates; whitelisted authors keep their floors. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Bluesky search: satellite constellation",
+        "url": "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=%22satellite%20constellation%22&sort=latest&limit=25",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Open Bluesky keyword discovery (free public API, no auth; NOTE api.bsky.app works, public.api.bsky.app 403s our fetches). Posts from non-whitelisted accounts are informal-class candidates; whitelisted authors keep their floors. Verified live.",
+        "fail_count": 0
+      },
+      {
+        "name": "Bluesky search: earth observation satellite",
+        "url": "https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=%22earth%20observation%22%20satellite&sort=latest&limit=25",
+        "feed_type": "api_json",
+        "rss": null,
+        "cadence": "continuous",
+        "language": "en",
+        "tier": 2,
+        "status": "verified",
+        "notes": "[2026-07-08] Open Bluesky keyword discovery (free public API, no auth; NOTE api.bsky.app works, public.api.bsky.app 403s our fetches). Posts from non-whitelisted accounts are informal-class candidates; whitelisted authors keep their floors. Verified live.",
         "fail_count": 0
       }
     ]

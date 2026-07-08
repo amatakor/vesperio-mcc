@@ -20,13 +20,17 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
-import type { Source, SourcesFile, StateFile } from "../src/data/schema";
+import type { Source, SourcesFile, StateFile, SweepLogEntry } from "../src/data/schema";
 
 const UA = "VesperioMCC-Sweep contact@vesperio.ai";
 const FETCH_TIMEOUT_MS = 25_000;
 const EXCERPT_MAX_CHARS = 2000;
 /** Queue keeps entries newer than lastSweep minus this overlap. */
 const OVERLAP_HOURS = 48;
+/** Consecutive zero-add sweeps that trigger a deep sweep (Florian, 2026-07-08). */
+export const DEEP_SWEEP_AFTER_ZERO_STREAK = 2;
+/** Deep sweeps widen the window to this many days (also the first-run window). */
+const DEEP_WINDOW_DAYS = 7;
 /** Window used when state.lastSweep is null (first run). */
 const FIRST_RUN_WINDOW_DAYS = 7;
 const DEAD_AT_FAILURES = 3;
@@ -56,6 +60,13 @@ export interface CandidatesFile {
   $comment: string;
   generated_at: string;
   window_start: string;
+  /**
+   * "deep" after DEEP_SWEEP_AFTER_ZERO_STREAK consecutive zero-add sweeps
+   * (or FORCE_DEEP=1): 7-day window, and the agent escalates its passes
+   * per prompts/update-items.md. Decided here, in code; finalize-sweep
+   * stamps it onto the sweep log entry.
+   */
+  mode: "normal" | "deep";
   health: SourceHealthResult[];
   candidates: Candidate[];
 }
@@ -157,8 +168,42 @@ export function parseFeed(xml: string): FeedEntry[] {
 }
 
 /**
- * Normalizes known JSON API shapes ({ results: [...] }: Launch Library 2,
- * Federal Register). Unknown shapes return [] rather than guessing.
+ * Bluesky app.bsky.feed.searchPosts shape ({ posts: [...] }): open keyword
+ * discovery (audit follow-up, 2026-07-08). The at:// uri maps to the
+ * public web URL; record.text is the verbatim post text. A post from a
+ * non-whitelisted account is an informal-class candidate; whitelisted
+ * authors keep their floors (the agent classes per the normal rules).
+ */
+export function parseBlueskyPosts(posts: Record<string, unknown>[]): FeedEntry[] {
+  const entries: FeedEntry[] = [];
+  for (const post of posts) {
+    const uri = typeof post.uri === "string" ? post.uri : null;
+    const author = post.author as Record<string, unknown> | undefined;
+    const handle = typeof author?.handle === "string" ? author.handle : null;
+    const record = post.record as Record<string, unknown> | undefined;
+    if (uri === null || handle === null) continue;
+    const rkey = uri.split("/").pop();
+    if (!rkey) continue;
+    const published_at = isoDate(
+      (typeof post.indexedAt === "string" && post.indexedAt) ||
+        (typeof record?.createdAt === "string" && (record.createdAt as string)) ||
+        null,
+    );
+    const text = typeof record?.text === "string" ? (record.text as string) : "";
+    entries.push({
+      url: `https://bsky.app/profile/${handle}/post/${rkey}`,
+      title: `@${handle} on Bluesky`,
+      published_at,
+      raw_excerpt: text.replace(/\s+/g, " ").trim().slice(0, EXCERPT_MAX_CHARS),
+    });
+  }
+  return entries;
+}
+
+/**
+ * Normalizes known JSON API shapes: { results: [...] } (Launch Library 2,
+ * Federal Register) and { posts: [...] } (Bluesky searchPosts). Unknown
+ * shapes return [] rather than guessing.
  */
 export function parseJsonApi(text: string): FeedEntry[] {
   let j: unknown;
@@ -166,6 +211,9 @@ export function parseJsonApi(text: string): FeedEntry[] {
     j = JSON.parse(text);
   } catch {
     return [];
+  }
+  if (typeof j === "object" && j !== null && Array.isArray((j as { posts?: unknown }).posts)) {
+    return parseBlueskyPosts((j as { posts: Record<string, unknown>[] }).posts);
   }
   if (typeof j !== "object" || j === null || !Array.isArray((j as { results?: unknown }).results)) return [];
   const entries: FeedEntry[] = [];
@@ -274,6 +322,34 @@ export function isHarvestable(source: Source): boolean {
   return feedish && (source.status === "verified" || source.status === "unverified");
 }
 
+// ------------------------------------------------------------ sweep mode
+
+/**
+ * Deep-sweep fallback (Florian, 2026-07-08): after `threshold` consecutive
+ * zero-add sweeps, the next sweep escalates. The streak is counted from
+ * the tail of the sweep log and stops at any entry that added items OR at
+ * a previous deep sweep (cooldown: a dead market runs deep at most every
+ * threshold+1 sweeps, and a deep sweep that adds items resets naturally).
+ */
+export function sweepMode(
+  sweeps: SweepLogEntry[],
+  threshold = DEEP_SWEEP_AFTER_ZERO_STREAK,
+): "normal" | "deep" {
+  let streak = 0;
+  for (let i = sweeps.length - 1; i >= 0; i--) {
+    const entry = sweeps[i]!;
+    if (entry.mode === "deep" || entry.added > 0) break;
+    streak++;
+    if (streak >= threshold) return "deep";
+  }
+  return "normal";
+}
+
+/** Deep window: DEEP_WINDOW_DAYS back from now, ignoring lastSweep. */
+export function deepWindowStart(now: Date): string {
+  return new Date(now.getTime() - DEEP_WINDOW_DAYS * 86_400_000).toISOString();
+}
+
 // ------------------------------------------------------------ IO main
 
 async function fetchSource(url: string): Promise<{ status: number; text: string }> {
@@ -312,7 +388,16 @@ async function main(): Promise<void> {
   const now = new Date();
   const fetchedAt = now.toISOString();
   const dateStamp = fetchedAt.slice(0, 10);
-  const cutoff = windowStart(state.lastSweep, now);
+  const mode =
+    process.env.FORCE_DEEP === "1" || process.env.FORCE_DEEP === "true"
+      ? "deep"
+      : sweepMode(state.sweeps);
+  const cutoff = mode === "deep" ? deepWindowStart(now) : windowStart(state.lastSweep, now);
+  if (mode === "deep") {
+    console.log(
+      `harvest: DEEP SWEEP (${process.env.FORCE_DEEP ? "forced" : `${DEEP_SWEEP_AFTER_ZERO_STREAK} consecutive zero-add sweeps`}), window widened to ${cutoff}`,
+    );
+  }
 
   const targets: Source[] = [];
   for (const list of Object.values(sources.categories)) {
@@ -366,9 +451,10 @@ async function main(): Promise<void> {
   const candidates = mergeQueue(existingQueue, incoming, cutoff, fetchedAt);
   const out: CandidatesFile = {
     $comment:
-      "Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page.",
+      "Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
     generated_at: fetchedAt,
     window_start: cutoff,
+    mode,
     health,
     candidates,
   };
