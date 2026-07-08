@@ -9,6 +9,15 @@
     />
     <title>MCC | Mission Control Center</title>
     <!--canonical-->
+    <!-- The feed is held at opacity:0 until the JS masonry packs it (see
+         .cards in index.css); reveal it for clients that never run that JS. -->
+    <noscript>
+      <style>
+        .cards {
+          opacity: 1 !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
     <div id="root"><!--app-html--></div>

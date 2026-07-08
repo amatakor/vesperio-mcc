@@ -542,15 +542,25 @@ a.chip:hover {
   grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
   grid-auto-flow: dense;
   align-items: start;
-  /* Fallback before the JS masonry packs (also the no-JS state): cards are
-     content-sized, not stretched, so nothing crops and no gap opens under short
-     copy. .is-packed switches to a 1px row unit the script spans each card over. */
   grid-auto-rows: min-content;
   gap: 0;
   margin-top: 0.75rem;
+  /* Variable-height cards (whole, uncropped images) can only be packed
+     gaplessly once JS has measured them. Any un-packed CSS layout is ugly one
+     way or the other (content-sized leaves gaps below short cards; stretched
+     opens slack inside them), so hold the feed invisible until the masonry
+     packs and reveal it then. Layout is still reserved (opacity, not
+     display:none), so nothing shifts on reveal; no-JS clients get it revealed
+     by the <noscript> in index.html. */
+  opacity: 0;
 }
 .cards.is-packed {
+  /* Masonry: each card spans a run of 1px rows equal to its own measured
+     height, so columns pack independently with no gaps. align-items:start
+     (inherited above) keeps a card content-sized, not clipped to the 1px row,
+     so the measure and the span match. */
   grid-auto-rows: 1px;
+  opacity: 1;
 }
 
 .card {
@@ -628,6 +638,10 @@ a.chip:hover {
   justify-content: center;
   gap: 0.2rem;
   padding: 1rem 1.1rem;
+  /* Content-sized, not the media's 3/2 box: a mostly-empty 3/2 tile read as a
+     huge gap in the feed (Florian, 2026-07-08). The tile is a compact
+     typographic strip; the masonry absorbs the shorter card. */
+  aspect-ratio: auto;
 }
 
 /* SNR squares lead the card meta row, before the chips (Florian
@@ -771,7 +785,10 @@ a.card-tile:hover .tile-cat {
    type, extra body, black media strip. */
 .card-seismic {
   background: var(--acc);
-  border-color: var(--acc);
+  /* Yellow fill, but the same --line border as every other card: a yellow
+     border framed the dark media strip and dark footer and read as a stray
+     yellow outline against the feed (Florian, 2026-07-08). */
+  border-color: var(--line);
   color: var(--acc-ink);
 }
 .card-seismic:hover {
@@ -852,10 +869,11 @@ a.card-tile:hover .tile-cat {
 .card-foot {
   margin-top: auto;
   border-top: 1px solid var(--line);
-  /* Always opaque + dark so the hover inversion of the copy above never bleeds
-     through it (the transparent-to-dark transition was the white flash). */
-  background: var(--bg);
-  padding: 0.5rem var(--sp-3) 0.7rem;
+  /* Solid panel bar, opaque: page-black padding here read as a gap under every
+     card (Florian, 2026-07-08), and opacity kept the hover inversion of the
+     copy above from bleeding through (the transparent-to-dark white flash). */
+  background: var(--panel);
+  padding: 0.5rem var(--sp-3);
   display: flex;
   gap: 8px;
   align-items: center;

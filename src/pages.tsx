@@ -4,7 +4,11 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
   ReactNode,
 } from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+
+// useLayoutEffect runs before the browser paints (so the masonry packs with no
+// gap flash), but warns during SSR; fall back to useEffect on the server.
+const useIsoLayoutEffect = typeof document !== "undefined" ? useLayoutEffect : useEffect;
 import type {
   Item,
   SnrTrace,
@@ -445,18 +449,32 @@ function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
 
   // Content-sized masonry: give each card a row-span equal to its own measured
   // height so the feed packs with no gaps (images are shown whole, so card
-  // heights vary). Runs after mount; the CSS fallback handles no-JS.
+  // heights vary). Runs before paint; the CSS fallback keeps the pre-hydration
+  // and no-JS states gapless (equal-height rows) until this tightens them.
   const gridRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
     const pack = () => {
       grid.classList.add("is-packed");
       const cards = Array.from(grid.children) as HTMLElement[];
-      for (const c of cards) c.style.gridRowEnd = "";
+      for (const c of cards) {
+        c.style.gridRowEnd = "";
+        c.style.height = "";
+      }
       const heights = cards.map((c) => c.getBoundingClientRect().height);
       cards.forEach((c, i) => {
-        c.style.gridRowEnd = `span ${Math.max(1, Math.ceil(heights[i]!))}`;
+        // Integer height, fraction rounded INTO the card (the footer's
+        // margin-top:auto slack absorbs the sub-pixel invisibly): a span of
+        // ceil() rows over a fractional card left a 0-1px sliver of page
+        // black under every card and kept the two cards' 1px borders from
+        // merging (a visible double-line seam, Florian 2026-07-08). The grid
+        // area is one row SHORT of the height so each card, pulled up by its
+        // -1px top margin, overlaps the previous card's bottom border exactly:
+        // one hairline between cards, same as the vertical seams.
+        const h = Math.max(2, Math.ceil(heights[i]!));
+        c.style.height = `${h}px`;
+        c.style.gridRowEnd = `span ${h - 1}`;
       });
     };
     let raf = 0;
@@ -465,12 +483,18 @@ function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
       raf = requestAnimationFrame(pack);
     };
     pack();
+    // Re-pack on any card reflow: late-decoding images, web fonts, wrapped
+    // headlines. pack() clears its own inline height before re-measuring, and
+    // re-applying identical values causes no size change, so observing the
+    // cards can't feed back into a loop. ResizeObserver's initial callback
+    // also gives a guaranteed post-layout pack.
+    const ro = new ResizeObserver(schedule);
+    for (const c of Array.from(grid.children)) ro.observe(c);
     window.addEventListener("resize", schedule);
-    const t = setTimeout(pack, 300); // re-pack after late reflow (fonts, etc.)
     return () => {
+      ro.disconnect();
       window.removeEventListener("resize", schedule);
       cancelAnimationFrame(raf);
-      clearTimeout(t);
     };
   }, [list]);
 
