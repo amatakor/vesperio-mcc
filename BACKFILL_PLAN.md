@@ -76,6 +76,6 @@ If after the first full crawl pass the IPO item does not exist (or exists wrongl
 - [x] Feed carries on-scope items covering 2026-06-08 through today; 45 backfill items added across 4 windows; no unexplained week-sized gaps (thin days Jun 24-25 / Jul 3-4 reflect genuinely quiet legs or already-covered stories, per sweep entries)
 - [x] SpaceX IPO item exists: `2026-06-12-spacex-nasdaq-ipo`, financial/seismic, SNR 5, SEC 424B4 official-record lead, published unprompted on window 1's first pass
 - [x] Every backfill window has its own /log sweep entry with honest attestations (signalsPass empty+note per plan; discoveryPass 6-7 queries each)
-- [ ] found_none batch audit: DEFERRED to a future session (see above), agreed with Florian under token constraints
+- [x] found_none batch audit: ran 2026-07-08 (see reports/found-none-audit-2026-07-08.md); axelspace + LVM3 stamps stand; Redwire and Zhuque-2E rescores queued for the next sweep as verify-then-rescore (SWEEP_MEMORY 2026-07-08-J2)
 - [x] Build + tests green after every commit; all pushed to main
 - [x] Run log filled in

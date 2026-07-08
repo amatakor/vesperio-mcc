@@ -893,3 +893,14 @@ a newer entry if a lesson changes.
   standing task for the next sweep: the Airbus/Thales/Leonardo "Project Bromo"
   space merger and OHB's antitrust opposition have never been covered; chase
   the announcement and the opposition as dateable events.
+- 2026-07-08-J2: found_none batch audit (deferred in BACKFILL_PLAN.md) ran;
+  full evidence in reports/found-none-audit-2026-07-08.md. Stamps STAND for
+  axelspace-nsg-up42 and inspace-lvm3. STANDING TASK for the next sweep,
+  verify-then-rescore per 2026-07-08-A: (1) fetch the FODNews Zhuque-2E page
+  named in the report; if it independently cites the Space-Track fragmentation
+  advisory and named analysts (McKnight/LeoLabs, Jim Shell), rescore
+  2026-06-15-zhuque-2e-upper-stage-breakup found_none to found_some via
+  updates[].rescore with the source attached. (2) fetch the Investing.com
+  Redwire ATM piece named in the report; if independent, correct
+  2026-06-09-redwire-500m-atm corroboration to found_some (no score change
+  expected). Remove this task by completing it; log both movements.
