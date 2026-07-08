@@ -19,6 +19,8 @@ import {
   FEED_TYPES,
   SOURCE_TIERS,
   CONSTELLATION_DOMAINS,
+  TIMELINE_EVENT_TYPES,
+  MCC_READ_MAX_CHARS,
   SPACEPORT_REGIONS,
   ORG_KINDS,
   HEADLINE_MAX_CHARS,
@@ -751,13 +753,23 @@ function checkSourcedField(
   path: string,
   errors: string[],
 ): void {
-  const v = o[key];
+  checkSourcedFieldValue(o[key], kind, `${path}.${key}`, errors);
+}
+
+/** Same checks against a SourcedField not keyed on its parent object
+ * (e.g. one entry of positioning.claims). fieldPath already names it. */
+function checkSourcedFieldValue(
+  v: unknown,
+  kind: "string" | "number" | "boolean" | "string[]",
+  fieldPath: string,
+  errors: string[],
+): void {
   if (!isObj(v)) {
-    errors.push(`${path}.${key}: required SourcedField object { value, source, as_of }`);
+    errors.push(`${fieldPath}: required SourcedField object { value, source, as_of }`);
     return;
   }
   for (const k of ["value", "source", "as_of"]) {
-    if (!(k in v)) errors.push(`${path}.${key}.${k}: required (use null when unknown)`);
+    if (!(k in v)) errors.push(`${fieldPath}.${k}: required (use null when unknown)`);
   }
   const { value, source, as_of } = v;
   if (value !== null && value !== undefined) {
@@ -765,59 +777,59 @@ function checkSourcedField(
       kind === "string[]"
         ? Array.isArray(value) && value.every((x) => typeof x === "string")
         : typeof value === kind;
-    if (!ok) errors.push(`${path}.${key}.value: must be null or ${kind}`);
+    if (!ok) errors.push(`${fieldPath}.value: must be null or ${kind}`);
     // A filled value needs provenance: no source, no fact.
     if (source === null || source === undefined) {
-      errors.push(`${path}.${key}: has a value but no source`);
+      errors.push(`${fieldPath}: has a value but no source`);
     }
     if (as_of === null || as_of === undefined) {
-      errors.push(`${path}.${key}: has a value but no as_of date`);
+      errors.push(`${fieldPath}: has a value but no as_of date`);
     }
   }
   if (source !== null && source !== undefined && !isHttpUrl(source)) {
-    errors.push(`${path}.${key}.source: must be null or an http(s) URL`);
+    errors.push(`${fieldPath}.source: must be null or an http(s) URL`);
   }
   if (as_of !== null && as_of !== undefined && !(typeof as_of === "string" && isValidDate(as_of))) {
-    errors.push(`${path}.${key}.as_of: must be null or YYYY-MM-DD`);
+    errors.push(`${fieldPath}.as_of: must be null or YYYY-MM-DD`);
   }
 
   // SNR block (SNR_SPEC 2.3/5): absent on Wikipedia/first-party facts;
   // when present it needs its trace and a tier consistent with the score.
   if (v.snr !== undefined) {
     if (!isSnrValue(v.snr)) {
-      errors.push(`${path}.${key}.snr: must be an integer 1-5`);
+      errors.push(`${fieldPath}.snr: must be an integer 1-5`);
     } else {
-      validateSnrTrace(v.snr_trace, v.snr, `${path}.${key}.snr_trace`, errors);
+      validateSnrTrace(v.snr_trace, v.snr, `${fieldPath}.snr_trace`, errors);
       if (value === null || value === undefined) {
-        errors.push(`${path}.${key}: snr present on a null value`);
+        errors.push(`${fieldPath}: snr present on a null value`);
       }
       if (v.tier === undefined) {
-        errors.push(`${path}.${key}.tier: required when snr is present`);
+        errors.push(`${fieldPath}.tier: required when snr is present`);
       }
     }
   } else if (v.snr_trace !== undefined) {
-    errors.push(`${path}.${key}.snr_trace: present without snr`);
+    errors.push(`${fieldPath}.snr_trace: present without snr`);
   }
   if (v.tier !== undefined) {
     if (!REGISTRY_FACT_TIERS.includes(v.tier as never)) {
-      errors.push(`${path}.${key}.tier: must be one of [${REGISTRY_FACT_TIERS.join(", ")}]`);
+      errors.push(`${fieldPath}.tier: must be one of [${REGISTRY_FACT_TIERS.join(", ")}]`);
     } else if (v.snr === undefined) {
-      errors.push(`${path}.${key}.tier: present without snr`);
+      errors.push(`${fieldPath}.tier: present without snr`);
     } else if (isSnrValue(v.snr)) {
       if (v.tier === "provisional" && v.snr !== 3) {
-        errors.push(`${path}.${key}.tier: provisional requires snr 3 exactly (SNR_PLAN A6)`);
+        errors.push(`${fieldPath}.tier: provisional requires snr 3 exactly (SNR_PLAN A6)`);
       }
       if (v.tier === "canonical" && v.snr < 4) {
-        errors.push(`${path}.${key}.tier: canonical requires snr 4-5`);
+        errors.push(`${fieldPath}.tier: canonical requires snr 4-5`);
       }
     }
   }
   if (v.disputed !== undefined) {
     if (!isObj(v.disputed) || !Array.isArray(v.disputed.competing)) {
-      errors.push(`${path}.${key}.disputed: must be { competing: [...] }`);
+      errors.push(`${fieldPath}.disputed: must be { competing: [...] }`);
     } else {
       v.disputed.competing.forEach((c, i) => {
-        const p = `${path}.${key}.disputed.competing[${i}]`;
+        const p = `${fieldPath}.disputed.competing[${i}]`;
         if (!isObj(c)) {
           errors.push(`${p}: must be an object`);
           return;
@@ -858,8 +870,129 @@ function checkTimeline(o: Obj, path: string, errors: string[]): void {
     if (typeof e.as_of !== "string" || !isValidDate(e.as_of)) {
       errors.push(`${p}.as_of: must be YYYY-MM-DD`);
     }
+    // Registry v2: typed events. Absent type means "milestone";
+    // outcome/cause are incident-only fields.
+    if (e.type !== undefined && !TIMELINE_EVENT_TYPES.includes(e.type as never)) {
+      errors.push(`${p}.type: "${String(e.type)}" not in [${TIMELINE_EVENT_TYPES.join(", ")}]`);
+    }
+    for (const key of ["outcome", "cause"] as const) {
+      if (e[key] === undefined) continue;
+      if (typeof e[key] !== "string" || e[key] === "") {
+        errors.push(`${p}.${key}: must be a non-empty string when present`);
+      }
+      if (e.type !== "incident") {
+        errors.push(`${p}.${key}: only meaningful on incident events (type "incident")`);
+      }
+    }
   });
 }
+
+/**
+ * Registry v2 per-mode EO specs. Each row is sourced like any other
+ * fact: no source, no mode. Numbers stay null when the page does not
+ * state them; never derived.
+ */
+function checkImagingModes(o: Obj, path: string, errors: string[]): void {
+  const modes = o.imaging_modes;
+  if (modes === undefined) return;
+  if (!Array.isArray(modes)) {
+    errors.push(`${path}.imaging_modes: must be an array when present`);
+    return;
+  }
+  modes.forEach((m, i) => {
+    const p = `${path}.imaging_modes[${i}]`;
+    if (!isObj(m)) {
+      errors.push(`${p}: must be an object`);
+      return;
+    }
+    reqString(m, "mode", p, errors);
+    for (const key of ["resolution_m", "swath_km"] as const) {
+      const n = m[key];
+      if (n !== null && (typeof n !== "number" || !Number.isFinite(n))) {
+        errors.push(`${p}.${key}: must be null or a finite number`);
+      }
+    }
+    if (!isHttpUrl(m.source)) errors.push(`${p}.source: required http(s) URL`);
+    if (typeof m.as_of !== "string" || !isValidDate(m.as_of)) {
+      errors.push(`${p}.as_of: required YYYY-MM-DD`);
+    }
+  });
+}
+
+/**
+ * Registry v2 positioning block. claims follow the full sourcing model
+ * (each is a SourcedField<string>); mcc_read is the registry's one
+ * editorial surface: never SNR-scored, never feeding other fields, and
+ * required to list the basis sources it rests on.
+ */
+function checkPositioning(o: Obj, path: string, errors: string[]): void {
+  const pos = o.positioning;
+  if (pos === undefined) return;
+  if (!isObj(pos)) {
+    errors.push(`${path}.positioning: must be an object when present`);
+    return;
+  }
+  if (!Array.isArray(pos.claims)) {
+    errors.push(`${path}.positioning.claims: required array (empty when no sourced claims)`);
+  } else {
+    pos.claims.forEach((c, i) => {
+      checkSourcedFieldValue(c, "string", `${path}.positioning.claims[${i}]`, errors);
+    });
+  }
+  if (pos.mcc_read !== undefined) {
+    const p = `${path}.positioning.mcc_read`;
+    const r = pos.mcc_read;
+    if (!isObj(r)) {
+      errors.push(`${p}: must be { text, basis, as_of }`);
+    } else {
+      const text = reqString(r, "text", p, errors);
+      if (text !== null && text.length > MCC_READ_MAX_CHARS) {
+        errors.push(`${p}.text: ${text.length} chars, max ${MCC_READ_MAX_CHARS}`);
+      }
+      checkNoEmDash(text, `${p}.text`, errors);
+      const basis = reqStringArray(r, "basis", p, errors);
+      if (basis !== null && basis.length === 0) {
+        errors.push(`${p}.basis: must list at least one basis source`);
+      }
+      if (basis !== null) {
+        for (const u of basis) {
+          if (!isHttpUrl(u)) errors.push(`${p}.basis: "${u}" is not an http(s) URL`);
+        }
+      }
+      if (typeof r.as_of !== "string" || !isValidDate(r.as_of)) {
+        errors.push(`${p}.as_of: required YYYY-MM-DD`);
+      }
+    }
+  }
+}
+
+type FieldKind = "string" | "number" | "boolean" | "string[]";
+
+/** Registry v2 capability fields: optional, validated only when present. */
+const CONSTELLATION_OPTIONAL_FIELDS: Array<[string, FieldKind]> = [
+  // EO capability figures
+  ["resolution_m", "number"],
+  ["swath_km", "number"],
+  // Revisit stays a string as stated by the source, never coerced.
+  ["revisit", "string"],
+  ["spectral_bands", "string[]"],
+  // Connectivity/IoT service figures
+  ["frequency_bands", "string[]"],
+  ["capacity", "string"],
+  ["user_terminals", "string"],
+  ["service_type", "string"],
+];
+
+/** Registry v2 vehicle performance/dimension fields: optional. */
+const VEHICLE_OPTIONAL_FIELDS: Array<[string, FieldKind]> = [
+  ["payload_sso_kg", "number"],
+  ["payload_gto_kg", "number"],
+  ["height_m", "number"],
+  ["diameter_m", "number"],
+  ["mass_kg", "number"],
+  ["stages", "number"],
+  ["engines_stage1", "string"],
+];
 
 const CONSTELLATION_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
   ["overview", "string"],
@@ -1180,9 +1313,21 @@ export function validateRegistryProfile(
       }
     }
     for (const [key, kind] of CONSTELLATION_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    for (const [key, kind] of CONSTELLATION_OPTIONAL_FIELDS) {
+      if (data[key] !== undefined) checkSourcedField(data, key, kind, path, errors);
+    }
+    checkImagingModes(data, path, errors);
     checkTimeline(data, path, errors);
   } else if (expectedType === "vehicle") {
     for (const [key, kind] of VEHICLE_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    for (const [key, kind] of VEHICLE_OPTIONAL_FIELDS) {
+      if (data[key] !== undefined) checkSourcedField(data, key, kind, path, errors);
+    }
+    // variant is a plain rendering qualifier ("Block 5"), not a SourcedField.
+    if (data.variant !== undefined && (typeof data.variant !== "string" || data.variant === "")) {
+      errors.push(`${path}.variant: must be a non-empty string when present`);
+    }
+    checkTimeline(data, path, errors);
   } else if (expectedType === "spaceport") {
     if (!SPACEPORT_REGIONS.includes(data.region as never)) {
       errors.push(`${path}.region: must be one of [${SPACEPORT_REGIONS.join(", ")}]`);
@@ -1191,6 +1336,7 @@ export function validateRegistryProfile(
     if (data.ll2_location_id !== undefined) {
       checkSourcedField(data, "ll2_location_id", "number", path, errors);
     }
+    checkTimeline(data, path, errors);
   } else {
     if (!ORG_KINDS.includes(data.kind as never)) {
       errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
@@ -1198,6 +1344,8 @@ export function validateRegistryProfile(
     for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
     checkTimeline(data, path, errors);
   }
+  // Registry v2: positioning is allowed on all four profile types.
+  checkPositioning(data, path, errors);
   return errors;
 }
 

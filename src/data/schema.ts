@@ -587,6 +587,21 @@ export interface SourcedField<T> {
 }
 
 /**
+ * Timeline event types (registry v2). Absent type means "milestone", so
+ * every pre-v2 event stays valid without a rewrite.
+ */
+export const TIMELINE_EVENT_TYPES = [
+  "launch",
+  "funding",
+  "corporate",
+  "regulatory",
+  "contract",
+  "milestone",
+  "incident",
+] as const;
+export type TimelineEventType = (typeof TIMELINE_EVENT_TYPES)[number];
+
+/**
  * One sourced event on a profile's history timeline (Task 15). Dates keep
  * the precision the source states: YYYY, YYYY-MM, or YYYY-MM-DD. The
  * headline is actor-first plain English, max ~90 chars, no hype. Where
@@ -602,6 +617,51 @@ export interface TimelineEvent {
   source: string;
   /** YYYY-MM-DD the event was verified against the source. */
   as_of: string;
+  /** Event type for timeline rendering; absent means "milestone". */
+  type?: TimelineEventType;
+  /** Outcome as stated by the source; only meaningful on incident events. */
+  outcome?: string;
+  /** Cause as stated by the source; only meaningful on incident events. */
+  cause?: string;
+}
+
+/**
+ * One per-mode spec row on an EO constellation (Capella-style
+ * spotlight/stripmap). Numbers are copied from the cited page, never
+ * derived; unknown stays null.
+ */
+export interface ImagingMode {
+  /** Mode name as the source states it, e.g. "Spotlight". */
+  mode: string;
+  resolution_m: number | null;
+  swath_km: number | null;
+  /** The page that states the mode's figures. Required. */
+  source: string;
+  /** YYYY-MM-DD the figures were verified against the source. */
+  as_of: string;
+}
+
+/**
+ * Per-entity positioning block (registry v2), carried by all four profile
+ * types. claims follow the full sourcing model: each is a SourcedField
+ * whose value is stated by its cited page, superlatives attributed
+ * ("ICEYE says..."), never repeated as fact. mcc_read is the registry's
+ * ONE editorial surface: the site's own read on where the entity sits.
+ * It is never SNR-scored, never feeds items, stats, or other registry
+ * fields, and must list the basis sources it rests on.
+ */
+export const MCC_READ_MAX_CHARS = 400;
+
+export interface Positioning {
+  claims: SourcedField<string>[];
+  mcc_read?: {
+    /** The editorial read, plain declarative English, max MCC_READ_MAX_CHARS. */
+    text: string;
+    /** URLs of the sources the read rests on. Required, non-empty. */
+    basis: string[];
+    /** YYYY-MM-DD the read was written or last reviewed. */
+    as_of: string;
+  };
 }
 
 export const CONSTELLATION_DOMAINS = [
@@ -668,6 +728,29 @@ export interface ConstellationProfile {
   latest_launch_date: SourcedField<string>;
   status: SourcedField<string>;
   website: SourcedField<string>;
+  // EO capability figures (registry v2). Numbers are copied from the
+  // cited page, never derived; unknown stays absent or null.
+  /** Best stated ground resolution in metres. */
+  resolution_m?: SourcedField<number>;
+  /** Stated swath width in km. */
+  swath_km?: SourcedField<number>;
+  /** Revisit as the source states it (e.g. "up to 10x daily"); never coerced to a number. */
+  revisit?: SourcedField<string>;
+  /** Spectral bands as stated, e.g. ["RGB", "NIR", "red edge"]. */
+  spectral_bands?: SourcedField<string[]>;
+  /** Per-mode specs (Capella-style spotlight/stripmap); each row sourced. */
+  imaging_modes?: ImagingMode[];
+  // Connectivity/IoT service figures (registry v2), same copying rules.
+  /** Frequency bands as stated, e.g. ["Ka", "Ku"]. */
+  frequency_bands?: SourcedField<string[]>;
+  /** Stated throughput/capacity, as stated (e.g. "up to 220 Mbps per user"). */
+  capacity?: SourcedField<string>;
+  /** User terminal offering as stated, e.g. "standard dish, flat high performance". */
+  user_terminals?: SourcedField<string>;
+  /** Service type as stated, e.g. "broadband", "direct-to-device", "IoT messaging". */
+  service_type?: SourcedField<string>;
+  /** Per-entity positioning block; see Positioning. */
+  positioning?: Positioning;
   notes?: string | null;
 }
 
@@ -691,6 +774,26 @@ export interface VehicleProfile {
   next_flight_date: SourcedField<string>;
   status: SourcedField<string>;
   price_per_launch_usd: SourcedField<number>;
+  // Performance and dimensions (registry v2). Numbers are copied from
+  // the cited page, never derived; unknown stays absent or null.
+  payload_sso_kg?: SourcedField<number>;
+  payload_gto_kg?: SourcedField<number>;
+  height_m?: SourcedField<number>;
+  diameter_m?: SourcedField<number>;
+  mass_kg?: SourcedField<number>;
+  stages?: SourcedField<number>;
+  /** First-stage engines as stated, e.g. "9x Merlin 1D". */
+  engines_stage1?: SourcedField<string>;
+  /**
+   * Plain string qualifier rendered beside the figures, e.g. "Block 5":
+   * says which variant the specs describe. NOT a SourcedField; the
+   * figures it qualifies carry the sources.
+   */
+  variant?: string;
+  /** Sourced history timeline; absent until the crawl fills it. */
+  events?: TimelineEvent[];
+  /** Per-entity positioning block; see Positioning. */
+  positioning?: Positioning;
   notes?: string | null;
 }
 
@@ -722,6 +825,10 @@ export interface SpaceportProfile {
   launches_total: SourcedField<number>;
   status: SourcedField<string>;
   website: SourcedField<string>;
+  /** Sourced history timeline; absent until the crawl fills it. */
+  events?: TimelineEvent[];
+  /** Per-entity positioning block; see Positioning. */
+  positioning?: Positioning;
   notes?: string | null;
 }
 
@@ -755,6 +862,8 @@ export interface OrgProfile {
   focus: SourcedField<string>;
   status: SourcedField<string>;
   website: SourcedField<string>;
+  /** Per-entity positioning block; see Positioning. */
+  positioning?: Positioning;
   notes?: string | null;
 }
 
