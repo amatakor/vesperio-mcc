@@ -199,8 +199,11 @@ result when nothing on-scope happened; padding is still the bug.
    contradict "operational" or "announced" claims;
    `sats_active_verified` is machine-computed and never crossfed).
 
-   You attest the extraction and the like-for-like judgment in a
-   `crossfeed` block on the item (see the draft format below); the
+   Commentary items are exempt: they never feed the registry, so omit
+   the crossfeed block entirely (the gate rejects commentary carrying
+   facts). For event items, you attest the extraction and the
+   like-for-like judgment in a `crossfeed` block (see the draft format
+   below); the
    deterministic gate runs `reconcile()` on your inputs, writes the
    outcomes to `src/data/registry-candidates.json` for the weekly
    registry run, applies the dispute downgrade when a canonical fact

@@ -320,6 +320,28 @@ describe("finalize-sweep crossfeed wiring", () => {
     expect(readQueue().candidates[0]!.action).toBe("both_disputed_queue");
   });
 
+  test("commentary owes no crossfeed attestation even when companies match the registry", () => {
+    writeDraft([draftItem({ kind: "commentary" })]);
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
+
+  test("commentary carrying crossfeed facts is rejected (never feeds the registry)", () => {
+    writeDraft([
+      draftItem({
+        kind: "commentary",
+        crossfeed: {
+          facts: [
+            { entity_slug: "iceye", field: "sats_launched_total", value: 54, metric: "cumulative launched", same_metric: true },
+          ],
+        },
+      }),
+    ]);
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("commentary never feeds the registry");
+  });
+
   test("queue entries persist across sweeps and dedup by id", () => {
     const cf = {
       crossfeed: {

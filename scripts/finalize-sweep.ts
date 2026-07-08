@@ -713,7 +713,9 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     // an honest answer; silence is not).
     const itemQueue: QueueCandidate[] = [];
     const crossfeedRaw = raw.crossfeed;
-    if (crossfeedRaw !== undefined) {
+    if (stamped.kind === "commentary" && isObj(crossfeedRaw) && Array.isArray((crossfeedRaw as Obj).facts) && ((crossfeedRaw as Obj).facts as unknown[]).length > 0) {
+      errors.push(`${path}.crossfeed: commentary never feeds the registry; remove the facts`);
+    } else if (crossfeedRaw !== undefined) {
       if (!isObj(crossfeedRaw) || !Array.isArray((crossfeedRaw as Obj).facts)) {
         errors.push(`${path}.crossfeed: must be { facts: [...], note? }`);
       } else {
@@ -775,8 +777,10 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         }
       }
     } else {
+      // Commentary never feeds the registry (policy), so it owes no
+      // crossfeed attestation; the gate applies to events only.
       const matched = matchCompanies(registryIndex, stamped.companies);
-      if (stamped.snr >= 3 && matched.length > 0) {
+      if (stamped.kind !== "commentary" && stamped.snr >= 3 && matched.length > 0) {
         errors.push(
           `${path}: item companies map to registry entit${matched.length === 1 ? "y" : "ies"} ` +
             `[${matched.join(", ")}] and the item scored SNR ${stamped.snr} (>= 3), but the draft ` +
