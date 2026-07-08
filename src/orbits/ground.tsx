@@ -4,7 +4,7 @@
  * a neon accent overlay only on the selected marker (spec 3).
  */
 
-import { useMemo, useRef, type MutableRefObject } from "react";
+import { useEffect, useMemo, type MutableRefObject } from "react";
 import * as THREE from "three";
 import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import type { OrbitsFacility, OrbitsSpaceport } from "../data/schema";
@@ -51,28 +51,26 @@ function glyphTexture(glyph: Glyph): THREE.CanvasTexture {
   return tex;
 }
 
-let ringTex: THREE.CanvasTexture | null = null;
-function ringTexture(): THREE.CanvasTexture {
-  if (!ringTex) {
-    const c = document.createElement("canvas");
-    c.width = c.height = 64;
-    const ctx = c.getContext("2d")!;
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 8;
-    ctx.beginPath();
-    ctx.arc(32, 32, 23, 0, Math.PI * 2);
-    ctx.stroke();
-    ringTex = new THREE.CanvasTexture(c);
-  }
-  return ringTex;
-}
+/** Concurrent surface waves per active spaceport: small, slow ripples
+ * (Florian 2026-07-08). */
+const RIPPLE_WAVES = 3;
+const RIPPLE_PERIOD_S = 8.5;
+/** Peak angular radius of a wave, radians (~15 degrees of arc). */
+const RIPPLE_MAX_ANGLE = 0.26;
+/** Just above the coastlines so the ring hugs the surface. */
+const RIPPLE_RADIUS = 1.006;
+const RIPPLE_SEGMENTS = 96;
 
 /**
- * Ring-pulse on spaceports with a launch in the last 30 days (spec 3
- * sanctions the ring-pulse glyph; Florian 2026-07-05 asked for the
- * activity signal). Static ring under prefers-reduced-motion.
+ * A wave that propagates outward across the globe from each spaceport
+ * with a launch in the last 30 days: an expanding geodesic circle drawn
+ * as a wireframe line that sits ON the sphere and follows its curvature,
+ * so its far arc dips over the horizon and is occluded by the globe
+ * (Florian 2026-07-08). A unit circle in the tangent plane, scaled by
+ * R*sin(theta) and pushed R*cos(theta) along the site normal, traces the
+ * small circle at angular distance theta; theta animates outward.
  */
-function ActivityPulse({
+function SurfaceRipple({
   positions,
   color,
   reducedMotion,
@@ -81,40 +79,86 @@ function ActivityPulse({
   color: string;
   reducedMotion: boolean;
 }) {
-  const matRef = useRef<THREE.PointsMaterial>(null);
-  const geometry = useMemo(() => {
+  // One unit circle in the local XY plane, shared by every wave loop.
+  const circle = useMemo(() => {
+    const arr = new Float32Array((RIPPLE_SEGMENTS + 1) * 3);
+    for (let i = 0; i <= RIPPLE_SEGMENTS; i++) {
+      const a = (i / RIPPLE_SEGMENTS) * Math.PI * 2;
+      arr[i * 3] = Math.cos(a);
+      arr[i * 3 + 1] = Math.sin(a);
+      arr[i * 3 + 2] = 0;
+    }
     const g = new THREE.BufferGeometry();
-    const arr = new Float32Array(positions.length * 3);
-    positions.forEach((v, i) => {
-      arr[i * 3] = v.x;
-      arr[i * 3 + 1] = v.y;
-      arr[i * 3 + 2] = v.z;
-    });
     g.setAttribute("position", new THREE.BufferAttribute(arr, 3));
+    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1.5);
     return g;
-  }, [positions]);
+  }, []);
+  useEffect(() => () => circle.dispose(), [circle]);
+
+  // Per-spaceport orientation: the site normal is the ring axis (+Z);
+  // (u, v) span the tangent plane.
+  const bases = useMemo(
+    () =>
+      positions.map((p) => {
+        const axis = p.clone().normalize();
+        const ref = Math.abs(axis.y) < 0.92 ? new THREE.Vector3(0, 1, 0) : new THREE.Vector3(1, 0, 0);
+        const u = new THREE.Vector3().crossVectors(ref, axis).normalize();
+        const v = new THREE.Vector3().crossVectors(axis, u).normalize();
+        const q = new THREE.Quaternion().setFromRotationMatrix(
+          new THREE.Matrix4().makeBasis(u, v, axis),
+        );
+        return { axis, q };
+      }),
+    [positions],
+  );
+
+  const loops = useMemo(() => {
+    const out: { line: THREE.LineLoop; site: number }[] = [];
+    for (let s = 0; s < bases.length; s++) {
+      for (let w = 0; w < RIPPLE_WAVES; w++) {
+        const line = new THREE.LineLoop(
+          circle,
+          new THREE.LineBasicMaterial({
+            color,
+            transparent: true,
+            opacity: 0,
+            depthWrite: false,
+          }),
+        );
+        line.renderOrder = 2;
+        out.push({ line, site: s });
+      }
+    }
+    return out;
+  }, [bases, circle, color]);
+  useEffect(() => () => loops.forEach((l) => (l.line.material as THREE.Material).dispose()), [loops]);
 
   useFrame(({ clock }) => {
-    if (reducedMotion || !matRef.current) return;
-    const t = (clock.getElapsedTime() % 1.8) / 1.8;
-    matRef.current.size = 0.05 + t * 0.14;
-    matRef.current.opacity = 1 - t;
+    const now = clock.getElapsedTime();
+    for (let i = 0; i < loops.length; i++) {
+      const { line, site } = loops[i]!;
+      const base = bases[site]!;
+      const wave = i % RIPPLE_WAVES;
+      const t = reducedMotion ? 0.45 : (now / RIPPLE_PERIOD_S + wave / RIPPLE_WAVES) % 1;
+      const theta = t * RIPPLE_MAX_ANGLE;
+      const r = RIPPLE_RADIUS * Math.sin(theta);
+      line.quaternion.copy(base.q);
+      line.position.copy(base.axis).multiplyScalar(RIPPLE_RADIUS * Math.cos(theta));
+      line.scale.set(r, r, 1);
+      // Bright at birth, easing out as it spreads.
+      (line.material as THREE.LineBasicMaterial).opacity = reducedMotion
+        ? 0.85
+        : 0.95 * Math.pow(1 - t, 0.42);
+    }
   });
 
   if (positions.length === 0) return null;
   return (
-    <points geometry={geometry}>
-      <pointsMaterial
-        ref={matRef}
-        size={reducedMotion ? 0.09 : 0.05}
-        sizeAttenuation
-        map={ringTexture()}
-        color={color}
-        transparent
-        opacity={reducedMotion ? 0.8 : 1}
-        depthWrite={false}
-      />
-    </points>
+    <>
+      {loops.map((l, i) => (
+        <primitive key={i} object={l.line} />
+      ))}
+    </>
   );
 }
 
@@ -133,6 +177,9 @@ function markerPoints(
     arr[i * 3 + 2] = v.z;
   });
   geometry.setAttribute("position", new THREE.BufferAttribute(arr, 3));
+  // Markers hug the globe; a fixed bounding sphere spares three from
+  // computing one (which spams a NaN warning during load races).
+  geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1.3);
   return { geometry, glyph, color, size, onClick };
 }
 
@@ -144,8 +191,8 @@ interface Props {
   /** Resolved CSS colors (tokens are resolved by the scene root). */
   baseColor: string;
   accentColor: string;
-  /** Resolved --alert red for the recent-activity pulse. */
-  alertColor: string;
+  /** Resolved colour for the surface-ripple wave (mint green). */
+  pulseColor: string;
   /** LL2 ids of spaceports with a launch in the last 30 days. */
   recentIds: ReadonlySet<number>;
   reducedMotion: boolean;
@@ -168,7 +215,7 @@ export function GroundMarkers({
   showFacilities,
   baseColor,
   accentColor,
-  alertColor,
+  pulseColor,
   recentIds,
   reducedMotion,
   selected,
@@ -252,6 +299,7 @@ export function GroundMarkers({
     const geometry = new THREE.BufferGeometry();
     const v = latLonToVec3(target.lat, target.lon, MARKER_RADIUS);
     geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array([v.x, v.y, v.z]), 3));
+    geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1.3);
     return { geometry, glyph: target.glyph, size: target.size };
   }, [selected]);
 
@@ -262,14 +310,21 @@ export function GroundMarkers({
           key={`${layer.glyph}-${i}-${layer.geometry.attributes.position!.count}`}
           geometry={layer.geometry}
           onClick={(e) => {
-            // The overall nearest visible hit owns the click; far-side
-            // markers are hidden and therefore not pickable.
-            const nearest = e.intersections.find(
-              (h) => h.index !== undefined && !occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS),
+            // Claim the nearest non-occluded marker of THIS layer.
+            // Far-side markers are hidden behind the globe and excluded.
+            // R3F dispatches nearest-first with stopPropagation, and the
+            // unpickable satellite blanket is transparent to picks
+            // (satellites.tsx), so if this handler runs the marker is a
+            // valid target and no longer gets swallowed (Florian 2026-07-07).
+            const own = e.intersections.find(
+              (h) =>
+                h.object === e.eventObject &&
+                h.index !== undefined &&
+                !occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS),
             );
-            if (!nearest || nearest.object !== e.eventObject) return;
+            if (!own) return;
             e.stopPropagation();
-            layer.onClick(nearest.index!, e);
+            layer.onClick(own.index!, e);
           }}
         >
           <pointsMaterial
@@ -296,7 +351,7 @@ export function GroundMarkers({
           />
         </points>
       )}
-      <ActivityPulse positions={pulsePositions} color={alertColor} reducedMotion={reducedMotion} />
+      <SurfaceRipple positions={pulsePositions} color={pulseColor} reducedMotion={reducedMotion} />
     </>
   );
 }

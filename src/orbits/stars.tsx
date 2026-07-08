@@ -53,6 +53,9 @@ function makeCloud(
   const g = new THREE.BufferGeometry();
   g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   g.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  // The field is a fixed shell; pin its bounding sphere so three never
+  // computes one (which warns NaN for an empty split during load).
+  g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), STAR_RADIUS + 1);
   const m = new THREE.PointsMaterial({
     size: sizePx,
     sizeAttenuation: false,

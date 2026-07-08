@@ -11,7 +11,7 @@
 
 import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
-import { useFrame, type ThreeEvent } from "@react-three/fiber";
+import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { occludedByGlobe } from "./geo";
 import type { LayoutEntry } from "./types";
 
@@ -71,6 +71,9 @@ interface Props {
   labelColor: string;
   /** VIEW cluster gate for the per-satellite name labels. */
   showLabels: boolean;
+  /** The earth-fixed spin group; labels use it to hide when their
+   * satellite is behind the globe (far-side occlusion). */
+  spinRef: MutableRefObject<THREE.Group | null>;
   /** Pointer-down screen position, for the drag-vs-click filter. */
   downPos: MutableRefObject<{ x: number; y: number } | null>;
   onPick(sat: PickedSat): void;
@@ -116,35 +119,68 @@ function satTexture(): THREE.CanvasTexture {
   return satTex;
 }
 
-/** Stylised ISS glyph: long truss, four solar array pairs, module stack
- * through the middle. Rendered whenever the station is visible, not
- * just on focus (Florian 2026-07-06: custom ISS icon). */
-let issTex: THREE.CanvasTexture | null = null;
-function issTexture(): THREE.CanvasTexture {
-  if (!issTex) {
-    const c = document.createElement("canvas");
-    c.width = c.height = 64;
-    const ctx = c.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    // Main truss across the middle.
-    ctx.fillRect(4, 30, 56, 4);
-    // Two solar array pairs at each truss end, above and below.
-    for (const x of [6, 16, 40, 50]) {
-      ctx.fillRect(x, 8, 8, 20);
-      ctx.fillRect(x, 36, 8, 20);
-    }
-    // Pressurised module stack, perpendicular through the center.
-    ctx.fillRect(28, 16, 8, 32);
-    issTex = new THREE.CanvasTexture(c);
-  }
-  return issTex;
-}
-
-/** Layers drawn as their own glyph even when nothing is focused. */
+/** Layers drawn as their own glyph even when nothing is focused. The
+ * ISS is special-cased into a small 3D model (buildIssModel) held in the
+ * station's real LVLH attitude, so it is excluded from the billboarded
+ * points overlay below. */
 const GLYPH_SLUGS = new Set(["iss"]);
 
-function glyphTextureFor(slug: string): THREE.CanvasTexture {
-  return GLYPH_SLUGS.has(slug) ? issTexture() : satTexture();
+/**
+ * A wireframe ISS, built in body axes so the render loop can drop it into
+ * the station's flight attitude: +X is the pressurised module stack
+ * (along the velocity vector), the long integrated truss runs along Y
+ * (orbit-normal) carrying the solar arrays, and +Z faces nadir. Every
+ * part is the wireframe edge set of a box, so it reads as line art with
+ * no lighting (Florian 2026-07-08).
+ */
+function buildIssModel(): THREE.Group {
+  const g = new THREE.Group();
+  const disposables = new Set<THREE.BufferGeometry | THREE.Material>();
+  const structMat = new THREE.LineBasicMaterial({
+    color: "#d5deec",
+    transparent: true,
+    opacity: 0.95,
+    depthWrite: false,
+  });
+  const arrayMat = new THREE.LineBasicMaterial({
+    color: "#7aa8e0",
+    transparent: true,
+    opacity: 0.9,
+    depthWrite: false,
+  });
+  disposables.add(structMat);
+  disposables.add(arrayMat);
+  const wire = (
+    size: [number, number, number],
+    mat: THREE.LineBasicMaterial,
+    pos: [number, number, number] = [0, 0, 0],
+  ) => {
+    const edges = new THREE.EdgesGeometry(new THREE.BoxGeometry(size[0], size[1], size[2]));
+    const ls = new THREE.LineSegments(edges, mat);
+    ls.position.set(pos[0], pos[1], pos[2]);
+    g.add(ls);
+    disposables.add(edges);
+  };
+  // Integrated truss, one long beam along Y (orbit-normal).
+  wire([0.02, 0.44, 0.02], structMat);
+  // Pressurised modules: a stack along +X (velocity), a nadir-facing node
+  // (Node 3 / cupola), and a laboratory box aft.
+  wire([0.19, 0.03, 0.03], structMat);
+  wire([0.035, 0.028, 0.06], structMat, [0.03, 0, 0.03]);
+  wire([0.05, 0.05, 0.034], structMat, [-0.055, 0, 0]);
+  // Eight solar-array wings: a fore and an aft panel at four truss
+  // stations, the station's signature spread.
+  for (const y of [0.14, 0.205, -0.14, -0.205]) {
+    for (const x of [0.075, -0.075]) wire([0.13, 0.048, 0.004], arrayMat, [x, y, 0]);
+  }
+  // White radiator panels near the centre, canted off the truss.
+  wire([0.06, 0.004, 0.05], structMat, [0, 0.055, 0.02]);
+  wire([0.06, 0.004, 0.05], structMat, [0, -0.055, 0.02]);
+  // Built at working scale, then shrunk to a small on-globe marker
+  // (Florian 2026-07-08). The frame loop only sets position/rotation.
+  g.scale.setScalar(0.32);
+  g.userData.dispose = () => disposables.forEach((d) => d.dispose());
+  return g;
 }
 
 /** Hard dim for non-highlighted layers (Florian 2026-07-05: dim more). */
@@ -161,10 +197,19 @@ export function Satellites({
   pickSlugs,
   labelColor,
   showLabels,
+  spinRef,
   downPos,
   onPick,
 }: Props) {
   const pointsRef = useRef<THREE.Points>(null);
+  const { camera } = useThree();
+  // Reusable scratch for per-frame far-side label occlusion.
+  const labelTmp = useRef({
+    camLocal: new THREE.Vector3(),
+    dir: new THREE.Vector3(),
+    ray: new THREE.Ray(),
+    inv: new THREE.Matrix4(),
+  });
 
   const plan = useMemo(() => {
     let total = 0;
@@ -216,8 +261,9 @@ export function Satellites({
   // of the shared position buffer. Highlighted layers always; glyph
   // layers (the ISS) also when nothing is focused.
   const highlights = useMemo(() => {
+    // The ISS is drawn by IssGlyph (a rotating sprite), not here.
     const wanted = (slug: string) =>
-      highlightSlugs === null ? GLYPH_SLUGS.has(slug) : highlightSlugs.has(slug);
+      !GLYPH_SLUGS.has(slug) && highlightSlugs !== null && highlightSlugs.has(slug);
     const full = geometry.getAttribute("position")!.array as Float32Array;
     return plan.segments
       .filter((s) => wanted(s.entry.slug) && s.count > 0)
@@ -229,15 +275,41 @@ export function Satellites({
         return {
           slug: seg.entry.slug,
           geometry: g,
-          // Structural glyphs (the ISS) render grey, not their category
-          // neon (Florian 2026-07-07); data points keep the palette.
-          color: GLYPH_SLUGS.has(seg.entry.slug)
-            ? "#8f8f8f"
-            : colorBySlug.get(seg.entry.slug) ?? "#ffffff",
+          color: colorBySlug.get(seg.entry.slug) ?? "#ffffff",
         };
       });
   }, [geometry, plan, colorBySlug, highlightSlugs]);
   useEffect(() => () => highlights.forEach((h) => h.geometry.dispose()), [highlights]);
+
+  // The ISS: shown as its own glyph even unfocused (GLYPH_SLUGS), drawn
+  // as a small 3D model held in its LVLH flight attitude each frame.
+  const issStart = useMemo(() => {
+    const show = highlightSlugs === null || highlightSlugs.has("iss");
+    if (!show) return null;
+    const seg = plan.segments.find((s) => s.entry.slug === "iss" && s.count > 0);
+    return seg ? seg.start : null;
+  }, [plan, highlightSlugs]);
+  const issModel = useMemo(() => (issStart === null ? null : buildIssModel()), [issStart]);
+  useEffect(
+    () => () => (issModel?.userData.dispose as (() => void) | undefined)?.(),
+    [issModel],
+  );
+  const issTmp = useRef({
+    x: new THREE.Vector3(),
+    y: new THREE.Vector3(),
+    z: new THREE.Vector3(),
+    v: new THREE.Vector3(),
+    m: new THREE.Matrix4(),
+  });
+  // What clicking the ISS selects, and an invisible sphere that gives the
+  // small wireframe a comfortable hit target (follows it each frame).
+  const issPick = useMemo((): PickedSat | null => {
+    const seg = plan.segments.find((s) => s.entry.slug === "iss" && s.count > 0);
+    return seg
+      ? { slug: "iss", id: seg.entry.ids[0]!, name: seg.entry.names[0]!, index: seg.start }
+      : null;
+  }, [plan]);
+  const issHitRef = useRef<THREE.Mesh>(null);
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
   // satellite, positions synced from the shared buffer each frame.
@@ -256,8 +328,13 @@ export function Satellites({
             map: labelTexture(n, labelColor),
             transparent: true,
             depthWrite: false,
+            // Draw over the globe rather than intersecting it (the flat
+            // billboard used to clip into the sphere). Far-side labels
+            // are culled per-frame below so nothing floats over the map.
+            depthTest: false,
           }),
         );
+        sprite.renderOrder = 10;
         sprite.scale.set(0.36, 0.045, 1);
         // Anchor left of the texture just right of the glyph.
         sprite.center.set(-0.12, 0.5);
@@ -309,11 +386,66 @@ export function Satellites({
     attr.needsUpdate = true;
     // The overlays' attributes view the same memory; only flag them.
     for (const oa of overlayAttrs) oa.needsUpdate = true;
-    // Move the name labels with their satellites.
-    for (const l of labels) {
-      for (let i = 0; i < l.seg.count; i++) {
-        const j = (l.seg.start + i) * 3;
-        l.sprites[i]!.position.set(out[j]!, out[j + 1]!, out[j + 2]!);
+    // Move the name labels with their satellites, and hide any whose
+    // satellite is behind the globe so a depthTest-off label never
+    // floats over the far side of the map (Florian 2026-07-07).
+    if (labels.length > 0) {
+      const t = labelTmp.current;
+      const spin = spinRef.current;
+      let camReady = false;
+      if (spin) {
+        spin.updateWorldMatrix(true, false);
+        t.inv.copy(spin.matrixWorld).invert();
+        // Camera in the spin group's local frame; the globe sphere is
+        // at that frame's origin, so occlusion is a plain sphere test.
+        t.camLocal.copy(camera.position).applyMatrix4(t.inv);
+        camReady = true;
+      }
+      for (const l of labels) {
+        for (let i = 0; i < l.seg.count; i++) {
+          const j = (l.seg.start + i) * 3;
+          const sprite = l.sprites[i]!;
+          const x = out[j]!;
+          const y = out[j + 1]!;
+          const z = out[j + 2]!;
+          sprite.position.set(x, y, z);
+          if (camReady) {
+            t.dir.set(x - t.camLocal.x, y - t.camLocal.y, z - t.camLocal.z);
+            const dist = t.dir.length();
+            t.dir.multiplyScalar(1 / dist);
+            t.ray.origin.copy(t.camLocal);
+            t.ray.direction.copy(t.dir);
+            sprite.visible = !occludedByGlobe(t.ray, dist, OCCLUDER_RADIUS);
+          }
+        }
+      }
+    }
+    // Hold the ISS model in its LVLH +XVV attitude: body +X along the
+    // velocity vector, +Z toward nadir, truss along Y (orbit-normal).
+    if (issModel && issStart !== null) {
+      const j = issStart * 3;
+      const px = out[j]!;
+      const py = out[j + 1]!;
+      const pz = out[j + 2]!;
+      issModel.position.set(px, py, pz);
+      if (issHitRef.current) issHitRef.current.position.set(px, py, pz);
+      if (prev && next && j + 2 < next.length && j + 2 < prev.length) {
+        const vx = next[j]! - prev[j]!;
+        const vy = next[j + 1]! - prev[j + 1]!;
+        const vz = next[j + 2]! - prev[j + 2]!;
+        const rlen = Math.hypot(px, py, pz);
+        if (!Number.isNaN(vx) && vx * vx + vy * vy + vz * vz > 1e-12 && rlen > 1e-6) {
+          const it = issTmp.current;
+          // +Z = nadir (toward Earth centre at the origin).
+          it.z.set(-px / rlen, -py / rlen, -pz / rlen);
+          // +X = velocity, re-orthogonalised against nadir.
+          it.v.set(vx, vy, vz).normalize();
+          it.x.copy(it.v).addScaledVector(it.z, -it.v.dot(it.z)).normalize();
+          // +Y = Z x X (orbit-normal), the truss line.
+          it.y.crossVectors(it.z, it.x).normalize();
+          it.m.makeBasis(it.x, it.y, it.z);
+          issModel.quaternion.setFromRotationMatrix(it.m);
+        }
       }
     }
   });
@@ -338,6 +470,9 @@ export function Satellites({
     }
   };
 
+  const segFor = (index: number) =>
+    plan.segments.find((s) => index >= s.start && index < s.start + s.count) ?? null;
+
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     const down = downPos.current;
     if (
@@ -346,28 +481,35 @@ export function Satellites({
     ) {
       return;
     }
-    // The overall nearest visible hit owns the click; anything hidden
-    // behind the occluding globe is unpickable (spec 3), and hits that
-    // belong to another layer propagate to that layer's handler. With a
-    // focus active, only the focused layers' points are pickable.
-    const allowedSegs =
-      pickSlugs === null ? null : plan.segments.filter((s) => pickSlugs.has(s.entry.slug));
-    const nearest = e.intersections.find((h) => {
-      if (h.index === undefined || occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS)) {
-        return false;
-      }
-      if (allowedSegs === null) return true;
-      return allowedSegs.some((s) => h.index! >= s.start && h.index! < s.start + s.count);
+    // The nearest non-occluded, pickable satellite point under the
+    // cursor. Points behind the globe are unpickable (spec 3); with a
+    // focus active only the focused layers are pickable, and without one
+    // the connectivity blanket (Starlink) is excluded (Florian).
+    const sat = e.intersections.find((h) => {
+      if (h.object !== pointsRef.current || h.index === undefined) return false;
+      if (occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS)) return false;
+      const seg = segFor(h.index);
+      return seg !== null && (pickSlugs === null || pickSlugs.has(seg.entry.slug));
     });
-    if (!nearest || nearest.object !== pointsRef.current) return;
-    for (const { entry, start, count } of plan.segments) {
-      if (nearest.index! >= start && nearest.index! < start + count) {
-        const i = nearest.index! - start;
-        e.stopPropagation();
-        onPick({ slug: entry.slug, id: entry.ids[i]!, name: entry.names[i]!, index: nearest.index! });
-        return;
-      }
-    }
+    // No pickable satellite here: stay transparent so the click reaches
+    // whatever is behind (a ground marker, another layer). This is why
+    // the unpickable satellite blanket no longer swallows ground clicks.
+    if (!sat) return;
+    // A nearer non-occluded ground marker is a deliberate target and
+    // should win; defer so its own handler claims the click.
+    const nearerGround = e.intersections.find(
+      (h) =>
+        h.object !== pointsRef.current &&
+        h.index !== undefined &&
+        !occludedByGlobe(e.ray, h.distance, OCCLUDER_RADIUS) &&
+        h.distance < sat.distance - 1e-4,
+    );
+    if (nearerGround) return;
+    const seg = segFor(sat.index!);
+    if (!seg) return;
+    const i = sat.index! - seg.start;
+    e.stopPropagation();
+    onPick({ slug: seg.entry.slug, id: seg.entry.ids[i]!, name: seg.entry.names[i]!, index: sat.index! });
   };
 
   if (plan.total === 0) return null;
@@ -389,7 +531,7 @@ export function Satellites({
           <pointsMaterial
             size={0.13}
             sizeAttenuation
-            map={glyphTextureFor(h.slug)}
+            map={satTexture()}
             color={h.color}
             transparent
             alphaTest={0.1}
@@ -397,6 +539,27 @@ export function Satellites({
           />
         </points>
       ))}
+      {issModel && <primitive object={issModel} />}
+      {issModel && issPick && (
+        <mesh
+          ref={issHitRef}
+          onClick={(e) => {
+            const down = downPos.current;
+            if (
+              down &&
+              Math.hypot(e.nativeEvent.clientX - down.x, e.nativeEvent.clientY - down.y) > 8
+            ) {
+              return;
+            }
+            if (occludedByGlobe(e.ray, e.distance, OCCLUDER_RADIUS)) return;
+            e.stopPropagation();
+            onPick(issPick);
+          }}
+        >
+          <sphereGeometry args={[0.11, 10, 10]} />
+          <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+        </mesh>
+      )}
       {labels.flatMap((l, li) =>
         l.sprites.map((s, si) => (
           <primitive

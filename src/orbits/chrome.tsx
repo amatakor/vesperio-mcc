@@ -90,12 +90,22 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
     <>
       <div className="hud-label">NEXT LAUNCH · T MINUS</div>
       <div className="hud-countdown">
-        <span className="hud-tminus">T-{days}D</span>
+        {/* The whole T-minus reads on the LCD face, letters and all
+            (Florian 2026-07-07). */}
+        <Lcd className="lcd-tminus" value={`T-${days}D`} />
         <Lcd className="lcd-clock" value={`${pad2(h)}:${pad2(m)}:${pad2(s)}`} />
       </div>
-      <div className="hud-mission">{next.name.replace(" | ", " · ").toUpperCase()}</div>
+      {/* Vehicle and complex hug the left, mission and time the right, so
+          each line is justified across the panel (Florian 2026-07-08). */}
+      <div className="hud-mission">
+        {next.name.split(" | ").map((part, i) => (
+          <span key={i}>{part.toUpperCase()}</span>
+        ))}
+      </div>
       <div className="hud-pad">
-        {[next.pad, netLabel].filter(Boolean).join(" · ").toUpperCase()}
+        {[next.pad, netLabel].filter(Boolean).map((part, i) => (
+          <span key={i}>{String(part).toUpperCase()}</span>
+        ))}
       </div>
     </>
   );
@@ -154,6 +164,11 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
               <span className="flow-bar flow-bar-decay" style={{ height: botH(w.count) }} />
               <span className="flow-fig">{w.count}</span>
             </div>
+          ))}
+          {/* Empty slots under NOW + the scheduled columns so the deorbit
+              bars line up beneath the launched (past) bars. */}
+          {Array.from({ length: scheduled.length + 1 }, (_, i) => (
+            <div key={`e${i}`} className="flow-col" aria-hidden="true" />
           ))}
         </div>
       </div>
@@ -286,65 +301,96 @@ export interface ViewClusterProps {
 }
 
 export function ViewCluster(p: ViewClusterProps) {
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("orbits:view-collapsed") === "1";
+    } catch {
+      return false;
+    }
+  });
+  const toggle = () =>
+    setCollapsed((v) => {
+      const next = !v;
+      try {
+        localStorage.setItem("orbits:view-collapsed", next ? "1" : "0");
+      } catch {
+        // Best-effort persistence only.
+      }
+      return next;
+    });
   return (
     <div className="view opanel6">
-      <div className="view-title">VIEW</div>
-      <div className="view-row">
-        <span>ZOOM</span>
-        <span>
-          <button type="button" className="view-btn" onClick={p.onZoomIn} title="Zoom in">
-            [ + ]
-          </button>{" "}
-          <button type="button" className="view-btn" onClick={p.onZoomOut} title="Zoom out">
-            [ − ]
-          </button>
+      <button
+        type="button"
+        className="view-head"
+        onClick={toggle}
+        aria-expanded={!collapsed}
+        title={collapsed ? "Show view controls" : "Hide view controls"}
+      >
+        <span className="view-title">VIEW</span>
+        <span className="view-caret" aria-hidden="true">
+          {collapsed ? "+" : "−"}
         </span>
-      </div>
-      <div className="view-row">
-        <span>AUTO-ROTATE</span>
-        <button type="button" className="view-btn" onClick={p.onToggleAutoRotate}>
-          [{p.autoRotate ? "ON" : "OFF"}]
-        </button>
-      </div>
-      <div className="view-row">
-        <span>LOCK AXIS</span>
-        <button
-          type="button"
-          className="view-btn"
-          onClick={p.onToggleAxisLock}
-          title="Locked: dragging spins the globe about its tilted axis"
-        >
-          [{p.axisLock ? "ON" : "OFF"}]
-        </button>
-      </div>
-      <div className="view-row">
-        <span>SAT LABELS</span>
-        <button type="button" className="view-btn" onClick={p.onToggleLabels}>
-          [{p.labelsOn ? "ON" : "OFF"}]
-        </button>
-      </div>
-      <div className="view-row">
-        <span>RESET VIEW</span>
-        <button type="button" className="view-btn" onClick={p.onReset} title="Reset view (R)">
-          [R]
-        </button>
-      </div>
-      <div className="view-rule" />
-      <div className="view-legend-title">GROUND MARKERS</div>
-      <div className="view-legend">
-        <span>
-          <i className="gm gm-tri" /> SPACEPORT
-        </span>
-        <span>
-          <i className="gm gm-sq" /> FACILITY
-        </span>
-        <span>
-          <i className="gm gm-dot" /> OPERATOR HQ
-        </span>
-        <span>
-          <i className="gm gm-ring" /> LAUNCH ACTIVITY &lt; 30D
-        </span>
-      </div>
+      </button>
+      {!collapsed && (
+        <div className="view-body">
+          <div className="view-row">
+            <span>ZOOM</span>
+            <span className="view-zoom">
+              <button type="button" className="view-btn" onClick={p.onZoomIn} title="Zoom in">
+                [+]
+              </button>
+              <button type="button" className="view-btn" onClick={p.onZoomOut} title="Zoom out">
+                [−]
+              </button>
+            </span>
+          </div>
+          <div className="view-row">
+            <span>AUTO-ROTATE</span>
+            <button type="button" className="view-btn" onClick={p.onToggleAutoRotate}>
+              [{p.autoRotate ? "ON" : "OFF"}]
+            </button>
+          </div>
+          <div className="view-row">
+            <span>LOCK AXIS</span>
+            <button
+              type="button"
+              className="view-btn"
+              onClick={p.onToggleAxisLock}
+              title="Locked: dragging spins the globe about its tilted axis"
+            >
+              [{p.axisLock ? "ON" : "OFF"}]
+            </button>
+          </div>
+          <div className="view-row">
+            <span>SAT LABELS</span>
+            <button type="button" className="view-btn" onClick={p.onToggleLabels}>
+              [{p.labelsOn ? "ON" : "OFF"}]
+            </button>
+          </div>
+          <div className="view-row">
+            <span>RESET VIEW</span>
+            <button type="button" className="view-btn" onClick={p.onReset} title="Reset view (R)">
+              [R]
+            </button>
+          </div>
+          <div className="view-rule" />
+          <div className="view-legend">
+            <span>
+              <i className="gm gm-tri" /> SPACEPORT
+            </span>
+            <span>
+              <i className="gm gm-sq" /> FACILITY
+            </span>
+            <span>
+              <i className="gm gm-dot" /> OPERATOR HQ
+            </span>
+            <span>
+              <i className="gm gm-ring" /> ACTIVITY &lt; 30D
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

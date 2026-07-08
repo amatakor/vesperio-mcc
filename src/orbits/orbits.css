@@ -17,8 +17,16 @@
 .oframe {
   display: flex;
   flex-direction: column;
+  /* Fixed to the viewport so the globe stays centred; over-tall panels
+     scroll internally on the slim styled scrollbar below rather than
+     growing the page and pushing the globe off-centre (Florian 2026-07-07). */
   height: calc(100vh - 85px);
   min-height: 540px;
+  /* Match the rest of the site's measure (.shell) so Orbits is no wider
+     than News and its edges line up with the masthead (Florian 2026-07-08). */
+  width: 100%;
+  max-width: 104rem;
+  margin: 0 auto;
 }
 
 .oframe-main {
@@ -26,7 +34,7 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  padding: 20px 24px 12px;
+  padding: 20px 1.25rem 12px;
 }
 
 .ocol-left {
@@ -40,8 +48,10 @@
      the guaranteed minimum padding between zones. */
   gap: 24px;
   min-height: 0;
-  /* Sections never squash mid-module; short windows scroll instead. */
-  overflow-y: auto;
+  /* The left column is a pure HUD and never shows a scrollbar (Florian
+     2026-07-07): the VIEW cluster now lives under the rail on the right,
+     so the remaining HUD fits the frame. */
+  overflow: hidden;
 }
 .ocol-left > * {
   flex: none;
@@ -81,6 +91,8 @@
   width: 352px;
   flex: none;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   min-height: 0;
 }
 
@@ -203,9 +215,6 @@
   font-size: 0.62em;
   padding: 0 2px;
 }
-.lcd-clock {
-  font-size: 17px;
-}
 
 /* The tracked count in the site mono (Florian 2026-07-07): tabular
    figures so the digits do not shuffle as the count moves. */
@@ -232,30 +241,55 @@
   text-underline-offset: 2px;
 }
 
+/* The countdown spans the full panel width: T-minus pinned left, the
+   larger clock pinned right (Florian 2026-07-08). */
 .hud-countdown {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: 8px;
 }
-.hud-tminus {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--acc);
+.lcd-tminus {
+  font-size: 30px;
+}
+.lcd-clock {
+  font-size: 30px;
 }
 .hud-mission {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
   font-size: 10px;
   color: var(--fg);
   margin-top: 8px;
   letter-spacing: 0.5px;
 }
 .hud-pad {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
   font-size: 9px;
   color: var(--dim);
   margin-top: 3px;
   letter-spacing: 0.5px;
 }
+/* When a line has a single part it stays left; a second part is pushed to
+   the right edge. Each part clips rather than overflowing the panel. */
+.hud-mission span,
+.hud-pad span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hud-mission span:last-child:not(:only-child),
+.hud-pad span:last-child:not(:only-child) {
+  text-align: right;
+  flex: none;
+}
 
-/* Orbital flow chart. */
+/* Orbital flow chart. Columns stretch to fill the panel width (Florian
+   2026-07-08). */
 .flow-top {
   display: flex;
   align-items: flex-end;
@@ -267,14 +301,17 @@
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  width: 18px;
+  flex: 1;
+  min-width: 0;
 }
 .flow-fig {
   font-size: 8px;
   color: var(--dim);
 }
 .flow-bar {
-  width: 18px;
+  /* Thick bars that fill most of each column so the gaps read as a bar
+     chart, not scattered ticks (Florian 2026-07-08). */
+  width: 82%;
   background: var(--fg);
   position: relative;
   min-height: 1px;
@@ -299,7 +336,8 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 0 2px;
+  flex: 1;
+  min-width: 0;
 }
 .flow-now-line {
   width: 1px;
@@ -389,16 +427,38 @@
 /* --------------------------------------------------------- VIEW cluster */
 
 .view {
-  padding: 12px 14px;
+  padding: 8px 12px;
   font-family: var(--mono);
   flex: none;
+}
+/* The whole title row toggles the cluster open/closed. */
+.view-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
 }
 .view-title {
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--fg);
-  margin-bottom: 8px;
+}
+.view-caret {
+  font-size: 11px;
+  line-height: 1;
+  color: var(--dim);
+}
+.view-head:hover .view-caret {
+  color: var(--fg);
+}
+.view-body {
+  margin-top: 7px;
 }
 .view-row {
   display: flex;
@@ -406,8 +466,12 @@
   align-items: center;
   font-size: 9px;
   color: var(--dim);
-  padding: 3px 0;
+  padding: 2px 0;
   letter-spacing: 1px;
+}
+.view-zoom {
+  display: inline-flex;
+  gap: 6px;
 }
 .view-btn {
   background: none;
@@ -425,18 +489,12 @@
 .view-rule {
   height: 1px;
   background: var(--line);
-  margin: 10px 0;
-}
-.view-legend-title {
-  font-size: 8px;
-  letter-spacing: 2px;
-  color: var(--dim);
-  margin-bottom: 6px;
+  margin: 7px 0;
 }
 .view-legend {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5px 8px;
+  gap: 4px 8px;
   font-size: 8px;
   color: var(--dim);
   letter-spacing: 0.5px;
@@ -473,7 +531,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1px solid var(--alert);
+  border: 1px solid var(--snr-5);
 }
 
 /* ------------------------------------------------------------ layer rail */
@@ -512,21 +570,75 @@
   padding: 0 14px;
 }
 .rl-cols {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 1.5px;
-  color: var(--dim);
-  padding-bottom: 5px;
+  color: #b3b3b3;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--line);
+}
+/* The CT header matches the other column labels (Florian 2026-07-07):
+   the .rl-count data styling (tabular) must not bleed into the header
+   row, where CONSTELLATION / CT / SAT / ORB share one type. */
+.rl-cols .rl-count {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #b3b3b3;
+  font-variant-numeric: normal;
 }
 .rl-col-c {
   text-align: center;
 }
 
-.rl-body {
+.rl-scroll {
   flex: 1;
   min-height: 0;
+  position: relative;
+}
+.rl-body {
+  height: 100%;
   overflow-y: auto;
   padding: 4px 0;
+  box-sizing: border-box;
+  /* Native scrollbar hidden; the bespoke thumb below replaces it. */
+  scrollbar-width: none;
+}
+.rl-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Bespoke rail scrollbar (Florian 2026-07-07): the native bar is hidden
+   (above) and this JS-driven thumb replaces it, identical on every
+   browser and OS. Square (house rule: no radius), overlaid on the right
+   gutter so it reserves no width, dim by default and lifting on hover /
+   grab. */
+.rl-scrollbar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 3px;
+  width: 5px;
+  pointer-events: none;
+}
+.rl-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  background: var(--dim-deep);
+  opacity: 0;
+  pointer-events: auto;
+  cursor: grab;
+  transition:
+    background 100ms,
+    opacity 150ms;
+}
+.rl-scrollbar-thumb:hover {
+  background: var(--dim);
+}
+.rl-scrollbar-thumb:active {
+  background: var(--fg);
+  cursor: grabbing;
 }
 
 .rl-row {
@@ -720,7 +832,7 @@
   align-items: center;
   gap: 16px;
   border-top: 1px solid var(--line);
-  padding: 10px 24px;
+  padding: 10px 1.25rem;
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.8px;
@@ -898,9 +1010,6 @@
   .ocol-left > .hud:first-child {
     margin-top: 0;
   }
-  .ocol-left .view {
-    margin-top: 0;
-  }
   .flow-legend {
     margin-top: 7px;
   }
@@ -948,22 +1057,17 @@
     pointer-events: auto;
   }
   /* The left column is a bare HUD on wide screens (Florian 2026-07-06:
-     no boxes); only the VIEW cluster and the rail keep their
-     translucent panels. */
-  .ocol-left .view,
-  .ocol-right .rail {
+     no boxes); only the rail and the VIEW cluster below it (right
+     column) keep their translucent panels. */
+  .ocol-right .rail,
+  .ocol-right .view {
     background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
   }
-  /* The launch block keeps its natural height and centers in the
-     space between the counter and the VIEW box; the counter and VIEW
-     stay pinned to their ends (Florian 2026-07-06). */
+  /* The launch block keeps its natural height and centers in the space
+     below the counter (Florian 2026-07-06). */
   .hud + .hud {
     margin-top: auto;
     margin-bottom: auto;
-  }
-  /* The VIEW box keeps clear air above it even on tight screens. */
-  .ocol-left .view {
-    margin-top: 8px;
   }
   /* Centered in the dead space between the globe's lower-right edge,
      the rail, and the footer (Florian 2026-07-06). */

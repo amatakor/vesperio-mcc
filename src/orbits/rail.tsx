@@ -7,7 +7,93 @@
  * Purely presentational; scene.tsx owns all state.
  */
 
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from "react";
 import type { ConstellationDomain } from "../data/schema";
+
+/**
+ * Scroll container with a fully bespoke scrollbar: the native scrollbar
+ * is hidden and a custom thumb overlay is driven in JS, so it looks the
+ * same across browsers and never falls back to the OS overlay bar
+ * (Florian 2026-07-07). The thumb overlays the right gutter (no reserved
+ * width) and is draggable.
+ */
+function Scroller({ children }: { children: ReactNode }) {
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+
+  const update = useCallback(() => {
+    const body = bodyRef.current;
+    const thumb = thumbRef.current;
+    if (!body || !thumb) return;
+    const { scrollTop, scrollHeight, clientHeight } = body;
+    if (scrollHeight <= clientHeight + 1) {
+      thumb.style.opacity = "0";
+      return;
+    }
+    const trackH = clientHeight;
+    const h = Math.max(28, (clientHeight / scrollHeight) * trackH);
+    const maxScroll = scrollHeight - clientHeight;
+    const top = maxScroll > 0 ? (scrollTop / maxScroll) * (trackH - h) : 0;
+    thumb.style.opacity = "1";
+    thumb.style.height = `${h}px`;
+    thumb.style.transform = `translateY(${top}px)`;
+  }, []);
+
+  useLayoutEffect(() => {
+    const body = bodyRef.current;
+    if (!body) return;
+    update();
+    body.addEventListener("scroll", update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(body);
+    const mo = new MutationObserver(update);
+    mo.observe(body, { childList: true, subtree: true });
+    return () => {
+      body.removeEventListener("scroll", update);
+      ro.disconnect();
+      mo.disconnect();
+    };
+  }, [update]);
+
+  const onThumbDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const body = bodyRef.current;
+    if (!body) return;
+    const startY = e.clientY;
+    const startScroll = body.scrollTop;
+    const move = (ev: globalThis.PointerEvent) => {
+      const b = bodyRef.current;
+      if (!b) return;
+      const h = Math.max(28, (b.clientHeight / b.scrollHeight) * b.clientHeight);
+      const maxTop = b.clientHeight - h;
+      const maxScroll = b.scrollHeight - b.clientHeight;
+      b.scrollTop = startScroll + (maxTop > 0 ? ((ev.clientY - startY) / maxTop) * maxScroll : 0);
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  };
+
+  return (
+    <div className="rl-scroll">
+      <div className="rl-body" ref={bodyRef}>
+        {children}
+      </div>
+      <div className="rl-scrollbar" aria-hidden="true">
+        <div className="rl-scrollbar-thumb" ref={thumbRef} onPointerDown={onThumbDown} />
+      </div>
+    </div>
+  );
+}
 
 export interface RailRow {
   slug: string;
@@ -159,7 +245,7 @@ export function LayerRail(p: RailProps) {
         <span className="rl-col-c">ORB</span>
       </div>
 
-      <div className="rl-body">
+      <Scroller>
         {p.allOff ? (
           <div className="rl-empty">
             <div>NO LAYERS ACTIVE</div>
@@ -220,7 +306,7 @@ export function LayerRail(p: RailProps) {
           />
           <span />
         </div>
-      </div>
+      </Scroller>
 
       <div className="rl-key">
         <span>

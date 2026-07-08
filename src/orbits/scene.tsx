@@ -22,10 +22,12 @@ import {
   useRef,
   useState,
   type MutableRefObject,
+  type ReactNode,
 } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { gstime } from "satellite.js";
 import { mesh } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { MultiLineString } from "geojson";
@@ -119,6 +121,7 @@ function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
   const geometry = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 1.1);
     return g;
   }, [positions]);
   useEffect(() => () => geometry.dispose(), [geometry]);
@@ -147,26 +150,29 @@ function Globe({ colors }: { colors: { ocean: string; grid: string; coast: strin
 // ---------------------------------------------------------- overlays
 
 /**
- * The selected satellite's orbit: solid ahead in the direction of
- * flight, dashed behind (Florian 2026-07-05). The worker samples the
- * arc chronologically with the satellite at the midpoint.
+ * The selected satellite's orbit: dashed ahead in the direction of
+ * flight, solid behind (Florian 2026-07-07, reversed). The worker
+ * samples the arc chronologically with the satellite at the midpoint,
+ * so the second half (mid -> end) is the future track.
  */
 function ArcLine({ positions, color }: { positions: Float32Array; color: string }) {
   const lines = useMemo(() => {
     const mid = Math.floor(positions.length / 3 / 2);
     const ahead = new THREE.BufferGeometry();
     ahead.setAttribute("position", new THREE.BufferAttribute(positions.subarray(mid * 3), 3));
+    ahead.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
     const behind = new THREE.BufferGeometry();
     behind.setAttribute(
       "position",
       new THREE.BufferAttribute(positions.subarray(0, (mid + 1) * 3), 3),
     );
+    behind.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
     const solid = new THREE.Line(
-      ahead,
+      behind,
       new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 }),
     );
     const dashed = new THREE.Line(
-      behind,
+      ahead,
       new THREE.LineDashedMaterial({
         color,
         transparent: true,
@@ -246,6 +252,7 @@ function ShellLines({ positions, color }: { positions: Float32Array; color: stri
   const seg = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
     return new THREE.LineSegments(
       g,
       new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.22 }),
@@ -332,6 +339,27 @@ function AutoSpin({
   return null;
 }
 
+/**
+ * Holds the inertial (ECI) overlays: the orbit shells and the selected
+ * satellite's arc are emitted in ECI (no GMST bake), so rotating this
+ * group by -GMST(now) every frame earth-fixes them to exactly where the
+ * live ECEF dots are, killing the old drift (Florian 2026-07-07). Sits
+ * inside the spin group so the auto-rotate turntable carries it too.
+ */
+function InertialFrame({
+  groupRef,
+  children,
+}: {
+  groupRef: MutableRefObject<THREE.Group | null>;
+  children: ReactNode;
+}) {
+  useFrame(() => {
+    const g = groupRef.current;
+    if (g) g.rotation.y = -gstime(new Date());
+  });
+  return <group ref={groupRef}>{children}</group>;
+}
+
 /** Snaps the camera to the front view and the spin to zero when `nonce`
  * changes. */
 function CameraReset({
@@ -393,6 +421,10 @@ export default function Scene() {
       coast: token("--globe-coast"),
       accent: token(RESERVE_TOKEN),
       alert: token("--alert"),
+      acc: token("--acc"),
+      // Neon mint-green of the SNR mark, for the spaceport activity ripple
+      // (Florian 2026-07-08).
+      ripple: token("--snr-5"),
       fg: token("--fg"),
     }),
     [],
@@ -433,12 +465,15 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  // Default zoom differs by frame (Florian 2026-07-07): the wide HUD
-  // state opens one step closer, the narrow panel state one step wider.
-  const defaultZoomFor = (isWide: boolean) => (isWide ? 1 : -1);
-  const [zoomStep, setZoomStep] = useState(() =>
-    defaultZoomFor(window.matchMedia("(min-width: 1281px)").matches),
-  );
+  // Default zoom by frame (Florian 2026-07-07): the wide desktop HUD
+  // opens at the base fit, the mid panel state one step wider, and
+  // mobile two steps wider so the globe clears the stacked panels.
+  const defaultZoom = () => {
+    if (window.matchMedia("(min-width: 1281px)").matches) return 0;
+    if (window.matchMedia("(max-width: 900px)").matches) return -2;
+    return -1;
+  };
+  const [zoomStep, setZoomStep] = useState(defaultZoom);
   const [resetNonce, setResetNonce] = useState(0);
   // Wide screens keep the globe fitted between the floating panels even
   // though the canvas itself runs full-bleed underneath them; on every
@@ -500,7 +535,12 @@ export default function Scene() {
   const selectionRef = useRef<Selection | null>(null);
   selectionRef.current = selection;
   const [watch, setWatch] = useState<{ id: number; lat: number; lon: number; altKm: number } | null>(null);
-  const [arc, setArc] = useState<{ id: number; positions: Float32Array } | null>(null);
+  // The dashed/solid orbit line. It is requested both for a picked
+  // satellite and, in the default view, for the ISS (which has no
+  // selection), so the arc carries its own slug for colouring and the
+  // wanted-arc id gates which worker reply we accept.
+  const [arc, setArc] = useState<{ id: number; positions: Float32Array; slug: string } | null>(null);
+  const arcWantRef = useRef<{ id: number; slug: string } | null>(null);
 
   const buffersRef = useRef<SnapshotBuffers>({ prev: null, next: null, prevTime: 0, nextTime: 0 });
   const recordsRef = useRef(new Map<string, OmmRecord[]>());
@@ -509,6 +549,9 @@ export default function Scene() {
   const workerRef = useRef<Worker | null>(null);
   // The earth-fixed group AutoSpin rotates; everything ECEF lives inside.
   const spinGroup = useRef<THREE.Group | null>(null);
+  // The inertial (ECI) overlay group: orbit shells + arc, rotated by
+  // -GMST(now) each frame so they earth-fix onto the live dots.
+  const inertialGroup = useRef<THREE.Group | null>(null);
   // Axis-locked manual drag: last pointer X while the primary button is
   // down; null when not dragging.
   const dragLastX = useRef<number | null>(null);
@@ -554,9 +597,9 @@ export default function Scene() {
           setWatch({ id: msg.id, lat: msg.lat, lon: msg.lon, altKm: msg.altKm });
         }
       } else if (msg.type === "arc") {
-        const sel = selectionRef.current;
-        if (sel?.kind === "sat" && sel.sat.id === msg.id) {
-          setArc({ id: msg.id, positions: new Float32Array(msg.positions) });
+        const want = arcWantRef.current;
+        if (want && want.id === msg.id) {
+          setArc({ id: msg.id, positions: new Float32Array(msg.positions), slug: want.slug });
         }
       }
     };
@@ -628,9 +671,11 @@ export default function Scene() {
   }, [showFacilities, facilities]);
 
   const clearSelection = useCallback(() => {
+    setBootIss(false);
     setSelection(null);
     setWatch(null);
     setArc(null);
+    arcWantRef.current = null;
     post({ type: "watch", id: null });
   }, [post]);
 
@@ -640,6 +685,7 @@ export default function Scene() {
       setSelection({ kind: "sat", sat });
       setWatch(null);
       setArc(null);
+      arcWantRef.current = { id: sat.id, slug: sat.slug };
       post({ type: "watch", id: sat.id });
       post({ type: "arc", id: sat.id });
     },
@@ -648,9 +694,11 @@ export default function Scene() {
 
   const pickGround = useCallback(
     (pick: GroundPick) => {
+      setBootIss(false);
       setSelection({ kind: "ground", pick });
       setWatch(null);
       setArc(null);
+      arcWantRef.current = null;
       post({ type: "watch", id: null });
     },
     [post],
@@ -730,9 +778,25 @@ export default function Scene() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // The effective focus: an explicit selection, or the ISS at boot
-  // (the load state keeps the cloud undimmed; see bootIss above).
-  const shellFocus = selectedConstellation ?? (bootIss ? "iss" : null);
+  // Ask the worker for the ISS orbit arc (the dashed/solid line of the
+  // default view). Stable id and orbit, so a repeat is harmless.
+  const requestIssArc = useCallback(() => {
+    const entry = layout.find((e) => e.slug === "iss" && e.ids.length > 0);
+    if (!entry) return;
+    arcWantRef.current = { id: entry.ids[0]!, slug: "iss" };
+    post({ type: "arc", id: entry.ids[0]! });
+  }, [layout, post]);
+
+  // Default view: the ISS keeps its arc while the whole cloud stays up.
+  // (Re)request once the ISS layer is present in the layout.
+  useEffect(() => {
+    if (bootIss) requestIssArc();
+  }, [bootIss, requestIssArc]);
+
+  // Constellation shells render only for an explicit focus. The default
+  // view marks the ISS with its dashed/solid arc instead (see below), not
+  // a faint shell, so bootIss no longer feeds shellFocus.
+  const shellFocus = selectedConstellation;
 
   // Rail model, nested like the Registry (fleet parents with children).
   const staleHoursOf = (fetchedAt: string | null): number | null => {
@@ -851,7 +915,6 @@ export default function Scene() {
   // selection, or the ISS load state with the cloud intact).
   const shells = useMemo(() => {
     if (!shellFocus) return [];
-    const now = new Date();
     return expandHighlight(shellFocus)
       .filter((s) => enabled.has(s))
       .flatMap((s) => {
@@ -860,7 +923,7 @@ export default function Scene() {
         return [
           {
             slug: s,
-            positions: orbitShellSegments(recs, now),
+            positions: orbitShellSegments(recs),
             color: colorBySlug.get(s) ?? colors.accent,
           },
         ];
@@ -882,7 +945,7 @@ export default function Scene() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, layout, zoomStep]);
 
-  // Spaceports with a launch inside the last 30 days pulse red.
+  // Spaceports with a launch inside the last 30 days pulse yellow.
   const recentIds = useMemo(() => {
     const cutoff = Date.now() - 30 * 24 * 3600 * 1000;
     return new Set(
@@ -1020,48 +1083,47 @@ export default function Scene() {
     return toWorld(new THREE.Vector3(x, y, z));
   }, [toWorld]);
 
-  const arcColor =
-    arc && selection?.kind === "sat" ? colorBySlug.get(selection.sat.slug) ?? colors.accent : null;
+  const arcColor = arc ? colorBySlug.get(arc.slug) ?? colors.accent : null;
+
+  // Reset returns to the default view: front camera, default zoom, earth
+  // spinning, no focus/selection, and the ISS arc + full cloud back up.
+  const resetView = useCallback(() => {
+    setResetNonce((n) => n + 1);
+    setZoomStep(defaultZoom());
+    setAutoRotate(!reducedMotion);
+    setSelectedConstellation(null);
+    setSelection(null);
+    setWatch(null);
+    arcWantRef.current = null;
+    post({ type: "watch", id: null });
+    setBootIss(true);
+    requestIssArc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion, post, requestIssArc]);
 
   // Keyboard: ESC clears focus, R resets the view (6A handoff).
   const focusRef = useRef(selectConstellation);
   focusRef.current = selectConstellation;
+  const resetRef = useRef(resetView);
+  resetRef.current = resetView;
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         focusRef.current(null);
         clearSelection();
       } else if (e.key === "r" || e.key === "R") {
-        setResetNonce((n) => n + 1);
-        setZoomStep(defaultZoomFor(window.matchMedia("(min-width: 1281px)").matches));
+        resetRef.current();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clearSelection]);
-
-  const onReset = () => {
-    setResetNonce((n) => n + 1);
-    setZoomStep(defaultZoomFor(wide));
-  };
 
   return (
     <div className="oframe">
       <div className="oframe-main">
         <div className="ocol-left">
           <HudColumn tracked={trackedSats} stats={stats} />
-          <ViewCluster
-            onZoomIn={() => setZoomStep((z) => Math.min(4, z + 1))}
-            onZoomOut={() => setZoomStep((z) => Math.max(-2, z - 1))}
-            autoRotate={autoRotate}
-            onToggleAutoRotate={() => setAutoRotate((v) => !v)}
-            axisLock={axisLock}
-            onToggleAxisLock={() => setAxisLock((v) => !v)}
-            labelsOn={labelsOn}
-            onToggleLabels={() => setLabelsOn((v) => !v)}
-            onReset={onReset}
-          />
         </div>
         <div
           className="orbits-canvas-wrap"
@@ -1110,9 +1172,12 @@ export default function Scene() {
             <Stars color={colors.fg} spinRef={spinGroup} />
             <group ref={spinGroup}>
               <Globe colors={colors} />
-              {shells.map((s) => (
-                <ShellLines key={s.slug} positions={s.positions} color={s.color} />
-              ))}
+              <InertialFrame groupRef={inertialGroup}>
+                {shells.map((s) => (
+                  <ShellLines key={s.slug} positions={s.positions} color={s.color} />
+                ))}
+                {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
+              </InertialFrame>
               <Satellites
                 layout={layout}
                 buffers={buffersRef}
@@ -1121,6 +1186,7 @@ export default function Scene() {
                 pickSlugs={pickSlugs}
                 labelColor={colors.fg}
                 showLabels={labelsOn}
+                spinRef={spinGroup}
                 downPos={downPos}
                 onPick={pickSat}
               />
@@ -1131,14 +1197,13 @@ export default function Scene() {
                 showFacilities={showFacilities}
                 baseColor={colors.coast}
                 accentColor={colors.accent}
-                alertColor={colors.alert}
+                pulseColor={colors.ripple}
                 recentIds={recentIds}
                 reducedMotion={reducedMotion}
                 selected={selection?.kind === "ground" ? selection.pick : null}
                 downPos={downPos}
                 onPick={pickGround}
               />
-              {arc && arcColor && <ArcLine positions={arc.positions} color={arcColor} />}
             </group>
           </group>
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
@@ -1180,6 +1245,17 @@ export default function Scene() {
             onToggleSpaceports={() => setShowSpaceports((v) => !v)}
             onToggleFacilities={() => setShowFacilities((v) => !v)}
             onRestoreDefaults={() => setEnabled(new Set(orbitCatalog.map((e) => e.slug)))}
+          />
+          <ViewCluster
+            onZoomIn={() => setZoomStep((z) => Math.min(4, z + 1))}
+            onZoomOut={() => setZoomStep((z) => Math.max(-2, z - 1))}
+            autoRotate={autoRotate}
+            onToggleAutoRotate={() => setAutoRotate((v) => !v)}
+            axisLock={axisLock}
+            onToggleAxisLock={() => setAxisLock((v) => !v)}
+            labelsOn={labelsOn}
+            onToggleLabels={() => setLabelsOn((v) => !v)}
+            onReset={resetView}
           />
         </div>
       </div>

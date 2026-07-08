@@ -126,25 +126,26 @@ export function subpoint(satrec: SatRecLike, date: Date): { lat: number; lon: nu
 }
 
 export interface OrbitArc {
-  /** 3 floats per sample, in the earth-fixed frame of the request time. */
+  /** 3 floats per sample, in the inertial (ECI) frame. */
   positions: Float32Array;
   periodMin: number;
 }
 
 /**
  * One closed orbital revolution as scene-unit points, sampled across
- * [date - T/2, date + T/2] where T is the orbital period. All samples
- * are transformed with the SAME gmst(date) so the result is a fixed,
- * closed ellipse in the earth-fixed frame at `date` rather than a
- * spiral. Failed samples are filled by copying the previous sample so
- * the line stays continuous; null if more than 10% of samples fail.
+ * [date - T/2, date + T/2] where T is the orbital period, emitted in
+ * the inertial (ECI) frame (no GMST bake). The scene rotates the arc
+ * group by -GMST(now) each frame so the arc earth-fixes exactly like
+ * the live ECEF dots and the satellite stays glued to it as time
+ * advances (Florian 2026-07-07). Failed samples are filled by copying
+ * the previous sample so the line stays continuous; null if more than
+ * 10% of samples fail.
  */
 export function orbitArcScene(satrec: SatRecLike, date: Date, samples = 129): OrbitArc | null {
   const n = meanMotion(satrec);
   if (!Number.isFinite(n) || n <= 0) return null;
 
   const periodMin = (2 * Math.PI) / n;
-  const gmst = gstime(date);
   const halfMs = (periodMin * 60_000) / 2;
   const startMs = date.getTime() - halfMs;
   const stepMs = samples > 1 ? (halfMs * 2) / (samples - 1) : 0;
@@ -161,8 +162,7 @@ export function orbitArcScene(satrec: SatRecLike, date: Date, samples = 129): Or
       const pv = propagate(satrec, t);
       const position = pv && pv.position;
       if (position && typeof position === "object") {
-        const ecf = eciToEcf(position, gmst);
-        const [x, y, z] = ecfToScene(ecf);
+        const [x, y, z] = ecfToScene(position);
         if (Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z)) {
           positions[base] = x;
           positions[base + 1] = y;
