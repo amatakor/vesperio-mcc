@@ -35,6 +35,7 @@ const existingItem = {
     what_happened: "ICEYE announced an expansion of its satellite manufacturing line. The company published the plan on its own press page.",
     why_it_matters: "SAR supply constrains every downstream reseller; more production capacity changes delivery timelines.",
   },
+  kind: "event",
   tags: ["sar", "europe"],
   category: "constellation",
   impact: "notable",
@@ -944,6 +945,38 @@ describe("dedup-as-code gate (matchDecision in finalize)", () => {
     });
     const result = finalizeSweep({ dataDir, draftPath });
     expect(result.ok).toBe(true);
+  });
+});
+
+describe("commentary kind (audit Phase 4)", () => {
+  test("kind defaults to event when the draft omits it", () => {
+    writeDraft({ newItems: [baseNewItem()] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readItems().items.find((i) => i.id === baseNewItem().id)!.kind).toBe("event");
+  });
+
+  test("an explicit commentary kind is stamped through", () => {
+    writeDraft({ newItems: [baseNewItem({ kind: "commentary" })] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    expect(readItems().items.find((i) => i.id === baseNewItem().id)!.kind).toBe("commentary");
+  });
+
+  test("seismic commentary is rejected: impact caps at notable", () => {
+    writeDraft({ newItems: [baseNewItem({ kind: "commentary", impact: "seismic" })] });
+    const before = snapshotDataFiles();
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("commentary caps at");
+    expect(snapshotDataFiles()).toEqual(before);
+  });
+
+  test("an unknown kind is rejected", () => {
+    writeDraft({ newItems: [baseNewItem({ kind: "hot-take" })] });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("kind");
   });
 });
 

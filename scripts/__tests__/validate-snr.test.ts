@@ -28,6 +28,7 @@ const legacyItem = {
     what_happened: "TestCo won a contract for imagery.",
     why_it_matters: "It shifts imagery supply.",
   },
+  kind: "event",
   tags: ["eo"],
   category: "contract",
   impact: "notable",

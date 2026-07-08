@@ -77,14 +77,30 @@ result when nothing on-scope happened; padding is still the bug.
    fetches per sweep**; if `fetchableCount` exceeds what the budget
    allows, rotate so every fetchable channel is covered at least
    weekly and say so in the note. Channel finds are classed per the
-   whitelist rules in step 6; jokes, opinions, and off-topic posts are
-   discarded silently. Record the outcome in the draft's `signalsPass`
+   whitelist rules in step 6. Factual claims draft as events; a
+   substantive take or analysis from a whitelisted person may draft as
+   a commentary item (see Commentary below). Jokes and off-topic posts
+   are discarded silently. Record the outcome in the draft's `signalsPass`
    block (required whenever `fetchableCount > 0`): `checked` = the
    fetchable channel URLs you fetched this run, `xAttempted` = how many
    X handles you searched, `note` = one line on what was found (or why
    `checked` is empty: rotation, all unreachable). finalize-sweep
    rejects a draft that omits it or lists a URL that is not a fetchable
    channel.
+   **Discovery pass (open web, after the source list).** Run 3-5
+   WebSearch queries this sweep for on-scope stories the source list
+   missed. Rotate across the scope categories sweep to sweep so every
+   area gets coverage weekly: EO / connectivity / IoT / launch /
+   regulatory / financial, and include China, India, and Japan terms in
+   the rotation (e.g. "Chinese commercial launch", "ISRO contract",
+   "JAXA commercial"). Candidates found here follow the normal pipeline
+   (scope filter, dedup, corroboration, honest classes). When a story
+   leads to an outlet or feed not in sources.json, add it as a new
+   source with status "unverified" so the harvester picks it up next
+   run. Publishing an early signal at SNR 1-2 with honest scoring is
+   the model working; the gate is attribution, not confidence. Low-SNR
+   items from this pass are a feature, not a defect.
+
 3. **Known to MCC?** Match each candidate against `existing[]` by actor
    and event class:
    - Same event within **7 days** → it is an update, never a new item.
@@ -179,6 +195,7 @@ result when nothing on-scope happened; padding is still the bug.
          "date": "YYYY-MM-DD",
          "headline": "...",
          "explainer": { "tagline": "...", "what_happened": "...", "why_it_matters": "..." },
+         "kind": "event|commentary (omit for event; see Commentary below)",
          "tags": [], "category": "...", "impact": "seismic|notable|noise",
          "companies": [],
          "source_url": "lead source, must equal scoring.sources[0].url",
@@ -249,6 +266,26 @@ result when nothing on-scope happened; padding is still the bug.
    worth remembering), append a short dated entry to `SWEEP_MEMORY.md`.
    Skip routine runs.
 
+## Commentary items (kind: "commentary")
+
+A take, analysis, or position from a named voice is publishable as a
+first-class feed item, visibly tagged. Rules, enforced by the gate where
+mechanical and by you where editorial:
+
+- Source: a signals.json whitelisted person, or a named outlet/author.
+  Anonymous takes never publish, at any SNR.
+- The tagline quotes the take or tightly paraphrases it WITH attribution
+  ("Per @handle: ..."). `what_happened` states who said what, where, and
+  when. `why_it_matters` may engage with the argument on the merits.
+- SNR scores the attribution ("this person said this"), never the
+  opinion's truth. Whitelist floors apply as observers. Corroboration
+  means confirming the person actually said it, not agreeing with it.
+- Commentary never feeds the registry crossfeed and never reinforces or
+  corroborates a factual (event) item. An opinion repeated is still one
+  opinion.
+- Impact caps at `notable` (the gate rejects seismic commentary).
+- Category: use the category the take is about.
+
 ## Inclusion bar
 
 An item ships when all are true:
@@ -268,20 +305,34 @@ An item ships when all are true:
 
 ## Importance calibration (impact field)
 
+The test for `notable` is concrete: would a commercial director at an
+operator, reseller, or investor plausibly ACT on this or brief their
+team on it? If nobody changes a plan, a price, or a pitch because of
+it, it is `noise`. When torn between two levels, pick the lower one.
+
 - `seismic`: reshapes competitive dynamics; you would interrupt
-  someone's Monday for this (major M&A, operator failure, flagship
-  cancellation, first flight of a new vehicle)
-- `notable`: belongs in their weekly read
-- `noise`: belongs in the record
-Appointments: routine executive hires (CFO, CAO, SVP) stay below the
-inclusion bar, per standing precedent. The exception is a senior
-government or political figure joining a tracked company (board,
-advisory board, executive role): that is a commercial-access signal
-and ships as `notable` (the Wolfgang Schmidt/Planet case).
-When torn between two levels, pick the lower one. Importance and SNR
-are independent axes: a seismic rumour is seismic AND low-SNR, and the
-gate automatically queues seismic items at SNR 1-2 for Florian's
-review while they publish.
+  someone's Monday for this. Examples: a major M&A between tracked
+  operators (Rocket Lab/Iridium); an operator failure or bankruptcy;
+  the first flight of a new orbital vehicle.
+- `notable`: a commercial director would act on it or brief on it.
+  Examples: a contract award with a stated value; a funding round; a
+  regulatory grant or denial that changes what an operator may sell
+  (an FCC license modification, a NOAA imaging waiver); a
+  constellation-scale change (a batch order, a new generation
+  announced with numbers). A senior government or political figure
+  joining a tracked company (board or advisory) stays notable: it is a
+  commercial-access signal (the Wolfgang Schmidt/Planet case).
+- `noise`: belongs in the record, not the push. Examples: a scheduled
+  launch succeeding on schedule; a routine product update or minor
+  partnership without stated money, capacity, or regulatory effect; a
+  routine executive hire (CFO, CAO, SVP), which stays below the
+  inclusion bar entirely per standing precedent.
+
+Default for routine product updates, minor partnerships, and scheduled
+successes is `noise`, even when the press release is long. Importance
+and SNR are independent axes: a seismic rumour is seismic AND low-SNR,
+and the gate automatically queues seismic items at SNR 1-2 for
+Florian's review while they publish.
 
 ## Hard reminders
 

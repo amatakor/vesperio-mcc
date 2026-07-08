@@ -11,6 +11,7 @@ import {
   ItemPage,
   CategoryPage,
   TagPage,
+  KindPage,
   OrbitsPage,
   RegistryIndexPage,
   ConstellationPage,
@@ -35,6 +36,8 @@ export default function App({ path, generatedAt }: { path: string; generatedAt: 
       return <CategoryPage category={route.category} />;
     case "tag":
       return <TagPage tag={route.tag} />;
+    case "kind":
+      return <KindPage kind={route.kind} />;
     case "orbits":
       return <OrbitsPage />;
     case "registry":
