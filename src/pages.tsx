@@ -14,6 +14,8 @@ import type {
   SnrTrace,
   SourcedField,
   TimelineEvent,
+  ImagingMode,
+  Positioning,
   ConstellationProfile,
   VehicleProfile,
   SpaceportProfile,
@@ -1083,6 +1085,36 @@ function fleetSum(
   return { value: sum, source: null, as_of: asOf };
 }
 
+/** One cell in the key-specs panel: a defining figure with its provenance. */
+interface SpecCell {
+  /** Anchor suffix and React key; rendered id is `spec-<field>`. */
+  field: string;
+  label: string;
+  /** Already formatted value + unit. */
+  value: string;
+  as_of?: string | null;
+  snr?: number;
+  snr_trace?: SnrTrace;
+  /** True for derived figures (fleet sums, flight record); no LED, marked computed. */
+  computed?: boolean;
+}
+
+/** Thousands-separated for readability; leaves non-numbers untouched. */
+function fmtNum(v: unknown): string {
+  return typeof v === "number" ? v.toLocaleString("en-US") : String(v);
+}
+
+/** Build a spec cell from a sourced field, or null when the field is absent/unfilled. */
+function specFromField(
+  field: string,
+  label: string,
+  f: SourcedField<unknown> | undefined,
+  fmt: (v: unknown) => string,
+): SpecCell | null {
+  if (!f || f.value === null || f.value === undefined) return null;
+  return { field, label, value: fmt(f.value), as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace };
+}
+
 function fieldRow(
   label: string,
   f: SourcedField<unknown>,
@@ -1849,6 +1881,16 @@ interface ProfileMeta {
   tableNote?: string | null;
   /** Stock ticker for listed entities; renders the stock section. */
   stockTicker?: SourcedField<string> | null;
+  /** Key-specs panel cells (registry v2); panel hides below 2 cells. */
+  specs?: SpecCell[];
+  /** Dim note under the key-specs panel (e.g. variant qualifier). */
+  specNote?: string | null;
+  /** Vehicle configuration qualifier, rendered as a chip beside the name. */
+  variant?: string | null;
+  /** Per-entity positioning block; renders the positioning section. */
+  positioning?: Positioning | null;
+  /** Per-mode EO specs; rendered as a sub-table inside the facts section. */
+  imagingModes?: ImagingMode[];
 }
 
 function Breadcrumbs({
@@ -1925,21 +1967,28 @@ function RelatedSection({
   next: { slug: string; name: string } | null;
 }) {
   if (related.length === 0 && !prev && !next) return null;
+  const sameLabel = profile.affiliation ?? "same operator";
   return (
     <section id="related" className="panel">
       <h2>related</h2>
       {related.length > 0 && (
-        <div className="tag-row">
-          {related.map((r) => (
-            <a key={r.slug} className="chip chip-tag" href={r.href}>
-              {r.name}
-            </a>
-          ))}
+        <div className="related-group">
+          <span className="related-label">{sameLabel}</span>
+          <div className="tag-row">
+            {related.map((r) => (
+              <a key={r.slug} className="chip chip-tag" href={r.href}>
+                {r.name}
+              </a>
+            ))}
+          </div>
         </div>
       )}
-      <div className="prev-next">
-        <span>{prev ? <a href={`${profile.siblingsBase}${prev.slug}/`}>&larr; {prev.name}</a> : <span className="dim">&larr; start</span>}</span>
-        <span>{next ? <a href={`${profile.siblingsBase}${next.slug}/`}>{next.name} &rarr;</a> : <span className="dim">end &rarr;</span>}</span>
+      <div className="related-group related-browse">
+        <span className="related-label">browse</span>
+        <div className="prev-next">
+          <span>{prev ? <a href={`${profile.siblingsBase}${prev.slug}/`}>&larr; {prev.name}</a> : <span className="dim">&larr; start</span>}</span>
+          <span>{next ? <a href={`${profile.siblingsBase}${next.slug}/`}>{next.name} &rarr;</a> : <span className="dim">end &rarr;</span>}</span>
+        </div>
       </div>
     </section>
   );
@@ -2228,6 +2277,109 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
 }
 
 /** Sourced history timeline: every event carries its own source link. */
+/** The entity's defining numbers as anchored, citable stat cells (registry v2). */
+function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
+  if (cells.length < 2) return null;
+  return (
+    <section id="specs" className="panel">
+      <h2>key specs</h2>
+      <div className="specs-grid">
+        {cells.map((c) => (
+          <div key={c.field} id={`spec-${c.field}`} className="spec-cell">
+            <span className="spec-label">
+              {c.label}{" "}
+              <a className="spec-anchor" href={`#spec-${c.field}`}>
+                {"//"}
+              </a>
+            </span>
+            <span className="spec-value">{c.value}</span>
+            <span className="spec-meta">
+              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
+              {c.computed && <span className="dim spec-computed">computed</span>}
+              {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
+            </span>
+          </div>
+        ))}
+      </div>
+      {note && <p className="dim spec-note">{note}</p>}
+    </section>
+  );
+}
+
+/** Where the entity sits: sourced positioning claims, then MCC's own read. */
+function PositioningSection({ positioning }: { positioning?: Positioning | null }) {
+  if (!positioning) return null;
+  const claims = positioning.claims ?? [];
+  const read = positioning.mcc_read;
+  if (claims.length === 0 && !read) return null;
+  return (
+    <section id="positioning" className="panel">
+      <h2>positioning</h2>
+      {claims.length > 0 && (
+        <ul className="positioning-claims">
+          {claims.map((c, i) => (
+            <li key={i}>
+              <span>{c.value}</span>{" "}
+              {c.source && (
+                <a className="src-link" href={c.source} rel="noopener">
+                  source
+                </a>
+              )}{" "}
+              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
+            </li>
+          ))}
+        </ul>
+      )}
+      {read && (
+        <div className="mcc-read">
+          <span className="mcc-read-label">MCC READ</span>
+          <p className="mcc-read-text">{read.text}</p>
+          <p className="dim mcc-read-basis">
+            basis:{" "}
+            {read.basis.map((u, i) => (
+              <span key={u}>
+                {i > 0 && " "}
+                <a className="src-link" href={u} rel="noopener">
+                  [{i + 1}]
+                </a>
+              </span>
+            ))}{" "}
+            · as of {read.as_of}
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** Orbital-safety and anomaly events, surfaced ahead of the full history. */
+function IncidentsSection({ history }: { history: TimelineEvent[] }) {
+  const incidents = history
+    .filter((e) => e.type === "incident")
+    .sort((a, b) => a.date.localeCompare(b.date));
+  if (incidents.length === 0) return null;
+  return (
+    <section id="incidents" className="panel">
+      <h2>incidents</h2>
+      <ol className="timeline">
+        {incidents.map((e) => (
+          <li key={`${e.date}-${e.headline}`}>
+            <span className="mono timeline-date">{e.date}</span>
+            <span>
+              {e.headline}
+              {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
+              {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
+              <a href={e.source} rel="noopener" className="dim">
+                (source, as of {e.as_of})
+              </a>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
 function HistorySection({ history }: { history: TimelineEvent[] }) {
   if (history.length === 0) return null;
   const ordered = [...history].sort((a, b) => a.date.localeCompare(b.date));
@@ -2239,6 +2391,9 @@ function HistorySection({ history }: { history: TimelineEvent[] }) {
           <li key={`${e.date}-${e.headline}`}>
             <span className="mono timeline-date">{e.date}</span>
             <span>
+              {e.type && e.type !== "milestone" && (
+                <span className="chip chip-tl-type">{e.type}</span>
+              )}{" "}
               {e.headline}{" "}
               <a href={e.source} rel="noopener" className="dim">
                 (source, as of {e.as_of})
@@ -2308,23 +2463,19 @@ interface FaqItem {
 }
 
 function FaqSection({ items }: { items: FaqItem[] }) {
+  const answered = items.filter((i) => i.field.value !== null && i.field.value !== undefined);
+  if (answered.length === 0) return null;
   return (
     <section id="faq" className="panel">
       <h2>faq</h2>
-      {items.map(({ q, field, render }) => (
+      {answered.map(({ q, field, render }) => (
         <details className="cite faq-item" key={q}>
           <summary>{q}</summary>
           <p className="citation">
-            {field.value === null || field.value === undefined ? (
-              "No sourced figure yet. Unknowns stay unknown rather than estimated."
-            ) : (
-              <>
-                {render(field.value)}{" "}
-                <a href={field.source ?? undefined} rel="noopener" className="dim">
-                  (source, as of {field.as_of})
-                </a>
-              </>
-            )}
+            {render(field.value)}{" "}
+            <a href={field.source ?? undefined} rel="noopener" className="dim">
+              (source, as of {field.as_of})
+            </a>
           </p>
         </details>
       ))}
@@ -2337,14 +2488,15 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
   const roster = profile.vehicleRoster ?? [];
   const history = profile.history ?? [];
-  const sections: Array<[string, string]> = [["facts", "facts"]];
-  if (history.length > 0) sections.push(["history", "history"]);
-  if (profile.stockTicker?.value) sections.push(["stock", "stock"]);
-  if (children.length > 0) sections.push(["constellations", "constellations"]);
-  if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
-  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
-  const hasEvents = itemsMentioning(names).length > 0;
-  if (hasEvents) sections.push(["events", "events"]);
+  const specs = profile.specs ?? [];
+  const hasSpecs = specs.length >= 2;
+  const positioning = profile.positioning ?? null;
+  const hasPositioning =
+    !!positioning && ((positioning.claims?.length ?? 0) > 0 || !!positioning.mcc_read);
+  const hasIncidents = history.some((e) => e.type === "incident");
+  const answeredFaq = profile.faq.filter(
+    (i) => i.field.value !== null && i.field.value !== undefined,
+  );
 
   const related = profile.affiliation
     ? profile.siblings
@@ -2360,11 +2512,27 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const idx = ordered.findIndex((s) => s.slug === profile.slug);
   const prev = idx > 0 ? ordered[idx - 1]! : null;
   const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1]! : null;
-  if (related.length > 0 || prev || next) sections.push(["related", "related"]);
 
+  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
+  const hasEvents = itemsMentioning(names).length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
+
+  // TOC mirrors the rendered sections, in reading-flow order (specs first,
+  // then positioning, facts, incidents, history, stock, children/roster,
+  // events); related and sources live in the rail but stay in the list.
+  const sections: Array<[string, string]> = [];
+  if (hasSpecs) sections.push(["specs", "key specs"]);
+  if (hasPositioning) sections.push(["positioning", "positioning"]);
+  sections.push(["facts", "facts"]);
+  if (hasIncidents) sections.push(["incidents", "incidents"]);
+  if (history.length > 0) sections.push(["history", "history"]);
+  if (profile.stockTicker?.value) sections.push(["stock", "stock"]);
+  if (children.length > 0) sections.push(["constellations", "constellations"]);
+  if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
+  if (hasEvents) sections.push(["events", "events"]);
+  if (related.length > 0 || prev || next) sections.push(["related", "related"]);
   if (hasSources) sections.push(["sources", "sources"]);
-  sections.push(["faq", "faq"]);
+  if (answeredFaq.length > 0) sections.push(["faq", "faq"]);
 
   return (
     <Layout current="registry">
@@ -2376,7 +2544,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         />
         <h1 className="page-title profile-title">
           <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
-          {profile.name} <span className="dim">/ {profile.typeLabel}</span>
+          {profile.name}
+          {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
+          <span className="dim">/ {profile.typeLabel}</span>
         </h1>
         {profile.overview.value && (
           <>
@@ -2393,16 +2563,45 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
             sticky rail right. One column below 64rem, original order. */}
         <div className="profile-cols">
           <div className="profile-main">
+            <KeySpecsPanel cells={specs} note={profile.specNote} />
+            <PositioningSection positioning={positioning} />
             <section id="facts" className="panel">
               <h2>facts</h2>
               <ProfileTable rows={profile.rows} />
+              {profile.imagingModes && profile.imagingModes.length > 0 && (
+                <table className="profile imaging-modes">
+                  <thead>
+                    <tr>
+                      <th>mode</th>
+                      <th>resolution</th>
+                      <th>swath</th>
+                      <th>source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {profile.imagingModes.map((m) => (
+                      <tr key={m.mode}>
+                        <th scope="row">{m.mode}</th>
+                        <td>{m.resolution_m !== null ? `${m.resolution_m} m` : "unknown"}</td>
+                        <td>{m.swath_km !== null ? `${m.swath_km} km` : "unknown"}</td>
+                        <td className="src-cell">
+                          <a href={m.source} rel="noopener">
+                            source
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
               {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
             </section>
-            <ChildConstellationsSection children={children} />
+            <IncidentsSection history={history} />
             <HistorySection history={history} />
             {profile.stockTicker?.value && (
               <StockSection slug={profile.slug} ticker={profile.stockTicker} />
             )}
+            <ChildConstellationsSection children={children} />
             <VehicleRosterSection roster={roster} />
             <EventsSection profile={profile} />
             <FaqSection items={profile.faq} />
@@ -2435,13 +2634,14 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     }
     return [label, profile[field]];
   };
+  const verifiedRow = countRow("sats active (verified)", "sats_active_verified");
   const rows: ProfileRow[] = [
     ["operator", profile.operator],
     ["country", profile.country],
     ["sensor types", profile.sensor_types],
     countRow("sats launched (total)", "sats_launched_total"),
     countRow("sats active (claimed)", "sats_active_claimed"),
-    countRow("sats active (verified)", "sats_active_verified"),
+    verifiedRow,
     ["sats planned", profile.sats_planned],
     ["orbit", profile.orbit],
     ["first launch", profile.first_launch_date],
@@ -2449,6 +2649,52 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     ["status", profile.status],
     ["website", profile.website],
   ];
+  // v2 capability fields join the exhaustive table only when present.
+  const addOpt = (label: string, f: SourcedField<unknown> | undefined) => {
+    if (f) rows.push([label, f]);
+  };
+  addOpt("resolution (m)", profile.resolution_m);
+  addOpt("swath (km)", profile.swath_km);
+  addOpt("revisit", profile.revisit);
+  addOpt("spectral bands", profile.spectral_bands);
+  addOpt("frequency bands", profile.frequency_bands);
+  addOpt("capacity", profile.capacity);
+  addOpt("user terminals", profile.user_terminals);
+  addOpt("service type", profile.service_type);
+
+  // Key-specs panel: defining figures, capped at 6 in priority order.
+  const isConnIot = profile.domain === "connectivity" || profile.domain === "iot";
+  const verifiedField = verifiedRow[1];
+  const verifiedComputed = verifiedRow[2] === "computed";
+  const specCandidates: Array<SpecCell | null> = [
+    specFromField("resolution_m", "resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
+    specFromField("swath_km", "swath", profile.swath_km, (v) => `${fmtNum(v)} km`),
+    specFromField("revisit", "revisit", profile.revisit, (v) => String(v)),
+    specFromField("spectral_bands", "spectral bands", profile.spectral_bands, (v) =>
+      (v as string[]).join(", "),
+    ),
+    verifiedField.value !== null && verifiedField.value !== undefined
+      ? {
+          field: "sats_active_verified",
+          label: "sats on orbit (verified)",
+          value: fmtNum(verifiedField.value),
+          as_of: verifiedField.as_of,
+          snr: verifiedField.snr,
+          snr_trace: verifiedField.snr_trace,
+          computed: verifiedComputed,
+        }
+      : null,
+    ...(isConnIot
+      ? [
+          specFromField("frequency_bands", "frequency bands", profile.frequency_bands, (v) =>
+            (v as string[]).join(", "),
+          ),
+          specFromField("capacity", "capacity", profile.capacity, (v) => String(v)),
+          specFromField("service_type", "service type", profile.service_type, (v) => String(v)),
+        ]
+      : []),
+  ];
+  const specs = specCandidates.filter((c): c is SpecCell => c !== null).slice(0, 6);
   const faq: FaqItem[] = [
     {
       q: `Who operates ${profile.name}?`,
@@ -2497,6 +2743,9 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     faq,
     parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
     children: children.map((c) => ({ slug: c.slug, name: c.name })),
+    specs,
+    positioning: profile.positioning ?? null,
+    imagingModes: profile.imaging_modes,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -2516,6 +2765,45 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     ["status", profile.status],
     ["price per launch (USD)", profile.price_per_launch_usd],
   ];
+  const addOpt = (label: string, f: SourcedField<unknown> | undefined) => {
+    if (f) rows.push([label, f]);
+  };
+  addOpt("payload to SSO (kg)", profile.payload_sso_kg);
+  addOpt("payload to GTO (kg)", profile.payload_gto_kg);
+  addOpt("height (m)", profile.height_m);
+  addOpt("diameter (m)", profile.diameter_m);
+  addOpt("mass (kg)", profile.mass_kg);
+  addOpt("stages", profile.stages);
+  addOpt("stage-1 engines", profile.engines_stage1);
+
+  // Key-specs panel: defining figures, capped at 6 in priority order.
+  const st = profile.flights_successful.value;
+  const tt = profile.flights_total.value;
+  const flightRecord: SpecCell | null =
+    st !== null && tt !== null && tt > 0
+      ? {
+          field: "flight-record",
+          label: "flight record",
+          // One decimal, never rounded up to a claim the record does not
+          // support: 603/604 is 99.8%, not "100% success".
+          value: `${st} / ${tt} (${(Math.floor((st / tt) * 1000) / 10).toFixed(1)}% success)`,
+          computed: true,
+        }
+      : null;
+  const specCandidates: Array<SpecCell | null> = [
+    specFromField("payload_leo_kg", "payload to LEO", profile.payload_leo_kg, (v) => `${fmtNum(v)} kg`),
+    specFromField("payload_sso_kg", "payload to SSO", profile.payload_sso_kg, (v) => `${fmtNum(v)} kg`),
+    specFromField("payload_gto_kg", "payload to GTO", profile.payload_gto_kg, (v) => `${fmtNum(v)} kg`),
+    specFromField("height_m", "height", profile.height_m, (v) => `${fmtNum(v)} m`),
+    specFromField(
+      "price_per_launch_usd",
+      "price per launch",
+      profile.price_per_launch_usd,
+      (v) => `$${fmtNum(v)}`,
+    ),
+    flightRecord,
+  ];
+  const specs = specCandidates.filter((c): c is SpecCell => c !== null).slice(0, 6);
   const faq: FaqItem[] = [
     {
       q: `Who builds ${profile.name}?`,
@@ -2550,6 +2838,13 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
     breadcrumbSegment: "vehicles",
     faq,
+    specs,
+    variant: profile.variant ?? null,
+    specNote: profile.variant
+      ? `figures describe the ${profile.variant} configuration where sourced`
+      : null,
+    history: profile.events ?? [],
+    positioning: profile.positioning ?? null,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -2580,6 +2875,12 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
       render: (v) => `${profile.name} is operated by ${v as string}.`,
     },
   ];
+  const specCandidates: Array<SpecCell | null> = [
+    specFromField("launches_total", "launches total", profile.launches_total, (v) => fmtNum(v)),
+    specFromField("first_launch_date", "first launch", profile.first_launch_date, (v) => String(v)),
+    specFromField("status", "status", profile.status, (v) => String(v)),
+  ];
+  const specs = specCandidates.filter((c): c is SpecCell => c !== null).slice(0, 6);
   const meta: ProfileMeta = {
     slug: profile.slug,
     name: profile.name,
@@ -2594,6 +2895,9 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
       .map((s) => ({ slug: s.slug, name: s.name, affiliation: s.region })),
     breadcrumbSegment: "spaceports",
     faq,
+    specs,
+    history: profile.events ?? [],
+    positioning: profile.positioning ?? null,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -2645,6 +2949,7 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     vehicleRoster,
     history: profile.events ?? [],
     stockTicker: profile.ticker ?? null,
+    positioning: profile.positioning ?? null,
   };
   return <ProfilePage profile={meta} />;
 }
