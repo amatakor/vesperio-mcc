@@ -971,3 +971,9 @@ a newer entry if a lesson changes.
   marketplace actually went live 2026-07-01; drafted and published dated
   2026-07-01 per the 2026-07-06-GG event-date-over-publish-date convention,
   reusing the id slug format YYYY-MM-DD-actor-slug with the corrected date.
+- 2026-07-08-K: Ruling (Florian): categorize by the transaction, not the
+  press-release framing. A contract/award win with a government buyer is
+  `procurement` even when the release reads as a product or capability
+  announcement (fixed: 2026-07-07-blacksky-gen3-ai-tactical-isr, was
+  `product`); a commercial buyer makes it `contract`. `product` is reserved
+  for product news with no transaction in the event.
