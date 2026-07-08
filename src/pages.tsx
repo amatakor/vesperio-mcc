@@ -432,10 +432,74 @@ function Card({
   );
 }
 
+// ------------------------------------------------------ sweep countdown
+
+/** News sweep schedule, UTC hours. Mirrors the cron in
+    .github/workflows/update-items.yml ("0 5,17 * * *"); keep in sync by
+    hand, the workflow file is not readable from the client. */
+const SWEEP_UTC_HOURS = [5, 17];
+
+function nextSweepAfter(now: Date): Date {
+  for (const h of SWEEP_UTC_HOURS) {
+    const t = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), h));
+    if (t.getTime() > now.getTime()) return t;
+  }
+  return new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, SWEEP_UTC_HOURS[0]!),
+  );
+}
+
+/** 7-segment display with a ghost "888" layer underneath, the orbits-page
+    LCD language (DSEG7 has the digits, the colon, and the dash). */
+function SweepLcd({ value }: { value: string }) {
+  return (
+    <span className="sweep-lcd">
+      <span className="sweep-lcd-ghost" aria-hidden="true">
+        {value.replace(/[0-9-]/g, "8")}
+      </span>
+      <span className="sweep-lcd-lit">{value}</span>
+    </span>
+  );
+}
+
+/** First slot of the news feed: countdown to the next scheduled sweep.
+    Renders a placeholder until mounted so SSR and hydration agree; the
+    ticking never changes the card's height, so the masonry stays put. */
+function SweepCountdownCard() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    const tick = () => setNow(new Date());
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  let digits = "--:--:--";
+  let local = "";
+  if (now) {
+    const target = nextSweepAfter(now);
+    const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
+    digits = [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
+      .map((n) => String(n).padStart(2, "0"))
+      .join(":");
+    local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  }
+  return (
+    <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
+      <p className="sweep-card-label">T-minus next sweep</p>
+      <p className="sweep-card-foot">
+        <span className="sweep-card-seg">sweeps 05:00 + 17:00 utc</span>
+        {local && <span className="sweep-card-seg">next {local} local</span>}
+      </p>
+      <SweepLcd value={digits} />
+    </aside>
+  );
+}
+
 /** Card grid plus the item modal. Opening an item pushes /item/{id}/
     onto history so the URL is shareable; back (or close) returns to
     the feed. Direct visits to /item/ URLs get the prerendered page. */
-function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
+function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; lead?: ReactNode }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -517,6 +581,7 @@ function FeedList({ list, emptyNote }: { list: Item[]; emptyNote: string }) {
   return (
     <>
       <div className="cards" ref={gridRef}>
+        {lead}
         {list.map((i) => (
           <Card key={i.id} item={i} onOpen={open} />
         ))}
@@ -799,7 +864,11 @@ export function HomePage() {
       {(q !== "" || filter) && shown.length === 0 ? (
         <p className="empty">// no items match: adjust filters</p>
       ) : (
-        <FeedList list={shown} emptyNote="No items yet. The first sweep has not run." />
+        <FeedList
+          list={shown}
+          emptyNote="No items yet. The first sweep has not run."
+          lead={<SweepCountdownCard />}
+        />
       )}
     </Layout>
   );

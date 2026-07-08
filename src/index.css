@@ -395,7 +395,8 @@ a.chip:hover {
 
 /* Collapsible categories menu, anchored to the filter bar. */
 .cat-btn {
-  border: 1px solid var(--line);
+  /* Same white frame as the cards (Florian, 2026-07-08). */
+  border: 1px solid var(--fg);
   background: none;
   color: var(--fg);
   font-family: var(--mono);
@@ -501,7 +502,8 @@ a.chip:hover {
   flex: 1;
   min-width: 0;
   background: var(--panel);
-  border: 1px solid var(--line);
+  /* Same white frame as the cards (Florian, 2026-07-08). */
+  border: 1px solid var(--fg);
   color: var(--fg);
   font-family: var(--mono);
   font-size: 0.85rem;
@@ -561,6 +563,87 @@ a.chip:hover {
      so the measure and the span match. */
   grid-auto-rows: 1px;
   opacity: 1;
+}
+
+/* First feed slot: countdown to the next scheduled sweep. Same frame and
+   -1px border collapse as a card, but not interactive: no cursor, no hover
+   inversion. The LCD reuses the orbits-page DSEG7 ghost-segment language
+   (the face is also declared in orbits.css; that chunk only loads on
+   /orbits, so the news page needs its own declaration — browsers dedupe). */
+@font-face {
+  font-family: "DSEG7 Classic";
+  src: url("/fonts/DSEG7Classic-Bold.woff2") format("woff2");
+  font-display: swap;
+}
+.sweep-card {
+  border: 1px solid var(--fg);
+  background: var(--bg);
+  margin: -1px 0 0 -1px;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.75rem 1rem;
+  /* Instrument strip, the page's own row grammar: text anchored left (label
+     over schedule), data anchored right (the LCD, centered across both text
+     rows). Same left/right rhythm as card meta, card footers, and the
+     filter bar. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label lcd"
+    "foot  lcd";
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: 0.3rem;
+}
+.sweep-card-label {
+  grid-area: label;
+  align-self: end;
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.sweep-card-foot {
+  grid-area: foot;
+  align-self: start;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+/* Schedule phrases separated by a flex gap, no glyph: on one line they sit
+   a clear space apart, and on narrow columns the second phrase wraps to its
+   own line with nothing dangling in front. Never breaks mid-phrase. */
+.sweep-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.8em;
+  row-gap: 0.15rem;
+}
+.sweep-card-seg {
+  white-space: nowrap;
+}
+.sweep-lcd {
+  grid-area: lcd;
+  position: relative;
+  display: inline-block;
+  font-family: "DSEG7 Classic", var(--mono);
+  font-weight: 700;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+.sweep-lcd-ghost {
+  color: var(--acc-ghost);
+}
+.sweep-lcd-lit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--acc);
 }
 
 .card {
