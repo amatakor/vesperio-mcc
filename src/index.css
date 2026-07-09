@@ -1849,18 +1849,24 @@ table.profile td.src-cell a,
    tucked beside the number. No axis chrome; the meta line names the span. */
 .spec-chart-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.1rem;
   align-items: center;
 }
 .spec-chart-value {
   flex: none;
 }
+/* The curve flows across everything the number leaves free. */
 .spec-chart-svg {
   display: block;
   flex: 1;
   min-width: 0;
-  max-width: 15rem;
-  height: auto;
+  height: 2.6rem;
+}
+/* Long stated phrases step down from display type to body scale. */
+.spec-value.spec-value-long {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 400;
 }
 
 /* Profile overview: fg copy behind an accent rule. A paragraph of bold

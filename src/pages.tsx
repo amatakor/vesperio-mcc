@@ -2426,7 +2426,11 @@ function KeySpecsPanel({
                 {"//"}
               </a>
             </span>
-            <span className="spec-value">{c.value}</span>
+            {/* Numbers earn the display size; stated phrases ("under 6 hour
+                global revisit") read at body scale so they never tower. */}
+            <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
+              {c.value}
+            </span>
             <span className="spec-meta">
               {c.computed && <span className="dim spec-computed">computed</span>}
               {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
