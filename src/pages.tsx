@@ -50,9 +50,32 @@ import { OrbitsStage } from "./orbits/stage";
 
 // -------------------------------------------------------- registry logos
 
-const LOGO_BY_SLUG: Record<string, { file: string; origin: string }> = (
-  registryLogos as { logos: Record<string, { file: string; origin: string }> }
+const LOGO_BY_SLUG: Record<
+  string,
+  { file: string; origin: string; license?: string; author?: string | null }
+> = (
+  registryLogos as {
+    logos: Record<string, { file: string; origin: string; license?: string; author?: string | null }>;
+  }
 ).logos;
+
+/**
+ * Attribution line for Creative Commons logo marks (Wikimedia Commons,
+ * reviewed per file in logo-approvals.json). Public-domain marks and
+ * own-site favicons render nothing; CC licenses require the credit.
+ */
+function LogoCredit({ slug }: { slug: string }) {
+  const logo = LOGO_BY_SLUG[slug];
+  if (!logo?.license || !logo.license.startsWith("CC")) return null;
+  return (
+    <p className="dim logo-credit">
+      logo: {logo.author ? `${logo.author}, ` : ""}
+      <a href={logo.origin} rel="noopener">
+        {logo.license}, via Wikimedia Commons
+      </a>
+    </p>
+  );
+}
 
 /** Entity mark: the favicon fetched from the entity's own recorded
  * website (scripts/fetch-logos.ts), or a generated initials tile when
@@ -3128,6 +3151,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
 
         <footer className="profile-foot">
           <RelatedSection profile={profile} related={related} prev={prev} next={next} />
+          <LogoCredit slug={profile.slug} />
           <p>
             <a href="/registry/">Back to the registry</a>
           </p>
