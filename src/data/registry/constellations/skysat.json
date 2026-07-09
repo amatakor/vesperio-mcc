@@ -160,5 +160,95 @@
     "source": "https://www.planet.com/company/",
     "as_of": "2026-07-05"
   },
-  "notes": null
+  "resolution_m": {
+    "value": 0.9,
+    "source": "https://www.eoportal.org/satellite-missions/skysat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/skysat",
+        "reason": "eoPortal mission page (ESA-run aggregator); specification table states 'Pan (Panchromatic): 90 cm at nadir' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 8,
+    "source": "https://www.eoportal.org/satellite-missions/skysat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/skysat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'A ground swath of 8 km is covered at nadir' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "an average of seven times a day, some locations up to 12 revisits a day",
+    "source": "https://www.eoportal.org/satellite-missions/skysat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/skysat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states Planet says it can 'image locations an average of seven times a day, with some locations seeing up to 12 revisits a day' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Pan 450-900 nm",
+      "Blue 450-515 nm",
+      "Green 515-595 nm",
+      "Red 605-695 nm",
+      "NIR 740-900 nm"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/skysat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/skysat",
+        "reason": "eoPortal mission page (ESA-run aggregator); specification table (Table 6) lists the panchromatic and four multispectral bands with these ranges (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 0.9,
+      "swath_km": 8,
+      "source": "https://www.eoportal.org/satellite-missions/skysat",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 2,
+      "swath_km": 8,
+      "source": "https://www.eoportal.org/satellite-missions/skysat",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "eoPortal spec table states 90 cm panchromatic and 2 m multispectral at nadir; a launch note on the same page relays Planet saying full-constellation imaging comes 'at 50-centimeter resolution', not carried as the spec figure. Page last updated Oct 5, 2023."
 }

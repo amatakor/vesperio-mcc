@@ -99,7 +99,76 @@
     "source": "https://www.iceye.com/company",
     "as_of": "2026-07-05"
   },
-  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page.",
+  "resolution_m": {
+    "value": 0.16,
+    "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states Gen4 platforms offer 'up to ~16 cm resolution' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "multiple times per day",
+    "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states ICEYE 'can revisit individual locations multiple times per day' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "X-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+        "reason": "eoPortal mission page (ESA-run aggregator); system parameters table states carrier frequency '9.65 GHz (X-band)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Stripmap",
+      "resolution_m": 3.0,
+      "swath_km": 30,
+      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Spotlight",
+      "resolution_m": 1,
+      "swath_km": 5,
+      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page. eoPortal imaging-modes table (Table 4) states GRD ground range resolution and nominal swath per mode; ScanSAR listed as under development, not carried here.",
   "events": [
     {
       "date": "2015-11",

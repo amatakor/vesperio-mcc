@@ -89,5 +89,59 @@
     "source": "https://www.planet.com/company/",
     "as_of": "2026-07-05"
   },
-  "notes": "Renamed to PlanetScope (2026-07-05): the product line spanning Doves and SuperDoves; Planet states 200+ on orbit, the layer shows what the active catalog carries."
+  "resolution_m": {
+    "value": 3,
+    "source": "https://www.eoportal.org/satellite-missions/planet",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/planet",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states SuperDoves 'offer medium-resolution multispectral imagery (3-5m) globally'; 3 m is the best figure in the stated range (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "near-daily global Earth coverage",
+    "source": "https://www.eoportal.org/satellite-missions/planet",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/planet",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the design enables Planet to 'maintain near-daily global Earth coverage' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "visible",
+      "near-infrared"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/planet",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/planet",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the payload is 'capable of capturing visible and near-infrared bands'; SuperDoves described as 'equipped with eight spectral bands' without listing them (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Renamed to PlanetScope (2026-07-05): the product line spanning Doves and SuperDoves; Planet states 200+ on orbit, the layer shows what the active catalog carries. eoPortal states SuperDoves carry eight spectral bands but names only visible and near-infrared coverage."
 }

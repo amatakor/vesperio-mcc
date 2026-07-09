@@ -76,5 +76,88 @@
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
     "as_of": "2026-07-05"
   },
-  "notes": "Copernicus SAR mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. ESA confirmed Sentinel-1A's operational duties ended 29 June 2026 (disposal phase to begin over summer 2026), leaving Sentinel-1C and Sentinel-1D as the active pair; Sentinel-1B was already lost in 2021."
+  "resolution_m": {
+    "value": 5,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states Stripmap mode delivers '80 km swath, 5 m x 5 m resolution (single look)' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "repeat cycle of 12 days per satellite; six days with both satellites operating",
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'repeat cycle of 12 days' and 'With both satellites operating, the repeat cycle is six days' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "C-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+        "reason": "eoPortal mission page (ESA-run aggregator); page describes 'a constellation of C-band imaging radar satellites' with 'The C-SAR has a centre frequency of 5.405 GHz' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Stripmap",
+      "resolution_m": 5,
+      "swath_km": 80,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Interferometric Wide swath (5 m x 20 m)",
+      "resolution_m": null,
+      "swath_km": 250,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Extra Wide swath (20 m x 40 m)",
+      "resolution_m": null,
+      "swath_km": 410,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Wave (5 m x 20 m, 20 km x 20 km vignettes)",
+      "resolution_m": null,
+      "swath_km": 20,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-1",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Copernicus SAR mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. ESA confirmed Sentinel-1A's operational duties ended 29 June 2026 (disposal phase to begin over summer 2026), leaving Sentinel-1C and Sentinel-1D as the active pair; Sentinel-1B was already lost in 2021. eoPortal states non-square resolutions per mode (range x azimuth); those figures are kept verbatim in the mode names rather than reduced to one number."
 }

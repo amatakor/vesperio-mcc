@@ -137,7 +137,74 @@
     "source": "https://space-solutions.airbus.com/imagery/our-optical-and-radar-satellite-imagery/pleiades-neo/",
     "as_of": "2026-07-05"
   },
-  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "resolution_m": {
+    "value": 0.3,
+    "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'spatial resolution of 0.3 m for panchromatic spectral bands' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 14,
+    "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'They have a swath width of 14 km' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "twice daily, anywhere",
+    "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'revisit capacity twice daily, anywhere' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 0.3,
+      "swath_km": 14,
+      "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 1.2,
+      "swath_km": 14,
+      "source": "https://www.eoportal.org/satellite-missions/pleiades-neo",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. eoPortal performance specifications (page last updated Nov 19, 2023) state 0.3 m panchromatic, 1.2 m multispectral, 14 km swath, twice-daily revisit.",
   "events": [
     {
       "date": "2021-04-29",

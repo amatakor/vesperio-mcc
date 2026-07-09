@@ -172,7 +172,26 @@
     },
     "tier": "canonical"
   },
-  "notes": null,
+  "spectral_bands": {
+    "value": [
+      "RF, 70 MHz to 6 GHz (front end extends to ~18 GHz)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/hawkeye-360",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/hawkeye-360",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the SDR 'is capable of frequency tuning from 70 MHz to 6 GHz' and the RF front end 'extends the SDR frequency range to approximately 18 GHz (Ku-band)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "RF-sensing constellation: imaging-resolution fields do not apply; the sensed frequency range is carried in spectral_bands as stated by eoPortal (page last updated May 1, 2026).",
   "events": [
     {
       "date": "2018-12-03",

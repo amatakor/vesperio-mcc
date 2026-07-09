@@ -75,7 +75,66 @@
     "source": "https://synspective.com/satellite/",
     "as_of": "2026-07-05"
   },
-  "notes": "Company newsroom announced first imagery from its seventh satellite (2026-07 fetch); on-orbit total not stated as a figure.",
+  "resolution_m": {
+    "value": 0.25,
+    "source": "https://www.eoportal.org/satellite-missions/synspective",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/synspective",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states Staring Spotlight mode enables 'ultra-high-resolution imaging down to ~0.25 m azimuth resolution in advanced configurations' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "X-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/synspective",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/synspective",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'StriX uses X-band for high-resolution urban monitoring and infrastructure assessment' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Stripmap (10-30 km swath)",
+      "resolution_m": 3.6,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/synspective",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Sliding Spotlight",
+      "resolution_m": 0.46,
+      "swath_km": 10,
+      "source": "https://www.eoportal.org/satellite-missions/synspective",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Staring Spotlight",
+      "resolution_m": 0.25,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/synspective",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Company newsroom announced first imagery from its seventh satellite (2026-07 fetch); on-orbit total not stated as a figure. eoPortal (page last updated Jun 16, 2026) states Stripmap ground range resolution 'approximately 3.6 m' over a 'typical swath width of 10-30 km' (range kept in the mode name, not reduced to one number), Sliding Spotlight 'down to approximately 0.46 m' over 'around 10 km', Staring Spotlight '~0.25 m azimuth resolution'.",
   "events": [
     {
       "date": "2018-02",

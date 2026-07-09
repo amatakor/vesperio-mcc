@@ -87,7 +87,101 @@
     "source": "https://satellogic.com/company/",
     "as_of": "2026-07-05"
   },
-  "notes": "Constellation page states '57 Satellites launched' and a roadmap target of a 'complete constellation of 200+ satellites'; no explicit current-active count distinct from launched total was found (2026-07-06). Note: Gunter's Space Page (space.skyrocket.de/doc_sdat/nusat-1.htm) lists only 54 NuSat launches through Aug 2024 and appears stale versus the operator's own March 2026 NewSat 53/54 launch; the operator's own figures were preferred.",
+  "resolution_m": {
+    "value": 0.7,
+    "source": "https://www.eoportal.org/satellite-missions/newsat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/newsat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'Multispectral imagery is provided with a 5 km swath width and a 0.7 m spatial resolution' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 5,
+    "source": "https://www.eoportal.org/satellite-missions/newsat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/newsat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states multispectral imagery comes 'with a 5 km swath width' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "points of interest revisited up to eight times a day",
+    "source": "https://www.eoportal.org/satellite-missions/newsat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/newsat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the constellation of over 50 operational spacecraft allows 'points of interest to be revisited up to eight times a day' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "visible (RGB)",
+      "near-infrared 750-900 nm"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/newsat",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/newsat",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'five spectral bands, four within the red-green-blue range, plus one near-infrared channel between 750 and 900 nm' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Multispectral",
+      "resolution_m": 0.7,
+      "swath_km": 5,
+      "source": "https://www.eoportal.org/satellite-missions/newsat",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Hyperspectral (29 wavebands)",
+      "resolution_m": 30,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/newsat",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Full-Motion Video (monochromatic)",
+      "resolution_m": 1,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/newsat",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Constellation page states '57 Satellites launched' and a roadmap target of a 'complete constellation of 200+ satellites'; no explicit current-active count distinct from launched total was found (2026-07-06). Note: Gunter's Space Page (space.skyrocket.de/doc_sdat/nusat-1.htm) lists only 54 NuSat launches through Aug 2024 and appears stale versus the operator's own March 2026 NewSat 53/54 launch; the operator's own figures were preferred. eoPortal states basic multispectral GSD is 0.99 m at nadir with Super Resolution processing enhancing it to 70 cm; the 0.7 m figure carried here is that stated newest-generation product resolution.",
   "events": [
     {
       "date": "2010-07",

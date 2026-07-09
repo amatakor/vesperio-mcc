@@ -77,5 +77,79 @@
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2",
     "as_of": "2026-07-05"
   },
-  "notes": "Copernicus optical mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 10,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states '13 spectral channels at a spatial resolution as high as 10 m' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 290,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'The Sentinel-2 satellites have a swath width of 290 km' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "five-day revisit time with two satellites",
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the satellites 'together achieve a five-day revisit time' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "visible",
+      "near-infrared",
+      "shortwave infrared",
+      "water vapor",
+      "cirrus"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'MSI has 13 spectral bands: four visible..., five near-infrared (NIR)..., two shortwave infrared (SWIR)..., one for water vapor detection and one for cirrus detection' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Copernicus optical mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. eoPortal (page last updated Dec 7, 2025) states MSI carries 13 spectral bands at 10 m, 20 m, and 60 m depending on band; 10 m is the finest stated resolution."
 }

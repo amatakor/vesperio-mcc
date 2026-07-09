@@ -161,7 +161,97 @@
     "source": "https://space-solutions.airbus.com/imagery/our-optical-and-radar-satellite-imagery/pleiades/",
     "as_of": "2026-07-05"
   },
-  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "resolution_m": {
+    "value": 0.7,
+    "source": "https://www.eoportal.org/satellite-missions/pleiades",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'The PAN band has a spatial resolution of 0.7 m' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 20,
+    "source": "https://www.eoportal.org/satellite-missions/pleiades",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'The swath width for each is 20 km at nadir' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "potential to revisit any point on Earth within one day",
+    "source": "https://www.eoportal.org/satellite-missions/pleiades",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the two agile spacecraft 'have the potential to revisit any point on Earth within one day' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "PAN",
+      "blue",
+      "green",
+      "red",
+      "near-infrared"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/pleiades",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pleiades",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states HiRI 'captures images in one Panchromatic (PAN) and four multispectral bands: blue, green, red and near-infrared' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 0.7,
+      "swath_km": 20,
+      "source": "https://www.eoportal.org/satellite-missions/pleiades",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 2.8,
+      "swath_km": 20,
+      "source": "https://www.eoportal.org/satellite-missions/pleiades",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. eoPortal states 0.7 m PAN native resolution; the Pleiades Neo page describes first-gen products as 50 cm, not carried here since the dedicated page states the native figure.",
   "events": [
     {
       "date": "2011-12-17",

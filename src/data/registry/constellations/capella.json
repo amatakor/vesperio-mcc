@@ -111,7 +111,83 @@
     "source": "https://www.capellaspace.com/",
     "as_of": "2026-07-05"
   },
-  "notes": "Site states sub-0.25 m SAR capability and lists US offices; news items reference IonQ offering InSAR via Capella satellites. Counts not stated.",
+  "resolution_m": {
+    "value": 0.25,
+    "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'Spotlight mode provides high resolution imaging at 0.25 meter azimuth resolution' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "2-5 hours with eight satellites",
+    "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the 90-minute orbital period 'provides a revisit time of 2-5 hours with eight satellites' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "X-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'Capella SAR satellites operate at X-band with a bandwidth of up to 700 MHz' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Spotlight",
+      "resolution_m": 0.25,
+      "swath_km": 5,
+      "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Sliding spotlight",
+      "resolution_m": 0.5,
+      "swath_km": 10,
+      "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Stripmap",
+      "resolution_m": 1.2,
+      "swath_km": 10,
+      "source": "https://www.eoportal.org/satellite-missions/capella-x-sar",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Site states sub-0.25 m SAR capability and lists US offices; news items reference IonQ offering InSAR via Capella satellites. Counts not stated. eoPortal performance specifications state azimuth resolution per mode; Spotlight swath stated as '5 x 5 km', sliding spotlight 'scene length up to 10 km', Stripmap 'up to 100 km x 10 km' (10 km swath width, 100 km scene length).",
   "events": [
     {
       "date": "2018-09-26",

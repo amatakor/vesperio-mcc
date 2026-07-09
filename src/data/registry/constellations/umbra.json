@@ -123,7 +123,76 @@
     "source": "https://umbra.space/about",
     "as_of": "2026-07-05"
   },
-  "notes": "Site states 100% US owned, engineered, and operated; satellite counts not stated.",
+  "resolution_m": {
+    "value": 0.25,
+    "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states both imaging modes capture scenes 'with resolutions as low as 0.25 m' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "less than one hour for latitude bands +/- 67 degrees",
+    "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states satellite agility 'allows for revisit periods less than one hour for latitude bands +/- 67 degrees' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "X-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+        "reason": "eoPortal mission page (ESA-run aggregator); quick-facts table lists the instrument as 'X-band SAR (Umbra)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Spotlight",
+      "resolution_m": 0.25,
+      "swath_km": 5,
+      "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Extended Dwell",
+      "resolution_m": 0.25,
+      "swath_km": 5,
+      "source": "https://www.eoportal.org/satellite-missions/umbra-sar",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Site states 100% US owned, engineered, and operated; satellite counts not stated. eoPortal states both prioritised imaging modes 'capture 5 km x 5 km scenes as standard, with resolutions as low as 0.25 m'; Stripmap, Mosaic, and Scan modes described as planned additions without stated figures.",
   "events": [
     {
       "date": "2019-12-31",
