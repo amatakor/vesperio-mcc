@@ -73,7 +73,27 @@
     "source": "https://www.aboutamazon.com/what-we-do/devices-services/project-kuiper",
     "as_of": "2026-07-05"
   },
-  "notes": "Amazon states a plan of more than 3,000 satellites in low Earth orbit; no exact figure stated, so sats_planned stays null.",
+  "frequency_bands": {
+    "value": [
+      "Ka",
+      "V"
+    ],
+    "source": "https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf",
+    "as_of": "2026-07-09",
+    "snr": 5,
+    "snr_trace": {
+      "base": {
+        "tier": 5,
+        "source": "https://docs.fcc.gov/public/attachments/DA-26-553A1.pdf",
+        "reason": "FCC order DA-26-553 (official record): cites the Gen1 'Authority to Deploy and Operate a Ka-band Non-Geostationary Satellite Orbit System' and the Amazon 2026 V-band Grant 'authorizing Gen1 system operations' in V-band frequencies, granted in part with conditions (registry v2 connectivity backfill, PR6c)"
+      },
+      "modifiers": [],
+      "final": 5,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "sats_planned (3,236) per Wikipedia matches the FCC-authorized Gen1 constellation and Amazon's own aboutamazon.com statement (verified 2026-07-09); the earlier 'no exact figure stated' note is superseded. A 2026 Gen2 expansion is reported in press but no fetched source states a verified new total, so the figure stands. Frequency bands are the FCC Gen1 Ka authorization plus the 2026 V-band grant (granted in part, with conditions).",
   "events": [
     {
       "date": "2022",
