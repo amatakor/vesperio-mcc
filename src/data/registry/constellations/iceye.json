@@ -142,24 +142,31 @@
   },
   "imaging_modes": [
     {
-      "mode": "Stripmap",
-      "resolution_m": 3.0,
-      "swath_km": 30,
-      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
-      "as_of": "2026-07-09"
-    },
-    {
-      "mode": "Spotlight",
-      "resolution_m": 1,
+      "mode": "Dwell (25 cm / 50 cm / 1 m)",
+      "resolution_m": 0.25,
       "swath_km": 5,
-      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+      "source": "https://www.iceye.com/sar-data/imaging-modes",
       "as_of": "2026-07-09"
     },
     {
-      "mode": "ScanSAR (under development)",
-      "resolution_m": null,
+      "mode": "Spot (up to 50 cm)",
+      "resolution_m": 0.5,
+      "swath_km": 15,
+      "source": "https://www.iceye.com/sar-data/imaging-modes",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Strip",
+      "resolution_m": 3,
+      "swath_km": 30,
+      "source": "https://www.iceye.com/sar-data/imaging-modes",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Scan (15 m / 27 m)",
+      "resolution_m": 15,
       "swath_km": null,
-      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+      "source": "https://www.iceye.com/sar-data/imaging-modes",
       "as_of": "2026-07-09"
     }
   ],
@@ -177,7 +184,7 @@
       "as_of": "2026-07-09"
     }
   ],
-  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page. eoPortal imaging-modes table (Table 4) states GRD ground range resolution and nominal swath per mode; ScanSAR carried with the page's 'currently under development' qualifier in the mode name, no figures stated. The operator's own product pages likely state more modes (Spot Fine, Dwell) with figures; queued for the first-party imaging-modes pass. Revisit upgraded 2026-07-09 to the operator's own quantified statement ('Under 6 hour global revisit', iceye.com/sar-data), which also states 'resolutions up to 25 cm'; the 0.16 m figure stands on eoPortal's newer Gen4 statement, the 25 cm product figure is noted here rather than disputed. No sourced Gen2 statement found; only Gen3/Gen4 rows carried.",
+  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page. Imaging modes upgraded 2026-07-09 to the operator's own product page (first-party beats aggregator): Dwell modes state ground resolutions '25 cm, 50 cm, and 1 m' at 5 km x 5 km scenes with Dwell Precise as the 25 cm product; Spot states ceilings ('up to 50 cm', scenes 'up to 15 km x 15 km', 15 carried as the stated maximum); Strip 3 m at 30 km x 50 km scenes (30 km width carried); Scan states resolutions '15 m, 27 m' over scenes '100 km x 100 km up to 200 km x 600 km' (a range, not reduced to one swath figure). This supersedes eoPortal's Gen2-era Table 4 (Stripmap 3.0 m GRD / 30 km, Spotlight 1 m / 5 km, ScanSAR under development). Revisit is the operator's own quantified statement ('Under 6 hour global revisit', iceye.com/sar-data); the 0.16 m max resolution stands on eoPortal's Gen4 statement while the operator's product pages state 25 cm as the finest product. No sourced Gen2 generation statement found; only Gen3/Gen4 rows carried.",
   "events": [
     {
       "date": "2015-11",

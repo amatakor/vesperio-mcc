@@ -125,23 +125,17 @@
   },
   "spectral_bands": {
     "value": [
-      "visible",
-      "near-infrared"
+      "coastal blue",
+      "blue",
+      "green I",
+      "green",
+      "yellow",
+      "red",
+      "red edge",
+      "NIR"
     ],
-    "source": "https://www.eoportal.org/satellite-missions/planet",
-    "as_of": "2026-07-09",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://www.eoportal.org/satellite-missions/planet",
-        "reason": "eoPortal mission page (ESA-run aggregator); page states the payload is 'capable of capturing visible and near-infrared bands'; SuperDoves described as 'equipped with eight spectral bands' without listing them (registry v2 EO spec backfill)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "source": "https://assets.planet.com/docs/Planet_PSScene_Imagery_Product_Spec_letter_screen.pdf",
+    "as_of": "2026-07-09"
   },
-  "notes": "Renamed to PlanetScope (2026-07-05): the product line spanning Doves and SuperDoves; Planet states 200+ on orbit, the layer shows what the active catalog carries. eoPortal states SuperDoves carry eight spectral bands but names only visible and near-infrared coverage."
+  "notes": "Renamed to PlanetScope (2026-07-05): the product line spanning Doves and SuperDoves; Planet states 200+ on orbit, the layer shows what the active catalog carries. Spectral bands upgraded 2026-07-09 to the eight PSB.SD instrument bands named in Planet's own PSScene product spec PDF (June 2026 edition), superseding eoPortal's unnamed 'eight spectral bands' statement; the spec's stated GSD for PSB.SD is 3.7-4.2 m at nadir (approximate, altitude dependent), consistent with the carried 3 m best-of-range figure from eoPortal's 3-5 m statement."
 }

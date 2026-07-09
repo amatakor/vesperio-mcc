@@ -178,21 +178,9 @@
     "tier": "canonical"
   },
   "swath_km": {
-    "value": 8,
-    "source": "https://www.eoportal.org/satellite-missions/skysat",
-    "as_of": "2026-07-09",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://www.eoportal.org/satellite-missions/skysat",
-        "reason": "eoPortal mission page (ESA-run aggregator); page states 'A ground swath of 8 km is covered at nadir' (registry v2 EO spec backfill)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 5.73,
+    "source": "https://docs.planet.com/data/imagery/skysat/",
+    "as_of": "2026-07-09"
   },
   "revisit": {
     "value": "an average of seven times a day, some locations up to 12 revisits a day",
@@ -250,5 +238,5 @@
       "as_of": "2026-07-09"
     }
   ],
-  "notes": "eoPortal spec table states 90 cm panchromatic and 2 m multispectral at nadir; a launch note on the same page relays Planet saying full-constellation imaging comes 'at 50-centimeter resolution', not carried as the spec figure. Page last updated Oct 5, 2023."
+  "notes": "eoPortal spec table states 90 cm panchromatic and 2 m multispectral at nadir; Planet's own product docs state 'SkySat imagery is sampled at 50 centimeters per pixel when orthorectified', an orthorectified product sampling rather than a native GSD, so the 0.9 m native figure stands. Swath refreshed 2026-07-09 to the operator's own docs ('SkySat collects approximately a 5.73 km swath'), superseding eoPortal's earlier 8 km at-nadir figure (first-party leads on a same-metric conflict). eoPortal page last updated Oct 5, 2023."
 }
