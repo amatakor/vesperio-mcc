@@ -2362,10 +2362,10 @@ function OrbitYearsChart({ slug }: { slug: string }) {
   }, [slug]);
   if (!data || data.pts.length < 2) return null;
   const { pts, asOf } = data;
-  // A real chart with room to breathe: fixed drawing frame, step curve,
-  // first/last year ticks, a marker on today's count.
-  const W = 520;
-  const H = 132;
+  // A compact, boxy drawing frame: the hero count carries the module,
+  // the curve is its companion. Year ticks, marker on today's count.
+  const W = 360;
+  const H = 150;
   const padX = 6;
   const padTop = 12;
   const padBot = 22;
