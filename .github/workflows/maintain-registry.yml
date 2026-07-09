@@ -43,6 +43,19 @@ jobs:
       - name: Deterministic registry enrichment (null-fill from LL2/CelesTrak/GCAT)
         run: bun scripts/enrich-registry.ts
 
+      - name: Registry v2 LL2 enrichment (alternates to respect the free-tier rate limit)
+        # enrich-registry (3 reqs) + enrich-ll2 (~6) + enrich-incidents (<=8)
+        # together can exceed LL2's ~15 req/hr free tier, so the two v2
+        # enrichers alternate: vehicle specs on the Monday run, incident
+        # events on Thursday. workflow_dispatch picks by the same rule
+        # (current UTC weekday).
+        run: |
+          if [ "$(date -u +%u)" -le 3 ]; then
+            bun scripts/enrich/enrich-ll2.ts
+          else
+            bun scripts/enrich/enrich-incidents.ts
+          fi
+
       - name: Run the registry maintenance agent
         uses: anthropics/claude-code-action@v1
         with:
