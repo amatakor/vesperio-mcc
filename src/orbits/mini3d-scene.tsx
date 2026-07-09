@@ -286,12 +286,16 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
         }}
       >
         <Canvas
-          frameloop={active ? "always" : "never"}
+          // "demand" (not "never") while hidden/off-screen: the scene still
+          // paints its mount/state frames, so a backgrounded tab shows a
+          // static globe instead of a blank canvas, and the loop resumes
+          // "always" the moment the view is visible again.
+          frameloop={active ? "always" : "demand"}
           camera={{ position: [0, 0, 2.7], fov: 45 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
           onCreated={({ raycaster }) => {
-            raycaster.params.Points.threshold = 0.04;
+            raycaster.params.Points.threshold = 0.06;
           }}
           onPointerMissed={() => {
             if (downPos.current === null) return;
@@ -310,6 +314,10 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
                 pickSlugs={null}
                 labelColor={colors.fg}
                 showLabels={false}
+                // Attenuated point size scales with canvas height; this
+                // compact frame is ~4x shorter than the /orbits/ stage, so
+                // unscaled dots go sub-pixel and vanish.
+                dotScale={3.5}
                 spinRef={spinGroup}
                 downPos={downPos}
                 onPick={pickSat}

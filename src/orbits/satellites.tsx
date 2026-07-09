@@ -71,6 +71,10 @@ interface Props {
   labelColor: string;
   /** VIEW cluster gate for the per-satellite name labels. */
   showLabels: boolean;
+  /** Point-size multiplier. Attenuated point size scales with canvas
+   * height, so small embeds (registry OrbitMini3D) pass >1 to keep dots
+   * visible; the full scene omits it (default 1, behavior unchanged). */
+  dotScale?: number;
   /** The earth-fixed spin group; labels use it to hide when their
    * satellite is behind the globe (far-side occlusion). */
   spinRef: MutableRefObject<THREE.Group | null>;
@@ -197,6 +201,7 @@ export function Satellites({
   pickSlugs,
   labelColor,
   showLabels,
+  dotScale = 1,
   spinRef,
   downPos,
   onPick,
@@ -517,7 +522,7 @@ export function Satellites({
     <>
       <points ref={pointsRef} geometry={geometry} frustumCulled={false} onClick={handleClick}>
         <pointsMaterial
-          size={0.014}
+          size={0.014 * dotScale}
           sizeAttenuation
           map={glowTexture()}
           vertexColors

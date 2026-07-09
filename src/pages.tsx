@@ -25,6 +25,7 @@ import type {
 } from "./data/schema";
 import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
+import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
 import {
   items,
@@ -2324,9 +2325,90 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
   );
 }
 
-/** Sourced history timeline: every event carries its own source link. */
+/**
+ * Cumulative cataloged-on-orbit count by launch year, computed client-side
+ * from the constellation's committed element set (OBJECT_ID international
+ * designators carry the launch year). Honest framing matters: this buckets
+ * TODAY's catalog by launch year; decayed satellites are absent, so it is
+ * a fleet-composition read, never a historical fleet-size series.
+ */
+function OrbitYearsChart({ slug }: { slug: string }) {
+  const [pts, setPts] = useState<Array<[number, number]> | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    void loadElements(slug).then((res) => {
+      if (cancelled || !res.ok) return;
+      const byYear = new Map<number, number>();
+      for (const r of res.file.records) {
+        const y = Number(r.OBJECT_ID?.slice(0, 4));
+        if (Number.isFinite(y) && y > 1950) byYear.set(y, (byYear.get(y) ?? 0) + 1);
+      }
+      if (byYear.size === 0) return;
+      const min = Math.min(...byYear.keys());
+      const max = Math.max(new Date().getUTCFullYear(), ...byYear.keys());
+      const out: Array<[number, number]> = [];
+      let cum = 0;
+      for (let y = min; y <= max; y++) {
+        cum += byYear.get(y) ?? 0;
+        out.push([y, cum]);
+      }
+      setPts(out);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+  if (!pts || pts.length < 2) return null;
+  const W = 280;
+  const H = 96;
+  const padL = 4;
+  const padR = 30;
+  const padY = 12;
+  const total = pts[pts.length - 1]![1];
+  const x = (i: number) => padL + ((W - padL - padR) * i) / (pts.length - 1);
+  const y = (v: number) => H - padY - ((H - padY * 2) * v) / total;
+  // Step path: each year holds its level until the next launch year.
+  let d = `M ${x(0)} ${y(pts[0]![1])}`;
+  for (let i = 1; i < pts.length; i++) d += ` H ${x(i)} V ${y(pts[i]![1])}`;
+  const area = `${d} V ${H - padY} H ${x(0)} Z`;
+  return (
+    <div className="spec-cell spec-chart" id="spec-orbit-years">
+      <span className="spec-label">
+        on orbit by launch year{" "}
+        <a className="spec-anchor" href="#spec-orbit-years">
+          {"//"}
+        </a>
+      </span>
+      <svg viewBox={`0 0 ${W} ${H}`} className="spec-chart-svg" aria-hidden="true">
+        <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.1} />
+        <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
+        <text x={x(0)} y={H - 1} className="spec-chart-tick">
+          {pts[0]![0]}
+        </text>
+        <text x={x(pts.length - 1)} y={H - 1} textAnchor="end" className="spec-chart-tick">
+          {pts[pts.length - 1]![0]}
+        </text>
+        <text x={W - 2} y={y(total) + 3} textAnchor="end" className="spec-chart-count">
+          {total}
+        </text>
+      </svg>
+      <span className="spec-meta">
+        <span className="dim">cataloged today, cumulative · CelesTrak</span>
+      </span>
+    </div>
+  );
+}
+
 /** The entity's defining numbers as anchored, citable stat cells (registry v2). */
-function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
+function KeySpecsPanel({
+  cells,
+  note,
+  extra,
+}: {
+  cells: SpecCell[];
+  note?: string | null;
+  extra?: ReactNode;
+}) {
   if (cells.length < 2) return null;
   return (
     <section id="specs" className="panel">
@@ -2347,6 +2429,7 @@ function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | nul
             </span>
           </div>
         ))}
+        {extra}
       </div>
       {note && <p className="dim spec-note">{note}</p>}
     </section>
@@ -2570,13 +2653,13 @@ function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
             <span className="mode-fig">
               <span className="fact-label">resolution</span>
               <span className="mode-fig-val">
-                {m.resolution_m !== null ? `${m.resolution_m} m` : <span className="dim">as stated</span>}
+                {m.resolution_m !== null ? `${m.resolution_m} m` : <span className="dim">not stated</span>}
               </span>
             </span>
             <span className="mode-fig">
               <span className="fact-label">swath</span>
               <span className="mode-fig-val">
-                {m.swath_km !== null ? `${m.swath_km} km` : <span className="dim">as stated</span>}
+                {m.swath_km !== null ? `${m.swath_km} km` : <span className="dim">not stated</span>}
               </span>
             </span>
           </span>
@@ -2710,11 +2793,13 @@ function TimelineSection({ history }: { history: TimelineEvent[] }) {
               {divider && <span className="tl-year">{year}</span>}
               <span className="tl-row">
                 <span className="tl-mark" aria-hidden="true" />
-                <span className="mono tl-date">{e.date}</span>
-                <span className="tl-body">
+                <span className="tl-head">
+                  <span className="tl-date">{e.date}</span>
                   {e.type && e.type !== "milestone" && (
                     <span className="chip chip-tl-type">{e.type}</span>
-                  )}{" "}
+                  )}
+                </span>
+                <span className="tl-title">
                   {e.headline}
                   {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
                   {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
@@ -2768,13 +2853,17 @@ function SourceCardsSection({
                   <a href={f.source!} rel="noopener" className="source-fact-label">
                     {label}
                   </a>
-                  {f.snr !== undefined ? (
-                    <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
-                  ) : (
-                    <span className="dim">{unscoredLabel(f, computed)}</span>
-                  )}
-                  {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
-                  {f.as_of && <span className="dim source-fact-asof">{f.as_of}</span>}
+                  <span className="source-fact-class">
+                    {f.snr !== undefined ? (
+                      <>
+                        <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
+                        {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+                      </>
+                    ) : (
+                      <span className="dim">{unscoredLabel(f, computed)}</span>
+                    )}
+                  </span>
+                  <span className="dim source-fact-asof">{f.as_of ?? ""}</span>
                 </span>
               ))}
             </div>
@@ -2941,7 +3030,11 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               </p>
             </>
           )}
-          <KeySpecsPanel cells={specs} note={profile.specNote} />
+          <KeySpecsPanel
+            cells={specs}
+            note={profile.specNote}
+            extra={orbitTab?.hasLayer ? <OrbitYearsChart slug={profile.slug} /> : undefined}
+          />
           <GenerationsSection generations={profile.generations} />
           <ChildConstellationsSection children={children} />
           <VehicleRosterSection roster={roster} />

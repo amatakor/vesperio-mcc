@@ -1584,8 +1584,11 @@ table.profile td.src-cell a,
 }
 @media (min-width: 48rem) {
   .orbit-grid {
-    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-    align-items: start;
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+    /* Default stretch: the 3D frame grows to match the facts column. */
+  }
+  .orbit-view {
+    min-height: 17rem;
   }
 }
 .orbit-view {
@@ -1701,52 +1704,83 @@ table.profile td.src-cell a,
   margin-top: auto;
 }
 .tl-filter {
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.9rem;
 }
+/* Timeline v3.2 (Florian: the flat rows read weaker than the old list):
+   a spine down the left, markers sitting on it, the year riding the spine
+   in the accent, and a real hierarchy inside each entry: dim mono date +
+   type chip up top, the event itself at body weight below. */
 .tl {
   margin: 0;
   padding: 0;
   list-style: none;
+  position: relative;
+}
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  width: 1px;
+  background: var(--line);
 }
 .tl-year {
-  display: block;
+  display: inline-block;
+  position: relative;
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  color: var(--dim);
-  border-bottom: 1px solid var(--line);
-  margin: 0.9rem 0 0.35rem;
-  padding-bottom: 0.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  color: var(--reg-acc, var(--acc));
+  background: var(--bg);
+  padding: 0.15rem 0.5rem 0.15rem 0;
+  margin: 0.9rem 0 0.15rem;
 }
 .tl li:first-child .tl-year {
   margin-top: 0;
 }
 .tl-row {
-  display: flex;
-  gap: 0.7rem;
-  padding: 0.3rem 0;
-  align-items: baseline;
+  position: relative;
+  display: block;
+  padding: 0.45rem 0 0.45rem 1.4rem;
 }
 .tl-mark {
+  position: absolute;
+  left: 0;
+  top: 0.72rem;
   width: 7px;
   height: 7px;
-  flex: none;
   background: var(--reg-acc, var(--acc));
-  align-self: center;
 }
 .tl-incident .tl-mark {
   background: var(--warn);
 }
-.tl-date {
-  flex: none;
-  width: 6.4rem;
-  color: var(--dim);
-  font-size: 0.78rem;
+.tl-head {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
 }
-.tl-body {
-  flex: 1;
-  min-width: 0;
-  font-size: 0.88rem;
+.tl-date {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+.tl-title {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--fg);
+  margin-top: 0.2rem;
+  max-width: 46rem;
+}
+.tl-title .incident-line {
+  font-size: 0.8rem;
+}
+/* News events: the date tag steps back so the headline leads. */
+.registry-profile .event-row .date {
+  font-size: 0.72rem;
+  color: var(--dim);
 }
 .source-cards {
   display: grid;
@@ -1777,13 +1811,15 @@ table.profile td.src-cell a,
   flex-direction: column;
   gap: 0.32rem;
 }
+/* Columns, not a flex ragged edge: label | mark/class | as-of, so the SNR
+   marks align down the card (Florian 2026-07-09). */
 .source-fact {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6.4rem 4.6rem;
   gap: 0.5rem;
   align-items: center;
   font-family: var(--mono);
   font-size: 0.74rem;
-  min-width: 0;
 }
 .source-fact-label {
   color: var(--ink-link);
@@ -1791,15 +1827,38 @@ table.profile td.src-cell a,
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.source-fact-class {
+  justify-self: end;
+  text-align: right;
+}
 .source-fact-asof {
-  margin-left: auto;
+  justify-self: end;
   font-size: 0.66rem;
-  flex: none;
 }
 .profile-foot {
   border-top: 1px solid var(--line);
   margin-top: 1.8rem;
   padding-top: 1.1rem;
+}
+/* The launch-year chart takes a full row of the specs grid, so the band
+   never shows empty trailing cells (Florian 2026-07-09). */
+.spec-chart {
+  grid-column: 1 / -1;
+}
+.spec-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.2rem;
+}
+.spec-chart-tick,
+.spec-chart-count {
+  font-family: var(--mono);
+  font-size: 9px;
+  fill: var(--dim);
+}
+.spec-chart-count {
+  fill: var(--reg-acc, var(--acc));
 }
 
 /* Profile overview: fg copy behind an accent rule. A paragraph of bold

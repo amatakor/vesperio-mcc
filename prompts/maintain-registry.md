@@ -133,6 +133,13 @@ field shapes exactly (any of those profiles is a template).
   sourced `generations` rows (`name`, `text`, `source`, `as_of`), same
   rules as timeline events. A generation no source names gets no row;
   never invent a baseline generation to complete the set.
+- **Imaging modes from the operator's own pages** (first-party beats
+  aggregator): after the eoPortal pass, check the operator's product or
+  spec page for modes eoPortal omits (ICEYE's Spot Fine and Dwell, for
+  example) and their stated figures. Append/upgrade `imaging_modes`
+  rows citing the operator page. A mode a source calls "under
+  development" keeps that qualifier in its mode name and carries no
+  figures; marketing superlatives never become numbers.
 
 ## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
 
