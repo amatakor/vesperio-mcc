@@ -1554,6 +1554,7 @@ table.profile td.src-cell a,
   display: none;
 }
 .gen-rows {
+  border: 1px solid var(--line);
 }
 .gen-row {
   display: flex;
@@ -1631,6 +1632,7 @@ table.profile td.src-cell a,
   margin-left: auto;
 }
 .mode-cards {
+  border: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 1px;
@@ -1666,6 +1668,7 @@ table.profile td.src-cell a,
   font-size: 1.15rem;
 }
 .fact-grid {
+  border: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 1px;
@@ -1789,6 +1792,7 @@ table.profile td.src-cell a,
   gap: 0.8rem;
 }
 .source-card {
+  border: 1px solid var(--line);
   background: var(--panel);
   display: flex;
   flex-direction: column;
@@ -1850,6 +1854,7 @@ table.profile td.src-cell a,
    panel, free of the key-specs band. Stat block left, chart right, both
    on one filled surface; stacks on narrow screens. */
 .onorbit-grid {
+  border: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 1px;
@@ -1916,6 +1921,15 @@ table.profile td.src-cell a,
 .registry-profile .panel h2::before {
   content: "// ";
 }
+/* Unfenced sections (Florian 2026-07-09, mirroring the item page): the
+   heading and a top hairline mark the section; the content blocks inside
+   keep their own frames. One frame total, just the inner one. */
+.registry-profile .panel {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 0.9rem 0 0;
+  margin: 0 0 1.6rem;
+}
 
 .event-list {
   margin: 0;
@@ -1978,6 +1992,7 @@ table.profile td.src-cell a,
 /* Flex, not grid (registry v3.4): cells grow to fill every row, so the
    band never shows empty remainder slots at any viewport or cell count. */
 .specs-grid {
+  border: 1px solid var(--line);
   display: flex;
   flex-wrap: wrap;
   gap: 1px;
