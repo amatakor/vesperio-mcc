@@ -102,7 +102,7 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
   ["/registry/", "registry"],
-  ["/orbits/", "orbits"],
+  ["/mcc/", "mcc"],
   ["/signals/", "signals"],
   ["/stats/", "stats"],
   ["/log/", "log"],
@@ -116,7 +116,7 @@ export function Masthead({ current }: { current?: string }) {
   return (
     <header className="masthead">
       <a href="/" className="brand">
-        MCC / MISSION CONTROL CENTER
+        VESPERIO
       </a>
       <nav className="nav">
         {NAV_LINKS.map(([href, label]) => (
@@ -3070,9 +3070,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               </p>
             </>
           )}
-          {/* The house read sits right under the operator's own words
-              (Florian 2026-07-09): what they say, then what we say. */}
-          <PositioningSection positioning={positioning} />
           <KeySpecsPanel cells={specs} note={profile.specNote} />
           {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
           <GenerationsSection generations={profile.generations} />
@@ -3081,6 +3078,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           {profile.stockTicker?.value && (
             <StockSection slug={profile.slug} ticker={profile.stockTicker} />
           )}
+          {/* The house read closes the overview, just before the FAQ
+              (Florian 2026-07-09). */}
+          <PositioningSection positioning={positioning} />
           <FaqSection items={profile.faq} />
         </div>
 
@@ -3117,8 +3117,8 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
                         <OrbitMini3D slug={profile.slug} />
                       </div>
                     )}
-                    <a className="orbit-open" href="/orbits/">
-                      open in orbits &rarr;
+                    <a className="orbit-open" href="/mcc/">
+                      open in mcc &rarr;
                     </a>
                   </div>
                 )}
@@ -3684,7 +3684,7 @@ export function OrbitsPage() {
   return (
     <div>
       <div className="shell orbits-head-shell">
-        <Masthead current="orbits" />
+        <Masthead current="mcc" />
       </div>
       <OrbitsStage />
     </div>
@@ -3794,7 +3794,7 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
     <Layout current="stats">
       <h1 className="page-title">stats</h1>
       <p className="lede">
-        Live indices computed from MCC data on every build. Each block answers one question,
+        Live indices computed from Vesperio data on every build. Each block answers one question,
         states its method, and offers a ready-made citation. Machine-readable copy at{" "}
         <a href="/stats.json">/stats.json</a>.
       </p>
@@ -3857,7 +3857,7 @@ export function StatsPage({ generatedAt }: { generatedAt: string }) {
 
 const QA: Array<[string, string]> = [
   [
-    "What is MCC?",
+    "What is Vesperio?",
     "A machine-maintained tracker for the new space economy: Earth observation, connectivity, launch, and commercial human spaceflight. It surfaces fresh items twice daily, keeps reference profiles of constellations and launch vehicles, and publishes basic computed statistics.",
   ],
   [
@@ -3881,7 +3881,7 @@ const QA: Array<[string, string]> = [
     "No. Figures are copied exactly from the linked source or omitted. Registry fields without a current source stay null, and every filled registry field carries its source URL and an as-of date.",
   ],
   [
-    "Can I cite MCC?",
+    "Can I cite Vesperio?",
     "Yes. Every stat block on the stats page has a stable anchor and a pre-formatted citation string with a retrieval date, and the same numbers are served machine-readable at /stats.json.",
   ],
 ];
@@ -3891,7 +3891,7 @@ export function AboutPage() {
     <Layout current="about">
       <h1 className="page-title">about</h1>
       <p className="lede">
-        MCC tracks the commercial space economy and the events that move it. Coverage of Chinese,
+        Vesperio tracks the commercial space economy and the events that move it. Coverage of Chinese,
         Indian, Japanese, and European activity gets equal weight to US activity.
       </p>
       <section id="verification-policy" className="qa">

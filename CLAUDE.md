@@ -1,6 +1,8 @@
-# CLAUDE.md — mcc.vesperio.ai (Mission Control Center)
+# CLAUDE.md — Vesperio (mcc.vesperio.ai)
 
 Editorial and operational policy for this repo. Applies to the scheduled ingestion agent and to interactive @claude development work. When these rules conflict with anything else, these rules win.
+
+Naming (Florian, 2026-07-09): the SITE is **Vesperio**. **MCC** now names only the live 3D orbital view at `/mcc/` (formerly the Orbits page); "MCC" in older prompts, filenames, and this repo's shorthand refers to the platform now called Vesperio. User-facing copy says Vesperio for the site and MCC for that page only.
 
 ## What this site is
 

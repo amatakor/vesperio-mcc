@@ -2080,8 +2080,11 @@ table.profile td.src-cell a,
 .positioning-claims li:last-child {
   border-bottom: 0;
 }
+/* No yellow frame (Florian 2026-07-09): a filled content block like its
+   siblings; the small accent MCC READ badge alone marks it editorial. */
 .mcc-read {
-  border: 1px solid var(--acc);
+  border: 1px solid var(--line);
+  background: var(--panel);
   padding: 0.75rem 0.9rem;
   margin-top: 0.9rem;
 }
