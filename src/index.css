@@ -1593,6 +1593,17 @@ table.profile td.src-cell a,
   border: 1px solid var(--line);
   background: #07131a;
 }
+/* The 3D globe overlays the in-flow SVG schematic, which defines the box
+   and shows through whenever the 3D view declines to render (no WebGL, no
+   elements file, still loading). Once the 3D view is actually in the DOM,
+   the schematic hides so the two captions never double up. */
+.orbit-3d {
+  position: absolute;
+  inset: 0;
+}
+.orbit-view:has(.omini3d) > svg {
+  visibility: hidden;
+}
 .orbit-open {
   position: absolute;
   right: 0.5rem;

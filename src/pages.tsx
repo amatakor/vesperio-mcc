@@ -24,6 +24,7 @@ import type {
   SignalPerson,
 } from "./data/schema";
 import { OrbitMini } from "./orbits/mini";
+import { OrbitMini3D } from "./orbits/mini3d";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
 import {
   items,
@@ -2879,6 +2880,12 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
     setTab(id);
     window.history.replaceState(null, "", `#${id}`);
   };
+  // The 3D view (three.js, lazy chunk) mounts only once the orbit tab has
+  // actually been opened; until then profile pages ship none of it.
+  const [orbitSeen, setOrbitSeen] = useState(false);
+  useEffect(() => {
+    if (tab === "orbit") setOrbitSeen(true);
+  }, [tab]);
 
   return (
     <Layout current="registry">
@@ -2965,7 +2972,18 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               <div className="orbit-grid">
                 {orbitTab.hasLayer && (
                   <div className="orbit-view">
+                    {/* The SVG schematic defines the box and doubles as the
+                        no-WebGL / no-data fallback; the real 3D globe (same
+                        render as /orbits/, this constellation only) overlays
+                        it once loaded. No accent is passed to the 3D view:
+                        it resolves the constellation's own orbits palette
+                        token, so colors match the /orbits/ page exactly. */}
                     <OrbitMini slug={profile.slug} accent={profile.accent} />
+                    {orbitSeen && (
+                      <div className="orbit-3d">
+                        <OrbitMini3D slug={profile.slug} />
+                      </div>
+                    )}
                     <a className="orbit-open" href="/orbits/">
                       open in orbits &rarr;
                     </a>
