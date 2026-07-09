@@ -1840,10 +1840,20 @@ table.profile td.src-cell a,
   margin-top: 1.8rem;
   padding-top: 1.1rem;
 }
-/* The launch-year chart takes a full row of the specs grid, so the band
-   never shows empty trailing cells (Florian 2026-07-09). */
+/* The launch-year chart cell IS the on-orbit stat (Florian 2026-07-09):
+   big count left, step chart flowing right, one full row of the band so
+   no trailing cells sit empty. */
 .spec-chart {
   grid-column: 1 / -1;
+}
+.spec-chart-row {
+  display: flex;
+  gap: 1.4rem;
+  align-items: center;
+}
+.spec-chart-value {
+  flex: none;
+  font-size: 1.7rem;
 }
 .spec-chart-svg {
   display: block;

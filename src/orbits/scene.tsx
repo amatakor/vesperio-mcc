@@ -250,7 +250,7 @@ export function FitCamera({
 }
 
 /** One faint ellipse per satellite of a highlighted constellation. */
-function ShellLines({ positions, color }: { positions: Float32Array; color: string }) {
+export function ShellLines({ positions, color }: { positions: Float32Array; color: string }) {
   const seg = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -348,7 +348,7 @@ export function AutoSpin({
  * live ECEF dots are, killing the old drift (Florian 2026-07-07). Sits
  * inside the spin group so the auto-rotate turntable carries it too.
  */
-function InertialFrame({
+export function InertialFrame({
   groupRef,
   children,
 }: {

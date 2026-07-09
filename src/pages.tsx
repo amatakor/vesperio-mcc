@@ -1994,8 +1994,8 @@ function EventsSection({ profile }: { profile: ProfileMeta }) {
       <ul className="index-list event-list">
         {events.map((i) => (
           <li key={i.id} className="event-row">
-            <span className="date">{i.date}</span>
             <span className={`chip chip-${i.impact}`}>{i.impact}</span>
+            <span className="date">{i.date}</span>
             <a href={`/item/${i.id}/`}>{i.headline}</a>
           </li>
         ))}
@@ -2333,7 +2333,9 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
  * a fleet-composition read, never a historical fleet-size series.
  */
 function OrbitYearsChart({ slug }: { slug: string }) {
-  const [pts, setPts] = useState<Array<[number, number]> | null>(null);
+  const [data, setData] = useState<{ pts: Array<[number, number]>; asOf: string | null } | null>(
+    null,
+  );
   useEffect(() => {
     let cancelled = false;
     void loadElements(slug).then((res) => {
@@ -2346,24 +2348,25 @@ function OrbitYearsChart({ slug }: { slug: string }) {
       if (byYear.size === 0) return;
       const min = Math.min(...byYear.keys());
       const max = Math.max(new Date().getUTCFullYear(), ...byYear.keys());
-      const out: Array<[number, number]> = [];
+      const pts: Array<[number, number]> = [];
       let cum = 0;
       for (let y = min; y <= max; y++) {
         cum += byYear.get(y) ?? 0;
-        out.push([y, cum]);
+        pts.push([y, cum]);
       }
-      setPts(out);
+      setData({ pts, asOf: res.file.fetched_at?.slice(0, 10) ?? null });
     });
     return () => {
       cancelled = true;
     };
   }, [slug]);
-  if (!pts || pts.length < 2) return null;
-  const W = 280;
-  const H = 96;
+  if (!data || data.pts.length < 2) return null;
+  const { pts, asOf } = data;
+  const W = 340;
+  const H = 84;
   const padL = 4;
-  const padR = 30;
-  const padY = 12;
+  const padR = 8;
+  const padY = 10;
   const total = pts[pts.length - 1]![1];
   const x = (i: number) => padL + ((W - padL - padR) * i) / (pts.length - 1);
   const y = (v: number) => H - padY - ((H - padY * 2) * v) / total;
@@ -2374,26 +2377,29 @@ function OrbitYearsChart({ slug }: { slug: string }) {
   return (
     <div className="spec-cell spec-chart" id="spec-orbit-years">
       <span className="spec-label">
-        on orbit by launch year{" "}
+        sats on orbit (verified){" "}
         <a className="spec-anchor" href="#spec-orbit-years">
           {"//"}
         </a>
       </span>
-      <svg viewBox={`0 0 ${W} ${H}`} className="spec-chart-svg" aria-hidden="true">
-        <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.1} />
-        <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
-        <text x={x(0)} y={H - 1} className="spec-chart-tick">
-          {pts[0]![0]}
-        </text>
-        <text x={x(pts.length - 1)} y={H - 1} textAnchor="end" className="spec-chart-tick">
-          {pts[pts.length - 1]![0]}
-        </text>
-        <text x={W - 2} y={y(total) + 3} textAnchor="end" className="spec-chart-count">
-          {total}
-        </text>
-      </svg>
+      <span className="spec-chart-row">
+        <span className="spec-value spec-chart-value">{fmtNum(total)}</span>
+        <svg viewBox={`0 0 ${W} ${H}`} className="spec-chart-svg" aria-hidden="true">
+          <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.1} />
+          <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
+          <text x={x(0)} y={H - 1} className="spec-chart-tick">
+            {pts[0]![0]}
+          </text>
+          <text x={x(pts.length - 1)} y={H - 1} textAnchor="end" className="spec-chart-tick">
+            {pts[pts.length - 1]![0]}
+          </text>
+        </svg>
+      </span>
       <span className="spec-meta">
-        <span className="dim">cataloged today, cumulative · CelesTrak</span>
+        <span className="dim">
+          cataloged today, cumulative by launch year · CelesTrak
+          {asOf ? ` · as of ${asOf}` : ""}
+        </span>
       </span>
     </div>
   );
@@ -3166,6 +3172,8 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
   const isConnIot = profile.domain === "connectivity" || profile.domain === "iot";
   const verifiedField = verifiedRow[1];
   const verifiedComputed = verifiedRow[2] === "computed";
+  const hasOrbitsLayer =
+    !!profile.orbits && (!!profile.orbits.celestrak_group || !!profile.orbits.celestrak_name);
   const specCandidates: Array<SpecCell | null> = [
     specFromField("resolution_m", "max resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
     specFromField("swath_km", "swath", profile.swath_km, (v) => `${fmtNum(v)} km`),
@@ -3173,7 +3181,9 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     specFromField("spectral_bands", "spectral bands", profile.spectral_bands, (v) =>
       (v as string[]).join(", "),
     ),
-    verifiedField.value !== null && verifiedField.value !== undefined
+    // With an Orbits layer, the launch-year chart cell IS the on-orbit
+    // stat (same CelesTrak-derived count), so the plain cell would repeat it.
+    !hasOrbitsLayer && verifiedField.value !== null && verifiedField.value !== undefined
       ? {
           field: "sats_active_verified",
           label: "sats on orbit (verified)",
@@ -3255,7 +3265,7 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
         verifiedRow,
         ["sats planned", profile.sats_planned],
       ],
-      hasLayer: !!profile.orbits && (!!profile.orbits.celestrak_group || !!profile.orbits.celestrak_name),
+      hasLayer: hasOrbitsLayer,
     },
     headerChips: [
       ...(profile.sensor_types.value ?? []).map((s) => ({ label: s })),

@@ -140,6 +140,12 @@ field shapes exactly (any of those profiles is a template).
   rows citing the operator page. A mode a source calls "under
   development" keeps that qualifier in its mode name and carries no
   figures; marketing superlatives never become numbers.
+- **Planned constellation size** (`sats_planned`, widely null): when a
+  profile lacks it, check the operator's own statements and regulatory
+  filings for a STATED target fleet size (an FCC/ITU authorization
+  count is official record, SNR 5; an operator statement is
+  first-party). Roadmap ranges stay verbatim as stated; never sum
+  phases into a total no source states.
 
 ## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
 

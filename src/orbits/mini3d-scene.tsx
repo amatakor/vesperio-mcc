@@ -23,11 +23,20 @@ import {
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 
-import { AXIAL_TILT_DEG, AutoSpin, FitCamera, Globe, PopupAnchor, token } from "./scene";
+import {
+  AXIAL_TILT_DEG,
+  AutoSpin,
+  FitCamera,
+  Globe,
+  InertialFrame,
+  PopupAnchor,
+  ShellLines,
+  token,
+} from "./scene";
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
 import { Popup, type PopupField } from "./popup";
 import { catalogBySlug } from "./catalog";
-import { maxApogeeSceneUnits } from "./kepler";
+import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
 import { RESERVE_TOKEN, SNAPSHOT_CADENCE_MS, type LayoutEntry, type WorkerIn, type WorkerOut } from "./types";
 import type { OmmRecord } from "../data/schema";
 
@@ -103,8 +112,13 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const workerRef = useRef<Worker | null>(null);
   const spinGroup = useRef<THREE.Group | null>(null);
+  const eciGroup = useRef<THREE.Group | null>(null);
   // Last pointer X while dragging; null when not dragging.
   const dragLastX = useRef<number | null>(null);
+
+  // Orbit tracks, exactly as the full scene's focus view draws them: kepler
+  // shell segments from the same records, earth-fixed via the ECI frame.
+  const shellSegments = useMemo(() => orbitShellSegments(records), [records]);
 
   const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
 
@@ -306,6 +320,9 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
           <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
             <group ref={spinGroup}>
               <Globe colors={colors} />
+              <InertialFrame groupRef={eciGroup}>
+                <ShellLines positions={shellSegments} color={dotColor} />
+              </InertialFrame>
               <Satellites
                 layout={layout}
                 buffers={buffersRef}
