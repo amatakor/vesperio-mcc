@@ -1610,8 +1610,180 @@ table.profile td.src-cell a,
   background: var(--reg-acc, var(--acc));
   color: var(--bg);
 }
-.fact-ledger th[scope="row"] {
-  font-weight: 400;
+/* Registry v3.1 (Florian's review of the tab shell): the mark sits flush
+   right like the mockup; specs, timeline, and sources drop the spreadsheet
+   tables for fact cells, mode cards, a marked timeline, and source cards. */
+.snr-agg {
+  margin-left: auto;
+}
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.mode-card {
+  background: var(--panel);
+  padding: 0.7rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mode-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--reg-acc, var(--acc));
+}
+.mode-figs {
+  display: flex;
+  gap: 1.4rem;
+}
+.mode-fig {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.mode-fig-val {
+  font-family: var(--mono);
+  font-size: 1.15rem;
+}
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.fact-cell {
+  background: var(--panel);
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.fact-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.fact-value {
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+.fact-value.empty {
+  color: var(--dim);
+}
+.fact-meta {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--dim);
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+.tl-filter {
+  margin-bottom: 0.7rem;
+}
+.tl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tl-year {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+  border-bottom: 1px solid var(--line);
+  margin: 0.9rem 0 0.35rem;
+  padding-bottom: 0.2rem;
+}
+.tl li:first-child .tl-year {
+  margin-top: 0;
+}
+.tl-row {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.3rem 0;
+  align-items: baseline;
+}
+.tl-mark {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--reg-acc, var(--acc));
+  align-self: center;
+}
+.tl-incident .tl-mark {
+  background: var(--warn);
+}
+.tl-date {
+  flex: none;
+  width: 6.4rem;
+  color: var(--dim);
+  font-size: 0.78rem;
+}
+.tl-body {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.88rem;
+}
+.source-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.8rem;
+}
+.source-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+.source-card-head {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.source-card-head:hover {
+  color: var(--reg-acc, var(--acc));
+}
+.source-card-facts {
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+.source-fact {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  min-width: 0;
+}
+.source-fact-label {
+  color: var(--ink-link);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.source-fact-asof {
+  margin-left: auto;
+  font-size: 0.66rem;
+  flex: none;
 }
 .profile-foot {
   border-top: 1px solid var(--line);

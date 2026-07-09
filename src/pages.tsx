@@ -1117,91 +1117,7 @@ function specFromField(
   return { field, label, value: fmt(f.value), as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace };
 }
 
-function fieldRow(
-  label: string,
-  f: SourcedField<unknown>,
-  computed?: boolean,
-  showAsOf = true,
-): ReactNode {
-  const value =
-    f.value === null || f.value === undefined
-      ? "unknown"
-      : typeof f.value === "boolean"
-        ? f.value
-          ? "yes"
-          : "no"
-        : Array.isArray(f.value)
-          ? f.value.join(", ")
-          : String(f.value);
-  const entityHref =
-    ENTITY_ROW_LABELS.has(label) && typeof f.value === "string"
-      ? entityHrefFor(f.value)
-      : undefined;
-  return (
-    <tr key={label}>
-      <th scope="row">{label}</th>
-      <td className={f.value === null ? "empty" : ""}>
-        {entityHref ? <a href={entityHref}>{value}</a> : value}
-        {f.disputed && (
-          <span className="disputed-stack">
-            <span className="chip chip-disputed">disputed</span>
-            {f.disputed.competing.map((c, i) => (
-              <span key={i} className="disputed-claim">
-                {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
-                <SnrLed snr={c.snr} size="compact" />{" "}
-                <a href={c.source} rel="noopener">
-                  source
-                </a>{" "}
-                <span className="dim">{c.as_of}</span>
-              </span>
-            ))}
-          </span>
-        )}
-      </td>
-      {showAsOf && <td>{f.as_of ?? ""}</td>}
-      <td className="src-cell">
-        {f.source ? (
-          <a href={f.source} rel="noopener">
-            source
-          </a>
-        ) : computed ? (
-          <span className="dim">computed</span>
-        ) : (
-          ""
-        )}
-        {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
-      </td>
-    </tr>
-  );
-}
-
 type ProfileRow = [string, SourcedField<unknown>] | [string, SourcedField<unknown>, "computed"];
-
-function ProfileTable({ rows }: { rows: ProfileRow[] }) {
-  // When every dated field shares one as-of date, the column is noise:
-  // collapse it into a single line under the table (2026-07-07 audit).
-  const dates = new Set(rows.map(([, f]) => f.as_of).filter((d): d is string => !!d));
-  const showAsOf = dates.size > 1;
-  const soleDate = dates.size === 1 ? [...dates][0] : null;
-  return (
-    <>
-      <table className="profile">
-        <thead>
-          <tr>
-            <th>field</th>
-            <th>value</th>
-            {showAsOf && <th>as of</th>}
-            <th>source</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(([label, f, computed]) => fieldRow(label, f, computed === "computed", showAsOf))}
-        </tbody>
-      </table>
-      {soleDate && <p className="dim table-asof">all fields as of {soleDate}</p>}
-    </>
-  );
-}
 
 /**
  * Gunter's Space Page permits summarization/RAG only with clear
@@ -2481,60 +2397,6 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
   );
 }
 
-/** Orbital-safety and anomaly events, surfaced ahead of the full history. */
-function IncidentsSection({ history }: { history: TimelineEvent[] }) {
-  const incidents = history
-    .filter((e) => e.type === "incident")
-    .sort((a, b) => a.date.localeCompare(b.date));
-  if (incidents.length === 0) return null;
-  return (
-    <section id="incidents" className="panel">
-      <h2>incidents</h2>
-      <ol className="timeline">
-        {incidents.map((e) => (
-          <li key={`${e.date}-${e.headline}`}>
-            <span className="mono timeline-date">{e.date}</span>
-            <span>
-              {e.headline}
-              {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
-              {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
-              <a href={e.source} rel="noopener" className="dim">
-                (source, as of {e.as_of})
-              </a>
-            </span>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-function HistorySection({ history }: { history: TimelineEvent[] }) {
-  if (history.length === 0) return null;
-  const ordered = [...history].sort((a, b) => a.date.localeCompare(b.date));
-  return (
-    <section id="history" className="panel">
-      <h2>history</h2>
-      <ol className="timeline">
-        {ordered.map((e) => (
-          <li key={`${e.date}-${e.headline}`}>
-            <span className="mono timeline-date">{e.date}</span>
-            <span>
-              {e.type && e.type !== "milestone" && (
-                <span className="chip chip-tl-type">{e.type}</span>
-              )}{" "}
-              {e.headline}{" "}
-              <a href={e.source} rel="noopener" className="dim">
-                (source, as of {e.as_of})
-              </a>
-            </span>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 /** A provider's vehicles, active and retired alike; the status makes the tag meaningful. */
 function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: string; status: string | null }> }) {
   if (roster.length === 0) return null;
@@ -2548,39 +2410,6 @@ function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: 
           </a>
         ))}
       </div>
-    </section>
-  );
-}
-
-function SourcesSection({ rows }: { rows: ProfileRow[] }) {
-  const byUrl = new Map<string, string[]>();
-  for (const [label, f] of rows) {
-    if (!f.source) continue;
-    const list = byUrl.get(f.source) ?? [];
-    list.push(label);
-    byUrl.set(f.source, list);
-  }
-  const urls = [...byUrl.keys()];
-  if (urls.length === 0) return null;
-  return (
-    <section id="sources" className="panel">
-      <h2>sources</h2>
-      <ol className="src-list">
-        {urls.map((u, i) => (
-          <li key={u}>
-            <a href={u} rel="noopener">
-              <span className="src-num">[{i + 1}]</span>
-              <span>
-                <span className="src-kind">{hostOf(u)}</span>
-                <span className="src-host">{byUrl.get(u)!.join(", ")}</span>
-              </span>
-              <span className="src-arrow">↗</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-      <GuntersAttribution rows={rows} />
-      <GcatAttribution rows={rows} />
     </section>
   );
 }
@@ -2704,18 +2533,20 @@ function GenerationsSection({ generations }: { generations?: GenerationRow[] }) 
   );
 }
 
-/**
- * The Sources tab's per-fact ledger: every sourced fact with its source
- * host, as-of date, and its own SNR mark (trace on click). This is where
- * the per-fact marks live now that the header carries the one aggregate.
- */
-function FactLedgerSection({
-  rows,
-  positioning,
-}: {
-  rows: ProfileRow[];
-  positioning?: Positioning | null;
-}) {
+// The honest class label for a sourced-but-unscored field: computed
+// figures (CelesTrak-derived counts) are the pipeline's, Wikipedia is a
+// reference, everything else unscored is the actor speaking directly.
+function unscoredLabel(f: SourcedField<unknown>, computed?: boolean): string {
+  if (computed || (f.source ?? "").includes("celestrak.org")) return "computed";
+  if ((f.source ?? "").includes("wikipedia.org")) return "wikipedia";
+  return "first-party";
+}
+
+/** Every sourced fact on the profile, positioning claims included. */
+function factEntries(
+  rows: ProfileRow[],
+  positioning?: Positioning | null,
+): Array<{ label: string; f: SourcedField<unknown>; computed?: boolean }> {
   const entries: Array<{ label: string; f: SourcedField<unknown>; computed?: boolean }> = [];
   for (const [label, f, computed] of rows) {
     if (f.source) entries.push({ label, f, computed: computed === "computed" });
@@ -2723,51 +2554,234 @@ function FactLedgerSection({
   (positioning?.claims ?? []).forEach((c, i) => {
     if (c.source) entries.push({ label: `positioning claim ${i + 1}`, f: c });
   });
-  // The honest class label for a sourced-but-unscored field: computed
-  // figures (CelesTrak-derived counts) are the pipeline's, Wikipedia is a
-  // reference, everything else unscored is the actor speaking directly.
-  const unscoredLabel = (f: SourcedField<unknown>, computed?: boolean): string => {
-    if (computed || (f.source ?? "").includes("celestrak.org")) return "computed";
-    if ((f.source ?? "").includes("wikipedia.org")) return "wikipedia";
-    return "first-party";
-  };
-  if (entries.length === 0) return null;
+  return entries;
+}
+
+/** Per-mode EO specs as spec cards (registry v3.1), not a spreadsheet row. */
+function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
+  if (!modes || modes.length === 0) return null;
   return (
-    <section id="fact-ledger" className="panel">
-      <h2>fact ledger</h2>
-      <table className="profile fact-ledger">
-        <thead>
-          <tr>
-            <th>fact</th>
-            <th>source</th>
-            <th>as of</th>
-            <th>snr</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map(({ label, f, computed }) => (
-            <tr key={label}>
-              <th scope="row">{label}</th>
-              <td>
-                <a href={f.source!} rel="noopener">
-                  {hostOf(f.source!)}
-                </a>
-              </td>
-              <td>{f.as_of ?? ""}</td>
-              <td className="src-cell">
-                {f.snr !== undefined ? (
-                  <>
-                    <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
-                    {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
-                  </>
-                ) : (
-                  <span className="dim">{unscoredLabel(f, computed)}</span>
-                )}
-              </td>
-            </tr>
+    <div className="mode-cards">
+      {modes.map((m) => (
+        <div key={m.mode} className="mode-card">
+          <span className="mode-name">{m.mode}</span>
+          <span className="mode-figs">
+            <span className="mode-fig">
+              <span className="fact-label">resolution</span>
+              <span className="mode-fig-val">
+                {m.resolution_m !== null ? `${m.resolution_m} m` : <span className="dim">as stated</span>}
+              </span>
+            </span>
+            <span className="mode-fig">
+              <span className="fact-label">swath</span>
+              <span className="mode-fig-val">
+                {m.swath_km !== null ? `${m.swath_km} km` : <span className="dim">as stated</span>}
+              </span>
+            </span>
+          </span>
+          <span className="fact-meta">
+            <a href={m.source} rel="noopener">
+              source
+            </a>{" "}
+            <span className="dim">as of {m.as_of}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The exhaustive reference as a data grid of fact cells (registry v3.1):
+ * micro label, prominent value, dim meta line. Same information as the old
+ * table, none of the spreadsheet reading.
+ */
+function FactGrid({ rows }: { rows: ProfileRow[] }) {
+  const cell = (label: string, f: SourcedField<unknown>, computed: boolean) => {
+    const raw = f.value;
+    const text =
+      raw === null || raw === undefined
+        ? "unknown"
+        : typeof raw === "boolean"
+          ? raw
+            ? "yes"
+            : "no"
+          : Array.isArray(raw)
+            ? raw.join(", ")
+            : String(raw);
+    const entityHref =
+      ENTITY_ROW_LABELS.has(label) && typeof raw === "string" ? entityHrefFor(raw) : undefined;
+    const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
+    return (
+      <div key={label} className="fact-cell">
+        <span className="fact-label">{label}</span>
+        <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
+          {isUrl ? (
+            <a href={raw as string} rel="noopener">
+              {hostOf(raw as string)}
+            </a>
+          ) : entityHref ? (
+            <a href={entityHref}>{text}</a>
+          ) : (
+            text
+          )}
+        </span>
+        {f.disputed && (
+          <span className="disputed-stack">
+            <span className="chip chip-disputed">disputed</span>
+            {f.disputed.competing.map((c, i) => (
+              <span key={i} className="disputed-claim">
+                {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
+                <SnrLed snr={c.snr} size="compact" />{" "}
+                <a href={c.source} rel="noopener">
+                  source
+                </a>{" "}
+                <span className="dim">{c.as_of}</span>
+              </span>
+            ))}
+          </span>
+        )}
+        <span className="fact-meta">
+          {f.source ? (
+            <a href={f.source} rel="noopener">
+              source
+            </a>
+          ) : computed ? (
+            <span className="dim">computed</span>
+          ) : null}
+          {f.as_of && <span className="dim">as of {f.as_of}</span>}
+          {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+        </span>
+      </div>
+    );
+  };
+  return (
+    <div className="fact-grid">
+      {rows.map(([label, f, computed]) => cell(label, f, computed === "computed"))}
+    </div>
+  );
+}
+
+/**
+ * The chronology as an interactive timeline (registry v3.1): newest first,
+ * type filter chips, year dividers, a spine with type-aware markers
+ * (incidents carry the warn ink). Renamed from history per Florian.
+ */
+function TimelineSection({ history }: { history: TimelineEvent[] }) {
+  const [filter, setFilter] = useState<string | null>(null);
+  if (history.length === 0) return null;
+  const typeOf = (e: TimelineEvent) => e.type ?? "milestone";
+  const present = [...new Set(history.map(typeOf))].sort();
+  const shown = (filter ? history.filter((e) => typeOf(e) === filter) : history)
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+  let lastYear = "";
+  return (
+    <section id="history" className="panel">
+      <h2>timeline</h2>
+      {present.length > 1 && (
+        <div className="sig-tabs tl-filter">
+          <button
+            className={`sig-tab${filter === null ? " active" : ""}`}
+            onClick={() => setFilter(null)}
+          >
+            all
+          </button>
+          {present.map((t) => (
+            <button
+              key={t}
+              className={`sig-tab${filter === t ? " active" : ""}`}
+              onClick={() => setFilter(filter === t ? null : t)}
+            >
+              {t}
+            </button>
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
+      <ol className="tl">
+        {shown.map((e) => {
+          const year = e.date.slice(0, 4);
+          const divider = year !== lastYear;
+          lastYear = year;
+          const incident = typeOf(e) === "incident";
+          return (
+            <li key={`${e.date}-${e.headline}`} className={incident ? "tl-incident" : undefined}>
+              {divider && <span className="tl-year">{year}</span>}
+              <span className="tl-row">
+                <span className="tl-mark" aria-hidden="true" />
+                <span className="mono tl-date">{e.date}</span>
+                <span className="tl-body">
+                  {e.type && e.type !== "milestone" && (
+                    <span className="chip chip-tl-type">{e.type}</span>
+                  )}{" "}
+                  {e.headline}
+                  {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
+                  {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
+                  <a href={e.source} rel="noopener" className="dim">
+                    (source, as of {e.as_of})
+                  </a>
+                </span>
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
+/**
+ * The Sources tab as provenance cards (registry v3.1): one card per source
+ * host, listing the facts it backs, each with its own SNR mark (trace on
+ * click) or honest class word. This is where per-fact marks live now that
+ * the header carries the one aggregate.
+ */
+function SourceCardsSection({
+  rows,
+  positioning,
+}: {
+  rows: ProfileRow[];
+  positioning?: Positioning | null;
+}) {
+  const entries = factEntries(rows, positioning);
+  if (entries.length === 0) return null;
+  const byHost = new Map<string, typeof entries>();
+  for (const e of entries) {
+    const host = hostOf(e.f.source!);
+    byHost.set(host, [...(byHost.get(host) ?? []), e]);
+  }
+  const cards = [...byHost.entries()].sort((a, b) => b[1].length - a[1].length);
+  return (
+    <section id="sources" className="panel">
+      <h2>sources</h2>
+      <div className="source-cards">
+        {cards.map(([host, list], i) => (
+          <div key={host} className="source-card">
+            <a className="source-card-head" href={list[0]!.f.source!} rel="noopener">
+              <span className="src-num">[{i + 1}]</span> {host}{" "}
+              <span className="src-arrow">↗</span>
+            </a>
+            <div className="source-card-facts">
+              {list.map(({ label, f, computed }) => (
+                <span key={label} className="source-fact">
+                  <a href={f.source!} rel="noopener" className="source-fact-label">
+                    {label}
+                  </a>
+                  {f.snr !== undefined ? (
+                    <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
+                  ) : (
+                    <span className="dim">{unscoredLabel(f, computed)}</span>
+                  )}
+                  {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+                  {f.as_of && <span className="dim source-fact-asof">{f.as_of}</span>}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <GuntersAttribution rows={rows} />
+      <GcatAttribution rows={rows} />
     </section>
   );
 }
@@ -2931,35 +2945,15 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         </div>
 
         <div className="tab-panel" hidden={tab !== "specs"}>
+          {profile.imagingModes && profile.imagingModes.length > 0 && (
+            <section id="imaging-modes" className="panel">
+              <h2>imaging modes</h2>
+              <ImagingModeCards modes={profile.imagingModes} />
+            </section>
+          )}
           <section id="facts" className="panel">
             <h2>facts</h2>
-            {profile.imagingModes && profile.imagingModes.length > 0 && (
-              <table className="profile imaging-modes">
-                <thead>
-                  <tr>
-                    <th>mode</th>
-                    <th>resolution</th>
-                    <th>swath</th>
-                    <th>source</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {profile.imagingModes.map((m) => (
-                    <tr key={m.mode}>
-                      <th scope="row">{m.mode}</th>
-                      <td>{m.resolution_m !== null ? `${m.resolution_m} m` : "unknown"}</td>
-                      <td>{m.swath_km !== null ? `${m.swath_km} km` : "unknown"}</td>
-                      <td className="src-cell">
-                        <a href={m.source} rel="noopener">
-                          source
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            <ProfileTable rows={profile.rows} />
+            <FactGrid rows={profile.rows} />
             {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
           </section>
         </div>
@@ -2978,7 +2972,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
                   </div>
                 )}
                 <div className="orbit-facts">
-                  <ProfileTable rows={orbitTab.rows} />
+                  <FactGrid rows={orbitTab.rows} />
                 </div>
               </div>
             </section>
@@ -2987,9 +2981,8 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
 
         {(timeline.length > 0 || hasEvents) && (
           <div className="tab-panel" hidden={tab !== "history"}>
-            <IncidentsSection history={timeline} />
-            <HistorySection history={timeline} />
             <EventsSection profile={profile} />
+            <TimelineSection history={timeline} />
           </div>
         )}
 
@@ -3001,8 +2994,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
 
         {hasSources && (
           <div className="tab-panel" hidden={tab !== "sources"}>
-            <FactLedgerSection rows={profile.rows} positioning={positioning} />
-            <SourcesSection rows={profile.rows} />
+            <SourceCardsSection rows={profile.rows} positioning={positioning} />
           </div>
         )}
 
