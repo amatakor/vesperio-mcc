@@ -2362,57 +2362,69 @@ function OrbitYearsChart({ slug }: { slug: string }) {
   }, [slug]);
   if (!data || data.pts.length < 2) return null;
   const { pts, asOf } = data;
-  // A quiet sparkline, no axis chrome: the meta line names the span.
-  const W = 200;
-  const H = 40;
-  const pad = 3;
+  // A real chart with room to breathe: fixed drawing frame, step curve,
+  // first/last year ticks, a marker on today's count.
+  const W = 520;
+  const H = 132;
+  const padX = 6;
+  const padTop = 12;
+  const padBot = 22;
   const total = pts[pts.length - 1]![1];
-  const x = (i: number) => pad + ((W - pad * 2) * i) / (pts.length - 1);
-  const y = (v: number) => H - pad - ((H - pad * 2) * v) / total;
+  const x = (i: number) => padX + ((W - padX * 2) * i) / (pts.length - 1);
+  const y = (v: number) => H - padBot - ((H - padTop - padBot) * v) / total;
   // Step path: each year holds its level until the next launch year.
   let d = `M ${x(0)} ${y(pts[0]![1])}`;
   for (let i = 1; i < pts.length; i++) d += ` H ${x(i)} V ${y(pts[i]![1])}`;
-  const area = `${d} V ${H - pad} H ${x(0)} Z`;
+  const area = `${d} V ${H - padBot} H ${x(0)} Z`;
   return (
-    <div className="spec-cell spec-chart" id="spec-orbit-years">
-      <span className="spec-label">
-        sats on orbit (verified){" "}
-        <a className="spec-anchor" href="#spec-orbit-years">
-          {"//"}
-        </a>
-      </span>
-      <span className="spec-chart-row">
-        <span className="spec-value spec-chart-value">{fmtNum(total)}</span>
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          className="spec-chart-svg"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.12} />
-          <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
-        </svg>
-      </span>
-      <span className="spec-meta">
-        <span className="dim">
-          {pts[0]![0]} to {pts[pts.length - 1]![0]}, cumulative by launch year · CelesTrak
-          {asOf ? ` · as of ${asOf}` : ""}
-        </span>
-      </span>
-    </div>
+    <section id="on-orbit" className="panel">
+      <h2>on orbit</h2>
+      <div className="onorbit-grid">
+        <div className="onorbit-stat">
+          <span className="fact-label">sats on orbit (verified)</span>
+          <span className="onorbit-value">{fmtNum(total)}</span>
+          <span className="fact-meta">
+            <span className="dim">cataloged by CelesTrak</span>
+            {asOf && <span className="dim">as of {asOf}</span>}
+          </span>
+        </div>
+        <div className="onorbit-chart">
+          <svg viewBox={`0 0 ${W} ${H}`} className="onorbit-svg" aria-hidden="true">
+            <line
+              x1={padX}
+              y1={H - padBot}
+              x2={W - padX}
+              y2={H - padBot}
+              stroke="var(--line)"
+              strokeWidth={1}
+            />
+            <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.08} />
+            <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
+            <circle
+              cx={x(pts.length - 1)}
+              cy={y(total)}
+              r={3}
+              fill="var(--reg-acc, var(--acc))"
+            />
+            <text x={padX} y={H - 6} className="onorbit-tick">
+              {pts[0]![0]}
+            </text>
+            <text x={W - padX} y={H - 6} textAnchor="end" className="onorbit-tick">
+              {pts[pts.length - 1]![0]}
+            </text>
+          </svg>
+          <p className="dim onorbit-note">
+            cumulative by launch year; counts objects in today's catalog, so satellites since
+            deorbited are absent
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
 /** The entity's defining numbers as anchored, citable stat cells (registry v2). */
-function KeySpecsPanel({
-  cells,
-  note,
-  extra,
-}: {
-  cells: SpecCell[];
-  note?: string | null;
-  extra?: ReactNode;
-}) {
+function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
   if (cells.length < 2) return null;
   return (
     <section id="specs" className="panel">
@@ -2437,7 +2449,6 @@ function KeySpecsPanel({
             </span>
           </div>
         ))}
-        {extra}
       </div>
       {note && <p className="dim spec-note">{note}</p>}
     </section>
@@ -2887,6 +2898,7 @@ function SourceCardsSection({
 /** Which tab owns each legacy in-page anchor, for #hash deep links. */
 const TAB_OF_ANCHOR: Record<string, string> = {
   specs: "overview",
+  "on-orbit": "overview",
   generations: "overview",
   stock: "overview",
   constellations: "overview",
@@ -3038,11 +3050,8 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               </p>
             </>
           )}
-          <KeySpecsPanel
-            cells={specs}
-            note={profile.specNote}
-            extra={orbitTab?.hasLayer ? <OrbitYearsChart slug={profile.slug} /> : undefined}
-          />
+          <KeySpecsPanel cells={specs} note={profile.specNote} />
+          {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
           <GenerationsSection generations={profile.generations} />
           <ChildConstellationsSection children={children} />
           <VehicleRosterSection roster={roster} />

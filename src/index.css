@@ -1844,29 +1844,59 @@ table.profile td.src-cell a,
   margin-top: 1.8rem;
   padding-top: 1.1rem;
 }
-/* The on-orbit stat cell carries its trend as a sparkline (v3.4 rethink):
-   same anatomy as its sibling cells (label, value, meta), the step curve
-   tucked beside the number. No axis chrome; the meta line names the span. */
-.spec-chart-row {
-  display: flex;
-  gap: 1.1rem;
-  align-items: center;
-}
-.spec-chart-value {
-  flex: none;
-}
-/* The curve flows across everything the number leaves free. */
-.spec-chart-svg {
-  display: block;
-  flex: 1;
-  min-width: 0;
-  height: 2.6rem;
-}
 /* Long stated phrases step down from display type to body scale. */
 .spec-value.spec-value-long {
   font-size: 0.95rem;
   line-height: 1.5;
   font-weight: 400;
+}
+/* ON ORBIT module (v3.5): the count and its growth curve get their own
+   panel, free of the key-specs band. Stat block left, chart right, both
+   on one filled surface; stacks on narrow screens. */
+.onorbit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.onorbit-stat {
+  flex: 1 1 11rem;
+  min-width: 0;
+  background: var(--panel);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+}
+.onorbit-value {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1.05;
+  color: var(--fg);
+}
+.onorbit-chart {
+  flex: 3 1 24rem;
+  min-width: 0;
+  background: var(--panel);
+  padding: 0.9rem 1rem 0.6rem;
+}
+.onorbit-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.onorbit-tick {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--dim);
+}
+.onorbit-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.7rem;
+  font-family: var(--mono);
 }
 
 /* Profile overview: fg copy behind an accent rule. A paragraph of bold
@@ -1959,9 +1989,6 @@ table.profile td.src-cell a,
 .specs-grid > .spec-cell {
   flex: 1 1 11rem;
   min-width: 0;
-}
-.specs-grid > .spec-chart {
-  flex: 2 1 24rem;
 }
 /* Filled cells like the facts grid (Florian 2026-07-09): page-black cells
    read as empty nested frames; panel fill makes the band a solid block. */
