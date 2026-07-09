@@ -977,3 +977,59 @@ a newer entry if a lesson changes.
   announcement (fixed: 2026-07-07-blacksky-gen3-ai-tactical-isr, was
   `product`); a commercial buyer makes it `contract`. `product` is reserved
   for product news with no transaction in the event.
+
+## Full-source-list sweep, ~24h11m gap (2026-07-09)
+
+- 2026-07-09-A: `draft.coverage` must be drawn from CATEGORIES (launch,
+  constellation, contract, procurement, regulatory, financial, product,
+  partnership, incident, geopolitical, human-spaceflight), not from the tag
+  vocabulary; a coverage array containing a domain tag like "eo" is a flat
+  rejection ("not a known category"). Populate coverage from the categories
+  the drafted items actually used.
+- 2026-07-09-B: Two same-pattern-different-country corporate announcements
+  inside 7 days (ICEYE Germany entity+CEO on 07-08, ICEYE Portugal
+  entity+CEO on 07-09) trip the same-event dedup heuristic on shared
+  company + category alone; finalize-sweep does not silently pass this
+  through as a genuinely distinct event even when the country, subsidiary
+  and named person are all different. Fix is mechanical: add a top-level
+  `dedup_distinct: [{ id, reason }]` on the newItems entry attesting why
+  it's not the same event, rather than routing it through `updates[]`.
+- 2026-07-09-C: A whitelisted signal's own claim can itself flag a genuine
+  scope question worth holding rather than drafting either way: Marcia
+  Smith's Bluesky post about NASA's STRIDE Mars robotic-mobility study
+  contracts (7 companies, ~$17M total) has a real commercial-provider
+  angle but reads as planetary-science procurement via small design-study
+  awards, closer to the 2026-07-05-Q Aeolus-2 precedent than to new-space
+  commercial-market activity; held with a clear reason rather than
+  published or silently discarded.
+- 2026-07-09-D: When two trade sources disagree on a technical sub-detail
+  of an otherwise-agreed contract (SpaceNews attributed Pulse Space's $40M
+  Space Force laser-power award to the Missile Defense Agency's SHIELD
+  IDIQ vehicle; SatNews described AFRL/STRATFI/OTA and the "Space Combat
+  Power" portfolio instead), the safer draft omits the disputed
+  programmatic detail from the copy and states only the facts both
+  sources agree on (company, amount, technology, date) rather than
+  picking one source's framing to assert as fact. Re-fetching the lead
+  source with a stricter "quote verbatim" prompt is worth doing before
+  concluding two sources actually conflict rather than one WebFetch
+  summary being loose.
+- 2026-07-09-E: A `sourceHealth` entry is legitimate for a source that
+  returns 200 with real content but the content is stale relative to the
+  run: ISRO's isro.gov.in/Press.html loaded cleanly this run but every
+  listed item was dated 2025 or earlier (confirms the 2026-07-08-C
+  pattern on a new source), logged as `unverified` rather than flipped
+  to `verified` on the strength of the 200 alone.
+- 2026-07-09-F: `europeanspaceflight.com` (site, article pages, and the
+  substack mirror) was 403 on every fetch path tried this run, including
+  a fresh curl with a descriptive browser User-Agent against the specific
+  article URL surfaced by a whitelisted signal's Bluesky post (Andrew
+  Parsonson linking an ArianeGroup Ariane-6 upper-stage engine story).
+  Rather than draft numeric claims (thrust figures, test durations) off a
+  WebSearch snippet summary of the blocked page, the candidate was
+  dropped this run; WebSearch prose is not a fetched source per the hard
+  rule against quoting numbers from a summary.
+- 2026-07-09-G: A forward-scheduled launch inside the discovery window
+  (Long March 10B's first-flight window opening 2026-07-10, the day
+  after this sweep) is not draftable as an event yet even though it
+  would likely be seismic (first flight of a new vehicle); it hasn't
+  happened. Left for the next sweep to pick up once it actually flies.
