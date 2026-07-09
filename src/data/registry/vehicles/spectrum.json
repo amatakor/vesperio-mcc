@@ -175,5 +175,49 @@
     "source": null,
     "as_of": null
   },
-  "notes": "Single flight to date recorded as a failure by Launch Library."
+  "notes": "Single flight to date recorded as a failure by Launch Library.",
+  "height_m": {
+    "value": 28,
+    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",
+    "as_of": "2026-07-08",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",
+        "reason": "Launch Library 2 record, deterministic v2 spec enrichment (null-fill only)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "diameter_m": {
+    "value": 2,
+    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",
+    "as_of": "2026-07-08",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",
+        "reason": "Launch Library 2 record, deterministic v2 spec enrichment (null-fill only)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "events": [
+    {
+      "date": "2025-03-30",
+      "headline": "Maiden Flight launch failure",
+      "type": "incident",
+      "outcome": "Launch Failure",
+      "source": "https://ll.thespacedevs.com/2.2.0/launch/?status=4&limit=100&ordering=-net",
+      "as_of": "2026-07-08"
+    }
+  ]
 }
