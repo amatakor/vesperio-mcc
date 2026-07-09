@@ -122,6 +122,30 @@ field shapes exactly (any of those profiles is a template).
   stated. All scored fields take eoPortal's aggregator class: `"snr": 4`,
   `"tier": "canonical"`, trace per the section below. Null-fill and
   upgrade only, as everywhere in the registry.
+- **Quantified beats vague** (`revisit` especially): a stated figure
+  ("under 6 hour global revisit", "twice daily") outranks a stated
+  vagueness ("multiple times per day"). A vague value already in a
+  profile is a placeholder: upgrade it when the eoPortal page or the
+  operator's own site states a quantified one (normal source-preference
+  order applies). Never coerce a vague statement into a number.
+- **Generations**: when a page names constellation generations with
+  stated capabilities ("Gen4 ... resolutions as fine as 16 cm"), append
+  sourced `generations` rows (`name`, `text`, `source`, `as_of`), same
+  rules as timeline events. A generation no source names gets no row;
+  never invent a baseline generation to complete the set.
+- **Imaging modes from the operator's own pages** (first-party beats
+  aggregator): after the eoPortal pass, check the operator's product or
+  spec page for modes eoPortal omits (ICEYE's Spot Fine and Dwell, for
+  example) and their stated figures. Append/upgrade `imaging_modes`
+  rows citing the operator page. A mode a source calls "under
+  development" keeps that qualifier in its mode name and carries no
+  figures; marketing superlatives never become numbers.
+- **Planned constellation size** (`sats_planned`, widely null): when a
+  profile lacks it, check the operator's own statements and regulatory
+  filings for a STATED target fleet size (an FCC/ITU authorization
+  count is official record, SNR 5; an operator statement is
+  first-party). Roadmap ranges stay verbatim as stated; never sum
+  phases into a total no source states.
 
 ## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
 

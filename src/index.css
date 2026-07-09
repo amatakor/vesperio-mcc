@@ -1454,25 +1454,452 @@ table.profile td.src-cell a,
 .registry-profile {
   max-width: 46rem;
 }
-/* Two-column profile at desktop (2026-07-07): reading flow left at the
-   proven measure, sticky wayfinding rail right. The 46rem cap lifts so
-   the pair uses the shell; each column keeps a sane measure itself. */
+/* Tabbed profile (registry v3, 2026-07-09): header row carrying the ONE
+   page sourcing mark, an uppercase tab bar in the domain accent, panels
+   below, related demoted to a footer strip. The two-column rail and the
+   on-this-page TOC died with the tabs. */
 @media (min-width: 64rem) {
   .registry-profile {
-    max-width: none;
+    max-width: 62rem;
   }
-  .profile-cols {
-    display: grid;
-    grid-template-columns: minmax(0, 46rem) minmax(16rem, 20rem);
-    gap: 0 2rem;
-    align-items: start;
+}
+.profile-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.snr-agg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding-top: 0.5rem;
+  cursor: default;
+}
+.snr-agg-label {
+  color: var(--dim);
+}
+.snr-agg-count {
+  white-space: nowrap;
+}
+.snr-agg-pop {
+  left: auto;
+  right: 0;
+  width: 17rem;
+}
+.snr-agg-pop-title {
+  display: block;
+  color: var(--reg-acc, var(--acc));
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+.snr-agg-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.snr-agg-foot {
+  display: block;
+  border-top: 1px solid var(--line);
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
+  color: var(--dim);
+}
+.profile-chips {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin: 0.2rem 0 1rem;
+}
+.profile-chips .chip-status {
+  background: var(--reg-acc, var(--acc));
+  border-color: var(--reg-acc, var(--acc));
+  color: var(--bg);
+}
+.profile-tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  margin: 0 0 1.2rem;
+}
+.profile-tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--dur-fast, 120ms) var(--ease, ease);
+}
+.profile-tab:hover {
+  color: var(--fg);
+}
+.profile-tab.active {
+  color: var(--bg);
+  background: var(--reg-acc, var(--acc));
+}
+.tab-panel[hidden] {
+  display: none;
+}
+.gen-rows {
+  border: 1px solid var(--line);
+}
+.gen-row {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+  font-family: var(--sans);
+}
+.gen-row:last-child {
+  border-bottom: 0;
+}
+.gen-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--reg-acc, var(--acc));
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex: none;
+  min-width: 3.4rem;
+  padding-top: 0.15rem;
+}
+.orbit-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 48rem) {
+  .orbit-grid {
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+    /* Default stretch: the 3D frame grows to match the facts column. */
   }
-  .profile-rail {
-    position: sticky;
-    top: 1rem;
-    max-height: calc(100vh - 2rem);
-    overflow-y: auto;
+  .orbit-view {
+    min-height: 17rem;
   }
+}
+/* One frame, not two: the section panel already draws the box, so the
+   view area is delineated by its deep-space background alone. */
+.orbit-view {
+  position: relative;
+  background: #07131a;
+}
+/* The 3D globe overlays the in-flow SVG schematic, which defines the box
+   and shows through whenever the 3D view declines to render (no WebGL, no
+   elements file, still loading). Once the 3D view is actually in the DOM,
+   the schematic hides so the two captions never double up. */
+.orbit-3d {
+  position: absolute;
+  inset: 0;
+}
+.orbit-view:has(.omini3d) > svg {
+  visibility: hidden;
+}
+.orbit-open {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--reg-acc, var(--acc));
+  color: var(--reg-acc, var(--acc));
+  padding: 0.25rem 0.55rem;
+  background: rgba(7, 19, 26, 0.85);
+}
+.orbit-open:hover {
+  background: var(--reg-acc, var(--acc));
+  color: var(--bg);
+}
+/* Registry v3.1 (Florian's review of the tab shell): the mark sits flush
+   right like the mockup; specs, timeline, and sources drop the spreadsheet
+   tables for fact cells, mode cards, a marked timeline, and source cards. */
+.snr-agg {
+  margin-left: auto;
+}
+.mode-cards {
+  border: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: var(--line);
+}
+.mode-card {
+  flex: 1 1 12rem;
+  min-width: 0;
+  background: var(--panel);
+  padding: 0.7rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mode-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--reg-acc, var(--acc));
+}
+.mode-figs {
+  display: flex;
+  gap: 1.4rem;
+}
+.mode-fig {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.mode-fig-val {
+  font-family: var(--mono);
+  font-size: 1.15rem;
+}
+.fact-grid {
+  border: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: var(--line);
+}
+.fact-cell {
+  flex: 1 1 13rem;
+  background: var(--panel);
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.fact-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.fact-value {
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+.fact-value.empty {
+  color: var(--dim);
+}
+.fact-meta {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  color: var(--dim);
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+.tl-filter {
+  margin-bottom: 0.9rem;
+}
+/* Timeline v3.2 (Florian: the flat rows read weaker than the old list):
+   a spine down the left, markers sitting on it, the year riding the spine
+   in the accent, and a real hierarchy inside each entry: dim mono date +
+   type chip up top, the event itself at body weight below. */
+.tl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  width: 1px;
+  background: var(--line);
+}
+.tl-year {
+  display: inline-block;
+  position: relative;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  color: var(--reg-acc, var(--acc));
+  background: var(--bg);
+  padding: 0.15rem 0.5rem 0.15rem 0;
+  margin: 0.9rem 0 0.15rem;
+}
+.tl li:first-child .tl-year {
+  margin-top: 0;
+}
+.tl-row {
+  position: relative;
+  display: block;
+  padding: 0.45rem 0 0.45rem 1.4rem;
+}
+.tl-mark {
+  position: absolute;
+  left: 0;
+  top: 0.72rem;
+  width: 7px;
+  height: 7px;
+  background: var(--reg-acc, var(--acc));
+}
+.tl-incident .tl-mark {
+  background: var(--warn);
+}
+.tl-head {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+.tl-date {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+.tl-title {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--fg);
+  margin-top: 0.2rem;
+  max-width: 46rem;
+}
+.tl-title .incident-line {
+  font-size: 0.8rem;
+}
+/* News events: the date tag steps back so the headline leads. */
+.registry-profile .event-row .date {
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+.source-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.8rem;
+}
+.source-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+.source-card-head {
+  display: block;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.source-card-head:hover {
+  color: var(--reg-acc, var(--acc));
+}
+.source-card-facts {
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+/* Columns, not a flex ragged edge: label | mark/class | as-of, so the SNR
+   marks align down the card (Florian 2026-07-09). */
+.source-fact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 6.4rem 4.6rem;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+}
+.source-fact-label {
+  color: var(--ink-link);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.source-fact-class {
+  justify-self: end;
+  text-align: right;
+}
+.source-fact-asof {
+  justify-self: end;
+  font-size: 0.66rem;
+}
+.profile-foot {
+  border-top: 1px solid var(--line);
+  margin-top: 1.8rem;
+  padding-top: 1.1rem;
+}
+/* Long stated phrases step down from display type to body scale. */
+.spec-value.spec-value-long {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+/* ON ORBIT module (v3.5): the count and its growth curve get their own
+   panel, free of the key-specs band. Stat block left, chart right, both
+   on one filled surface; stacks on narrow screens. */
+.onorbit-grid {
+  border: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  background: var(--line);
+}
+/* Hero stat (Florian 2026-07-09): the count is the module's lead, the
+   chart its compact companion, so the stat block takes the growth and
+   the chart keeps a boxy fixed measure. */
+.onorbit-stat {
+  flex: 1 1 16rem;
+  min-width: 0;
+  background: var(--panel);
+  padding: 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.55rem;
+}
+.onorbit-value {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  line-height: 1;
+  color: var(--fg);
+}
+.onorbit-chart {
+  flex: 0 1 24rem;
+  min-width: min(100%, 16rem);
+  background: var(--panel);
+  padding: 0.9rem 1rem 0.6rem;
+}
+.onorbit-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.onorbit-tick {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--dim);
+}
+.onorbit-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.7rem;
+  font-family: var(--mono);
 }
 
 /* Profile overview: fg copy behind an accent rule. A paragraph of bold
@@ -1480,7 +1907,7 @@ table.profile td.src-cell a,
    reserved for one-line taglines and interaction. */
 .overview-block {
   font-family: var(--sans);
-  border-left: 3px solid var(--acc);
+  border-left: 3px solid var(--reg-acc, var(--acc));
   padding-left: 0.9rem;
   max-width: 46rem;
 }
@@ -1488,34 +1915,20 @@ table.profile td.src-cell a,
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--acc);
+  color: var(--reg-acc, var(--acc));
   margin: 0 0 0.6rem;
 }
-.registry-profile .panel h2::before,
-.registry-profile .toc-panel h2::before {
+.registry-profile .panel h2::before {
   content: "// ";
 }
-.toc-list {
-  margin: 0;
-  padding-left: 0;
-  font-size: 0.85rem;
-  list-style: none;
-  counter-reset: toc;
-}
-.toc-list li {
-  margin: 0.15rem 0;
-}
-.toc-list li::before {
-  counter-increment: toc;
-  content: counter(toc, decimal-leading-zero) " ";
-  color: var(--dim);
-  font-family: var(--mono);
-}
-.toc-list a {
-  color: var(--fg);
-}
-.toc-list a:hover {
-  color: var(--acc);
+/* Unfenced sections (Florian 2026-07-09, mirroring the item page): the
+   heading and a top hairline mark the section; the content blocks inside
+   keep their own frames. One frame total, just the inner one. */
+.registry-profile .panel {
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 0.9rem 0 0;
+  margin: 0 0 1.6rem;
 }
 
 .event-list {
@@ -1576,15 +1989,23 @@ table.profile td.src-cell a,
 /* Registry v2 profile: key-specs panel, positioning + MCC read, incidents,
    split related. Reuses .panel/.tile/.chip aesthetics rather than a new
    visual language; no radius, no transform hovers. */
+/* Flex, not grid (registry v3.4): cells grow to fill every row, so the
+   band never shows empty remainder slots at any viewport or cell count. */
 .specs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  border: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   background: var(--line);
-  border: 1px solid var(--line);
 }
+.specs-grid > .spec-cell {
+  flex: 1 1 11rem;
+  min-width: 0;
+}
+/* Filled cells like the facts grid (Florian 2026-07-09): page-black cells
+   read as empty nested frames; panel fill makes the band a solid block. */
 .spec-cell {
-  background: var(--bg);
+  background: var(--panel);
   padding: 0.7rem 0.85rem;
   display: flex;
   flex-direction: column;

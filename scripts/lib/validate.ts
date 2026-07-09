@@ -920,6 +920,33 @@ function checkImagingModes(o: Obj, path: string, errors: string[]): void {
 }
 
 /**
+ * Registry v3 per-generation capability rows. Each row is sourced like any
+ * other fact: no source, no row. text is copied/tightly paraphrased from
+ * the cited page, never derived.
+ */
+function checkGenerations(o: Obj, path: string, errors: string[]): void {
+  const gens = o.generations;
+  if (gens === undefined) return;
+  if (!Array.isArray(gens)) {
+    errors.push(`${path}.generations: must be an array when present`);
+    return;
+  }
+  gens.forEach((g, i) => {
+    const p = `${path}.generations[${i}]`;
+    if (!isObj(g)) {
+      errors.push(`${p}: must be an object`);
+      return;
+    }
+    reqString(g, "name", p, errors);
+    reqString(g, "text", p, errors);
+    if (!isHttpUrl(g.source)) errors.push(`${p}.source: required http(s) URL`);
+    if (typeof g.as_of !== "string" || !isValidDate(g.as_of)) {
+      errors.push(`${p}.as_of: required YYYY-MM-DD`);
+    }
+  });
+}
+
+/**
  * Registry v2 positioning block. claims follow the full sourcing model
  * (each is a SourcedField<string>); mcc_read is the registry's one
  * editorial surface: never SNR-scored, never feeding other fields, and
@@ -1317,6 +1344,7 @@ export function validateRegistryProfile(
       if (data[key] !== undefined) checkSourcedField(data, key, kind, path, errors);
     }
     checkImagingModes(data, path, errors);
+    checkGenerations(data, path, errors);
     checkTimeline(data, path, errors);
   } else if (expectedType === "vehicle") {
     for (const [key, kind] of VEHICLE_FIELDS) checkSourcedField(data, key, kind, path, errors);

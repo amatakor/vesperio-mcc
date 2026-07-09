@@ -65,8 +65,9 @@ const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = 0.995; // occluder
 
 /** Earth's axial tilt (obliquity), degrees; the pole leans screen-right
- * from the default front view (Florian 2026-07-06). */
-const AXIAL_TILT_DEG = 23.44;
+ * from the default front view (Florian 2026-07-06). Exported so the
+ * registry OrbitMini3D can lean its globe by the exact same obliquity. */
+export const AXIAL_TILT_DEG = 23.44;
 
 /** Auto-rotate spins the earth about its own tilted axis (so the tilt
  * holds on screen), eastward like the real one. Rad/s; ~150s per turn,
@@ -75,8 +76,9 @@ const SPIN_RAD_PER_S = (2 * Math.PI) / 150;
 
 // ------------------------------------------------------------- theme
 
-/** Reads a shared theme token; the tokens are the single color source. */
-function token(name: string): string {
+/** Reads a shared theme token; the tokens are the single color source.
+ * Exported for the registry OrbitMini3D, which reuses the same globe. */
+export function token(name: string): string {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   if (!v) throw new Error(`missing theme token ${name}`);
   return v;
@@ -128,7 +130,7 @@ function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
   return geometry;
 }
 
-function Globe({ colors }: { colors: { ocean: string; grid: string; coast: string } }) {
+export function Globe({ colors }: { colors: { ocean: string; grid: string; coast: string } }) {
   const grat = useLineGeometry(useMemo(graticuleSegments, []));
   const coast = useLineGeometry(useMemo(coastlineSegments, []));
   return (
@@ -212,7 +214,7 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
  * between the unequal side panels. Zoom is disabled, so this distance
  * holds until the fit target changes.
  */
-function FitCamera({
+export function FitCamera({
   fitRadius,
   sidePad,
   shiftX,
@@ -248,7 +250,7 @@ function FitCamera({
 }
 
 /** One faint ellipse per satellite of a highlighted constellation. */
-function ShellLines({ positions, color }: { positions: Float32Array; color: string }) {
+export function ShellLines({ positions, color }: { positions: Float32Array; color: string }) {
   const seg = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -273,7 +275,7 @@ function ShellLines({ positions, color }: { positions: Float32Array; color: stri
  * every frame and moves the popup DOM node directly (no react state at
  * frame rate).
  */
-function PopupAnchor({
+export function PopupAnchor({
   getWorldPos,
   popupEl,
 }: {
@@ -325,7 +327,7 @@ function Controls({
 }
 
 /** Spins the earth-fixed group about its own (tilted) axis. */
-function AutoSpin({
+export function AutoSpin({
   on,
   spinRef,
 }: {
@@ -346,7 +348,7 @@ function AutoSpin({
  * live ECEF dots are, killing the old drift (Florian 2026-07-07). Sits
  * inside the spin group so the auto-rotate turntable carries it too.
  */
-function InertialFrame({
+export function InertialFrame({
   groupRef,
   children,
 }: {

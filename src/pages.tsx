@@ -15,6 +15,7 @@ import type {
   SourcedField,
   TimelineEvent,
   ImagingMode,
+  GenerationRow,
   Positioning,
   ConstellationProfile,
   VehicleProfile,
@@ -22,6 +23,9 @@ import type {
   OrgProfile,
   SignalPerson,
 } from "./data/schema";
+import { OrbitMini } from "./orbits/mini";
+import { OrbitMini3D } from "./orbits/mini3d";
+import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
 import {
   items,
@@ -1115,92 +1119,7 @@ function specFromField(
   return { field, label, value: fmt(f.value), as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace };
 }
 
-function fieldRow(
-  label: string,
-  f: SourcedField<unknown>,
-  computed?: boolean,
-  showAsOf = true,
-): ReactNode {
-  const value =
-    f.value === null || f.value === undefined
-      ? "unknown"
-      : typeof f.value === "boolean"
-        ? f.value
-          ? "yes"
-          : "no"
-        : Array.isArray(f.value)
-          ? f.value.join(", ")
-          : String(f.value);
-  const entityHref =
-    ENTITY_ROW_LABELS.has(label) && typeof f.value === "string"
-      ? entityHrefFor(f.value)
-      : undefined;
-  return (
-    <tr key={label}>
-      <th scope="row">{label}</th>
-      <td className={f.value === null ? "empty" : ""}>
-        {entityHref ? <a href={entityHref}>{value}</a> : value}
-        {f.disputed && (
-          <span className="disputed-stack">
-            <span className="chip chip-disputed">disputed</span>
-            {f.disputed.competing.map((c, i) => (
-              <span key={i} className="disputed-claim">
-                {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
-                <SnrLed snr={c.snr} size="compact" />{" "}
-                <a href={c.source} rel="noopener">
-                  source
-                </a>{" "}
-                <span className="dim">{c.as_of}</span>
-              </span>
-            ))}
-          </span>
-        )}
-      </td>
-      {showAsOf && <td>{f.as_of ?? ""}</td>}
-      <td className="src-cell">
-        {f.source ? (
-          <a href={f.source} rel="noopener">
-            source
-          </a>
-        ) : computed ? (
-          <span className="dim">computed</span>
-        ) : (
-          ""
-        )}
-        {f.snr !== undefined && <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />}
-        {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
-      </td>
-    </tr>
-  );
-}
-
 type ProfileRow = [string, SourcedField<unknown>] | [string, SourcedField<unknown>, "computed"];
-
-function ProfileTable({ rows }: { rows: ProfileRow[] }) {
-  // When every dated field shares one as-of date, the column is noise:
-  // collapse it into a single line under the table (2026-07-07 audit).
-  const dates = new Set(rows.map(([, f]) => f.as_of).filter((d): d is string => !!d));
-  const showAsOf = dates.size > 1;
-  const soleDate = dates.size === 1 ? [...dates][0] : null;
-  return (
-    <>
-      <table className="profile">
-        <thead>
-          <tr>
-            <th>field</th>
-            <th>value</th>
-            {showAsOf && <th>as of</th>}
-            <th>source</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(([label, f, computed]) => fieldRow(label, f, computed === "computed", showAsOf))}
-        </tbody>
-      </table>
-      {soleDate && <p className="dim table-asof">all fields as of {soleDate}</p>}
-    </>
-  );
-}
 
 /**
  * Gunter's Space Page permits summarization/RAG only with clear
@@ -1651,7 +1570,10 @@ function constellationGroups(scoped: RegEntry[], all: RegEntry[]): GroupNode[] {
       nodeFor(e.parent, opLabel(p.name), p.href).entries.push(e);
     } else {
       // Standalone constellation (or orphaned child under search filters).
-      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? null).entries.push(e);
+      // The operator row must lead somewhere: the alias-mapped company
+      // profile when one exists, else the constellation's own page (for a
+      // single-constellation operator like ICEYE that IS the company page).
+      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? e.href).entries.push(e);
     }
   }
   // A parent whose children are all filtered out still previews itself.
@@ -1756,7 +1678,14 @@ function PaneBrowser({
           <RegRow
             key={g.key}
             label={g.label}
-            aside={g.entries.length}
+            // A count of 1 on a group that is just its own entity (ICEYE >
+            // ICEYE) is noise; the suffix only earns its place at 2+.
+            aside={
+              g.entries.length === 1 &&
+              g.entries[0]!.name.toLowerCase() === g.label.toLowerCase()
+                ? ""
+                : g.entries.length
+            }
             selected={!!group && g.key === group.key}
             onClick={() => {
               setSelGroup(g.key);
@@ -1767,7 +1696,14 @@ function PaneBrowser({
       </div>
       <div className="reg-pane reg-ents">
         <div className="reg-pane-head">
-          {group ? group.label : ""} <span className="dim">{groupEntries.length}</span>
+          {group ? group.label : ""}{" "}
+          {/* Same rule as the group rows: a count of 1 on a group that is
+              just its own entity is noise. */}
+          {!(
+            groupEntries.length === 1 &&
+            group &&
+            groupEntries[0]!.name.toLowerCase() === group.label.toLowerCase()
+          ) && <span className="dim">{groupEntries.length}</span>}
         </div>
         {group?.profileHref && (
           <a className="reg-profile-link" href={group.profileHref}>
@@ -2012,6 +1948,14 @@ interface ProfileMeta {
   positioning?: Positioning | null;
   /** Per-mode EO specs; rendered as a sub-table inside the facts section. */
   imagingModes?: ImagingMode[];
+  /** Sourced per-generation capability rows (registry v3). */
+  generations?: GenerationRow[];
+  /** Orbit-tab data (constellations): fact rows plus whether an Orbits layer exists. */
+  orbitTab?: { rows: ProfileRow[]; hasLayer: boolean } | null;
+  /** Uppercase micro-chips under the title (sensor types, country, status...). */
+  headerChips?: Array<{ label: string; kind?: "status" }>;
+  /** Section/domain accent for the page chrome; falls back to the brand accent. */
+  accent?: string;
 }
 
 function Breadcrumbs({
@@ -2039,22 +1983,6 @@ function Breadcrumbs({
   );
 }
 
-/** Numbered "// on this page" jump-list, ai-tldr style, built from the sections present. */
-function OnThisPageToc({ sections }: { sections: Array<[string, string]> }) {
-  return (
-    <section className="panel toc-panel">
-      <h2>on this page</h2>
-      <ol className="toc-list">
-        {sections.map(([id, label]) => (
-          <li key={id}>
-            <a href={`#${id}`}>{label}</a>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 function EventsSection({ profile }: { profile: ProfileMeta }) {
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
   // items is sorted newest-first already; itemsMentioning preserves that order.
@@ -2066,8 +1994,8 @@ function EventsSection({ profile }: { profile: ProfileMeta }) {
       <ul className="index-list event-list">
         {events.map((i) => (
           <li key={i.id} className="event-row">
-            <span className="date">{i.date}</span>
             <span className={`chip chip-${i.impact}`}>{i.impact}</span>
+            <span className="date">{i.date}</span>
             <a href={`/item/${i.id}/`}>{i.headline}</a>
           </li>
         ))}
@@ -2397,7 +2325,104 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
   );
 }
 
-/** Sourced history timeline: every event carries its own source link. */
+/**
+ * Cumulative cataloged-on-orbit count by launch year, computed client-side
+ * from the constellation's committed element set (OBJECT_ID international
+ * designators carry the launch year). Honest framing matters: this buckets
+ * TODAY's catalog by launch year; decayed satellites are absent, so it is
+ * a fleet-composition read, never a historical fleet-size series.
+ */
+function OrbitYearsChart({ slug }: { slug: string }) {
+  const [data, setData] = useState<{ pts: Array<[number, number]>; asOf: string | null } | null>(
+    null,
+  );
+  useEffect(() => {
+    let cancelled = false;
+    void loadElements(slug).then((res) => {
+      if (cancelled || !res.ok) return;
+      const byYear = new Map<number, number>();
+      for (const r of res.file.records) {
+        const y = Number(r.OBJECT_ID?.slice(0, 4));
+        if (Number.isFinite(y) && y > 1950) byYear.set(y, (byYear.get(y) ?? 0) + 1);
+      }
+      if (byYear.size === 0) return;
+      const min = Math.min(...byYear.keys());
+      const max = Math.max(new Date().getUTCFullYear(), ...byYear.keys());
+      const pts: Array<[number, number]> = [];
+      let cum = 0;
+      for (let y = min; y <= max; y++) {
+        cum += byYear.get(y) ?? 0;
+        pts.push([y, cum]);
+      }
+      setData({ pts, asOf: res.file.fetched_at?.slice(0, 10) ?? null });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+  if (!data || data.pts.length < 2) return null;
+  const { pts, asOf } = data;
+  // A compact, boxy drawing frame: the hero count carries the module,
+  // the curve is its companion. Year ticks, marker on today's count.
+  const W = 360;
+  const H = 150;
+  const padX = 6;
+  const padTop = 12;
+  const padBot = 22;
+  const total = pts[pts.length - 1]![1];
+  const x = (i: number) => padX + ((W - padX * 2) * i) / (pts.length - 1);
+  const y = (v: number) => H - padBot - ((H - padTop - padBot) * v) / total;
+  // Step path: each year holds its level until the next launch year.
+  let d = `M ${x(0)} ${y(pts[0]![1])}`;
+  for (let i = 1; i < pts.length; i++) d += ` H ${x(i)} V ${y(pts[i]![1])}`;
+  const area = `${d} V ${H - padBot} H ${x(0)} Z`;
+  return (
+    <section id="on-orbit" className="panel">
+      <h2>on orbit</h2>
+      <div className="onorbit-grid">
+        <div className="onorbit-stat">
+          <span className="fact-label">sats on orbit (verified)</span>
+          <span className="onorbit-value">{fmtNum(total)}</span>
+          <span className="fact-meta">
+            <span className="dim">cataloged by CelesTrak</span>
+            {asOf && <span className="dim">as of {asOf}</span>}
+          </span>
+        </div>
+        <div className="onorbit-chart">
+          <svg viewBox={`0 0 ${W} ${H}`} className="onorbit-svg" aria-hidden="true">
+            <line
+              x1={padX}
+              y1={H - padBot}
+              x2={W - padX}
+              y2={H - padBot}
+              stroke="var(--line)"
+              strokeWidth={1}
+            />
+            <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.08} />
+            <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
+            <circle
+              cx={x(pts.length - 1)}
+              cy={y(total)}
+              r={3}
+              fill="var(--reg-acc, var(--acc))"
+            />
+            <text x={padX} y={H - 6} className="onorbit-tick">
+              {pts[0]![0]}
+            </text>
+            <text x={W - padX} y={H - 6} textAnchor="end" className="onorbit-tick">
+              {pts[pts.length - 1]![0]}
+            </text>
+          </svg>
+          <p className="dim onorbit-note">
+            cumulative by launch year; counts objects in today's catalog, so satellites since
+            deorbited are absent
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /** The entity's defining numbers as anchored, citable stat cells (registry v2). */
 function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
   if (cells.length < 2) return null;
@@ -2413,9 +2438,12 @@ function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | nul
                 {"//"}
               </a>
             </span>
-            <span className="spec-value">{c.value}</span>
+            {/* Numbers earn the display size; stated phrases ("under 6 hour
+                global revisit") read at body scale so they never tower. */}
+            <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
+              {c.value}
+            </span>
             <span className="spec-meta">
-              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
               {c.computed && <span className="dim spec-computed">computed</span>}
               {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
             </span>
@@ -2445,8 +2473,7 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
                 <a className="src-link" href={c.source} rel="noopener">
                   source
                 </a>
-              )}{" "}
-              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
+              )}
             </li>
           ))}
         </ul>
@@ -2473,60 +2500,6 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
   );
 }
 
-/** Orbital-safety and anomaly events, surfaced ahead of the full history. */
-function IncidentsSection({ history }: { history: TimelineEvent[] }) {
-  const incidents = history
-    .filter((e) => e.type === "incident")
-    .sort((a, b) => a.date.localeCompare(b.date));
-  if (incidents.length === 0) return null;
-  return (
-    <section id="incidents" className="panel">
-      <h2>incidents</h2>
-      <ol className="timeline">
-        {incidents.map((e) => (
-          <li key={`${e.date}-${e.headline}`}>
-            <span className="mono timeline-date">{e.date}</span>
-            <span>
-              {e.headline}
-              {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
-              {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
-              <a href={e.source} rel="noopener" className="dim">
-                (source, as of {e.as_of})
-              </a>
-            </span>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
-function HistorySection({ history }: { history: TimelineEvent[] }) {
-  if (history.length === 0) return null;
-  const ordered = [...history].sort((a, b) => a.date.localeCompare(b.date));
-  return (
-    <section id="history" className="panel">
-      <h2>history</h2>
-      <ol className="timeline">
-        {ordered.map((e) => (
-          <li key={`${e.date}-${e.headline}`}>
-            <span className="mono timeline-date">{e.date}</span>
-            <span>
-              {e.type && e.type !== "milestone" && (
-                <span className="chip chip-tl-type">{e.type}</span>
-              )}{" "}
-              {e.headline}{" "}
-              <a href={e.source} rel="noopener" className="dim">
-                (source, as of {e.as_of})
-              </a>
-            </span>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
-}
-
 /** A provider's vehicles, active and retired alike; the status makes the tag meaningful. */
 function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: string; status: string | null }> }) {
   if (roster.length === 0) return null;
@@ -2540,39 +2513,6 @@ function VehicleRosterSection({ roster }: { roster: Array<{ slug: string; name: 
           </a>
         ))}
       </div>
-    </section>
-  );
-}
-
-function SourcesSection({ rows }: { rows: ProfileRow[] }) {
-  const byUrl = new Map<string, string[]>();
-  for (const [label, f] of rows) {
-    if (!f.source) continue;
-    const list = byUrl.get(f.source) ?? [];
-    list.push(label);
-    byUrl.set(f.source, list);
-  }
-  const urls = [...byUrl.keys()];
-  if (urls.length === 0) return null;
-  return (
-    <section id="sources" className="panel">
-      <h2>sources</h2>
-      <ol className="src-list">
-        {urls.map((u, i) => (
-          <li key={u}>
-            <a href={u} rel="noopener">
-              <span className="src-num">[{i + 1}]</span>
-              <span>
-                <span className="src-kind">{hostOf(u)}</span>
-                <span className="src-host">{byUrl.get(u)!.join(", ")}</span>
-              </span>
-              <span className="src-arrow">↗</span>
-            </a>
-          </li>
-        ))}
-      </ol>
-      <GuntersAttribution rows={rows} />
-      <GcatAttribution rows={rows} />
     </section>
   );
 }
@@ -2604,20 +2544,383 @@ function FaqSection({ items }: { items: FaqItem[] }) {
   );
 }
 
-/** Shared destination-page shell for every registry profile type. */
+/**
+ * The profile header's ONE sourcing mark (registry v3, Florian 2026-07-09):
+ * the median of the page's scored facts on the LED bezel, with the honest
+ * mix (count per score, weakest fact, unscored-sourced count) in a hover/
+ * focus popover. Display-only and computed at render; per-fact scores stay
+ * the record and render in the Sources tab.
+ */
+function PageSourcingMark({
+  scored,
+  unscored,
+}: {
+  scored: number[];
+  unscored: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const total = scored.length + unscored;
+  if (total === 0) return null;
+  const sorted = [...scored].sort((a, b) => a - b);
+  // Lower median: the conservative middle when the count is even.
+  const median = sorted.length > 0 ? sorted[Math.floor((sorted.length - 1) / 2)]! : null;
+  const weakest = sorted[0] ?? null;
+  const perScore = [5, 4, 3, 2, 1]
+    .map((v) => [v, sorted.filter((s) => s === v).length] as const)
+    .filter(([, n]) => n > 0);
+  return (
+    <span
+      className="snr-agg"
+      tabIndex={0}
+      role="note"
+      aria-label={
+        median !== null
+          ? `Sourcing: typical fact scores ${median} of 5 across ${total} sourced facts`
+          : `Sourcing: ${total} sourced facts, unscored`
+      }
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
+    >
+      <span className="snr-agg-label">sourcing</span>
+      {median !== null && <SnrLed snr={median} size="compact" />}
+      <span className="snr-agg-count dim">
+        {median !== null ? `typical ${median}/5 · ` : ""}
+        {total} facts
+      </span>
+      {open && (
+        <span className="snr-pop snr-agg-pop" role="status">
+          <span className="snr-agg-pop-title">source mix</span>
+          {perScore.map(([v, n]) => (
+            <span key={v} className="snr-agg-row">
+              <span>{v}/5</span>
+              <span>{n}</span>
+            </span>
+          ))}
+          {unscored > 0 && (
+            <span className="snr-agg-row">
+              <span>first-party / reference (unscored)</span>
+              <span>{unscored}</span>
+            </span>
+          )}
+          {weakest !== null && (
+            <span className="snr-agg-foot">weakest fact {weakest}/5 · per-fact detail in sources</span>
+          )}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** Sourced per-generation capability rows (registry v3); hidden when empty. */
+function GenerationsSection({ generations }: { generations?: GenerationRow[] }) {
+  if (!generations || generations.length === 0) return null;
+  return (
+    <section id="generations" className="panel">
+      <h2>generations</h2>
+      <div className="gen-rows">
+        {generations.map((g) => (
+          <div key={g.name} className="gen-row">
+            <span className="gen-name">{g.name}</span>
+            <span className="gen-text">
+              {g.text}{" "}
+              <a href={g.source} rel="noopener" className="dim">
+                (source, as of {g.as_of})
+              </a>
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// The honest class label for a sourced-but-unscored field: computed
+// figures (CelesTrak-derived counts) are the pipeline's, Wikipedia is a
+// reference, everything else unscored is the actor speaking directly.
+function unscoredLabel(f: SourcedField<unknown>, computed?: boolean): string {
+  if (computed || (f.source ?? "").includes("celestrak.org")) return "computed";
+  if ((f.source ?? "").includes("wikipedia.org")) return "wikipedia";
+  return "first-party";
+}
+
+/** Every sourced fact on the profile, positioning claims included. */
+function factEntries(
+  rows: ProfileRow[],
+  positioning?: Positioning | null,
+): Array<{ label: string; f: SourcedField<unknown>; computed?: boolean }> {
+  const entries: Array<{ label: string; f: SourcedField<unknown>; computed?: boolean }> = [];
+  for (const [label, f, computed] of rows) {
+    if (f.source) entries.push({ label, f, computed: computed === "computed" });
+  }
+  (positioning?.claims ?? []).forEach((c, i) => {
+    if (c.source) entries.push({ label: `positioning claim ${i + 1}`, f: c });
+  });
+  return entries;
+}
+
+/** Per-mode EO specs as spec cards (registry v3.1), not a spreadsheet row. */
+function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
+  if (!modes || modes.length === 0) return null;
+  return (
+    <div className="mode-cards">
+      {modes.map((m) => (
+        <div key={m.mode} className="mode-card">
+          <span className="mode-name">{m.mode}</span>
+          <span className="mode-figs">
+            <span className="mode-fig">
+              <span className="fact-label">resolution</span>
+              <span className="mode-fig-val">
+                {m.resolution_m !== null ? `${m.resolution_m} m` : <span className="dim">not stated</span>}
+              </span>
+            </span>
+            <span className="mode-fig">
+              <span className="fact-label">swath</span>
+              <span className="mode-fig-val">
+                {m.swath_km !== null ? `${m.swath_km} km` : <span className="dim">not stated</span>}
+              </span>
+            </span>
+          </span>
+          <span className="fact-meta">
+            <a href={m.source} rel="noopener">
+              source
+            </a>{" "}
+            <span className="dim">as of {m.as_of}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The exhaustive reference as a data grid of fact cells (registry v3.1):
+ * micro label, prominent value, dim meta line. Same information as the old
+ * table, none of the spreadsheet reading.
+ */
+function FactGrid({ rows }: { rows: ProfileRow[] }) {
+  const cell = (label: string, f: SourcedField<unknown>, computed: boolean) => {
+    const raw = f.value;
+    const text =
+      raw === null || raw === undefined
+        ? "unknown"
+        : typeof raw === "boolean"
+          ? raw
+            ? "yes"
+            : "no"
+          : Array.isArray(raw)
+            ? raw.join(", ")
+            : String(raw);
+    const entityHref =
+      ENTITY_ROW_LABELS.has(label) && typeof raw === "string" ? entityHrefFor(raw) : undefined;
+    const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
+    return (
+      <div key={label} className="fact-cell">
+        <span className="fact-label">{label}</span>
+        <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
+          {isUrl ? (
+            <a href={raw as string} rel="noopener">
+              {hostOf(raw as string)}
+            </a>
+          ) : entityHref ? (
+            <a href={entityHref}>{text}</a>
+          ) : (
+            text
+          )}
+        </span>
+        {f.disputed && (
+          <span className="disputed-stack">
+            <span className="chip chip-disputed">disputed</span>
+            {f.disputed.competing.map((c, i) => (
+              <span key={i} className="disputed-claim">
+                {Array.isArray(c.value) ? c.value.join(", ") : String(c.value)}{" "}
+                <SnrLed snr={c.snr} size="compact" />{" "}
+                <a href={c.source} rel="noopener">
+                  source
+                </a>{" "}
+                <span className="dim">{c.as_of}</span>
+              </span>
+            ))}
+          </span>
+        )}
+        <span className="fact-meta">
+          {f.source ? (
+            <a href={f.source} rel="noopener">
+              source
+            </a>
+          ) : computed ? (
+            <span className="dim">computed</span>
+          ) : null}
+          {f.as_of && <span className="dim">as of {f.as_of}</span>}
+          {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+        </span>
+      </div>
+    );
+  };
+  return (
+    <div className="fact-grid">
+      {rows.map(([label, f, computed]) => cell(label, f, computed === "computed"))}
+    </div>
+  );
+}
+
+/**
+ * The chronology as an interactive timeline (registry v3.1): newest first,
+ * type filter chips, year dividers, a spine with type-aware markers
+ * (incidents carry the warn ink). Renamed from history per Florian.
+ */
+function TimelineSection({ history }: { history: TimelineEvent[] }) {
+  const [filter, setFilter] = useState<string | null>(null);
+  if (history.length === 0) return null;
+  const typeOf = (e: TimelineEvent) => e.type ?? "milestone";
+  const present = [...new Set(history.map(typeOf))].sort();
+  const shown = (filter ? history.filter((e) => typeOf(e) === filter) : history)
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+  let lastYear = "";
+  return (
+    <section id="history" className="panel">
+      <h2>timeline</h2>
+      {present.length > 1 && (
+        <div className="sig-tabs tl-filter">
+          <button
+            className={`sig-tab${filter === null ? " active" : ""}`}
+            onClick={() => setFilter(null)}
+          >
+            all
+          </button>
+          {present.map((t) => (
+            <button
+              key={t}
+              className={`sig-tab${filter === t ? " active" : ""}`}
+              onClick={() => setFilter(filter === t ? null : t)}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      )}
+      <ol className="tl">
+        {shown.map((e) => {
+          const year = e.date.slice(0, 4);
+          const divider = year !== lastYear;
+          lastYear = year;
+          const incident = typeOf(e) === "incident";
+          return (
+            <li key={`${e.date}-${e.headline}`} className={incident ? "tl-incident" : undefined}>
+              {divider && <span className="tl-year">{year}</span>}
+              <span className="tl-row">
+                <span className="tl-mark" aria-hidden="true" />
+                <span className="tl-head">
+                  <span className="tl-date">{e.date}</span>
+                  {e.type && e.type !== "milestone" && (
+                    <span className="chip chip-tl-type">{e.type}</span>
+                  )}
+                </span>
+                <span className="tl-title">
+                  {e.headline}
+                  {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
+                  {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
+                  <a href={e.source} rel="noopener" className="dim">
+                    (source, as of {e.as_of})
+                  </a>
+                </span>
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
+/**
+ * The Sources tab as provenance cards (registry v3.1): one card per source
+ * host, listing the facts it backs, each with its own SNR mark (trace on
+ * click) or honest class word. This is where per-fact marks live now that
+ * the header carries the one aggregate.
+ */
+function SourceCardsSection({
+  rows,
+  positioning,
+}: {
+  rows: ProfileRow[];
+  positioning?: Positioning | null;
+}) {
+  const entries = factEntries(rows, positioning);
+  if (entries.length === 0) return null;
+  const byHost = new Map<string, typeof entries>();
+  for (const e of entries) {
+    const host = hostOf(e.f.source!);
+    byHost.set(host, [...(byHost.get(host) ?? []), e]);
+  }
+  const cards = [...byHost.entries()].sort((a, b) => b[1].length - a[1].length);
+  return (
+    <section id="sources" className="panel">
+      <h2>sources</h2>
+      <div className="source-cards">
+        {cards.map(([host, list], i) => (
+          <div key={host} className="source-card">
+            <a className="source-card-head" href={list[0]!.f.source!} rel="noopener">
+              <span className="src-num">[{i + 1}]</span> {host}{" "}
+              <span className="src-arrow">↗</span>
+            </a>
+            <div className="source-card-facts">
+              {list.map(({ label, f, computed }) => (
+                <span key={label} className="source-fact">
+                  <a href={f.source!} rel="noopener" className="source-fact-label">
+                    {label}
+                  </a>
+                  <span className="source-fact-class">
+                    {f.snr !== undefined ? (
+                      <>
+                        <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
+                        {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+                      </>
+                    ) : (
+                      <span className="dim">{unscoredLabel(f, computed)}</span>
+                    )}
+                  </span>
+                  <span className="dim source-fact-asof">{f.as_of ?? ""}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <GuntersAttribution rows={rows} />
+      <GcatAttribution rows={rows} />
+    </section>
+  );
+}
+
+/** Which tab owns each legacy in-page anchor, for #hash deep links. */
+const TAB_OF_ANCHOR: Record<string, string> = {
+  specs: "overview",
+  "on-orbit": "overview",
+  generations: "overview",
+  stock: "overview",
+  constellations: "overview",
+  vehicles: "overview",
+  faq: "overview",
+  facts: "specs",
+  incidents: "history",
+  events: "history",
+  positioning: "positioning",
+  sources: "sources",
+  "fact-ledger": "sources",
+};
+
+/** Shared destination-page shell for every registry profile type (tabbed, registry v3). */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
   const roster = profile.vehicleRoster ?? [];
-  const history = profile.history ?? [];
+  const timeline = profile.history ?? [];
   const specs = profile.specs ?? [];
-  const hasSpecs = specs.length >= 2;
   const positioning = profile.positioning ?? null;
   const hasPositioning =
     !!positioning && ((positioning.claims?.length ?? 0) > 0 || !!positioning.mcc_read);
-  const hasIncidents = history.some((e) => e.type === "incident");
-  const answeredFaq = profile.faq.filter(
-    (i) => i.field.value !== null && i.field.value !== undefined,
-  );
 
   const related = profile.affiliation
     ? profile.siblings
@@ -2637,105 +2940,198 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
   const hasEvents = itemsMentioning(names).length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
+  const orbitTab = profile.orbitTab ?? null;
+  const hasOrbit =
+    !!orbitTab && (orbitTab.hasLayer || orbitTab.rows.some(([, f]) => f.value !== null && f.value !== undefined));
 
-  // TOC mirrors the rendered sections, in reading-flow order (specs first,
-  // then positioning, facts, incidents, history, stock, children/roster,
-  // events); related and sources live in the rail but stay in the list.
-  const sections: Array<[string, string]> = [];
-  if (hasSpecs) sections.push(["specs", "key specs"]);
-  if (hasPositioning) sections.push(["positioning", "positioning"]);
-  sections.push(["facts", "facts"]);
-  if (hasIncidents) sections.push(["incidents", "incidents"]);
-  if (history.length > 0) sections.push(["history", "history"]);
-  if (profile.stockTicker?.value) sections.push(["stock", "stock"]);
-  if (children.length > 0) sections.push(["constellations", "constellations"]);
-  if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
-  if (hasEvents) sections.push(["events", "events"]);
-  if (related.length > 0 || prev || next) sections.push(["related", "related"]);
-  if (hasSources) sections.push(["sources", "sources"]);
-  if (answeredFaq.length > 0) sections.push(["faq", "faq"]);
+  // The page-level sourcing mix: scored facts feed the median mark, sourced
+  // but unscored fields (first-party, Wikipedia, computed) are counted.
+  const scored: number[] = [];
+  let unscored = 0;
+  for (const [, f] of profile.rows) {
+    if (typeof f.snr === "number") scored.push(f.snr);
+    else if (f.source) unscored++;
+  }
+  for (const c of positioning?.claims ?? []) {
+    if (typeof c.snr === "number") scored.push(c.snr);
+    else if (c.source) unscored++;
+  }
+
+  const tabs: Array<[string, string]> = [["overview", "overview"]];
+  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "specs & sensors" : "specs"]);
+  if (hasOrbit) tabs.push(["orbit", "orbit"]);
+  if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
+  if (hasPositioning) tabs.push(["positioning", "positioning"]);
+  if (hasSources) tabs.push(["sources", "sources"]);
+
+  const [tab, setTab] = useState("overview");
+  const tabIds = tabs.map(([id]) => id).join(",");
+  useEffect(() => {
+    const ids = tabIds.split(",");
+    const apply = () => {
+      const h = window.location.hash.replace(/^#/, "");
+      if (!h) return;
+      const direct = ids.includes(h) ? h : null;
+      const owner =
+        direct ?? TAB_OF_ANCHOR[h] ?? (h.startsWith("spec-") ? "overview" : null);
+      if (owner && ids.includes(owner)) {
+        setTab(owner);
+        if (!direct) {
+          requestAnimationFrame(() => document.getElementById(h)?.scrollIntoView());
+        }
+      }
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, [tabIds]);
+  const pick = (id: string) => {
+    setTab(id);
+    window.history.replaceState(null, "", `#${id}`);
+  };
+  // The 3D view (three.js, lazy chunk) mounts only once the orbit tab has
+  // actually been opened; until then profile pages ship none of it.
+  const [orbitSeen, setOrbitSeen] = useState(false);
+  useEffect(() => {
+    if (tab === "orbit") setOrbitSeen(true);
+  }, [tab]);
 
   return (
     <Layout current="registry">
-      <div className="registry-profile">
+      <div
+        className="registry-profile"
+        style={profile.accent ? ({ "--reg-acc": profile.accent } as CSSProperties) : undefined}
+      >
         <Breadcrumbs
           segment={profile.breadcrumbSegment}
           name={profile.name}
           parentLink={profile.parentLink}
         />
-        <h1 className="page-title profile-title">
-          <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
-          {profile.name}
-          {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
-          <span className="dim">/ {profile.typeLabel}</span>
-        </h1>
-        {profile.overview.value && (
-          <>
-            <p className="overview-block">{profile.overview.value}</p>
-            <p className="dim source-line">
-              <a href={profile.overview.source ?? undefined} rel="noopener">
-                (source, as of {profile.overview.as_of})
-              </a>
-            </p>
-          </>
-        )}
-        {/* Two columns on wide screens (2026-07-07 design pass): the
-            reading flow left, wayfinding (toc / related / sources) in a
-            sticky rail right. One column below 64rem, original order. */}
-        <div className="profile-cols">
-          <div className="profile-main">
-            <KeySpecsPanel cells={specs} note={profile.specNote} />
-            <PositioningSection positioning={positioning} />
-            <section id="facts" className="panel">
-              <h2>facts</h2>
-              <ProfileTable rows={profile.rows} />
-              {profile.imagingModes && profile.imagingModes.length > 0 && (
-                <table className="profile imaging-modes">
-                  <thead>
-                    <tr>
-                      <th>mode</th>
-                      <th>resolution</th>
-                      <th>swath</th>
-                      <th>source</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {profile.imagingModes.map((m) => (
-                      <tr key={m.mode}>
-                        <th scope="row">{m.mode}</th>
-                        <td>{m.resolution_m !== null ? `${m.resolution_m} m` : "unknown"}</td>
-                        <td>{m.swath_km !== null ? `${m.swath_km} km` : "unknown"}</td>
-                        <td className="src-cell">
-                          <a href={m.source} rel="noopener">
-                            source
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-              {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-            </section>
-            <IncidentsSection history={history} />
-            <HistorySection history={history} />
-            {profile.stockTicker?.value && (
-              <StockSection slug={profile.slug} ticker={profile.stockTicker} />
-            )}
-            <ChildConstellationsSection children={children} />
-            <VehicleRosterSection roster={roster} />
-            <EventsSection profile={profile} />
-            <FaqSection items={profile.faq} />
-            <p>
-              <a href="/registry/">Back to the registry</a>
-            </p>
-          </div>
-          <aside className="profile-rail">
-            <OnThisPageToc sections={sections} />
-            <RelatedSection profile={profile} related={related} prev={prev} next={next} />
-            {hasSources && <SourcesSection rows={profile.rows} />}
-          </aside>
+        <div className="profile-head">
+          <h1 className="page-title profile-title">
+            <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
+            {profile.name}
+            {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
+            <span className="dim">/ {profile.typeLabel}</span>
+          </h1>
+          <PageSourcingMark scored={scored} unscored={unscored} />
         </div>
+        {profile.headerChips && profile.headerChips.length > 0 && (
+          <div className="profile-chips">
+            {profile.headerChips.map((c) => (
+              <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
+                {c.label}
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="profile-tabs" role="tablist">
+          {tabs.map(([id, label]) => (
+            <button
+              key={id}
+              role="tab"
+              aria-selected={tab === id}
+              className={`profile-tab${tab === id ? " active" : ""}`}
+              onClick={() => pick(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="tab-panel" hidden={tab !== "overview"}>
+          {profile.overview.value && (
+            <>
+              <p className="overview-block">{profile.overview.value}</p>
+              <p className="dim source-line">
+                <a href={profile.overview.source ?? undefined} rel="noopener">
+                  (source, as of {profile.overview.as_of})
+                </a>
+              </p>
+            </>
+          )}
+          <KeySpecsPanel cells={specs} note={profile.specNote} />
+          {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
+          <GenerationsSection generations={profile.generations} />
+          <ChildConstellationsSection children={children} />
+          <VehicleRosterSection roster={roster} />
+          {profile.stockTicker?.value && (
+            <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+          )}
+          <FaqSection items={profile.faq} />
+        </div>
+
+        <div className="tab-panel" hidden={tab !== "specs"}>
+          {profile.imagingModes && profile.imagingModes.length > 0 && (
+            <section id="imaging-modes" className="panel">
+              <h2>imaging modes</h2>
+              <ImagingModeCards modes={profile.imagingModes} />
+            </section>
+          )}
+          <section id="facts" className="panel">
+            <h2>facts</h2>
+            <FactGrid rows={profile.rows} />
+            {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
+          </section>
+        </div>
+
+        {hasOrbit && orbitTab && (
+          <div className="tab-panel" hidden={tab !== "orbit"}>
+            <section id="orbit-view" className="panel">
+              <h2>orbit</h2>
+              <div className="orbit-grid">
+                {orbitTab.hasLayer && (
+                  <div className="orbit-view">
+                    {/* The SVG schematic defines the box and doubles as the
+                        no-WebGL / no-data fallback; the real 3D globe (same
+                        render as /orbits/, this constellation only) overlays
+                        it once loaded. No accent is passed to the 3D view:
+                        it resolves the constellation's own orbits palette
+                        token, so colors match the /orbits/ page exactly. */}
+                    <OrbitMini slug={profile.slug} accent={profile.accent} />
+                    {orbitSeen && (
+                      <div className="orbit-3d">
+                        <OrbitMini3D slug={profile.slug} />
+                      </div>
+                    )}
+                    <a className="orbit-open" href="/orbits/">
+                      open in orbits &rarr;
+                    </a>
+                  </div>
+                )}
+                <div className="orbit-facts">
+                  <FactGrid rows={orbitTab.rows} />
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {(timeline.length > 0 || hasEvents) && (
+          <div className="tab-panel" hidden={tab !== "history"}>
+            <EventsSection profile={profile} />
+            <TimelineSection history={timeline} />
+          </div>
+        )}
+
+        {hasPositioning && (
+          <div className="tab-panel" hidden={tab !== "positioning"}>
+            <PositioningSection positioning={positioning} />
+          </div>
+        )}
+
+        {hasSources && (
+          <div className="tab-panel" hidden={tab !== "sources"}>
+            <SourceCardsSection rows={profile.rows} positioning={positioning} />
+          </div>
+        )}
+
+        <footer className="profile-foot">
+          <RelatedSection profile={profile} related={related} prev={prev} next={next} />
+          <p>
+            <a href="/registry/">Back to the registry</a>
+          </p>
+        </footer>
       </div>
     </Layout>
   );
@@ -2787,14 +3183,18 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
   const isConnIot = profile.domain === "connectivity" || profile.domain === "iot";
   const verifiedField = verifiedRow[1];
   const verifiedComputed = verifiedRow[2] === "computed";
+  const hasOrbitsLayer =
+    !!profile.orbits && (!!profile.orbits.celestrak_group || !!profile.orbits.celestrak_name);
   const specCandidates: Array<SpecCell | null> = [
-    specFromField("resolution_m", "resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
+    specFromField("resolution_m", "max resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
     specFromField("swath_km", "swath", profile.swath_km, (v) => `${fmtNum(v)} km`),
     specFromField("revisit", "revisit", profile.revisit, (v) => String(v)),
     specFromField("spectral_bands", "spectral bands", profile.spectral_bands, (v) =>
       (v as string[]).join(", "),
     ),
-    verifiedField.value !== null && verifiedField.value !== undefined
+    // With an Orbits layer, the launch-year chart cell IS the on-orbit
+    // stat (same CelesTrak-derived count), so the plain cell would repeat it.
+    !hasOrbitsLayer && verifiedField.value !== null && verifiedField.value !== undefined
       ? {
           field: "sats_active_verified",
           label: "sats on orbit (verified)",
@@ -2867,6 +3267,23 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     specs,
     positioning: profile.positioning ?? null,
     imagingModes: profile.imaging_modes,
+    generations: profile.generations,
+    orbitTab: {
+      rows: [
+        ["orbit", profile.orbit],
+        countRow("sats launched (total)", "sats_launched_total"),
+        countRow("sats active (claimed)", "sats_active_claimed"),
+        verifiedRow,
+        ["sats planned", profile.sats_planned],
+      ],
+      hasLayer: hasOrbitsLayer,
+    },
+    headerChips: [
+      ...(profile.sensor_types.value ?? []).map((s) => ({ label: s })),
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: profile.status.value, kind: "status" as const }] : []),
+    ],
+    accent: DOMAIN_ACCENT[profile.domain],
   };
   return <ProfilePage profile={meta} />;
 }
@@ -2966,6 +3383,13 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
       : null,
     history: profile.events ?? [],
     positioning: profile.positioning ?? null,
+    headerChips: [
+      ...(profile.vehicle_class.value ? [{ label: String(profile.vehicle_class.value) }] : []),
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.reusable.value === true ? [{ label: "reusable" }] : []),
+      ...(profile.status.value ? [{ label: profile.status.value, kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.launch,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -3019,6 +3443,11 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
     specs,
     history: profile.events ?? [],
     positioning: profile.positioning ?? null,
+    headerChips: [
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: String(profile.status.value), kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.spaceports,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -3071,6 +3500,12 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     history: profile.events ?? [],
     stockTicker: profile.ticker ?? null,
     positioning: profile.positioning ?? null,
+    headerChips: [
+      { label: ORG_KIND_LABEL[profile.kind] ?? profile.kind },
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: String(profile.status.value), kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.ecosystem,
   };
   return <ProfilePage profile={meta} />;
 }
