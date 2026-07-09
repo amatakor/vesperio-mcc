@@ -2362,18 +2362,17 @@ function OrbitYearsChart({ slug }: { slug: string }) {
   }, [slug]);
   if (!data || data.pts.length < 2) return null;
   const { pts, asOf } = data;
-  const W = 340;
-  const H = 84;
-  const padL = 4;
-  const padR = 8;
-  const padY = 10;
+  // A quiet sparkline, no axis chrome: the meta line names the span.
+  const W = 200;
+  const H = 40;
+  const pad = 3;
   const total = pts[pts.length - 1]![1];
-  const x = (i: number) => padL + ((W - padL - padR) * i) / (pts.length - 1);
-  const y = (v: number) => H - padY - ((H - padY * 2) * v) / total;
+  const x = (i: number) => pad + ((W - pad * 2) * i) / (pts.length - 1);
+  const y = (v: number) => H - pad - ((H - pad * 2) * v) / total;
   // Step path: each year holds its level until the next launch year.
   let d = `M ${x(0)} ${y(pts[0]![1])}`;
   for (let i = 1; i < pts.length; i++) d += ` H ${x(i)} V ${y(pts[i]![1])}`;
-  const area = `${d} V ${H - padY} H ${x(0)} Z`;
+  const area = `${d} V ${H - pad} H ${x(0)} Z`;
   return (
     <div className="spec-cell spec-chart" id="spec-orbit-years">
       <span className="spec-label">
@@ -2384,20 +2383,19 @@ function OrbitYearsChart({ slug }: { slug: string }) {
       </span>
       <span className="spec-chart-row">
         <span className="spec-value spec-chart-value">{fmtNum(total)}</span>
-        <svg viewBox={`0 0 ${W} ${H}`} className="spec-chart-svg" aria-hidden="true">
-          <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.1} />
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className="spec-chart-svg"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          <path d={area} fill="var(--reg-acc, var(--acc))" opacity={0.12} />
           <path d={d} fill="none" stroke="var(--reg-acc, var(--acc))" strokeWidth={1.5} />
-          <text x={x(0)} y={H - 1} className="spec-chart-tick">
-            {pts[0]![0]}
-          </text>
-          <text x={x(pts.length - 1)} y={H - 1} textAnchor="end" className="spec-chart-tick">
-            {pts[pts.length - 1]![0]}
-          </text>
         </svg>
       </span>
       <span className="spec-meta">
         <span className="dim">
-          cataloged today, cumulative by launch year · CelesTrak
+          {pts[0]![0]} to {pts[pts.length - 1]![0]}, cumulative by launch year · CelesTrak
           {asOf ? ` · as of ${asOf}` : ""}
         </span>
       </span>

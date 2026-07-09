@@ -1591,9 +1591,10 @@ table.profile td.src-cell a,
     min-height: 17rem;
   }
 }
+/* One frame, not two: the section panel already draws the box, so the
+   view area is delineated by its deep-space background alone. */
 .orbit-view {
   position: relative;
-  border: 1px solid var(--line);
   background: #07131a;
 }
 /* The 3D globe overlays the in-flow SVG schematic, which defines the box
@@ -1631,13 +1632,15 @@ table.profile td.src-cell a,
   margin-left: auto;
 }
 .mode-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
 }
 .mode-card {
+  flex: 1 1 12rem;
+  min-width: 0;
   background: var(--panel);
   padding: 0.7rem 0.85rem;
   display: flex;
@@ -1665,13 +1668,14 @@ table.profile td.src-cell a,
   font-size: 1.15rem;
 }
 .fact-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
 }
 .fact-cell {
+  flex: 1 1 13rem;
   background: var(--panel);
   padding: 0.55rem 0.75rem;
   display: flex;
@@ -1840,35 +1844,23 @@ table.profile td.src-cell a,
   margin-top: 1.8rem;
   padding-top: 1.1rem;
 }
-/* The launch-year chart cell IS the on-orbit stat (Florian 2026-07-09):
-   big count left, step chart flowing right, one full row of the band so
-   no trailing cells sit empty. */
-.spec-chart {
-  grid-column: 1 / -1;
-}
+/* The on-orbit stat cell carries its trend as a sparkline (v3.4 rethink):
+   same anatomy as its sibling cells (label, value, meta), the step curve
+   tucked beside the number. No axis chrome; the meta line names the span. */
 .spec-chart-row {
   display: flex;
-  gap: 1.4rem;
+  gap: 1rem;
   align-items: center;
 }
 .spec-chart-value {
   flex: none;
-  font-size: 1.7rem;
 }
 .spec-chart-svg {
   display: block;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+  max-width: 15rem;
   height: auto;
-  margin-top: 0.2rem;
-}
-.spec-chart-tick,
-.spec-chart-count {
-  font-family: var(--mono);
-  font-size: 9px;
-  fill: var(--dim);
-}
-.spec-chart-count {
-  fill: var(--reg-acc, var(--acc));
 }
 
 /* Profile overview: fg copy behind an accent rule. A paragraph of bold
@@ -1949,12 +1941,21 @@ table.profile td.src-cell a,
 /* Registry v2 profile: key-specs panel, positioning + MCC read, incidents,
    split related. Reuses .panel/.tile/.chip aesthetics rather than a new
    visual language; no radius, no transform hovers. */
+/* Flex, not grid (registry v3.4): cells grow to fill every row, so the
+   band never shows empty remainder slots at any viewport or cell count. */
 .specs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
+}
+.specs-grid > .spec-cell {
+  flex: 1 1 11rem;
+  min-width: 0;
+}
+.specs-grid > .spec-chart {
+  flex: 2 1 24rem;
 }
 .spec-cell {
   background: var(--bg);

@@ -333,8 +333,9 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
                 showLabels={false}
                 // Attenuated point size scales with canvas height; this
                 // compact frame is ~4x shorter than the /orbits/ stage, so
-                // unscaled dots go sub-pixel and vanish.
-                dotScale={3.5}
+                // unscaled dots go sub-pixel and vanish. 5.25 = the 3.5
+                // baseline +50% (Florian 2026-07-09).
+                dotScale={5.25}
                 spinRef={spinGroup}
                 downPos={downPos}
                 onPick={pickSat}
