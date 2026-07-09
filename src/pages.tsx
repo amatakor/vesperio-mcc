@@ -2930,7 +2930,7 @@ const TAB_OF_ANCHOR: Record<string, string> = {
   facts: "specs",
   incidents: "history",
   events: "history",
-  positioning: "positioning",
+  positioning: "overview",
   sources: "sources",
   "fact-ledger": "sources",
 };
@@ -2942,8 +2942,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const timeline = profile.history ?? [];
   const specs = profile.specs ?? [];
   const positioning = profile.positioning ?? null;
-  const hasPositioning =
-    !!positioning && ((positioning.claims?.length ?? 0) > 0 || !!positioning.mcc_read);
 
   const related = profile.affiliation
     ? profile.siblings
@@ -2984,7 +2982,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "specs & sensors" : "specs"]);
   if (hasOrbit) tabs.push(["orbit", "orbit"]);
   if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
-  if (hasPositioning) tabs.push(["positioning", "positioning"]);
   if (hasSources) tabs.push(["sources", "sources"]);
 
   const [tab, setTab] = useState("overview");
@@ -3073,6 +3070,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               </p>
             </>
           )}
+          {/* The house read sits right under the operator's own words
+              (Florian 2026-07-09): what they say, then what we say. */}
+          <PositioningSection positioning={positioning} />
           <KeySpecsPanel cells={specs} note={profile.specNote} />
           {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
           <GenerationsSection generations={profile.generations} />
@@ -3134,12 +3134,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <div className="tab-panel" hidden={tab !== "history"}>
             <EventsSection profile={profile} />
             <TimelineSection history={timeline} />
-          </div>
-        )}
-
-        {hasPositioning && (
-          <div className="tab-panel" hidden={tab !== "positioning"}>
-            <PositioningSection positioning={positioning} />
           </div>
         )}
 
