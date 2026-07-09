@@ -9,6 +9,14 @@
     />
     <title>Vesperio</title>
     <!--canonical-->
+    <!-- Theme before paint: default dark; "light" sets data-theme on <html>.
+         Kept inline so a saved light theme never flashes dark. -->
+    <script>
+      try {
+        if (localStorage.getItem("vesperio-theme") === "light")
+          document.documentElement.setAttribute("data-theme", "light");
+      } catch (e) {}
+    </script>
     <!-- The feed is held at opacity:0 until the JS masonry packs it (see
          .cards in index.css); reveal it for clients that never run that JS. -->
     <noscript>

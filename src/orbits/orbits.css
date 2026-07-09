@@ -210,7 +210,7 @@
 }
 .lcd-comma {
   font-family: var(--mono);
-  font-weight: 700;
+  font-weight: 500;
   color: var(--acc);
   font-size: 0.62em;
   padding: 0 2px;
@@ -222,7 +222,7 @@
   display: block;
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 44px;
   line-height: 1.1;
   letter-spacing: 0.02em;
@@ -370,7 +370,7 @@
 }
 .flow-legend b {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 .flow-sw {
   display: inline-block;
@@ -412,7 +412,7 @@
 }
 .veh-count {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 .veh-track {
   height: 3px;
@@ -445,7 +445,7 @@
 }
 .view-title {
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
 }
@@ -478,7 +478,7 @@
   border: none;
   padding: 0;
   font: inherit;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fg);
   cursor: pointer;
   letter-spacing: 0;
@@ -551,7 +551,7 @@
 }
 .rl-title {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 3px;
   color: var(--fg);
 }
@@ -659,7 +659,7 @@
   align-items: center;
   gap: 7px;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
 }
@@ -730,7 +730,7 @@
 }
 .rl-stale {
   font-size: 7px;
-  font-weight: 700;
+  font-weight: 500;
   color: #0a0a0a;
   background: var(--warn);
   padding: 1px 4px;
@@ -778,7 +778,7 @@
   box-shadow: inset 2px 0 var(--acc);
 }
 .rl-focused .rl-name {
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fg);
 }
 
@@ -803,7 +803,7 @@
 }
 .rl-key b {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .rl-empty {
@@ -855,7 +855,7 @@
   color: #0a0a0a;
   background: var(--warn);
   padding: 1px 4px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* --------------------------------------------------- popup (unchanged) */
@@ -1124,7 +1124,7 @@
 }
 .orbits-fallback-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
   margin-bottom: 8px;
@@ -1138,4 +1138,68 @@
   font-size: 10px;
   letter-spacing: 1.5px;
   color: var(--acc);
+}
+
+/* ---------------------------------------------------------------- theme
+   MCC is the space view: theme-invariant (V1.1). Re-pin the themed
+   tokens locally so the light theme can never wash the instrument; the
+   masthead above the stage still themes with the site. */
+.oframe,
+.orbits-fallback {
+  --n0: #050505;
+  --n1: #0a0a0a;
+  --n2: #161616;
+  --n3: #232323;
+  --n4: #3a3a3a;
+  --n5: #6a6a6a;
+  --n6: #a8a8a8;
+  --n7: #ededed;
+  --n8: #ffffff;
+  --bg-inset: #000000;
+  --acc-green: #39ff6a;
+  --acc-red: #ff2e1e;
+  --acc-yellow: #ffff00;
+  --acc-orange: #ff8a00;
+  --acc-cyan: #00f0ff;
+  --acc-blue: #2e7cff;
+  --acc-magenta: #ff2ed2;
+  --acc-uv: #8c45ff;
+  --shell-accent: var(--volt);
+  --focus-ring: var(--volt);
+  --dot: var(--volt);
+  --mark-frame: var(--volt-ink);
+  --acc: var(--volt);
+  --acc-ink: #0a0a0a;
+  /* Aliases resolve var() where they are DECLARED, so the :root aliases
+     carry the themed values down; re-declare them here so they re-resolve
+     against the dark ramp pinned above. */
+  --bg-page: var(--n0);
+  --bg-panel: var(--n1);
+  --bg-raised: var(--n2);
+  --border-1: var(--n3);
+  --border-2: var(--n4);
+  --text-1: var(--n8);
+  --text-2: var(--n6);
+  --text-3: var(--n5);
+  --text-disabled: var(--n4);
+  --link: var(--acc-cyan);
+  --link-hover: var(--n8);
+  --status-live: var(--acc-green);
+  --status-fail: var(--acc-red);
+  --status-notable: var(--acc-yellow);
+  --status-critical: var(--acc-orange);
+  --bg: var(--n0);
+  --panel: var(--n1);
+  --fg: var(--n8);
+  --dim: var(--n6);
+  --line: var(--n3);
+  --alert: var(--acc-red);
+  --warn: var(--acc-orange);
+  --live: var(--acc-green);
+  --panel-dark: var(--bg-inset);
+  --dim-deep: var(--n4);
+  --track: var(--n3);
+  --ink-link: var(--acc-cyan);
+  color: var(--text-1);
+  background: var(--bg-page);
 }
