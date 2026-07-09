@@ -117,21 +117,9 @@
     "tier": "canonical"
   },
   "revisit": {
-    "value": "multiple times per day",
-    "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
-    "as_of": "2026-07-09",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
-        "reason": "eoPortal mission page (ESA-run aggregator); page states ICEYE 'can revisit individual locations multiple times per day' (registry v2 EO spec backfill)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": "under 6 hour global revisit",
+    "source": "https://www.iceye.com/sar-data",
+    "as_of": "2026-07-09"
   },
   "spectral_bands": {
     "value": [
@@ -168,7 +156,21 @@
       "as_of": "2026-07-09"
     }
   ],
-  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page. eoPortal imaging-modes table (Table 4) states GRD ground range resolution and nominal swath per mode; ScanSAR listed as under development, not carried here.",
+  "generations": [
+    {
+      "name": "Gen3",
+      "text": "Introduces the Spot Fine imaging mode with 50 cm ground range resolution",
+      "source": "https://www.iceye.com/press/press-releases/iceyes-four-new-generation-3-satellites-launch",
+      "as_of": "2026-07-09"
+    },
+    {
+      "name": "Gen4",
+      "text": "Initial Gen4 platforms offer resolutions as fine as 16 cm and expanded high-resolution coverage areas",
+      "source": "https://www.eoportal.org/satellite-missions/iceye-constellation",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Company states it operates the world's largest SAR constellation; satellite counts not stated on the company page. eoPortal imaging-modes table (Table 4) states GRD ground range resolution and nominal swath per mode; ScanSAR listed as under development, not carried here. Revisit upgraded 2026-07-09 to the operator's own quantified statement ('Under 6 hour global revisit', iceye.com/sar-data), which also states 'resolutions up to 25 cm'; the 0.16 m figure stands on eoPortal's newer Gen4 statement, the 25 cm product figure is noted here rather than disputed. No sourced Gen2 statement found; only Gen3/Gen4 rows carried.",
   "events": [
     {
       "date": "2015-11",

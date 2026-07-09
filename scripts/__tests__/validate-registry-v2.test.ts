@@ -216,6 +216,34 @@ describe("imaging_modes", () => {
   });
 });
 
+describe("generations", () => {
+  const okGen = {
+    name: "Gen4",
+    text: "50cm resolution, daily revisit",
+    source: "https://example.com/gen4",
+    as_of: "2026-07-08",
+  };
+
+  test("valid generations pass", () => {
+    expect(constErrors({ generations: [okGen, { ...okGen, name: "Gen5" }] })).toEqual([]);
+  });
+
+  test("entry missing name, text, source, or as_of fails", () => {
+    const errors = constErrors({
+      generations: [{}],
+    });
+    expect(errors.some((e) => e.includes("generations[0].name"))).toBe(true);
+    expect(errors.some((e) => e.includes("generations[0].text"))).toBe(true);
+    expect(errors.some((e) => e.includes("generations[0].source"))).toBe(true);
+    expect(errors.some((e) => e.includes("generations[0].as_of"))).toBe(true);
+  });
+
+  test("bad as_of format fails", () => {
+    const errors = constErrors({ generations: [{ ...okGen, as_of: "07/08/2026" }] });
+    expect(errors.some((e) => e.includes("generations[0].as_of"))).toBe(true);
+  });
+});
+
 // -------------------------------------------- new optional SourcedFields
 
 describe("registry v2 optional SourcedFields", () => {

@@ -641,6 +641,18 @@ export interface ImagingMode {
   as_of: string;
 }
 
+/** One sourced generation row on a constellation (e.g. "Gen4"). */
+export interface GenerationRow {
+  /** Generation name as the source states it, e.g. "Gen4". */
+  name: string;
+  /** One line of stated capabilities, copied/tightly paraphrased from the source. */
+  text: string;
+  /** The page that states it. Required. */
+  source: string;
+  /** YYYY-MM-DD verified against the source. */
+  as_of: string;
+}
+
 /**
  * Per-entity positioning block (registry v2), carried by all four profile
  * types. claims follow the full sourcing model: each is a SourcedField
@@ -740,6 +752,10 @@ export interface ConstellationProfile {
   spectral_bands?: SourcedField<string[]>;
   /** Per-mode specs (Capella-style spotlight/stripmap); each row sourced. */
   imaging_modes?: ImagingMode[];
+  /** Sourced per-generation capability rows (registry v3); each row's text
+   *  states only what its cited page states. Rendered as the profile's
+   *  GENERATIONS block. */
+  generations?: GenerationRow[];
   // Connectivity/IoT service figures (registry v2), same copying rules.
   /** Frequency bands as stated, e.g. ["Ka", "Ku"]. */
   frequency_bands?: SourcedField<string[]>;

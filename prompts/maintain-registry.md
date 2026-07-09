@@ -122,6 +122,17 @@ field shapes exactly (any of those profiles is a template).
   stated. All scored fields take eoPortal's aggregator class: `"snr": 4`,
   `"tier": "canonical"`, trace per the section below. Null-fill and
   upgrade only, as everywhere in the registry.
+- **Quantified beats vague** (`revisit` especially): a stated figure
+  ("under 6 hour global revisit", "twice daily") outranks a stated
+  vagueness ("multiple times per day"). A vague value already in a
+  profile is a placeholder: upgrade it when the eoPortal page or the
+  operator's own site states a quantified one (normal source-preference
+  order applies). Never coerce a vague statement into a number.
+- **Generations**: when a page names constellation generations with
+  stated capabilities ("Gen4 ... resolutions as fine as 16 cm"), append
+  sourced `generations` rows (`name`, `text`, `source`, `as_of`), same
+  rules as timeline events. A generation no source names gets no row;
+  never invent a baseline generation to complete the set.
 
 ## SNR fields on registry writes (SNR_SPEC.md, 2026-07-06)
 

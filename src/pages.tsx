@@ -15,6 +15,7 @@ import type {
   SourcedField,
   TimelineEvent,
   ImagingMode,
+  GenerationRow,
   Positioning,
   ConstellationProfile,
   VehicleProfile,
@@ -22,6 +23,7 @@ import type {
   OrgProfile,
   SignalPerson,
 } from "./data/schema";
+import { OrbitMini } from "./orbits/mini";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
 import {
   items,
@@ -1167,7 +1169,6 @@ function fieldRow(
         ) : (
           ""
         )}
-        {f.snr !== undefined && <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />}
         {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
       </td>
     </tr>
@@ -1651,7 +1652,10 @@ function constellationGroups(scoped: RegEntry[], all: RegEntry[]): GroupNode[] {
       nodeFor(e.parent, opLabel(p.name), p.href).entries.push(e);
     } else {
       // Standalone constellation (or orphaned child under search filters).
-      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? null).entries.push(e);
+      // The operator row must lead somewhere: the alias-mapped company
+      // profile when one exists, else the constellation's own page (for a
+      // single-constellation operator like ICEYE that IS the company page).
+      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? e.href).entries.push(e);
     }
   }
   // A parent whose children are all filtered out still previews itself.
@@ -1756,7 +1760,14 @@ function PaneBrowser({
           <RegRow
             key={g.key}
             label={g.label}
-            aside={g.entries.length}
+            // A count of 1 on a group that is just its own entity (ICEYE >
+            // ICEYE) is noise; the suffix only earns its place at 2+.
+            aside={
+              g.entries.length === 1 &&
+              g.entries[0]!.name.toLowerCase() === g.label.toLowerCase()
+                ? ""
+                : g.entries.length
+            }
             selected={!!group && g.key === group.key}
             onClick={() => {
               setSelGroup(g.key);
@@ -1767,7 +1778,14 @@ function PaneBrowser({
       </div>
       <div className="reg-pane reg-ents">
         <div className="reg-pane-head">
-          {group ? group.label : ""} <span className="dim">{groupEntries.length}</span>
+          {group ? group.label : ""}{" "}
+          {/* Same rule as the group rows: a count of 1 on a group that is
+              just its own entity is noise. */}
+          {!(
+            groupEntries.length === 1 &&
+            group &&
+            groupEntries[0]!.name.toLowerCase() === group.label.toLowerCase()
+          ) && <span className="dim">{groupEntries.length}</span>}
         </div>
         {group?.profileHref && (
           <a className="reg-profile-link" href={group.profileHref}>
@@ -2012,6 +2030,14 @@ interface ProfileMeta {
   positioning?: Positioning | null;
   /** Per-mode EO specs; rendered as a sub-table inside the facts section. */
   imagingModes?: ImagingMode[];
+  /** Sourced per-generation capability rows (registry v3). */
+  generations?: GenerationRow[];
+  /** Orbit-tab data (constellations): fact rows plus whether an Orbits layer exists. */
+  orbitTab?: { rows: ProfileRow[]; hasLayer: boolean } | null;
+  /** Uppercase micro-chips under the title (sensor types, country, status...). */
+  headerChips?: Array<{ label: string; kind?: "status" }>;
+  /** Section/domain accent for the page chrome; falls back to the brand accent. */
+  accent?: string;
 }
 
 function Breadcrumbs({
@@ -2036,22 +2062,6 @@ function Breadcrumbs({
         </>
       )}
     </p>
-  );
-}
-
-/** Numbered "// on this page" jump-list, ai-tldr style, built from the sections present. */
-function OnThisPageToc({ sections }: { sections: Array<[string, string]> }) {
-  return (
-    <section className="panel toc-panel">
-      <h2>on this page</h2>
-      <ol className="toc-list">
-        {sections.map(([id, label]) => (
-          <li key={id}>
-            <a href={`#${id}`}>{label}</a>
-          </li>
-        ))}
-      </ol>
-    </section>
   );
 }
 
@@ -2415,7 +2425,6 @@ function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | nul
             </span>
             <span className="spec-value">{c.value}</span>
             <span className="spec-meta">
-              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
               {c.computed && <span className="dim spec-computed">computed</span>}
               {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
             </span>
@@ -2445,8 +2454,7 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
                 <a className="src-link" href={c.source} rel="noopener">
                   source
                 </a>
-              )}{" "}
-              {c.snr !== undefined && <SnrLed snr={c.snr} trace={c.snr_trace} size="compact" />}
+              )}
             </li>
           ))}
         </ul>
@@ -2604,20 +2612,191 @@ function FaqSection({ items }: { items: FaqItem[] }) {
   );
 }
 
-/** Shared destination-page shell for every registry profile type. */
+/**
+ * The profile header's ONE sourcing mark (registry v3, Florian 2026-07-09):
+ * the median of the page's scored facts on the LED bezel, with the honest
+ * mix (count per score, weakest fact, unscored-sourced count) in a hover/
+ * focus popover. Display-only and computed at render; per-fact scores stay
+ * the record and render in the Sources tab.
+ */
+function PageSourcingMark({
+  scored,
+  unscored,
+}: {
+  scored: number[];
+  unscored: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const total = scored.length + unscored;
+  if (total === 0) return null;
+  const sorted = [...scored].sort((a, b) => a - b);
+  // Lower median: the conservative middle when the count is even.
+  const median = sorted.length > 0 ? sorted[Math.floor((sorted.length - 1) / 2)]! : null;
+  const weakest = sorted[0] ?? null;
+  const perScore = [5, 4, 3, 2, 1]
+    .map((v) => [v, sorted.filter((s) => s === v).length] as const)
+    .filter(([, n]) => n > 0);
+  return (
+    <span
+      className="snr-agg"
+      tabIndex={0}
+      role="note"
+      aria-label={
+        median !== null
+          ? `Sourcing: typical fact scores ${median} of 5 across ${total} sourced facts`
+          : `Sourcing: ${total} sourced facts, unscored`
+      }
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
+    >
+      <span className="snr-agg-label">sourcing</span>
+      {median !== null && <SnrLed snr={median} size="compact" />}
+      <span className="snr-agg-count dim">
+        {median !== null ? `typical ${median}/5 · ` : ""}
+        {total} facts
+      </span>
+      {open && (
+        <span className="snr-pop snr-agg-pop" role="status">
+          <span className="snr-agg-pop-title">source mix</span>
+          {perScore.map(([v, n]) => (
+            <span key={v} className="snr-agg-row">
+              <span>{v}/5</span>
+              <span>{n}</span>
+            </span>
+          ))}
+          {unscored > 0 && (
+            <span className="snr-agg-row">
+              <span>first-party / reference (unscored)</span>
+              <span>{unscored}</span>
+            </span>
+          )}
+          {weakest !== null && (
+            <span className="snr-agg-foot">weakest fact {weakest}/5 · per-fact detail in sources</span>
+          )}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** Sourced per-generation capability rows (registry v3); hidden when empty. */
+function GenerationsSection({ generations }: { generations?: GenerationRow[] }) {
+  if (!generations || generations.length === 0) return null;
+  return (
+    <section id="generations" className="panel">
+      <h2>generations</h2>
+      <div className="gen-rows">
+        {generations.map((g) => (
+          <div key={g.name} className="gen-row">
+            <span className="gen-name">{g.name}</span>
+            <span className="gen-text">
+              {g.text}{" "}
+              <a href={g.source} rel="noopener" className="dim">
+                (source, as of {g.as_of})
+              </a>
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * The Sources tab's per-fact ledger: every sourced fact with its source
+ * host, as-of date, and its own SNR mark (trace on click). This is where
+ * the per-fact marks live now that the header carries the one aggregate.
+ */
+function FactLedgerSection({
+  rows,
+  positioning,
+}: {
+  rows: ProfileRow[];
+  positioning?: Positioning | null;
+}) {
+  const entries: Array<{ label: string; f: SourcedField<unknown>; computed?: boolean }> = [];
+  for (const [label, f, computed] of rows) {
+    if (f.source) entries.push({ label, f, computed: computed === "computed" });
+  }
+  (positioning?.claims ?? []).forEach((c, i) => {
+    if (c.source) entries.push({ label: `positioning claim ${i + 1}`, f: c });
+  });
+  // The honest class label for a sourced-but-unscored field: computed
+  // figures (CelesTrak-derived counts) are the pipeline's, Wikipedia is a
+  // reference, everything else unscored is the actor speaking directly.
+  const unscoredLabel = (f: SourcedField<unknown>, computed?: boolean): string => {
+    if (computed || (f.source ?? "").includes("celestrak.org")) return "computed";
+    if ((f.source ?? "").includes("wikipedia.org")) return "wikipedia";
+    return "first-party";
+  };
+  if (entries.length === 0) return null;
+  return (
+    <section id="fact-ledger" className="panel">
+      <h2>fact ledger</h2>
+      <table className="profile fact-ledger">
+        <thead>
+          <tr>
+            <th>fact</th>
+            <th>source</th>
+            <th>as of</th>
+            <th>snr</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map(({ label, f, computed }) => (
+            <tr key={label}>
+              <th scope="row">{label}</th>
+              <td>
+                <a href={f.source!} rel="noopener">
+                  {hostOf(f.source!)}
+                </a>
+              </td>
+              <td>{f.as_of ?? ""}</td>
+              <td className="src-cell">
+                {f.snr !== undefined ? (
+                  <>
+                    <SnrLed snr={f.snr} trace={f.snr_trace} size="compact" />
+                    {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+                  </>
+                ) : (
+                  <span className="dim">{unscoredLabel(f, computed)}</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+/** Which tab owns each legacy in-page anchor, for #hash deep links. */
+const TAB_OF_ANCHOR: Record<string, string> = {
+  specs: "overview",
+  generations: "overview",
+  stock: "overview",
+  constellations: "overview",
+  vehicles: "overview",
+  faq: "overview",
+  facts: "specs",
+  incidents: "history",
+  events: "history",
+  positioning: "positioning",
+  sources: "sources",
+  "fact-ledger": "sources",
+};
+
+/** Shared destination-page shell for every registry profile type (tabbed, registry v3). */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
   const roster = profile.vehicleRoster ?? [];
-  const history = profile.history ?? [];
+  const timeline = profile.history ?? [];
   const specs = profile.specs ?? [];
-  const hasSpecs = specs.length >= 2;
   const positioning = profile.positioning ?? null;
   const hasPositioning =
     !!positioning && ((positioning.claims?.length ?? 0) > 0 || !!positioning.mcc_read);
-  const hasIncidents = history.some((e) => e.type === "incident");
-  const answeredFaq = profile.faq.filter(
-    (i) => i.field.value !== null && i.field.value !== undefined,
-  );
 
   const related = profile.affiliation
     ? profile.siblings
@@ -2637,105 +2816,202 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
   const hasEvents = itemsMentioning(names).length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
+  const orbitTab = profile.orbitTab ?? null;
+  const hasOrbit =
+    !!orbitTab && (orbitTab.hasLayer || orbitTab.rows.some(([, f]) => f.value !== null && f.value !== undefined));
 
-  // TOC mirrors the rendered sections, in reading-flow order (specs first,
-  // then positioning, facts, incidents, history, stock, children/roster,
-  // events); related and sources live in the rail but stay in the list.
-  const sections: Array<[string, string]> = [];
-  if (hasSpecs) sections.push(["specs", "key specs"]);
-  if (hasPositioning) sections.push(["positioning", "positioning"]);
-  sections.push(["facts", "facts"]);
-  if (hasIncidents) sections.push(["incidents", "incidents"]);
-  if (history.length > 0) sections.push(["history", "history"]);
-  if (profile.stockTicker?.value) sections.push(["stock", "stock"]);
-  if (children.length > 0) sections.push(["constellations", "constellations"]);
-  if (roster.length > 0) sections.push(["vehicles", "vehicles"]);
-  if (hasEvents) sections.push(["events", "events"]);
-  if (related.length > 0 || prev || next) sections.push(["related", "related"]);
-  if (hasSources) sections.push(["sources", "sources"]);
-  if (answeredFaq.length > 0) sections.push(["faq", "faq"]);
+  // The page-level sourcing mix: scored facts feed the median mark, sourced
+  // but unscored fields (first-party, Wikipedia, computed) are counted.
+  const scored: number[] = [];
+  let unscored = 0;
+  for (const [, f] of profile.rows) {
+    if (typeof f.snr === "number") scored.push(f.snr);
+    else if (f.source) unscored++;
+  }
+  for (const c of positioning?.claims ?? []) {
+    if (typeof c.snr === "number") scored.push(c.snr);
+    else if (c.source) unscored++;
+  }
+
+  const tabs: Array<[string, string]> = [["overview", "overview"]];
+  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "specs & sensors" : "specs"]);
+  if (hasOrbit) tabs.push(["orbit", "orbit"]);
+  if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
+  if (hasPositioning) tabs.push(["positioning", "positioning"]);
+  if (hasSources) tabs.push(["sources", "sources"]);
+
+  const [tab, setTab] = useState("overview");
+  const tabIds = tabs.map(([id]) => id).join(",");
+  useEffect(() => {
+    const ids = tabIds.split(",");
+    const apply = () => {
+      const h = window.location.hash.replace(/^#/, "");
+      if (!h) return;
+      const direct = ids.includes(h) ? h : null;
+      const owner =
+        direct ?? TAB_OF_ANCHOR[h] ?? (h.startsWith("spec-") ? "overview" : null);
+      if (owner && ids.includes(owner)) {
+        setTab(owner);
+        if (!direct) {
+          requestAnimationFrame(() => document.getElementById(h)?.scrollIntoView());
+        }
+      }
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, [tabIds]);
+  const pick = (id: string) => {
+    setTab(id);
+    window.history.replaceState(null, "", `#${id}`);
+  };
 
   return (
     <Layout current="registry">
-      <div className="registry-profile">
+      <div
+        className="registry-profile"
+        style={profile.accent ? ({ "--reg-acc": profile.accent } as CSSProperties) : undefined}
+      >
         <Breadcrumbs
           segment={profile.breadcrumbSegment}
           name={profile.name}
           parentLink={profile.parentLink}
         />
-        <h1 className="page-title profile-title">
-          <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
-          {profile.name}
-          {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
-          <span className="dim">/ {profile.typeLabel}</span>
-        </h1>
-        {profile.overview.value && (
-          <>
-            <p className="overview-block">{profile.overview.value}</p>
-            <p className="dim source-line">
-              <a href={profile.overview.source ?? undefined} rel="noopener">
-                (source, as of {profile.overview.as_of})
-              </a>
-            </p>
-          </>
-        )}
-        {/* Two columns on wide screens (2026-07-07 design pass): the
-            reading flow left, wayfinding (toc / related / sources) in a
-            sticky rail right. One column below 64rem, original order. */}
-        <div className="profile-cols">
-          <div className="profile-main">
-            <KeySpecsPanel cells={specs} note={profile.specNote} />
-            <PositioningSection positioning={positioning} />
-            <section id="facts" className="panel">
-              <h2>facts</h2>
-              <ProfileTable rows={profile.rows} />
-              {profile.imagingModes && profile.imagingModes.length > 0 && (
-                <table className="profile imaging-modes">
-                  <thead>
-                    <tr>
-                      <th>mode</th>
-                      <th>resolution</th>
-                      <th>swath</th>
-                      <th>source</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {profile.imagingModes.map((m) => (
-                      <tr key={m.mode}>
-                        <th scope="row">{m.mode}</th>
-                        <td>{m.resolution_m !== null ? `${m.resolution_m} m` : "unknown"}</td>
-                        <td>{m.swath_km !== null ? `${m.swath_km} km` : "unknown"}</td>
-                        <td className="src-cell">
-                          <a href={m.source} rel="noopener">
-                            source
-                          </a>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-              {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-            </section>
-            <IncidentsSection history={history} />
-            <HistorySection history={history} />
-            {profile.stockTicker?.value && (
-              <StockSection slug={profile.slug} ticker={profile.stockTicker} />
-            )}
-            <ChildConstellationsSection children={children} />
-            <VehicleRosterSection roster={roster} />
-            <EventsSection profile={profile} />
-            <FaqSection items={profile.faq} />
-            <p>
-              <a href="/registry/">Back to the registry</a>
-            </p>
-          </div>
-          <aside className="profile-rail">
-            <OnThisPageToc sections={sections} />
-            <RelatedSection profile={profile} related={related} prev={prev} next={next} />
-            {hasSources && <SourcesSection rows={profile.rows} />}
-          </aside>
+        <div className="profile-head">
+          <h1 className="page-title profile-title">
+            <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
+            {profile.name}
+            {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
+            <span className="dim">/ {profile.typeLabel}</span>
+          </h1>
+          <PageSourcingMark scored={scored} unscored={unscored} />
         </div>
+        {profile.headerChips && profile.headerChips.length > 0 && (
+          <div className="profile-chips">
+            {profile.headerChips.map((c) => (
+              <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
+                {c.label}
+              </span>
+            ))}
+          </div>
+        )}
+        <div className="profile-tabs" role="tablist">
+          {tabs.map(([id, label]) => (
+            <button
+              key={id}
+              role="tab"
+              aria-selected={tab === id}
+              className={`profile-tab${tab === id ? " active" : ""}`}
+              onClick={() => pick(id)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        <div className="tab-panel" hidden={tab !== "overview"}>
+          {profile.overview.value && (
+            <>
+              <p className="overview-block">{profile.overview.value}</p>
+              <p className="dim source-line">
+                <a href={profile.overview.source ?? undefined} rel="noopener">
+                  (source, as of {profile.overview.as_of})
+                </a>
+              </p>
+            </>
+          )}
+          <KeySpecsPanel cells={specs} note={profile.specNote} />
+          <GenerationsSection generations={profile.generations} />
+          <ChildConstellationsSection children={children} />
+          <VehicleRosterSection roster={roster} />
+          {profile.stockTicker?.value && (
+            <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+          )}
+          <FaqSection items={profile.faq} />
+        </div>
+
+        <div className="tab-panel" hidden={tab !== "specs"}>
+          <section id="facts" className="panel">
+            <h2>facts</h2>
+            {profile.imagingModes && profile.imagingModes.length > 0 && (
+              <table className="profile imaging-modes">
+                <thead>
+                  <tr>
+                    <th>mode</th>
+                    <th>resolution</th>
+                    <th>swath</th>
+                    <th>source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {profile.imagingModes.map((m) => (
+                    <tr key={m.mode}>
+                      <th scope="row">{m.mode}</th>
+                      <td>{m.resolution_m !== null ? `${m.resolution_m} m` : "unknown"}</td>
+                      <td>{m.swath_km !== null ? `${m.swath_km} km` : "unknown"}</td>
+                      <td className="src-cell">
+                        <a href={m.source} rel="noopener">
+                          source
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+            <ProfileTable rows={profile.rows} />
+            {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
+          </section>
+        </div>
+
+        {hasOrbit && orbitTab && (
+          <div className="tab-panel" hidden={tab !== "orbit"}>
+            <section id="orbit-view" className="panel">
+              <h2>orbit</h2>
+              <div className="orbit-grid">
+                {orbitTab.hasLayer && (
+                  <div className="orbit-view">
+                    <OrbitMini slug={profile.slug} accent={profile.accent} />
+                    <a className="orbit-open" href="/orbits/">
+                      open in orbits &rarr;
+                    </a>
+                  </div>
+                )}
+                <div className="orbit-facts">
+                  <ProfileTable rows={orbitTab.rows} />
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
+
+        {(timeline.length > 0 || hasEvents) && (
+          <div className="tab-panel" hidden={tab !== "history"}>
+            <IncidentsSection history={timeline} />
+            <HistorySection history={timeline} />
+            <EventsSection profile={profile} />
+          </div>
+        )}
+
+        {hasPositioning && (
+          <div className="tab-panel" hidden={tab !== "positioning"}>
+            <PositioningSection positioning={positioning} />
+          </div>
+        )}
+
+        {hasSources && (
+          <div className="tab-panel" hidden={tab !== "sources"}>
+            <FactLedgerSection rows={profile.rows} positioning={positioning} />
+            <SourcesSection rows={profile.rows} />
+          </div>
+        )}
+
+        <footer className="profile-foot">
+          <RelatedSection profile={profile} related={related} prev={prev} next={next} />
+          <p>
+            <a href="/registry/">Back to the registry</a>
+          </p>
+        </footer>
       </div>
     </Layout>
   );
@@ -2788,7 +3064,7 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
   const verifiedField = verifiedRow[1];
   const verifiedComputed = verifiedRow[2] === "computed";
   const specCandidates: Array<SpecCell | null> = [
-    specFromField("resolution_m", "resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
+    specFromField("resolution_m", "max resolution", profile.resolution_m, (v) => `${fmtNum(v)} m`),
     specFromField("swath_km", "swath", profile.swath_km, (v) => `${fmtNum(v)} km`),
     specFromField("revisit", "revisit", profile.revisit, (v) => String(v)),
     specFromField("spectral_bands", "spectral bands", profile.spectral_bands, (v) =>
@@ -2867,6 +3143,23 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     specs,
     positioning: profile.positioning ?? null,
     imagingModes: profile.imaging_modes,
+    generations: profile.generations,
+    orbitTab: {
+      rows: [
+        ["orbit", profile.orbit],
+        countRow("sats launched (total)", "sats_launched_total"),
+        countRow("sats active (claimed)", "sats_active_claimed"),
+        verifiedRow,
+        ["sats planned", profile.sats_planned],
+      ],
+      hasLayer: !!profile.orbits && (!!profile.orbits.celestrak_group || !!profile.orbits.celestrak_name),
+    },
+    headerChips: [
+      ...(profile.sensor_types.value ?? []).map((s) => ({ label: s })),
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: profile.status.value, kind: "status" as const }] : []),
+    ],
+    accent: DOMAIN_ACCENT[profile.domain],
   };
   return <ProfilePage profile={meta} />;
 }
@@ -2966,6 +3259,13 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
       : null,
     history: profile.events ?? [],
     positioning: profile.positioning ?? null,
+    headerChips: [
+      ...(profile.vehicle_class.value ? [{ label: String(profile.vehicle_class.value) }] : []),
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.reusable.value === true ? [{ label: "reusable" }] : []),
+      ...(profile.status.value ? [{ label: profile.status.value, kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.launch,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -3019,6 +3319,11 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
     specs,
     history: profile.events ?? [],
     positioning: profile.positioning ?? null,
+    headerChips: [
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: String(profile.status.value), kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.spaceports,
   };
   return <ProfilePage profile={meta} />;
 }
@@ -3071,6 +3376,12 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     history: profile.events ?? [],
     stockTicker: profile.ticker ?? null,
     positioning: profile.positioning ?? null,
+    headerChips: [
+      { label: ORG_KIND_LABEL[profile.kind] ?? profile.kind },
+      ...(profile.country.value ? [{ label: profile.country.value }] : []),
+      ...(profile.status.value ? [{ label: String(profile.status.value), kind: "status" as const }] : []),
+    ],
+    accent: SECTION_ACCENT.ecosystem,
   };
   return <ProfilePage profile={meta} />;
 }

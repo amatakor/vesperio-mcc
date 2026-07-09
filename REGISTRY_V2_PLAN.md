@@ -228,3 +228,11 @@ Open questions resolved in-session: Q4 = Yahoo Finance (from code). Q1 proceeded
 6. Deferred pending checks: NewSpace Index terms (human), CelesTrak usage policy, GCAT anomaly-vs-launch-failure field semantics; Wikipedia infobox fallback (beware adapter-mass trap, C2.5).
 7. Wire enrich-ll2/enrich-incidents into maintain-registry.yml: DONE 2026-07-09 (commit 8ff0099). The two v2 enrichers alternate, vehicle specs on the Monday run and incidents on Thursday, keeping each run inside LL2's ~15 req/hr free tier alongside enrich-registry's 3 bulk queries.
 8. Unrelated standing work: 30-day backfill follow-ups per BACKFILL_PLAN.md (found_none batch audit); site still NOT deployed (Cloudflare Pages, Task 6).
+
+---
+
+## 10. Registry v3: tabbed profile redesign (2026-07-09, Florian's UX review of the v2 pages)
+
+Florian reviewed the ICEYE page post-PR6b and directed a redesign (mockup approved interactively): profile pages felt sub-par vs News/Orbits, SNR marks everywhere were noise, and the browser's standalone-operator rows read broken ("ICEYE 1").
+
+Decisions (Florian, 2026-07-09): ONE aggregate sourcing mark per profile page = the MEDIAN of scored facts on the LED bezel, hover breakdown like news (per-score counts, unscored count, weakest fact); per-fact marks move to a fact ledger in the Sources tab. Tabs: overview / specs & sensors / orbit / history / positioning / sources, hash-addressable, all panels prerendered (SEO safe), legacy anchors mapped to their owning tab. Orbit tab = live compact orbital view (real SGP4 via src/orbits/mini.tsx, altitude-banded tracks, reduced-motion safe) plus orbit facts. Key specs label "max resolution". Generations = new sourced rows on constellations (schema + validator + CLAUDE.md rule); ICEYE carries Gen3 (first-party PR) + Gen4 (eoPortal); no Gen2 row because no source names one. Revisit: quantified-beats-vague rule added to CLAUDE.md + maintenance prompt; ICEYE upgraded to first-party "under 6 hour global revisit" (iceye.com/sar-data). FAQ folded into overview; related demoted to footer; the TOC rail died. Menu: standalone operators read like Planet (company profile link, no count-of-1 noise). CLAUDE.md SNR-display section amended accordingly.
