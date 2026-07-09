@@ -75,7 +75,77 @@
     "source": "https://www.pixxel.space/",
     "as_of": "2026-07-05"
   },
-  "notes": "Company states all six Firefly satellites launched in 2025 are operating in orbit.",
+  "resolution_m": {
+    "value": 5,
+    "source": "https://www.eoportal.org/satellite-missions/pixxel",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pixxel",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the operational Firefly satellites deliver '5 m ground sampling distance (GSD) across a 40 km swath'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 40,
+    "source": "https://www.eoportal.org/satellite-missions/pixxel",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pixxel",
+        "reason": "eoPortal mission page; page states Firefly delivers a '40 km swath (VNIR)' (SWIR swath 10 km)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "24 hours once the full constellation is deployed",
+    "source": "https://www.eoportal.org/satellite-missions/pixxel",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pixxel",
+        "reason": "eoPortal mission page; page states 'Once the full constellation is deployed, revisit times will be reduced to 24 hours'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "135+ bands, 470-850 nm (Firefly)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/pixxel",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/pixxel",
+        "reason": "eoPortal mission page; page states the operational Firefly satellites carry 'more than 135 hyperspectral bands' over a '470-850 nm range' (planned constellation satellites will carry 300 spectral bands)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "eoPortal EO spec backfill (2026-07-09): figures are for the operational Firefly satellites (first launched 2025): 5 m GSD, 40 km VNIR swath (10 km SWIR), 135+ bands over 470-850 nm; planned constellation satellites are stated to carry 300 spectral bands at 5 m. Earlier TD-1/TD-2 demonstrators carried ~150 bands at 10 m. Page last updated Sep 21, 2025. Company states all six Firefly satellites launched in 2025 are operating in orbit.",
   "events": [
     {
       "date": "2022-04-01",

@@ -71,5 +71,63 @@
     "source": "https://albedo.com/",
     "as_of": "2026-07-08"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add."
+  "resolution_m": {
+    "value": 0.1,
+    "source": "https://www.eoportal.org/satellite-missions/clarity",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/clarity",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the optical imager has a 'ground sample distance (GSD) of 10 cm at nadir' (thermal imager 2 m); registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "1.5 revisits per day, increasing to 3-5 revisits per day (full constellation)",
+    "source": "https://www.eoportal.org/satellite-missions/clarity",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/clarity",
+        "reason": "eoPortal mission page; page states the full constellation will provide 'a global revisit rate of 1.5 revisits per day, increasing to 3-5 revisits per day'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Panchromatic (400-700 nm)",
+      "Blue (450-510 nm)",
+      "Green (510-580 nm)",
+      "Red (630-690 nm)",
+      "Near-Infrared (770-895 nm)",
+      "thermal infrared (LWIR)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/clarity",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/clarity",
+        "reason": "eoPortal mission page; Table 1 states the optical imager captures Panchromatic 400-700 nm, Blue 450-510 nm, Green 510-580 nm, Red 630-690 nm, Near-Infrared 770-895 nm, and the payload adds a thermal infrared (LWIR) imager"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. eoPortal EO spec backfill (2026-07-09): Clarity constellation is in development (Clarity-1 launched March 2025), so the stated figures are design specifications; the optical GSD is 10 cm at nadir, multispectral 40 cm, thermal 2 m. Swath width not stated on the page, left null. No page 'last updated' date was shown."
 }

@@ -178,5 +178,58 @@
     "source": "https://www.orbitalsidekick.com/",
     "as_of": "2026-07-08"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add."
+  "resolution_m": {
+    "value": 3,
+    "source": "https://www.eoportal.org/satellite-missions/ghost",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/ghost",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the sensors provide '8.3 m for multispectral band and 3 m for panchromatic bands' (hyperspectral GSD approximately 8 m); registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "up to daily for certain locations",
+    "source": "https://www.eoportal.org/satellite-missions/ghost",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/ghost",
+        "reason": "eoPortal mission page; Performance Specifications state a 'revisit rate of up to daily for certain locations'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "468 bands, 400-2,500 nm (VIS to SWIR)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/ghost",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/ghost",
+        "reason": "eoPortal mission page; page states the imager captures 'data across 468 spectral bands from 400 to 2,500 nanometers with 8-meter resolution' (the sensor is developed to capture up to 512 spectral bands VIS to SWIR)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. eoPortal EO spec backfill (2026-07-09): six-satellite hyperspectral constellation; best stated resolution 3 m (panchromatic), 8.3 m multispectral / ~8 m hyperspectral GSD; 468 spectral bands 400-2,500 nm (sensor developed to capture up to 512 bands); revisit up to daily for certain locations. Swath width not stated on the page, left null. Page last updated Jun 20, 2024."
 }

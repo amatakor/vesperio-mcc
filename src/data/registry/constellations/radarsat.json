@@ -95,7 +95,26 @@
     "source": "https://www.asc-csa.gc.ca/eng/satellites/radarsat/",
     "as_of": "2026-07-05"
   },
-  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "spectral_bands": {
+    "value": [
+      "C-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/radarsat-1",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/radarsat-1",
+        "reason": "eoPortal RADARSAT-1 mission page (ESA-run aggregator); page states the SAR instrument 'used a single microwave frequency of 5.3 GHz in the C band'; all RADARSAT missions (RADARSAT-1/-2, RCM) operate in C-band, so the band is a fleet-wide fact; registry v2 EO spec backfill"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05). eoPortal EO spec backfill (2026-07-09): all RADARSAT missions operate in C-band (RADARSAT-1 page states 5.3 GHz C band), carried here as the fleet-wide spectral band. Per-satellite resolution and imaging modes differ across generations and are carried on the member profiles (radarsat-2, rcm), so resolution_m/swath_km/imaging_modes are left null on the fleet parent to avoid conflating heterogeneous figures.",
   "events": [
     {
       "date": "1995-11-04",

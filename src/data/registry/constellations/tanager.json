@@ -112,5 +112,22 @@
     "source": "https://www.planet.com/company/",
     "as_of": "2026-07-05"
   },
-  "notes": null
+  "swath_km": {
+    "value": 18,
+    "source": "https://www.eoportal.org/satellite-missions/carbon-mapper",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/carbon-mapper",
+        "reason": "eoPortal Carbon Mapper mission page (ESA-run aggregator); specifications table states 'Swath width (km) 18'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "eoPortal EO spec backfill (2026-07-09) from the Carbon Mapper (Tanager) mission page: hyperspectral imaging spectrometer for methane and CO2 point sources; 18 km swath. The page's specifications table states spatial resolution as a range ('30-15' m), so resolution_m is left null rather than reduced to a single number. Spectral range not stated as a clean nm figure on the page, so spectral_bands left null. Revisit stated only as 'rapid revisit' (vague), left null. Page last updated Sep 22, 2024."
 }

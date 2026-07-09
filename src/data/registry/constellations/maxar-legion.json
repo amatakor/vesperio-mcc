@@ -76,5 +76,76 @@
     "source": "https://vantor.com/company/about",
     "as_of": "2026-07-05"
   },
-  "notes": "Maxar Intelligence web pages redirect to vantor.com as of 2026-07-05. Company page states 30 cm-class and 15 cm HD imagery; Legion satellite counts not stated."
+  "resolution_m": {
+    "value": 0.29,
+    "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+        "reason": "eoPortal mission page (ESA-run aggregator); parameters table states 'GSD at nadir (m) 0.29 (Panchromatic), 0.48 (Multispectral)'; the 30 cm multispectral imager 'can be pan-sharpened to 15 cm'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 9,
+    "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+        "reason": "eoPortal mission page; parameters table states 'Swath width at nadir (km) 9'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "up to 15 revisits per day",
+    "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+        "reason": "eoPortal mission page; page states the constellation 'enables up to 15 revisits per day'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Panchromatic (450-800 nm)",
+      "8 multispectral bands, Coastal (400-500 nm) to Near Infrared (780-920 nm)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+        "reason": "eoPortal mission page; page states 'panchromatic band imaging between 450 and 800 nm' and 'Eight multispectral bands range from Coastal (400 - 500 nm) to Near Infrared (780 - 920 nm)'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Maxar Intelligence web pages redirect to vantor.com as of 2026-07-05. Company page states 30 cm-class and 15 cm HD imagery; Legion satellite counts not stated. eoPortal EO spec backfill (2026-07-09): native GSD at nadir 0.29 m panchromatic / 0.48 m multispectral, pan-sharpened to 15 cm; 9 km swath at nadir; up to 15 revisits per day; panchromatic (450-800 nm) plus eight multispectral bands (Coastal to NIR). Six-satellite constellation. Page last updated Apr 12, 2025."
 }

@@ -172,5 +172,58 @@
     "source": "https://blacksky.com/technology/",
     "as_of": "2026-07-05"
   },
-  "notes": "BlackSky's Gen-2 smallsats (Global 1-19 numbering). Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 1,
+    "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+        "reason": "eoPortal BlackSky Constellation mission page (ESA-run aggregator); page states each satellite's SV-24 imager 'has a spatial resolution of 1 m at an altitude of 500 km'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "a few hours or less",
+    "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+        "reason": "eoPortal mission page; page states the constellation is planned 'to enable revisit times of a few hours or less'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "panchromatic and color (multispectral)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+        "reason": "eoPortal mission page; page states the SV-24 sensor provides 'panchromatic and color imagery with submeter resolution'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "BlackSky's Gen-2 smallsats (Global 1-19 numbering). eoPortal EO spec backfill (2026-07-09) from the BlackSky Constellation mission page: each Gen-2 satellite carries the SV-24 (Spaceview-24) imaging telescope at 1 m spatial resolution (at 500 km), panchromatic and color imagery, with a planned constellation revisit of a few hours or less; image frames are 30 km2 (frame area, not a swath), so swath_km left null. Page last updated Jul 2, 2025."
 }

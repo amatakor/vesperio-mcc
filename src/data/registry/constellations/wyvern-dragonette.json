@@ -118,5 +118,59 @@
     "source": "https://www.wyvern.space/technology",
     "as_of": "2026-07-08"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add."
+  "resolution_m": {
+    "value": 5.3,
+    "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states all three EPICHyper satellites capture data 'at a 5.3 m spatial resolution'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 20,
+    "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+        "reason": "eoPortal mission page; page states 'All three satellites have a swath width of 20 km at nadir'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "23 bands (EPICHyper-1)",
+      "32 bands, 445-880 nm (EPICHyper-2 and -3)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/epichyper-dragonette",
+        "reason": "eoPortal mission page; page states 'EPICHyper-1 can capture data from 23 bands' and 'EPICHyper-2 and 3 can capture data from 32 bands' with 'a band centre wavelength range of 445 nm to 880 nm'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. eoPortal EO spec backfill (2026-07-09): EPICHyper (Dragonette) constellation of three 6U hyperspectral satellites; 5.3 m resolution at nadir, 20 km swath; EPICHyper-1 captures 23 bands, EPICHyper-2 and -3 capture 32 bands over 445-880 nm. Revisit not stated on the page, left null. Page last updated Dec 13, 2023."
 }

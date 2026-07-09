@@ -137,5 +137,39 @@
     "source": null,
     "as_of": null
   },
-  "notes": "CGSTL's high-resolution (Gaofen) series within the Jilin-1 program. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 0.75,
+    "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+        "reason": "eoPortal Jilin / Gaofen Constellation mission page (ESA-run aggregator); satellite table states 'JL-1-GF03D 0.75 m 17 km' (the improved Gaofen-03D platform; JL-1-GF03B is 1 m); registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 17,
+    "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+        "reason": "eoPortal mission page; satellite table states a swath width of '17 km' for the JL-1-GF03B and JL-1-GF03D Gaofen platforms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "CGSTL's high-resolution (Gaofen) series within the Jilin-1 program. eoPortal EO spec backfill (2026-07-09) from the Jilin / Gaofen Constellation mission page: the satellite table gives the Gaofen-03 platform at 0.75 m (JL-1-GF03D, improved) / 1 m (JL-1-GF03B), 17 km swath. Spectral bands and revisit not stated per-platform on the page, left null. Page last updated Mar 3, 2025."
 }

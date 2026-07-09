@@ -148,7 +148,43 @@
     "source": "https://www.unseenlabs.com/en/",
     "as_of": "2026-07-05"
   },
-  "notes": null,
+  "revisit": {
+    "value": "8 to 12 collections per day depending on latitude",
+    "source": "https://www.eoportal.org/satellite-missions/unseenlabs",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/unseenlabs",
+        "reason": "eoPortal BRO / Unseenlabs mission page (ESA-run aggregator); page states temporal resolution 'allows 8 to 12 collections per day depending on latitude'; registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "RF: S-band and X-band radar emissions"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/unseenlabs",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/unseenlabs",
+        "reason": "eoPortal mission page; page states the sensors 'primarily target S-band and X-band radar emissions, as S-band is mandated by SOLAS ... while X-band provides complementary higher resolution'; measured quantity is carrier frequency in MHz"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "RF-sensing constellation (BRO, maritime electromagnetic intelligence): imaging-resolution fields do not apply. eoPortal EO spec backfill (2026-07-09): each 6U CubeSat carries a single-satellite RF Direction-of-Arrival detector primarily targeting S-band and X-band radar emissions; temporal resolution 8 to 12 collections per day depending on latitude. Page last updated May 17, 2026.",
   "events": [
     {
       "date": "2015",

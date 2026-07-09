@@ -76,7 +76,81 @@
     "source": "https://space-solutions.airbus.com/imagery/our-optical-and-radar-satellite-imagery/spot/",
     "as_of": "2026-07-05"
   },
-  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "resolution_m": {
+    "value": 2,
+    "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'The constellation has spatial resolution of 2m for panchromatic bands, and 8m for multispectral bands' (panchromatic GSD 1.5 m to 2.5 m at nadir); registry v2 EO spec backfill, cite-facts-only per terms"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 60,
+    "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+        "reason": "eoPortal mission page; page states a '60km swath width at nadir using two imagers, or 120km with a single pass mosaic'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "daily revisit capability via the phased SPOT-6 & SPOT-7 constellation (1 day at 45 degrees to 5 days at 30 degrees incidence)",
+    "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+        "reason": "eoPortal mission page; page states 'Daily revisit capability thanks to the phased constellation of SPOT-6 & SPOT-7' and a revisit 'capability 1 (45deg) to 5 days (30deg)'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Panchromatic",
+      "Blue",
+      "Green",
+      "Red",
+      "Near-Infrared (NIR)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/spot-6-7",
+        "reason": "eoPortal mission page; page states the NAOMI imager provides one panchromatic band, one Near infrared band (NIR), and three multispectral (blue, green, red) bands"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields filled by the eoPortal EO spec backfill (2026-07-09) from the SPOT-6/7 mission page: NAOMI imager, 2 m panchromatic (1.5-2.5 m GSD at nadir) and 8 m multispectral, 60 km swath (120 km with both imagers), daily revisit via the phased two-satellite constellation, five bands (panchromatic, blue, green, red, NIR).",
   "events": [
     {
       "date": "1986-02-22",
