@@ -204,7 +204,7 @@ Decision (Florian, 2026-07-08): Commons per-file review, re-hosted. No third-par
 
 ## 8. Execution status (2026-07-09 session, appended at close)
 
-All workstreams executed as seven commits on main (LOCAL, not pushed; push when Florian says go):
+All workstreams executed as seven commits on main. PUSHED to origin/main 2026-07-09 (Florian's instruction) after rebasing over the day's cron commits (stocks daily refresh + orbits data; the stock-series conflicts resolved in favor of the new 2-year files, which the next daily cron refreshes with current closes). Hashes below are the pre-rebase ones from the session log; the pushed history ends at d16ffc2.
 
 | Commit | Scope |
 |---|---|
