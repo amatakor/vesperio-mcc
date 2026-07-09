@@ -1963,8 +1963,10 @@ table.profile td.src-cell a,
 .specs-grid > .spec-chart {
   flex: 2 1 24rem;
 }
+/* Filled cells like the facts grid (Florian 2026-07-09): page-black cells
+   read as empty nested frames; panel fill makes the band a solid block. */
 .spec-cell {
-  background: var(--bg);
+  background: var(--panel);
   padding: 0.7rem 0.85rem;
   display: flex;
   flex-direction: column;
