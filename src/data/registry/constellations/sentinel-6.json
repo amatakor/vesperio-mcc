@@ -76,5 +76,42 @@
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-6",
     "as_of": "2026-07-05"
   },
-  "notes": "Copernicus sea-level mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "revisit": {
+    "value": "repeat ground-track cycle of about 9 days 22 hours; maps 95% of Earth's ice-free ocean every 10 days",
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-6-michael-freilich",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-6-michael-freilich",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'the ground track cycle repeats approximately every 9 days and 22 hours' and the non-sun-synchronous orbit lets it 'map 95% of Earth's ice-free ocean every 10 days' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Ku-band",
+      "C-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-6-michael-freilich",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-6-michael-freilich",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the Poseidon-4 altimeter's 'main frequency for surface height measurements is the Ku-band...with the secondary C-band frequency' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Copernicus sea-level mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (page last updated 2026-01-23). resolution_m/swath_km stay null: Poseidon-4 is a nadir-pointing altimeter, not a swath imager, and the source states no ground resolution or swath figure for it."
 }

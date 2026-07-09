@@ -76,5 +76,81 @@
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-5P",
     "as_of": "2026-07-05"
   },
-  "notes": "Copernicus atmospheric monitoring mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 7000,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states TROPOMI's 'spatial sampling of 7 km x 7 km', converted to metres for this field (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 2600,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states TROPOMI's swath width is '2600 km (roughly 104 deg wide)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "daily global coverage; 17-day orbit repeat cycle",
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states TROPOMI provides daily global coverage with the satellite completing 'one orbit every 101 minutes with a 17-day repeat cycle' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "UV1 (270-300 nm)",
+      "UV2 (300-320 nm)",
+      "UVIS (310-405 nm)",
+      "VIS (405-500 nm)",
+      "NIR1 (675-725 nm)",
+      "NIR2 (725-775 nm)",
+      "SWIR (2305-2385 nm)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-5p",
+        "reason": "eoPortal mission page (ESA-run aggregator); page lists TROPOMI's spectral bands (UV1, UV2, UVIS, VIS, NIR1, NIR2, SWIR) with their wavelength ranges (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Copernicus atmospheric monitoring mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (page last updated 2024-10-02). No imaging_modes row: TROPOMI is a single-instrument nadir spectrometer, not multi-mode."
 }

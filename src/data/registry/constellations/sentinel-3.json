@@ -78,5 +78,83 @@
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-3",
     "as_of": "2026-07-05"
   },
-  "notes": "Copernicus ocean and land mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 300,
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states OLCI has 'a spatial resolution of 300 m for all bands', the finest square resolution stated for the mission (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": { "value": null, "source": null, "as_of": null },
+  "revisit": {
+    "value": "less than or equal to four days (varies with latitude)",
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states OLCI/SLSTR global coverage revisit is 'less than or equal to four days (varies with latitude)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "OLCI: 21 VNIR/SWIR bands",
+      "SLSTR: 11 bands (3 VNIR, 3 SWIR, 5 MWIR/TIR)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'OLCI has 21 spectral bands ranging over VNIR...and SWIR' and SLSTR's 'VNIR and SWIR channels have three bands each...and the MWIR...and TIR...channels cover five bands' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "OLCI (Ocean and Land Colour Imager)",
+      "resolution_m": 300,
+      "swath_km": 1270,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "SLSTR nadir view (500 m VNIR/SWIR, 1 km MWIR/TIR)",
+      "resolution_m": null,
+      "swath_km": 1420,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "SLSTR backward view (500 m VNIR/SWIR, 1 km MWIR/TIR)",
+      "resolution_m": null,
+      "swath_km": 750,
+      "source": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-3",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Copernicus ocean and land mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (page last updated 2024-09-15)."
 }

@@ -112,5 +112,124 @@
     "source": "https://www.asc-csa.gc.ca/eng/satellites/radarsat2/",
     "as_of": "2026-07-05"
   },
-  "notes": "MDA's commercial SAR satellite. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "resolution_m": {
+    "value": 3,
+    "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); the mode table states Ultra-fine mode resolution '3 x 3' (m), the finest square resolution stated; overall range is quoted as 'imaging resolution of 3m-100m' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": { "value": null, "source": null, "as_of": null },
+  "revisit": {
+    "value": "24-day exact repeat cycle (343 orbits); near-global coverage within one week in ScanSAR Wide mode",
+    "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'repeat cycle = 24 days (343 orbits)' and 'covering a ground swath of 20km-500km, RADARSAT-2 has near global coverage' within one week 'when operating in ScanSAR Wide mode' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "C-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'Center Frequency 5.405 GHz, C-band (5.5 cm wavelength)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Standard (25 m x 28 m)",
+      "resolution_m": null,
+      "swath_km": 100,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Wide (25 m x 28 m)",
+      "resolution_m": null,
+      "swath_km": 150,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Fine (10 m x 9 m)",
+      "resolution_m": null,
+      "swath_km": 50,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "ScanSAR Wide",
+      "resolution_m": 100,
+      "swath_km": 500,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "ScanSAR Narrow",
+      "resolution_m": 50,
+      "swath_km": 300,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Ultra-fine",
+      "resolution_m": 3,
+      "swath_km": 20,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Multi-Look Fine (11 m x 9 m)",
+      "resolution_m": null,
+      "swath_km": 50,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Standard Quad-Polarization (25 m x 28 m)",
+      "resolution_m": null,
+      "swath_km": 25,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Fine Quad-Polarization (11 m x 9 m)",
+      "resolution_m": null,
+      "swath_km": 25,
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "MDA's commercial SAR satellite. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (no 'Last updated' date shown on the page)."
 }

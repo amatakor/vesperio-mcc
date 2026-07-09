@@ -76,5 +76,59 @@
     "source": "https://www.asc-csa.gc.ca/eng/satellites/radarsat/",
     "as_of": "2026-07-05"
   },
-  "notes": "Canadian SAR constellation operated for CSA; MDA is prime and commercial distributor. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run."
+  "swath_km": { "value": null, "source": null, "as_of": null },
+  "resolution_m": { "value": null, "source": null, "as_of": null },
+  "revisit": {
+    "value": "daily global re-look in Medium Resolution 50 m mode; four-day exact repeat cycle for InSAR coherent change detection",
+    "source": "https://www.eoportal.org/satellite-missions/rcm",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/rcm",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'average daily global re-look capability in medium 50 m resolution mode' and 'RCM provides a four-day exact revisit, allowing coherent change detection using an InSAR mode' (registry v2 EO spec backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "C-band"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/rcm",
+    "as_of": "2026-07-09",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/rcm",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'Radar center frequency: 5.405 GHz (C-band)' (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Medium Resolution 50 m (ScanSAR)",
+      "resolution_m": 50,
+      "swath_km": 350,
+      "source": "https://www.eoportal.org/satellite-missions/rcm",
+      "as_of": "2026-07-09"
+    },
+    {
+      "mode": "Spotlight (1 m azimuth x 3 m range)",
+      "resolution_m": null,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/rcm",
+      "as_of": "2026-07-09"
+    }
+  ],
+  "notes": "Canadian SAR constellation operated for CSA; MDA is prime and commercial distributor. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (page last updated 2026-03-09). Only two modes carried a clean per-mode resolution/swath pairing on the page; the full mode table (Table 6) was not legibly extractable, and the source's overall range figures (5-50 m resolution, 20-350 km swath, 500 km accessible swath) are ranges per CLAUDE.md's no-range-reduction rule, so constellation-level resolution_m/swath_km stay null."
 }
