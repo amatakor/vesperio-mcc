@@ -942,3 +942,18 @@ fresh headless loads showed the truth. The scene now polls its token
 set once a second and re-keys the palette only when a value changes,
 so open tabs repaint within a tick of any tune. Proven by injecting a
 red land token into a running page: repainted in 2.5s without reload.)
+
+## 3k · The lighter view's triad: the night ladder, raised
+
+RULE (Florian: "not a light theme — a lighter one"; the grey/navy/#333
+triad read muddy): the daylight MCC grounds on the NIGHT view's depth
+order at a raised ambient — sky #31363F (deep blue-grey), ocean
+#2C4368 one step above it, land #43536B one step above the water
+(night's land-over-ocean order restored; #333 under the navy read as
+holes), coast #4D6980 (the night steel, now shared). Even ~6L steps,
+one blue family, data layers brightest. Supersedes 3h/3j's values;
+the principle supersedes the "daylight chart" metaphor: one instrument,
+two ambient levels.
+
+IMPLEMENTATION: --mcc-sky/--globe-ocean/--globe-land/--globe-coast in
+[data-theme="light"], src/index.css.
