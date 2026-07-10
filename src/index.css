@@ -261,7 +261,6 @@
   --acc-green: #128a38;
   --acc-red: #d12619;
   --acc-yellow: #ffff00; /* fills only, black text — unchanged */
-  --acc-yellow-dim: #8f8e00; /* yellow INK on paper (rule 51: outlined NOTABLE chip) */
   --acc-orange: #c56a00;
   --acc-cyan: #007a87;
   --acc-blue: #2666d1;
@@ -685,12 +684,13 @@ a.chip:hover {
   border-color: var(--acc-yellow);
   color: #000;
 }
-/* notable: OUTLINED yellow (dim yellow border + yellow text), the
-   standard badge grammar; yellow intensity now encodes the tier:
-   outline < fill < red (rule 51). */
+/* notable: OUTLINED blue (rule 51b) — the instrument advisory tier:
+   red = failure, yellow fill = act today, blue outline = worth
+   knowing, neutral = logged. INFO blue pair per the token sheet;
+   distinct from link cyan. */
 .chip-notable {
-  border-color: color-mix(in srgb, var(--acc-yellow-dim) 55%, transparent);
-  color: var(--acc-yellow-dim);
+  border-color: var(--acc-blue-dim);
+  color: var(--acc-blue);
 }
 .chip-noise {
   border-color: var(--border-2);
@@ -1128,8 +1128,8 @@ a.chip:hover {
   color: #000;
 }
 .card:not(.card-seismic):hover .chip-notable {
-  border-color: color-mix(in srgb, var(--acc-yellow-dim) 70%, transparent);
-  color: var(--acc-yellow-dim);
+  border-color: var(--acc-blue-dim);
+  color: var(--acc-blue-dim);
 }
 .card:not(.card-seismic):hover .chip-seismic {
   background: var(--acc-red);

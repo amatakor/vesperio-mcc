@@ -633,3 +633,18 @@ IMPLEMENTATION: IMPACTS in schema.ts; .chip-major / .chip-notable in
 src/index.css (+ hover inversion rules); CLAUDE.md Impact block + badge
 law; prompts/update-items.md impact guidance; stats.ts hero and
 impact-mix copy.
+
+## 51b · Notable chip in INFO blue (supersedes 51's yellow outline)
+
+RULE (Florian, same day; endorsed): the notable chip is the OUTLINED
+INFO-blue badge (--acc-blue text, --acc-blue-dim border — the token
+sheet's CONNECTIVITY/INFO pair, the same pairing the kit already uses
+elsewhere). The impact ladder now reads as the instrument convention:
+red fill = failure/seismic, yellow fill = act today (major), blue
+outline = worth knowing (notable), neutral outline = logged (noise).
+Yellow means exactly one thing again, and yellow/blue is the
+colorblind-safe axis. 51's light-theme --acc-yellow-dim ink (#8F8E00)
+is withdrawn (unused).
+
+IMPLEMENTATION: .chip-notable + hover rule in src/index.css; CLAUDE.md
+badge law updated.
