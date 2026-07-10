@@ -882,3 +882,14 @@ bright graticule on dark water, data accents luminous. Full day's ramp:
 coast unchanged; verified headless with the boot ISS volt arc.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3h · Daylight ocean — deep navy (supersedes 3g)
+
+RULE (Florian: "even darker blue"): #24406B. The daylight globe is now
+a dark atlas plate on the paper page — pale land and luminous data on
+deep water. Note recorded: at this depth the coast stroke (#33495A)
+matches the water's luminance and the land edge is carried by the fill
+contrast alone, which reads clean. Ramp: ... > #7B9CC4 > #3B5B88 >
+#24406B.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
