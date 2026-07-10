@@ -680,3 +680,18 @@ the daylight face the ghost grid is subliminal, an impression of the
 instrument rather than a visible frame.
 
 IMPLEMENTATION: [data-theme="light"] .sweep-lcd-ghost, src/index.css.
+
+## 53 · Seismic hover — negative for the copy, not the photo or frame
+
+RULE (Florian, 2026-07-10): the seismic card's hover keeps its
+photographic-negative READ but spares the thumbnail and the frame, and
+the card's framing behaves exactly like every other card (border-2 at
+rest, volt hover frame, z-lift). Implementation drops filter:invert
+(which flipped the border, and triple-stacked on imgs so thumbnails
+rendered negative) for explicit values: ground #FFFF00 -> #0000FF (the
+literal negative), ink #0A0A0A -> #F5F5F5, outlined chips to paper ink,
+filled chips keep their fills, media and foot untouched. Both themes
+(the yellow fill keeps its hue everywhere, so its negative does too).
+
+IMPLEMENTATION: .card-seismic:hover rules in src/index.css; rule 41's
+seismic exclusion note retired.

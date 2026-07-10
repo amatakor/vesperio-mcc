@@ -1119,9 +1119,8 @@ a.chip:hover {
   /* Volt hover frame (fix 2, 2026-07-10): --shell-accent is volt on dark,
      volt-ink on bright (same theme-aware token as the nav underline and
      the wordmark's always-lit dot), so the frame reads correctly in both
-     themes without a new color role. Seismic is excluded (see
-     .card-seismic:hover below): it already inverts wholesale and its
-     border is explicitly locked. */
+     themes without a new color role. Seismic carries the same frame via
+     its own hover rule (rule 53). */
   border-color: var(--shell-accent);
   z-index: 2;
 }
@@ -1353,17 +1352,33 @@ a.card-tile:hover .tile-cat {
   border-color: var(--border-2);
   color: #0a0a0a;
 }
-/* Seismic hover (V1.1): a literal photographic negative — invert the
-   whole card, then re-invert media so photos stay true-color. No
-   border-color change on hover. */
+/* Seismic hover (rule 53, supersedes the filter negative): the same
+   photographic-negative READ, stated explicitly — the yellow ground
+   flips to its literal negative and the ink to paper, but the
+   thumbnail stays true-color and the frame behaves like every other
+   card (volt hover frame, rule 41; the filter used to invert both,
+   and stacked to a triple-invert on imgs that rendered thumbnails
+   negative). Fills keep their fills; the foot stays put. */
 .card-seismic:hover {
-  background: var(--acc-yellow);
-  filter: invert(1);
+  background: #0000ff; /* literal invert of the #ffff00 ground */
+  border-color: var(--shell-accent);
   z-index: 2;
 }
-.card-seismic:hover .card-media,
-.card-seismic:hover img {
-  filter: invert(1);
+.card-seismic:hover .card-headline a,
+.card-seismic:hover .card-tagline,
+.card-seismic:hover .card-extra,
+.card-seismic:hover .card-meta,
+.card-seismic:hover .card-meta .date {
+  color: #f5f5f5; /* literal invert of the #0a0a0a ink */
+}
+.card-seismic:hover .card-meta .chip {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #f5f5f5;
+}
+.card-seismic:hover .chip-seismic {
+  background: var(--acc-red);
+  border-color: var(--acc-red);
+  color: #fff;
 }
 .card-seismic .card-media {
   height: 18.75rem;
