@@ -957,3 +957,12 @@ two ambient levels.
 
 IMPLEMENTATION: --mcc-sky/--globe-ocean/--globe-land/--globe-coast in
 [data-theme="light"], src/index.css.
+
+## 3k (amended) · Ocean half a step darker
+
+Florian's balance pass on the 3k triad: the ocean drops #2C4368 ->
+#24395C, widening the land/water gap while the globe still lifts off
+the #31363F sky. Final lighter-view ladder: sky #31363F, ocean
+#24395C, land #43536B, coast #4D6980, data brightest.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
