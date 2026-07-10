@@ -182,6 +182,8 @@
 
   /* Orbits globe base (quiet tier), canvas-only. Land carries a very
      light shading step against the water (tuning round 8). */
+  --mcc-sky: var(--bg); /* the MCC canvas ground; light overrides to grey (rule 3i) */
+  --mcc-fg: var(--fg); /* stars + in-canvas label ink, MAIN scene only (mini embeds keep --fg) */
   --globe-ocean: #0b1626;
   --globe-land: #12203a;
   --globe-grid: #1d2e42;
@@ -280,10 +282,12 @@
      "orbits canvas is theme-invariant" rule): pale cool ground, steel
      coasts, darkened data accents; the LCD instruments keep volt via
      --clock, rendered as volt-ink by the HUD's themed --acc alias. */
-  --globe-ocean: #9db9d6; /* saturated map blue (Florian 2026-07-10, rule 3e; ramp #e6ebee > #dbe2e7 > #c7d5e3 > this) */
-  --globe-land: #dce3dd;
-  --globe-grid: #bfc9d0;
-  --globe-coast: #33495a;
+  --mcc-sky: #373d48; /* rule 3m: sky lifted a notch (Florian: star background slightly brighter) */
+  --mcc-fg: #f2f2ee; /* rule 3i: white stars + light label ink on the grey sky */
+  --globe-ocean: #1d3050; /* rule 3k, second nudge: the land/water gap at full step */
+  --globe-land: #43536b; /* rule 3k: land one step above the water (the night order), blue-grey */
+  --globe-grid: none; /* rule 3i: the lat/lon grid is removed on the light chart (scenes skip the draw) */
+  --globe-coast: #4d6980; /* rule 3k: the night view's steel coast serves both */
   --neon-eo: #0e9e57;
   --neon-connectivity: #c217a0;
   --neon-iot: #0e93ad;

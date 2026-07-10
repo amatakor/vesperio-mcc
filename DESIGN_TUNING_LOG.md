@@ -872,3 +872,128 @@ already its job). CLAUDE.md's item-images fallback chain now ends at
 IMPLEMENTATION: CardMedia returns null without an image; the modal's
 tile branch removed; .card-tile/.tile-cat/.tile-co/.modal-tile CSS and
 the CAT_ABBR map deleted (pages.tsx, index.css).
+
+## 3f · Daylight ocean — deeper for the volt orbits (supersedes 3e)
+
+RULE (Florian, 2026-07-10: "I need to create a contrast with the volt
+orbits" — rule 46 made selected arcs volt-ink on daylight): the ocean
+steps to #7B9CC4, a confident mid-blue. Full ramp: #E6EBEE > #DBE2E7 >
+#C7D5E3 > #9DB9D6 > #7B9CC4. Land/grid/coast unchanged; verified in a
+headless WebGL render with the boot ISS volt arc against the new
+ground.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3g · Daylight ocean lands on cartographic navy (supersedes 3f)
+
+RULE (Florian, same request, final step: "make it dark blue"): the
+daylight ocean is #3B5B88, a dark cartographic navy — the volt arcs'
+contrast ground. The chart flips to the classic atlas read: pale land,
+bright graticule on dark water, data accents luminous. Full day's ramp:
+#E6EBEE > #DBE2E7 > #C7D5E3 > #9DB9D6 > #7B9CC4 > #3B5B88. Land, grid,
+coast unchanged; verified headless with the boot ISS volt arc.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3h · Daylight ocean — deep navy (supersedes 3g)
+
+RULE (Florian: "even darker blue"): #24406B. The daylight globe is now
+a dark atlas plate on the paper page — pale land and luminous data on
+deep water. Note recorded: at this depth the coast stroke (#33495A)
+matches the water's luminance and the land edge is carried by the fill
+contrast alone, which reads clean. Ramp: ... > #7B9CC4 > #3B5B88 >
+#24406B.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3i · The daylight chart rethought: grey sky, white stars, no grid
+
+RULE (Florian, 2026-07-10, superseding the paper-sky model): the light
+theme's MCC canvas grounds on a dark-mid grey (--mcc-sky #47494C), the
+stars go white (--mcc-fg #F2F2EE, main scene only — registry embeds
+keep the page ink), the seas stay the deep navy (#24406B) and the
+continents the pale land, and the lat/lon graticule is REMOVED on the
+light chart (--globe-grid: none; the scenes skip the draw; the night
+view keeps its tactical grid). Knock-ons carried with it: the left HUD
+and status lamp float on the grey and remap their ink ramp to the
+night values (the rail and VIEW panels are paper chrome, unchanged);
+the canvas edge fades follow the sky token; the ISS wireframe returns
+to its pale night inks in both themes; the dot cloud's additive glow
+returns in both themes (the paper-era NormalBlending branch retired);
+in-canvas labels flip to light-ink-on-dark automatically via the
+luminance check. Verified in headless WebGL renders, light and dark.
+
+IMPLEMENTATION: --mcc-sky/--mcc-fg tokens + light --globe-grid: none
+(index.css); canvas-wrap ground + fades + HUD ink remap (orbits.css);
+grid draw gate + fg token in scene.tsx; ISS inks + blending in
+satellites.tsx.
+
+## 3j · Continents at 80% grey
+
+RULE (Florian): the daylight land drops its green cast for neutral 80%
+grey (#CCCCCC) — a pure two-tone plate: grey land, navy water, grey
+sky, white stars.
+
+IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
+
+## 3j (amended) · Continents at 80% INK grey
+
+Florian's "80% grey" meant ink coverage, not lightness: the daylight
+land is #333333. The daylight chart resolves as a moody sibling of the
+night view — grey sky, white stars, navy water, dark land — with the
+data layers as the only luminous elements.
+
+IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
+
+(Engineering note, the "continents still almost white" mystery: the
+WebGL scene read its color tokens ONCE at mount and baked them into
+the globe texture — theme toggles remounted the scene, but hot style
+updates did not, so any open tab rendered palette tunes one or more
+steps stale. Florian's live view lagged the whole daylight ramp while
+fresh headless loads showed the truth. The scene now polls its token
+set once a second and re-keys the palette only when a value changes,
+so open tabs repaint within a tick of any tune. Proven by injecting a
+red land token into a running page: repainted in 2.5s without reload.)
+
+## 3k · The lighter view's triad: the night ladder, raised
+
+RULE (Florian: "not a light theme — a lighter one"; the grey/navy/#333
+triad read muddy): the daylight MCC grounds on the NIGHT view's depth
+order at a raised ambient — sky #31363F (deep blue-grey), ocean
+#2C4368 one step above it, land #43536B one step above the water
+(night's land-over-ocean order restored; #333 under the navy read as
+holes), coast #4D6980 (the night steel, now shared). Even ~6L steps,
+one blue family, data layers brightest. Supersedes 3h/3j's values;
+the principle supersedes the "daylight chart" metaphor: one instrument,
+two ambient levels.
+
+IMPLEMENTATION: --mcc-sky/--globe-ocean/--globe-land/--globe-coast in
+[data-theme="light"], src/index.css.
+
+## 3k (amended) · Ocean half a step darker
+
+Florian's balance pass on the 3k triad: the ocean drops #2C4368 ->
+#24395C, widening the land/water gap while the globe still lifts off
+the #31363F sky. Final lighter-view ladder: sky #31363F, ocean
+#24395C, land #43536B, coast #4D6980, data brightest.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3k (second nudge) · Ocean to #1D3050
+
+The land/water gap at a full step: sky #31363F, ocean #1D3050, land
+#43536B, coast #4D6980. The continents now carry the globe's shape.
+
+## 3m · Lighter-view HUD polish: track, clock foot, sky lift
+
+RULE (Florian, three-point review): the vehicle meters' track goes
+rgba(255,255,255,.14) inside the desktop remap (the paper track token
+vanished under white fills); the launch clock's footer drops its pure
+white --bg-inset for a dark inset (rgba(10,10,10,.28)) matching the
+smoked stage; the sky lifts #31363F -> #373D48 (star background
+slightly brighter). With 3l's scoping (night inks on desktop regimes
+only; sky-tinted mid boxes; page inks on the stacked layout), the
+lighter view is coherent at every width.
+
+IMPLEMENTATION: remap block + .hud-launch-foot override (orbits.css);
+--mcc-sky (index.css).

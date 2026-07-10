@@ -64,6 +64,10 @@
 }
 
 .orbits-canvas-wrap {
+  /* The canvas ground (rule 3i): page-colored on night, dark-mid grey
+     on the daylight chart so white stars and the navy globe sit on an
+     instrument ground rather than paper. */
+  background: var(--mcc-sky);
   position: relative;
   flex: 1;
   min-width: 0;
@@ -86,11 +90,11 @@
 }
 .orbits-canvas-wrap::before {
   top: 0;
-  background: linear-gradient(var(--bg), transparent);
+  background: linear-gradient(var(--mcc-sky), transparent);
 }
 .orbits-canvas-wrap::after {
   bottom: 0;
-  background: linear-gradient(transparent, var(--bg));
+  background: linear-gradient(transparent, var(--mcc-sky));
 }
 
 .ocol-right {
@@ -1066,7 +1070,10 @@
 
 @media (min-width: 901px) and (max-width: 1280px) {
   .ocol-left .hud {
-    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    /* Boxes tint from the SKY, not the page (rule 3l): identical on
+       night (sky = page), smoked dark on the lighter view — the paper
+       tint put pale HUD ink on pale boxes at mid widths. */
+    background: color-mix(in srgb, var(--mcc-sky) 85%, transparent);
     border: 1px solid var(--line);
     padding: 10px 12px;
   }
@@ -1236,4 +1243,36 @@
 .orbits-fallback {
   color: var(--text-1);
   background: var(--bg-page);
+}
+
+/* Rule 3i/3l: the left HUD and status lamp float on the grey sky in
+   the light theme's DESKTOP regimes (bare on wide, sky-smoked boxes at
+   mid widths), so their ink ramp remaps to the night values there. The
+   stacked mobile layout puts panels on the paper page and keeps the
+   page inks (the remap once applied at all widths and washed out on
+   paper, Florian's narrow-window report). The rail and VIEW panels are
+   paper chrome and keep page inks everywhere. */
+@media (min-width: 901px) {
+  [data-theme="light"] .ocol-left,
+  [data-theme="light"] .ostatus {
+    --n5: #6a6a6a;
+    --n6: #a8a8a8;
+    --n7: #ededed;
+    --n8: #ffffff;
+    --fg: #f2f2ee;
+    --text-1: #f2f2ee;
+    --text-2: #a8a8a8;
+    --text-3: #9a9a95;
+    --dim: #a8a8a8;
+    --dim-deep: #6f6f6a;
+    --line: rgba(255, 255, 255, 0.16);
+    --track: rgba(255, 255, 255, 0.14); /* rule 3m: the paper track token vanished under white fills */
+  }
+  /* Rule 3m: the launch clock's footer glared pure white (--bg-inset)
+     against the smoked HUD; on the lighter view it recedes to a dark
+     inset like the stage above it. */
+  [data-theme="light"] .ocol-left .hud-launch-foot {
+    background: rgba(10, 10, 10, 0.28);
+    border-color: rgba(10, 10, 10, 0.55); /* dark frame; the paper border glared */
+  }
 }
