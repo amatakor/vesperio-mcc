@@ -439,3 +439,32 @@ shells are now SGP4-sampled per satellite on the worker, so every ring
 passes through its live dot; the old two-body-at-epoch ellipses drifted
 100-400 km off stale-epoch dots. Rule 3's daylight/night visuals are
 unchanged.)
+
+## 42b · Sweep footer token corrected (same day, Florian's review)
+
+RULE 42 AMENDED: the reference surface is the feed cards' FOOTER bar
+(--bg-raised, the grey footer token), not the card body (--bg-panel).
+The sweep card's footer now matches .card-foot exactly in both themes.
+
+## 44 · Fluid measure; band box = content box
+
+RULE: the shell is FLUID — the site adapts to the browser width with no
+maximum measure; the page gutter is the only outer inset and is shared
+by the menu bar and the content at every size. The masthead band's box
+is exactly the content box (round 5's full-bleed pull-out is
+superseded): in the light theme the white band no longer overhangs the
+feed by a gutter on each side. The masonry grows columns as the window
+widens (auto-fill).
+
+IMPLEMENTATION: .shell max-width none; .masthead margin/padding
+pull-out removed (src/index.css).
+
+## 45 · MCC star field fills the browser
+
+RULE: the MCC canvas (globe + star field) bleeds window edge to window
+edge; the HUD panels hold the page-gutter line so chrome stays aligned
+with the masthead (rule 44). The star field reads as the page ground,
+panels float on it.
+
+IMPLEMENTATION: .oframe escapes the gutter with negative side margins;
+.oframe-main pads the panels back in (src/orbits/orbits.css).
