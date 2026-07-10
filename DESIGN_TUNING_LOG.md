@@ -860,3 +860,14 @@ long-lived tabs even after the child-observer fix. The clock's grid
 span still reserves its rows; an unpinned fixed-height instrument can
 never be clipped by a stale measure. Ordinary cards keep the pin,
 whose sub-pixel absorption their footers provide.)
+
+## 3f · Daylight ocean — deeper for the volt orbits (supersedes 3e)
+
+RULE (Florian, 2026-07-10: "I need to create a contrast with the volt
+orbits" — rule 46 made selected arcs volt-ink on daylight): the ocean
+steps to #7B9CC4, a confident mid-blue. Full ramp: #E6EBEE > #DBE2E7 >
+#C7D5E3 > #9DB9D6 > #7B9CC4. Land/grid/coast unchanged; verified in a
+headless WebGL render with the boot ISS volt arc against the new
+ground.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
