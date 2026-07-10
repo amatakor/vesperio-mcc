@@ -923,3 +923,12 @@ grey (#CCCCCC) — a pure two-tone plate: grey land, navy water, grey
 sky, white stars.
 
 IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
+
+## 3j (amended) · Continents at 80% INK grey
+
+Florian's "80% grey" meant ink coverage, not lightness: the daylight
+land is #333333. The daylight chart resolves as a moody sibling of the
+night view — grey sky, white stars, navy water, dark land — with the
+data layers as the only luminous elements.
+
+IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
