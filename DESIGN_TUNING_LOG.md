@@ -971,3 +971,17 @@ IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
 
 The land/water gap at a full step: sky #31363F, ocean #1D3050, land
 #43536B, coast #4D6980. The continents now carry the globe's shape.
+
+## 3m · Lighter-view HUD polish: track, clock foot, sky lift
+
+RULE (Florian, three-point review): the vehicle meters' track goes
+rgba(255,255,255,.14) inside the desktop remap (the paper track token
+vanished under white fills); the launch clock's footer drops its pure
+white --bg-inset for a dark inset (rgba(10,10,10,.28)) matching the
+smoked stage; the sky lifts #31363F -> #373D48 (star background
+slightly brighter). With 3l's scoping (night inks on desktop regimes
+only; sky-tinted mid boxes; page inks on the stacked layout), the
+lighter view is coherent at every width.
+
+IMPLEMENTATION: remap block + .hud-launch-foot override (orbits.css);
+--mcc-sky (index.css).
