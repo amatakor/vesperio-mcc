@@ -19,6 +19,7 @@
 
 import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { loadElements } from "./elements";
+import { useTheme } from "./stage";
 import type { OmmRecord } from "../data/schema";
 
 const Mini3DScene = lazy(() => import("./mini3d-scene"));
@@ -60,10 +61,12 @@ export function OrbitMini3D({ slug, accent }: { slug: string; accent?: string })
     };
   }, [slug]);
 
+  const theme = useTheme();
   if (gate.phase !== "ready") return null;
   return (
     <Suspense fallback={null}>
-      <Mini3DScene slug={slug} accent={accent} records={gate.records} />
+      {/* Keyed on theme: the scene reads CSS tokens once on mount. */}
+      <Mini3DScene key={theme} slug={slug} accent={accent} records={gate.records} />
     </Suspense>
   );
 }

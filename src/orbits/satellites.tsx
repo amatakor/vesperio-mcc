@@ -23,20 +23,25 @@ const OCCLUDER_RADIUS = 0.995;
 const LABEL_LIMIT = 150;
 
 function labelTexture(text: string, color: string): THREE.CanvasTexture {
+  // 2x texture so labels stay crisp under minification/retina; the
+  // backing box derives from the ink's luminance so it works over both
+  // the night view (light ink, dark box) and the daylight chart (dark
+  // ink, paper box). V1.1 tuning 2026-07-10: labels were dim and fuzzy.
   const c = document.createElement("canvas");
-  c.width = 256;
-  c.height = 32;
+  c.width = 512;
+  c.height = 64;
   const ctx = c.getContext("2d")!;
-  ctx.font = "600 20px ui-monospace, 'SF Mono', Menlo, monospace";
-  // Semi-translucent backing box so labels read over the cloud.
-  const w = Math.min(ctx.measureText(text).width, 244);
-  ctx.fillStyle = "rgba(0, 0, 0, 0.62)";
-  ctx.fillRect(0, 2, w + 9, 28);
+  ctx.font = "500 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  const ink = new THREE.Color(color);
+  const darkInk = ink.r + ink.g + ink.b < 1.5;
+  const w = Math.min(ctx.measureText(text).width, 488);
+  ctx.fillStyle = darkInk ? "rgba(255, 255, 255, 0.82)" : "rgba(0, 0, 0, 0.78)";
+  ctx.fillRect(0, 4, w + 18, 56);
   ctx.fillStyle = color;
   ctx.textBaseline = "middle";
-  ctx.fillText(text, 4, 17, 248);
+  ctx.fillText(text, 8, 34, 496);
   const t = new THREE.CanvasTexture(c);
-  t.anisotropy = 2;
+  t.anisotropy = 4;
   return t;
 }
 

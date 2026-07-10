@@ -45,7 +45,7 @@ function makeCloud(
     positions[i * 3] = v.x;
     positions[i * 3 + 1] = v.y;
     positions[i * 3 + 2] = v.z;
-    const b = Math.min(1, Math.max(0.18, (5.8 - mag) / 5));
+    const b = Math.min(1, Math.max(0.3, (5.8 - mag) / 5));
     colors[i * 3] = base.r * b;
     colors[i * 3 + 1] = base.g * b;
     colors[i * 3 + 2] = base.b * b;
@@ -57,7 +57,10 @@ function makeCloud(
   // computes one (which warns NaN for an empty split during load).
   g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), STAR_RADIUS + 1);
   const m = new THREE.PointsMaterial({
-    size: sizePx,
+    // sizeAttenuation:false sizes in DEVICE pixels, so retina displays
+    // halved the stars to near-invisibility; scale by the pixel ratio
+    // (V1.1 tuning, 2026-07-10).
+    size: sizePx * Math.min(window.devicePixelRatio || 1, 2),
     sizeAttenuation: false,
     vertexColors: true,
     transparent: true,

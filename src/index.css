@@ -273,6 +273,21 @@
   --mark-frame: #0a0a0a;
   --acc: var(--volt-ink); /* legacy alias follows the shell accent */
   --acc-ink: #0a0a0a;
+
+  /* MCC daylight chart (DS amendment 2026-07-10; supersedes the
+     "orbits canvas is theme-invariant" rule): pale cool ground, steel
+     coasts, darkened data accents; the LCD instruments keep volt via
+     --clock, rendered as volt-ink by the HUD's themed --acc alias. */
+  --globe-ocean: #e6ebee;
+  --globe-grid: #c9d2d8;
+  --globe-coast: #56707f;
+  --acc-ghost: #d6d6d0; /* unlit LCD segments on the paper HUD */
+  --neon-eo: #0e9e57;
+  --neon-connectivity: #c217a0;
+  --neon-iot: #0e93ad;
+  --neon-hsf: #c56a00;
+  --neon-nav: #45566f;
+  --neon-reserve: #7434d6;
 }
 
 ::selection {
@@ -579,11 +594,14 @@ input,
   font-size: var(--fs-body);
 }
 
-/* Page titles: DISPLAY voice, light and wide (28/200/+.12em caps). */
+/* Page titles: DISPLAY voice, light and wide (28/300/+.12em caps).
+   DS amendment (2026-07-10): weight 200 is reserved for display sizes
+   >=40px (hero numbers); at 28px the H1 register runs 300 so the title
+   never reads dimmer than the copy below it. */
 .page-title {
   font-family: var(--font-display);
   font-size: var(--fs-h1);
-  font-weight: var(--fw-display);
+  font-weight: var(--fw-headline);
   line-height: 1.2;
   letter-spacing: var(--ls-h1);
   text-transform: uppercase;
@@ -968,7 +986,9 @@ a.chip:hover {
 /* Ghost segments must equal the flood color on the flood side, or
    disembodied segments appear in the seam wedge. */
 .sweep-lcd-ghost {
-  color: #161616;
+  /* Bright enough that the full 8-cell grid reads as the instrument's
+     frame; the digit GRID is what centers, the ink of "1"s cannot. */
+  color: #1f1f1f;
 }
 .sweep-flood .sweep-lcd-ghost {
   color: var(--volt);
@@ -1303,8 +1323,10 @@ a.card-tile:hover .tile-cat {
   color: #fff;
 }
 /* Seismic cards are all-yellow, but green-on-yellow clashes, so the
-   footer stays a constant-dark bar carrying the green meter — literal
-   grays, never themed tokens, so the light theme cannot wash it out. */
+   footer becomes its own bar. DS amendment (Florian, 2026-07-10): the
+   seismic footer THEMES — dark bar on dark, inset-white bar on light;
+   only the sweep instrument, orbits LCDs, and monogram tiles remain
+   constant-dark surfaces. */
 .card-seismic .card-foot {
   background: #0c0c0c;
   border-top: 1px solid #1f1f1f;
@@ -1315,6 +1337,17 @@ a.card-tile:hover .tile-cat {
 }
 .card-seismic .card-foot a.card-details {
   color: var(--acc-yellow);
+}
+[data-theme="light"] .card-seismic .card-foot {
+  background: var(--bg-inset);
+  border-top: 1px solid var(--border-1);
+  color: var(--text-3);
+}
+[data-theme="light"] .card-seismic .card-foot .card-companies {
+  color: var(--text-3);
+}
+[data-theme="light"] .card-seismic .card-foot a.card-details {
+  color: var(--link);
 }
 .card-extra {
   font-family: var(--font-ui);
@@ -2006,7 +2039,7 @@ table.profile td.src-cell a,
    view area is delineated by its deep-space background alone. */
 .orbit-view {
   position: relative;
-  background: #07131a;
+  background: var(--globe-ocean);
 }
 /* The 3D globe overlays the in-flow SVG schematic, which defines the box
    and shows through whenever the 3D view declines to render (no WebGL, no
@@ -2031,14 +2064,13 @@ table.profile td.src-cell a,
   height: var(--h-badge);
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--n6);
-  color: #ededed;
+  border: 1px solid var(--border-2);
+  color: var(--text-1);
   padding: 0 var(--sp-2);
-  background: rgba(7, 19, 26, 0.85);
+  background: var(--bg-panel);
 }
 .orbit-open:hover {
-  border-color: #ededed;
-  color: #ffffff;
+  border-color: var(--text-1);
 }
 /* Registry v3.1 (Florian's review of the tab shell): the mark sits flush
    right like the mockup; specs, timeline, and sources drop the spreadsheet
@@ -2603,9 +2635,9 @@ a.sig-card.entity-card:hover .ent-p-vehicle {
 /* -------------------------------------------------------------- stats */
 
 .hero-sentence {
-  font-family: var(--sans);
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: var(--lh-body);
   max-width: 46rem;
 }
 
@@ -2624,7 +2656,7 @@ a.sig-card.entity-card:hover .ent-p-vehicle {
 }
 .tile-num {
   font-family: var(--font-display);
-  font-weight: var(--fw-display);
+  font-weight: var(--fw-headline);
   font-size: var(--fs-h1);
   line-height: var(--lh-tight);
   font-variant-numeric: tabular-nums;

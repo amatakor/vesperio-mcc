@@ -572,7 +572,7 @@
 .rl-cols {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #b3b3b3;
+  color: var(--text-2);
   padding-bottom: 6px;
   border-bottom: 1px solid var(--line);
 }
@@ -582,7 +582,7 @@
 .rl-cols .rl-count {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #b3b3b3;
+  color: var(--text-2);
   font-variant-numeric: normal;
 }
 .rl-col-c {
@@ -647,7 +647,7 @@
   color: var(--fg);
 }
 .rl-row:hover {
-  background: #121212;
+  background: var(--bg-raised);
 }
 .rl-cat {
   height: 24px;
@@ -717,7 +717,7 @@
   text-underline-offset: 2px;
 }
 .rl-child .rl-name {
-  color: #c9c9c9;
+  color: var(--text-2);
   padding-left: 6px;
 }
 .rl-name-loading {
@@ -774,8 +774,8 @@
 }
 
 .rl-focused {
-  background: #161616;
-  box-shadow: inset 2px 0 var(--acc);
+  background: var(--bg-raised);
+  box-shadow: inset 2px 0 var(--n7);
 }
 .rl-focused .rl-name {
   font-weight: 500;
@@ -1141,65 +1141,14 @@
 }
 
 /* ---------------------------------------------------------------- theme
-   MCC is the space view: theme-invariant (V1.1). Re-pin the themed
-   tokens locally so the light theme can never wash the instrument; the
-   masthead above the stage still themes with the site. */
+   MCC themes with the site (DS amendment 2026-07-10, superseding the
+   V1.1 "space view is always dark" rule): dark is the night ops view,
+   light is a daylight chart. Canvas colors come from the globe/neon
+   tokens, which carry their own [data-theme="light"] values; the scene
+   remounts on theme change to re-read them. LCD faces keep the clock
+   rule (volt on dark; volt-ink on paper via the themed --acc alias). */
 .oframe,
 .orbits-fallback {
-  --n0: #050505;
-  --n1: #0a0a0a;
-  --n2: #161616;
-  --n3: #232323;
-  --n4: #3a3a3a;
-  --n5: #6a6a6a;
-  --n6: #a8a8a8;
-  --n7: #ededed;
-  --n8: #ffffff;
-  --bg-inset: #000000;
-  --acc-green: #39ff6a;
-  --acc-red: #ff2e1e;
-  --acc-yellow: #ffff00;
-  --acc-orange: #ff8a00;
-  --acc-cyan: #00f0ff;
-  --acc-blue: #2e7cff;
-  --acc-magenta: #ff2ed2;
-  --acc-uv: #8c45ff;
-  --shell-accent: var(--volt);
-  --focus-ring: var(--volt);
-  --dot: var(--volt);
-  --mark-frame: var(--volt-ink);
-  --acc: var(--volt);
-  --acc-ink: #0a0a0a;
-  /* Aliases resolve var() where they are DECLARED, so the :root aliases
-     carry the themed values down; re-declare them here so they re-resolve
-     against the dark ramp pinned above. */
-  --bg-page: var(--n0);
-  --bg-panel: var(--n1);
-  --bg-raised: var(--n2);
-  --border-1: var(--n3);
-  --border-2: var(--n4);
-  --text-1: var(--n8);
-  --text-2: var(--n6);
-  --text-3: var(--n5);
-  --text-disabled: var(--n4);
-  --link: var(--acc-cyan);
-  --link-hover: var(--n8);
-  --status-live: var(--acc-green);
-  --status-fail: var(--acc-red);
-  --status-notable: var(--acc-yellow);
-  --status-critical: var(--acc-orange);
-  --bg: var(--n0);
-  --panel: var(--n1);
-  --fg: var(--n8);
-  --dim: var(--n6);
-  --line: var(--n3);
-  --alert: var(--acc-red);
-  --warn: var(--acc-orange);
-  --live: var(--acc-green);
-  --panel-dark: var(--bg-inset);
-  --dim-deep: var(--n4);
-  --track: var(--n3);
-  --ink-link: var(--acc-cyan);
   color: var(--text-1);
   background: var(--bg-page);
 }
