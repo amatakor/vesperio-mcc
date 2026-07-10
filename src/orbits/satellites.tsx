@@ -429,6 +429,11 @@ export function Satellites({
             t.ray.origin.copy(t.camLocal);
             t.ray.direction.copy(t.dir);
             sprite.visible = !occludedByGlobe(t.ray, dist, OCCLUDER_RADIUS);
+            // Fixed on-screen size (tuning round 8): scale each label
+            // with its camera distance so zooming never grows the type.
+            // 2.8 is the reference distance of the default desktop view.
+            const k = dist / 2.8;
+            sprite.scale.set(0.36 * k, 0.045 * k, 1);
           }
         }
       }

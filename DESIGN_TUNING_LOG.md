@@ -262,3 +262,44 @@ module title in the shared HUD label class (same register as ORBITAL
 FLOW and LAUNCHES). The stage drops to 64px and the digits center
 DEAD in the box (inset 0; -2px lift for DSEG7's em-box descent). Only
 the `T-nD` days chip stays inside the stage, top-right.
+
+---
+
+# Round 8 (2026-07-10, seventh review)
+
+## 23 · Globe land shading
+
+RULE: continents carry a very light shading step against the water,
+both themes: dark land `#12203A` on ocean `#0B1626`; light land
+`#DCE3DD` on ocean `#E6EBEE`. Implemented as an equirectangular
+canvas texture generated from the same Natural Earth 110m topology as
+the coastlines, so the fill sits exactly under the strokes. Tokens:
+`--globe-land`.
+
+## 24 · Launch instrument dark stage
+
+RULE: the dark stage carries the same smoked treatment as light, in
+reverse: `rgba(255,255,255,.07)` lift off the page ground, so the
+module's padding reads against a surface.
+
+## 25 · Light-stage ghost, quieter
+
+RULE: ghost cells on the smoked light stage drop to `rgba(0,0,0,.14)`
+(from .3) — to be reassessed.
+
+## 26 · Wheel zoom
+
+RULE: scroll/pinch-wheel zooms the globe, stepping the same FitCamera
+zoom as the `[+]/[-]` buttons (60 wheel-units per step, clamped to the
+same -2..4 range); non-passive so the page never scrolls under the
+canvas.
+
+## 27 · Labels hold fixed screen size
+
+RULE: satellite labels scale with camera distance every frame
+(reference distance 2.8), so zooming never grows the type. Labels are
+instrument chrome, not scene objects.
+
+## 28 · Focused orbit shells brighter
+
+RULE: orbit-shell line opacity 0.36 (was 0.22).

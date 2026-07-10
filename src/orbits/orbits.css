@@ -267,7 +267,10 @@
 }
 .hud-launch-stage {
   position: relative;
-  background: rgba(0, 0, 0, 0.72);
+  /* A slight lift off the page ground (tuning round 8): the smoked
+     treatment from light, translated to dark, so the module's padding
+     reads against a surface. */
+  background: rgba(255, 255, 255, 0.07);
   height: 64px;
 }
 .hud-launch-days {
@@ -318,7 +321,8 @@
   background: rgba(20, 20, 18, 0.55);
 }
 [data-theme="light"] .hud-launch-stage .lcd-ghost {
-  color: rgba(0, 0, 0, 0.3);
+  /* Quieter ghost on the smoked light stage (tuning round 8). */
+  color: rgba(0, 0, 0, 0.14);
 }
 .hud-launch-foot-row {
   display: flex;
