@@ -506,3 +506,16 @@ IMPLEMENTATION: scene.tsx arcColor -> colors.volt (token
 --shell-accent); CLAUDE.md volt clause updated; MCC_HERO_BRIEF.md
 constraint 3 rewritten (the count's volt is no longer a violation to
 resolve).
+
+## 3c · Daylight chart — ocean one step darker
+
+RULE 3 AMENDED (Florian, 2026-07-10): the light-theme ocean darkens one
+step, #E6EBEE -> #DBE2E7, so the globe disc separates from the paper
+ground. Land, grid, and coast values unchanged.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+(Engineering note, same date: the registry orbit-tab mini embed now
+renders SGP4-sampled shells from its worker, same fix as the main
+scene; kepler.ts's two-body orbitShellSegments deleted, ISS ring now
+passes through the station glyph.)
