@@ -13,6 +13,7 @@ import {
   parseGcatOrgs,
   GCAT_ATTRIBUTION,
 } from "../enrich-registry";
+import { ll2SearchName } from "../enrich/lib";
 
 type Obj = Record<string, unknown>;
 
@@ -74,6 +75,31 @@ describe("ll2ConfigId", () => {
   });
   test("null when no LL2 config URL exists on the profile", () => {
     expect(ll2ConfigId({ provider: { value: "x", source: "https://en.wikipedia.org/wiki/X", as_of: "2026-07-05" } })).toBeNull();
+  });
+  test("extracts the id from the newer launcher_configurations URL shape", () => {
+    expect(
+      ll2ConfigId({
+        height_m: { value: 70, source: "https://ll.thespacedevs.com/2.3.0/launcher_configurations/164/", as_of: "2026-07-10" },
+      }),
+    ).toBe(164);
+  });
+});
+
+describe("ll2SearchName", () => {
+  test("decodes the search term from a search-shaped config URL", () => {
+    expect(
+      ll2SearchName({
+        height_m: {
+          value: 72,
+          source: "https://ll.thespacedevs.com/2.3.0/launcher_configurations/?search=Delta%20IV%20Heavy&limit=10&mode=detailed",
+          as_of: "2026-07-10",
+        },
+      }),
+    ).toBe("Delta IV Heavy");
+  });
+  test("null for id-shaped and non-LL2 sources", () => {
+    expect(ll2SearchName(profile())).toBeNull();
+    expect(ll2SearchName({ provider: { value: "x", source: "https://en.wikipedia.org/wiki/X", as_of: "2026-07-05" } })).toBeNull();
   });
 });
 

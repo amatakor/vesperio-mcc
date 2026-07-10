@@ -39,8 +39,32 @@ export function ll2ConfigId(profile: Obj): number | null {
     if (typeof v !== "object" || v === null) continue;
     const src = (v as SourcedFieldShape).source;
     if (typeof src !== "string") continue;
-    const m = /ll\.thespacedevs\.com\/2\.\d+\.\d+\/config\/launcher\/(\d+)\//.exec(src);
+    const m =
+      /ll\.thespacedevs\.com\/2\.\d+\.\d+\/(?:config\/launcher|launcher_configurations)\/(\d+)\//.exec(src);
     if (m) return Number(m[1]);
+  }
+  return null;
+}
+
+/** Search term from a search-shaped LL2 config source URL (those carry no
+    numeric id, so ll2ConfigId cannot resolve them). Decoded, or null when
+    no field cites one. */
+export function ll2SearchName(profile: Obj): string | null {
+  for (const v of Object.values(profile)) {
+    if (typeof v !== "object" || v === null) continue;
+    const src = (v as SourcedFieldShape).source;
+    if (typeof src !== "string") continue;
+    const m =
+      /ll\.thespacedevs\.com\/2\.\d+\.\d+\/(?:config\/launcher|launcher_configurations)\/\?[^\s]*?\bsearch=([^&\s]+)/.exec(
+        src,
+      );
+    if (m) {
+      try {
+        return decodeURIComponent(m[1].replace(/\+/g, " "));
+      } catch {
+        return null;
+      }
+    }
   }
   return null;
 }

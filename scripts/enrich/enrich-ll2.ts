@@ -33,7 +33,7 @@
 
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { LL2, type Obj, fetchJson, fillV2, ll2ConfigId, pause, today } from "./lib";
+import { LL2, type Obj, fetchJson, fillV2, ll2ConfigId, ll2SearchName, pause, today } from "./lib";
 
 /** A finite number strictly greater than zero, else null (rejects 0 / null / NaN). */
 function posNum(raw: unknown): number | null {
@@ -89,7 +89,30 @@ async function main(): Promise<void> {
   for (const file of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
     const path = join(dir, file);
     const profile = JSON.parse(readFileSync(path, "utf8")) as Obj;
-    const id = ll2ConfigId(profile);
+    let id = ll2ConfigId(profile);
+    if (id === null) {
+      // Search-shaped source URLs carry no numeric id; resolve by exact
+      // name against the catalog already fetched (zero extra requests).
+      const name = ll2SearchName(profile);
+      if (name !== null) {
+        const norm = name.trim().toLowerCase();
+        const hits = [...configs.entries()].filter(([, m]) => {
+          const c = m.cfg as Obj;
+          return (
+            String(c.name ?? "").trim().toLowerCase() === norm ||
+            String(c.full_name ?? "").trim().toLowerCase() === norm
+          );
+        });
+        if (hits.length === 1) {
+          id = hits[0][0];
+          console.log(`enrich-ll2: ${file}: resolved search-name "${name}" to config ${id}`);
+        } else {
+          console.log(
+            `enrich-ll2: ${file}: search-name "${name}" matched ${hits.length} configs, skipped`,
+          );
+        }
+      }
+    }
     if (id === null) {
       console.log(`enrich-ll2: ${file}: no LL2 config id on any field source, skipped`);
       continue;
