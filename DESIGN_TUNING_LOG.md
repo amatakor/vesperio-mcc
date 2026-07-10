@@ -664,3 +664,11 @@ untouched. Constant-dark survivors: monogram/avatar tiles only.
 
 IMPLEMENTATION: [data-theme="light"] .sweep-card / .sweep-lcd-ghost /
 .sweep-lab rules in src/index.css.
+
+## 52b · Daylight ghost segments quieter
+
+RULE (Florian, same day): the smoked face's unlit LCD segments drop
+rgba(0,0,0,.18) -> rgba(0,0,0,.11), just under the MCC clock's 0.14 —
+the ghost grid should be felt, not read.
+
+IMPLEMENTATION: [data-theme="light"] .sweep-lcd-ghost, src/index.css.
