@@ -648,3 +648,19 @@ is withdrawn (unused).
 
 IMPLEMENTATION: .chip-notable + hover rule in src/index.css; CLAUDE.md
 badge law updated.
+
+## 52 · Sweep face smoked on daylight (supersedes rule 2 for this face)
+
+RULE (Florian, 2026-07-10: the constant-black clock face was jarring
+on the light page; "take inspiration from the grey tones in the MCC
+section — that was the right direction"): the news sweep-countdown
+face takes the MCC launch clock's smoked treatment on the daylight
+theme — rgba(20,20,18,.55) over the page ground (the approved
+instrument grey), ghost cells rgba(0,0,0,.18) (MCC's 0.14 nudged up so
+the centering grid still anchors, rule 1), on-stage labels at full
+paper ink, flood side unchanged (volt flood, volt-equal ghosts, dark
+flood labels). Volt digits constant in both themes. Night view
+untouched. Constant-dark survivors: monogram/avatar tiles only.
+
+IMPLEMENTATION: [data-theme="light"] .sweep-card / .sweep-lcd-ghost /
+.sweep-lab rules in src/index.css.
