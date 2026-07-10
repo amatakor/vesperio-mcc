@@ -303,3 +303,31 @@ instrument chrome, not scene objects.
 ## 28 · Focused orbit shells brighter
 
 RULE: orbit-shell line opacity 0.36 (was 0.22).
+
+---
+
+# Round 9 (2026-07-10, eighth review)
+
+## 29 · Launch clock — signed and centered
+
+RULE: the countdown reads negative (`-17:18:32`), like a pad clock; the
+sign occupies its own grid cell. Vertical centering is measured, not
+eyeballed: +1px at 32px sits the lit ink dead on the stage center.
+
+## 30 · Satellite dots — crisp and pixel-stable
+
+RULE: cloud points render as crisp discs (solid core, 2-texel AA rim,
+128px texture — the radial glow blurred at zoom) and hold a fixed
+apparent size: the material's point size tracks camera distance per
+frame (ref 2.8), so zooming never inflates the dots.
+
+## 31 · Labels — true-width textures
+
+RULE: label textures take the text's true width (capped at ~25 chars
+with an ellipsis); glyphs are never condensed to fit. Sprite aspect
+follows the texture.
+
+## 32 · (superseding note) Rounds 8-9 lock the MCC instrument: title
+outside in the HUD label class, smoked stage both themes, signed
+centered digits, quiet ghost. Kit should adopt this as the LCD module
+spec alongside the sweep card.

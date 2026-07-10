@@ -293,10 +293,12 @@
 }
 .lcd-launch {
   font-size: 32px;
-  transform: translateY(-2px);
+  /* Measured (tuning round 9): +1px sits the lit ink dead on the
+     stage's vertical center at 32px. */
+  transform: translateY(1px);
 }
 .lcd-launch.lcd-lead-1 {
-  transform: translateY(-2px);
+  transform: translateY(1px);
 }
 /* Optical ink centering (see DESIGN_TUNING_LOG round 12): a leading
    7-seg "1" leaves its cell's left half dark, so the whole grid shifts

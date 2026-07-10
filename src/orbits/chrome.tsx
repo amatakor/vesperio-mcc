@@ -89,7 +89,9 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
   const href = launchHref(next);
 
-  const clock = `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+  // The instrument shows the sign (tuning round 9): T-minus reads
+  // negative, like the pad clocks.
+  const clock = `-${pad2(h)}:${pad2(m)}:${pad2(s)}`;
   const body = (
     <>
       {/* The launch countdown instrument (tuning rounds 4-7): module

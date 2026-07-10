@@ -26,20 +26,30 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   // 2x texture so labels stay crisp under minification/retina; the
   // backing box derives from the ink's luminance so it works over both
   // the night view (light ink, dark box) and the daylight chart (dark
-  // ink, paper box). V1.1 tuning 2026-07-10: labels were dim and fuzzy.
+  // ink, paper box). The canvas takes the text's TRUE width (long names
+  // ellipsize rather than squeeze — tuning round 9: no condensed
+  // glyphs), and the sprite reads the aspect off the texture.
   const c = document.createElement("canvas");
-  c.width = 512;
   c.height = 64;
-  const ctx = c.getContext("2d")!;
-  ctx.font = "400 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  const ctx0 = c.getContext("2d")!;
+  const FONT = "400 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  ctx0.font = FONT;
+  const MAX_W = 1006;
+  let label = text;
+  while (label.length > 1 && ctx0.measureText(label).width > MAX_W) {
+    label = label.slice(0, -2).trimEnd() + "…";
+  }
+  const tw = Math.ceil(ctx0.measureText(label).width);
+  c.width = Math.max(48, tw + 18);
+  const ctx = c.getContext("2d")!; // width change resets state
+  ctx.font = FONT;
   const ink = new THREE.Color(color);
   const darkInk = ink.r + ink.g + ink.b < 1.5;
-  const w = Math.min(ctx.measureText(text).width, 488);
   ctx.fillStyle = darkInk ? "rgba(255, 255, 255, 0.82)" : "rgba(0, 0, 0, 0.78)";
-  ctx.fillRect(0, 4, w + 18, 56);
+  ctx.fillRect(0, 4, c.width, 56);
   ctx.fillStyle = color;
   ctx.textBaseline = "middle";
-  ctx.fillText(text, 8, 34, 496);
+  ctx.fillText(label, 8, 34);
   const t = new THREE.CanvasTexture(c);
   t.anisotropy = 4;
   return t;
@@ -91,16 +101,20 @@ interface Props {
 let glowTex: THREE.CanvasTexture | null = null;
 function glowTexture(): THREE.CanvasTexture {
   if (!glowTex) {
+    // Crisp disc (tuning round 9): solid core with a 2-texel AA rim —
+    // the old radial glow blurred into fuzzy blobs when zoomed.
     const c = document.createElement("canvas");
-    c.width = c.height = 64;
+    c.width = c.height = 128;
     const ctx = c.getContext("2d")!;
-    const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
     g.addColorStop(0, "rgba(255,255,255,1)");
-    g.addColorStop(0.3, "rgba(255,255,255,0.7)");
+    g.addColorStop(0.82, "rgba(255,255,255,1)");
+    g.addColorStop(0.92, "rgba(255,255,255,0.55)");
     g.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = g;
-    ctx.fillRect(0, 0, 64, 64);
+    ctx.fillRect(0, 0, 128, 128);
     glowTex = new THREE.CanvasTexture(c);
+    glowTex.anisotropy = 4;
   }
   return glowTex;
 }
@@ -323,6 +337,7 @@ export function Satellites({
       : null;
   }, [plan]);
   const issHitRef = useRef<THREE.Mesh>(null);
+  const cloudMatRef = useRef<THREE.PointsMaterial>(null);
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
   // satellite, positions synced from the shared buffer each frame.
@@ -336,9 +351,10 @@ export function Satellites({
         continue;
       }
       const sprites = seg.entry.names.slice(0, LABEL_LIMIT).map((n) => {
+        const map = labelTexture(n, labelColor);
         const sprite = new THREE.Sprite(
           new THREE.SpriteMaterial({
-            map: labelTexture(n, labelColor),
+            map,
             transparent: true,
             depthWrite: false,
             // Draw over the globe rather than intersecting it (the flat
@@ -348,9 +364,12 @@ export function Satellites({
           }),
         );
         sprite.renderOrder = 10;
-        sprite.scale.set(0.36, 0.045, 1);
+        // Width follows the texture's true aspect (tuning round 9).
+        const w0 = 0.045 * ((map.image as HTMLCanvasElement).width / 64);
+        sprite.userData.w0 = w0;
+        sprite.scale.set(w0, 0.045, 1);
         // Anchor left of the texture just right of the glyph.
-        sprite.center.set(-0.12, 0.5);
+        sprite.center.set(-0.12 * (0.36 / w0), 0.5);
         return sprite;
       });
       out.push({ seg: { start: seg.start, count: sprites.length }, sprites });
@@ -371,6 +390,13 @@ export function Satellites({
   useFrame(() => {
     const { prev, next, prevTime, nextTime } = buffers.current;
     if (!next) return;
+    // Fixed apparent dot size (tuning round 9): with sizeAttenuation the
+    // world size is constant, so zooming inflates the discs; scaling the
+    // material size with camera distance holds them pixel-stable.
+    if (cloudMatRef.current) {
+      const d = camera.position.length();
+      cloudMatRef.current.size = 0.014 * dotScale * (d / 2.8);
+    }
     const attr = geometry.getAttribute("position") as THREE.BufferAttribute;
     const out = attr.array as Float32Array;
     const overlayAttrs = highlights.map(
@@ -433,7 +459,8 @@ export function Satellites({
             // with its camera distance so zooming never grows the type.
             // 2.8 is the reference distance of the default desktop view.
             const k = dist / 2.8;
-            sprite.scale.set(0.36 * k, 0.045 * k, 1);
+            const w0 = (sprite.userData.w0 as number) ?? 0.36;
+            sprite.scale.set(w0 * k, 0.045 * k, 1);
           }
         }
       }
@@ -539,6 +566,7 @@ export function Satellites({
     <>
       <points ref={pointsRef} geometry={geometry} frustumCulled={false} onClick={handleClick}>
         <pointsMaterial
+          ref={cloudMatRef}
           size={0.014 * dotScale}
           sizeAttenuation
           map={glowTexture()}
