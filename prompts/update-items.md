@@ -258,7 +258,7 @@ result when nothing on-scope happened; padding is still the bug.
          "headline": "...",
          "explainer": { "tagline": "...", "what_happened": "...", "why_it_matters": "..." },
          "kind": "event|commentary (omit for event; see Commentary below)",
-         "tags": [], "category": "...", "impact": "seismic|notable|noise",
+         "tags": [], "category": "...", "impact": "seismic|major|notable|noise",
          "companies": [],
          "source_url": "lead source, must equal scoring.sources[0].url",
          "secondary_urls": [],
@@ -378,23 +378,34 @@ An item ships when all are true:
 
 ## Importance calibration (impact field)
 
-The test for `notable` is concrete: would a commercial director at an
-operator, reseller, or investor plausibly ACT on this or brief their
-team on it? If nobody changes a plan, a price, or a pitch because of
-it, it is `noise`. When torn between two levels, pick the lower one.
+Four tiers since 2026-07-10 (the old scale marked 78% of the feed
+notable; the bar is now deliberately higher). The test for `major` is
+concrete: does a commercial director at an operator, reseller, or
+investor ACT on this or brief their team the SAME DAY? The test for
+`notable` is weaker: worth knowing, skimmed in the morning read. If
+nobody changes a plan, a price, or a pitch because of it, it is
+`noise`. When torn between two levels, ALWAYS pick the lower one.
 
 - `seismic`: reshapes competitive dynamics; you would interrupt
   someone's Monday for this. Examples: a major M&A between tracked
   operators (Rocket Lab/Iridium); an operator failure or bankruptcy;
   the first flight of a new orbital vehicle.
-- `notable`: a commercial director would act on it or brief on it.
-  Examples: a contract award with a stated value; a funding round; a
-  regulatory grant or denial that changes what an operator may sell
-  (an FCC license modification, a NOAA imaging waiver); a
-  constellation-scale change (a batch order, a new generation
-  announced with numbers). A senior government or political figure
-  joining a tracked company (board or advisory) stays notable: it is a
-  commercial-access signal (the Wolfgang Schmidt/Planet case).
+- `major`: a director acts or briefs the team today. Examples: a
+  contract award or funding round with a STATED value that changes the
+  actor's trajectory (nine figures, or the actor's largest to date); a
+  regulatory grant or denial that changes what an operator may sell or
+  where (an FCC license modification, a NOAA imaging waiver); a
+  demonstrated first-of-kind capability offered on commercial terms.
+  The stated-value test is hard: the money or market access must be in
+  the source, never inferred.
+- `notable`: worth knowing, skimmed and moved past. Examples: a
+  contract award of routine size or without a stated value; an
+  ordinary funding round; a batch order or new generation announced
+  with numbers but no market shift; a program milestone arriving on
+  schedule; a partnership with named scope but unstated money. A
+  senior government or political figure joining a tracked company
+  (board or advisory) stays notable: it is a commercial-access signal
+  (the Wolfgang Schmidt/Planet case).
 - `noise`: belongs in the record, not the push. Examples: a scheduled
   launch succeeding on schedule; a routine product update or minor
   partnership without stated money, capacity, or regulatory effect; a
@@ -402,10 +413,11 @@ it, it is `noise`. When torn between two levels, pick the lower one.
   inclusion bar entirely per standing precedent.
 
 Default for routine product updates, minor partnerships, and scheduled
-successes is `noise`, even when the press release is long. Importance
-and SNR are independent axes: a seismic rumour is seismic AND low-SNR,
-and the gate automatically queues seismic items at SNR 1-2 for
-Florian's review while they publish.
+successes is `noise`, even when the press release is long. Commentary
+still caps at `notable`. Importance and SNR are independent axes: a
+seismic rumour is seismic AND low-SNR, and the gate automatically
+queues seismic items at SNR 1-2 for Florian's review while they
+publish.
 
 ## Hard reminders
 

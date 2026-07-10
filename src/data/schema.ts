@@ -24,9 +24,11 @@ export const CATEGORIES = [
 export type Category = (typeof CATEGORIES)[number];
 
 /**
- * Importance, independent of SNR (SNR_SPEC.md §1): seismic = major
- * industry shifts only, notable = matters to anyone tracking the sector,
- * noise = worth logging, not worth a push.
+ * Importance, independent of SNR (SNR_SPEC.md §1), four tiers since
+ * 2026-07-10: seismic = reshapes competitive dynamics; major = a
+ * commercial director acts or briefs the team the same day (stated
+ * value/market access in the source); notable = worth knowing, skimmed
+ * and moved past; noise = worth logging, not worth a push.
  */
 /**
  * Item kinds (audit Phase 4, 2026-07-08). "event": something happened;
@@ -39,7 +41,7 @@ export type Category = (typeof CATEGORIES)[number];
 export const ITEM_KINDS = ["event", "commentary"] as const;
 export type ItemKind = (typeof ITEM_KINDS)[number];
 
-export const IMPACTS = ["seismic", "notable", "noise"] as const;
+export const IMPACTS = ["seismic", "major", "notable", "noise"] as const;
 export type Impact = (typeof IMPACTS)[number];
 
 // ------------------------------------------------------------------ snr

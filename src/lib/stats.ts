@@ -78,14 +78,14 @@ export function computeHero(
     }),
   );
   const notableUp = real.filter(
-    (i) => (i.impact === "notable" || i.impact === "seismic") && daysAgo(i.date, now) <= 30,
+    (i) => (i.impact === "major" || i.impact === "seismic") && daysAgo(i.date, now) <= 30,
   ).length;
   const perWeek = last30 > 0 ? Math.round((last30 / 30) * 7 * 10) / 10 : 0;
 
   return {
     sentence:
       `MCC has tracked ${real.length} items from ${sources.size} distinct sources. ` +
-      `${notableUp} notable-or-seismic items landed in the last 30 days, ` +
+      `${notableUp} major-or-seismic items landed in the last 30 days, ` +
       `and the feed is averaging ${perWeek} items per week.`,
     tiles: [
       [String(real.length), "items tracked", "verified, all-time"],
@@ -228,7 +228,7 @@ export function computeStats(
     question: "How big are the stories?",
     answer: impactAnswer,
     rows: impactRows,
-    method: "Items per impact level (seismic, notable, noise), all-time.",
+    method: "Items per impact level (seismic, major, notable, noise), all-time.",
     citation: cite(impactAnswer, "impact-mix", asOf),
   });
 

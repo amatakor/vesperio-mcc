@@ -677,11 +677,20 @@ a.chip:hover {
   border-color: var(--acc-red);
   color: #fff;
 }
-/* notable: FILLED yellow, black text at 500 (fill keeps its hue in light). */
-.chip-notable {
+/* major: FILLED yellow, black text at 500 — the fill moved up a tier
+   when the 4-level impact scale landed (rule 51, 2026-07-10). */
+.chip-major {
   background: var(--acc-yellow);
   border-color: var(--acc-yellow);
   color: #000;
+}
+/* notable: OUTLINED blue (rule 51b) — the instrument advisory tier:
+   red = failure, yellow fill = act today, blue outline = worth
+   knowing, neutral = logged. INFO blue pair per the token sheet;
+   distinct from link cyan. */
+.chip-notable {
+  border-color: var(--acc-blue-dim);
+  color: var(--acc-blue);
 }
 .chip-noise {
   border-color: var(--border-2);
@@ -1113,10 +1122,14 @@ a.chip:hover {
   color: var(--bg-page);
 }
 /* Filled badges keep their fills under inversion; only outlines flip. */
-.card:not(.card-seismic):hover .chip-notable {
+.card:not(.card-seismic):hover .chip-major {
   background: var(--acc-yellow);
   border-color: var(--acc-yellow);
   color: #000;
+}
+.card:not(.card-seismic):hover .chip-notable {
+  border-color: var(--acc-blue-dim);
+  color: var(--acc-blue-dim);
 }
 .card:not(.card-seismic):hover .chip-seismic {
   background: var(--acc-red);

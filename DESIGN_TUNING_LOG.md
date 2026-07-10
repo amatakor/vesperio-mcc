@@ -615,3 +615,36 @@ radius drops 1.28 -> 1.22 globe radii; the LEO cloud's outer edge may
 crop under the chrome (the canvas-wrap fades own the top and bottom).
 
 IMPLEMENTATION: fitRadius base in scene.tsx.
+
+## 51 · Four impact tiers; yellow intensity encodes the tier
+
+RULE (Florian, 2026-07-10: "I see too many notables" — 102 of 131 items
+wore the yellow fill): the impact scale gains MAJOR between notable and
+seismic. Badge grammar: NOTABLE becomes the standard outlined chip in
+yellow (dim yellow border at 45%, yellow text); MAJOR takes the filled
+yellow badge; SEISMIC keeps filled red. One hue, three intensities —
+outline < fill < red; the feed's yellow becomes rare and meaningful
+again. Editorial bars redefined in CLAUDE.md (major = a director acts
+or briefs the team the same day, stated value or market access in the
+source; when torn, take the lower tier). Existing items reclassified in
+a reviewed migration.
+
+IMPLEMENTATION: IMPACTS in schema.ts; .chip-major / .chip-notable in
+src/index.css (+ hover inversion rules); CLAUDE.md Impact block + badge
+law; prompts/update-items.md impact guidance; stats.ts hero and
+impact-mix copy.
+
+## 51b · Notable chip in INFO blue (supersedes 51's yellow outline)
+
+RULE (Florian, same day; endorsed): the notable chip is the OUTLINED
+INFO-blue badge (--acc-blue text, --acc-blue-dim border — the token
+sheet's CONNECTIVITY/INFO pair, the same pairing the kit already uses
+elsewhere). The impact ladder now reads as the instrument convention:
+red fill = failure/seismic, yellow fill = act today (major), blue
+outline = worth knowing (notable), neutral outline = logged (noise).
+Yellow means exactly one thing again, and yellow/blue is the
+colorblind-safe axis. 51's light-theme --acc-yellow-dim ink (#8F8E00)
+is withdrawn (unused).
+
+IMPLEMENTATION: .chip-notable + hover rule in src/index.css; CLAUDE.md
+badge law updated.
