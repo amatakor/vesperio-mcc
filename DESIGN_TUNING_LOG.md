@@ -528,3 +528,14 @@ reads as water against the paper ground; land/grid/coast unchanged,
 grid still darker than the ocean it draws on.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3e · Daylight ocean — saturated map blue (supersedes 3d)
+
+RULE (Florian, same day, third step): the daylight ocean is a saturated
+cartographic blue, #9DB9D6. Full ramp walked today:
+#E6EBEE > #DBE2E7 > #C7D5E3 > #9DB9D6. Land stays pale (#DCE3DD) so
+continents read light-on-water like a printed chart; the grid now draws
+LIGHTER than the water (inverted, intentional); coast steel unchanged;
+data accents still clear the ocean.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
