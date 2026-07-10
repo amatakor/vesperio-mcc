@@ -1087,3 +1087,64 @@ a newer entry if a lesson changes.
   after this sweep) is not draftable as an event yet even though it
   would likely be seismic (first flight of a new vehicle); it hasn't
   happened. Left for the next sweep to pick up once it actually flies.
+
+## Narrow same-day re-check, full source list, ~9h43m window (2026-07-10)
+
+- 2026-07-10-F: The same-company+category dedup heuristic (2026-07-09-B,
+  2026-07-10-C) trips even when the two NASA programs are completely
+  unrelated: a CSDA Earth-science data-quality report on Umbra's SAR
+  imagery got flagged as a same-event match against the existing NASA
+  Commercial LEO Destinations draft-RFP item, sharing only "NASA" +
+  category "procurement" within 7 days. `dedup_distinct` cleared it in
+  one pass. Worth assuming this heuristic will fire on ANY two NASA (or
+  any prolific actor's) items in the same category within a week, not
+  just the multi-country-subsidiary shape seen before.
+- 2026-07-10-G: A registry organization's recorded `website` field is a
+  reusable key for finding new first-party corroboration on an existing
+  item: CASC's registry entry (src/data/registry/organizations/casc.json)
+  records `website: https://english.spacechina.com`, which exactly
+  matched a CASC English-language article found via the CASC newsroom
+  fetch, letting it attach as `first_party` (anti-spoof gate passed
+  cleanly) and earn `corroboration_4plus` on the already-published Long
+  March 10B item (SNR 3 -> 4). Check an actor's registry `website` value
+  before fetching their newsroom when trying to upgrade an existing
+  item's lead or add a scoring-eligible source.
+- 2026-07-10-H: Wire-mirror trap confirmed on a new pair: Axelspace's own
+  GRUS-3 launch-success release was reprinted verbatim on BusinessWire,
+  MarketScreener, and Business Upturn -- none of these count as
+  independent corroboration of the first-party Axelspace page (same
+  text, same source). `crawl: "found_none"` was correct and cost nothing
+  since the lead was first_party.
+- 2026-07-10-I: A Chinese-language WebSearch (native characters, not an
+  English translation of the query) surfaced genuine independent
+  corroboration a pure-English search missed: searching "中国商业航天产业联盟
+  成员名单 国防科工局" found a district government portal (wnd.gov.cn)
+  republishing SASTIND's July 1 consortium-roster announcement,
+  independent of SpaceNews's July 10 English writeup. Worth trying a
+  native-language query as a specific corroboration step on China/Japan/
+  India stories, not just as a discovery-pass rotation slot.
+- 2026-07-10-J: A WebSearch tool's own prose summary can misdate a page
+  even when a direct WebFetch of the live URL gets it right: search
+  results described the NASA CSDA Umbra SAR quality-assessment reports
+  as "released in May 2026," but WebFetch-ing the actual
+  science.nasa.gov page directly returned "Publish Date: July 9, 2026."
+  Trusted the direct fetch. Confirms 2026-07-06-HH/2026-07-07-F's
+  pattern on a new tool (WebSearch's synthesized answer, not just
+  WebFetch's page summarizer) -- always re-check a load-bearing date
+  against a direct fetch of the source page before using it to decide
+  in-window vs. stale.
+- 2026-07-10-K: Umbra's configured source URL (umbra.space/blog) now
+  serves a static "Media Center -- Old Posts Page" archive with no
+  dated posts; the live index moved to umbra.space/press-releases/,
+  which lists titles but no per-item dates on the listing page itself
+  (each post needs to be opened individually to get a real date). Flag
+  for a sources.json URL update at the next structural touch; until
+  then, treat a top-of-list title on /press-releases/ as unverified
+  until its own page is opened.
+- 2026-07-10-L: Vantor's news-bureau page (vantor.com/company/news-bureau/)
+  returns 200 with real content via curl, but both WebFetch's summarizer
+  and a plain grep for dated article markup come back empty or
+  mis-parsed (WebFetch read an evergreen "award-winning investigations"
+  feature as if it were the live feed). Treat this source as needing a
+  different URL or a JS-capable render before it's reliably checkable;
+  a clean 200 here is not proof of a checkable press-release listing.
