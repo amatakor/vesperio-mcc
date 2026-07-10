@@ -360,3 +360,30 @@ skipped when detecting it). Shifts are ONE analytic transform (sign
 half-cell + leading-1 ink delta; -13px / -21px at 32px), never
 compounded margins. Verified by pixel scan: digit ink center within
 0.5px of the stage center.
+
+---
+
+# Round 12 (2026-07-10, eleventh review)
+
+## 36 · Signed clock — OPTICAL centering (final)
+
+RULE: digit-only centering reads left-heavy (the dash adds ink mass),
+full-string centering reads right-heavy; the sign carries HALF weight.
+At 32px: -7px shift (-15px with a leading 1). Supersedes round 35's
+digit-only rule.
+
+## 37 · Light-theme stars, 1.3x
+
+RULE: dark ink on paper needs more body than light ink on night; the
+daylight chart renders the star field at 1.3x point size.
+
+## 38 · Focus keeps the context cloud present
+
+RULE: under a constellation focus, unfocused dots dim to 0.18 (was
+0.12) — context stays legible without competing.
+
+## 39 · Labels — light register, smaller
+
+RULE: in-canvas labels render in Plex Mono 200 (the light register) at
+0.038 sprite height (~15% smaller). Canvas text weight follows the
+site's self-hosted faces only.

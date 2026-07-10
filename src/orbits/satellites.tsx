@@ -33,7 +33,8 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   const c = document.createElement("canvas");
   c.height = 64;
   const ctx0 = c.getContext("2d")!;
-  const FONT = "400 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  // Light register (tuning round 12): the self-hosted Plex Mono 200.
+  const FONT = "200 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
   ctx0.font = FONT;
   const MAX_W = 1006;
   let label = text;
@@ -213,7 +214,8 @@ function buildIssModel(): THREE.Group {
 /** Hard dim for non-highlighted layers (Florian 2026-07-05: dim more). */
 function dimmed(c: THREE.Color): THREE.Color {
   const l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b;
-  return new THREE.Color(l, l, l).lerp(c, 0.25).multiplyScalar(0.12);
+  // 0.12 buried the context cloud under focus (tuning round 12).
+  return new THREE.Color(l, l, l).lerp(c, 0.25).multiplyScalar(0.18);
 }
 
 export function Satellites({
@@ -397,10 +399,11 @@ export function Satellites({
           }),
         );
         sprite.renderOrder = 10;
-        // Width follows the texture's true aspect (tuning round 9).
-        const w0 = 0.045 * ((map.image as HTMLCanvasElement).width / 64);
+        // Width follows the texture's true aspect (tuning round 9);
+        // 0.038 height = round-12 size reduction (~15%).
+        const w0 = 0.038 * ((map.image as HTMLCanvasElement).width / 64);
         sprite.userData.w0 = w0;
-        sprite.scale.set(w0, 0.045, 1);
+        sprite.scale.set(w0, 0.038, 1);
         // Anchor left of the texture just right of the glyph.
         sprite.center.set(-0.12 * (0.36 / w0), 0.5);
         return sprite;
@@ -493,7 +496,7 @@ export function Satellites({
             // 2.8 is the reference distance of the default desktop view.
             const k = dist / 2.8;
             const w0 = (sprite.userData.w0 as number) ?? 0.36;
-            sprite.scale.set(w0 * k, 0.045 * k, 1);
+            sprite.scale.set(w0 * k, 0.038 * k, 1);
           }
         }
       }
