@@ -932,3 +932,13 @@ night view — grey sky, white stars, navy water, dark land — with the
 data layers as the only luminous elements.
 
 IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
+
+(Engineering note, the "continents still almost white" mystery: the
+WebGL scene read its color tokens ONCE at mount and baked them into
+the globe texture — theme toggles remounted the scene, but hot style
+updates did not, so any open tab rendered palette tunes one or more
+steps stale. Florian's live view lagged the whole daylight ramp while
+fresh headless loads showed the truth. The scene now polls its token
+set once a second and re-keys the palette only when a value changes,
+so open tabs repaint within a tick of any tune. Proven by injecting a
+red land token into a running page: repainted in 2.5s without reload.)

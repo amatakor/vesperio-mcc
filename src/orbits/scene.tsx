@@ -533,30 +533,56 @@ function registryHrefForOperator(slug: string): string | null {
 
 // -------------------------------------------------------------- scene
 
-export default function Scene() {
-  const colors = useMemo(
-    () => ({
-      ocean: token("--globe-ocean"),
-      land: token("--globe-land"),
-      grid: token("--globe-grid"),
-      coast: token("--globe-coast"),
-      accent: token(RESERVE_TOKEN),
-      alert: token("--alert"),
-      acc: token("--acc"),
-      // Neon mint-green of the LIVE lamp, for the spaceport activity ripple
-      // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
-      ripple: token("--live"),
-      fg: token("--mcc-fg"),
-      // Selection is volt (rule 46, Florian 2026-07-10): the picked
-      // satellite's orbit renders in the shell accent, volt on night,
-      // volt-ink on the daylight chart.
-      volt: token("--shell-accent"),
-    }),
-    [],
+/** Every token the scene paints with, in one stable read; the joined
+ * string is the change-detection key. */
+function readSceneTokens() {
+  return {
+    ocean: token("--globe-ocean"),
+    land: token("--globe-land"),
+    grid: token("--globe-grid"),
+    coast: token("--globe-coast"),
+    accent: token(RESERVE_TOKEN),
+    alert: token("--alert"),
+    acc: token("--acc"),
+    // Neon mint-green of the LIVE lamp, for the spaceport activity ripple
+    // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
+    ripple: token("--live"),
+    fg: token("--mcc-fg"),
+    // Selection is volt (rule 46, Florian 2026-07-10): the picked
+    // satellite's orbit renders in the shell accent, volt on night,
+    // volt-ink on the daylight chart.
+    volt: token("--shell-accent"),
+  };
+}
+function sceneTokensKey(): string {
+  return (
+    Object.values(readSceneTokens()).join("|") +
+    "|" +
+    orbitCatalog.map((e) => token(e.colorToken)).join("|")
   );
+}
+
+export default function Scene() {
+  // Live token tracking (2026-07-10): mount-time reads meant the globe
+  // rendered stale colors after hot style updates — theme toggles
+  // remounted, but live palette tuning lagged in any open tab. A 1s
+  // poll re-keys the palette only when a VALUE changes (the Scene has
+  // no render cadence of its own to piggyback on); downstream memos
+  // key on the values, so the land texture rebuilds only on change.
+  const [tokensKey, setTokensKey] = useState(sceneTokensKey);
+  useEffect(() => {
+    const id = setInterval(() => {
+      const k = sceneTokensKey();
+      setTokensKey((prev) => (prev === k ? prev : k));
+    }, 1000);
+    return () => clearInterval(id);
+  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const colors = useMemo(() => readSceneTokens(), [tokensKey]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const colorBySlug = useMemo(
     () => new Map(orbitCatalog.map((e) => [e.slug, token(e.colorToken)])),
-    [],
+    [tokensKey],
   );
   const reducedMotion = useMemo(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
