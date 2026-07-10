@@ -705,3 +705,15 @@ to black, exactly what the retired filter produced. Other filled
 badges keep their fills; only the seismic tag belongs to the effect.
 
 IMPLEMENTATION: .card-seismic:hover .chip-seismic in src/index.css.
+
+## 53c · Seismic card's category chip — opaque panel backing
+
+RULE (Florian, same day): the category chip on the seismic card was
+transparent and read as a yellow pill on the yellow ground; it now
+carries an opaque --bg-panel backing so it renders identically to the
+same chip on every other card. Under the negative hover it becomes the
+dark pill (#0A0A0A) with paper ink in both themes. (53b's seismic-tag
+selectors gained the .card-meta scope so the cyan flip outranks the
+generic chip rule.)
+
+IMPLEMENTATION: .card-seismic .card-meta .chip rules, src/index.css.
