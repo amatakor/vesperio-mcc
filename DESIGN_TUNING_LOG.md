@@ -468,3 +468,12 @@ panels float on it.
 
 IMPLEMENTATION: .oframe escapes the gutter with negative side margins;
 .oframe-main pads the panels back in (src/orbits/orbits.css).
+
+## 44b · Band interior — brand and nav on the cards' text line
+
+RULE 44 AMENDED (Florian's second review, same day): with the band box
+equal to the content box, a flush logo reads as a defect. Inside the
+band, the brand lockup and nav sit on the cards' inner text line
+(--pad-card), one shared left edge from the menu text to the card text.
+
+IMPLEMENTATION: .masthead padding var(--sp-2) var(--pad-card).

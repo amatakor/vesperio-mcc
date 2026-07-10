@@ -428,10 +428,11 @@ input,
   /* Band box = content box (Florian, 2026-07-10, rule 44; supersedes
      round 5's full-bleed pull-out): the menu bar surface is exactly as
      wide as the content at every size, with the shared page gutter
-     outside it. Visible in the light theme, where the white band used
-     to overhang the feed by one gutter on each side. */
+     outside it. Inside the band, the brand and nav sit on the cards'
+     inner text line (--pad-card), one shared left edge from menu to
+     feed; a flush logo read as a defect (Florian's second review). */
   margin: 0 0 var(--sp-6);
-  padding: var(--sp-2) 0;
+  padding: var(--sp-2) var(--pad-card);
   background: var(--bg-inset);
   border-bottom: 2px solid var(--n7);
 }
