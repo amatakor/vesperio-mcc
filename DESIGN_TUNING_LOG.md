@@ -756,3 +756,17 @@ grammar stays honest.
 
 IMPLEMENTATION: .sweep-link anchor in pages.tsx (SweepCard wraps stage
 + foot); .sweep-card:hover rules at the end of src/index.css.
+
+## 52d · Sweep face smoked on the night theme too (pitch black retired)
+
+RULE (Florian, 2026-07-10, completing rule 52's arc): the sweep clock's
+dark-theme face drops constant #000 for the MCC launch clock's dark
+recipe — rgba(255,255,255,.07) over the page ground, the instrument
+dark grey. Both clocks now share one smoked treatment in both themes.
+The hover negative softens to match: #E3E3DF paper grey (the literal
+negative of a dark-grey face) instead of the white flash. Ghost cells
+unchanged — the grey ground quiets them a step by itself, in the
+direction rules 52b/52c already walked.
+
+IMPLEMENTATION: .sweep-card background and :hover background,
+src/index.css; CLAUDE.md constant-dark note synced.

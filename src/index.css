@@ -950,7 +950,11 @@ a.chip:hover {
 }
 .sweep-card {
   border: 1px solid var(--border-2);
-  background: #000;
+  /* The pitch-black face is retired (rule 52d): the MCC launch clock's
+     smoked lift, dark side — rgba white over the page ground reads as
+     the instrument dark grey, and its negative is a paper grey rather
+     than a white flash. */
+  background: rgba(255, 255, 255, 0.07);
   margin: -1px 0 0 -1px;
   min-width: 0;
   overflow: hidden;
@@ -3723,7 +3727,7 @@ a.sig-card:hover .sig-p-x {
   text-decoration: none;
 }
 .sweep-card:hover {
-  background: #f5f5f5;
+  background: #e3e3df; /* the dark-grey face's negative: paper grey, not white */
   border-color: var(--shell-accent);
   z-index: 2;
 }
