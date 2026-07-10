@@ -31,7 +31,7 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   c.width = 512;
   c.height = 64;
   const ctx = c.getContext("2d")!;
-  ctx.font = "500 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  ctx.font = "400 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
   const ink = new THREE.Color(color);
   const darkInk = ink.r + ink.g + ink.b < 1.5;
   const w = Math.min(ctx.measureText(text).width, 488);
@@ -145,14 +145,17 @@ const GLYPH_SLUGS = new Set(["iss"]);
 function buildIssModel(): THREE.Group {
   const g = new THREE.Group();
   const disposables = new Set<THREE.BufferGeometry | THREE.Material>();
+  // Night view keeps the pale wireframe; the daylight chart needs dark
+  // inks or the station vanishes on the pale ocean (tuning round 3).
+  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
   const structMat = new THREE.LineBasicMaterial({
-    color: "#d5deec",
+    color: lightTheme ? "#22303c" : "#d5deec",
     transparent: true,
     opacity: 0.95,
     depthWrite: false,
   });
   const arrayMat = new THREE.LineBasicMaterial({
-    color: "#7aa8e0",
+    color: lightTheme ? "#2666d1" : "#7aa8e0",
     transparent: true,
     opacity: 0.9,
     depthWrite: false,
@@ -522,6 +525,10 @@ export function Satellites({
     onPick({ slug: seg.entry.slug, id: seg.entry.ids[i]!, name: seg.entry.names[i]!, index: sat.index! });
   };
 
+  // Additive blending is the night-view glow; over the daylight chart's
+  // pale ground it washes the cloud to nothing, so light uses normal
+  // blending (V1.1 tuning round 3).
+  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
   if (plan.total === 0) return null;
   return (
     <>
@@ -533,7 +540,7 @@ export function Satellites({
           vertexColors
           transparent
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={lightTheme ? THREE.NormalBlending : THREE.AdditiveBlending}
         />
       </points>
       {highlights.map((h) => (

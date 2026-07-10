@@ -87,3 +87,60 @@ off-system and out-shouted the title.
 
 IMPLEMENTATION: `.page-title`, `.tile-num`, `.hero-sentence` in
 `src/index.css`.
+
+---
+
+# Round 3 (2026-07-10, second review)
+
+## 6 · Sweep LCD — grid centering, measured and locked
+
+MEASUREMENT: DSEG7 "88:88:88" at 45px has symmetric ink bearings (4px
+each side of the 240px advance box); the LCD box centers to the pixel in
+the stage (verified by getBoundingClientRect and pixel-scan). What reads
+as off-center is lit-segment asymmetry: a 7-seg "1" lights only its
+right segment pair.
+
+RULE: the instrument centers its DIGIT GRID, never the lit ink (ink
+centering would make the clock wobble as digits change). The ghost grid
+is therefore a first-class element: unlit segments run classic LCD gray
+`#262626` on the black instrument ground, strong enough to anchor the
+eye. Applies to every LCD face (sweep card, MCC countdown).
+
+## 7 · LCD instruments are MODULES (amendment)
+
+RULE: every LCD countdown sits on a constant black instrument module
+(black ground, 1px `--border-2` frame, volt digits via `--clock`,
+`#262626` ghost) in BOTH themes — the news sweep card grammar, reused.
+The MCC HUD countdown adopts it; volt digits never sit on paper.
+
+IMPLEMENTATION: `.hud-countdown` module + `.lcd-*` constants in
+`src/orbits/orbits.css`.
+
+## 8 · Daylight chart refinements
+
+- ISS wireframe inks are theme-aware: `#22303C` structure / `#2666D1`
+  arrays on light (pale `#D5DEEC` / `#7AA8E0` stay on dark).
+- Satellite cloud blending: additive is the night-view glow; the
+  daylight chart uses normal blending or the cloud washes out over the
+  pale ocean.
+- Coast ink darkens to `#33495A`, grid to `#BFC9D0`, for continent
+  contrast on paper.
+
+## 9 · MCC layout — flush panels
+
+RULE: the MCC frame sits flush under the top bar (no top gap) and its
+side gutter is the sitewide 28px, so panel edges align with the
+masthead content. Frame height accounts for the 64px bar + 2px rule.
+
+## 10 · Stars — original rendering restored
+
+The dpr-scaled point sizes from round 2 read as chunky squares; the
+original sizes (2.2 / 1.3, brightness floor 0.18) are restored and
+locked. Source data unchanged: Yale Bright Star Catalog, true RA/Dec,
+sidereal orientation, parallax factor 0.3.
+
+## 11 · Satellite labels — weight
+
+RULE: in-canvas labels render at weight 400 (was 500). Mono above 400
+stays reserved for labels/badges in the UI itself; canvas text is body
+register. Bold mono remains banned everywhere.

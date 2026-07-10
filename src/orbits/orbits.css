@@ -19,8 +19,9 @@
   flex-direction: column;
   /* Fixed to the viewport so the globe stays centred; over-tall panels
      scroll internally on the slim styled scrollbar below rather than
-     growing the page and pushing the globe off-centre (Florian 2026-07-07). */
-  height: calc(100vh - 85px);
+     growing the page and pushing the globe off-centre (Florian 2026-07-07).
+     66px = the V1.1 top bar (64px) + its 2px rule. */
+  height: calc(100vh - 66px);
   min-height: 540px;
   /* Match the rest of the site's measure (.shell) so Orbits is no wider
      than News and its edges line up with the masthead (Florian 2026-07-08). */
@@ -34,7 +35,10 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  padding: 20px 1.25rem 12px;
+  /* Flush under the top bar (Florian, tuning round 3): no top gap; the
+     side gutter matches the sitewide 28px so panel edges align with the
+     masthead content. */
+  padding: 0 var(--gutter-page) 12px;
 }
 
 .ocol-left {
@@ -188,6 +192,10 @@
 .lcd {
   display: inline-flex;
   align-items: baseline;
+  /* An LCD never wraps or shrinks (the ghost's hyphen is a line-break
+     opportunity when a flex parent squeezes it). */
+  white-space: nowrap;
+  flex: none;
   font-family: "DSEG7 Classic", var(--mono);
   font-weight: 700;
 }
@@ -200,18 +208,20 @@
   display: inline-block;
 }
 .lcd-ghost {
-  color: var(--acc-ghost);
+  /* Instrument constant: unlit segments on the black module ground,
+     both themes (the module below pins the ground). */
+  color: #262626;
 }
 .lcd-lit {
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--acc);
+  color: var(--clock);
 }
 .lcd-comma {
   font-family: var(--mono);
   font-weight: 500;
-  color: var(--acc);
+  color: var(--clock);
   font-size: 0.62em;
   padding: 0 2px;
 }
@@ -243,11 +253,19 @@
 
 /* The countdown spans the full panel width: T-minus pinned left, the
    larger clock pinned right (Florian 2026-07-08). */
+/* The countdown is an INSTRUMENT (tuning round 3, recycling the news
+   sweep card's grammar): constant black module, volt digits, 1px
+   emphasized border — identical in both themes, legible on the
+   daylight chart. */
 .hud-countdown {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
+  background: #000;
+  border: 1px solid var(--border-2);
+  padding: 12px 12px;
+  margin: 2px 0 8px;
 }
 .lcd-tminus {
   font-size: 30px;

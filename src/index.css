@@ -279,9 +279,8 @@
      coasts, darkened data accents; the LCD instruments keep volt via
      --clock, rendered as volt-ink by the HUD's themed --acc alias. */
   --globe-ocean: #e6ebee;
-  --globe-grid: #c9d2d8;
-  --globe-coast: #56707f;
-  --acc-ghost: #d6d6d0; /* unlit LCD segments on the paper HUD */
+  --globe-grid: #bfc9d0;
+  --globe-coast: #33495a;
   --neon-eo: #0e9e57;
   --neon-connectivity: #c217a0;
   --neon-iot: #0e93ad;
@@ -986,9 +985,12 @@ a.chip:hover {
 /* Ghost segments must equal the flood color on the flood side, or
    disembodied segments appear in the seam wedge. */
 .sweep-lcd-ghost {
-  /* Bright enough that the full 8-cell grid reads as the instrument's
-     frame; the digit GRID is what centers, the ink of "1"s cannot. */
-  color: #1f1f1f;
+  /* Classic unlit-LCD gray: the full 8-cell grid must read as the
+     instrument's frame, because the GRID is what centers — measured
+     ink bearings of DSEG7 "88:88:88" are symmetric (4px each side),
+     but lit segments (a "1" lights only its right pair) pull the eye
+     unless the grid anchors it. */
+  color: #262626;
 }
 .sweep-flood .sweep-lcd-ghost {
   color: var(--volt);
