@@ -690,7 +690,15 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     // cards can't feed back into a loop. ResizeObserver's initial callback
     // also gives a guaranteed post-layout pack.
     const ro = new ResizeObserver(schedule);
-    for (const c of Array.from(grid.children)) ro.observe(c);
+    for (const c of Array.from(grid.children)) {
+      ro.observe(c);
+      // pack() pins each card with an inline height, so the card's own
+      // box can never fire the observer when its CONTENT grows (the
+      // sweep clock's stage growing under HMR clipped its schedule row,
+      // 2026-07-10). Observe the card's direct children too: content
+      // growth fires there, and re-packing re-measures the true height.
+      for (const k of Array.from(c.children)) ro.observe(k);
+    }
     window.addEventListener("resize", schedule);
     return () => {
       ro.disconnect();

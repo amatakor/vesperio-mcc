@@ -1382,9 +1382,17 @@ a.card-tile:hover .tile-cat {
 .card-seismic .card-meta .chip:not(.chip-seismic) {
   background: var(--bg-panel);
 }
-.card-seismic:hover .card-meta .chip {
-  background: #0a0a0a; /* negative: dark pill under paper ink, both themes */
-  border-color: rgba(255, 255, 255, 0.45);
+/* Outlined chips join the negative fully (rule 53f): the stated invert
+   of their per-theme rest state — light pill on night's hover, dark
+   pill on daylight's. The SEISMIC tag keeps its own cyan flip. */
+.card-seismic:hover .card-meta .chip:not(.chip-seismic) {
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.35);
+  color: #0a0a0a;
+}
+[data-theme="light"] .card-seismic:hover .card-meta .chip:not(.chip-seismic) {
+  background: #0a0a0a;
+  border-color: rgba(255, 255, 255, 0.35);
   color: #f5f5f5;
 }
 /* The SEISMIC tag joins the negative (rule 53b): the exact invert of
@@ -1417,7 +1425,7 @@ a.card-tile:hover .tile-cat {
      rule 56): Plex Sans, regular case — a lede, not data. */
   font-family: var(--font-display);
   font-size: 14px;
-  font-weight: 450;
+  font-weight: 400; /* not bold (Florian, second look; rule 56 amended) */
   letter-spacing: 0.01em;
   line-height: 1.5;
   -webkit-line-clamp: 4;

@@ -829,3 +829,26 @@ sides of the digits, ink-flips correct on both label rows.
 
 IMPLEMENTATION: .sweep-layer height + .sweep-mid insets in
 src/index.css; clip-path lean constants in pages.tsx.
+
+## 53f · Outlined chips join the negative fully
+
+RULE (Florian): on the seismic hover the category chip takes the stated
+invert of its per-theme rest state — light pill/dark ink on night, dark
+pill/paper ink on daylight — instead of the fixed dark pill. The
+SEISMIC tag keeps its cyan flip.
+
+IMPLEMENTATION: per-theme .card-seismic:hover chip rules, src/index.css.
+
+## 56 (amended) · Seismic lede weight 400
+
+Florian's second look: 450 read bold; the display-voice lede sits at
+400.
+
+(Engineering note, 2026-07-10: the masonry packer pins cards with an
+inline height, so a card whose CONTENT grows at runtime could never
+re-fire the ResizeObserver — the box was pinned — and overflow:hidden
+clipped the growth; this is what kept "cutting off" the clock's
+schedule row after live height tunings. The observer now also watches
+each card's direct children, so content growth re-packs. Verified:
+force-growing the stage +26px at runtime re-packed the card with the
+schedule row intact.)
