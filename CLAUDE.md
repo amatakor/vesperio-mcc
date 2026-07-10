@@ -150,7 +150,7 @@ Card and item artwork is stamped exclusively by the deterministic `scripts/fetch
 
 1. The og:image / twitter:image of the item's own sources, tried press-first (trade > mainstream > aggregator > informal > first-party > official record): trade-press artwork beats press-release, investor-relations, and filing pages (Florian, 2026-07-08). Social platform pages never contribute their own og:image (it is a profile picture); a Bluesky post resolves to the article it embeds via the public API and that page joins the candidates. PDFs are skipped; tiny images and ad-shaped banners are rejected; a logo-shaped image is used only when no source yields a photo. The winner is re-hosted under `public/img/items/`, credited to and linked to the page it actually came from.
 2. A curated freely licensed stock image from `src/data/stock-images.json`, keyed by source domain. Every entry records license, author, and origin URL; the map grows only via reviewed PRs with the license verified. (The SEC headquarters photo was removed 2026-07-08: one stock photo repeating across filing-sourced items, seismic ones included, reads worse than the honest text tile.)
-3. Nothing: the site renders a generated mono text tile from the item's own fields.
+3. Nothing: the card and item page render text-only — no media block at all (the generated mono text tile was retired 2026-07-10, rule 57).
 
 Never: image search results, AI-generated imagery of real events, official agency seals (legally restricted), or images hand-picked by the drafting agent. Any image is removed on request from its rights holder by setting the item's `image` to null.
 
