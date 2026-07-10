@@ -944,22 +944,24 @@ a.chip:hover {
 /* Corner labels pin to the stage, not the LCD: label top-left in the
    instrument register, arming state top-right. Constant-dark surface, so
    literal light grays, not themed tokens. */
+/* Label drops a class (tuning round 6): micro register, hugging the
+   corner — the instrument face belongs to the digits. */
 .sweep-lab {
   position: absolute;
-  top: 14px;
-  left: var(--sp-4);
+  top: 8px;
+  left: 10px;
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: var(--fs-micro);
   font-weight: 500;
-  letter-spacing: var(--ls-inst);
+  letter-spacing: var(--ls-label);
   text-transform: uppercase;
   color: #ededed;
   margin: 0;
 }
 .sweep-armed {
   position: absolute;
-  top: 14px;
-  right: var(--sp-4);
+  top: 8px;
+  right: 10px;
   font-family: var(--font-ui);
   font-size: var(--fs-micro);
   font-weight: 500;
@@ -975,7 +977,7 @@ a.chip:hover {
 /* LCD centered in the area below the label row. */
 .sweep-mid {
   position: absolute;
-  inset: 26px 0 0 0;
+  inset: 22px 0 0 0;
   display: grid;
   place-items: center;
 }

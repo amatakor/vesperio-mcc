@@ -224,3 +224,23 @@ reverted and superseded.)
 RULE: nav items respond on hover — text steps n6→n8 and a neutral
 `--border-2` underline previews the volt underline the active tab
 carries; ≤120ms linear. The theme toggle shares the treatment.
+
+---
+
+# Round 6 (2026-07-10, fifth review)
+
+## 19 · Instrument labels — micro register
+
+RULE: instrument corner labels drop a class: micro register (9px / 500 /
++.08em caps), pinned 8px from the top and 10px from the sides. The face
+belongs to the digits. Applies to the sweep card and the launch
+instrument (label and days chip alike).
+
+## 20 · Launch instrument light stage — smoked glass
+
+RULE: the white light-theme stage failed review; the light variant is
+SMOKED GLASS instead: `rgba(20,20,18,.55)` over the paper, volt digits
+exactly as on dark, ghost cells `rgba(0,0,0,.3)`. Labels carry constant
+light inks (#EDEDED / #A8A8A8) since the stage is dark-to-smoked in
+both themes. The module's footer keeps its 1px frame (`--border-1`) and
+inset ground in both themes; only the stage is frameless.
