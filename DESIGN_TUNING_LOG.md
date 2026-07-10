@@ -331,3 +331,14 @@ follows the texture.
 outside in the HUD label class, smoked stage both themes, signed
 centered digits, quiet ghost. Kit should adopt this as the LCD module
 spec alongside the sweep card.
+
+---
+
+# Round 10 (2026-07-10, ninth review)
+
+## 33 · Dot weight is per-category
+
+RULE: the mega-constellations must not overwhelm the map: connectivity
+dots render at 0.6x the standard disc; every other category keeps the
+full size. Implemented as a per-point size attribute (`aDot`) patched
+into the points shader — one draw call, no split geometry.

@@ -11,6 +11,7 @@
 
 import { useEffect, useMemo, useRef, type MutableRefObject } from "react";
 import * as THREE from "three";
+import { orbitCatalog } from "./catalog";
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { occludedByGlobe } from "./geo";
 import type { LayoutEntry } from "./types";
@@ -253,6 +254,17 @@ export function Satellites({
     const pos = new Float32Array(plan.total * 3);
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     g.setAttribute("color", new THREE.BufferAttribute(new Float32Array(plan.total * 3), 3));
+    // Per-point size scale (tuning round 10): the mega-constellations
+    // overwhelm the map at full thickness, so connectivity dots render
+    // at 0.6x; every other category keeps the standard disc.
+    const dotScaleArr = new Float32Array(plan.total).fill(1);
+    for (const { entry, start, count } of plan.segments) {
+      const cat = orbitCatalog.find((e) => e.slug === entry.slug)?.category;
+      if (cat === "connectivity") {
+        for (let i = 0; i < count; i++) dotScaleArr[start + i] = 0.6;
+      }
+    }
+    g.setAttribute("aDot", new THREE.BufferAttribute(dotScaleArr, 1));
     // Positions stream in place; skip three.js bounds bookkeeping.
     g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
     return g;
@@ -337,7 +349,28 @@ export function Satellites({
       : null;
   }, [plan]);
   const issHitRef = useRef<THREE.Mesh>(null);
-  const cloudMatRef = useRef<THREE.PointsMaterial>(null);
+  // Cloud material built imperatively (tuning round 10): the shader is
+  // patched to multiply each point's size by the aDot attribute, so
+  // connectivity dots slim down without a second draw call.
+  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
+  const cloudMaterial = useMemo(() => {
+    const m = new THREE.PointsMaterial({
+      size: 0.014 * dotScale,
+      sizeAttenuation: true,
+      map: glowTexture(),
+      vertexColors: true,
+      transparent: true,
+      depthWrite: false,
+      blending: lightTheme ? THREE.NormalBlending : THREE.AdditiveBlending,
+    });
+    m.onBeforeCompile = (shader) => {
+      shader.vertexShader =
+        "attribute float aDot;\n" +
+        shader.vertexShader.replace("gl_PointSize = size;", "gl_PointSize = size * aDot;");
+    };
+    return m;
+  }, [lightTheme, dotScale]);
+  useEffect(() => () => cloudMaterial.dispose(), [cloudMaterial]);
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per
   // satellite, positions synced from the shared buffer each frame.
@@ -393,9 +426,9 @@ export function Satellites({
     // Fixed apparent dot size (tuning round 9): with sizeAttenuation the
     // world size is constant, so zooming inflates the discs; scaling the
     // material size with camera distance holds them pixel-stable.
-    if (cloudMatRef.current) {
+    {
       const d = camera.position.length();
-      cloudMatRef.current.size = 0.014 * dotScale * (d / 2.8);
+      cloudMaterial.size = 0.014 * dotScale * (d / 2.8);
     }
     const attr = geometry.getAttribute("position") as THREE.BufferAttribute;
     const out = attr.array as Float32Array;
@@ -557,25 +590,16 @@ export function Satellites({
     onPick({ slug: seg.entry.slug, id: seg.entry.ids[i]!, name: seg.entry.names[i]!, index: sat.index! });
   };
 
-  // Additive blending is the night-view glow; over the daylight chart's
-  // pale ground it washes the cloud to nothing, so light uses normal
-  // blending (V1.1 tuning round 3).
-  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
   if (plan.total === 0) return null;
   return (
     <>
-      <points ref={pointsRef} geometry={geometry} frustumCulled={false} onClick={handleClick}>
-        <pointsMaterial
-          ref={cloudMatRef}
-          size={0.014 * dotScale}
-          sizeAttenuation
-          map={glowTexture()}
-          vertexColors
-          transparent
-          depthWrite={false}
-          blending={lightTheme ? THREE.NormalBlending : THREE.AdditiveBlending}
-        />
-      </points>
+      <points
+        ref={pointsRef}
+        geometry={geometry}
+        material={cloudMaterial}
+        frustumCulled={false}
+        onClick={handleClick}
+      />
       {highlights.map((h) => (
         <points key={h.slug} geometry={h.geometry} frustumCulled={false}>
           <pointsMaterial
