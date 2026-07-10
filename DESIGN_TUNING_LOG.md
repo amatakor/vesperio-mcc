@@ -852,3 +852,11 @@ schedule row after live height tunings. The observer now also watches
 each card's direct children, so content growth re-packs. Verified:
 force-growing the stage +26px at runtime re-packed the card with the
 schedule row intact.)
+
+(Engineering note, second pass on the clipped schedule row: the packer
+no longer PINS the sweep card with an inline height at all — pins from
+a pre-tuning measure were guillotining the instrument's bottom row in
+long-lived tabs even after the child-observer fix. The clock's grid
+span still reserves its rows; an unpinned fixed-height instrument can
+never be clipped by a stale measure. Ordinary cards keep the pin,
+whose sub-pixel absorption their footers provide.)

@@ -674,7 +674,12 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
         // -1px top margin, overlaps the previous card's bottom border exactly:
         // one hairline between cards, same as the vertical seams.
         const h = Math.max(2, Math.ceil(heights[i]!));
-        c.style.height = `${h}px`;
+        // The sweep clock is a fixed-height instrument and is never
+        // PINNED (2026-07-10: stale pins clipped its schedule row twice
+        // across live height tunings) — its span reserves the rows and
+        // the natural height can then never be cut. Ordinary cards keep
+        // the pin (it absorbs sub-pixels into the footer slack).
+        if (!c.classList.contains("sweep-card")) c.style.height = `${h}px`;
         c.style.gridRowEnd = `span ${h - 1}`;
       });
     };
