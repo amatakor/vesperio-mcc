@@ -770,3 +770,19 @@ direction rules 52b/52c already walked.
 
 IMPLEMENTATION: .sweep-card background and :hover background,
 src/index.css; CLAUDE.md constant-dark note synced.
+
+## 55 · The sweep footer dissolves into the instrument
+
+RULE (Florian, 2026-07-10: with the smoked faces, the footer's grey
+matched the face and the seam stopped meaning anything): the separate
+schedule footer is removed; its content (LAST / SWEEPS EVERY 12H /
+NEXT) moves ONTO the stage as a bottom-pinned row in the instrument
+register, mirroring the top label row. It renders inside both face
+copies, so the volt flood clips and re-inks it exactly like the other
+on-stage labels, and the hover negative carries it for free. The card
+is now a single smoked surface: labels top, LCD center, schedule
+bottom.
+
+IMPLEMENTATION: SweepFace gains the schedule row (pages.tsx);
+.sweep-sched layout + .sweep-card-foot/-seg rules removed
+(src/index.css).

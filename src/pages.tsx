@@ -545,7 +545,13 @@ function SweepLcd({ value }: { value: string }) {
     stage renders it twice — base (black ground, volt digits) and flood
     overlay (volt ground, black digits) — so the seam cuts through
     identical content. */
-function SweepFace({ digits }: { digits: string }) {
+function SweepFace({
+  digits,
+  schedule,
+}: {
+  digits: string;
+  schedule: { last: string | null; next: string | null; local: string | null };
+}) {
   return (
     <div className="sweep-layer">
       <span className="sweep-lab">T-MINUS NEXT SWEEP</span>
@@ -553,6 +559,18 @@ function SweepFace({ digits }: { digits: string }) {
       <div className="sweep-mid">
         <SweepLcd value={digits} />
       </div>
+      {/* The schedule line lives ON the instrument (rule 55): rendered in
+          both face copies so the flood clips and re-inks it like every
+          other on-stage label. */}
+      <span className="sweep-lab sweep-sched">
+        {schedule.last && <span>LAST {schedule.last}</span>}
+        <span>SWEEPS EVERY 12H</span>
+        {schedule.next && (
+          <span>
+            NEXT {schedule.next} · {schedule.local} LOCAL
+          </span>
+        )}
+      </span>
     </div>
   );
 }
@@ -599,7 +617,7 @@ function SweepCountdownCard() {
           hover announces a real destination, like every card. */}
       <a className="sweep-link" href="/log/" aria-label="Open the sweep log">
       <div className="sweep-stage">
-        <SweepFace digits={digits} />
+        <SweepFace digits={digits} schedule={{ last, next, local }} />
         <div
           className="sweep-flood"
           aria-hidden="true"
@@ -607,20 +625,9 @@ function SweepCountdownCard() {
             clipPath: `polygon(0 0, calc(${p} + 26px) 0, calc(${p} - 26px) 100%, 0 100%)`,
           }}
         >
-          <SweepFace digits={digits} />
+          <SweepFace digits={digits} schedule={{ last, next, local }} />
         </div>
       </div>
-      <p className="sweep-card-foot">
-        {last && <span className="sweep-card-seg">LAST {last}</span>}
-        {/* Crawl frequency (tuning round 7): the instrument states its
-            own cadence. */}
-        <span className="sweep-card-seg">SWEEPS EVERY 12H</span>
-        {next && (
-          <span className="sweep-card-seg">
-            NEXT {next} · {local} LOCAL
-          </span>
-        )}
-      </p>
       </a>
     </aside>
   );
