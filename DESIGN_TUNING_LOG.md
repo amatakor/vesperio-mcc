@@ -966,3 +966,8 @@ the #31363F sky. Final lighter-view ladder: sky #31363F, ocean
 #24395C, land #43536B, coast #4D6980, data brightest.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3k (second nudge) · Ocean to #1D3050
+
+The land/water gap at a full step: sky #31363F, ocean #1D3050, land
+#43536B, coast #4D6980. The continents now carry the globe's shape.
