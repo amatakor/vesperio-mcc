@@ -425,15 +425,14 @@ input,
   gap: var(--sp-2) var(--sp-4);
   align-items: center;
   min-height: var(--header-h);
-  /* Band box = content box (Florian, 2026-07-10, rule 44; supersedes
-     round 5's full-bleed pull-out): the menu bar surface is exactly as
-     wide as the content at every size, with the shared page gutter
-     outside it. Inside the band, the brand and nav sit on the cards'
-     inner text line (--pad-card), one shared left edge from menu to
-     feed; a flush logo read as a defect (Florian's second review). */
+  /* The menu bar sits on the page ground itself (Florian, 2026-07-10,
+     rule 44c): no band surface in either theme — the dark theme always
+     read this way because band and page were both near-black, and the
+     light theme now matches. The brand and nav align flush with the
+     content edge; the 2px rule below is the masthead's only mark. */
   margin: 0 0 var(--sp-6);
-  padding: var(--sp-2) var(--pad-card);
-  background: var(--bg-inset);
+  padding: var(--sp-2) 0;
+  background: var(--bg);
   border-bottom: 2px solid var(--n7);
 }
 

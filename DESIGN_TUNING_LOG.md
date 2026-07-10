@@ -477,3 +477,15 @@ band, the brand lockup and nav sit on the cards' inner text line
 (--pad-card), one shared left edge from the menu text to the card text.
 
 IMPLEMENTATION: .masthead padding var(--sp-2) var(--pad-card).
+
+## 44c · The menu bar sits on the page ground (supersedes 44b)
+
+RULE (Florian's third review, same day): the masthead has NO band
+surface in either theme — its background is the page ground itself
+(--bg), which is how the dark theme always read (band and page were
+both near-black). The brand and nav align flush with the content edge
+(44b's --pad-card inset reverted: "aligning the logo to the website
+edge was the right move"); the 2px n7 rule below is the masthead's
+only mark.
+
+IMPLEMENTATION: .masthead background var(--bg), padding var(--sp-2) 0.
