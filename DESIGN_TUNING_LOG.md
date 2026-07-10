@@ -1155,3 +1155,18 @@ place-items center); the days chip stays pinned top-right; the footer
 is untouched.
 
 IMPLEMENTATION: .hud-launch-stage height (orbits.css).
+
+## 58i · The count in volt-ink both themes; the scheduled hatch goes cyan
+
+RULE (Florian, 2026-07-11, after a live volt-ink preview on night):
+the satellites-tracked count renders volt-ink #64C400 in BOTH themes —
+printed ink, not a lit instrument — and leaves the volt hero-element
+list (CLAUDE.md synced; the LCD clocks keep true volt on their black
+grounds). The orbital-flow SCHEDULED hatch (rule 48b's
+hatched-equals-planned grammar) recolors from the volt shell accent to
+the themed cyan (--acc-cyan: #00F0FF night, #007A87 daylight), legend
+swatch included.
+
+IMPLEMENTATION: .osat-count color var(--volt-ink); .flow-bar-sched +
+.flow-sw-sched gradients var(--acc-cyan) (orbits.css); CLAUDE.md volt
+list amended.

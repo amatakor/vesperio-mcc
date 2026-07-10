@@ -242,7 +242,9 @@
   font-size: 52px;
   line-height: 1;
   white-space: nowrap;
-  color: var(--shell-accent);
+  /* Volt-ink BOTH themes (rule 58i, Florian: the count reads as
+     printed ink, not a lit instrument; it leaves the volt hero list). */
+  color: var(--volt-ink);
 }
 
 /* The countdown links to the mission's feed item or vehicle profile. */
@@ -390,13 +392,13 @@
   min-height: 1px;
 }
 .flow-bar-sched {
-  /* Scheduled bars carry the volt hatch (Florian 2026-07-10, rule 48b:
-     hatched = planned, the engineering-drawing grammar; volt via the
-     shell accent, sanctioned per rule 46's sign-off path). */
+  /* Scheduled bars keep rule 48b's hatch grammar (hatched = planned,
+     the engineering drawing) but in the themed cyan (rule 58i,
+     Florian 2026-07-11; was the volt shell accent). */
   background: repeating-linear-gradient(
     45deg,
-    var(--shell-accent) 0,
-    var(--shell-accent) 2px,
+    var(--acc-cyan) 0,
+    var(--acc-cyan) 2px,
     transparent 2px,
     transparent 5px
   );
@@ -463,8 +465,8 @@
 .flow-sw-sched {
   background: repeating-linear-gradient(
     45deg,
-    var(--shell-accent) 0,
-    var(--shell-accent) 2px,
+    var(--acc-cyan) 0,
+    var(--acc-cyan) 2px,
     transparent 2px,
     transparent 5px
   );
