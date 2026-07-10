@@ -956,6 +956,13 @@ a.chip:hover {
   overflow: hidden;
   padding: 0;
 }
+/* Daylight face (rule 52, supersedes rule 2's constant black here):
+   the MCC launch clock's smoked treatment, translated — translucent
+   near-black over the page ground reads as the instrument grey, the
+   volt flood and digits keep their charge against it. */
+[data-theme="light"] .sweep-card {
+  background: rgba(20, 20, 18, 0.55);
+}
 .sweep-stage {
   position: relative;
   overflow: hidden;
@@ -979,6 +986,9 @@ a.chip:hover {
    literal light grays, not themed tokens. */
 /* Label drops a class (tuning round 6): micro register, hugging the
    corner — the instrument face belongs to the digits. */
+[data-theme="light"] .sweep-card .sweep-lab {
+  color: #fbfbf8; /* pale label needs full paper ink on the smoked grey */
+}
 .sweep-lab {
   position: absolute;
   top: 8px;
@@ -1004,7 +1014,9 @@ a.chip:hover {
   margin: 0;
 }
 .sweep-flood .sweep-lab,
-.sweep-flood .sweep-armed {
+.sweep-flood .sweep-armed,
+[data-theme="light"] .sweep-card .sweep-flood .sweep-lab,
+[data-theme="light"] .sweep-card .sweep-flood .sweep-armed {
   color: #0a0a0a;
 }
 /* LCD centered in the area below the label row. */
@@ -1041,6 +1053,11 @@ a.chip:hover {
      but lit segments (a "1" lights only its right pair) pull the eye
      unless the grid anchors it. */
   color: #262626;
+}
+[data-theme="light"] .sweep-lcd-ghost {
+  /* Quieter ghost on the smoked stage (Florian, two review rounds:
+     barely-there — the grid is subliminal on daylight). */
+  color: rgba(0, 0, 0, 0.06);
 }
 .sweep-flood .sweep-lcd-ghost {
   color: var(--volt);
