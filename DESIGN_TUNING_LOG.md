@@ -786,3 +786,14 @@ bottom.
 IMPLEMENTATION: SweepFace gains the schedule row (pages.tsx);
 .sweep-sched layout + .sweep-card-foot/-seg rules removed
 (src/index.css).
+
+## 55b · Flood layer pinned above the base face (regression fix)
+
+Florian's screenshot: seam-crossing labels rendered white OVER the
+volt instead of flipping to dark ink — the doubled-face flip relied on
+implicit DOM paint order, disturbed by the rule-54 link wrapper and
+rule-55 layer changes. .sweep-flood now carries z-index: 1 so the
+flood copy explicitly wins; the flip is structural again, not
+accidental.
+
+IMPLEMENTATION: .sweep-flood in src/index.css.

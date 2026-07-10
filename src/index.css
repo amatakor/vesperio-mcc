@@ -978,6 +978,12 @@ a.chip:hover {
 .sweep-flood {
   position: absolute;
   inset: 0;
+  /* Pinned ABOVE the base face copy explicitly (rule 55b): the flip
+     of seam-crossing text to dark-on-volt relied on implicit DOM paint
+     order, which the rule-54/55 wrappers disturbed — labels rendered
+     white over the flood. The doubled-face mechanism requires the
+     flood layer to win, so it says so. */
+  z-index: 1;
   background: var(--volt);
   /* The seam glides continuously between the 1s ticks. Compositing-layer
      hint keeps the clip edge rasterizing on its own layer (production fix
