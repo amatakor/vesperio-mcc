@@ -342,3 +342,21 @@ RULE: the mega-constellations must not overwhelm the map: connectivity
 dots render at 0.6x the standard disc; every other category keeps the
 full size. Implemented as a per-point size attribute (`aDot`) patched
 into the points shader — one draw call, no split geometry.
+
+---
+
+# Round 11 (2026-07-10, tenth review)
+
+## 34 · Connectivity dots — 0.5x
+
+RULE: connectivity dot factor drops to 0.5x (from round 10's 0.6).
+
+## 35 · Signed clock centers its DIGITS
+
+RULE: on a signed LCD, the sign cell does not participate in
+centering: the digit group centers in the box and the minus hangs
+left. The leading-1 ink rule applies to the first DIGIT (the sign is
+skipped when detecting it). Shifts are ONE analytic transform (sign
+half-cell + leading-1 ink delta; -13px / -21px at 32px), never
+compounded margins. Verified by pixel scan: digit ink center within
+0.5px of the stage center.

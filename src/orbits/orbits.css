@@ -293,12 +293,18 @@
 }
 .lcd-launch {
   font-size: 32px;
-  /* Measured (tuning round 9): +1px sits the lit ink dead on the
-     stage's vertical center at 32px. */
-  transform: translateY(1px);
+  /* Measured (tuning rounds 9-11): +1px sits the lit ink dead on the
+     stage's vertical center at 32px; -13px is half the sign cell's
+     26px advance, so the DIGITS center in the box and the minus hangs
+     to the left (Florian: don't count the sign). */
+  transform: translate(-13px, 1px);
 }
 .lcd-launch.lcd-lead-1 {
-  transform: translateY(1px);
+  /* Sign half-cell (13px) + leading-1 ink shift (8px at 32px), as ONE
+     analytic transform; the generic margin-left rule is neutralized so
+     the shifts never compound. */
+  margin-left: 0;
+  transform: translate(-21px, 1px);
 }
 /* Optical ink centering (see DESIGN_TUNING_LOG round 12): a leading
    7-seg "1" leaves its cell's left half dark, so the whole grid shifts

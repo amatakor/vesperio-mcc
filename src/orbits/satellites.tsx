@@ -261,7 +261,7 @@ export function Satellites({
     for (const { entry, start, count } of plan.segments) {
       const cat = orbitCatalog.find((e) => e.slug === entry.slug)?.category;
       if (cat === "connectivity") {
-        for (let i = 0; i < count; i++) dotScaleArr[start + i] = 0.6;
+        for (let i = 0; i < count; i++) dotScaleArr[start + i] = 0.5;
       }
     }
     g.setAttribute("aDot", new THREE.BufferAttribute(dotScaleArr, 1));

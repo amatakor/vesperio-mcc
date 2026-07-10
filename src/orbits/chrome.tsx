@@ -17,8 +17,10 @@ function Lcd({ value, className }: { value: string; className: string }) {
   // mono glyphs between segment groups.
   const parts = value.split(",");
   // Optical ink centering: a leading 7-seg "1" leaves its cell's left
-  // half dark; shift the grid by half that dead space (round 12).
-  const lead1 = value.startsWith("1") ? " lcd-lead-1" : "";
+  // half dark; shift the grid by half that dead space (rounds 12/34).
+  // A sign cell doesn't count — the first DIGIT decides.
+  const core = value.startsWith("-") ? value.slice(1) : value;
+  const lead1 = core.startsWith("1") ? " lcd-lead-1" : "";
   return (
     <span className={`lcd ${className}${lead1}`}>
       {parts.map((part, i) => (
