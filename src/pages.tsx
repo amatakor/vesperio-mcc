@@ -196,20 +196,6 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
 
 // ------------------------------------------------------------------- feed
 
-const CAT_ABBR: Record<string, string> = {
-  launch: "LAU",
-  constellation: "CON",
-  contract: "CTR",
-  procurement: "PRC",
-  regulatory: "REG",
-  financial: "FIN",
-  product: "PRD",
-  partnership: "PTN",
-  incident: "INC",
-  geopolitical: "GEO",
-  "human-spaceflight": "HSF",
-};
-
 const SNR_LABELS: Record<number, string> = {
   1: "single source, low confidence",
   2: "weakly corroborated",
@@ -445,12 +431,9 @@ function CardMedia({ item }: { item: Item }) {
       </div>
     );
   }
-  return (
-    <div className="card-media card-tile">
-      <span className="tile-cat">{CAT_ABBR[item.category] ?? item.category.toUpperCase()}</span>
-      <span className="tile-co">{item.companies[0] ?? item.category}</span>
-    </div>
-  );
+  // No thumbnail: no media block at all (Florian 2026-07-10, rule 57 —
+  // the generated text tile is retired; the card is text-only).
+  return null;
 }
 
 /** A feed card. The whole card opens the item modal; the headline and
@@ -832,14 +815,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
                   </a>
                 </p>
               </>
-            ) : (
-              <div className="modal-media card-tile modal-tile">
-                <span className="tile-cat">
-                  {CAT_ABBR[item.category] ?? item.category.toUpperCase()}
-                </span>
-                <span className="tile-co">{item.companies[0] ?? item.category}</span>
-              </div>
-            )}
+            ) : null}
             <div className="src-band">
               // sources · {srcEntriesOf(item).length} attached
             </div>
