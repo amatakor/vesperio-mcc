@@ -5,7 +5,7 @@
  * scene.tsx owns state and data.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { OrbitsStatsFile } from "../data/schema";
 import { items, vehicles } from "../lib/data";
 
@@ -267,37 +267,87 @@ function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicl
 // ----------------------------------------------------------- HUD column
 
 /**
- * Two of the left column's three equally spaced sections (the third is
- * the VIEW cluster): the prominent tracked count on its own, then the
- * launch block (orbital flow, countdown, vehicle ranking).
+ * The satellites-tracked counter as a rail module (rule 58f: the
+ * floating hero seat is retired; the count lives in the panel under
+ * the full module grammar — hud-label header carrying the AS OF stamp
+ * in the label's · convention, hairline separation, shared module
+ * padding). The count is the DISPLAY voice at natural tracking, SIZED
+ * to fill the module measure (rule 58g: type size, never letter
+ * spacing, closes the line). Tabular figures keep a moving count from
+ * shuffling or re-fitting within a digit count (the 2026-07-07 lock);
+ * only a digit-count change re-measures.
+ */
+function SatCount({ tracked, asOf }: { tracked: number; asOf: string | null }) {
+  const text = tracked.toLocaleString("en-US");
+  const stamp = zTime(asOf);
+  const countRef = useRef<HTMLDivElement | null>(null);
+  const [size, setSize] = useState<number | null>(null);
+  useEffect(() => {
+    const el = countRef.current;
+    if (!el || tracked <= 0) {
+      setSize(null);
+      return;
+    }
+    let live = true;
+    const fit = () => {
+      if (!live) return;
+      // Measure the TEXT, not the box (a block's scrollWidth floors
+      // at its container), then scale from the current size to the
+      // module measure, floored so the line never overflows. Repeated
+      // calls converge; waiting on fonts.ready keeps a fallback-face
+      // measure from fitting the wrong font.
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const w = range.getBoundingClientRect().width;
+      if (w <= 0) return;
+      const cur = parseFloat(getComputedStyle(el).fontSize);
+      setSize(Math.floor((cur * el.clientWidth) / w));
+    };
+    void document.fonts.ready.then(fit);
+    window.addEventListener("resize", fit);
+    return () => {
+      live = false;
+      window.removeEventListener("resize", fit);
+    };
+  }, [text, tracked]);
+  return (
+    <div className="hud-module">
+      <div className="hud-label">
+        SATELLITES TRACKED{stamp ? ` · AS OF ${stamp}` : ""}
+      </div>
+      <div className="osat-count" ref={countRef} style={size ? { fontSize: size } : undefined}>
+        {text}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The left rail panel, centered to the page by the column's auto
+ * margins. Module order (rules 58c/58f, Florian 2026-07-11): the
+ * tracked counter leads, then orbital flow, vehicle ranking, and the
+ * T-minus clock anchoring the panel's foot.
  */
 export function HudColumn({
   tracked,
+  asOf,
   stats,
 }: {
   tracked: number;
+  asOf: string | null;
   stats: OrbitsStatsFile | null;
 }) {
   return (
-    <>
-      <div className="hud">
-        <div className="hud-module">
-          <div className="hud-label">SATELLITES TRACKED</div>
-          {/* Site mono, not the LCD face (Florian 2026-07-07): the
-              count must render with every glyph the data can produce
-              and never fall back to tofu boxes. The T-minus clock
-              keeps the LCD look. */}
-          <span className="count-big">{tracked.toLocaleString("en-US")}</span>
-        </div>
-      </div>
+    <div className="hud">
+      <SatCount tracked={tracked} asOf={asOf} />
       {stats && (
-        <div className="hud">
+        <>
           <FlowChart stats={stats} />
-          <Countdown upcoming={stats.upcoming} />
           <VehicleBars vehicles={stats.vehicles_6mo} />
-        </div>
+          <Countdown upcoming={stats.upcoming} />
+        </>
       )}
-    </>
+    </div>
   );
 }
 

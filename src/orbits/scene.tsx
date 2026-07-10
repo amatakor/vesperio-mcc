@@ -640,6 +640,7 @@ export default function Scene() {
       for (const [mq, fn] of pairs) mq.removeEventListener("change", fn);
     };
   }, []);
+
   // v2 key: categories now default open (Florian 2026-07-06); the bump
   // clears everyone's stored v1 collapse state so the new default shows.
   const [collapse, setCollapse] = useState<Record<string, boolean>>(() => {
@@ -1314,7 +1315,7 @@ export default function Scene() {
     <div className="oframe">
       <div className="oframe-main">
         <div className="ocol-left">
-          <HudColumn tracked={trackedSats} stats={stats} />
+          <HudColumn tracked={trackedSats} asOf={oldestElements} stats={stats} />
         </div>
         <div
           className="orbits-canvas-wrap"
