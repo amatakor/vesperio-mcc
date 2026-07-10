@@ -49,7 +49,7 @@ import {
   ll2ToRegistrySlug,
   orbitCatalog,
 } from "./catalog";
-import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
+import { maxApogeeSceneUnits } from "./kepler";
 import { loadElements, loadFacilities, loadSpaceports, loadStats } from "./elements";
 import { latLonToVec3 } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
@@ -606,6 +606,9 @@ export default function Scene() {
   // wanted-arc id gates which worker reply we accept.
   const [arc, setArc] = useState<{ id: number; positions: Float32Array; slug: string } | null>(null);
   const arcWantRef = useRef<{ id: number; slug: string } | null>(null);
+  // SGP4-sampled focus shells, keyed by slug, filled by the worker; stale
+  // entries for a previous focus are never read (shells maps focusSlugs).
+  const [shellSegs, setShellSegs] = useState<Map<string, Float32Array>>(new Map());
 
   const buffersRef = useRef<SnapshotBuffers>({ prev: null, next: null, prevTime: 0, nextTime: 0 });
   const recordsRef = useRef(new Map<string, OmmRecord[]>());
@@ -689,6 +692,12 @@ export default function Scene() {
         if (want && want.id === msg.id) {
           setArc({ id: msg.id, positions: new Float32Array(msg.positions), slug: want.slug });
         }
+      } else if (msg.type === "shell") {
+        setShellSegs((prev) => {
+          const next = new Map(prev);
+          next.set(msg.slug, new Float32Array(msg.positions));
+          return next;
+        });
       }
     };
     return () => {
@@ -1001,24 +1010,29 @@ export default function Scene() {
 
   // Orbit shells: every orbit of the effective focus (explicit
   // selection, or the ISS load state with the cloud intact).
-  const shells = useMemo(() => {
-    if (!shellFocus) return [];
-    return expandHighlight(shellFocus)
-      .filter((s) => enabled.has(s))
-      .flatMap((s) => {
-        const recs = recordsRef.current.get(s) ?? [];
-        if (recs.length === 0) return [];
-        return [
-          {
-            slug: s,
-            positions: orbitShellSegments(recs),
-            color: colorBySlug.get(s) ?? colors.accent,
-          },
-        ];
-      });
+  // SGP4-sampled on the worker so each ring passes through its live dot
+  // (the old two-body ellipse froze RAAN at the element-set epoch and
+  // drifted off stale-epoch dots); request on focus/records change,
+  // render whatever the worker returns.
+  const focusSlugs = useMemo(
+    () => (shellFocus ? expandHighlight(shellFocus).filter((s) => enabled.has(s)) : []),
+    [shellFocus, enabled],
+  );
+  useEffect(() => {
+    const slugs = focusSlugs.filter((s) => (recordsRef.current.get(s)?.length ?? 0) > 0);
+    if (slugs.length > 0) post({ type: "shell", slugs });
     // layout signals fresh records having arrived for enabled slugs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shellFocus, enabled, layout, colorBySlug, colors.accent]);
+  }, [focusSlugs, layout, post]);
+  const shells = useMemo(
+    () =>
+      focusSlugs.flatMap((s) => {
+        const positions = shellSegs.get(s);
+        if (!positions || positions.length === 0) return [];
+        return [{ slug: s, positions, color: colorBySlug.get(s) ?? colors.accent }];
+      }),
+    [focusSlugs, shellSegs, colorBySlug, colors.accent],
+  );
 
   // Camera fit: the globe plus generous air for the LEO cloud, widened
   // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
