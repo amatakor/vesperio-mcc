@@ -384,9 +384,11 @@
   position: relative;
   min-height: 1px;
 }
-.flow-bar-hollow {
-  background: transparent;
-  border: 1px solid var(--dim);
+.flow-bar-sched {
+  /* Scheduled bars are FILLED (Florian 2026-07-10, rule 48): the mid
+     dim ink, provisional against the launched bars' full ink; the NOW
+     divider already separates past from future. */
+  background: var(--dim);
 }
 .flow-bar-decay {
   background: var(--dim-deep);
@@ -447,9 +449,8 @@
   vertical-align: -1px;
   margin-right: 4px;
 }
-.flow-sw-hollow {
-  background: transparent;
-  border: 1px solid var(--dim);
+.flow-sw-sched {
+  background: var(--dim);
 }
 
 /* Vehicle ranking. */

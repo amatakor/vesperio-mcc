@@ -539,3 +539,34 @@ LIGHTER than the water (inverted, intentional); coast steel unchanged;
 data accents still clear the ocean.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 47 · Daylight canvas labels — regular weight, opaque paper
+
+RULE (Florian, 2026-07-10: "labels not readable in light mode"): in-
+canvas satellite labels keep Plex Mono 200 on the night view but step
+up to 400 on the daylight chart, and the paper backing goes near-opaque
+(0.95, was 0.82). Same optical asymmetry as the stars (rule 3b): dark
+strokes on paper thin out at sprite scale where light-on-night reads
+heavier; and the blue ocean bled through the translucent backing and
+grayed the ink. Amends rules 4 and 39 for the light theme only.
+
+IMPLEMENTATION: labelTexture() in src/orbits/satellites.tsx (weight and
+backing switch on the ink's luminance).
+
+## 48 · Orbital flow — scheduled bars are FILLED
+
+RULE (Florian, 2026-07-10): the next-30d scheduled bars fill with the
+mid dim ink (--dim) in both themes, replacing the hollow outline; the
+NOW divider already separates past from future, and the legend swatch
+fills to match. Launched keeps the full ink, deorbited keeps dim-deep.
+
+IMPLEMENTATION: .flow-bar-sched / .flow-sw-sched (renamed from -hollow)
+in src/orbits/orbits.css + chrome.tsx.
+
+(Engineering note, same date: the pale band that crossed the globe was
+the land texture mis-filling at the antimeridian — 7 rings in the 110m
+data cross lon 180 (Fiji's at 16S was the visible one) and their wrap
+edges drew straight lines across the canvas. landTexture now unwraps
+rings, closes pole-encircling rings via the pole, and fills at the
+three seam offsets. Present since the texture shipped; the saturated
+daylight ocean made it visible.)

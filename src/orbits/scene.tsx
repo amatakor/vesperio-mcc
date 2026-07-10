@@ -162,19 +162,59 @@ function landTexture(ocean: string, land: string): THREE.CanvasTexture {
       : (geo.coordinates as unknown as [number, number][][][]),
   );
   ctx.fillStyle = land;
-  ctx.beginPath();
+  // Antimeridian handling (2026-07-10): 7 rings in the 110m land data
+  // cross lon +-180 (Fiji, Chukotka, Wrangel, Antarctica). Drawn
+  // naively, each crossing edge strokes a straight line across the
+  // whole canvas and evenodd mis-fills a thin wedge that wraps the
+  // globe as a pale band (glaring on the saturated daylight ocean).
+  // Fix: unwrap each ring to monotonic longitude, close pole-encircling
+  // rings via their pole, and fill per polygon at the three seam
+  // offsets so both canvas edges stay covered.
+  const unwrapRing = (ring: [number, number][]): [number, number][] => {
+    const out: [number, number][] = [];
+    let prev: number | null = null;
+    let shift = 0;
+    for (const [lon, lat] of ring) {
+      let l = lon + shift;
+      if (prev !== null) {
+        while (l - prev > 180) {
+          shift -= 360;
+          l -= 360;
+        }
+        while (l - prev < -180) {
+          shift += 360;
+          l += 360;
+        }
+      }
+      out.push([l, lat]);
+      prev = l;
+    }
+    return out;
+  };
   for (const poly of polys) {
-    for (const ring of poly) {
-      ring.forEach(([lon, lat], i) => {
-        const x = ((lon + 180) / 360) * W;
-        const y = ((90 - lat) / 180) * H;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.closePath();
+    for (const dx of [-W, 0, W]) {
+      ctx.beginPath();
+      for (const ring of poly) {
+        let pts = unwrapRing(ring as [number, number][]);
+        const lons = pts.map(([l]) => l);
+        if (Math.max(...lons) - Math.min(...lons) >= 359) {
+          // Pole-encircling ring (Antarctica): close it across its pole
+          // so the cap fills instead of leaving a wrapped sliver.
+          const meanLat = pts.reduce((s, [, la]) => s + la, 0) / pts.length;
+          const pole = meanLat < 0 ? -90 : 90;
+          pts = [...pts, [pts[pts.length - 1]![0], pole], [pts[0]![0], pole]];
+        }
+        pts.forEach(([lon, lat], i) => {
+          const x = ((lon + 180) / 360) * W + dx;
+          const y = ((90 - lat) / 180) * H;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+      }
+      ctx.fill("evenodd");
     }
   }
-  ctx.fill("evenodd");
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = 4;

@@ -168,7 +168,7 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
           {scheduled.map((w, i) => (
             <div key={`s${i}`} className="flow-col">
               <span className="flow-fig">{w.count}</span>
-              <span className="flow-bar flow-bar-hollow" style={{ height: topH(w.count) }} />
+              <span className="flow-bar flow-bar-sched" style={{ height: topH(w.count) }} />
             </div>
           ))}
         </div>
@@ -197,7 +197,7 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
           <b>{stats.launched_30d.failed}</b>
         </span>
         <span>
-          <i className="flow-sw flow-sw-hollow" /> SCHEDULED <b>{stats.scheduled_30d.total}</b>
+          <i className="flow-sw flow-sw-sched" /> SCHEDULED <b>{stats.scheduled_30d.total}</b>
         </span>
         <span>
           <i className="flow-sw" style={{ background: "var(--dim-deep)" }} /> DEORBITED{" "}
