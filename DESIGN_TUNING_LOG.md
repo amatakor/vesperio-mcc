@@ -570,3 +570,40 @@ edges drew straight lines across the canvas. landTexture now unwraps
 rings, closes pole-encircling rings via the pole, and fills at the
 three seam offsets. Present since the texture shipped; the saturated
 daylight ocean made it visible.)
+
+## 48b · Scheduled bars — volt hatch (supersedes 48's dim fill)
+
+RULE (Florian, same day): the next-30d bars fill with a 45-degree volt
+hatch (2px stroke / 3px gap, --shell-accent: volt on night, volt-ink on
+daylight) — hatched-equals-planned, the engineering-drawing grammar.
+Legend swatch matches. Volt on this element is Florian's explicit
+sign-off (rule 46's process).
+
+IMPLEMENTATION: .flow-bar-sched / .flow-sw-sched repeating-linear-
+gradient in src/orbits/orbits.css.
+
+## 49 · Satellite card fits its content and hides behind the earth
+
+RULE (Florian, 2026-07-10): the click popup accommodates its data — no
+truncation; width grows to fit (max-content, 210-320px), titles wrap,
+the card may run taller. And the card is occluded like its object: when
+the satellite (or ground site) passes behind the earth, the card hides
+with it (same 0.995-radius test the labels use), returning as the
+object does.
+
+IMPLEMENTATION: .opopup / .opopup-title in orbits.css; PopupAnchor
+occlusion in scene.tsx.
+
+## 50 · Camera fit measures the real gap between the panels
+
+RULE (Florian, 2026-07-10): on load the globe fits the actual space
+between the floating panels at ANY window size — big enough to fill
+the gap, never sliding under the chrome. The old symmetric side-pad +
+breakpoint zoom steps (0/-1/-2) are replaced by true per-side spans
+(gutter 28 + HUD 272 + gap 16 left; gap 16 + rail 352 + gutter 28
+right), with the view offset derived from their difference. Every
+floating-panel width opens at the base fit; mobile keeps two steps
+wider over the stacked layout. User zoom steps are unchanged.
+
+IMPLEMENTATION: FitCamera padLeft/padRight in scene.tsx (mini3d passes
+zeros); defaultZoom simplified.

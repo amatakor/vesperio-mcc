@@ -51,7 +51,7 @@ import {
 } from "./catalog";
 import { maxApogeeSceneUnits } from "./kepler";
 import { loadElements, loadFacilities, loadSpaceports, loadStats } from "./elements";
-import { latLonToVec3 } from "./geo";
+import { latLonToVec3, occludedByGlobe } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
 import { FooterBar, HudColumn, ViewCluster } from "./chrome";
 import { LayerRail, type RailCategory, type RailRow } from "./rail";
@@ -317,12 +317,16 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
  */
 export function FitCamera({
   fitRadius,
-  sidePad,
-  shiftX,
+  padLeft,
+  padRight,
 }: {
   fitRadius: number;
-  sidePad: number;
-  shiftX: number;
+  /** Real pixel spans the floating panels occupy on each side (gutter +
+   * panel + gap); the globe fits and centers in the space BETWEEN them
+   * at any window size (Florian 2026-07-10: the fixed side-pad + step
+   * approximation over- or under-sized the globe between breakpoints). */
+  padLeft: number;
+  padRight: number;
 }) {
   const { camera, size } = useThree();
   useEffect(() => {
@@ -330,7 +334,8 @@ export function FitCamera({
     // camera to Infinity and poison the position with NaN for the whole
     // session; skip until the size is real and self-heal a bad position.
     if (size.width < 2 || size.height < 2) return;
-    const width = Math.max(size.width - 2 * sidePad, 120);
+    const width = Math.max(size.width - padLeft - padRight, 120);
+    const shiftX = (padRight - padLeft) / 2;
     const persp = camera as THREE.PerspectiveCamera;
     if (shiftX !== 0) {
       persp.setViewOffset(size.width, size.height, shiftX, 0, size.width, size.height);
@@ -346,7 +351,7 @@ export function FitCamera({
     if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
     else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size, fitRadius, sidePad, shiftX]);
+  }, [camera, size, fitRadius, padLeft, padRight]);
   return null;
 }
 
@@ -386,11 +391,20 @@ export function PopupAnchor({
 }) {
   const { camera, size } = useThree();
   const v = useMemo(() => new THREE.Vector3(), []);
+  const ray = useMemo(() => new THREE.Ray(), []);
   useFrame(() => {
     const el = popupEl.current;
     if (!el) return;
     const world = getWorldPos();
     if (!world) {
+      el.style.visibility = "hidden";
+      return;
+    }
+    // The card follows its object behind the earth (Florian 2026-07-10):
+    // same occlusion test as the satellite labels, same fudged radius.
+    ray.origin.copy(camera.position);
+    ray.direction.copy(world).sub(camera.position).normalize();
+    if (occludedByGlobe(ray, world.distanceTo(camera.position), 0.995)) {
       el.style.visibility = "hidden";
       return;
     }
@@ -574,13 +588,13 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  // Default zoom by frame (Florian 2026-07-07): the wide desktop HUD
-  // opens at the base fit, the mid panel state one step wider, and
-  // mobile two steps wider so the globe clears the stacked panels.
+  // Default zoom by frame: every floating-panel width opens at the base
+  // fit — FitCamera now measures the true space between the panels
+  // (Florian 2026-07-10), so the old one-step-wider mid default is
+  // gone. Mobile keeps two steps wider to clear the stacked panels.
   const defaultZoom = () => {
-    if (window.matchMedia("(min-width: 1281px)").matches) return 0;
     if (window.matchMedia("(max-width: 900px)").matches) return -2;
-    return -1;
+    return 0;
   };
   const [zoomStep, setZoomStep] = useState(defaultZoom);
   const [resetNonce, setResetNonce] = useState(0);
@@ -588,11 +602,9 @@ export default function Scene() {
   // though the canvas itself runs full-bleed underneath them; on every
   // desktop width the view shifts left so the globe centers between the
   // unequal panels (left column 296px incl. padding, right rail 376px).
-  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1281px)").matches);
   const [desktop, setDesktop] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   useEffect(() => {
     const pairs: [MediaQueryList, (e: MediaQueryListEvent) => void][] = [
-      [window.matchMedia("(min-width: 1281px)"), (e) => setWide(e.matches)],
       [window.matchMedia("(min-width: 901px)"), (e) => setDesktop(e.matches)],
     ];
     for (const [mq, fn] of pairs) mq.addEventListener("change", fn);
@@ -1312,7 +1324,14 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} shiftX={desktop ? 40 : 0} />
+          {/* Pads = gutter 28 + left HUD 272 + gap 16, and gap 16 + rail
+              352 + gutter 28: the true spans the floating panels occupy
+              on every desktop width (the panels float from 901px up). */}
+          <FitCamera
+            fitRadius={fitRadius}
+            padLeft={desktop ? 316 : 0}
+            padRight={desktop ? 396 : 0}
+          />
           {/* The earth's axis leans by its real obliquity; the sky shares
               the axis (declination is measured from the equator), while
               AutoSpin turns only the earth-fixed inner group, so the tilt

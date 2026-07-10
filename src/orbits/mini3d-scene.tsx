@@ -324,7 +324,7 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} sidePad={0} shiftX={0} />
+          <FitCamera fitRadius={fitRadius} padLeft={0} padRight={0} />
           <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
             <group ref={spinGroup}>
               <Globe colors={colors} />
