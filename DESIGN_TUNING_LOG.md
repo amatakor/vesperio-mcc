@@ -893,3 +893,25 @@ contrast alone, which reads clean. Ramp: ... > #7B9CC4 > #3B5B88 >
 #24406B.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3i · The daylight chart rethought: grey sky, white stars, no grid
+
+RULE (Florian, 2026-07-10, superseding the paper-sky model): the light
+theme's MCC canvas grounds on a dark-mid grey (--mcc-sky #47494C), the
+stars go white (--mcc-fg #F2F2EE, main scene only — registry embeds
+keep the page ink), the seas stay the deep navy (#24406B) and the
+continents the pale land, and the lat/lon graticule is REMOVED on the
+light chart (--globe-grid: none; the scenes skip the draw; the night
+view keeps its tactical grid). Knock-ons carried with it: the left HUD
+and status lamp float on the grey and remap their ink ramp to the
+night values (the rail and VIEW panels are paper chrome, unchanged);
+the canvas edge fades follow the sky token; the ISS wireframe returns
+to its pale night inks in both themes; the dot cloud's additive glow
+returns in both themes (the paper-era NormalBlending branch retired);
+in-canvas labels flip to light-ink-on-dark automatically via the
+luminance check. Verified in headless WebGL renders, light and dark.
+
+IMPLEMENTATION: --mcc-sky/--mcc-fg tokens + light --globe-grid: none
+(index.css); canvas-wrap ground + fades + HUD ink remap (orbits.css);
+grid draw gate + fg token in scene.tsx; ISS inks + blending in
+satellites.tsx.

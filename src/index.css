@@ -182,6 +182,8 @@
 
   /* Orbits globe base (quiet tier), canvas-only. Land carries a very
      light shading step against the water (tuning round 8). */
+  --mcc-sky: var(--bg); /* the MCC canvas ground; light overrides to grey (rule 3i) */
+  --mcc-fg: var(--fg); /* stars + in-canvas label ink, MAIN scene only (mini embeds keep --fg) */
   --globe-ocean: #0b1626;
   --globe-land: #12203a;
   --globe-grid: #1d2e42;
@@ -280,9 +282,11 @@
      "orbits canvas is theme-invariant" rule): pale cool ground, steel
      coasts, darkened data accents; the LCD instruments keep volt via
      --clock, rendered as volt-ink by the HUD's themed --acc alias. */
-  --globe-ocean: #24406b; /* deep navy (rule 3h): the volt arcs' ground; ramp ends #7b9cc4 > #3b5b88 > this */
+  --mcc-sky: #47494c; /* rule 3i: dark-mid grey canvas under the daylight chart */
+  --mcc-fg: #f2f2ee; /* rule 3i: white stars + light label ink on the grey sky */
+  --globe-ocean: #24406b; /* deep navy (rule 3h): the volt arcs' ground */
   --globe-land: #dce3dd;
-  --globe-grid: #bfc9d0;
+  --globe-grid: none; /* rule 3i: the lat/lon grid is removed on the light chart (scenes skip the draw) */
   --globe-coast: #33495a;
   --neon-eo: #0e9e57;
   --neon-connectivity: #c217a0;

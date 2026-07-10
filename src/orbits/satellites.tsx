@@ -166,17 +166,17 @@ const GLYPH_SLUGS = new Set(["iss"]);
 function buildIssModel(): THREE.Group {
   const g = new THREE.Group();
   const disposables = new Set<THREE.BufferGeometry | THREE.Material>();
-  // Night view keeps the pale wireframe; the daylight chart needs dark
-  // inks or the station vanishes on the pale ocean (tuning round 3).
-  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
+  // Rule 3i: both themes ground the station on a dark sky (night page /
+  // daylight grey), so the pale night inks serve both; the old daylight
+  // dark-ink branch retired with the paper sky.
   const structMat = new THREE.LineBasicMaterial({
-    color: lightTheme ? "#22303c" : "#d5deec",
+    color: "#d5deec",
     transparent: true,
     opacity: 0.95,
     depthWrite: false,
   });
   const arrayMat = new THREE.LineBasicMaterial({
-    color: lightTheme ? "#2666d1" : "#7aa8e0",
+    color: "#7aa8e0",
     transparent: true,
     opacity: 0.9,
     depthWrite: false,
@@ -359,7 +359,6 @@ export function Satellites({
   // Cloud material built imperatively (tuning round 10): the shader is
   // patched to multiply each point's size by the aDot attribute, so
   // connectivity dots slim down without a second draw call.
-  const lightTheme = document.documentElement.getAttribute("data-theme") === "light";
   const cloudMaterial = useMemo(() => {
     const m = new THREE.PointsMaterial({
       size: 0.014 * dotScale,
@@ -368,7 +367,9 @@ export function Satellites({
       vertexColors: true,
       transparent: true,
       depthWrite: false,
-      blending: lightTheme ? THREE.NormalBlending : THREE.AdditiveBlending,
+      // Rule 3i: additive glow in both themes — the daylight sky is now
+      // the dark-mid grey, so the paper-era NormalBlending branch went.
+      blending: THREE.AdditiveBlending,
     });
     m.onBeforeCompile = (shader) => {
       shader.vertexShader =
@@ -376,7 +377,7 @@ export function Satellites({
         shader.vertexShader.replace("gl_PointSize = size;", "gl_PointSize = size * aDot;");
     };
     return m;
-  }, [lightTheme, dotScale]);
+  }, [dotScale]);
   useEffect(() => () => cloudMaterial.dispose(), [cloudMaterial]);
 
   // Name labels beside the glyphs (Florian 2026-07-05), one sprite per

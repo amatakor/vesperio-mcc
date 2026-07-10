@@ -64,6 +64,10 @@
 }
 
 .orbits-canvas-wrap {
+  /* The canvas ground (rule 3i): page-colored on night, dark-mid grey
+     on the daylight chart so white stars and the navy globe sit on an
+     instrument ground rather than paper. */
+  background: var(--mcc-sky);
   position: relative;
   flex: 1;
   min-width: 0;
@@ -86,11 +90,11 @@
 }
 .orbits-canvas-wrap::before {
   top: 0;
-  background: linear-gradient(var(--bg), transparent);
+  background: linear-gradient(var(--mcc-sky), transparent);
 }
 .orbits-canvas-wrap::after {
   bottom: 0;
-  background: linear-gradient(transparent, var(--bg));
+  background: linear-gradient(transparent, var(--mcc-sky));
 }
 
 .ocol-right {
@@ -1236,4 +1240,22 @@
 .orbits-fallback {
   color: var(--text-1);
   background: var(--bg-page);
+}
+
+/* Rule 3i: the left HUD and status lamp float on the grey sky in the
+   light theme, so their ink ramp remaps to the night values; the rail
+   and VIEW panels are paper chrome and keep the page inks. */
+[data-theme="light"] .ocol-left,
+[data-theme="light"] .ostatus {
+  --n5: #6a6a6a;
+  --n6: #a8a8a8;
+  --n7: #ededed;
+  --n8: #ffffff;
+  --fg: #f2f2ee;
+  --text-1: #f2f2ee;
+  --text-2: #a8a8a8;
+  --text-3: #9a9a95;
+  --dim: #a8a8a8;
+  --dim-deep: #6f6f6a;
+  --line: rgba(255, 255, 255, 0.16);
 }

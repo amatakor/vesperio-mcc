@@ -240,9 +240,11 @@ export function Globe({
         <sphereGeometry args={[OCEAN_RADIUS, 64, 64]} />
         <meshBasicMaterial map={map} />
       </mesh>
-      <lineSegments geometry={grat}>
-        <lineBasicMaterial color={colors.grid} transparent opacity={0.85} />
-      </lineSegments>
+      {colors.grid !== "none" && (
+        <lineSegments geometry={grat}>
+          <lineBasicMaterial color={colors.grid} transparent opacity={0.85} />
+        </lineSegments>
+      )}
       <lineSegments geometry={coast}>
         <lineBasicMaterial color={colors.coast} />
       </lineSegments>
@@ -544,7 +546,7 @@ export default function Scene() {
       // Neon mint-green of the LIVE lamp, for the spaceport activity ripple
       // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
       ripple: token("--live"),
-      fg: token("--fg"),
+      fg: token("--mcc-fg"),
       // Selection is volt (rule 46, Florian 2026-07-10): the picked
       // satellite's orbit renders in the shell accent, volt on night,
       // volt-ink on the daylight chart.
