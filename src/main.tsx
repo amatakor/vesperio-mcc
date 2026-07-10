@@ -1,8 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App";
-// JetBrains Mono + Inter (OFL licensed) are self-hosted variable fonts,
-// declared via @font-face in index.css and served from public/fonts/.
+// IBM Plex Sans + IBM Plex Mono + Space Grotesk (OFL licensed) are
+// self-hosted static-weight fonts, declared via @font-face in index.css
+// and served from public/fonts/.
 import "./index.css";
 
 const container = document.getElementById("root")!;

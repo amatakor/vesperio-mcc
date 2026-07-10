@@ -109,21 +109,66 @@ const NAV_LINKS: Array<[string, string]> = [
   ["/about/", "about"],
 ];
 
+/** Light/dark switch (V1.1): bracket-style control at the right end of the
+ * nav. Sets data-theme="light" on <html>, persists as vesperio-theme;
+ * default dark. index.html applies the saved theme before paint, so this
+ * only needs to read the attribute after mount (SSR renders the dark
+ * label; the effect corrects it before the user can blink). */
+function ThemeToggle() {
+  const [light, setLight] = useState(false);
+  useEffect(() => {
+    setLight(document.documentElement.getAttribute("data-theme") === "light");
+  }, []);
+  const flip = () => {
+    const next = !light;
+    setLight(next);
+    if (next) document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
+    try {
+      localStorage.setItem("vesperio-theme", next ? "light" : "dark");
+    } catch {
+      /* storage unavailable: the switch still works for the session */
+    }
+  };
+  return (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={flip}
+      aria-label={light ? "Switch to dark theme" : "Switch to light theme"}
+      suppressHydrationWarning
+    >
+      {light ? "[DARK]" : "[LIGHT]"}
+    </button>
+  );
+}
+
 /** Shared site header. `current` marks the active section (aria-current
- * drives the accent underline); the orbits app frame reuses it so the
- * masthead holds still across every page. */
+ * drives the volt underline); the orbits app frame reuses it so the
+ * masthead holds still across every page. The wordmark's square i-dot is
+ * ALWAYS LIT (brand amendment 2026-07-10): the dotless ı carries the stem
+ * and the .brand-dot square carries the volt dot. */
 export function Masthead({ current }: { current?: string }) {
   return (
     <header className="masthead">
-      <a href="/" className="brand">
-        VESPERIO
+      <a href="/" className="brand" aria-label="Vesperio home">
+        <span className="brand-mark" aria-hidden="true" />
+        <span className="brand-word" aria-hidden="true">
+          vesper
+          <span className="brand-i">
+            ı<span className="brand-dot" />
+          </span>
+          o
+        </span>
       </a>
+      <span className="brand-tag">/ SPACE INTELLIGENCE</span>
       <nav className="nav">
         {NAV_LINKS.map(([href, label]) => (
           <a key={href} href={href} aria-current={label === current ? "page" : undefined}>
             {label}
           </a>
         ))}
+        <ThemeToggle />
       </nav>
     </header>
   );
@@ -481,8 +526,13 @@ function nextSweepAfter(now: Date): Date {
 /** 7-segment display with a ghost "888" layer underneath, the orbits-page
     LCD language (DSEG7 has the digits, the colon, and the dash). */
 function SweepLcd({ value }: { value: string }) {
+  // Optical ink centering (DESIGN_TUNING_LOG round 12): a leading 7-seg
+  // "1" lights only its right segments, leaving 22px of dark cell at
+  // 45px; the grid shifts left by half that so the INK centers. The
+  // class changes only when the leading digit does (at most hourly).
+  const lead1 = value.startsWith("1") ? " lcd-lead-1" : "";
   return (
-    <span className="sweep-lcd">
+    <span className={`sweep-lcd${lead1}`}>
       <span className="sweep-lcd-ghost" aria-hidden="true">
         {value.replace(/[0-9-]/g, "8")}
       </span>
@@ -491,9 +541,29 @@ function SweepLcd({ value }: { value: string }) {
   );
 }
 
-/** First slot of the news feed: countdown to the next scheduled sweep.
-    Renders a placeholder until mounted so SSR and hydration agree; the
-    ticking never changes the card's height, so the masonry stays put. */
+/** One face of the sweep instrument: corner labels + centered LCD. The
+    stage renders it twice — base (black ground, volt digits) and flood
+    overlay (volt ground, black digits) — so the seam cuts through
+    identical content. */
+function SweepFace({ digits }: { digits: string }) {
+  return (
+    <div className="sweep-layer">
+      <span className="sweep-lab">T-MINUS NEXT SWEEP</span>
+      <span className="sweep-armed">● ARMED</span>
+      <div className="sweep-mid">
+        <SweepLcd value={digits} />
+      </div>
+    </div>
+  );
+}
+
+/** First slot of the news feed, V1.1 flood-fill instrument ("options 4a"):
+    the whole card face is the countdown. A volt flood advances left→right
+    as the 12h sweep window elapses; the ~30° seam (lean ±26px over the
+    86px stage) cuts through the doubled content, and the .85s linear
+    clip-path transition glides it between ticks. Renders a placeholder
+    until mounted so SSR and hydration agree; ticking never changes the
+    card's height, so the masonry stays put. */
 function SweepCountdownCard() {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
@@ -503,24 +573,51 @@ function SweepCountdownCard() {
     return () => clearInterval(id);
   }, []);
 
+  const WINDOW_S = 12 * 3600;
   let digits = "--:--:--";
+  let last = "";
+  let next = "";
   let local = "";
+  let elapsedPct = 0;
   if (now) {
     const target = nextSweepAfter(now);
     const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
     digits = [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
       .map((n) => String(n).padStart(2, "0"))
       .join(":");
+    elapsedPct = (1 - Math.min(s, WINDOW_S) / WINDOW_S) * 100;
+    const fmtZ = (d: Date) =>
+      `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}Z`;
+    last = fmtZ(new Date(target.getTime() - WINDOW_S * 1000));
+    next = fmtZ(target);
     local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
   }
+  const p = `${elapsedPct.toFixed(2)}%`;
   return (
     <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
-      <p className="sweep-card-label">T-minus next sweep</p>
+      <div className="sweep-stage">
+        <SweepFace digits={digits} />
+        <div
+          className="sweep-flood"
+          aria-hidden="true"
+          style={{
+            clipPath: `polygon(0 0, calc(${p} + 26px) 0, calc(${p} - 26px) 100%, 0 100%)`,
+          }}
+        >
+          <SweepFace digits={digits} />
+        </div>
+      </div>
       <p className="sweep-card-foot">
-        <span className="sweep-card-seg">sweeps 05:00 + 17:00 utc</span>
-        {local && <span className="sweep-card-seg">next {local} local</span>}
+        {last && <span className="sweep-card-seg">LAST {last}</span>}
+        {/* Crawl frequency (tuning round 7): the instrument states its
+            own cadence. */}
+        <span className="sweep-card-seg">SWEEPS EVERY 12H</span>
+        {next && (
+          <span className="sweep-card-seg">
+            NEXT {next} · {local} LOCAL
+          </span>
+        )}
       </p>
-      <SweepLcd value={digits} />
     </aside>
   );
 }
@@ -1473,7 +1570,7 @@ function RegPreviewCard({ entry }: { entry: RegEntry }) {
       </div>
       <a className="reg-card" href={entry.href}>
         <div className="card-meta">
-          <span className="chip chip-notable">{KIND_LABEL[entry.kind]}</span>
+          <span className="chip">{KIND_LABEL[entry.kind]}</span>
           {status && <span className="chip">{status}</span>}
           {entry.asOf && <span className="date">{entry.asOf}</span>}
         </div>
@@ -2304,10 +2401,11 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
                   y1={plotT}
                   x2={x(hIdx)}
                   y2={plotB}
-                  stroke="var(--acc)"
+                  stroke="var(--acc-cyan)"
                   strokeWidth="1"
                 />
-                <circle cx={x(hIdx)} cy={y(hPoint[1])} r="3" fill="var(--acc)" />
+                {/* telemetry cursor: cyan is the DATA constant */}
+                <circle cx={x(hIdx)} cy={y(hPoint[1])} r="3" fill="var(--acc-cyan)" />
                 <text
                   x={x(hIdx) < W / 2 ? x(hIdx) + 6 : x(hIdx) - 6}
                   y={plotT + 10}
@@ -3945,7 +4043,7 @@ export function LogPage() {
           <section key={s.at} className="panel">
             <div className="card-meta">
               <span>{formatSweepTimestamp(s.at)}</span>
-              <span className={`chip${s.added > 0 ? " chip-notable" : ""}`}>+{s.added}</span>
+              <span className="chip">+{s.added}</span>
               <span className="chip">~{s.updated}</span>
               {s.held > 0 && <span className="chip">{s.held} held</span>}
               {s.mode === "deep" && <span className="chip chip-deep">deep sweep</span>}

@@ -57,6 +57,9 @@ function makeCloud(
   // computes one (which warns NaN for an empty split during load).
   g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), STAR_RADIUS + 1);
   const m = new THREE.PointsMaterial({
+    // Original point sizes restored (tuning round 3): the dpr-scaled
+    // sizes read as chunky squares. Star data remains the Yale Bright
+    // Star Catalog at true RA/Dec with sidereal orientation.
     size: sizePx,
     sizeAttenuation: false,
     vertexColors: true,
@@ -89,9 +92,12 @@ export function Stars({
 
   const clouds = useMemo(() => {
     if (!stars) return null;
+    // Dark ink on paper needs a touch more body than light ink on
+    // night (tuning round 12): the daylight chart runs stars at 1.3x.
+    const k = document.documentElement.getAttribute("data-theme") === "light" ? 1.3 : 1;
     return [
-      makeCloud(stars.filter((s) => s[2] < BRIGHT_MAG), color, 2.2),
-      makeCloud(stars.filter((s) => s[2] >= BRIGHT_MAG), color, 1.3),
+      makeCloud(stars.filter((s) => s[2] < BRIGHT_MAG), color, 2.2 * k),
+      makeCloud(stars.filter((s) => s[2] >= BRIGHT_MAG), color, 1.3 * k),
     ];
   }, [stars, color]);
   useEffect(

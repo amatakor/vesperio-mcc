@@ -67,6 +67,7 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
   const colors = useMemo(
     () => ({
       ocean: token("--globe-ocean"),
+      land: token("--globe-land"),
       grid: token("--globe-grid"),
       coast: token("--globe-coast"),
       fg: token("--fg"),

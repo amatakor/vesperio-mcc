@@ -28,7 +28,7 @@ import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { gstime } from "satellite.js";
-import { mesh } from "topojson-client";
+import { feature, mesh } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { MultiLineString } from "geojson";
 import landTopo from "world-atlas/land-110m.json";
@@ -130,14 +130,75 @@ function useLineGeometry(positions: Float32Array): THREE.BufferGeometry {
   return geometry;
 }
 
-export function Globe({ colors }: { colors: { ocean: string; grid: string; coast: string } }) {
+/**
+ * Equirectangular ocean+land texture from the same Natural Earth 110m
+ * topology as the coastlines (tuning round 8): a very light shading
+ * step between water and continents. The projection matches
+ * latLonToVec3 against three's SphereGeometry UVs exactly
+ * (u = (lon+180)/360, v = (90-lat)/180), so the fill sits precisely
+ * under the coastline strokes.
+ */
+function landTexture(ocean: string, land: string): THREE.CanvasTexture {
+  const W = 2048;
+  const H = 1024;
+  const c = document.createElement("canvas");
+  c.width = W;
+  c.height = H;
+  const ctx = c.getContext("2d")!;
+  ctx.fillStyle = ocean;
+  ctx.fillRect(0, 0, W, H);
+  const featOrColl = feature(topology, topology.objects.land) as unknown as {
+    type: string;
+    geometry?: MultiPolygonGeo;
+    features?: Array<{ geometry: MultiPolygonGeo }>;
+  };
+  const geos: MultiPolygonGeo[] =
+    featOrColl.type === "FeatureCollection"
+      ? (featOrColl.features ?? []).map((f) => f.geometry)
+      : [featOrColl.geometry!];
+  const polys: [number, number][][][] = geos.flatMap((geo) =>
+    geo.type === "Polygon"
+      ? [geo.coordinates as unknown as [number, number][][]]
+      : (geo.coordinates as unknown as [number, number][][][]),
+  );
+  ctx.fillStyle = land;
+  ctx.beginPath();
+  for (const poly of polys) {
+    for (const ring of poly) {
+      ring.forEach(([lon, lat], i) => {
+        const x = ((lon + 180) / 360) * W;
+        const y = ((90 - lat) / 180) * H;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+    }
+  }
+  ctx.fill("evenodd");
+  const t = new THREE.CanvasTexture(c);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.anisotropy = 4;
+  return t;
+}
+interface MultiPolygonGeo {
+  type: "Polygon" | "MultiPolygon";
+  coordinates: unknown;
+}
+
+export function Globe({
+  colors,
+}: {
+  colors: { ocean: string; land: string; grid: string; coast: string };
+}) {
   const grat = useLineGeometry(useMemo(graticuleSegments, []));
   const coast = useLineGeometry(useMemo(coastlineSegments, []));
+  const map = useMemo(() => landTexture(colors.ocean, colors.land), [colors.ocean, colors.land]);
+  useEffect(() => () => map.dispose(), [map]);
   return (
     <group>
       <mesh>
         <sphereGeometry args={[OCEAN_RADIUS, 64, 64]} />
-        <meshBasicMaterial color={colors.ocean} />
+        <meshBasicMaterial map={map} />
       </mesh>
       <lineSegments geometry={grat}>
         <lineBasicMaterial color={colors.grid} transparent opacity={0.85} />
@@ -257,7 +318,8 @@ export function ShellLines({ positions, color }: { positions: Float32Array; colo
     g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 4);
     return new THREE.LineSegments(
       g,
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.22 }),
+      // 0.22 read too dim under focus (tuning round 8).
+      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.36 }),
     );
   }, [positions, color]);
   useEffect(
@@ -419,6 +481,7 @@ export default function Scene() {
   const colors = useMemo(
     () => ({
       ocean: token("--globe-ocean"),
+      land: token("--globe-land"),
       grid: token("--globe-grid"),
       coast: token("--globe-coast"),
       accent: token(RESERVE_TOKEN),
@@ -557,6 +620,29 @@ export default function Scene() {
   // Axis-locked manual drag: last pointer X while the primary button is
   // down; null when not dragging.
   const dragLastX = useRef<number | null>(null);
+  // Wheel zoom (tuning round 8): scroll steps the same FitCamera zoom
+  // the [+]/[-] buttons drive. Non-passive so the page never scrolls
+  // under the globe; deltas accumulate so trackpads step sanely.
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const wheelAcc = useRef(0);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      wheelAcc.current += e.deltaY;
+      while (wheelAcc.current <= -60) {
+        wheelAcc.current += 60;
+        setZoomStep((z) => Math.min(4, z + 1));
+      }
+      while (wheelAcc.current >= 60) {
+        wheelAcc.current -= 60;
+        setZoomStep((z) => Math.max(-2, z - 1));
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
   const axisLockRef = useRef(axisLock);
   axisLockRef.current = axisLock;
   const autoRotateRef = useRef(autoRotate);
@@ -1129,6 +1215,7 @@ export default function Scene() {
         </div>
         <div
           className="orbits-canvas-wrap"
+          ref={wrapRef}
           onPointerDown={(e) => {
             downPos.current = { x: e.clientX, y: e.clientY };
             dragLastX.current = e.clientX;

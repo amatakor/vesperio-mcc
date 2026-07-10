@@ -19,8 +19,9 @@
   flex-direction: column;
   /* Fixed to the viewport so the globe stays centred; over-tall panels
      scroll internally on the slim styled scrollbar below rather than
-     growing the page and pushing the globe off-centre (Florian 2026-07-07). */
-  height: calc(100vh - 85px);
+     growing the page and pushing the globe off-centre (Florian 2026-07-07).
+     66px = the V1.1 top bar (64px) + its 2px rule. */
+  height: calc(100vh - 66px);
   min-height: 540px;
   /* Match the rest of the site's measure (.shell) so Orbits is no wider
      than News and its edges line up with the masthead (Florian 2026-07-08). */
@@ -34,7 +35,11 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  padding: 20px 1.25rem 12px;
+  /* Edge-aligned with the BAND (Florian, tuning round 5): the top bar
+     keeps its full-bleed width and the panels move out to meet its
+     edges (no side padding; the frame shares the shell's outer width).
+     The 20px top gap is back — the bar must not touch the panels. */
+  padding: 20px 0 12px;
 }
 
 .ocol-left {
@@ -188,6 +193,10 @@
 .lcd {
   display: inline-flex;
   align-items: baseline;
+  /* An LCD never wraps or shrinks (the ghost's hyphen is a line-break
+     opportunity when a flex parent squeezes it). */
+  white-space: nowrap;
+  flex: none;
   font-family: "DSEG7 Classic", var(--mono);
   font-weight: 700;
 }
@@ -200,18 +209,20 @@
   display: inline-block;
 }
 .lcd-ghost {
-  color: var(--acc-ghost);
+  /* Instrument constant: unlit segments on the black module ground,
+     both themes (the module below pins the ground). */
+  color: #262626;
 }
 .lcd-lit {
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--acc);
+  color: var(--clock);
 }
 .lcd-comma {
   font-family: var(--mono);
-  font-weight: 700;
-  color: var(--acc);
+  font-weight: 500;
+  color: var(--clock);
   font-size: 0.62em;
   padding: 0 2px;
 }
@@ -222,7 +233,7 @@
   display: block;
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 44px;
   line-height: 1.1;
   letter-spacing: 0.02em;
@@ -235,55 +246,111 @@
   color: inherit;
   text-decoration: none;
 }
-.hud-countdown-link:hover .hud-mission {
+.hud-countdown-link:hover .hud-launch-foot-row:first-child {
   text-decoration: underline;
   text-decoration-color: var(--dim);
   text-underline-offset: 2px;
 }
 
-/* The countdown spans the full panel width: T-minus pinned left, the
-   larger clock pinned right (Florian 2026-07-08). */
-.hud-countdown {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
+/* The launch countdown instrument (tuning round 4): the news sweep
+   card's grammar, quieted for the rail — the eye belongs to the earth.
+   Constant black stage in both themes; label + days chip pinned to the
+   top corners in the instrument register; the HH:MM:SS clock (total
+   remainder inside the day) centered on its ghost grid below; the
+   remaining launch facts live in the module's themed footer. No volt
+   flood: the flood is the sweep instrument's exception, not a family
+   trait. */
+.hud-launch {
+  /* Frameless (tuning round 5): the instrument sits in the HUD like the
+     other panels, slightly translucent over the canvas, no border. */
+  margin: 2px 0 8px;
 }
-.lcd-tminus {
-  font-size: 30px;
+.hud-launch-stage {
+  position: relative;
+  /* A slight lift off the page ground (tuning round 8): the smoked
+     treatment from light, translated to dark, so the module's padding
+     reads against a surface. */
+  background: rgba(255, 255, 255, 0.07);
+  height: 64px;
 }
-.lcd-clock {
-  font-size: 30px;
+.hud-launch-days {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: #a8a8a8;
+  font-variant-numeric: tabular-nums;
 }
-.hud-mission {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--fg);
-  margin-top: 8px;
-  letter-spacing: 0.5px;
+/* Dead-centered (tuning round 7): the title left the frame, so the
+   digits center in the full stage; -2px lifts DSEG7's em-box descent. */
+.hud-launch-mid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
 }
-.hud-pad {
+.lcd-launch {
+  font-size: 32px;
+  /* OPTICAL centering (tuning round 12): digit-only centering read
+     left-heavy (the dash adds ink mass on the left), full-string
+     centering reads right-heavy. The sign carries HALF weight: shift
+     is half the digit-centering offset (-7px, not -13px at 32px), and
+     the leading-1 ink shift rides on top (-15px). +1px sits the lit
+     ink on the vertical center. */
+  transform: translate(-7px, 1px);
+}
+.lcd-launch.lcd-lead-1 {
+  margin-left: 0;
+  transform: translate(-15px, 1px);
+}
+/* Optical ink centering (see DESIGN_TUNING_LOG round 12): a leading
+   7-seg "1" leaves its cell's left half dark, so the whole grid shifts
+   left by half that dead space; the class is set from the live value
+   and only ever changes when the leading digit does. 0.245em = half of
+   DSEG7's (26px - 4px) leading-ink delta at any size. */
+.lcd-lead-1 {
+  margin-left: -0.245em;
+}
+.hud-launch-foot {
+  /* The footer keeps its frame (Florian, tuning round 6); only the
+     stage is frameless. */
+  border: 1px solid var(--border-1);
+  background: var(--bg-inset);
+  padding: 7px 12px 8px;
+}
+/* Light variant round 2 (tuning round 6): the white stage did not
+   work; smoked glass instead — translucent dark grey over the paper,
+   volt digits as on dark, ghost cells as darker smoke. In-between by
+   design. */
+[data-theme="light"] .hud-launch-stage {
+  background: rgba(20, 20, 18, 0.55);
+}
+[data-theme="light"] .hud-launch-stage .lcd-ghost {
+  /* Quieter ghost on the smoked light stage (tuning round 8). */
+  color: rgba(0, 0, 0, 0.14);
+}
+.hud-launch-foot-row {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   font-size: 9px;
-  color: var(--dim);
-  margin-top: 3px;
-  letter-spacing: 0.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
 }
-/* When a line has a single part it stays left; a second part is pushed to
-   the right edge. Each part clips rather than overflowing the panel. */
-.hud-mission span,
-.hud-pad span {
+.hud-launch-foot-row:first-child {
+  color: var(--text-2);
+  margin-bottom: 3px;
+}
+.hud-launch-foot-row span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.hud-mission span:last-child:not(:only-child),
-.hud-pad span:last-child:not(:only-child) {
+.hud-launch-foot-row span:last-child:not(:only-child) {
   text-align: right;
   flex: none;
 }
@@ -370,7 +437,7 @@
 }
 .flow-legend b {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 .flow-sw {
   display: inline-block;
@@ -412,7 +479,7 @@
 }
 .veh-count {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 .veh-track {
   height: 3px;
@@ -445,7 +512,7 @@
 }
 .view-title {
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
 }
@@ -478,7 +545,7 @@
   border: none;
   padding: 0;
   font: inherit;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fg);
   cursor: pointer;
   letter-spacing: 0;
@@ -551,7 +618,7 @@
 }
 .rl-title {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 3px;
   color: var(--fg);
 }
@@ -572,7 +639,7 @@
 .rl-cols {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #b3b3b3;
+  color: var(--text-2);
   padding-bottom: 6px;
   border-bottom: 1px solid var(--line);
 }
@@ -582,7 +649,7 @@
 .rl-cols .rl-count {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #b3b3b3;
+  color: var(--text-2);
   font-variant-numeric: normal;
 }
 .rl-col-c {
@@ -647,7 +714,7 @@
   color: var(--fg);
 }
 .rl-row:hover {
-  background: #121212;
+  background: var(--bg-raised);
 }
 .rl-cat {
   height: 24px;
@@ -659,7 +726,7 @@
   align-items: center;
   gap: 7px;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
 }
@@ -717,7 +784,7 @@
   text-underline-offset: 2px;
 }
 .rl-child .rl-name {
-  color: #c9c9c9;
+  color: var(--text-2);
   padding-left: 6px;
 }
 .rl-name-loading {
@@ -730,7 +797,7 @@
 }
 .rl-stale {
   font-size: 7px;
-  font-weight: 700;
+  font-weight: 500;
   color: #0a0a0a;
   background: var(--warn);
   padding: 1px 4px;
@@ -774,11 +841,11 @@
 }
 
 .rl-focused {
-  background: #161616;
-  box-shadow: inset 2px 0 var(--acc);
+  background: var(--bg-raised);
+  box-shadow: inset 2px 0 var(--n7);
 }
 .rl-focused .rl-name {
-  font-weight: 700;
+  font-weight: 500;
   color: var(--fg);
 }
 
@@ -803,7 +870,7 @@
 }
 .rl-key b {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .rl-empty {
@@ -832,7 +899,7 @@
   align-items: center;
   gap: 16px;
   border-top: 1px solid var(--line);
-  padding: 10px 1.25rem;
+  padding: 10px 0;
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.8px;
@@ -855,7 +922,7 @@
   color: #0a0a0a;
   background: var(--warn);
   padding: 1px 4px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* --------------------------------------------------- popup (unchanged) */
@@ -1124,7 +1191,7 @@
 }
 .orbits-fallback-title {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 2px;
   color: var(--fg);
   margin-bottom: 8px;
@@ -1138,4 +1205,17 @@
   font-size: 10px;
   letter-spacing: 1.5px;
   color: var(--acc);
+}
+
+/* ---------------------------------------------------------------- theme
+   MCC themes with the site (DS amendment 2026-07-10, superseding the
+   V1.1 "space view is always dark" rule): dark is the night ops view,
+   light is a daylight chart. Canvas colors come from the globe/neon
+   tokens, which carry their own [data-theme="light"] values; the scene
+   remounts on theme change to re-read them. LCD faces keep the clock
+   rule (volt on dark; volt-ink on paper via the themed --acc alias). */
+.oframe,
+.orbits-fallback {
+  color: var(--text-1);
+  background: var(--bg-page);
 }

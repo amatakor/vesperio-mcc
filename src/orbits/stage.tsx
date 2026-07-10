@@ -10,6 +10,23 @@ import { lazy, Suspense, useEffect, useState } from "react";
 
 const Scene = lazy(() => import("./scene"));
 
+/** Current theme, tracked live off <html data-theme>. The 3D scene reads
+ * its colors from CSS tokens once on mount, so theme switches remount it
+ * (keyed below) to re-read the themed values — V1.1 light MCC. */
+export function useTheme(): string {
+  const [theme, setTheme] = useState(
+    () => document.documentElement.getAttribute("data-theme") ?? "dark",
+  );
+  useEffect(() => {
+    const obs = new MutationObserver(() =>
+      setTheme(document.documentElement.getAttribute("data-theme") ?? "dark"),
+    );
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
+  }, []);
+  return theme;
+}
+
 function Fallback({ reason }: { reason: "loading" | "no-webgl" }) {
   if (reason === "no-webgl") {
     return (
@@ -49,7 +66,12 @@ export function OrbitsStage() {
   // Scene owns the stage/rail layout (orbits.css).
   return (
     <Suspense fallback={<Fallback reason="loading" />}>
-      <Scene />
+      <ThemedScene />
     </Suspense>
   );
+}
+
+function ThemedScene() {
+  const theme = useTheme();
+  return <Scene key={theme} />;
 }
