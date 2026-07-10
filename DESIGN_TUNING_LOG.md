@@ -695,3 +695,13 @@ filled chips keep their fills, media and foot untouched. Both themes
 
 IMPLEMENTATION: .card-seismic:hover rules in src/index.css; rule 41's
 seismic exclusion note retired.
+
+## 53b · The SEISMIC tag flips with the negative
+
+RULE (Florian, same day): on the seismic card's hover the SEISMIC chip
+is part of the negative, not exempt from it — its red fill inverts
+(#FF2E1E -> #00D1E1 dark, #D12619 -> #2ED9E6 light) and its white text
+to black, exactly what the retired filter produced. Other filled
+badges keep their fills; only the seismic tag belongs to the effect.
+
+IMPLEMENTATION: .card-seismic:hover .chip-seismic in src/index.css.
