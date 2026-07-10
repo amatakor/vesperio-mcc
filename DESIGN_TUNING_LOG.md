@@ -861,6 +861,18 @@ span still reserves its rows; an unpinned fixed-height instrument can
 never be clipped by a stale measure. Ordinary cards keep the pin,
 whose sub-pixel absorption their footers provide.)
 
+## 57 · The generated text tile is retired
+
+RULE (Florian, 2026-07-10): items without a thumbnail render TEXT-ONLY
+— no media block, no REG/PTN monogram header, on cards and on the item
+page/modal hero alike. The masonry absorbs the shorter cards (that was
+already its job). CLAUDE.md's item-images fallback chain now ends at
+"nothing" meaning nothing.
+
+IMPLEMENTATION: CardMedia returns null without an image; the modal's
+tile branch removed; .card-tile/.tile-cat/.tile-co/.modal-tile CSS and
+the CAT_ABBR map deleted (pages.tsx, index.css).
+
 ## 3f · Daylight ocean — deeper for the volt orbits (supersedes 3e)
 
 RULE (Florian, 2026-07-10: "I need to create a contrast with the volt

@@ -1137,9 +1137,7 @@ a.chip:hover {
 .card:not(.card-seismic):hover .card-tagline,
 .card:not(.card-seismic):hover .card-extra,
 .card:not(.card-seismic):hover .card-meta,
-.card:not(.card-seismic):hover .card-meta .date,
-.card:not(.card-seismic):hover .tile-cat,
-.card:not(.card-seismic):hover .tile-co {
+.card:not(.card-seismic):hover .card-meta .date {
   color: var(--bg-page);
 }
 .card:not(.card-seismic):hover .chip {
@@ -1198,19 +1196,6 @@ a.chip:hover {
   padding: var(--sp-4);
   box-sizing: border-box;
 }
-.card-tile {
-  background: var(--bg-raised);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--sp-1);
-  padding: var(--sp-4) var(--sp-4);
-  /* Content-sized, not the media's 3/2 box: a mostly-empty 3/2 tile read as a
-     huge gap in the feed (Florian, 2026-07-08). The tile is a compact
-     typographic strip; the masonry absorbs the shorter card. */
-  aspect-ratio: auto;
-}
-
 /* SNR squares lead the card meta row, before the chips (Florian
    2026-07-07); moved off the photo where they vanished on light
    images. Row gap handles the spacing. */
@@ -1218,27 +1203,8 @@ a.chip:hover {
   display: inline-flex;
   line-height: 0;
 }
-/* Text-tile monogram: neutral n7, no accent (governed color: role colors
-   never carry running text; the category name is data). */
-.tile-cat {
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 38px;
-  letter-spacing: var(--ls-h2);
-  color: var(--n7);
-  line-height: 1;
-}
-.tile-co {
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: var(--ls-h1);
-  color: var(--text-3);
-}
-a.card-tile:hover .tile-cat {
-  color: var(--text-1);
-}
+/* The generated text tile (REG/PTN monograms) is retired (rule 57,
+   Florian 2026-07-10): imageless items render text-only. */
 
 /* UNVERIFIED strip: overlaid on any non-confirmed item's media, card or
    item page alike. Parent needs position: relative. */
@@ -1416,9 +1382,6 @@ a.card-tile:hover .tile-cat {
   height: 18.75rem;
   background: #0a0a0a;
   border-bottom: 1px solid #0a0a0a;
-}
-.card-seismic .card-tile {
-  background: #0a0a0a;
 }
 .card-seismic .card-headline {
   font-size: 25px;
@@ -1791,9 +1754,6 @@ a.card-details:hover {
   object-fit: contain;
   padding: 1rem;
   box-sizing: border-box;
-}
-.modal-tile {
-  min-height: 9rem;
 }
 .modal-credit {
   font-family: var(--mono);
