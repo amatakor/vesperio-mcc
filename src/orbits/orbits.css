@@ -268,17 +268,7 @@
 .hud-launch-stage {
   position: relative;
   background: rgba(0, 0, 0, 0.72);
-  height: 76px;
-}
-.hud-launch-lab {
-  position: absolute;
-  top: 8px;
-  left: 10px;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
-  /* Constant light ink: the stage is dark-to-smoked in both themes. */
-  color: #ededed;
+  height: 64px;
 }
 .hud-launch-days {
   position: absolute;
@@ -290,14 +280,20 @@
   color: #a8a8a8;
   font-variant-numeric: tabular-nums;
 }
+/* Dead-centered (tuning round 7): the title left the frame, so the
+   digits center in the full stage; -2px lifts DSEG7's em-box descent. */
 .hud-launch-mid {
   position: absolute;
-  inset: 22px 0 0 0;
+  inset: 0;
   display: grid;
   place-items: center;
 }
 .lcd-launch {
   font-size: 32px;
+  transform: translateY(-2px);
+}
+.lcd-launch.lcd-lead-1 {
+  transform: translateY(-2px);
 }
 /* Optical ink centering (see DESIGN_TUNING_LOG round 12): a leading
    7-seg "1" leaves its cell's left half dark, so the whole grid shifts

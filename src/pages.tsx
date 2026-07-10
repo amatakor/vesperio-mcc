@@ -609,9 +609,14 @@ function SweepCountdownCard() {
       </div>
       <p className="sweep-card-foot">
         {last && <span className="sweep-card-seg">LAST {last}</span>}
-        <span className="sweep-card-seg sweep-card-seg-next">
-          {next ? `NEXT ${next} · ${local} LOCAL` : "SWEEPS 05:00Z + 17:00Z"}
-        </span>
+        {/* Crawl frequency (tuning round 7): the instrument states its
+            own cadence. */}
+        <span className="sweep-card-seg">SWEEPS EVERY 12H</span>
+        {next && (
+          <span className="sweep-card-seg">
+            NEXT {next} · {local} LOCAL
+          </span>
+        )}
       </p>
     </aside>
   );

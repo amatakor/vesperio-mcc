@@ -92,14 +92,14 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const clock = `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
   const body = (
     <>
-      {/* The launch countdown instrument (tuning round 4): the sweep
-          card's grammar — corner labels on a black stage, the clock
-          centered on its ghost grid, remaining facts in the module's
-          themed footer. Days ride the top-right slot instead of a
-          second LCD. */}
+      {/* The launch countdown instrument (tuning rounds 4-7): module
+          title in the shared HUD label class (like ORBITAL FLOW /
+          LAUNCHES), digits dead-centered on the smoked stage, remaining
+          facts in the framed footer. Days ride the stage's top-right
+          slot instead of a second LCD. */}
+      <div className="hud-label">T-MINUS NEXT LAUNCH</div>
       <div className="hud-launch">
         <div className="hud-launch-stage">
-          <span className="hud-launch-lab">T-MINUS NEXT LAUNCH</span>
           {days > 0 && <span className="hud-launch-days">T-{days}D</span>}
           <div className="hud-launch-mid">
             <Lcd className="lcd-launch" value={clock} />

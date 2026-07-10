@@ -244,3 +244,21 @@ exactly as on dark, ghost cells `rgba(0,0,0,.3)`. Labels carry constant
 light inks (#EDEDED / #A8A8A8) since the stage is dark-to-smoked in
 both themes. The module's footer keeps its 1px frame (`--border-1`) and
 inset ground in both themes; only the stage is frameless.
+
+---
+
+# Round 7 (2026-07-10, sixth review)
+
+## 21 · Sweep footer states its cadence
+
+RULE: the sweep instrument's footer carries the crawl frequency as its
+middle segment — `LAST …Z · SWEEPS EVERY 12H · NEXT …Z · LOCAL`,
+three-way justified. An instrument states its own duty cycle.
+
+## 22 · Launch instrument — title is a MODULE title
+
+RULE: `T-MINUS NEXT LAUNCH` moves out of the frame and becomes the
+module title in the shared HUD label class (same register as ORBITAL
+FLOW and LAUNCHES). The stage drops to 64px and the digits center
+DEAD in the box (inset 0; -2px lift for DSEG7's em-box descent). Only
+the `T-nD` days chip stays inside the stage, top-right.
