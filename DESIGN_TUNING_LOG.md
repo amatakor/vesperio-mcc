@@ -607,3 +607,11 @@ wider over the stacked layout. User zoom steps are unchanged.
 
 IMPLEMENTATION: FitCamera padLeft/padRight in scene.tsx (mini3d passes
 zeros); defaultZoom simplified.
+
+## 50b · Fit air tightened
+
+RULE (Florian, same day: "fill the gap sliiiightly more"): the base fit
+radius drops 1.28 -> 1.22 globe radii; the LEO cloud's outer edge may
+crop under the chrome (the canvas-wrap fades own the top and bottom).
+
+IMPLEMENTATION: fitRadius base in scene.tsx.

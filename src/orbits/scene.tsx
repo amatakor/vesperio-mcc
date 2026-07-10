@@ -1093,7 +1093,10 @@ export default function Scene() {
   // Camera fit: the globe plus generous air for the LEO cloud, widened
   // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
   const fitRadius = useMemo(() => {
-    let max = 1.28;
+    // 1.28 -> 1.22 (Florian 2026-07-10, rule 50b): the globe fills the
+    // panel gap slightly more; the LEO cloud's outer edge cropping under
+    // the chrome is by design (the fades own the top and bottom).
+    let max = 1.22;
     for (const e of orbitCatalog) {
       if (e.category !== "navigation" || !enabled.has(e.slug)) continue;
       const recs = recordsRef.current.get(e.slug);
