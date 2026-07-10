@@ -489,3 +489,20 @@ edge was the right move"); the 2px n7 rule below is the masthead's
 only mark.
 
 IMPLEMENTATION: .masthead background var(--bg), padding var(--sp-2) 0.
+
+## 46 · Volt gains HERO ELEMENTS (Florian's palette ruling)
+
+RULE: volt is logo + app shell + HERO ELEMENTS. A hero element is a
+singular, page-defining mark — currently the MCC satellites-tracked
+count (whose legacy --acc volt is hereby lawful) and the selected
+satellite's orbit arc on /mcc/ (volt on night, volt-ink on the daylight
+chart, via --shell-accent; the boot-state ISS arc shares the treatment
+as the load-state selection). Running data, counts in tables, and
+status marks stay volt-free; each NEW hero use needs Florian's
+sign-off. Selection was already volt in the shell (selection fills,
+focus) — this extends the same grammar into the canvas.
+
+IMPLEMENTATION: scene.tsx arcColor -> colors.volt (token
+--shell-accent); CLAUDE.md volt clause updated; MCC_HERO_BRIEF.md
+constraint 3 rewritten (the count's volt is no longer a violation to
+resolve).

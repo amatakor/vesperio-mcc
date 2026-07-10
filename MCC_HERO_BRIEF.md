@@ -33,10 +33,12 @@ px, weights, tracking, tokens, spacing steps, states).
   `.count-big` (the number).
 - `.count-big` today: IBM Plex Mono 500, 44px, line-height 1.1,
   tabular-nums, letter-spacing .02em, color `var(--acc)`.
-- `--acc` is a LEGACY ALIAS that resolves to volt (#ADFF00 dark /
-  #64C400 light). Under the V1.1 color law the count is DATA and should
-  never be volt (volt = shell chrome + LCD clocks only). The redesign
-  must land the number on a lawful color. This is the moment to fix it.
+- The count renders in volt (#ADFF00 dark / #64C400 light) via the
+  `--acc` alias, and per rule 46 (2026-07-10) this is LAWFUL: volt now
+  covers HERO ELEMENTS, and the satellites-tracked count is the named
+  first case. The redesign may keep volt, or argue a different ink; if
+  it keeps volt, prefer the `--shell-accent` token over the legacy
+  `--acc` alias.
 - Placement: top module of the left HUD rail, floating over the WebGL
   globe. Below it (same rail): ORBITAL FLOW chart, T-MINUS launch
   countdown (constant-black LCD instrument, rule 16), LAUNCHES BY
@@ -55,13 +57,13 @@ px, weights, tracking, tokens, spacing steps, states).
 2. MCC THEMES (tuning rule 3): dark = night-ops, light = daylight chart
    (ocean #E6EBEE, coast steel). The hero must be designed for BOTH.
    MCC is no longer constant-dark.
-3. Color governance 90/9/1: volt #ADFF00 is logo + app shell + LCD
-   clocks ONLY, never data. Constants: links cyan, meters + live dots
-   green, yellow strictly NOTABLE fills. Role accents (--acc-*) only as
-   glyphs ≤12px, layer squares, badges. If the hero number needs a
-   color, argue it from this law (foreground ink is always lawful;
-   a new sanctioned use needs Florian's explicit sign-off in the
-   handoff).
+3. Color governance 90/9/1: volt #ADFF00 is logo + app shell + HERO
+   ELEMENTS (rule 46) — and the satellites-tracked count is a named
+   hero element, so volt is available to this design. Everything else
+   holds: links cyan, meters + live dots green, yellow strictly NOTABLE
+   fills, role accents (--acc-*) only as glyphs ≤12px, layer squares,
+   badges. Any NEW hero-element use of volt beyond the count still
+   needs Florian's explicit sign-off in the handoff.
 4. Typography voices: IBM Plex Sans = DISPLAY voice (light register,
    ALWAYS uppercase; the V1.1 hero-number spec is 52px/weight 200 —
    note Plex Sans 200 has no tabular figures guarantee; if you propose

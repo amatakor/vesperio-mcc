@@ -491,6 +491,10 @@ export default function Scene() {
       // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
       ripple: token("--live"),
       fg: token("--fg"),
+      // Selection is volt (rule 46, Florian 2026-07-10): the picked
+      // satellite's orbit renders in the shell accent, volt on night,
+      // volt-ink on the daylight chart.
+      volt: token("--shell-accent"),
     }),
     [],
   );
@@ -1185,7 +1189,9 @@ export default function Scene() {
     return toWorld(new THREE.Vector3(x, y, z));
   }, [toWorld]);
 
-  const arcColor = arc ? colorBySlug.get(arc.slug) ?? colors.accent : null;
+  // The picked orbit is a hero element: always the shell accent (volt on
+  // night, volt-ink on daylight), never the constellation color (rule 46).
+  const arcColor = arc ? colors.volt : null;
 
   // Reset returns to the default view: front camera, default zoom, earth
   // spinning, no focus/selection, and the ISS arc + full cloud back up.
