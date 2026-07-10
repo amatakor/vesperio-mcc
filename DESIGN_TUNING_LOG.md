@@ -387,3 +387,55 @@ RULE: under a constellation focus, unfocused dots dim to 0.18 (was
 RULE: in-canvas labels render in Plex Mono 200 (the light register) at
 0.038 sprite height (~15% smaller). Canvas text weight follows the
 site's self-hosted faces only.
+
+# Round 13 (2026-07-10, Florian's pre-deploy punch list)
+
+## 40 · Page containers span the shell
+
+RULE: every page container runs the full shell measure, exactly as wide
+as the menu bar; structural furniture (bands, hairlines, panels, grids)
+spans with it, and only raw running text keeps the 46rem reading
+measure. When the window narrows, the menu and the content share the
+same gutters. Supersedes the 46rem page cap on .item-page/.qa and
+retires .item-wide's 64rem cap (the class stays as a layout hook).
+
+IMPLEMENTATION: src/index.css (.item-page/.qa max-width none; .item-page
+p/ul/ol and .qa p at 46rem; .lede unchanged). The narrow-viewport
+masonry blowout (grid minmax forcing tracks past the container under
+~408px) fixed with minmax(min(22rem, 100%), 1fr) in .cards.
+
+## 41 · Card hover carries the shell-accent frame
+
+RULE: news cards on hover show a 1px shell-accent frame (volt on dark,
+volt-ink on bright — the nav-underline token) on top of the existing
+copy inversion. This is a sanctioned interaction-feedback use of the
+shell accent, not a new color role; running data stays volt-free.
+Seismic cards keep their photographic-negative hover and are excluded
+(their inverted filter would shift volt off-palette).
+
+IMPLEMENTATION: .card:not(.card-seismic):hover { border-color:
+var(--shell-accent) } in src/index.css.
+
+## 42 · Sweep footer sits on the card surface
+
+RULE: the sweep-countdown card's footer strip (LAST / SWEEPS EVERY /
+NEXT) is a themed surface on the card token (--bg-panel), identical to
+feed cards in both themes. The instrument face above it stays constant
+dark (rule 2's list is unchanged).
+
+IMPLEMENTATION: .sweep-card-foot background --bg-inset -> --bg-panel.
+
+## 43 · Registry pane header — logo/name on one axis (defect fix)
+
+Not a new rule; rule-8-family alignment defect. The registry browser's
+preview-pane header now vertically centers the monogram/logo tile and
+the entity name on one flex axis (was block flow with a mistuned
+vertical-align, ~3px off).
+
+IMPLEMENTATION: .reg-pane-head { display: flex; align-items: center }.
+
+(Engineering note, same date, not a design rule: MCC focus-mode orbit
+shells are now SGP4-sampled per satellite on the worker, so every ring
+passes through its live dot; the old two-body-at-epoch ellipses drifted
+100-400 km off stale-epoch dots. Rule 3's daylight/night visuals are
+unchanged.)
