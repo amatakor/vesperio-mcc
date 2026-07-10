@@ -35,9 +35,9 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  /* Flush under the top bar (Florian, tuning round 3): no top gap; the
-     side gutter matches the sitewide 28px so panel edges align with the
-     masthead content. */
+  /* Flush with the top bar (Florian, tuning rounds 3-4): no top gap,
+     and the sitewide gutter on the sides — the band now holds the
+     content measure, so bar edges and panel edges land on one line. */
   padding: 0 var(--gutter-page) 12px;
 }
 
@@ -245,63 +245,90 @@
   color: inherit;
   text-decoration: none;
 }
-.hud-countdown-link:hover .hud-mission {
+.hud-countdown-link:hover .hud-launch-foot-row:first-child {
   text-decoration: underline;
   text-decoration-color: var(--dim);
   text-underline-offset: 2px;
 }
 
-/* The countdown spans the full panel width: T-minus pinned left, the
-   larger clock pinned right (Florian 2026-07-08). */
-/* The countdown is an INSTRUMENT (tuning round 3, recycling the news
-   sweep card's grammar): constant black module, volt digits, 1px
-   emphasized border — identical in both themes, legible on the
-   daylight chart. */
-.hud-countdown {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-  background: #000;
+/* The launch countdown instrument (tuning round 4): the news sweep
+   card's grammar, quieted for the rail — the eye belongs to the earth.
+   Constant black stage in both themes; label + days chip pinned to the
+   top corners in the instrument register; the HH:MM:SS clock (total
+   remainder inside the day) centered on its ghost grid below; the
+   remaining launch facts live in the module's themed footer. No volt
+   flood: the flood is the sweep instrument's exception, not a family
+   trait. */
+.hud-launch {
   border: 1px solid var(--border-2);
-  padding: 12px 12px;
   margin: 2px 0 8px;
 }
-.lcd-tminus {
-  font-size: 30px;
+.hud-launch-stage {
+  position: relative;
+  background: #000;
+  height: 76px;
 }
-.lcd-clock {
-  font-size: 30px;
+.hud-launch-lab {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 1.3px;
+  color: #ededed;
 }
-.hud-mission {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--fg);
-  margin-top: 8px;
-  letter-spacing: 0.5px;
+.hud-launch-days {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: #a8a8a8;
+  font-variant-numeric: tabular-nums;
 }
-.hud-pad {
+.hud-launch-mid {
+  position: absolute;
+  inset: 22px 0 0 0;
+  display: grid;
+  place-items: center;
+}
+.lcd-launch {
+  font-size: 32px;
+}
+/* Optical ink centering (see DESIGN_TUNING_LOG round 12): a leading
+   7-seg "1" leaves its cell's left half dark, so the whole grid shifts
+   left by half that dead space; the class is set from the live value
+   and only ever changes when the leading digit does. 0.245em = half of
+   DSEG7's (26px - 4px) leading-ink delta at any size. */
+.lcd-lead-1 {
+  margin-left: -0.245em;
+}
+.hud-launch-foot {
+  border-top: 1px solid var(--border-1);
+  background: var(--bg-inset);
+  padding: 7px 12px 8px;
+}
+.hud-launch-foot-row {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   font-size: 9px;
-  color: var(--dim);
-  margin-top: 3px;
-  letter-spacing: 0.5px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
 }
-/* When a line has a single part it stays left; a second part is pushed to
-   the right edge. Each part clips rather than overflowing the panel. */
-.hud-mission span,
-.hud-pad span {
+.hud-launch-foot-row:first-child {
+  color: var(--text-2);
+  margin-bottom: 3px;
+}
+.hud-launch-foot-row span {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.hud-mission span:last-child:not(:only-child),
-.hud-pad span:last-child:not(:only-child) {
+.hud-launch-foot-row span:last-child:not(:only-child) {
   text-align: right;
   flex: none;
 }
@@ -850,7 +877,7 @@
   align-items: center;
   gap: 16px;
   border-top: 1px solid var(--line);
-  padding: 10px 1.25rem;
+  padding: 10px var(--gutter-page);
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.8px;

@@ -408,10 +408,11 @@ input,
   gap: var(--sp-2) var(--sp-4);
   align-items: center;
   min-height: var(--header-h);
-  /* Full-bleed band inside the shell measure: pull out to the page edge,
-     pad back in, so the inset ground and 2px rule run edge to edge. */
-  margin: 0 calc(-1 * var(--gutter-page)) var(--sp-6);
-  padding: var(--sp-2) var(--gutter-page);
+  /* The band holds the content measure (tuning round 4): its edges land
+     exactly above the panels and card plates below, on every page. The
+     full-bleed variant read as "the bar is wider than the panels". */
+  margin: 0 0 var(--sp-6);
+  padding: var(--sp-2) 0;
   background: var(--bg-inset);
   border-bottom: 2px solid var(--n7);
 }
@@ -981,6 +982,13 @@ a.chip:hover {
   font-weight: 700; /* the DSEG7 Bold face; not mono text */
   font-size: 45px;
   line-height: 1;
+}
+/* Optical ink centering (DESIGN_TUNING_LOG round 12): a leading "1"
+   leaves its cell's left half dark (26px vs 4px ink bearing at 45px);
+   shift the grid left by half the delta so the INK centers. Changes at
+   most hourly, so the clock never visibly wobbles. */
+.sweep-lcd.lcd-lead-1 {
+  transform: translateY(-3px) translateX(-0.245em);
 }
 /* Ghost segments must equal the flood color on the flood side, or
    disembodied segments appear in the seam wedge. */

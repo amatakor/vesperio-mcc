@@ -144,3 +144,49 @@ sidereal orientation, parallax factor 0.3.
 RULE: in-canvas labels render at weight 400 (was 500). Mono above 400
 stays reserved for labels/badges in the UI itself; canvas text is body
 register. Bold mono remains banned everywhere.
+
+---
+
+# Round 4 (2026-07-10, third review)
+
+## 12 · LCD centering — ink-true (amends round 6)
+
+MEASUREMENT: in DSEG7 at 45px, every digit's ink ends 33/37 into its
+cell, but a leading "1" STARTS its ink at 26px where every other digit
+starts at 4px. So lit ink sits off-center exactly and only when the
+first digit is a 1.
+
+RULE: the clock centers its INK. When the leading digit is "1" the grid
+shifts left by half the dead space (`-0.245em`, any size); the shift
+keys on the leading digit only, so it changes at most hourly and the
+clock never wobbles. Ghost grid stays `#262626`. Applies to every LCD
+face (class `lcd-lead-1`).
+
+IMPLEMENTATION: `SweepLcd` in `src/pages.tsx`, `Lcd` in
+`src/orbits/chrome.tsx`, classes in `src/index.css` /
+`src/orbits/orbits.css`.
+
+## 13 · MCC launch countdown — redesigned as the sweep instrument
+
+RULE: the launch countdown adopts the sweep card's grammar, quieted for
+the rail (the eye belongs to the earth): black stage (76px) with
+`T-MINUS NEXT LAUNCH` in the instrument register top-left and a
+tabular `T-nD` days chip top-right (only when days > 0); the HH:MM:SS
+remainder centered on its ghost grid at 32px (not 45 — rail scale); a
+themed footer carries vehicle · mission and pad · net time in the meta
+register. NO volt flood: the flood is the sweep instrument's exception,
+not a family trait. The old twin-LCD `t-0d` display is retired.
+
+IMPLEMENTATION: `.hud-launch*` in `src/orbits/orbits.css`, markup in
+`src/orbits/chrome.tsx`.
+
+## 14 · Top bar band holds the content measure
+
+RULE: the masthead band is NOT full-bleed; it spans the content measure,
+so the band's edges land exactly above the panel and card-plate edges on
+every page (raised by Florian on MCC: "the menu bar extends wider than
+the panels"). The MCC frame keeps the sitewide 28px gutter and its
+footer bar indents to match.
+
+IMPLEMENTATION: `.masthead` in `src/index.css`, `.oframe-main` /
+`.obar` in `src/orbits/orbits.css`.

@@ -16,8 +16,11 @@ function Lcd({ value, className }: { value: string; className: string }) {
   // DSEG7 has digits and the colon but no comma; commas render as lit
   // mono glyphs between segment groups.
   const parts = value.split(",");
+  // Optical ink centering: a leading 7-seg "1" leaves its cell's left
+  // half dark; shift the grid by half that dead space (round 12).
+  const lead1 = value.startsWith("1") ? " lcd-lead-1" : "";
   return (
-    <span className={`lcd ${className}`}>
+    <span className={`lcd ${className}${lead1}`}>
       {parts.map((part, i) => (
         <span key={i} className="lcd-part">
           {i > 0 && <span className="lcd-comma">,</span>}
@@ -86,26 +89,34 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
   const href = launchHref(next);
 
+  const clock = `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
   const body = (
     <>
-      <div className="hud-label">NEXT LAUNCH · T MINUS</div>
-      <div className="hud-countdown">
-        {/* The whole T-minus reads on the LCD face, letters and all
-            (Florian 2026-07-07). */}
-        <Lcd className="lcd-tminus" value={`T-${days}D`} />
-        <Lcd className="lcd-clock" value={`${pad2(h)}:${pad2(m)}:${pad2(s)}`} />
-      </div>
-      {/* Vehicle and complex hug the left, mission and time the right, so
-          each line is justified across the panel (Florian 2026-07-08). */}
-      <div className="hud-mission">
-        {next.name.split(" | ").map((part, i) => (
-          <span key={i}>{part.toUpperCase()}</span>
-        ))}
-      </div>
-      <div className="hud-pad">
-        {[next.pad, netLabel].filter(Boolean).map((part, i) => (
-          <span key={i}>{String(part).toUpperCase()}</span>
-        ))}
+      {/* The launch countdown instrument (tuning round 4): the sweep
+          card's grammar — corner labels on a black stage, the clock
+          centered on its ghost grid, remaining facts in the module's
+          themed footer. Days ride the top-right slot instead of a
+          second LCD. */}
+      <div className="hud-launch">
+        <div className="hud-launch-stage">
+          <span className="hud-launch-lab">T-MINUS NEXT LAUNCH</span>
+          {days > 0 && <span className="hud-launch-days">T-{days}D</span>}
+          <div className="hud-launch-mid">
+            <Lcd className="lcd-launch" value={clock} />
+          </div>
+        </div>
+        <div className="hud-launch-foot">
+          <div className="hud-launch-foot-row">
+            {next.name.split(" | ").map((part, i) => (
+              <span key={i}>{part.toUpperCase()}</span>
+            ))}
+          </div>
+          <div className="hud-launch-foot-row">
+            {[next.pad, netLabel].filter(Boolean).map((part, i) => (
+              <span key={i}>{String(part).toUpperCase()}</span>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );

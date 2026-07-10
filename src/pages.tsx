@@ -526,8 +526,13 @@ function nextSweepAfter(now: Date): Date {
 /** 7-segment display with a ghost "888" layer underneath, the orbits-page
     LCD language (DSEG7 has the digits, the colon, and the dash). */
 function SweepLcd({ value }: { value: string }) {
+  // Optical ink centering (DESIGN_TUNING_LOG round 12): a leading 7-seg
+  // "1" lights only its right segments, leaving 22px of dark cell at
+  // 45px; the grid shifts left by half that so the INK centers. The
+  // class changes only when the leading digit does (at most hourly).
+  const lead1 = value.startsWith("1") ? " lcd-lead-1" : "";
   return (
-    <span className="sweep-lcd">
+    <span className={`sweep-lcd${lead1}`}>
       <span className="sweep-lcd-ghost" aria-hidden="true">
         {value.replace(/[0-9-]/g, "8")}
       </span>
