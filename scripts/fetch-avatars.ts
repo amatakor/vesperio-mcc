@@ -1,8 +1,9 @@
 /**
  * Signals avatar pipeline, deterministic, no LLM. For each person in
  * signals.json, fetch the profile picture of the account we link to
- * (their own public avatar, via unavatar.io's resolver), re-host it
- * under public/img/signals/{id}.{ext}, and write the manifest
+ * (their own public avatar: via unavatar.io's resolver for X/YouTube, or
+ * the public Bluesky API for a bluesky channel), re-host it under
+ * public/img/signals/{id}.{ext}, and write the manifest
  * src/data/signal-avatars.json. People whose channels expose no
  * fetchable avatar keep the generated initials tile. Any avatar is
  * removed on request from the person concerned.
@@ -38,6 +39,35 @@ function avatarSource(person: SignalPerson): string | null {
   return null;
 }
 
+/** Bluesky handle of the exact account the person's card links to, straight
+    from signals.json (never a name search). null when no live bluesky
+    channel carries a handle. */
+function bskyHandle(person: SignalPerson): string | null {
+  for (const c of person.channels) {
+    if (c.status === "dead") continue;
+    if (c.type === "bluesky" && c.handle) return c.handle;
+  }
+  return null;
+}
+
+/** Resolve a Bluesky handle's avatar URL via the public, unauthenticated
+    profile API (same host fetch-thumbs.ts uses to resolve embedded
+    articles). Returns null when the profile has no avatar set or the
+    lookup fails. */
+async function resolveBskyAvatar(handle: string): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${encodeURIComponent(handle)}`,
+      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) },
+    );
+    if (!res.ok) return null;
+    const data = (await res.json()) as { avatar?: string };
+    return data.avatar && /^https?:\/\//i.test(data.avatar) ? data.avatar : null;
+  } catch {
+    return null;
+  }
+}
+
 async function download(url: string, id: string): Promise<string | null> {
   try {
     const res = await fetch(url, {
@@ -71,14 +101,31 @@ async function main(): Promise<void> {
       continue;
     }
     const src = avatarSource(person);
-    if (!src) {
+    if (src) {
+      const path = await download(src, person.id);
+      if (path) {
+        manifest[person.id] = path;
+        console.log(`${person.id}: ${path}`);
+      } else {
+        console.log(`${person.id}: fetch failed, initials tile`);
+      }
+      continue;
+    }
+
+    const handle = bskyHandle(person);
+    if (!handle) {
       console.log(`${person.id}: no avatar source, initials tile`);
       continue;
     }
-    const path = await download(src, person.id);
-    if (path) {
-      manifest[person.id] = path;
-      console.log(`${person.id}: ${path}`);
+    const bskySrc = await resolveBskyAvatar(handle);
+    if (!bskySrc) {
+      console.log(`${person.id}: bluesky profile has no avatar, initials tile`);
+      continue;
+    }
+    const bskyPath = await download(bskySrc, person.id);
+    if (bskyPath) {
+      manifest[person.id] = bskyPath;
+      console.log(`${person.id}: ${bskyPath} (bluesky)`);
     } else {
       console.log(`${person.id}: fetch failed, initials tile`);
     }
