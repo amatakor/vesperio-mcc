@@ -519,3 +519,12 @@ IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
 renders SGP4-sampled shells from its worker, same fix as the main
 scene; kepler.ts's two-body orbitShellSegments deleted, ISS ring now
 passes through the station glyph.)
+
+## 3d · Daylight ocean — darker and bluer (supersedes 3c)
+
+RULE (Florian, same day): the light-theme ocean is a real blue, not a
+gray: #C7D5E3 (from 3c's #DBE2E7; original #E6EBEE). The globe disc
+reads as water against the paper ground; land/grid/coast unchanged,
+grid still darker than the ocean it draws on.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
