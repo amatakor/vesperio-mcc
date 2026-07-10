@@ -730,3 +730,13 @@ dark ink (they still sit on the yellow itself).
 
 IMPLEMENTATION: legacy .card-seismic .chip / a.chip:hover rules removed
 from src/index.css.
+
+## 53e · Backing exempts the SEISMIC tag (it keeps its red fill at rest)
+
+53c's panel backing out-ranked the red fill by specificity and painted
+over it. The backing rule now targets outlined chips only
+(:not(.chip-seismic)); the tag is red at rest, cyan under the negative,
+as ruled.
+
+IMPLEMENTATION: .card-seismic .card-meta .chip:not(.chip-seismic),
+src/index.css.

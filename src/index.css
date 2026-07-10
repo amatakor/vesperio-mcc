@@ -1374,7 +1374,7 @@ a.card-tile:hover .tile-cat {
 /* Category chip on the yellow ground gets an opaque panel backing
    (rule 53c): transparent chips read as yellow pills here; with the
    backing they render identically to chips on every other card. */
-.card-seismic .card-meta .chip {
+.card-seismic .card-meta .chip:not(.chip-seismic) {
   background: var(--bg-panel);
 }
 .card-seismic:hover .card-meta .chip {
