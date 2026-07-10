@@ -808,3 +808,24 @@ a headless render: no overlap, and the seam ink-flip reads correctly
 on both rows.
 
 IMPLEMENTATION: .sweep-mid inset in src/index.css.
+
+## 56 · The seismic lede speaks in the display voice
+
+RULE (Florian, 2026-07-10, annotated screenshot): the seismic card's
+tagline renders in Plex Sans (450, 14px, regular case) — it is a lede,
+not data; the what-happened body below stays in the mono data voice.
+First sanctioned regular-case use of the display face; scoped to the
+seismic lede only.
+
+IMPLEMENTATION: .card-seismic .card-tagline in src/index.css.
+
+## 56b · Sweep stage grows to 104px (amends rule 15's 86)
+
+RULE (Florian, same request): the stage takes real padding between the
+LCD and the rule-55 schedule row — 86 -> 104px, LCD centering insets
+26/28, and the seam lean scales 26 -> 31px so the locked ~31-degree
+slope holds on the taller face. Verified headless: clear air on both
+sides of the digits, ink-flips correct on both label rows.
+
+IMPLEMENTATION: .sweep-layer height + .sweep-mid insets in
+src/index.css; clip-path lean constants in pages.tsx.
