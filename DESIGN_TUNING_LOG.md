@@ -997,3 +997,161 @@ lighter view is coherent at every width.
 
 IMPLEMENTATION: remap block + .hud-launch-foot override (orbits.css);
 --mcc-sky (index.css).
+## 58 · The satellites-tracked hero floats in the instrument void (design 9a)
+
+RULE (Florian via Claude Design, 2026-07-10): The MCC satellites-tracked
+count is the page's hero element (rule 46). It renders frameless over
+the canvas in the DISPLAY voice — Plex Sans 200/72, `--shell-accent` —
+its digits justified edge-to-edge across the 272px HUD measure
+(per-glyph flex cells; no tabular dependency, no shuffle within a digit
+count, 6 digits tighten against held edges). Label demotes to one mono
+line below (SP-16): `SATELLITES TRACKED` 10/500/+.14em with `AS OF
+<stamp>` 10/400/+.08em one step dimmer. Placement is computed, not
+styled: the module centers in the instrument void (masthead rule →
+first rail ink; gutter → fitted cloud edge, globeCenterX − 1.22R) and
+lifts one SP-16 step, the LCD rules' optical-center grammar; on stacked
+layouts it is the first rail block at 52px. The legacy `.count-big` /
+`--acc` implementation is retired.
+
+IMPLEMENTATION: hero component (SatHero) in src/orbits/chrome.tsx,
+styles in src/orbits/orbits.css (hero label inks carry their own
+--hero-dim/--hero-dim-deep aliases, both themes: the neutral ramp has
+no step at the handoff's values), void math beside FitCamera's spans
+(onProject + recalcHero, src/orbits/scene.tsx). A page-load count-up
+was discussed and deferred; no persistent animation is permitted.
+
+## 58a · The launch block centers between the counter and the footer
+
+RULE (Florian, 2026-07-11: "the left panel needs to be centered between
+the sat counter and the footer, not between the top and bottom of the
+page"): the launch block (ORBITAL FLOW / T-MINUS / LAUNCHES) centers in
+the leftover BELOW the floating hero, not the full column. The hero's
+own seat is unchanged: its void.bottom keeps the full-column centering
+line (the block's pre-58a position, derived from sizes only) so the
+counter does not chase the block it displaces — the dependency runs
+hero → block, never back.
+
+IMPLEMENTATION: scene.tsx sets the column's padding-top to the hero's
+bottom edge when the hero floats (heroPos.clear), so the block's
+existing auto margins measure from the counter; the rail fallback
+already behaved this way (the in-flow hero pushes the block). Comment
+updated on .ocol-left > .hud (orbits.css).
+
+## 58b · The hero's seat, dragged into place
+
+RULE (Florian, 2026-07-11: positioned by hand on a live drag handle,
+1600×1240): the hero sits one SP-64 in from the page gutter and one
+SP-20 step BELOW the void's optical center — supersedes 9a's
+horizontally centered, SP-16-lifted seat. His drop landed at (90,110)
+in frame coordinates; the grid-snapped rule gives (92,110), within
+hand tolerance. The count's right edge now deliberately tucks under
+the LEO cloud's sparse fringe (the 272px measure no longer fits
+inside the void's width); the clamp thresholds still key on the void
+and are unchanged, so narrow windows and zoom-in fall back to the
+rail exactly as before.
+
+IMPLEMENTATION: recalcHero's seat math (scene.tsx): left = voidLeft +
+64, top = voidCenterY − H/2 + 20; dev reference check updated to hero
+(92,174) viewport at 1600×1240. The 58a block-centering follows the
+new seat automatically (padding derives from the hero's bottom edge).
+
+## 58c · The launch block reorders: ranking, flow, clock at the foot
+
+RULE (Florian, 2026-07-11): the launch block reads LAUNCHES · 6 MO /
+BY VEHICLE first, ORBITAL FLOW second, and the T-MINUS clock anchors
+the panel's foot. The block's first ink (now the LAUNCHES label) still
+defines nothing structural — the hero's void math keys on the block's
+box, so the reorder moves no seats.
+
+IMPLEMENTATION: HudColumn child order (chrome.tsx); the .hud-module
+first/last-child rules (flush top, clean foot) follow structurally.
+
+## 58c (amended) · Flow back on top, ranking second
+
+RULE (Florian, 2026-07-11, same review): swap the first two — ORBITAL
+FLOW leads, LAUNCHES · 6 MO / BY VEHICLE second, the T-MINUS clock
+keeps the panel's foot.
+
+IMPLEMENTATION: HudColumn child order (chrome.tsx).
+
+## 58d · 58a reverted: the launch block re-centers to the page
+
+RULE (Florian, 2026-07-11, same review, "still not 100% happy"): the
+launch block returns to full-column centering (top of frame to
+footer), reverting 58a's counter-to-footer seat while the hero's
+position is re-tuned by hand (see 58b's method: live drag handle plus
+a module-gap slider, grid-stepped).
+
+IMPLEMENTATION: heroPos.clear + the column padding-top removed
+(scene.tsx); .ocol-left > .hud comment restored (orbits.css). The
+hero's void.bottom already used the full-column line, so its math is
+untouched.
+
+## 58e · Second drag round: seat re-anchored, module gap 44
+
+RULE (Florian, 2026-07-11, tuned on the live rig — drag handle plus
+grid-stepped gap slider — after 58d re-centered the launch block to
+the page): the hero's center sits one SP-64 step RIGHT of the void's
+optical center and one SP-8 step ABOVE it, both offsets from the same
+anchor (supersedes 58b's gutter-indent grammar; his drop (103,70)
+frame-local, the snapped rule gives (104,70)). The launch block's
+inter-module air steps 32 -> 44 (his slider value, on the 4px grid).
+The count's right edge still tucks under the LEO cloud's fringe;
+clamp thresholds unchanged.
+
+IMPLEMENTATION: recalcHero seat math (scene.tsx): left/top =
+voidCenter − module/2 + (64, −8); .ocol-left .hud .hud-module padding
+44px 0 (orbits.css); dev reference check now expects hero (104,134)
+viewport at 1600×1240.
+
+## 58f · Back to the rail: the count is a module (floating seat retired)
+
+RULE (Florian, 2026-07-11, "back to square one, that doesn't work"):
+the tracked count moves INTO the left rail panel as its first module,
+with everything the module grammar entails — the module measure, a
+hairline below, the hud-label header (the AS OF stamp joins it in the
+label's · convention: "SATELLITES TRACKED · AS OF <stamp>"), and the
+shared module padding. The count keeps the DISPLAY voice at the V1.1
+hero size (Plex Sans 200/52, --shell-accent) with the per-glyph
+edge-to-edge justification from 9a. The panel centers in the column's
+full height. Retired with the floating seat: the void math beside
+FitCamera (onProject), the float/rail duality and clamp, the dragged
+seat constants (58b/58e), and the hero-only label inks
+(--hero-dim/--hero-dim-deep — the label is a standard hud-label now).
+Module order: counter, orbital flow, vehicle ranking, clock at the
+foot. The 44px module padding from 58e stands, pending another slider
+round.
+
+IMPLEMENTATION: SatCount module inside HudColumn (chrome.tsx, SatHero
+deleted); scene.tsx sheds proj/onProject/heroPos/recalcHero/observers
+and the FitCamera onProject param; orbits.css replaces the .osat-hero
+family with .osat-count.
+
+## 58g · The count closes the line by size, not spacing; module gap 52
+
+RULE (Florian, 2026-07-11, slider round 2 + "this spacing looks off"):
+the count fills the module measure by TYPE SIZE, never letter spacing
+— the per-glyph justified cells (9a's edge-to-edge trick) read as
+broken tracking at module scale and are retired. The count renders as
+plain DISPLAY-voice text at natural tracking, sized to close the line
+exactly (SatCount measures the rendered width and scales the type,
+floored to the pixel; re-fits on resize and digit-count change, waits
+for the display face to load). Tabular figures return so a moving
+count neither shuffles nor re-fits within a digit count (the
+2026-07-07 lock, by its original mechanism). The rail's inter-module
+air steps 44 -> 52 (his slider, on the grid).
+
+IMPLEMENTATION: SatCount fit effect (chrome.tsx); .osat-count drops
+the flex cells for nowrap + tabular-nums, 52px as pre-fit fallback
+(orbits.css); .ocol-left .hud .hud-module padding 52px 0.
+
+## 58h · Launch clock stage 20% taller
+
+RULE (Florian, 2026-07-11): the clock's display stage (the smoked
+face, not the framed footer) steps 64 -> 76px — his "20% taller"
+(76.8) snapped to the 4px grid per his standing nudge-to-grid call.
+The digits re-center in the taller stage (the mid layer is inset:0
+place-items center); the days chip stays pinned top-right; the footer
+is untouched.
+
+IMPLEMENTATION: .hud-launch-stage height (orbits.css).

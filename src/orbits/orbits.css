@@ -166,16 +166,10 @@
   padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
-/* Generous air between the launch block's modules; the block growing
-   also tightens its outer gaps toward the counter and VIEW. */
-.hud + .hud .hud-module {
-  padding: 32px 0;
-}
-/* The counter is its own object, not a list row: centered in the
-   column, no rule under it, floated slightly into the frame. */
-.ocol-left > .hud:first-child {
-  margin-top: 16px;
-  text-align: center;
+/* Generous air between the rail panel's modules (32 -> 44 -> 52 by
+   Florian's slider rounds, rules 58e/58g). */
+.ocol-left .hud .hud-module {
+  padding: 52px 0;
 }
 /* The left column is three equally spaced sections; each section's
    first module sits flush and the last drops its trailing border and
@@ -232,17 +226,23 @@
   padding: 0 2px;
 }
 
-/* The tracked count in the site mono (Florian 2026-07-07): tabular
-   figures so the digits do not shuffle as the count moves. */
-.count-big {
-  display: block;
-  font-family: var(--mono);
+/* ------------------------------------------- satellites-tracked count
+   Rule 58f/58g: the count is a rail module under the full module
+   grammar (hud-label header carrying the AS OF stamp, hairline
+   separation, shared module padding); the floating hero seat is
+   retired. DISPLAY voice at natural tracking; SatCount sizes the type
+   to fill the module measure (58g: size, never letter spacing, closes
+   the line — 52px is only the pre-fit fallback). Tabular figures keep
+   a moving count from shuffling or re-fitting within a digit count
+   (the 2026-07-07 lock). */
+.osat-count {
+  font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  color: var(--acc);
+  font-weight: 200;
+  font-size: 52px;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--shell-accent);
 }
 
 /* The countdown links to the mission's feed item or vehicle profile. */
@@ -274,9 +274,10 @@
   position: relative;
   /* A slight lift off the page ground (tuning round 8): the smoked
      treatment from light, translated to dark, so the module's padding
-     reads against a surface. */
+     reads against a surface. 64 -> 76 (rule 58h: +20%, snapped to the
+     4px grid); the digits re-center in the taller stage. */
   background: rgba(255, 255, 255, 0.07);
-  height: 64px;
+  height: 76px;
 }
 .hud-launch-days {
   position: absolute;
@@ -1093,14 +1094,8 @@
   .hud-module {
     padding: 9px 0;
   }
-  .count-big {
-    font-size: 34px;
-  }
-  .hud + .hud .hud-module {
+  .ocol-left .hud .hud-module {
     padding: 10px 0;
-  }
-  .ocol-left > .hud:first-child {
-    margin-top: 0;
   }
   .flow-legend {
     margin-top: 7px;
@@ -1155,9 +1150,10 @@
   .ocol-right .view {
     background: color-mix(in srgb, var(--panel-dark) 80%, transparent);
   }
-  /* The launch block keeps its natural height and centers in the space
-     below the counter (Florian 2026-07-06). */
-  .hud + .hud {
+  /* The rail panel keeps its natural height and centers in the
+     column's full height (Florian 2026-07-06; re-affirmed 2026-07-11,
+     rules 58d/58f, with the counter back inside the panel). */
+  .ocol-left > .hud {
     margin-top: auto;
     margin-bottom: auto;
   }
