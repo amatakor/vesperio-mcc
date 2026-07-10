@@ -680,3 +680,183 @@ the daylight face the ghost grid is subliminal, an impression of the
 instrument rather than a visible frame.
 
 IMPLEMENTATION: [data-theme="light"] .sweep-lcd-ghost, src/index.css.
+
+## 53 · Seismic hover — negative for the copy, not the photo or frame
+
+RULE (Florian, 2026-07-10): the seismic card's hover keeps its
+photographic-negative READ but spares the thumbnail and the frame, and
+the card's framing behaves exactly like every other card (border-2 at
+rest, volt hover frame, z-lift). Implementation drops filter:invert
+(which flipped the border, and triple-stacked on imgs so thumbnails
+rendered negative) for explicit values: ground #FFFF00 -> #0000FF (the
+literal negative), ink #0A0A0A -> #F5F5F5, outlined chips to paper ink,
+filled chips keep their fills, media and foot untouched. Both themes
+(the yellow fill keeps its hue everywhere, so its negative does too).
+
+IMPLEMENTATION: .card-seismic:hover rules in src/index.css; rule 41's
+seismic exclusion note retired.
+
+## 53b · The SEISMIC tag flips with the negative
+
+RULE (Florian, same day): on the seismic card's hover the SEISMIC chip
+is part of the negative, not exempt from it — its red fill inverts
+(#FF2E1E -> #00D1E1 dark, #D12619 -> #2ED9E6 light) and its white text
+to black, exactly what the retired filter produced. Other filled
+badges keep their fills; only the seismic tag belongs to the effect.
+
+IMPLEMENTATION: .card-seismic:hover .chip-seismic in src/index.css.
+
+## 53c · Seismic card's category chip — opaque panel backing
+
+RULE (Florian, same day): the category chip on the seismic card was
+transparent and read as a yellow pill on the yellow ground; it now
+carries an opaque --bg-panel backing so it renders identically to the
+same chip on every other card. Under the negative hover it becomes the
+dark pill (#0A0A0A) with paper ink in both themes. (53b's seismic-tag
+selectors gained the .card-meta scope so the cyan flip outranks the
+generic chip rule.)
+
+IMPLEMENTATION: .card-seismic .card-meta .chip rules, src/index.css.
+
+## 53d · Seismic chips use the base inks (legacy dark-ink override retired)
+
+RULE (Florian, same day: the launch chip went unreadable at rest): the
+yellow-ground era pinned seismic-card chips to #0A0A0A ink and border —
+right on yellow, invisible on 53c's panel backing. The override is
+deleted; chips on seismic cards now render with the base chip inks
+(text-1 on border-2 over --bg-panel), pixel-identical to chips on
+every other card, in both themes. The date and meta labels keep their
+dark ink (they still sit on the yellow itself).
+
+IMPLEMENTATION: legacy .card-seismic .chip / a.chip:hover rules removed
+from src/index.css.
+
+## 53e · Backing exempts the SEISMIC tag (it keeps its red fill at rest)
+
+53c's panel backing out-ranked the red fill by specificity and painted
+over it. The backing rule now targets outlined chips only
+(:not(.chip-seismic)); the tag is red at rest, cyan under the negative,
+as ruled.
+
+IMPLEMENTATION: .card-seismic .card-meta .chip:not(.chip-seismic),
+src/index.css.
+
+## 54 · The sweep clock opens the log; negative hover announces it
+
+RULE (Florian, 2026-07-10): the sweep-countdown card is a real door —
+clicking it opens /log/, the sweep changelog — and hovering it flips
+the instrument to its stated negative (the rule-53 method, no filter):
+paper face, flood and lit digits to #5200FF (the literal invert of
+volt, landing on the palette's UV family), ghosts #D9D9D9, labels to
+ink, the ARMED lamp to magenta #C60095, flood-side inks to paper, and
+the standard volt hover frame. The footer stays put like every card.
+Both themes share the values (volt and the lamp are literals). The
+hover is earned: it announces a real destination, so the instrument
+grammar stays honest.
+
+IMPLEMENTATION: .sweep-link anchor in pages.tsx (SweepCard wraps stage
++ foot); .sweep-card:hover rules at the end of src/index.css.
+
+## 52d · Sweep face smoked on the night theme too (pitch black retired)
+
+RULE (Florian, 2026-07-10, completing rule 52's arc): the sweep clock's
+dark-theme face drops constant #000 for the MCC launch clock's dark
+recipe — rgba(255,255,255,.07) over the page ground, the instrument
+dark grey. Both clocks now share one smoked treatment in both themes.
+The hover negative softens to match: #E3E3DF paper grey (the literal
+negative of a dark-grey face) instead of the white flash. Ghost cells
+unchanged — the grey ground quiets them a step by itself, in the
+direction rules 52b/52c already walked.
+
+IMPLEMENTATION: .sweep-card background and :hover background,
+src/index.css; CLAUDE.md constant-dark note synced.
+
+## 55 · The sweep footer dissolves into the instrument
+
+RULE (Florian, 2026-07-10: with the smoked faces, the footer's grey
+matched the face and the seam stopped meaning anything): the separate
+schedule footer is removed; its content (LAST / SWEEPS EVERY 12H /
+NEXT) moves ONTO the stage as a bottom-pinned row in the instrument
+register, mirroring the top label row. It renders inside both face
+copies, so the volt flood clips and re-inks it exactly like the other
+on-stage labels, and the hover negative carries it for free. The card
+is now a single smoked surface: labels top, LCD center, schedule
+bottom.
+
+IMPLEMENTATION: SweepFace gains the schedule row (pages.tsx);
+.sweep-sched layout + .sweep-card-foot/-seg rules removed
+(src/index.css).
+
+## 55b · Flood layer pinned above the base face (regression fix)
+
+Florian's screenshot: seam-crossing labels rendered white OVER the
+volt instead of flipping to dark ink — the doubled-face flip relied on
+implicit DOM paint order, disturbed by the rule-54 link wrapper and
+rule-55 layer changes. .sweep-flood now carries z-index: 1 so the
+flood copy explicitly wins; the flip is structural again, not
+accidental.
+
+IMPLEMENTATION: .sweep-flood in src/index.css.
+
+## 55c · LCD centers between the label and schedule rows
+
+RULE (Florian: the digits overlapped the schedule line): .sweep-mid's
+centering band still ran to the stage floor from before rule 55 put
+the schedule there; its bottom inset now mirrors the top (22px), so
+the LCD centers between the two label rows with clear air. Verified in
+a headless render: no overlap, and the seam ink-flip reads correctly
+on both rows.
+
+IMPLEMENTATION: .sweep-mid inset in src/index.css.
+
+## 56 · The seismic lede speaks in the display voice
+
+RULE (Florian, 2026-07-10, annotated screenshot): the seismic card's
+tagline renders in Plex Sans (450, 14px, regular case) — it is a lede,
+not data; the what-happened body below stays in the mono data voice.
+First sanctioned regular-case use of the display face; scoped to the
+seismic lede only.
+
+IMPLEMENTATION: .card-seismic .card-tagline in src/index.css.
+
+## 56b · Sweep stage grows to 104px (amends rule 15's 86)
+
+RULE (Florian, same request): the stage takes real padding between the
+LCD and the rule-55 schedule row — 86 -> 104px, LCD centering insets
+26/28, and the seam lean scales 26 -> 31px so the locked ~31-degree
+slope holds on the taller face. Verified headless: clear air on both
+sides of the digits, ink-flips correct on both label rows.
+
+IMPLEMENTATION: .sweep-layer height + .sweep-mid insets in
+src/index.css; clip-path lean constants in pages.tsx.
+
+## 53f · Outlined chips join the negative fully
+
+RULE (Florian): on the seismic hover the category chip takes the stated
+invert of its per-theme rest state — light pill/dark ink on night, dark
+pill/paper ink on daylight — instead of the fixed dark pill. The
+SEISMIC tag keeps its cyan flip.
+
+IMPLEMENTATION: per-theme .card-seismic:hover chip rules, src/index.css.
+
+## 56 (amended) · Seismic lede weight 400
+
+Florian's second look: 450 read bold; the display-voice lede sits at
+400.
+
+(Engineering note, 2026-07-10: the masonry packer pins cards with an
+inline height, so a card whose CONTENT grows at runtime could never
+re-fire the ResizeObserver — the box was pinned — and overflow:hidden
+clipped the growth; this is what kept "cutting off" the clock's
+schedule row after live height tunings. The observer now also watches
+each card's direct children, so content growth re-packs. Verified:
+force-growing the stage +26px at runtime re-packed the card with the
+schedule row intact.)
+
+(Engineering note, second pass on the clipped schedule row: the packer
+no longer PINS the sweep card with an inline height at all — pins from
+a pre-tuning measure were guillotining the instrument's bottom row in
+long-lived tabs even after the child-observer fix. The clock's grid
+span still reserves its rows; an unpinned fixed-height instrument can
+never be clipped by a stale measure. Ordinary cards keep the pin,
+whose sub-pixel absorption their footers provide.)

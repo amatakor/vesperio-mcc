@@ -950,7 +950,11 @@ a.chip:hover {
 }
 .sweep-card {
   border: 1px solid var(--border-2);
-  background: #000;
+  /* The pitch-black face is retired (rule 52d): the MCC launch clock's
+     smoked lift, dark side — rgba white over the page ground reads as
+     the instrument dark grey, and its negative is a paper grey rather
+     than a white flash. */
+  background: rgba(255, 255, 255, 0.07);
   margin: -1px 0 0 -1px;
   min-width: 0;
   overflow: hidden;
@@ -968,12 +972,19 @@ a.chip:hover {
   overflow: hidden;
 }
 .sweep-layer {
-  height: 86px; /* -20%, tuning round 5 */
+  height: 104px; /* 86 + air (rule 56b): the LCD needs padding above
+     the rule-55 schedule row; the seam lean scales to hold ~31deg. */
   position: relative;
 }
 .sweep-flood {
   position: absolute;
   inset: 0;
+  /* Pinned ABOVE the base face copy explicitly (rule 55b): the flip
+     of seam-crossing text to dark-on-volt relied on implicit DOM paint
+     order, which the rule-54/55 wrappers disturbed — labels rendered
+     white over the flood. The doubled-face mechanism requires the
+     flood layer to win, so it says so. */
+  z-index: 1;
   background: var(--volt);
   /* The seam glides continuously between the 1s ticks. Compositing-layer
      hint keeps the clip edge rasterizing on its own layer (production fix
@@ -1001,6 +1012,20 @@ a.chip:hover {
   color: #ededed;
   margin: 0;
 }
+.sweep-sched {
+  /* Schedule line ON the instrument (rule 55): bottom-pinned row, full
+     width, spread like the old footer; ink and flood/negative behavior
+     come from the shared .sweep-lab class. */
+  top: auto;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 0.8em;
+  white-space: nowrap;
+  overflow: hidden;
+}
 .sweep-armed {
   position: absolute;
   top: 8px;
@@ -1022,7 +1047,9 @@ a.chip:hover {
 /* LCD centered in the area below the label row. */
 .sweep-mid {
   position: absolute;
-  inset: 22px 0 0 0;
+  /* The LCD centers between the label row and the schedule row (rules
+     55c/56b): both insets reserve the label bands on the 104px stage. */
+  inset: 26px 0 28px 0;
   display: grid;
   place-items: center;
 }
@@ -1071,31 +1098,9 @@ a.chip:hover {
 .sweep-flood .sweep-lcd-lit {
   color: #0a0a0a;
 }
-/* Schedule footer: themed ground (white in light), meta register, no
-   border above it (removed by review). */
-.sweep-card-foot {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  column-gap: 0.8em;
-  row-gap: var(--sp-1);
-  margin: 0;
-  padding: 10px var(--sp-4);
-  /* Same surface as the feed cards' FOOTER bar (Florian, 2026-07-10,
-     second pass): .card-foot sits on --bg-raised, the grey footer
-     token, not the card body's --bg-panel. Matches in both themes; the
-     LCD instrument face above stays constant dark. */
-  background: var(--bg-raised);
-  font-family: var(--font-ui);
-  font-size: var(--fs-micro);
-  font-weight: 500;
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-.sweep-card-seg {
-  white-space: nowrap;
-}
+/* The sweep footer is gone (rule 55): the schedule line lives ON the
+   instrument as a bottom-pinned .sweep-sched row, clipped and re-inked
+   by the flood like every other on-stage label. */
 
 .card {
   border: 1px solid var(--border-2);
@@ -1119,9 +1124,8 @@ a.chip:hover {
   /* Volt hover frame (fix 2, 2026-07-10): --shell-accent is volt on dark,
      volt-ink on bright (same theme-aware token as the nav underline and
      the wordmark's always-lit dot), so the frame reads correctly in both
-     themes without a new color role. Seismic is excluded (see
-     .card-seismic:hover below): it already inverts wholesale and its
-     border is explicitly locked. */
+     themes without a new color role. Seismic carries the same frame via
+     its own hover rule (rule 53). */
   border-color: var(--shell-accent);
   z-index: 2;
 }
@@ -1353,17 +1357,56 @@ a.card-tile:hover .tile-cat {
   border-color: var(--border-2);
   color: #0a0a0a;
 }
-/* Seismic hover (V1.1): a literal photographic negative — invert the
-   whole card, then re-invert media so photos stay true-color. No
-   border-color change on hover. */
+/* Seismic hover (rule 53, supersedes the filter negative): the same
+   photographic-negative READ, stated explicitly — the yellow ground
+   flips to its literal negative and the ink to paper, but the
+   thumbnail stays true-color and the frame behaves like every other
+   card (volt hover frame, rule 41; the filter used to invert both,
+   and stacked to a triple-invert on imgs that rendered thumbnails
+   negative). Fills keep their fills; the foot stays put. */
 .card-seismic:hover {
-  background: var(--acc-yellow);
-  filter: invert(1);
+  background: #0000ff; /* literal invert of the #ffff00 ground */
+  border-color: var(--shell-accent);
   z-index: 2;
 }
-.card-seismic:hover .card-media,
-.card-seismic:hover img {
-  filter: invert(1);
+.card-seismic:hover .card-headline a,
+.card-seismic:hover .card-tagline,
+.card-seismic:hover .card-extra,
+.card-seismic:hover .card-meta,
+.card-seismic:hover .card-meta .date {
+  color: #f5f5f5; /* literal invert of the #0a0a0a ink */
+}
+/* Category chip on the yellow ground gets an opaque panel backing
+   (rule 53c): transparent chips read as yellow pills here; with the
+   backing they render identically to chips on every other card. */
+.card-seismic .card-meta .chip:not(.chip-seismic) {
+  background: var(--bg-panel);
+}
+/* Outlined chips join the negative fully (rule 53f): the stated invert
+   of their per-theme rest state — light pill on night's hover, dark
+   pill on daylight's. The SEISMIC tag keeps its own cyan flip. */
+.card-seismic:hover .card-meta .chip:not(.chip-seismic) {
+  background: #f5f5f5;
+  border-color: rgba(0, 0, 0, 0.35);
+  color: #0a0a0a;
+}
+[data-theme="light"] .card-seismic:hover .card-meta .chip:not(.chip-seismic) {
+  background: #0a0a0a;
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #f5f5f5;
+}
+/* The SEISMIC tag joins the negative (rule 53b): the exact invert of
+   its themed red fill, white text to black — what the old filter
+   produced, now stated. */
+.card-seismic:hover .card-meta .chip-seismic {
+  background: #00d1e1; /* invert of #ff2e1e */
+  border-color: #00d1e1;
+  color: #000;
+}
+[data-theme="light"] .card-seismic:hover .card-meta .chip-seismic {
+  background: #2ed9e6; /* invert of the light theme's #d12619 */
+  border-color: #2ed9e6;
+  color: #000;
 }
 .card-seismic .card-media {
   height: 18.75rem;
@@ -1378,8 +1421,12 @@ a.card-tile:hover .tile-cat {
   line-height: 1.1;
 }
 .card-seismic .card-tagline {
-  font-size: 13px;
-  font-weight: 500;
+  /* The seismic lede speaks in the DISPLAY voice (Florian, 2026-07-10,
+     rule 56): Plex Sans, regular case — a lede, not data. */
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400; /* not bold (Florian, second look; rule 56 amended) */
+  letter-spacing: 0.01em;
   line-height: 1.5;
   -webkit-line-clamp: 4;
 }
@@ -1390,15 +1437,9 @@ a.card-tile:hover .tile-cat {
 .card-seismic .date {
   color: #0a0a0a;
 }
-.card-seismic .chip {
-  border-color: #0a0a0a;
-  color: #0a0a0a;
-}
-.card-seismic a.chip:hover {
-  border-color: #0a0a0a;
-  background: #0a0a0a;
-  color: var(--acc-yellow);
-}
+/* The dark-ink chip override from the yellow-ground era is retired
+   (rule 53d): chips sit on their own panel backing now (53c) and use
+   the base chip inks, identical to every other card. */
 .card-seismic .chip-seismic {
   background: var(--acc-red);
   border-color: var(--acc-red);
@@ -3687,3 +3728,44 @@ a.sig-card:hover .sig-p-x {
 }
 .snr-up { color: var(--acc-green); }
 .snr-down { color: var(--acc-orange); }
+
+/* --------------------------------------------- sweep clock hover (54)
+   The clock links to /log/ and announces it with the instrument's own
+   negative (stated values, the rule-53 method; the invert of volt lands
+   on the palette's UV): paper face, UV flood and digits, magenta ARMED,
+   the standard volt hover frame. Footer stays put like every card. */
+.sweep-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.sweep-card:hover {
+  background: #e3e3df; /* the dark-grey face's negative: paper grey, not white */
+  border-color: var(--shell-accent);
+  z-index: 2;
+}
+.sweep-card:hover .sweep-flood {
+  background: #5200ff; /* invert of volt #adff00 */
+}
+.sweep-card:hover .sweep-lcd-lit {
+  color: #5200ff;
+}
+.sweep-card:hover .sweep-flood .sweep-lcd-lit {
+  color: #f5f5f5; /* invert of the flood side's #0a0a0a */
+}
+.sweep-card:hover .sweep-lcd-ghost {
+  color: #d9d9d9; /* invert of #262626 */
+}
+.sweep-card:hover .sweep-flood .sweep-lcd-ghost {
+  color: #5200ff; /* ghost equals the flood color on the flood side (rule 1) */
+}
+.sweep-card:hover .sweep-lab {
+  color: #121212;
+}
+.sweep-card:hover .sweep-armed {
+  color: #c60095; /* invert of the literal #39ff6a lamp */
+}
+.sweep-card:hover .sweep-flood .sweep-lab,
+.sweep-card:hover .sweep-flood .sweep-armed {
+  color: #f5f5f5;
+}

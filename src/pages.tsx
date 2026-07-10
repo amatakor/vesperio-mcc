@@ -545,7 +545,13 @@ function SweepLcd({ value }: { value: string }) {
     stage renders it twice — base (black ground, volt digits) and flood
     overlay (volt ground, black digits) — so the seam cuts through
     identical content. */
-function SweepFace({ digits }: { digits: string }) {
+function SweepFace({
+  digits,
+  schedule,
+}: {
+  digits: string;
+  schedule: { last: string | null; next: string | null; local: string | null };
+}) {
   return (
     <div className="sweep-layer">
       <span className="sweep-lab">T-MINUS NEXT SWEEP</span>
@@ -553,13 +559,25 @@ function SweepFace({ digits }: { digits: string }) {
       <div className="sweep-mid">
         <SweepLcd value={digits} />
       </div>
+      {/* The schedule line lives ON the instrument (rule 55): rendered in
+          both face copies so the flood clips and re-inks it like every
+          other on-stage label. */}
+      <span className="sweep-lab sweep-sched">
+        {schedule.last && <span>LAST {schedule.last}</span>}
+        <span>SWEEPS EVERY 12H</span>
+        {schedule.next && (
+          <span>
+            NEXT {schedule.next} · {schedule.local} LOCAL
+          </span>
+        )}
+      </span>
     </div>
   );
 }
 
 /** First slot of the news feed, V1.1 flood-fill instrument ("options 4a"):
     the whole card face is the countdown. A volt flood advances left→right
-    as the 12h sweep window elapses; the ~30° seam (lean ±26px over the
+    as the 12h sweep window elapses; the ~30° seam (lean ±31px over the
     86px stage) cuts through the doubled content, and the .85s linear
     clip-path transition glides it between ticks. Renders a placeholder
     until mounted so SSR and hydration agree; ticking never changes the
@@ -595,29 +613,22 @@ function SweepCountdownCard() {
   const p = `${elapsedPct.toFixed(2)}%`;
   return (
     <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
+      {/* The clock is the door to the sweep log (rule 54): the negative
+          hover announces a real destination, like every card. */}
+      <a className="sweep-link" href="/log/" aria-label="Open the sweep log">
       <div className="sweep-stage">
-        <SweepFace digits={digits} />
+        <SweepFace digits={digits} schedule={{ last, next, local }} />
         <div
           className="sweep-flood"
           aria-hidden="true"
           style={{
-            clipPath: `polygon(0 0, calc(${p} + 26px) 0, calc(${p} - 26px) 100%, 0 100%)`,
+            clipPath: `polygon(0 0, calc(${p} + 31px) 0, calc(${p} - 31px) 100%, 0 100%)`,
           }}
         >
-          <SweepFace digits={digits} />
+          <SweepFace digits={digits} schedule={{ last, next, local }} />
         </div>
       </div>
-      <p className="sweep-card-foot">
-        {last && <span className="sweep-card-seg">LAST {last}</span>}
-        {/* Crawl frequency (tuning round 7): the instrument states its
-            own cadence. */}
-        <span className="sweep-card-seg">SWEEPS EVERY 12H</span>
-        {next && (
-          <span className="sweep-card-seg">
-            NEXT {next} · {local} LOCAL
-          </span>
-        )}
-      </p>
+      </a>
     </aside>
   );
 }
@@ -663,7 +674,12 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
         // -1px top margin, overlaps the previous card's bottom border exactly:
         // one hairline between cards, same as the vertical seams.
         const h = Math.max(2, Math.ceil(heights[i]!));
-        c.style.height = `${h}px`;
+        // The sweep clock is a fixed-height instrument and is never
+        // PINNED (2026-07-10: stale pins clipped its schedule row twice
+        // across live height tunings) — its span reserves the rows and
+        // the natural height can then never be cut. Ordinary cards keep
+        // the pin (it absorbs sub-pixels into the footer slack).
+        if (!c.classList.contains("sweep-card")) c.style.height = `${h}px`;
         c.style.gridRowEnd = `span ${h - 1}`;
       });
     };
@@ -679,7 +695,15 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     // cards can't feed back into a loop. ResizeObserver's initial callback
     // also gives a guaranteed post-layout pack.
     const ro = new ResizeObserver(schedule);
-    for (const c of Array.from(grid.children)) ro.observe(c);
+    for (const c of Array.from(grid.children)) {
+      ro.observe(c);
+      // pack() pins each card with an inline height, so the card's own
+      // box can never fire the observer when its CONTENT grows (the
+      // sweep clock's stage growing under HMR clipped its schedule row,
+      // 2026-07-10). Observe the card's direct children too: content
+      // growth fires there, and re-packing re-measures the true height.
+      for (const k of Array.from(c.children)) ro.observe(k);
+    }
     window.addEventListener("resize", schedule);
     return () => {
       ro.disconnect();
