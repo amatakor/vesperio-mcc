@@ -717,3 +717,16 @@ selectors gained the .card-meta scope so the cyan flip outranks the
 generic chip rule.)
 
 IMPLEMENTATION: .card-seismic .card-meta .chip rules, src/index.css.
+
+## 53d · Seismic chips use the base inks (legacy dark-ink override retired)
+
+RULE (Florian, same day: the launch chip went unreadable at rest): the
+yellow-ground era pinned seismic-card chips to #0A0A0A ink and border —
+right on yellow, invisible on 53c's panel backing. The override is
+deleted; chips on seismic cards now render with the base chip inks
+(text-1 on border-2 over --bg-panel), pixel-identical to chips on
+every other card, in both themes. The date and meta labels keep their
+dark ink (they still sit on the yellow itself).
+
+IMPLEMENTATION: legacy .card-seismic .chip / a.chip:hover rules removed
+from src/index.css.
