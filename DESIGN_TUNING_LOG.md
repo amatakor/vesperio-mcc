@@ -915,3 +915,11 @@ IMPLEMENTATION: --mcc-sky/--mcc-fg tokens + light --globe-grid: none
 (index.css); canvas-wrap ground + fades + HUD ink remap (orbits.css);
 grid draw gate + fg token in scene.tsx; ISS inks + blending in
 satellites.tsx.
+
+## 3j · Continents at 80% grey
+
+RULE (Florian): the daylight land drops its green cast for neutral 80%
+grey (#CCCCCC) — a pure two-tone plate: grey land, navy water, grey
+sky, white stars.
+
+IMPLEMENTATION: --globe-land in [data-theme="light"], src/index.css.
