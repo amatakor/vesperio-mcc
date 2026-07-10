@@ -797,3 +797,14 @@ flood copy explicitly wins; the flip is structural again, not
 accidental.
 
 IMPLEMENTATION: .sweep-flood in src/index.css.
+
+## 55c · LCD centers between the label and schedule rows
+
+RULE (Florian: the digits overlapped the schedule line): .sweep-mid's
+centering band still ran to the stage floor from before rule 55 put
+the schedule there; its bottom inset now mirrors the top (22px), so
+the LCD centers between the two label rows with clear air. Verified in
+a headless render: no overlap, and the seam ink-flip reads correctly
+on both rows.
+
+IMPLEMENTATION: .sweep-mid inset in src/index.css.

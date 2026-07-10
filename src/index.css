@@ -1046,7 +1046,10 @@ a.chip:hover {
 /* LCD centered in the area below the label row. */
 .sweep-mid {
   position: absolute;
-  inset: 22px 0 0 0;
+  /* The LCD centers between the label row and the schedule row (rule
+     55c): the bottom inset reserves the schedule band added by rule 55
+     — inset to the stage floor made the digits overlap it. */
+  inset: 22px 0 22px 0;
   display: grid;
   place-items: center;
 }
