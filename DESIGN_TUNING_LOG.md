@@ -672,3 +672,11 @@ rgba(0,0,0,.18) -> rgba(0,0,0,.11), just under the MCC clock's 0.14 —
 the ghost grid should be felt, not read.
 
 IMPLEMENTATION: [data-theme="light"] .sweep-lcd-ghost, src/index.css.
+
+## 52c · Daylight ghosts, second step down
+
+RULE (Florian, same day, second round): rgba(0,0,0,.11) -> .06 — on
+the daylight face the ghost grid is subliminal, an impression of the
+instrument rather than a visible frame.
+
+IMPLEMENTATION: [data-theme="light"] .sweep-lcd-ghost, src/index.css.
