@@ -871,3 +871,14 @@ headless WebGL render with the boot ISS volt arc against the new
 ground.
 
 IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3g · Daylight ocean lands on cartographic navy (supersedes 3f)
+
+RULE (Florian, same request, final step: "make it dark blue"): the
+daylight ocean is #3B5B88, a dark cartographic navy — the volt arcs'
+contrast ground. The chart flips to the classic atlas read: pale land,
+bright graticule on dark water, data accents luminous. Full day's ramp:
+#E6EBEE > #DBE2E7 > #C7D5E3 > #9DB9D6 > #7B9CC4 > #3B5B88. Land, grid,
+coast unchanged; verified headless with the boot ISS volt arc.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
