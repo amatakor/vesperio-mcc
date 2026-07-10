@@ -1170,3 +1170,17 @@ swatch included.
 IMPLEMENTATION: .osat-count color var(--volt-ink); .flow-bar-sched +
 .flow-sw-sched gradients var(--acc-cyan) (orbits.css); CLAUDE.md volt
 list amended.
+
+## 58i (amended) · Night cyan for the hatch on the daylight sky
+
+RULE (Florian, 2026-07-11: "the cyan looks much dimmer in the light
+theme"): the scheduled hatch sits inside the left HUD, which floats on
+the GREY SKY in the light theme's desktop regimes — paper's darkened
+teal (#007A87) vanished there. The 3i/3l remap already returns the
+HUD's ink ramp to night values on that ground; --acc-cyan joins it
+(#00F0FF inside the desktop remap). The stacked mobile layout keeps
+paper's teal: its panels sit on the page, where the dark teal is the
+one that holds.
+
+IMPLEMENTATION: --acc-cyan added to the [data-theme="light"]
+.ocol-left/.ostatus desktop remap block (orbits.css).
