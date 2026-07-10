@@ -280,7 +280,7 @@
      "orbits canvas is theme-invariant" rule): pale cool ground, steel
      coasts, darkened data accents; the LCD instruments keep volt via
      --clock, rendered as volt-ink by the HUD's themed --acc alias. */
-  --globe-ocean: #e6ebee;
+  --globe-ocean: #9db9d6; /* saturated map blue (Florian 2026-07-10, rule 3e; ramp #e6ebee > #dbe2e7 > #c7d5e3 > this) */
   --globe-land: #dce3dd;
   --globe-grid: #bfc9d0;
   --globe-coast: #33495a;
@@ -389,14 +389,28 @@ input,
 }
 
 .shell {
-  max-width: 104rem;
+  /* Fluid measure (Florian, 2026-07-10, rule 44): the site adapts to the
+     browser width; the page gutter is the only outer inset, shared by
+     the menu bar and the content at every size. Supersedes the 104rem cap. */
+  max-width: none;
   margin: 0 auto;
   padding: 0 var(--gutter-page) var(--sp-8);
 }
 
+/* Page containers span the shell like the menu bar (Florian, 2026-07-10):
+   structural furniture (band, hairlines, panels, grids) runs the full
+   measure; only raw running text keeps the 46rem reading measure below. */
 .item-page,
-.qa,
+.qa {
+  max-width: none;
+}
 .lede {
+  max-width: 46rem;
+}
+.item-page p,
+.item-page ul,
+.item-page ol,
+.qa p {
   max-width: 46rem;
 }
 
@@ -411,12 +425,14 @@ input,
   gap: var(--sp-2) var(--sp-4);
   align-items: center;
   min-height: var(--header-h);
-  /* Full-bleed band (locked, tuning round 5): pull out to the shell's
-     outer edge and pad back in, so the band runs its full width; the
-     MCC panels edge-align to the BAND, not the reverse. */
-  margin: 0 calc(-1 * var(--gutter-page)) var(--sp-6);
-  padding: var(--sp-2) var(--gutter-page);
-  background: var(--bg-inset);
+  /* The menu bar sits on the page ground itself (Florian, 2026-07-10,
+     rule 44c): no band surface in either theme — the dark theme always
+     read this way because band and page were both near-black, and the
+     light theme now matches. The brand and nav align flush with the
+     content edge; the 2px rule below is the masthead's only mark. */
+  margin: 0 0 var(--sp-6);
+  padding: var(--sp-2) 0;
+  background: var(--bg);
   border-bottom: 2px solid var(--n7);
 }
 
@@ -879,7 +895,12 @@ a.chip:hover {
    bottom; leftover space sits between tagline and footer. */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  /* min(22rem, 100%) caps the track floor at the container's own width so a
+     narrow window can't force a track wider than the shell/masthead's
+     aligned content box (grid blowout past the nav's right edge, fix 1
+     2026-07-10) — the 22rem minimum still governs column count once the
+     container is wide enough to honor it. */
+  grid-template-columns: repeat(auto-fill, minmax(min(22rem, 100%), 1fr));
   grid-auto-flow: dense;
   align-items: start;
   grid-auto-rows: min-content;
@@ -1034,7 +1055,11 @@ a.chip:hover {
   row-gap: var(--sp-1);
   margin: 0;
   padding: 10px var(--sp-4);
-  background: var(--bg-inset);
+  /* Same surface as the feed cards' FOOTER bar (Florian, 2026-07-10,
+     second pass): .card-foot sits on --bg-raised, the grey footer
+     token, not the card body's --bg-panel. Matches in both themes; the
+     LCD instrument face above stays constant dark. */
+  background: var(--bg-raised);
   font-family: var(--font-ui);
   font-size: var(--fs-micro);
   font-weight: 500;
@@ -1065,6 +1090,13 @@ a.chip:hover {
    keeps its own photographic-negative treatment (excluded via :not). */
 .card:not(.card-seismic):hover {
   background: var(--n7);
+  /* Volt hover frame (fix 2, 2026-07-10): --shell-accent is volt on dark,
+     volt-ink on bright (same theme-aware token as the nav underline and
+     the wordmark's always-lit dot), so the frame reads correctly in both
+     themes without a new color role. Seismic is excluded (see
+     .card-seismic:hover below): it already inverts wholesale and its
+     border is explicitly locked. */
+  border-color: var(--shell-accent);
   z-index: 2;
 }
 .card:not(.card-seismic):hover .card-headline a,
@@ -1436,9 +1468,8 @@ a.card-details:hover {
 
 /* --------------------------------------------------------------- item */
 
-.item-page.item-wide {
-  max-width: 64rem;
-}
+/* .item-wide's 64rem cap retired 2026-07-10: all item pages span the
+   shell; the class stays in markup as a layout hook only. */
 
 .item-band {
   display: flex;
@@ -3163,6 +3194,15 @@ a.sig-card:hover .sig-p-x {
   color: var(--text-3);
   padding: var(--sp-3) var(--sp-3);
   border-bottom: 1px solid var(--border-1);
+  /* Logo/name baseline fix (fix 4, 2026-07-10): this head was plain block
+     flow, so .reg-logo's vertical-align (tuned against a different
+     font/line-height context) landed a few px below the 9px micro-label
+     text's center. Flex + align-items:center centers both on one axis
+     regardless of the label's line-height; .reg-logo's own vertical-align
+     is now inert here (harmless) and still applies where the mark sits in
+     inline flow elsewhere (e.g. the profile h1). */
+  display: flex;
+  align-items: center;
 }
 .reg-row {
   display: flex;

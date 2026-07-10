@@ -36,7 +36,7 @@ import {
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
 import { Popup, type PopupField } from "./popup";
 import { catalogBySlug } from "./catalog";
-import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
+import { maxApogeeSceneUnits } from "./kepler";
 import { RESERVE_TOKEN, SNAPSHOT_CADENCE_MS, type LayoutEntry, type WorkerIn, type WorkerOut } from "./types";
 import type { OmmRecord } from "../data/schema";
 
@@ -117,9 +117,12 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
   // Last pointer X while dragging; null when not dragging.
   const dragLastX = useRef<number | null>(null);
 
-  // Orbit tracks, exactly as the full scene's focus view draws them: kepler
-  // shell segments from the same records, earth-fixed via the ECI frame.
-  const shellSegments = useMemo(() => orbitShellSegments(records), [records]);
+  // Orbit tracks, exactly as the full scene's focus view draws them:
+  // SGP4-sampled on the worker so each ring passes through its live dot
+  // (the kepler two-body ellipse drifted off stale-epoch dots — the ISS,
+  // lowest and fastest-drifting, was the worst case). Filled by the
+  // worker's "shell" reply below.
+  const [shellSegments, setShellSegments] = useState<Float32Array>(() => new Float32Array(0));
 
   const post = useCallback((msg: WorkerIn) => workerRef.current?.postMessage(msg), []);
 
@@ -146,12 +149,16 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
         if (sel && sel.sat.id === msg.id) {
           setWatch({ id: msg.id, lat: msg.lat, lon: msg.lon, altKm: msg.altKm });
         }
+      } else if (msg.type === "shell") {
+        if (msg.slug === slug) setShellSegments(new Float32Array(msg.positions));
       }
     };
     // Messages are processed in order: the worker builds satrecs on load,
-    // then enable finds this slug in its loaded map and starts the timer.
+    // enable finds this slug in its loaded map and starts the timer, and
+    // shell SGP4-samples the loaded satrecs into the track buffer.
     worker.postMessage({ type: "load", slug, records } satisfies WorkerIn);
     worker.postMessage({ type: "enable", slugs: [slug] } satisfies WorkerIn);
+    worker.postMessage({ type: "shell", slugs: [slug] } satisfies WorkerIn);
     return () => {
       worker.terminate();
       workerRef.current = null;
@@ -317,7 +324,7 @@ export default function Mini3DScene({ slug, accent, records }: Mini3DSceneProps)
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} sidePad={0} shiftX={0} />
+          <FitCamera fitRadius={fitRadius} padLeft={0} padRight={0} />
           <group rotation={[0, 0, (-AXIAL_TILT_DEG * Math.PI) / 180]}>
             <group ref={spinGroup}>
               <Globe colors={colors} />

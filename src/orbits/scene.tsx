@@ -49,9 +49,9 @@ import {
   ll2ToRegistrySlug,
   orbitCatalog,
 } from "./catalog";
-import { maxApogeeSceneUnits, orbitShellSegments } from "./kepler";
+import { maxApogeeSceneUnits } from "./kepler";
 import { loadElements, loadFacilities, loadSpaceports, loadStats } from "./elements";
-import { latLonToVec3 } from "./geo";
+import { latLonToVec3, occludedByGlobe } from "./geo";
 import { GroundMarkers, type GroundPick } from "./ground";
 import { FooterBar, HudColumn, ViewCluster } from "./chrome";
 import { LayerRail, type RailCategory, type RailRow } from "./rail";
@@ -162,19 +162,59 @@ function landTexture(ocean: string, land: string): THREE.CanvasTexture {
       : (geo.coordinates as unknown as [number, number][][][]),
   );
   ctx.fillStyle = land;
-  ctx.beginPath();
+  // Antimeridian handling (2026-07-10): 7 rings in the 110m land data
+  // cross lon +-180 (Fiji, Chukotka, Wrangel, Antarctica). Drawn
+  // naively, each crossing edge strokes a straight line across the
+  // whole canvas and evenodd mis-fills a thin wedge that wraps the
+  // globe as a pale band (glaring on the saturated daylight ocean).
+  // Fix: unwrap each ring to monotonic longitude, close pole-encircling
+  // rings via their pole, and fill per polygon at the three seam
+  // offsets so both canvas edges stay covered.
+  const unwrapRing = (ring: [number, number][]): [number, number][] => {
+    const out: [number, number][] = [];
+    let prev: number | null = null;
+    let shift = 0;
+    for (const [lon, lat] of ring) {
+      let l = lon + shift;
+      if (prev !== null) {
+        while (l - prev > 180) {
+          shift -= 360;
+          l -= 360;
+        }
+        while (l - prev < -180) {
+          shift += 360;
+          l += 360;
+        }
+      }
+      out.push([l, lat]);
+      prev = l;
+    }
+    return out;
+  };
   for (const poly of polys) {
-    for (const ring of poly) {
-      ring.forEach(([lon, lat], i) => {
-        const x = ((lon + 180) / 360) * W;
-        const y = ((90 - lat) / 180) * H;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.closePath();
+    for (const dx of [-W, 0, W]) {
+      ctx.beginPath();
+      for (const ring of poly) {
+        let pts = unwrapRing(ring as [number, number][]);
+        const lons = pts.map(([l]) => l);
+        if (Math.max(...lons) - Math.min(...lons) >= 359) {
+          // Pole-encircling ring (Antarctica): close it across its pole
+          // so the cap fills instead of leaving a wrapped sliver.
+          const meanLat = pts.reduce((s, [, la]) => s + la, 0) / pts.length;
+          const pole = meanLat < 0 ? -90 : 90;
+          pts = [...pts, [pts[pts.length - 1]![0], pole], [pts[0]![0], pole]];
+        }
+        pts.forEach(([lon, lat], i) => {
+          const x = ((lon + 180) / 360) * W + dx;
+          const y = ((90 - lat) / 180) * H;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+      }
+      ctx.fill("evenodd");
     }
   }
-  ctx.fill("evenodd");
   const t = new THREE.CanvasTexture(c);
   t.colorSpace = THREE.SRGBColorSpace;
   t.anisotropy = 4;
@@ -277,12 +317,16 @@ function ArcLine({ positions, color }: { positions: Float32Array; color: string 
  */
 export function FitCamera({
   fitRadius,
-  sidePad,
-  shiftX,
+  padLeft,
+  padRight,
 }: {
   fitRadius: number;
-  sidePad: number;
-  shiftX: number;
+  /** Real pixel spans the floating panels occupy on each side (gutter +
+   * panel + gap); the globe fits and centers in the space BETWEEN them
+   * at any window size (Florian 2026-07-10: the fixed side-pad + step
+   * approximation over- or under-sized the globe between breakpoints). */
+  padLeft: number;
+  padRight: number;
 }) {
   const { camera, size } = useThree();
   useEffect(() => {
@@ -290,7 +334,8 @@ export function FitCamera({
     // camera to Infinity and poison the position with NaN for the whole
     // session; skip until the size is real and self-heal a bad position.
     if (size.width < 2 || size.height < 2) return;
-    const width = Math.max(size.width - 2 * sidePad, 120);
+    const width = Math.max(size.width - padLeft - padRight, 120);
+    const shiftX = (padRight - padLeft) / 2;
     const persp = camera as THREE.PerspectiveCamera;
     if (shiftX !== 0) {
       persp.setViewOffset(size.width, size.height, shiftX, 0, size.width, size.height);
@@ -306,7 +351,7 @@ export function FitCamera({
     if (!Number.isFinite(len) || len < 1e-6) persp.position.set(0, 0, d);
     else persp.position.multiplyScalar(d / len);
     persp.updateProjectionMatrix();
-  }, [camera, size, fitRadius, sidePad, shiftX]);
+  }, [camera, size, fitRadius, padLeft, padRight]);
   return null;
 }
 
@@ -346,11 +391,20 @@ export function PopupAnchor({
 }) {
   const { camera, size } = useThree();
   const v = useMemo(() => new THREE.Vector3(), []);
+  const ray = useMemo(() => new THREE.Ray(), []);
   useFrame(() => {
     const el = popupEl.current;
     if (!el) return;
     const world = getWorldPos();
     if (!world) {
+      el.style.visibility = "hidden";
+      return;
+    }
+    // The card follows its object behind the earth (Florian 2026-07-10):
+    // same occlusion test as the satellite labels, same fudged radius.
+    ray.origin.copy(camera.position);
+    ray.direction.copy(world).sub(camera.position).normalize();
+    if (occludedByGlobe(ray, world.distanceTo(camera.position), 0.995)) {
       el.style.visibility = "hidden";
       return;
     }
@@ -491,6 +545,10 @@ export default function Scene() {
       // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
       ripple: token("--live"),
       fg: token("--fg"),
+      // Selection is volt (rule 46, Florian 2026-07-10): the picked
+      // satellite's orbit renders in the shell accent, volt on night,
+      // volt-ink on the daylight chart.
+      volt: token("--shell-accent"),
     }),
     [],
   );
@@ -530,13 +588,13 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  // Default zoom by frame (Florian 2026-07-07): the wide desktop HUD
-  // opens at the base fit, the mid panel state one step wider, and
-  // mobile two steps wider so the globe clears the stacked panels.
+  // Default zoom by frame: every floating-panel width opens at the base
+  // fit — FitCamera now measures the true space between the panels
+  // (Florian 2026-07-10), so the old one-step-wider mid default is
+  // gone. Mobile keeps two steps wider to clear the stacked panels.
   const defaultZoom = () => {
-    if (window.matchMedia("(min-width: 1281px)").matches) return 0;
     if (window.matchMedia("(max-width: 900px)").matches) return -2;
-    return -1;
+    return 0;
   };
   const [zoomStep, setZoomStep] = useState(defaultZoom);
   const [resetNonce, setResetNonce] = useState(0);
@@ -544,11 +602,9 @@ export default function Scene() {
   // though the canvas itself runs full-bleed underneath them; on every
   // desktop width the view shifts left so the globe centers between the
   // unequal panels (left column 296px incl. padding, right rail 376px).
-  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1281px)").matches);
   const [desktop, setDesktop] = useState(() => window.matchMedia("(min-width: 901px)").matches);
   useEffect(() => {
     const pairs: [MediaQueryList, (e: MediaQueryListEvent) => void][] = [
-      [window.matchMedia("(min-width: 1281px)"), (e) => setWide(e.matches)],
       [window.matchMedia("(min-width: 901px)"), (e) => setDesktop(e.matches)],
     ];
     for (const [mq, fn] of pairs) mq.addEventListener("change", fn);
@@ -606,6 +662,9 @@ export default function Scene() {
   // wanted-arc id gates which worker reply we accept.
   const [arc, setArc] = useState<{ id: number; positions: Float32Array; slug: string } | null>(null);
   const arcWantRef = useRef<{ id: number; slug: string } | null>(null);
+  // SGP4-sampled focus shells, keyed by slug, filled by the worker; stale
+  // entries for a previous focus are never read (shells maps focusSlugs).
+  const [shellSegs, setShellSegs] = useState<Map<string, Float32Array>>(new Map());
 
   const buffersRef = useRef<SnapshotBuffers>({ prev: null, next: null, prevTime: 0, nextTime: 0 });
   const recordsRef = useRef(new Map<string, OmmRecord[]>());
@@ -689,6 +748,12 @@ export default function Scene() {
         if (want && want.id === msg.id) {
           setArc({ id: msg.id, positions: new Float32Array(msg.positions), slug: want.slug });
         }
+      } else if (msg.type === "shell") {
+        setShellSegs((prev) => {
+          const next = new Map(prev);
+          next.set(msg.slug, new Float32Array(msg.positions));
+          return next;
+        });
       }
     };
     return () => {
@@ -1001,29 +1066,37 @@ export default function Scene() {
 
   // Orbit shells: every orbit of the effective focus (explicit
   // selection, or the ISS load state with the cloud intact).
-  const shells = useMemo(() => {
-    if (!shellFocus) return [];
-    return expandHighlight(shellFocus)
-      .filter((s) => enabled.has(s))
-      .flatMap((s) => {
-        const recs = recordsRef.current.get(s) ?? [];
-        if (recs.length === 0) return [];
-        return [
-          {
-            slug: s,
-            positions: orbitShellSegments(recs),
-            color: colorBySlug.get(s) ?? colors.accent,
-          },
-        ];
-      });
+  // SGP4-sampled on the worker so each ring passes through its live dot
+  // (the old two-body ellipse froze RAAN at the element-set epoch and
+  // drifted off stale-epoch dots); request on focus/records change,
+  // render whatever the worker returns.
+  const focusSlugs = useMemo(
+    () => (shellFocus ? expandHighlight(shellFocus).filter((s) => enabled.has(s)) : []),
+    [shellFocus, enabled],
+  );
+  useEffect(() => {
+    const slugs = focusSlugs.filter((s) => (recordsRef.current.get(s)?.length ?? 0) > 0);
+    if (slugs.length > 0) post({ type: "shell", slugs });
     // layout signals fresh records having arrived for enabled slugs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shellFocus, enabled, layout, colorBySlug, colors.accent]);
+  }, [focusSlugs, layout, post]);
+  const shells = useMemo(
+    () =>
+      focusSlugs.flatMap((s) => {
+        const positions = shellSegs.get(s);
+        if (!positions || positions.length === 0) return [];
+        return [{ slug: s, positions, color: colorBySlug.get(s) ?? colors.accent }];
+      }),
+    [focusSlugs, shellSegs, colorBySlug, colors.accent],
+  );
 
   // Camera fit: the globe plus generous air for the LEO cloud, widened
   // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
   const fitRadius = useMemo(() => {
-    let max = 1.28;
+    // 1.28 -> 1.22 (Florian 2026-07-10, rule 50b): the globe fills the
+    // panel gap slightly more; the LEO cloud's outer edge cropping under
+    // the chrome is by design (the fades own the top and bottom).
+    let max = 1.22;
     for (const e of orbitCatalog) {
       if (e.category !== "navigation" || !enabled.has(e.slug)) continue;
       const recs = recordsRef.current.get(e.slug);
@@ -1171,7 +1244,9 @@ export default function Scene() {
     return toWorld(new THREE.Vector3(x, y, z));
   }, [toWorld]);
 
-  const arcColor = arc ? colorBySlug.get(arc.slug) ?? colors.accent : null;
+  // The picked orbit is a hero element: always the shell accent (volt on
+  // night, volt-ink on daylight), never the constellation color (rule 46).
+  const arcColor = arc ? colors.volt : null;
 
   // Reset returns to the default view: front camera, default zoom, earth
   // spinning, no focus/selection, and the ISS arc + full cloud back up.
@@ -1252,7 +1327,14 @@ export default function Scene() {
             clearSelection();
           }}
         >
-          <FitCamera fitRadius={fitRadius} sidePad={wide ? 392 : 0} shiftX={desktop ? 40 : 0} />
+          {/* Pads = gutter 28 + left HUD 272 + gap 16, and gap 16 + rail
+              352 + gutter 28: the true spans the floating panels occupy
+              on every desktop width (the panels float from 901px up). */}
+          <FitCamera
+            fitRadius={fitRadius}
+            padLeft={desktop ? 316 : 0}
+            padRight={desktop ? 396 : 0}
+          />
           {/* The earth's axis leans by its real obliquity; the sky shares
               the axis (declination is measured from the equator), while
               AutoSpin turns only the earth-fixed inner group, so the tilt

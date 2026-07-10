@@ -25,6 +25,7 @@
 
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { ll2ConfigId as ll2ConfigIdShared, ll2SearchName } from "./enrich/lib";
 
 const UA = "VesperioMCC-Sweep contact@vesperio.ai";
 const LL2 = "https://ll.thespacedevs.com/2.2.0";
@@ -81,16 +82,11 @@ export function fillAggregator(
   return true;
 }
 
-/** LL2 launcher-config id from any field source URL already on the profile. */
+/** LL2 launcher-config id from any field source URL already on the profile.
+    Delegates to the shared v2 helper so both enrichers accept both LL2 URL
+    shapes (config/launcher and launcher_configurations). */
 export function ll2ConfigId(profile: Obj): number | null {
-  for (const v of Object.values(profile)) {
-    if (typeof v !== "object" || v === null) continue;
-    const src = (v as SourcedFieldShape).source;
-    if (typeof src !== "string") continue;
-    const m = /ll\.thespacedevs\.com\/2\.\d+\.\d+\/config\/launcher\/(\d+)\//.exec(src);
-    if (m) return Number(m[1]);
-  }
-  return null;
+  return ll2ConfigIdShared(profile);
 }
 
 /** YYYY-MM-DD from an ISO datetime; null when unparseable. */
@@ -212,7 +208,26 @@ async function main(): Promise<void> {
     for (const file of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
       const path = join(dir, file);
       const profile = JSON.parse(readFileSync(path, "utf8")) as Obj;
-      const id = ll2ConfigId(profile);
+      let id = ll2ConfigId(profile);
+      if (id === null) {
+        // Search-shaped source URLs carry no numeric id; resolve by exact
+        // name against the bulk catalog already fetched (zero extra requests).
+        const name = ll2SearchName(profile);
+        if (name !== null) {
+          const norm = name.trim().toLowerCase();
+          const hits = [...ll2.configs.entries()].filter(
+            ([, c]) =>
+              String(c.name ?? "").trim().toLowerCase() === norm ||
+              String(c.full_name ?? "").trim().toLowerCase() === norm,
+          );
+          if (hits.length === 1) {
+            id = hits[0][0];
+            console.log(`enrich: ${file}: resolved search-name "${name}" to config ${id}`);
+          } else {
+            console.log(`enrich: ${file}: search-name "${name}" matched ${hits.length} configs, skipped`);
+          }
+        }
+      }
       if (id === null) {
         console.log(`enrich: ${file}: no LL2 config id on any field source, skipped`);
         continue;

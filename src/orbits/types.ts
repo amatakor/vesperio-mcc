@@ -27,6 +27,7 @@ export type WorkerIn =
   | { type: "enable"; slugs: string[] }
   | { type: "watch"; id: number | null }
   | { type: "arc"; id: number }
+  | { type: "shell"; slugs: string[] }
   | { type: "cadence"; ms: number };
 
 /** Render order and identity of one enabled constellation's satellites. */
@@ -47,7 +48,10 @@ export type WorkerOut =
   | { type: "watch"; id: number; lat: number; lon: number; altKm: number }
   /** positions: Float32Array buffer of one closed orbit, 3 floats per
    * sample, in the earth-fixed frame of the request time. */
-  | { type: "arc"; id: number; positions: ArrayBuffer; periodMin: number };
+  | { type: "arc"; id: number; positions: ArrayBuffer; periodMin: number }
+  /** positions: Float32Array line-segment buffer (x,y,z vertex pairs) of
+   * every SGP4-sampled orbit in one focused constellation, ECI frame. */
+  | { type: "shell"; slug: string; positions: ArrayBuffer };
 
 // ------------------------------------------------- category colors
 

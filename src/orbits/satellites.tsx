@@ -33,8 +33,13 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   const c = document.createElement("canvas");
   c.height = 64;
   const ctx0 = c.getContext("2d")!;
-  // Light register (tuning round 12): the self-hosted Plex Mono 200.
-  const FONT = "200 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace";
+  // Night keeps the light register (tuning round 12: Plex Mono 200);
+  // the daylight chart steps up to 400 (rule 47) — dark 200-weight
+  // strokes on paper thin out at sprite scale exactly like the stars
+  // did (rule 3b), where light-on-night reads optically heavier.
+  const ink = new THREE.Color(color);
+  const darkInk = ink.r + ink.g + ink.b < 1.5;
+  const FONT = `${darkInk ? 400 : 200} 40px 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace`;
   ctx0.font = FONT;
   const MAX_W = 1006;
   let label = text;
@@ -45,9 +50,9 @@ function labelTexture(text: string, color: string): THREE.CanvasTexture {
   c.width = Math.max(48, tw + 18);
   const ctx = c.getContext("2d")!; // width change resets state
   ctx.font = FONT;
-  const ink = new THREE.Color(color);
-  const darkInk = ink.r + ink.g + ink.b < 1.5;
-  ctx.fillStyle = darkInk ? "rgba(255, 255, 255, 0.82)" : "rgba(0, 0, 0, 0.78)";
+  // Paper backing goes near-opaque on the daylight chart (rule 47):
+  // 0.82 let the blue ocean bleed through and gray the dark ink.
+  ctx.fillStyle = darkInk ? "rgba(255, 255, 255, 0.95)" : "rgba(0, 0, 0, 0.78)";
   ctx.fillRect(0, 4, c.width, 56);
   ctx.fillStyle = color;
   ctx.textBaseline = "middle";

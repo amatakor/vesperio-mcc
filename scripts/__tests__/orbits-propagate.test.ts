@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { buildSatrecs, ecfToScene, propagateToScene, subpoint, orbitArcScene } from "../../src/orbits/propagate";
+import { buildSatrecs, ecfToScene, propagateToScene, subpoint, orbitArcScene, orbitShellScene } from "../../src/orbits/propagate";
+import { propagate } from "satellite.js";
 import { EARTH_EQ_RADIUS_KM } from "../../src/orbits/types";
 import type { OmmRecord } from "../../src/data/schema";
 
@@ -200,5 +201,36 @@ describe("orbitArcScene", () => {
       (first[0] - last[0]) ** 2 + (first[1] - last[1]) ** 2 + (first[2] - last[2]) ** 2,
     );
     expect(dist).toBeLessThan(0.25);
+  });
+});
+
+describe("orbitShellScene", () => {
+  test("the satellite's now-position lies on its sampled ring (the focus-shell invariant)", () => {
+    const { satrecs } = buildSatrecs([ICEYE_X2]);
+    // Evaluate 3 days after epoch: far enough for J2 nodal regression to
+    // pull a two-body-at-epoch ellipse visibly off the SGP4 dot, which is
+    // the bug this sampler replaces.
+    const date = new Date(new Date(ICEYE_X2.EPOCH + "Z").getTime() + 3 * 86_400_000);
+    const segs = orbitShellScene(satrecs, date);
+    expect(segs.length).toBeGreaterThan(0);
+    expect(segs.length % 6).toBe(0); // whole line segments only
+
+    // Dot position, same convention the shell uses (ECI, no GMST bake).
+    const pv = propagate(satrecs[0]!, date);
+    const dot = ecfToScene(pv!.position as { x: number; y: number; z: number });
+
+    // Min distance from the dot to any segment endpoint: with 64 samples a
+    // LEO ring's inter-sample gap is ~600 km, so on-ring means well under
+    // half that. The old two-body ellipse missed by 100-400 km sideways
+    // PLUS sat-to-sample distance; this bound catches that regression.
+    let min = Infinity;
+    for (let i = 0; i < segs.length; i += 3) {
+      const d = Math.sqrt(
+        (segs[i]! - dot[0]) ** 2 + (segs[i + 1]! - dot[1]) ** 2 + (segs[i + 2]! - dot[2]) ** 2,
+      );
+      if (d < min) min = d;
+    }
+    const kmPerUnit = EARTH_EQ_RADIUS_KM;
+    expect(min * kmPerUnit).toBeLessThan(350); // < half the inter-sample gap
   });
 });

@@ -11,6 +11,7 @@ import { json2satrec, propagate, gstime, eciToEcf, eciToGeodetic, degreesLat, de
 import type { SatRec } from "satellite.js";
 import type { OmmRecord } from "../data/schema";
 import { EARTH_EQ_RADIUS_KM } from "./types";
+import { MAX_SHELL_ORBITS } from "./kepler";
 
 /** Alias for the satellite.js SatRec shape; kept local so callers don't
  * need to know the exact library type name. */
@@ -211,4 +212,61 @@ export function orbitArcScene(satrec: SatRecLike, date: Date, samples = 129): Or
   }
 
   return { positions, periodMin };
+}
+
+/**
+ * Focus-mode shells: one closed SGP4-sampled ring per satellite, emitted as
+ * line-segment vertices (x,y,z pairs) in the inertial (ECI) frame, so the
+ * scene's -GMST(now) InertialFrame earth-fixes them onto the live dots
+ * exactly like the click-arc does. Replaces the two-body ellipse from
+ * kepler.ts for the live scene (that ellipse froze RAAN at the element-set
+ * epoch and drifted off the dots by 100-400 km on stale sets; the mini
+ * registry embed still uses it). Sampled once per focus, on the worker;
+ * any segment touching a failed sample is dropped.
+ */
+export function orbitShellScene(
+  satrecs: SatRecLike[],
+  date: Date,
+  samplesPerOrbit = 64,
+  maxOrbits = MAX_SHELL_ORBITS,
+): Float32Array {
+  const stride = satrecs.length > maxOrbits ? satrecs.length / maxOrbits : 1;
+  const picked: SatRecLike[] = [];
+  for (let f = 0; f < satrecs.length; f += stride) picked.push(satrecs[Math.floor(f)]!);
+
+  const out = new Float32Array(picked.length * samplesPerOrbit * 2 * 3);
+  let w = 0;
+  const startMs = date.getTime();
+
+  for (const satrec of picked) {
+    const n = meanMotion(satrec);
+    if (!Number.isFinite(n) || n <= 0) continue;
+    const stepMs = (((2 * Math.PI) / n) * 60_000) / samplesPerOrbit;
+
+    const ring: ([number, number, number] | null)[] = [];
+    for (let s = 0; s < samplesPerOrbit; s++) {
+      let point: [number, number, number] | null = null;
+      try {
+        const pv = propagate(satrec, new Date(startMs + stepMs * s));
+        const position = pv && pv.position;
+        if (position && typeof position === "object") {
+          // ECI left unrotated (no GMST bake), same convention as orbitArcScene.
+          const [x, y, z] = ecfToScene(position);
+          if (Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z)) point = [x, y, z];
+        }
+      } catch {
+        point = null;
+      }
+      ring.push(point);
+    }
+
+    for (let s = 0; s < samplesPerOrbit; s++) {
+      const a = ring[s];
+      const b = ring[(s + 1) % samplesPerOrbit];
+      if (!a || !b) continue;
+      out[w++] = a[0]; out[w++] = a[1]; out[w++] = a[2];
+      out[w++] = b[0]; out[w++] = b[1]; out[w++] = b[2];
+    }
+  }
+  return out.slice(0, w);
 }

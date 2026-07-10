@@ -23,11 +23,13 @@
      66px = the V1.1 top bar (64px) + its 2px rule. */
   height: calc(100vh - 66px);
   min-height: 540px;
-  /* Match the rest of the site's measure (.shell) so Orbits is no wider
-     than News and its edges line up with the masthead (Florian 2026-07-08). */
+  /* Star field fills the browser (Florian 2026-07-10, rule 45): the
+     frame escapes the page gutter so the canvas runs window edge to
+     window edge; .oframe-main pads the PANELS back to the gutter line
+     so chrome still aligns with the masthead. Supersedes the 104rem
+     measure match of 2026-07-08. */
   width: 100%;
-  max-width: 104rem;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .oframe-main {
@@ -35,11 +37,10 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  /* Edge-aligned with the BAND (Florian, tuning round 5): the top bar
-     keeps its full-bleed width and the panels move out to meet its
-     edges (no side padding; the frame shares the shell's outer width).
-     The 20px top gap is back — the bar must not touch the panels. */
-  padding: 20px 0 12px;
+  /* Panels hold the page-gutter line (rule 44 band box = content box),
+     while the canvas behind them bleeds to the window edge (rule 45).
+     The 20px top gap stays — the bar must not touch the panels. */
+  padding: 20px var(--gutter-page) 12px;
 }
 
 .ocol-left {
@@ -383,9 +384,17 @@
   position: relative;
   min-height: 1px;
 }
-.flow-bar-hollow {
-  background: transparent;
-  border: 1px solid var(--dim);
+.flow-bar-sched {
+  /* Scheduled bars carry the volt hatch (Florian 2026-07-10, rule 48b:
+     hatched = planned, the engineering-drawing grammar; volt via the
+     shell accent, sanctioned per rule 46's sign-off path). */
+  background: repeating-linear-gradient(
+    45deg,
+    var(--shell-accent) 0,
+    var(--shell-accent) 2px,
+    transparent 2px,
+    transparent 5px
+  );
 }
 .flow-bar-decay {
   background: var(--dim-deep);
@@ -446,9 +455,14 @@
   vertical-align: -1px;
   margin-right: 4px;
 }
-.flow-sw-hollow {
-  background: transparent;
-  border: 1px solid var(--dim);
+.flow-sw-sched {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--shell-accent) 0,
+    var(--shell-accent) 2px,
+    transparent 2px,
+    transparent 5px
+  );
 }
 
 /* Vehicle ranking. */
@@ -958,7 +972,11 @@
 }
 
 .opopup {
-  width: 210px;
+  /* The card fits its content (Florian 2026-07-10): grows with the
+     longest field up to a cap, never truncating; taller is fine. */
+  width: max-content;
+  min-width: 210px;
+  max-width: 320px;
 }
 .opopup-head {
   display: flex;
@@ -972,9 +990,9 @@
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   color: var(--fg);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Titles wrap instead of ellipsizing (Florian 2026-07-10): the card
+     accommodates the data, not the reverse. */
+  overflow-wrap: anywhere;
 }
 .opopup-close {
   flex: none;

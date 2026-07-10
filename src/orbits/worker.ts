@@ -5,7 +5,7 @@
  * src/orbits/types.ts exactly.
  */
 
-import { buildSatrecs, propagateToScene, subpoint, orbitArcScene, type SatRecLike } from "./propagate";
+import { buildSatrecs, propagateToScene, subpoint, orbitArcScene, orbitShellScene, type SatRecLike } from "./propagate";
 import type { WorkerIn, WorkerOut, LayoutEntry } from "./types";
 import { SNAPSHOT_CADENCE_MS } from "./types";
 import type { OmmRecord } from "../data/schema";
@@ -122,6 +122,19 @@ function handleArc(id: number): void {
   post({ type: "arc", id, positions: buffer, periodMin: arc.periodMin }, [buffer]);
 }
 
+/** SGP4-sample every focused constellation's shells at now (one buffer per
+    slug, transferred). Focus only targets enabled -> loaded slugs. */
+function handleShell(slugs: string[]): void {
+  const now = new Date();
+  for (const slug of slugs) {
+    const entry = loaded.get(slug);
+    if (!entry || entry.satrecs.length === 0) continue;
+    const positions = orbitShellScene(entry.satrecs, now);
+    const buffer = positions.buffer as ArrayBuffer;
+    post({ type: "shell", slug, positions: buffer }, [buffer]);
+  }
+}
+
 function handleMessage(message: WorkerIn): void {
   switch (message.type) {
     case "load":
@@ -135,6 +148,9 @@ function handleMessage(message: WorkerIn): void {
       break;
     case "arc":
       handleArc(message.id);
+      break;
+    case "shell":
+      handleShell(message.slugs);
       break;
     case "cadence":
       cadenceMs = message.ms;

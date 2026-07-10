@@ -387,3 +387,231 @@ RULE: under a constellation focus, unfocused dots dim to 0.18 (was
 RULE: in-canvas labels render in Plex Mono 200 (the light register) at
 0.038 sprite height (~15% smaller). Canvas text weight follows the
 site's self-hosted faces only.
+
+# Round 13 (2026-07-10, Florian's pre-deploy punch list)
+
+## 40 · Page containers span the shell
+
+RULE: every page container runs the full shell measure, exactly as wide
+as the menu bar; structural furniture (bands, hairlines, panels, grids)
+spans with it, and only raw running text keeps the 46rem reading
+measure. When the window narrows, the menu and the content share the
+same gutters. Supersedes the 46rem page cap on .item-page/.qa and
+retires .item-wide's 64rem cap (the class stays as a layout hook).
+
+IMPLEMENTATION: src/index.css (.item-page/.qa max-width none; .item-page
+p/ul/ol and .qa p at 46rem; .lede unchanged). The narrow-viewport
+masonry blowout (grid minmax forcing tracks past the container under
+~408px) fixed with minmax(min(22rem, 100%), 1fr) in .cards.
+
+## 41 · Card hover carries the shell-accent frame
+
+RULE: news cards on hover show a 1px shell-accent frame (volt on dark,
+volt-ink on bright — the nav-underline token) on top of the existing
+copy inversion. This is a sanctioned interaction-feedback use of the
+shell accent, not a new color role; running data stays volt-free.
+Seismic cards keep their photographic-negative hover and are excluded
+(their inverted filter would shift volt off-palette).
+
+IMPLEMENTATION: .card:not(.card-seismic):hover { border-color:
+var(--shell-accent) } in src/index.css.
+
+## 42 · Sweep footer sits on the card surface
+
+RULE: the sweep-countdown card's footer strip (LAST / SWEEPS EVERY /
+NEXT) is a themed surface on the card token (--bg-panel), identical to
+feed cards in both themes. The instrument face above it stays constant
+dark (rule 2's list is unchanged).
+
+IMPLEMENTATION: .sweep-card-foot background --bg-inset -> --bg-panel.
+
+## 43 · Registry pane header — logo/name on one axis (defect fix)
+
+Not a new rule; rule-8-family alignment defect. The registry browser's
+preview-pane header now vertically centers the monogram/logo tile and
+the entity name on one flex axis (was block flow with a mistuned
+vertical-align, ~3px off).
+
+IMPLEMENTATION: .reg-pane-head { display: flex; align-items: center }.
+
+(Engineering note, same date, not a design rule: MCC focus-mode orbit
+shells are now SGP4-sampled per satellite on the worker, so every ring
+passes through its live dot; the old two-body-at-epoch ellipses drifted
+100-400 km off stale-epoch dots. Rule 3's daylight/night visuals are
+unchanged.)
+
+## 42b · Sweep footer token corrected (same day, Florian's review)
+
+RULE 42 AMENDED: the reference surface is the feed cards' FOOTER bar
+(--bg-raised, the grey footer token), not the card body (--bg-panel).
+The sweep card's footer now matches .card-foot exactly in both themes.
+
+## 44 · Fluid measure; band box = content box
+
+RULE: the shell is FLUID — the site adapts to the browser width with no
+maximum measure; the page gutter is the only outer inset and is shared
+by the menu bar and the content at every size. The masthead band's box
+is exactly the content box (round 5's full-bleed pull-out is
+superseded): in the light theme the white band no longer overhangs the
+feed by a gutter on each side. The masonry grows columns as the window
+widens (auto-fill).
+
+IMPLEMENTATION: .shell max-width none; .masthead margin/padding
+pull-out removed (src/index.css).
+
+## 45 · MCC star field fills the browser
+
+RULE: the MCC canvas (globe + star field) bleeds window edge to window
+edge; the HUD panels hold the page-gutter line so chrome stays aligned
+with the masthead (rule 44). The star field reads as the page ground,
+panels float on it.
+
+IMPLEMENTATION: .oframe escapes the gutter with negative side margins;
+.oframe-main pads the panels back in (src/orbits/orbits.css).
+
+## 44b · Band interior — brand and nav on the cards' text line
+
+RULE 44 AMENDED (Florian's second review, same day): with the band box
+equal to the content box, a flush logo reads as a defect. Inside the
+band, the brand lockup and nav sit on the cards' inner text line
+(--pad-card), one shared left edge from the menu text to the card text.
+
+IMPLEMENTATION: .masthead padding var(--sp-2) var(--pad-card).
+
+## 44c · The menu bar sits on the page ground (supersedes 44b)
+
+RULE (Florian's third review, same day): the masthead has NO band
+surface in either theme — its background is the page ground itself
+(--bg), which is how the dark theme always read (band and page were
+both near-black). The brand and nav align flush with the content edge
+(44b's --pad-card inset reverted: "aligning the logo to the website
+edge was the right move"); the 2px n7 rule below is the masthead's
+only mark.
+
+IMPLEMENTATION: .masthead background var(--bg), padding var(--sp-2) 0.
+
+## 46 · Volt gains HERO ELEMENTS (Florian's palette ruling)
+
+RULE: volt is logo + app shell + HERO ELEMENTS. A hero element is a
+singular, page-defining mark — currently the MCC satellites-tracked
+count (whose legacy --acc volt is hereby lawful) and the selected
+satellite's orbit arc on /mcc/ (volt on night, volt-ink on the daylight
+chart, via --shell-accent; the boot-state ISS arc shares the treatment
+as the load-state selection). Running data, counts in tables, and
+status marks stay volt-free; each NEW hero use needs Florian's
+sign-off. Selection was already volt in the shell (selection fills,
+focus) — this extends the same grammar into the canvas.
+
+IMPLEMENTATION: scene.tsx arcColor -> colors.volt (token
+--shell-accent); CLAUDE.md volt clause updated; MCC_HERO_BRIEF.md
+constraint 3 rewritten (the count's volt is no longer a violation to
+resolve).
+
+## 3c · Daylight chart — ocean one step darker
+
+RULE 3 AMENDED (Florian, 2026-07-10): the light-theme ocean darkens one
+step, #E6EBEE -> #DBE2E7, so the globe disc separates from the paper
+ground. Land, grid, and coast values unchanged.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+(Engineering note, same date: the registry orbit-tab mini embed now
+renders SGP4-sampled shells from its worker, same fix as the main
+scene; kepler.ts's two-body orbitShellSegments deleted, ISS ring now
+passes through the station glyph.)
+
+## 3d · Daylight ocean — darker and bluer (supersedes 3c)
+
+RULE (Florian, same day): the light-theme ocean is a real blue, not a
+gray: #C7D5E3 (from 3c's #DBE2E7; original #E6EBEE). The globe disc
+reads as water against the paper ground; land/grid/coast unchanged,
+grid still darker than the ocean it draws on.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 3e · Daylight ocean — saturated map blue (supersedes 3d)
+
+RULE (Florian, same day, third step): the daylight ocean is a saturated
+cartographic blue, #9DB9D6. Full ramp walked today:
+#E6EBEE > #DBE2E7 > #C7D5E3 > #9DB9D6. Land stays pale (#DCE3DD) so
+continents read light-on-water like a printed chart; the grid now draws
+LIGHTER than the water (inverted, intentional); coast steel unchanged;
+data accents still clear the ocean.
+
+IMPLEMENTATION: --globe-ocean in [data-theme="light"], src/index.css.
+
+## 47 · Daylight canvas labels — regular weight, opaque paper
+
+RULE (Florian, 2026-07-10: "labels not readable in light mode"): in-
+canvas satellite labels keep Plex Mono 200 on the night view but step
+up to 400 on the daylight chart, and the paper backing goes near-opaque
+(0.95, was 0.82). Same optical asymmetry as the stars (rule 3b): dark
+strokes on paper thin out at sprite scale where light-on-night reads
+heavier; and the blue ocean bled through the translucent backing and
+grayed the ink. Amends rules 4 and 39 for the light theme only.
+
+IMPLEMENTATION: labelTexture() in src/orbits/satellites.tsx (weight and
+backing switch on the ink's luminance).
+
+## 48 · Orbital flow — scheduled bars are FILLED
+
+RULE (Florian, 2026-07-10): the next-30d scheduled bars fill with the
+mid dim ink (--dim) in both themes, replacing the hollow outline; the
+NOW divider already separates past from future, and the legend swatch
+fills to match. Launched keeps the full ink, deorbited keeps dim-deep.
+
+IMPLEMENTATION: .flow-bar-sched / .flow-sw-sched (renamed from -hollow)
+in src/orbits/orbits.css + chrome.tsx.
+
+(Engineering note, same date: the pale band that crossed the globe was
+the land texture mis-filling at the antimeridian — 7 rings in the 110m
+data cross lon 180 (Fiji's at 16S was the visible one) and their wrap
+edges drew straight lines across the canvas. landTexture now unwraps
+rings, closes pole-encircling rings via the pole, and fills at the
+three seam offsets. Present since the texture shipped; the saturated
+daylight ocean made it visible.)
+
+## 48b · Scheduled bars — volt hatch (supersedes 48's dim fill)
+
+RULE (Florian, same day): the next-30d bars fill with a 45-degree volt
+hatch (2px stroke / 3px gap, --shell-accent: volt on night, volt-ink on
+daylight) — hatched-equals-planned, the engineering-drawing grammar.
+Legend swatch matches. Volt on this element is Florian's explicit
+sign-off (rule 46's process).
+
+IMPLEMENTATION: .flow-bar-sched / .flow-sw-sched repeating-linear-
+gradient in src/orbits/orbits.css.
+
+## 49 · Satellite card fits its content and hides behind the earth
+
+RULE (Florian, 2026-07-10): the click popup accommodates its data — no
+truncation; width grows to fit (max-content, 210-320px), titles wrap,
+the card may run taller. And the card is occluded like its object: when
+the satellite (or ground site) passes behind the earth, the card hides
+with it (same 0.995-radius test the labels use), returning as the
+object does.
+
+IMPLEMENTATION: .opopup / .opopup-title in orbits.css; PopupAnchor
+occlusion in scene.tsx.
+
+## 50 · Camera fit measures the real gap between the panels
+
+RULE (Florian, 2026-07-10): on load the globe fits the actual space
+between the floating panels at ANY window size — big enough to fill
+the gap, never sliding under the chrome. The old symmetric side-pad +
+breakpoint zoom steps (0/-1/-2) are replaced by true per-side spans
+(gutter 28 + HUD 272 + gap 16 left; gap 16 + rail 352 + gutter 28
+right), with the view offset derived from their difference. Every
+floating-panel width opens at the base fit; mobile keeps two steps
+wider over the stacked layout. User zoom steps are unchanged.
+
+IMPLEMENTATION: FitCamera padLeft/padRight in scene.tsx (mini3d passes
+zeros); defaultZoom simplified.
+
+## 50b · Fit air tightened
+
+RULE (Florian, same day: "fill the gap sliiiightly more"): the base fit
+radius drops 1.28 -> 1.22 globe radii; the LEO cloud's outer edge may
+crop under the chrome (the canvas-wrap fades own the top and bottom).
+
+IMPLEMENTATION: fitRadius base in scene.tsx.
