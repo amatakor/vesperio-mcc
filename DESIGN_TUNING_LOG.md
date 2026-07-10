@@ -740,3 +740,19 @@ as ruled.
 
 IMPLEMENTATION: .card-seismic .card-meta .chip:not(.chip-seismic),
 src/index.css.
+
+## 54 · The sweep clock opens the log; negative hover announces it
+
+RULE (Florian, 2026-07-10): the sweep-countdown card is a real door —
+clicking it opens /log/, the sweep changelog — and hovering it flips
+the instrument to its stated negative (the rule-53 method, no filter):
+paper face, flood and lit digits to #5200FF (the literal invert of
+volt, landing on the palette's UV family), ghosts #D9D9D9, labels to
+ink, the ARMED lamp to magenta #C60095, flood-side inks to paper, and
+the standard volt hover frame. The footer stays put like every card.
+Both themes share the values (volt and the lamp are literals). The
+hover is earned: it announces a real destination, so the instrument
+grammar stays honest.
+
+IMPLEMENTATION: .sweep-link anchor in pages.tsx (SweepCard wraps stage
++ foot); .sweep-card:hover rules at the end of src/index.css.

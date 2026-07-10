@@ -3711,3 +3711,44 @@ a.sig-card:hover .sig-p-x {
 }
 .snr-up { color: var(--acc-green); }
 .snr-down { color: var(--acc-orange); }
+
+/* --------------------------------------------- sweep clock hover (54)
+   The clock links to /log/ and announces it with the instrument's own
+   negative (stated values, the rule-53 method; the invert of volt lands
+   on the palette's UV): paper face, UV flood and digits, magenta ARMED,
+   the standard volt hover frame. Footer stays put like every card. */
+.sweep-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.sweep-card:hover {
+  background: #f5f5f5;
+  border-color: var(--shell-accent);
+  z-index: 2;
+}
+.sweep-card:hover .sweep-flood {
+  background: #5200ff; /* invert of volt #adff00 */
+}
+.sweep-card:hover .sweep-lcd-lit {
+  color: #5200ff;
+}
+.sweep-card:hover .sweep-flood .sweep-lcd-lit {
+  color: #f5f5f5; /* invert of the flood side's #0a0a0a */
+}
+.sweep-card:hover .sweep-lcd-ghost {
+  color: #d9d9d9; /* invert of #262626 */
+}
+.sweep-card:hover .sweep-flood .sweep-lcd-ghost {
+  color: #5200ff; /* ghost equals the flood color on the flood side (rule 1) */
+}
+.sweep-card:hover .sweep-lab {
+  color: #121212;
+}
+.sweep-card:hover .sweep-armed {
+  color: #c60095; /* invert of the literal #39ff6a lamp */
+}
+.sweep-card:hover .sweep-flood .sweep-lab,
+.sweep-card:hover .sweep-flood .sweep-armed {
+  color: #f5f5f5;
+}

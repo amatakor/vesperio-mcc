@@ -595,6 +595,9 @@ function SweepCountdownCard() {
   const p = `${elapsedPct.toFixed(2)}%`;
   return (
     <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
+      {/* The clock is the door to the sweep log (rule 54): the negative
+          hover announces a real destination, like every card. */}
+      <a className="sweep-link" href="/log/" aria-label="Open the sweep log">
       <div className="sweep-stage">
         <SweepFace digits={digits} />
         <div
@@ -618,6 +621,7 @@ function SweepCountdownCard() {
           </span>
         )}
       </p>
+      </a>
     </aside>
   );
 }
