@@ -35,10 +35,11 @@
   min-height: 0;
   display: flex;
   gap: 16px;
-  /* Flush with the top bar (Florian, tuning rounds 3-4): no top gap,
-     and the sitewide gutter on the sides — the band now holds the
-     content measure, so bar edges and panel edges land on one line. */
-  padding: 0 var(--gutter-page) 12px;
+  /* Edge-aligned with the BAND (Florian, tuning round 5): the top bar
+     keeps its full-bleed width and the panels move out to meet its
+     edges (no side padding; the frame shares the shell's outer width).
+     The 20px top gap is back — the bar must not touch the panels. */
+  padding: 20px 0 12px;
 }
 
 .ocol-left {
@@ -260,12 +261,13 @@
    flood: the flood is the sweep instrument's exception, not a family
    trait. */
 .hud-launch {
-  border: 1px solid var(--border-2);
+  /* Frameless (tuning round 5): the instrument sits in the HUD like the
+     other panels, slightly translucent over the canvas, no border. */
   margin: 2px 0 8px;
 }
 .hud-launch-stage {
   position: relative;
-  background: #000;
+  background: rgba(0, 0, 0, 0.72);
   height: 76px;
 }
 .hud-launch-lab {
@@ -275,7 +277,7 @@
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 1.3px;
-  color: #ededed;
+  color: var(--n7);
 }
 .hud-launch-days {
   position: absolute;
@@ -284,7 +286,7 @@
   font-size: 9px;
   font-weight: 500;
   letter-spacing: 0.8px;
-  color: #a8a8a8;
+  color: var(--text-3);
   font-variant-numeric: tabular-nums;
 }
 .hud-launch-mid {
@@ -306,8 +308,21 @@
 }
 .hud-launch-foot {
   border-top: 1px solid var(--border-1);
-  background: var(--bg-inset);
+  background: transparent;
   padding: 7px 12px 8px;
+}
+/* Light variant (Florian said yes, attempt it — tuning round 5): a
+   paper instrument, translucent white stage, volt-ink digits on light
+   ghost cells. The MCC clock THEMES; the news sweep card keeps its
+   constant black face (it carries the flood). */
+[data-theme="light"] .hud-launch-stage {
+  background: rgba(255, 255, 255, 0.72);
+}
+[data-theme="light"] .hud-launch-stage .lcd-ghost {
+  color: #dcdcd6;
+}
+[data-theme="light"] .hud-launch-stage .lcd-lit {
+  color: var(--volt-ink);
 }
 .hud-launch-foot-row {
   display: flex;
@@ -877,7 +892,7 @@
   align-items: center;
   gap: 16px;
   border-top: 1px solid var(--line);
-  padding: 10px var(--gutter-page);
+  padding: 10px 0;
   font-family: var(--mono);
   font-size: 8px;
   letter-spacing: 0.8px;

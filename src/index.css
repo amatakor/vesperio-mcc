@@ -408,11 +408,11 @@ input,
   gap: var(--sp-2) var(--sp-4);
   align-items: center;
   min-height: var(--header-h);
-  /* The band holds the content measure (tuning round 4): its edges land
-     exactly above the panels and card plates below, on every page. The
-     full-bleed variant read as "the bar is wider than the panels". */
-  margin: 0 0 var(--sp-6);
-  padding: var(--sp-2) 0;
+  /* Full-bleed band (locked, tuning round 5): pull out to the shell's
+     outer edge and pad back in, so the band runs its full width; the
+     MCC panels edge-align to the BAND, not the reverse. */
+  margin: 0 calc(-1 * var(--gutter-page)) var(--sp-6);
+  padding: var(--sp-2) var(--gutter-page);
   background: var(--bg-inset);
   border-bottom: 2px solid var(--n7);
 }
@@ -516,9 +516,15 @@ input,
 }
 .nav a:hover {
   color: var(--text-1);
+  /* Underline preview in a neutral: hover hints at the volt underline
+     the active tab carries (tuning round 5). */
+  border-bottom-color: var(--border-2);
 }
 .nav a[aria-current="page"] {
   color: var(--text-1);
+  border-bottom-color: var(--shell-accent);
+}
+.nav a[aria-current="page"]:hover {
   border-bottom-color: var(--shell-accent);
 }
 /* Theme switch: bracket-style control at the right end of the nav. */
@@ -537,6 +543,7 @@ input,
 }
 .theme-toggle:hover {
   color: var(--text-1);
+  border-bottom-color: var(--border-2);
 }
 
 /* ------------------------------------------------------------ orbits */
@@ -921,7 +928,7 @@ a.chip:hover {
   overflow: hidden;
 }
 .sweep-layer {
-  height: 108px;
+  height: 86px; /* -20%, tuning round 5 */
   position: relative;
 }
 .sweep-flood {
@@ -968,7 +975,7 @@ a.chip:hover {
 /* LCD centered in the area below the label row. */
 .sweep-mid {
   position: absolute;
-  inset: 30px 0 0 0;
+  inset: 26px 0 0 0;
   display: grid;
   place-items: center;
 }
@@ -977,10 +984,10 @@ a.chip:hover {
   display: inline-block;
   /* DSEG7's em box carries descent, so geometric centering sits the
      glyphs low; center the glyphs, not the box. */
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   font-family: "DSEG7 Classic", var(--font-ui);
   font-weight: 700; /* the DSEG7 Bold face; not mono text */
-  font-size: 45px;
+  font-size: 32px; /* -30%, tuning round 5 */
   line-height: 1;
 }
 /* Optical ink centering (DESIGN_TUNING_LOG round 12): a leading "1"
@@ -988,7 +995,7 @@ a.chip:hover {
    shift the grid left by half the delta so the INK centers. Changes at
    most hourly, so the clock never visibly wobbles. */
 .sweep-lcd.lcd-lead-1 {
-  transform: translateY(-3px) translateX(-0.245em);
+  transform: translateY(-2px) translateX(-0.245em);
 }
 /* Ghost segments must equal the flood color on the flood side, or
    disembodied segments appear in the seam wedge. */

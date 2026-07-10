@@ -190,3 +190,37 @@ footer bar indents to match.
 
 IMPLEMENTATION: `.masthead` in `src/index.css`, `.oframe-main` /
 `.obar` in `src/orbits/orbits.css`.
+
+---
+
+# Round 5 (2026-07-10, fourth review)
+
+## 15 · Sweep instrument — quieter scale
+
+RULE: sweep stage 86px (was 108), digits 32px (was 45); the seam keeps
+its ~31° slope (lean ±26px over the 86px stage). The instrument reads
+as a card among cards, not a headline.
+
+## 16 · Launch instrument — frameless, translucent, themed
+
+RULE: the MCC launch countdown drops its frame and sits slightly
+translucent over the canvas like the HUD's other panels:
+`rgba(0,0,0,.72)` stage on dark. The LIGHT variant exists (approved
+attempt): `rgba(255,255,255,.72)` stage, volt-ink digits, `#DCDCD6`
+ghost cells. The MCC clock THEMES; the news sweep card keeps its
+constant black face (it carries the flood). Label/days chip use themed
+inks (n7 / text-3).
+
+## 17 · Band and panels — final alignment rule
+
+RULE: the top bar band is FULL-BLEED (runs to the shell's outer edge);
+the MCC panels edge-align to the BAND (frame has no side padding), and
+a 20px top gap separates the bar from the panels — the bar never
+touches them. (Round 14's "band holds the content measure" is
+reverted and superseded.)
+
+## 18 · Nav hover feedback
+
+RULE: nav items respond on hover — text steps n6→n8 and a neutral
+`--border-2` underline previews the volt underline the active tab
+carries; ≤120ms linear. The theme toggle shares the treatment.

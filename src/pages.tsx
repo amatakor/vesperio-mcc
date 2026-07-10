@@ -559,8 +559,8 @@ function SweepFace({ digits }: { digits: string }) {
 
 /** First slot of the news feed, V1.1 flood-fill instrument ("options 4a"):
     the whole card face is the countdown. A volt flood advances left→right
-    as the 12h sweep window elapses; the ~30° seam (lean ±32px over the
-    108px stage) cuts through the doubled content, and the .85s linear
+    as the 12h sweep window elapses; the ~30° seam (lean ±26px over the
+    86px stage) cuts through the doubled content, and the .85s linear
     clip-path transition glides it between ticks. Renders a placeholder
     until mounted so SSR and hydration agree; ticking never changes the
     card's height, so the masonry stays put. */
@@ -601,7 +601,7 @@ function SweepCountdownCard() {
           className="sweep-flood"
           aria-hidden="true"
           style={{
-            clipPath: `polygon(0 0, calc(${p} + 32px) 0, calc(${p} - 32px) 100%, 0 100%)`,
+            clipPath: `polygon(0 0, calc(${p} + 26px) 0, calc(${p} - 26px) 100%, 0 100%)`,
           }}
         >
           <SweepFace digits={digits} />
