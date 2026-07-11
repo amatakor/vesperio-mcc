@@ -21,7 +21,7 @@ import { planElementQueries, splitRecords, stripOmm } from "./lib";
 const GP_BASE = "https://celestrak.org/NORAD/elements/gp.php";
 const REGISTRY_DIR = "src/data/registry/constellations";
 const OUT_DIR = "public/data/orbits";
-const USER_AGENT = "mcc-orbits/1.0 (+https://mcc.vesperio.ai)";
+const USER_AGENT = "mcc-orbits/1.0 (+https://vesperio.ai)";
 const DELAY_MS = 1500;
 const RETRIES = 2;
 

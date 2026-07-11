@@ -19,7 +19,7 @@ import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const OUT_DIR = "public/img/signals";
 const MANIFEST = "src/data/signal-avatars.json";
-const UA = "MCC-Vesperio avatar fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
+const UA = "MCC-Vesperio avatar fetcher (vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 2 * 1024 * 1024;
 
 const EXT_BY_TYPE: Record<string, string> = {

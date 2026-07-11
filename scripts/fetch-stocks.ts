@@ -12,7 +12,7 @@ import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 
 const OUT = "public/data/stocks";
-const UA = "mcc.vesperio.ai stock chart pipeline (contact: mail@florianwardell.com)";
+const UA = "vesperio.ai stock chart pipeline (contact: mail@florianwardell.com)";
 
 const targets: Array<{ slug: string; symbol: string }> = [];
 for (const dir of ["organizations", "constellations"]) {

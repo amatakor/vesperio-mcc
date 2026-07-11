@@ -32,7 +32,7 @@ import type { ItemsFile, ItemImage } from "../src/data/schema";
 import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
 
-const UA = "MCC-Vesperio thumbnail fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
+const UA = "MCC-Vesperio thumbnail fetcher (vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 3 * 1024 * 1024;
 const OUT_DIR = "public/img/items";
 

@@ -17,7 +17,7 @@ import { buildSpaceports, type Ll2Launch, type Ll2Location, type Ll2Pad } from "
 
 const BASE = "https://ll.thespacedevs.com/2.3.0";
 const OUT_PATH = join("public/data/orbits", "spaceports.json");
-const USER_AGENT = "mcc-orbits/1.0 (+https://mcc.vesperio.ai)";
+const USER_AGENT = "mcc-orbits/1.0 (+https://vesperio.ai)";
 const MAX_PAGES = 10;
 const RETRIES = 3;
 

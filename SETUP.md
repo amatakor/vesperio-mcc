@@ -18,9 +18,10 @@ Open Claude Code in the repo and work through BUILD_PLAN.md task by task.
 Each task is a self-contained brief with acceptance criteria.
 
 ## 4. Cloudflare Pages
-- Connect the repo in Cloudflare Pages, build command `bun run build`,
-  output `dist/`.
-- Add custom domain `mcc.vesperio.ai` (CNAME in the vesperio.com zone).
+- Connect the repo in Cloudflare Pages, build command `bun install && bun run build`,
+  output `dist/`, environment variable `BUN_VERSION=1.3.14`.
+- Add custom domain `vesperio.ai` (apex domain: the vesperio.ai zone is on
+  Cloudflare; nameservers point there from the Spaceship registrar).
 
 ## 5. First supervised sweeps
 - Trigger `update-items.yml` manually (workflow_dispatch) with only

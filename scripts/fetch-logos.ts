@@ -20,7 +20,7 @@ import { writeJsonAtomic } from "./lib/write-json-atomic";
 const REGISTRY_DIRS = ["constellations", "organizations", "spaceports", "vehicles"];
 const OUT_DIR = "public/img/registry/logos";
 const MANIFEST = "src/data/registry-logos.json";
-const UA = "MCC-Vesperio logo fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
+const UA = "MCC-Vesperio logo fetcher (vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 2 * 1024 * 1024;
 const TIMEOUT_MS = 20000;
 const CONCURRENCY = 4;

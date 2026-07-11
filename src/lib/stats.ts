@@ -14,7 +14,7 @@ import type {
   SweepLogEntry,
 } from "../data/schema";
 
-export const SITE_ORIGIN = "https://mcc.vesperio.ai";
+export const SITE_ORIGIN = "https://vesperio.ai";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

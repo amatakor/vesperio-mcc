@@ -40,7 +40,7 @@ const REGISTRY_DIRS = ["constellations", "organizations", "spaceports", "vehicle
 const LOGOS_MANIFEST = "src/data/registry-logos.json";
 const CANDIDATES_OUT = "src/data/logo-candidates.json";
 const REVIEW_OUT = "LOGO_REVIEW.md";
-const UA = "MCC-Vesperio logo candidate fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
+const UA = "MCC-Vesperio logo candidate fetcher (vesperio.ai; mail@florianwardell.com)";
 const API = "https://commons.wikimedia.org/w/api.php";
 const TIMEOUT_MS = 20000;
 const MIN_INTERVAL_MS = 1100; // <=1 req/sec

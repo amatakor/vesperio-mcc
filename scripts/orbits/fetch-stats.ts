@@ -18,7 +18,7 @@ import { buildStats, satcatDecays, type Ll2Launch } from "./lib";
 const LL2 = "https://ll.thespacedevs.com/2.3.0";
 const SATCAT_URL = "https://celestrak.org/pub/satcat.csv";
 const OUT_PATH = join("public/data/orbits", "stats.json");
-const USER_AGENT = "mcc-orbits/1.0 (+https://mcc.vesperio.ai)";
+const USER_AGENT = "mcc-orbits/1.0 (+https://vesperio.ai)";
 const MAX_PAGES = 5;
 const RETRIES = 3;
 

@@ -1,4 +1,4 @@
-# Registry fill crawl: collection rules (Task 13, mcc.vesperio.ai)
+# Registry fill crawl: collection rules (Task 13, vesperio.ai)
 
 You are collecting candidate field values for registry profiles of a tracker whose
 product promise is reliability: it must never claim more than its source supports.

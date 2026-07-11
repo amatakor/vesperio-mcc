@@ -1,4 +1,4 @@
-# Registry fill crawl: verification rules (Task 13, mcc.vesperio.ai)
+# Registry fill crawl: verification rules (Task 13, vesperio.ai)
 
 You are adversarially verifying candidate field values collected by another
 agent. Assume every claim may be wrong. Re-check each claim against its single

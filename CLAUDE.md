@@ -1,4 +1,4 @@
-# CLAUDE.md — Vesperio (mcc.vesperio.ai)
+# CLAUDE.md — Vesperio (vesperio.ai)
 
 Editorial and operational policy for this repo. Applies to the scheduled ingestion agent and to interactive @claude development work. When these rules conflict with anything else, these rules win.
 
