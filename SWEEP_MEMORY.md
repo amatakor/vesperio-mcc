@@ -1160,3 +1160,31 @@ a newer entry if a lesson changes.
   WebFetch cannot reach a source, record the honest fetch_note /
   sourceHealth outcome and move on; persistent unreachability is a
   source-health problem to surface, not to work around.
+- 2026-07-11-B: In an interactive/@claude session (not the scheduled
+  workflow), `bun run build` and even the lighter `bun scripts/check-feed.ts`
+  were consistently denied by the session's permission gate (repeated
+  retries, all "This command requires approval", no user response
+  available to grant it), while `bun scripts/sweep-context.ts`,
+  `bun scripts/signals-context.ts`, and `bun scripts/finalize-sweep.ts`
+  ran freely throughout the same session. Don't burn turns retrying
+  `bun run build` past 2-3 attempts once this pattern shows up --
+  `finalize-sweep.ts` already runs `validateItemsFile`/`validateHeldFile`/
+  `validateStateFile`/`validateSourcesFile`/`validateSourceLedgerFile` on
+  the merged output before writing (a real schema check, not nothing),
+  so a successful "merged N new, M updated, K held" message is
+  meaningful signal even without the full typecheck+vitest+vite build
+  behind it. Surface the blocked build step explicitly to the human
+  rather than silently skipping it or falsely claiming it passed.
+- 2026-07-11-C: A source-name filter restricting DISCOVERY to a single
+  outlet ("SpaceNews") still leaves the harvester's candidates.json
+  queue populated from every feed-capable source (it runs
+  deterministically ahead of the filtered agent); the correct reading
+  is to filter the queue to that source's own entries only (22 of
+  ~830 entries this run) rather than either processing the full queue
+  or ignoring it. Most of a narrow single-outlet queue on a short gap
+  duplicates stories already published by prior unfiltered sweeps
+  (dedup against `existing[]` catches this); checking whether an
+  already-published item is simply missing that outlet as a source
+  (2026-07-06-L/JJ's free-corroboration pattern) is where a
+  single-source-filtered run still adds value beyond the 1-2 genuinely
+  new items it finds.
