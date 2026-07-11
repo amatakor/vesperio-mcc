@@ -31,9 +31,10 @@
  * config record was read from. Exit 0 even when LL2 is down (logged, skipped).
  */
 
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { LL2, type Obj, fetchJson, fillV2, ll2ConfigId, ll2SearchName, pause, today } from "./lib";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 
 /** A finite number strictly greater than zero, else null (rejects 0 / null / NaN). */
 function posNum(raw: unknown): number | null {
@@ -168,7 +169,7 @@ async function main(): Promise<void> {
     }
 
     if (filledFields.length > 0 || variantWritten) {
-      writeFileSync(path, JSON.stringify(profile, null, 2) + "\n");
+      writeJsonAtomic(path, profile);
       totalFilled += filledFields.length;
       const parts = [...filledFields];
       if (variantWritten) parts.push(`variant="${String(profile.variant)}"`);

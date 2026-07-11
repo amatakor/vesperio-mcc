@@ -13,6 +13,9 @@
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { join, extname } from "node:path";
+import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
+import { sanitizeSvg, svgNeedsSanitizing } from "./lib/sanitize-svg";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const REGISTRY_DIRS = ["constellations", "organizations", "spaceports", "vehicles"];
 const OUT_DIR = "public/img/registry/logos";
@@ -146,30 +149,29 @@ function pickIcon(html: string, pageUrl: string): string | null {
 
 async function fetchIconUrl(website: string): Promise<{ iconUrl: string; finalUrl: string } | null> {
   try {
-    const res = await fetch(website, {
-      headers: { "User-Agent": UA },
-      redirect: "follow",
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-    if (!res.ok) return null;
-    const finalUrl = res.url || website;
-    const html = await res.text();
-    const iconUrl = pickIcon(html, finalUrl);
+    const res = await fetchSafeText(website, { timeoutMs: TIMEOUT_MS, headers: { "User-Agent": UA } });
+    if (res.status < 200 || res.status >= 300) return null;
+    const finalUrl = res.finalUrl || website;
+    const iconUrl = pickIcon(res.text, finalUrl);
     if (!iconUrl) return null;
     return { iconUrl, finalUrl };
-  } catch {
+  } catch (e) {
+    console.error(`fetch-logos: page fetch failed for ${website}: ${String(e)}`);
     return null;
   }
 }
 
 async function download(url: string, slug: string): Promise<string | null> {
   try {
-    const res = await fetch(url, {
+    // Through the shared safe fetcher: SSRF guard on the URL and each
+    // redirect hop, body capped at MAX_BYTES. Nothing is written on
+    // failure, unchanged; only the previously-silent error is now logged.
+    const res = await fetchSafe(url, {
+      timeoutMs: TIMEOUT_MS,
+      maxBytes: MAX_BYTES,
       headers: { "User-Agent": UA },
-      redirect: "follow",
-      signal: AbortSignal.timeout(TIMEOUT_MS),
     });
-    if (!res.ok) return null;
+    if (res.status < 200 || res.status >= 300) return null;
     const type = (res.headers.get("content-type") ?? "").split(";")[0]!.trim().toLowerCase();
     let ext = EXT_BY_TYPE[type];
     if (!ext) {
@@ -182,11 +184,24 @@ async function download(url: string, slug: string): Promise<string | null> {
         return null;
       }
     }
-    const buf = new Uint8Array(await res.arrayBuffer());
-    if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) return null;
-    writeFileSync(join(OUT_DIR, `${slug}.${ext}`), buf);
+    const buf = res.bytes;
+    if (buf.byteLength === 0) return null;
+    // SVGs are documents, not images: sanitize the script/external-reference
+    // surface (should-fix 9) before re-hosting a file the site renders.
+    let body: Uint8Array | string = buf;
+    if (ext === "svg") {
+      const svg = new TextDecoder().decode(buf);
+      if (svgNeedsSanitizing(svg)) {
+        console.warn(`fetch-logos: ${slug}: sanitized SVG from ${url} (stripped script/external refs)`);
+        body = sanitizeSvg(svg);
+      } else {
+        body = svg;
+      }
+    }
+    writeFileSync(join(OUT_DIR, `${slug}.${ext}`), body);
     return `/img/registry/logos/${slug}.${ext}`;
-  } catch {
+  } catch (e) {
+    console.error(`fetch-logos: ${slug}: icon download failed for ${url}: ${String(e)}`);
     return null;
   }
 }
@@ -277,7 +292,7 @@ async function main(): Promise<void> {
     generated_at: new Date().toISOString(),
     logos: manifest,
   };
-  writeFileSync(MANIFEST, JSON.stringify(out, null, 2) + "\n");
+  writeJsonAtomic(MANIFEST, out);
   console.log(
     `fetch-logos: ${entities.length} scanned, ${kept} kept, ${fetched} fetched, ${failed} failed/skipped, ${Object.keys(manifest).length} total in manifest`,
   );

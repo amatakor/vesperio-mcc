@@ -6,8 +6,9 @@
  *
  * Usage: bun merge-events.ts --verified <dir> --repo <root>
  */
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
@@ -52,7 +53,7 @@ for (const file of readdirSync(verifiedDir).filter((f) => f.endsWith(".json")).s
   if (keep.length === 0) { console.log(`${cand.slug}: nothing merged`); continue; }
   keep.sort((a, b) => a.date.localeCompare(b.date));
   profile.events = keep;
-  writeFileSync(profilePath, JSON.stringify(profile, null, 2) + "\n");
+  writeJsonAtomic(profilePath, profile);
   merged += keep.length;
   console.log(`${cand.slug}: ${keep.length} events`);
 }

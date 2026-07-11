@@ -9,7 +9,8 @@
  * the 15/hour free tier, plus one CelesTrak SATCAT CSV download.
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 import { join } from "node:path";
 import type { OrbitsStatsFile } from "../../src/data/schema";
 import { buildStats, satcatDecays, type Ll2Launch } from "./lib";
@@ -81,7 +82,7 @@ const file: OrbitsStatsFile = {
   ...stats,
 };
 mkdirSync("public/data/orbits", { recursive: true });
-writeFileSync(OUT_PATH, JSON.stringify(file, null, 2) + "\n");
+writeJsonAtomic(OUT_PATH, file);
 
 console.log(
   `fetch-stats: ${previous.length} past launches (180d), ` +

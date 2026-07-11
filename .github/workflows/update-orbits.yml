@@ -52,6 +52,9 @@ jobs:
       - name: Fetch spaceports (Launch Library 2)
         run: bun scripts/orbits/fetch-spaceports.ts
 
+      - name: Recompute spaceport launch totals from the fresh LL2 data
+        run: bun scripts/compute-spaceport-launches.ts
+
       - name: Fetch HUD stats (Launch Library 2 + SATCAT)
         run: bun scripts/orbits/fetch-stats.ts
 
@@ -64,13 +67,13 @@ jobs:
         run: |
           set -euo pipefail
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git diff --quiet -- public/data/orbits src/data/registry/constellations; then
+          if git diff --quiet -- public/data/orbits src/data/registry/constellations src/data/registry/spaceports; then
             echo "No orbits data changes; nothing to commit."
             exit 0
           fi
           git config user.name "mcc-orbits-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add public/data/orbits src/data/registry/constellations
+          git add public/data/orbits src/data/registry/constellations src/data/registry/spaceports
           git commit -m "orbits: data refresh ($(date -u '+%Y-%m-%d %H:%M UTC'))"
           # main may have moved during the run; these commits touch only
           # data files, so a rebase is clean or fails loudly.

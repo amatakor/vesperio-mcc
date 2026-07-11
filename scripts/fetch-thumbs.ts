@@ -29,6 +29,8 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
+import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const UA = "MCC-Vesperio thumbnail fetcher (mcc.vesperio.ai; mail@florianwardell.com)";
 const MAX_BYTES = 3 * 1024 * 1024;
@@ -179,14 +181,11 @@ function findMetaImage(html: string): string | null {
 
 async function fetchText(url: string): Promise<string | null> {
   try {
-    const res = await fetch(url, {
-      headers: { "User-Agent": UA },
-      redirect: "follow",
-      signal: AbortSignal.timeout(20000),
-    });
-    if (!res.ok) return null;
-    return await res.text();
-  } catch {
+    const res = await fetchSafeText(url, { timeoutMs: 20000, headers: { "User-Agent": UA } });
+    if (res.status < 200 || res.status >= 300) return null;
+    return res.text;
+  } catch (e) {
+    console.error(`fetch-thumbs: page fetch failed for ${url}: ${String(e)}`);
     return null;
   }
 }
@@ -211,17 +210,18 @@ async function resolveBskyArticle(postUrl: string): Promise<string | null> {
   if (!m) return null;
   const at = `at://${m[1]}/app.bsky.feed.post/${m[2]}`;
   try {
-    const res = await fetch(
+    const res = await fetchSafeText(
       `https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=${encodeURIComponent(at)}&depth=0`,
-      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) },
+      { timeoutMs: 20000, headers: { "User-Agent": UA } },
     );
-    if (!res.ok) return null;
-    const data = (await res.json()) as {
+    if (res.status < 200 || res.status >= 300) return null;
+    const data = JSON.parse(res.text) as {
       thread?: { post?: { record?: { embed?: { external?: { uri?: string } } } } };
     };
     const uri = data.thread?.post?.record?.embed?.external?.uri;
     return uri && /^https?:\/\//i.test(uri) ? uri : null;
-  } catch {
+  } catch (e) {
+    console.error(`fetch-thumbs: bluesky article resolve failed for ${postUrl}: ${String(e)}`);
     return null;
   }
 }
@@ -276,17 +276,20 @@ interface Download {
     caller cleans up rejected/unused files. */
 async function downloadImage(url: string, id: string): Promise<Download | null> {
   try {
-    const res = await fetch(url, {
+    // Through the shared safe fetcher: SSRF guard on the URL and each
+    // redirect hop, body capped at MAX_BYTES. Nothing is written on
+    // failure, unchanged; only the previously-silent error is now logged.
+    const res = await fetchSafe(url, {
+      timeoutMs: 20000,
+      maxBytes: MAX_BYTES,
       headers: { "User-Agent": UA },
-      redirect: "follow",
-      signal: AbortSignal.timeout(20000),
     });
-    if (!res.ok) return null;
+    if (res.status < 200 || res.status >= 300) return null;
     const type = (res.headers.get("content-type") ?? "").split(";")[0]!.trim();
     const ext = EXT_BY_TYPE[type];
     if (!ext) return null;
-    const buf = new Uint8Array(await res.arrayBuffer());
-    if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) return null;
+    const buf = res.bytes;
+    if (buf.byteLength === 0) return null;
     const dim = imageSize(buf);
     if (dim) {
       if (Math.min(dim.w, dim.h) < MIN_DIMENSION) return null; // favicon/tracker
@@ -297,7 +300,8 @@ async function downloadImage(url: string, id: string): Promise<Download | null> 
     const file = `${id}.${ext}`;
     writeFileSync(join(OUT_DIR, file), buf);
     return { src: `/img/items/${file}`, file, dim };
-  } catch {
+  } catch (e) {
+    console.error(`fetch-thumbs: image download failed for ${url}: ${String(e)}`);
     return null;
   }
 }
@@ -439,7 +443,7 @@ async function main(): Promise<void> {
   }
 
   if (stamped > 0 || refit > 0 || sized > 0) {
-    writeFileSync(itemsPath, JSON.stringify(data, null, 2) + "\n");
+    writeJsonAtomic(itemsPath, data);
   }
   console.log(`fetch-thumbs: ${stamped} item(s) stamped, ${refit} refit, ${sized} sized`);
 }

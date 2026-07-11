@@ -16,7 +16,8 @@
  * cutoff is the window start, so already-queued newer entries survive.)
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import type { SourcesFile } from "../src/data/schema";
 import type { CandidatesFile, FeedEntry } from "./harvest";
 import { mergeQueue, parseFeed } from "./harvest";
@@ -106,7 +107,7 @@ async function main(): Promise<void> {
     window_start: cutoff,
     candidates,
   };
-  writeFileSync(queuePath, JSON.stringify(out, null, 2) + "\n");
+  writeJsonAtomic(queuePath, out);
   console.log(
     `backfill-harvest: ${scoped.length} scoped feeds, ${candidates.length} candidates in queue (window >= ${cutoff})`,
   );

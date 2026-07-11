@@ -12,6 +12,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, extname } from "node:path";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const root = new URL("..", import.meta.url).pathname;
 const approvalsPath = join(root, "src/data/logo-approvals.json");
@@ -70,5 +71,5 @@ for (const a of approvals.approvals) {
 }
 
 manifest.generated_at = new Date().toISOString();
-writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+writeJsonAtomic(manifestPath, manifest);
 console.log(`apply-logo-approvals: ${shipped}/${approvals.approvals.length} shipped, ${approvals.rejected.length} entities left on the initials tile`);

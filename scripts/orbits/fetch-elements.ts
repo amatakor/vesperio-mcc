@@ -12,7 +12,8 @@
  * Exits non-zero only when every query fails.
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 import { join, basename } from "node:path";
 import type { ConstellationProfile, OmmRecord, OrbitsElementsFile } from "../../src/data/schema";
 import { planElementQueries, splitRecords, stripOmm } from "./lib";
@@ -128,7 +129,7 @@ for (const [i, q] of queries.entries()) {
       constellation: t.slug,
       records: mine,
     };
-    writeFileSync(outPath, JSON.stringify(file) + "\n");
+    writeJsonAtomic(outPath, file, 0);
     console.log(`  ${t.slug}: ${mine.length} records (${q.query})`);
     written++;
   }

@@ -14,6 +14,8 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import type { SignalsFile, SignalPerson } from "../src/data/schema";
+import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const OUT_DIR = "public/img/signals";
 const MANIFEST = "src/data/signal-avatars.json";
@@ -56,34 +58,40 @@ function bskyHandle(person: SignalPerson): string | null {
     lookup fails. */
 async function resolveBskyAvatar(handle: string): Promise<string | null> {
   try {
-    const res = await fetch(
+    const res = await fetchSafeText(
       `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${encodeURIComponent(handle)}`,
-      { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(20000) },
+      { timeoutMs: 20000, headers: { "User-Agent": UA } },
     );
-    if (!res.ok) return null;
-    const data = (await res.json()) as { avatar?: string };
+    if (res.status < 200 || res.status >= 300) return null;
+    const data = JSON.parse(res.text) as { avatar?: string };
     return data.avatar && /^https?:\/\//i.test(data.avatar) ? data.avatar : null;
-  } catch {
+  } catch (e) {
+    console.error(`fetch-avatars: bluesky profile lookup failed for ${handle}: ${String(e)}`);
     return null;
   }
 }
 
 async function download(url: string, id: string): Promise<string | null> {
   try {
-    const res = await fetch(url, {
+    // Through the shared safe fetcher: SSRF guard on the URL and every
+    // redirect hop, body capped at MAX_BYTES (an oversize blob throws
+    // rather than downloading in full). Nothing is written on failure,
+    // unchanged; only the previously-silent network error is now logged.
+    const res = await fetchSafe(url, {
+      timeoutMs: 20000,
+      maxBytes: MAX_BYTES,
       headers: { "User-Agent": UA },
-      redirect: "follow",
-      signal: AbortSignal.timeout(20000),
     });
-    if (!res.ok) return null;
+    if (res.status < 200 || res.status >= 300) return null;
     const type = (res.headers.get("content-type") ?? "").split(";")[0]!.trim();
     const ext = EXT_BY_TYPE[type];
     if (!ext) return null;
-    const buf = new Uint8Array(await res.arrayBuffer());
-    if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) return null;
+    const buf = res.bytes;
+    if (buf.byteLength === 0) return null;
     writeFileSync(join(OUT_DIR, `${id}.${ext}`), buf);
     return `/img/signals/${id}.${ext}`;
-  } catch {
+  } catch (e) {
+    console.error(`fetch-avatars: ${id}: download failed for ${url}: ${String(e)}`);
     return null;
   }
 }
@@ -131,7 +139,7 @@ async function main(): Promise<void> {
     }
   }
 
-  writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
+  writeJsonAtomic(MANIFEST, manifest);
   console.log(`fetch-avatars: ${Object.keys(manifest).length}/${signals.people.length} avatars`);
 }
 

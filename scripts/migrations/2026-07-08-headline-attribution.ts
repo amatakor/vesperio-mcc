@@ -7,7 +7,8 @@
  *
  * Usage: bun scripts/migrations/2026-07-08-headline-attribution.ts
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 
 const OUTLETS = new Set([
   "SpaceNews",
@@ -38,5 +39,5 @@ for (const item of data.items) {
     console.log(`  ${item.id}: dropped "${m[1]}:" prefix`);
   }
 }
-writeFileSync(PATH, JSON.stringify(data, null, 2) + "\n");
+writeJsonAtomic(PATH, data);
 console.log(`headline-attribution migration: ${changed} headline(s) cleaned`);

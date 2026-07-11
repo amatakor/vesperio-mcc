@@ -22,7 +22,8 @@
  * where <n> is the 1-based index shown by `list`.
  */
 
-import { readFileSync, writeFileSync, appendFileSync } from "node:fs";
+import { readFileSync, appendFileSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import type { HeldFile, HeldEntry } from "../src/data/schema";
 
 const HELD_PATH = "src/data/held.json";
@@ -41,7 +42,7 @@ function load(): { file: HeldFile; entries: Entry[] } {
 }
 
 function save(file: HeldFile): void {
-  writeFileSync(HELD_PATH, JSON.stringify(file, null, 2) + "\n");
+  writeJsonAtomic(HELD_PATH, file);
 }
 
 function headlineOf(e: Entry): string {

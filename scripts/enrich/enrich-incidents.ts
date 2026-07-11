@@ -25,7 +25,8 @@
  * rather than burning the budget experimenting.
  */
 
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 import { join } from "node:path";
 import { LL2, type Obj, fetchJson, isoDay, ll2ConfigId, pause, today } from "./lib";
 
@@ -186,7 +187,7 @@ async function main(): Promise<void> {
       // Keep timelines chronological for stable rendering and diffs.
       events.sort((a, b) => String(a.date).localeCompare(String(b.date)));
       profile.events = events;
-      writeFileSync(path, JSON.stringify(profile, null, 2) + "\n");
+      writeJsonAtomic(path, profile);
       appended += fileAppended;
       console.log(`enrich-incidents: ${file}: ${fileAppended} incident event(s) appended`);
     }

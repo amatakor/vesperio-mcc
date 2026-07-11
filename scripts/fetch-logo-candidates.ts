@@ -34,6 +34,7 @@
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const REGISTRY_DIRS = ["constellations", "organizations", "spaceports", "vehicles"] as const;
 const LOGOS_MANIFEST = "src/data/registry-logos.json";
@@ -333,7 +334,7 @@ function writeCandidatesJson(entries: CandidateEntry[]): void {
       "Wikimedia Commons logo candidates for Florian's per-file review. Nothing here ships to the site. status stays pending_review until Florian reviews; this script never writes any other status.",
     entries,
   };
-  writeFileSync(CANDIDATES_OUT, JSON.stringify(out, null, 2) + "\n");
+  writeJsonAtomic(CANDIDATES_OUT, out);
 }
 
 function licenseTagOf(c: Candidate): string {
