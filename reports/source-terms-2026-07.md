@@ -88,3 +88,9 @@ The 2026-07-09 verification holds as of 2026-07-11 07:09 UTC. The bare `/satelli
 | 3 | Vantor | use the site's Sanity CMS backend as a feed | no for now (B); revisit if a real feed appears |
 
 Items 3 (GCAT) and 4 (eoPortal ICEYE) of C4 are closed with evidence above and need no ruling.
+
+## Rulings (Florian, 2026-07-11) and how they were applied
+
+1. **NewSpace Index: Option A, citable.** Applied: the GATED sentence in CLAUDE.md's aggregator edge cases is replaced with the press-tier citation rule (SNR 3 provisional, cite facts and deep-link only within the quotation right, never copy tables or prose wholesale, prefer the primary sources it links). REGISTRY_V2_PLAN.md C4 closed.
+2. **CelesTrak: (b) accepted, (a) declined.** Applied: stop-on-non-200 is codified in CLAUDE.md and now ENFORCED in scripts/orbits/fetch-elements.ts (an HTTP error response is never retried and halts the run's remaining CelesTrak queries, keeping previous files; the documented 404 no-match answer stays an empty result). The declined (a) was documentation only: in practice agent tools still do not fetch celestrak.org (its robots.txt disallows claudebot site-wide, and all CelesTrak data flows through the deterministic orbits scripts), but no CLAUDE.md sentence asserts it.
+3. **Vantor: A and B combined.** Applied: the site's public Sanity content API joins the harvester as an api_json source (GROQ query projects url/title/published_at/raw_excerpt, `perspective=published` excludes drafts, canonical bare-domain URLs; verified live end to end, 20 entries, newest 2026-07-08). B is the automatic fallback: if the backend moves or closes, the harvester's normal failure handling flips the source and Vantor stories arrive via trade/wire coverage, no intervention needed. The fetch_note is removed; status reset to unverified so the first scheduled harvest re-verifies the new path.

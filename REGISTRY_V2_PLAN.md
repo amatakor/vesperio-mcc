@@ -164,8 +164,8 @@ Backfill priority: (1) vehicles via LL2 + Wikipedia (cheap, structured, immediat
 
 Status 2026-07-11 (plan Phase 5): all four items were researched with verbatim evidence in `reports/source-terms-2026-07.md`. The two mechanical items are CLOSED there (eoPortal ICEYE re-verified real with dated status notes; GCAT semantics confirmed, satcat/ftocat catalog split plus an empirical zero-F spot-check of satcat.tsv, ingestion filter documented). The two judgment items (NewSpace Index terms, CelesTrak usage policy) carry recommendations and ready-to-apply configs in the memo; the rulings stay with Florian.
 
-- NewSpace Index actual terms text (human check). RESEARCHED, ruling pending.
-- CelesTrak usage-policy page (fetch was robots-blocked; likely permissive, unconfirmed). RESEARCHED, ruling pending.
+- NewSpace Index actual terms text (human check). CLOSED: Florian ruled 2026-07-11, citable press-tier (SNR 3 provisional); CLAUDE.md edge cases updated.
+- CelesTrak usage-policy page (fetch was robots-blocked; likely permissive, unconfirmed). CLOSED: Florian ruled 2026-07-11, deterministic use continues; stop-on-non-200 codified in CLAUDE.md and enforced in fetch-elements.ts.
 - eoPortal ICEYE page (only Capella and Planet pages were verified during research; fetch before citing ICEYE figures). CLOSED.
 - GCAT/CelesTrak field semantics for satellite-anomaly (vs launch-failure) events. CLOSED.
 

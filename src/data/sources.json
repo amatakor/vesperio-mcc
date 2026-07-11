@@ -65,14 +65,13 @@
       {
         "name": "Vantor (ex-Maxar Intelligence)",
         "url": "https://www.vantor.com/company/news-bureau/",
-        "feed_type": "html",
-        "rss": null,
+        "feed_type": "api_json",
+        "rss": "https://ava0h2e5.api.sanity.io/v2025-01-01/data/query/production?perspective=published&query=%2A%5B_type%20%3D%3D%20%22article%22%20%26%26%20defined%28publishedDate%29%20%26%26%20defined%28slug.current%29%5D%20%7C%20order%28publishedDate%20desc%29%5B0...20%5D%7B%22url%22%3A%20%22https%3A//vantor.com%22%20%2B%20slug.current%2C%20title%2C%20%22published_at%22%3A%20publishedDate%2C%20%22raw_excerpt%22%3A%20coalesce%28seo.description%2C%20%22%22%29%7D",
         "cadence": "weekly",
         "language": "en",
         "tier": 1,
-        "status": "verified",
-        "notes": "Private (Advent), no SEC filings. | [2026-07-06] maxar.com/press-releases 301-redirects to vantor.com/blog/ (Vantor rebrand, consistent with 2026-07-05-P). Page loads (200) but the fetch tool only surfaced nav/footer, not the dated post listing; no candidate confirmed either way. Needs a differently-shaped fetch (e.g. a category-filtered URL) next time. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.maxar.com/press-releases) failed or moved. | [2026-07-08] Maxar rebranded to Vantor (SWEEP_MEMORY 2026-07-05-P); maxar.com redirects to vantor.com. | [2026-07-08] Fetched cleanly, no dated news items on the page (award callouts only). | [2026-07-11] fetch_note added after the plan Phase 5 endpoint probe.",
-        "fetch_note": "News bureau page is client-rendered (nav/footer only to our fetch tools; 2026-07-11 probe). A machine-readable path exists via the site's public unauthenticated Sanity CMS content API, but wiring a headless-CMS backend rather than a published feed awaits Florian's ruling (see reports/source-terms-2026-07.md). Vantor events arrive via trade/wire coverage meanwhile."
+        "status": "unverified",
+        "notes": "Private (Advent), no SEC filings. | [2026-07-06] maxar.com/press-releases 301-redirects to vantor.com/blog/ (Vantor rebrand, consistent with 2026-07-05-P). Page loads (200) but the fetch tool only surfaced nav/footer, not the dated post listing; no candidate confirmed either way. Needs a differently-shaped fetch (e.g. a category-filtered URL) next time. | [2026-07-08] URL updated after the audit Phase 1 live verification pass; old path (https://www.maxar.com/press-releases) failed or moved. | [2026-07-08] Maxar rebranded to Vantor (SWEEP_MEMORY 2026-07-05-P); maxar.com redirects to vantor.com. | [2026-07-08] Fetched cleanly, no dated news items on the page (award callouts only). | [2026-07-11] fetch_note added after the plan Phase 5 endpoint probe. | [2026-07-11] Florian ruled A+B on the Sanity CMS path (reports/source-terms-2026-07.md): the site's public content API joins the harvester as api_json (query projects url/title/published_at/raw_excerpt; perspective=published excludes drafts); if the backend ever moves or closes, normal fail handling applies and Vantor stories arrive via trade/wire coverage. Status reset to unverified so the first successful harvest re-verifies the new path."
       },
       {
         "name": "Airbus Defence and Space",

@@ -711,6 +711,29 @@ describe("youtube signals channels join the harvest", () => {
     expect(chans.map((c) => c.name).sort()).toEqual(["Creator A", "Creator B"]);
   });
 
+  test("Sanity Content Lake answers ({ result: [...] }, pre-projected) parse; junk rows are skipped", () => {
+    const SANITY = JSON.stringify({
+      query: "...",
+      result: [
+        {
+          url: "https://vantor.com/blog/esri-extend-partnership-arcgis-basemaps",
+          title: "Vantor and Esri extend partnership ",
+          published_at: "2026-07-08",
+          raw_excerpt: "Vantor and Esri extend their partnership to keep ArcGIS basemaps current.",
+        },
+        { url: "not-a-url", title: "Broken row", published_at: "2026-07-01", raw_excerpt: "" },
+        { url: "https://vantor.com/blog/untitled", title: "  ", published_at: null, raw_excerpt: "" },
+      ],
+      ms: 12,
+    });
+    const entries = parseJsonApi(SANITY);
+    expect(entries.length).toBe(1);
+    expect(entries[0]!.url).toBe("https://vantor.com/blog/esri-extend-partnership-arcgis-basemaps");
+    expect(entries[0]!.title).toBe("Vantor and Esri extend partnership");
+    expect(entries[0]!.published_at).toBe("2026-07-08T00:00:00.000Z");
+    expect(entries[0]!.raw_excerpt).toContain("ArcGIS basemaps");
+  });
+
   test("youtube Atom entries surface the video description as the excerpt", () => {
     const YT = `<feed xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
       <entry>

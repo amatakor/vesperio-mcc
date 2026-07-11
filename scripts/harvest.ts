@@ -249,9 +249,32 @@ export function parseBlueskyPosts(posts: Record<string, unknown>[]): FeedEntry[]
 }
 
 /**
+ * Sanity Content Lake query answers ({ result: [...] }): the source's own
+ * GROQ query projects entries into { url, title, published_at,
+ * raw_excerpt } directly (Vantor ruling, Florian 2026-07-11: the site's
+ * public content API is the feed; see reports/source-terms-2026-07.md).
+ * Entries missing a url or title are skipped, never guessed.
+ */
+export function parseSanityResult(result: Record<string, unknown>[]): FeedEntry[] {
+  const entries: FeedEntry[] = [];
+  for (const r of result) {
+    if (typeof r.url !== "string" || !/^https?:\/\//i.test(r.url)) continue;
+    if (typeof r.title !== "string" || r.title.trim() === "") continue;
+    entries.push({
+      url: r.url,
+      title: excerptText(r.title),
+      published_at: isoDate(typeof r.published_at === "string" ? r.published_at : null),
+      raw_excerpt: excerptText(typeof r.raw_excerpt === "string" ? r.raw_excerpt : ""),
+    });
+  }
+  return entries;
+}
+
+/**
  * Normalizes known JSON API shapes: { results: [...] } (Launch Library 2,
- * Federal Register) and { posts: [...] } (Bluesky searchPosts). Unknown
- * shapes return [] rather than guessing.
+ * Federal Register), { posts: [...] } (Bluesky searchPosts), and
+ * { result: [...] } (Sanity Content Lake, pre-projected). Unknown shapes
+ * return [] rather than guessing.
  */
 export function parseJsonApi(text: string): FeedEntry[] {
   let j: unknown;
@@ -262,6 +285,9 @@ export function parseJsonApi(text: string): FeedEntry[] {
   }
   if (typeof j === "object" && j !== null && Array.isArray((j as { posts?: unknown }).posts)) {
     return parseBlueskyPosts((j as { posts: Record<string, unknown>[] }).posts);
+  }
+  if (typeof j === "object" && j !== null && Array.isArray((j as { result?: unknown }).result)) {
+    return parseSanityResult((j as { result: Record<string, unknown>[] }).result);
   }
   if (typeof j !== "object" || j === null || !Array.isArray((j as { results?: unknown }).results)) return [];
   const entries: FeedEntry[] = [];
