@@ -26,6 +26,16 @@ const RETRIES = 2;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * A non-200 HTTP answer from CelesTrak. Per its usage policy (reviewed
+ * 2026-07-11, ruling in reports/source-terms-2026-07.md): "M2M software
+ * should immediately stop querying when it receives any non-HTTP 200
+ * responses", so this is never retried, and the run stops its remaining
+ * CelesTrak queries, keeping every previous file. The 404 no-match answer
+ * on NAME queries is CelesTrak's documented empty result, not an error.
+ */
+class CelestrakHttpError extends Error {}
+
 async function fetchGp(url: string): Promise<OmmRecord[] | null> {
   for (let attempt = 0; ; attempt++) {
     try {
@@ -34,7 +44,7 @@ async function fetchGp(url: string): Promise<OmmRecord[] | null> {
       // result (bad mapping surfaces as a "0 records" warning), not an
       // outage worth retrying.
       if (res.status === 404) return [];
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new CelestrakHttpError(`HTTP ${res.status}`);
       const text = await res.text();
       // CelesTrak answers "No GP data found" as plain text on empty matches.
       if (!text.trimStart().startsWith("[")) return [];
@@ -47,6 +57,9 @@ async function fetchGp(url: string): Promise<OmmRecord[] | null> {
       }
       return records;
     } catch (e) {
+      // HTTP error responses are never retried (see CelestrakHttpError);
+      // only network-level failures (timeouts, resets) get the backoff.
+      if (e instanceof CelestrakHttpError) throw e;
       if (attempt >= RETRIES) {
         console.error(`  FAIL ${url}: ${e instanceof Error ? e.message : String(e)}`);
         return null;
@@ -77,7 +90,21 @@ let failedQueries = 0;
 for (const [i, q] of queries.entries()) {
   if (i > 0) await sleep(DELAY_MS);
   const url = `${GP_BASE}?${q.query}&FORMAT=JSON`;
-  const records = await fetchGp(url);
+  let records: OmmRecord[] | null;
+  try {
+    records = await fetchGp(url);
+  } catch (e) {
+    // Non-200 from CelesTrak: stop ALL remaining queries this run per the
+    // usage policy; previous files stay in place, staleness surfaces to
+    // the client via fetched_at.
+    console.error(
+      `  HALT ${url}: ${e instanceof Error ? e.message : String(e)}; ` +
+        "stopping remaining CelesTrak queries this run per the usage policy.",
+    );
+    failedQueries += queries.length - i;
+    kept += queries.slice(i).reduce((n, rest) => n + rest.targets.length, 0);
+    break;
+  }
   if (records === null) {
     failedQueries++;
     kept += q.targets.length;

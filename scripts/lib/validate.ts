@@ -493,6 +493,27 @@ export function validateSourcesFile(data: unknown): string[] {
       if (src.fetch_note !== undefined && (typeof src.fetch_note !== "string" || src.fetch_note.length === 0)) {
         errors.push(`${path}.fetch_note: must be a non-empty string when present`);
       }
+      for (const key of ["etag", "last_modified"] as const) {
+        const v = src[key];
+        if (v !== undefined && v !== null && typeof v !== "string") {
+          errors.push(`${path}.${key}: must be null or a string when present`);
+        }
+      }
+      if (
+        src.newest_entry_at !== undefined &&
+        src.newest_entry_at !== null &&
+        (typeof src.newest_entry_at !== "string" || Number.isNaN(Date.parse(src.newest_entry_at)))
+      ) {
+        errors.push(`${path}.newest_entry_at: must be null or a parseable date string when present`);
+      }
+      if (
+        src.stale_streak !== undefined &&
+        (typeof src.stale_streak !== "number" ||
+          !Number.isInteger(src.stale_streak) ||
+          src.stale_streak < 0)
+      ) {
+        errors.push(`${path}.stale_streak: must be a non-negative integer when present`);
+      }
     });
   }
   return errors;

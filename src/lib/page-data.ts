@@ -104,6 +104,8 @@ export type PageData =
       ledgerSources: LedgerSource[];
       calibrationBuckets: CalibrationBucket[];
       archiveMonths: string[];
+      /** Sources currently dead or stale (Phase 5): the honest gap list. */
+      sourceProblems: { name: string; status: "dead" | "stale" }[];
     }
   | { page: "log-archive"; month: string; sweeps: SweepLogEntry[] }
   | {
