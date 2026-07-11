@@ -19,7 +19,7 @@ export const SITE_ORIGIN = "https://vesperio.ai";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export interface StatBlock {
-  /** Anchor id on /stats/, and key in stats.json. */
+  /** Anchor id on /system/, and key in stats.json. */
   id: string;
   /** Question the block answers, used as its title. */
   question: string;
@@ -41,7 +41,7 @@ export interface HeroStats {
 }
 
 function cite(answer: string, anchor: string, asOf: string): string {
-  return `"${answer}" MCC, ${SITE_ORIGIN}/stats/#${anchor}, retrieved ${asOf}.`;
+  return `"${answer}" Vesperio, ${SITE_ORIGIN}/system/#${anchor}, retrieved ${asOf}.`;
 }
 
 const sortDesc = (rows: Array<[string, number]>) =>
@@ -84,7 +84,7 @@ export function computeHero(
 
   return {
     sentence:
-      `MCC has tracked ${real.length} items from ${sources.size} distinct sources. ` +
+      `Vesperio has tracked ${real.length} items from ${sources.size} distinct sources. ` +
       `${notableUp} major-or-seismic items landed in the last 30 days, ` +
       `and the feed is averaging ${perWeek} items per week.`,
     tiles: [
@@ -120,11 +120,11 @@ export function computeStats(
   const topCat = catRows[0];
   const itemsAnswer =
     real.length === 0
-      ? "MCC has not published any items yet."
-      : `MCC tracks ${real.length} verified items across ${catRows.length} categories, led by ${topCat![0]} (${topCat![1]}).`;
+      ? "Vesperio has not published any items yet."
+      : `Vesperio tracks ${real.length} verified items across ${catRows.length} categories, led by ${topCat![0]} (${topCat![1]}).`;
   blocks.push({
     id: "items-tracked",
-    question: "What is MCC tracking?",
+    question: "What is Vesperio tracking?",
     answer: itemsAnswer,
     rows: catRows,
     method: "Count of published feed items per category, all-time. Test fixtures excluded.",
@@ -311,7 +311,7 @@ export function statsJson(hero: HeroStats, blocks: StatBlock[], generatedAt: Dat
         id: b.id,
         question: b.question,
         answer: b.answer,
-        anchor: `${SITE_ORIGIN}/stats/#${b.id}`,
+        anchor: `${SITE_ORIGIN}/system/#${b.id}`,
         rows: Object.fromEntries(b.rows),
         method: b.method,
         citation: b.citation,

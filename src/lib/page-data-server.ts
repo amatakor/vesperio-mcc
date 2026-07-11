@@ -248,13 +248,8 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
     }
     case "signals":
       return { page: "signals", people: signals, outlets: signalOutlets, avatars: signalAvatars };
-    case "stats":
-      return {
-        page: "stats",
-        hero: computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations),
-        blocks: computeStats(items, constellations, vehicles, spaceports, now),
-      };
-    case "log": {
+    case "system": {
+      // The merged page: the stats rail + the log spine in one slice.
       const { recent, archiveMonths } = splitLogWindow(sweeps, now);
       const sourceProblems = Object.values((sourcesJson as unknown as SourcesFile).categories)
         .flat()
@@ -264,7 +259,9 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       const candidates = (registryCandidatesJson as { candidates: CrossfeedCandidateRef[] })
         .candidates;
       return {
-        page: "log",
+        page: "system",
+        hero: computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations),
+        blocks: computeStats(items, constellations, vehicles, spaceports, now),
         sweeps: recent,
         totals: logTotals(sweeps),
         ledgerSources,

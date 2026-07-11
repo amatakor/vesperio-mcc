@@ -27,3 +27,18 @@ export function maxApogeeSceneUnits(records: OmmRecord[]): number {
   }
   return max;
 }
+
+// ----------------------------------------------------- ground stations
+//
+// The ground-station receiving cones (ground.tsx) are station-centric and
+// constellation-agnostic (Florian 2026-07-11, replacing the old
+// per-constellation footprint rings): apex at the station, axis along the
+// local vertical, half-angle (90 - epsilon). They scale km to globe units
+// against the mean Earth radius (globe radius 1 = 6371 km), so that
+// reference lives here as its own constant and is never inferred from the
+// equatorial radius the scene projection uses.
+
+/** Mean Earth radius for ground-station geometry, km (globe radius 1).
+ * The minimum-elevation default lives with the rest of the cone defaults
+ * in ground.tsx (CONE_DEFAULTS). */
+export const FOOTPRINT_EARTH_R_KM = 6371;

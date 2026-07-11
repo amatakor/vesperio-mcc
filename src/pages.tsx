@@ -92,8 +92,7 @@ const NAV_LINKS: Array<[string, string]> = [
   ["/registry/", "registry"],
   ["/mcc/", "mcc"],
   ["/signals/", "signals"],
-  ["/stats/", "stats"],
-  ["/log/", "log"],
+  ["/system/", "system"],
   ["/about/", "about"],
 ];
 
@@ -124,10 +123,77 @@ function ThemeToggle() {
       className="theme-toggle"
       onClick={flip}
       aria-label={light ? "Switch to dark theme" : "Switch to light theme"}
+      title={light ? "Switch to dark theme" : "Switch to light theme"}
       suppressHydrationWarning
     >
-      {light ? "[DARK]" : "[LIGHT]"}
+      {/* Sun / moon, drawn (Florian, 2026-07-12, third round: the font
+          glyphs read as dingbats). Shows the theme the click goes TO —
+          sun on night, moon on paper. The moon carries the brand mark's
+          square star; the sun's rays are square-cut. currentColor, so the
+          pair follows the nav's text-3 -> text-1 hover. */}
+      {light ? (
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+          <path d="M14 8.53A6 6 0 1 1 7.47 2 4.67 4.67 0 0 0 14 8.53Z" fill="currentColor" />
+          <rect x="11.4" y="1.6" width="2.4" height="2.4" fill="currentColor" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+          <circle cx="8" cy="8" r="3.1" fill="currentColor" />
+          <g stroke="currentColor" strokeWidth="1.3">
+            <line x1="8" y1="0.9" x2="8" y2="3.1" />
+            <line x1="8" y1="12.9" x2="8" y2="15.1" />
+            <line x1="0.9" y1="8" x2="3.1" y2="8" />
+            <line x1="12.9" y1="8" x2="15.1" y2="8" />
+            <line x1="2.98" y1="2.98" x2="4.54" y2="4.54" />
+            <line x1="11.46" y1="11.46" x2="13.02" y2="13.02" />
+            <line x1="11.46" y1="4.54" x2="13.02" y2="2.98" />
+            <line x1="2.98" y1="13.02" x2="4.54" y2="11.46" />
+          </g>
+        </svg>
+      )}
     </button>
+  );
+}
+
+/** Newsletter control in the masthead (Florian, 2026-07-11: the subscribe
+ * field lives in the menu bar; 2026-07-12: badge register, same style as
+ * the coffee button). Drops a compact panel under the bar carrying the
+ * Buttondown form; closes on Escape or an outside click. SSR renders it
+ * closed. */
+function SubscribeControl() {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+  return (
+    <span className="nav-subscribe" ref={rootRef}>
+      <button
+        type="button"
+        className="nav-badge nav-badge-sub"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        SUBSCRIBE
+      </button>
+      {open && (
+        <div className="subscribe-panel">
+          <SubscribeForm />
+        </div>
+      )}
+    </span>
   );
 }
 
@@ -149,15 +215,39 @@ export function Masthead({ current }: { current?: string }) {
           o
         </span>
       </a>
-      <span className="brand-tag">/ SPACE INTELLIGENCE</span>
+      <span className="brand-tag">/ NEW SPACE INTELLIGENCE</span>
       <nav className="nav">
         {NAV_LINKS.map(([href, label]) => (
           <a key={href} href={href} aria-current={label === current ? "page" : undefined}>
             {label}
           </a>
         ))}
+        {/* The theme switch rides with the words; the two framed badges
+            close the bar together (Florian, 2026-07-12: the glyph must not
+            sit between the framed elements). */}
         <ThemeToggle />
       </nav>
+      {/* The framed badges live in their own cluster so the narrow-window
+          grid can seat them on the brand row while the word menu takes a
+          clean full-width second row (the old single flex bar orphaned the
+          coffee badge onto a third row at mid widths). */}
+      <span className="nav-controls">
+        <SubscribeControl />
+        {/* Support button (Florian, 2026-07-11, corrected same day): FRAMED,
+            never filled — accent border + accent text — at the FAR RIGHT of
+            the menu. Links buymeacoffee.com/vesperio (Florian, 2026-07-12).
+            The cup glyph is drawn (Florian, 2026-07-12: a real coffee cup,
+            not the ◆); on narrow windows the badge collapses to the cup. */}
+        <a className="coffee-btn nav-badge nav-badge-coffee" href="https://buymeacoffee.com/vesperio" target="_blank" rel="noopener">
+          <svg className="badge-glyph" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.1">
+            <rect x="1.5" y="4.5" width="6.5" height="5.5" />
+            <path d="M8 5.5h2.2v2.6H8" />
+            <line x1="3.6" y1="1" x2="3.6" y2="3" />
+            <line x1="5.9" y1="1" x2="5.9" y2="3" />
+          </svg>
+          <span className="nav-badge-label">BUY ME A COFFEE ↗</span>
+        </a>
+      </span>
     </header>
   );
 }
@@ -171,7 +261,7 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
         <p>
           Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy</a> · <a href="/methodology/">How the SNR score works</a>
+          <a href="/about/">Verification policy →</a> · <a href="/methodology/">How the SNR score works →</a>
         </p>
         <p className="footer-feeds">
           category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
@@ -183,14 +273,6 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
 }
 
 // ------------------------------------------------------------------- feed
-
-const SNR_LABELS: Record<number, string> = {
-  1: "single source, low confidence",
-  2: "weakly corroborated",
-  3: "a few reputable sources",
-  4: "widely reported",
-  5: "direct source",
-};
 
 const SOURCE_CLASS_LABELS: Record<string, string> = {
   first_party: "first party",
@@ -256,22 +338,22 @@ function SnrAxes({ trace }: { trace: SnrTrace }) {
   const sum = corr.reduce((n, m) => n + m.delta, 0);
   const corrText =
     corr.length === 0
-      ? "untested (no corroboration modifier applies)"
-      : `${signed(sum)} from ${corr.length} rule${corr.length === 1 ? "" : "s"}`;
+      ? "not tested yet"
+      : `${signed(sum)} earned from ${corr.length} rule${corr.length === 1 ? "" : "s"}`;
   return (
     <span className="snr-pop-axes">
       <span className="snr-pop-row">
         <span className="snr-pop-delta">src</span>
-        <span>source class: tier {trace.base.tier} on its own</span>
+        <span>Lead source: tier {trace.base.tier} of 5 on its own</span>
       </span>
       <span className="snr-pop-row">
         <span className="snr-pop-delta">cor</span>
-        <span>corroboration: {corrText}</span>
+        <span>Corroboration: {corrText}</span>
       </span>
       {trace.single_class_corroboration && (
         <span className="snr-pop-row">
           <span className="snr-pop-delta">mix</span>
-          <span>corroboration is single-class (all {trace.single_class_corroboration})</span>
+          <span>All corroboration is one source class ({trace.single_class_corroboration})</span>
         </span>
       )}
     </span>
@@ -323,7 +405,7 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
         </span>
       )}
       <span className="snr-pop-foot">
-        scorer v{trace.scorer_version} ·{" "}
+        Scorer v{trace.scorer_version} ·{" "}
         <a href="/methodology/" onClick={(e) => e.stopPropagation()}>
           how scores work
         </a>
@@ -340,6 +422,52 @@ const SNR_WORDS: Record<number, string> = {
   4: "WIDELY REPORTED",
   5: "FIRST-PARTY",
 };
+
+/**
+ * Hover popover shared by the card SNR mark and the impact badge: a
+ * fixed-positioned condensed panel that escapes the card's overflow. The
+ * close is a 250ms timer, cancelled when the pointer enters the panel or
+ * returns to the trigger, so the gap between trigger and panel is
+ * crossable (the panel's link was unclickable before, 2026-07-11). The
+ * caller wires `show` on the trigger's mouseenter and `scheduleHide` on
+ * its mouseleave, and the same pair (cancelHide/scheduleHide) on the
+ * panel element. `show` positions the panel flush at the trigger edge
+ * (no spatial gap); the panel carries its own transparent hover bridge
+ * as top padding (.snr-pop-card). estHeight only steers the up/down flip.
+ */
+function useHoverPopover(width: number) {
+  const [hover, setHover] = useState(false);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelHide = () => {
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  };
+  const scheduleHide = () => {
+    cancelHide();
+    timer.current = setTimeout(() => setHover(false), 250);
+  };
+  useEffect(() => cancelHide, []);
+  const show = (anchor?: HTMLElement | null, estHeight = 300) => {
+    if (anchor) {
+      const r = anchor.getBoundingClientRect();
+      const flipUp = r.bottom + estHeight > window.innerHeight;
+      setPos({
+        top: flipUp ? Math.max(8, r.top - estHeight) : r.bottom,
+        left: Math.max(8, Math.min(r.left, window.innerWidth - width - 8)),
+      });
+    }
+    cancelHide();
+    setHover(true);
+  };
+  const hideNow = () => {
+    cancelHide();
+    setHover(false);
+  };
+  return { hover, pos, show, scheduleHide, cancelHide, hideNow };
+}
 
 /**
  * The SNR mark: five phosphor-green LED cells in a recessed bezel, N
@@ -363,8 +491,7 @@ function SnrLed({
   onCard?: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const [hover, setHover] = useState(false);
-  const [fixedPos, setFixedPos] = useState<{ top: number; left: number } | null>(null);
+  const pop = useHoverPopover(304);
   const rootRef = useRef<HTMLSpanElement>(null);
   const v = Math.max(1, Math.min(5, Math.round(snr)));
   const word = SNR_WORDS[v] ?? "";
@@ -399,7 +526,7 @@ function SnrLed({
       ))}
     </span>
   );
-  const showPop = interactive && (onCard ? hover : open || hover);
+  const showPop = interactive && (onCard ? pop.hover : open || pop.hover);
   return (
     <span
       ref={rootRef}
@@ -410,22 +537,15 @@ function SnrLed({
         interactive
           ? () => {
               if (onCard) {
-                const r = rootRef.current?.querySelector(".snr-led-bezel")?.getBoundingClientRect();
-                if (r) {
-                  const W = 304;
-                  const below = r.bottom + 6;
-                  const flipUp = below + 300 > window.innerHeight;
-                  setFixedPos({
-                    top: flipUp ? Math.max(8, r.top - 306) : below,
-                    left: Math.max(8, Math.min(r.left, window.innerWidth - W - 8)),
-                  });
-                }
+                const bezel = rootRef.current?.querySelector(".snr-led-bezel") as HTMLElement | null;
+                pop.show(bezel, 300);
+              } else {
+                pop.show();
               }
-              setHover(true);
             }
           : undefined
       }
-      onMouseLeave={interactive ? () => setHover(false) : undefined}
+      onMouseLeave={interactive ? () => (onCard ? pop.scheduleHide() : pop.hideNow()) : undefined}
     >
       {cells}
       {size === "hero" && (
@@ -448,14 +568,15 @@ function SnrLed({
           role="dialog"
           aria-label="SNR calculation"
           style={
-            onCard && fixedPos
-              ? { position: "fixed", top: fixedPos.top, left: fixedPos.left }
+            onCard && pop.pos
+              ? { position: "fixed", top: pop.pos.top, left: pop.pos.left }
               : undefined
           }
+          {...(onCard ? { onMouseEnter: pop.cancelHide, onMouseLeave: pop.scheduleHide } : {})}
         >
           <span className="snr-pop-head">
             <span>
-              snr {v}/5 · {SNR_LABELS[v]}
+              SNR {v}/5 · {word}
             </span>
             {!onCard && (
               <button
@@ -500,6 +621,76 @@ function CardMedia({ item }: { item: Item }) {
   return null;
 }
 
+/** The four importance tiers and their one-line reads (CLAUDE.md's impact
+    scale, condensed). Order is high to low; the popover marks the item's
+    own tier and mutes the rest. */
+const IMPACT_TIERS: Array<[string, string]> = [
+  ["seismic", "Reshapes competitive dynamics"],
+  ["major", "A commercial director acts on it the same day"],
+  ["notable", "Worth the morning read"],
+  ["noise", "Logged for the record, not pushed"],
+];
+
+/**
+ * The impact badge with a condensed hover popover (same mechanics as the
+ * card SNR mark, useHoverPopover): the four importance tiers listed, the
+ * item's own tier shown as its real badge and the rest muted. `variant`
+ * preserves the badge's existing look — a .chip on cards, .band-impact on
+ * item/modal bands. Importance and confidence are independent axes, so
+ * this popover never touches the SNR mark; it points at /about/#impact.
+ */
+function ImpactBadge({ impact, variant }: { impact: string; variant: "chip" | "band" }) {
+  const pop = useHoverPopover(304);
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const badgeClass = variant === "chip" ? `chip chip-${impact}` : "band-impact";
+  return (
+    <span
+      className="impact-badge"
+      onMouseEnter={() => pop.show(anchorRef.current, 180)}
+      onMouseLeave={pop.scheduleHide}
+    >
+      <span ref={anchorRef} className={badgeClass}>
+        {impact}
+      </span>
+      {pop.hover && (
+        <span
+          className="snr-pop snr-pop-card impact-pop"
+          role="dialog"
+          aria-label="Impact tiers"
+          style={pop.pos ? { position: "fixed", top: pop.pos.top, left: pop.pos.left } : undefined}
+          onMouseEnter={pop.cancelHide}
+          onMouseLeave={pop.scheduleHide}
+        >
+          <span className="snr-pop-head">
+            <span>importance</span>
+          </span>
+          {IMPACT_TIERS.map(([tier, desc]) => {
+            const self = tier === impact;
+            return (
+              <span key={tier} className="snr-pop-row impact-row">
+                <span className="impact-pop-tier">
+                  {self ? (
+                    <span className={`chip chip-${tier}`}>{tier}</span>
+                  ) : (
+                    <span className="impact-tier-muted">{tier}</span>
+                  )}
+                </span>
+                <span className={self ? "impact-desc-self" : "impact-desc-muted"}>{desc}</span>
+              </span>
+            );
+          })}
+          <span className="snr-pop-foot">
+            Importance and confidence are independent axes.{" "}
+            <a href="/about/#impact" onClick={(e) => e.stopPropagation()}>
+              What the tiers mean
+            </a>
+          </span>
+        </span>
+      )}
+    </span>
+  );
+}
+
 /** A feed card. The whole card opens the item modal; the headline and
     details keep real /item/ hrefs for crawlers and middle-click. Cards are a
     uniform width (one auto-fill column); their varying heights drive the
@@ -527,7 +718,7 @@ function Card({
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
         </a>
-        <span className={`chip chip-${item.impact}`}>{item.impact}</span>
+        <ImpactBadge impact={item.impact} variant="chip" />
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
         <span className="date">{item.date}</span>
@@ -541,10 +732,26 @@ function Card({
       )}
       <div className="card-foot">
         <SnrLed snr={item.snr} trace={item.snr_trace} onCard />
-        <span className="card-foot-div" aria-hidden="true" />
-        <span className="card-companies" title={item.companies.join(" · ")}>
-          <CompanyLinks item={item} />
-        </span>
+        {item.companies.length > 0 ? (
+          <>
+            <span className="card-foot-div" aria-hidden="true" />
+            <span className="card-companies" title={item.companies.join(" · ")}>
+              <CompanyLinks item={item} />
+            </span>
+          </>
+        ) : (
+          // No companies. The actor belongs in item.companies even when
+          // untracked (Florian, 2026-07-11) — an empty array is legitimate
+          // only when the story truly names no actor (e.g. debris with no
+          // operator identified). Then the slot shows the item's domain,
+          // one muted word, never a dead gap.
+          (() => {
+            const domain = item.tags.find((t) => (DOMAIN_TAGS as readonly string[]).includes(t));
+            return domain ? (
+              <span className="card-companies">{domain.replace(/-/g, " ").toUpperCase()}</span>
+            ) : null;
+          })()
+        )}
         <a className="card-details" href={`/item/${item.id}/`}>
           {sources} source{sources === 1 ? "" : "s"} →
         </a>
@@ -662,7 +869,7 @@ function SweepCountdownCard() {
     <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
       {/* The clock is the door to the sweep log (rule 54): the negative
           hover announces a real destination, like every card. */}
-      <a className="sweep-link" href="/log/" aria-label="Open the sweep log">
+      <a className="sweep-link" href="/system/" aria-label="Open the sweep log">
       <div className="sweep-stage">
         <SweepFace digits={digits} schedule={{ last, next, local }} />
         <div
@@ -859,7 +1066,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
       >
         <div className={`modal-band modal-band-${item.impact}`}>
           <SnrLed snr={item.snr} trace={item.snr_trace} />
-          <span className="band-impact">{item.impact}</span>
+          <ImpactBadge impact={item.impact} variant="band" />
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
           </a>
@@ -982,13 +1189,26 @@ function Pager({ current, pageCount }: { current: number; pageCount: number }) {
   );
 }
 
+/** Items appended per IntersectionObserver step on the home feed (the
+    first batch is the prerendered page-1 slice; see HomePage). */
+const FEED_BATCH = 30;
+
 export function HomePage({ data }: { data: DataFor<"home"> }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FeedFilter>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  // The full corpus, fetched lazily on the first filter/search interaction;
-  // null until it resolves, so we filter over the page-1 slice until then.
+  // The full corpus, fetched lazily on the first filter/search interaction
+  // OR when the reader scrolls past the first page; null until it resolves,
+  // so we filter over the page-1 slice until then.
   const [corpus, setCorpus] = useState<Item[] | null>(null);
+  // Progressive rendering: SSR and the first client render both emit the
+  // deterministic page-1 batch (data.items.length, keeps hydration stable);
+  // an IntersectionObserver sentinel then appends BATCH more until every
+  // item matching the active filter is shown. loadCorpus arms the corpus
+  // fetch from a scroll (the filter/search path arms it via `active`).
+  const [visible, setVisible] = useState(data.items.length);
+  const [loadCorpus, setLoadCorpus] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1011,10 +1231,11 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   const q = query.trim().toLowerCase();
   const active = q !== "" || filter !== null;
 
-  // On the first filter/search, load the full corpus so search/filter cover
-  // every item, not just the prerendered first page. getAllItems caches.
+  // On the first filter/search OR the first scroll past page 1, load the
+  // full corpus so search/filter/scroll cover every item, not just the
+  // prerendered first page. getAllItems caches.
   useEffect(() => {
-    if (!active || corpus !== null) return;
+    if ((!active && !loadCorpus) || corpus !== null) return;
     let live = true;
     void getAllItems()
       .then((all) => {
@@ -1026,7 +1247,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     return () => {
       live = false;
     };
-  }, [active, corpus]);
+  }, [active, loadCorpus, corpus]);
 
   // Base corpus to filter: the full set once loaded, else the page-1 slice.
   const base = corpus ?? data.items;
@@ -1036,6 +1257,40 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     if (filter?.kind === "tag") list = list.filter((i) => i.tags.includes(filter.value));
     return q === "" ? list : list.filter((i) => matchesQuery(i, q));
   }, [q, filter, base]);
+
+  // The batch actually rendered, and whether more remain. Two ways to have
+  // more: reveal already-loaded items (canRenderMore), or fetch the rest of
+  // the corpus first (canFetchMore, only on the un-filtered home before the
+  // corpus is in). hasMore drives the sentinel; it is deterministic at SSR
+  // (corpus null, visible = page size), so first client render matches.
+  const visibleList = useMemo(() => shown.slice(0, visible), [shown, visible]);
+  const canRenderMore = visibleList.length < shown.length;
+  const canFetchMore = corpus === null && !active && data.counts.total > data.items.length;
+  const hasMore = canRenderMore || canFetchMore;
+
+  // A new filter/search restarts batching from the first page.
+  useEffect(() => {
+    setVisible(data.items.length);
+  }, [q, filter, data.items.length]);
+
+  // Append the next batch as the sentinel nears the viewport; arm the corpus
+  // fetch the first time we run out of already-loaded items. The observer is
+  // rebuilt when the branch flags change so its closure stays current (e.g.
+  // canRenderMore flips true once the corpus lands, resuming the reveal).
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !hasMore) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        if (canFetchMore) setLoadCorpus(true);
+        if (canRenderMore) setVisible((v) => v + FEED_BATCH);
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [hasMore, canFetchMore, canRenderMore]);
 
   // Counts come precomputed over the FULL corpus (from the page slice).
   const catCounts = useMemo(
@@ -1087,7 +1342,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
           onChange={(e) => setQuery(e.target.value)}
         />
         <span className="filter-tally mono">
-          {shown.length} / {active ? base.length : data.counts.total}
+          {visibleList.length} / {active ? base.length : data.counts.total}
         </span>
         {menuOpen && (
           <div className="cat-panel">
@@ -1112,14 +1367,15 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
         )}
       </div>
       {active && shown.length === 0 ? (
-        <p className="empty">// no items match: adjust filters</p>
+        <p className="empty">No items match: adjust filters</p>
       ) : (
         <FeedList
-          list={shown}
+          list={visibleList}
           emptyNote="No items yet. The first sweep has not run."
           lead={<SweepCountdownCard />}
         />
       )}
+      {hasMore && <div ref={sentinelRef} className="feed-sentinel" aria-hidden="true" />}
       {!active && <Pager current={1} pageCount={data.pageCount} />}
     </Layout>
   );
@@ -1129,7 +1385,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
 export function FeedPagePage({ data }: { data: DataFor<"feed-page"> }) {
   return (
     <Layout current="news">
-      <h1 className="page-title">// feed · page {data.n}</h1>
+      <h1 className="page-title sec-mark">feed · page {data.n}</h1>
       <FeedList list={data.items} emptyNote="No items on this page." />
       <Pager current={data.n} pageCount={data.pageCount} />
     </Layout>
@@ -1189,7 +1445,7 @@ export function ItemPage({ item }: { item: Item }) {
     <Layout current="news">
       <article className="item-page item-wide">
         <div className="item-band">
-          <span className="band-impact">{item.impact}</span>
+          <ImpactBadge impact={item.impact} variant="band" />
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
           </a>
@@ -1223,11 +1479,11 @@ export function ItemPage({ item }: { item: Item }) {
             <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
-              <p>{item.explainer.what_happened}</p>
+              <p className="prose">{item.explainer.what_happened}</p>
             </section>
             <section className="panel">
               <h2>why it matters</h2>
-              <p>{item.explainer.why_it_matters}</p>
+              <p className="prose">{item.explainer.why_it_matters}</p>
             </section>
             {item.explainer.for_who && (
               <section className="panel">
@@ -1501,59 +1757,96 @@ function matchesRegQuery(e: RegEntry, q: string): boolean {
   return [e.name, e.affiliation, e.slug].join(" ").toLowerCase().includes(q);
 }
 
-/** Preview card shared by every section's last pane: logo, name, status, and a
- * dense spec grid of only the figures the underlying profile actually states. */
-function RegPreviewCard({ entry }: { entry: RegEntry }) {
-  const status = isOperational(entry.status)
-    ? "operational"
-    : entry.status && entry.status.length <= 24
-      ? entry.status
-      : null;
+/**
+ * Status badge descriptor: the normalized label plus an optional role-color
+ * glyph (governed mode: the glyph carries the color, ≤12px, never the text).
+ * Maps only statuses the data actually carries; anything else shows text-only
+ * or, when too long/absent, no badge at all.
+ */
+function statusBadge(status: string | null): { text: string; glyph: "live" | "state" | null } | null {
+  if (isOperational(status)) return { text: "operational", glyph: "live" };
+  if (!status || status.length > 24) return null;
+  const s = status.toLowerCase();
+  if (/plan|develop|deploy|early deployment|manufactur|engineering/.test(s))
+    return { text: status, glyph: "state" };
+  return { text: status, glyph: null };
+}
+
+/**
+ * Hero-spec accents (Florian's ruling, 2026-07-11; DESIGN_TUNING_LOG rule 63):
+ * registry CARD SPEC VALUES ONLY may carry role color, an explicit exception
+ * to the "no role color on counts" default. Scope: the .reg-spec dd figures
+ * and the 2px tile edge, nothing else (no prose, dates, or names). The map
+ * mirrors the orbits domain palette hue-for-hue, translated into the governed
+ * --acc-* set so the light theme's ink overrides apply: eo green, connectivity
+ * magenta, iot cyan, launch orange, spaceports uv, ecosystem blue.
+ */
+const CARD_ACCENT: Record<string, string> = {
+  eo: "var(--acc-green)",
+  connectivity: "var(--acc-magenta)",
+  iot: "var(--acc-cyan)",
+  vehicle: "var(--acc-orange)",
+  spaceport: "var(--acc-uv)",
+  org: "var(--acc-blue)",
+};
+
+/** The entity card: status badges, display-voice name, the accented spec
+ * grid, a clamped overview, modality chips, and the cyan open link. Clicking
+ * navigates to the entity's profile page. */
+function RegCard({ entry }: { entry: RegEntry }) {
+  const status = statusBadge(entry.status);
+  const acc = CARD_ACCENT[entry.kind];
   return (
-    <>
-      <div className="reg-pane-head">
-        <RegistryLogo slug={entry.slug} name={entry.name} />
-        {entry.name}
-        <span className="dim"> / {entry.affiliation}</span>
-      </div>
-      <a className="reg-card" href={entry.href}>
-        <div className="card-meta">
-          <span className="chip">{KIND_LABEL[entry.kind]}</span>
-          {status && <span className="chip">{status}</span>}
-          {entry.asOf && <span className="date">{entry.asOf}</span>}
-        </div>
-        <h3 className="sig-name">{entry.name}</h3>
-        {entry.specs.length > 0 && (
-          <dl className="reg-specs">
-            {entry.specs.map((s) => (
-              <div key={s.label} className="reg-spec">
-                <dt>{s.label}</dt>
-                <dd className="mono">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-        {entry.snippet ? (
-          <p className="reg-snippet">
-            {entry.snippet.length > 220 ? entry.snippet.slice(0, 220) + "..." : entry.snippet}
-          </p>
-        ) : (
-          <p className="reg-snippet dim">
-            No sourced overview yet. Unknowns stay unknown rather than estimated.
-          </p>
-        )}
-        {entry.sensors.length > 0 && (
-          <div className="tag-row">
-            {entry.sensors.map((s) => (
-              <span key={s} className="chip sig-tag">
-                {s}
+    <a
+      className="reg-card"
+      href={entry.href}
+      style={acc ? ({ "--card-acc": acc } as CSSProperties) : undefined}
+    >
+      <div className="card-meta">
+        <span className="chip">{KIND_LABEL[entry.kind]}</span>
+        {status && (
+          <span className="chip">
+            {status.glyph && (
+              <span className={`stat-glyph stat-glyph-${status.glyph}`} aria-hidden="true">
+                {status.glyph === "live" ? "●" : "◆"}
               </span>
-            ))}
-          </div>
+            )}
+            {status.text}
+          </span>
         )}
-        <span className="reg-open">facts, events &amp; sources &rarr;</span>
-      </a>
-    </>
+        {entry.asOf && <span className="date">{entry.asOf}</span>}
+      </div>
+      <h3 className="sig-name">{entry.name}</h3>
+      {entry.specs.length > 0 && (
+        <dl className="reg-specs">
+          {entry.specs.map((s) => (
+            <div key={s.label} className="reg-spec">
+              <dt>{s.label}</dt>
+              <dd className="mono">{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      {entry.snippet ? (
+        <p className="reg-snippet">
+          {entry.snippet.length > 220 ? entry.snippet.slice(0, 220) + "..." : entry.snippet}
+        </p>
+      ) : (
+        <p className="reg-snippet dim">
+          No sourced overview yet. Unknowns stay unknown rather than estimated.
+        </p>
+      )}
+      {entry.sensors.length > 0 && (
+        <div className="tag-row">
+          {entry.sensors.map((s) => (
+            <span key={s} className="chip sig-tag">
+              {s}
+            </span>
+          ))}
+        </div>
+      )}
+      <span className="reg-open">facts, events &amp; sources &rarr;</span>
+    </a>
   );
 }
 
@@ -1665,29 +1958,30 @@ interface SuperGroupConfig {
 }
 
 /**
- * The one registry browser, used by every section. Three panes (group ->
- * entity -> preview) by default; constellations pass an optional leading
- * super-group pane (domain -> operator -> fleet -> preview). Same visual
- * grammar throughout: reg-pane-head, RegRow, selection accents.
+ * The one registry browser, used by every section. Group pane(s) on the left
+ * (constellations pass an optional leading super-group pane: domain ->
+ * operator); the selected group's entities render as a full-width vertical
+ * CARD STACK on the right, topped by a company-profile bar when the group has
+ * a profile (Florian's rework, 2026-07-11: the old entity-list pane and
+ * detail panel merged into one card-stack region). Selection state is
+ * client-side; the deterministic first-group default keeps SSR and hydration
+ * identical.
  */
 function PaneBrowser({
   entries,
   superGroup,
   groupLabel,
   groupsFor,
-  entityAside,
   accent,
 }: {
   entries: RegEntry[];
   superGroup?: SuperGroupConfig;
   groupLabel: string;
   groupsFor: (scoped: RegEntry[], all: RegEntry[]) => GroupNode[];
-  entityAside: (e: RegEntry) => ReactNode;
   accent?: string;
 }) {
   const [selSuper, setSelSuper] = useState<string | null>(null);
   const [selGroup, setSelGroup] = useState<string | null>(null);
-  const [selSlug, setSelSlug] = useState<string | null>(null);
 
   let supers: Array<[string, RegEntry[]]> = [];
   let scoped = entries;
@@ -1709,7 +2003,12 @@ function PaneBrowser({
   const groups = groupsFor(scoped, entries);
   const group = groups.find((g) => g.key === selGroup) ?? groups[0];
   const groupEntries = (group ? group.entries : []).slice().sort((a, b) => a.name.localeCompare(b.name));
-  const sel = groupEntries.find((e) => e.slug === selSlug) ?? groupEntries[0];
+  // The profile bar is omitted when the group has no profile, or when it
+  // would only duplicate a lone card's own link (ICEYE > ICEYE is noise).
+  const profileHref =
+    group?.profileHref && !(groupEntries.length === 1 && groupEntries[0]!.href === group.profileHref)
+      ? group.profileHref
+      : null;
 
   const acc = superGroup && curSuper ? (superGroup.accent?.(curSuper) ?? accent) : accent;
 
@@ -1721,7 +2020,7 @@ function PaneBrowser({
       {superGroup && (
         <div className="reg-pane reg-ops">
           <div className="reg-pane-head">
-            {superGroup.label} <span className="dim">{supers.length}</span>
+            {superGroup.label} <span className="reg-pane-count">{supers.length}</span>
           </div>
           {supers.map(([k, list]) => (
             <RegRow
@@ -1732,7 +2031,6 @@ function PaneBrowser({
               onClick={() => {
                 setSelSuper(k);
                 setSelGroup(null);
-                setSelSlug(null);
               }}
             />
           ))}
@@ -1740,7 +2038,7 @@ function PaneBrowser({
       )}
       <div className="reg-pane reg-ops">
         <div className="reg-pane-head">
-          {groupLabel} <span className="dim">{groups.length}</span>
+          {groupLabel} <span className="reg-pane-count">{groups.length}</span>
         </div>
         {groups.map((g) => (
           <RegRow
@@ -1755,40 +2053,20 @@ function PaneBrowser({
                 : g.entries.length
             }
             selected={!!group && g.key === group.key}
-            onClick={() => {
-              setSelGroup(g.key);
-              setSelSlug(null);
-            }}
+            onClick={() => setSelGroup(g.key)}
           />
         ))}
       </div>
-      <div className="reg-pane reg-ents">
-        <div className="reg-pane-head">
-          {group ? group.label : ""}{" "}
-          {/* Same rule as the group rows: a count of 1 on a group that is
-              just its own entity is noise. */}
-          {!(
-            groupEntries.length === 1 &&
-            group &&
-            groupEntries[0]!.name.toLowerCase() === group.label.toLowerCase()
-          ) && <span className="dim">{groupEntries.length}</span>}
-        </div>
-        {group?.profileHref && (
-          <a className="reg-profile-link" href={group.profileHref}>
+      <div className="reg-pane reg-stack">
+        {profileHref && (
+          <a className="reg-profile-bar" href={profileHref}>
             company profile &rarr;
           </a>
         )}
         {groupEntries.map((e) => (
-          <RegRow
-            key={e.slug}
-            label={e.name}
-            aside={entityAside(e)}
-            selected={!!sel && e.slug === sel.slug}
-            onClick={() => setSelSlug(e.slug)}
-          />
+          <RegCard key={e.slug} entry={e} />
         ))}
       </div>
-      <div className="reg-pane reg-preview">{sel && <RegPreviewCard entry={sel} />}</div>
     </div>
   );
 }
@@ -1855,7 +2133,6 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
           entries={ents}
           groupLabel="provider"
           groupsFor={simpleGroups((n) => n, (g) => entityHrefFor(g, orgHrefs) ?? null)}
-          entityAside={() => "vehicle"}
           accent={SECTION_ACCENT.launch}
         />
       ),
@@ -1874,7 +2151,6 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
           superGroup={domainSuper}
           groupLabel="operator"
           groupsFor={(scoped, allEntries) => constellationGroups(scoped, allEntries, orgHrefs)}
-          entityAside={(e) => KIND_LABEL[e.kind]}
         />
       ),
     },
@@ -1891,7 +2167,6 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
           entries={ents}
           groupLabel="region"
           groupsFor={simpleGroups((r) => REGION_LABEL[r] ?? r, () => null)}
-          entityAside={() => "site"}
           accent={SECTION_ACCENT.spaceports}
         />
       ),
@@ -1909,7 +2184,6 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
           entries={ents}
           groupLabel="kind"
           groupsFor={simpleGroups((k) => ORG_KIND_LABEL[k] ?? k, () => null)}
-          entityAside={() => "organization"}
           accent={SECTION_ACCENT.ecosystem}
         />
       ),
@@ -1965,7 +2239,7 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
               </div>
             )}
             {visible.length === 0 ? (
-              <p className="empty">// nothing matches this filter</p>
+              <p className="empty">Nothing matches this filter</p>
             ) : (
               s.browser(visible)
             )}
@@ -3802,7 +4076,7 @@ export function SignalsPage({ data }: { data: DataFor<"signals"> }) {
         />
       </div>
       {filtered.length === 0 ? (
-        <p className="empty">// nobody matches: adjust filters</p>
+        <p className="empty">Nobody matches: adjust filters</p>
       ) : (
         Object.entries(BUCKET_META).map(([b, [label, tagline]]) => {
           const group = filtered.filter((p) => p.bucket === b);
@@ -3851,16 +4125,27 @@ export function SignalsPage({ data }: { data: DataFor<"signals"> }) {
 
 // ------------------------------------------------------------------ stats
 
-export function StatsPage({ data, generatedAt }: { data: DataFor<"stats">; generatedAt: string }) {
-  const hero = data.hero;
-  const blocks = data.blocks;
+/** The stats rail of the merged /system/ page (Florian, 2026-07-11): the
+ * hero tiles plus every stat block, each keeping its anchor id, table,
+ * method note, and cite-this element. Rendered as an <aside> that the
+ * SystemPage grid pins as a sticky right rail on desktop and stacks first
+ * on mobile. No Layout wrapper: SystemPage owns the shell. */
+export function StatsRail({
+  hero,
+  blocks,
+  generatedAt,
+}: {
+  hero: DataFor<"system">["hero"];
+  blocks: DataFor<"system">["blocks"];
+  generatedAt: string;
+}) {
   return (
-    <Layout current="stats">
-      <h1 className="page-title">stats</h1>
-      <p className="lede">
+    <aside className="system-rail" aria-label="Indices">
+      <h2 className="system-rail-title">indices</h2>
+      <p className="lede system-rail-lede">
         Live indices computed from Vesperio data on every build. Each block answers one question,
         states its method, and offers a ready-made citation. Machine-readable copy at{" "}
-        <a href="/stats.json">/stats.json</a>.
+        <a href="/stats.json">/stats.json →</a>.
       </p>
       <p className="hero-sentence">{hero.sentence}</p>
       <p>
@@ -3882,9 +4167,9 @@ export function StatsPage({ data, generatedAt }: { data: DataFor<"stats">; gener
             <h2>
               <a href={`#${b.id}`}>{"//"}</a> {b.question}
             </h2>
-            <p className="stat-answer">{b.answer}</p>
+            <p className="prose stat-answer">{b.answer}</p>
             {b.rows.length === 0 ? (
-              <p className="empty">// no data yet; this index fills as the feed and registry grow</p>
+              <p className="empty">No data yet; this index fills as the feed and registry grow</p>
             ) : (
               <table className="stat-table">
                 <tbody>
@@ -3913,7 +4198,7 @@ export function StatsPage({ data, generatedAt }: { data: DataFor<"stats">; gener
           </section>
         );
       })}
-    </Layout>
+    </aside>
   );
 }
 
@@ -3946,7 +4231,7 @@ const QA: Array<[string, string]> = [
   ],
   [
     "Can I cite Vesperio?",
-    "Yes. Every stat block on the stats page has a stable anchor and a pre-formatted citation string with a retrieval date, and the same numbers are served machine-readable at /stats.json.",
+    "Yes. Every stat block on the system page has a stable anchor and a pre-formatted citation string with a retrieval date, and the same numbers are served machine-readable at /stats.json.",
   ],
 ];
 
@@ -3963,9 +4248,27 @@ export function AboutPage() {
         {QA.map(([q, a]) => (
           <div className="qa-pair" key={q}>
             <h3>{q}</h3>
-            <p>{a}</p>
+            <p className="prose">{a}</p>
           </div>
         ))}
+      </section>
+      <section className="qa">
+        <h2>Impact tiers</h2>
+        <div className="qa-pair" id="impact">
+          <h3>What do the impact tiers mean?</h3>
+          <p className="prose">
+            Every item carries one of four importance tiers. Seismic reshapes competitive
+            dynamics: major M&amp;A, an operator failure, a flagship program cancelled, the first
+            flight of a new vehicle. Major is something a commercial director acts on the same day:
+            a contract or funding round with a stated value that changes the actor's trajectory, or
+            a regulatory grant or denial that changes what an operator may sell. Notable is worth
+            the morning read: a routine-sized award, an ordinary funding round, a milestone on
+            schedule. Noise is logged for the record, not pushed: a scheduled launch succeeding, a
+            routine product update, a minor partnership. Importance and confidence are independent
+            axes: a seismic rumour is seismic and low-SNR at once. When torn between two tiers, the
+            lower one wins.
+          </p>
+        </div>
       </section>
     </Layout>
   );
@@ -4037,7 +4340,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>where a score starts</h2>
-        <p>
+        <p className="prose">
           The best source attached to an item sets the base tier. First-party statements, official
           records, and directly computed data start at 5. Press-wire copy and established
           aggregators start at 4. Trade and mainstream press start at 3, as does a person on our
@@ -4045,7 +4348,7 @@ export function MethodologyPage() {
           starts at 1. Sources that cannot be named at all do not publish, whatever else they
           would score.
         </p>
-        <p>
+        <p className="prose">
           The test for first-party is strict: could the linked page be wrong about the fact
           without the actor or an official record being wrong? If yes, it is not first-party. And
           a source that has repeatedly burned us can lose its class entirely (see grading, below).
@@ -4054,7 +4357,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>what counts as one source</h2>
-        <p>
+        <p className="prose">
           Before corroboration is counted, sources are collapsed into corroboration units, because
           syndication is the cheapest way to fake breadth. URL variants of one article are one
           unit. Multiple pages on one registrable domain are one unit. And two articles whose
@@ -4067,7 +4370,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>how corroboration moves it</h2>
-        <p>
+        <p className="prose">
           Independent corroboration raises a score, and each rule fires at most once per claim: a
           second distinct unit, a fourth, and pickup by a mainstream outlet beyond the lead
           reporter. Corroboration is tested, not assumed: for any claim resting on second-hand
@@ -4078,7 +4381,7 @@ export function MethodologyPage() {
           crawl budget ran out first) costs nothing, but is recorded as not attempted rather than
           dressed up as a result.
         </p>
-        <p>
+        <p className="prose">
           There is a hard ceiling. No amount of second-hand corroboration reaches 5. Wide
           reporting IS the definition of 4; 5 is reserved for a direct source, the actor speaking
           for itself or an official record.
@@ -4087,21 +4390,21 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>scores keep moving after publication</h2>
-        <p>
+        <p className="prose">
           Two rules lift a score with time, both bounded, both automatic, both visible:
         </p>
-        <p>
+        <p className="prose">
           <strong>Reinforcement.</strong> When a matching event lands 8 to 30 days after an item
           published at SNR 1 or 2, the item is bumped by one and the new source is attached. An
           early lone signal that later reporting matches was early, not wrong, and the score says
           so retroactively. Once per item, only from 1 or 2, only inside the window.
         </p>
-        <p>
+        <p className="prose">
           <strong>Persistence.</strong> An item still below 4 that survives 14 days with nothing
           contradicting it earns one point, once, and can never pass 4 this way. Time is weak
           evidence; it counts a little and caps early.
         </p>
-        <p>
+        <p className="prose">
           Every movement, up or down, is appended to the item's stored calculation and listed in
           that sweep's entry on the log. Trace history is append-only: earlier steps are never
           rewritten to flatter the present score.
@@ -4110,7 +4413,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>claims that have to earn it</h2>
-        <p>
+        <p className="prose">
           An out-of-pattern or extraordinary claim starts at 1 whatever its source count, and
           climbs only through corroboration and survival. Any claim big enough to reshape the
           market whose best source is below first-party is treated as extraordinary automatically,
@@ -4122,7 +4425,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>when sources disagree</h2>
-        <p>
+        <p className="prose">
           A mismatch of metrics (one source counts launched satellites, another counts operational
           ones) is annotated, never punished: both numbers can be true. A genuine conflict on the
           same metric lets the better-sourced side lead and costs the loser a point. Two equally
@@ -4133,7 +4436,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>the signals-list floor</h2>
-        <p>
+        <p className="prose">
           The signals page lists people we have individually verified and chosen to trust. When
           one of them states an on-topic fact on a verified channel, the claim is floored at 4 as
           an observer, and at 5 when the person speaks for the actor concerned about itself. The
@@ -4144,7 +4447,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>fakes and spoofs</h2>
-        <p>
+        <p className="prose">
           Fake press releases are a documented attack on trackers like this one, so the two
           highest source classes are gated by domain: a page only counts as first-party or
           official record when its domain matches the actor's registry-recorded website or an
@@ -4156,7 +4459,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>sources are graded too</h2>
-        <p>
+        <p className="prose">
           Every source domain carries a rolling reliability record, rendered on the log: strikes
           for claims that lost a same-metric contradiction, credits for claims that started at 1
           or 2 and were later confirmed. Repeated strikes inside a 90-day window demote a source's
@@ -4168,7 +4471,7 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>what the score is not</h2>
-        <p>
+        <p className="prose">
           It is not importance. Importance is the separate impact label (seismic, major, notable,
           noise), and the two axes are independent: a seismic rumour is seismic AND low-SNR at the
           same time. It is not an endorsement of opinions: commentary items score the attribution
@@ -4179,18 +4482,18 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>stored, shown, and checked</h2>
-        <p>
+        <p className="prose">
           Every score is saved with its full calculation at the moment it was set: the base
           source tier, every adjustment since, and the two components (source class and
           corroboration) that fused into the integer. You can open that calculation under any
           score mark on the site.
         </p>
-        <p>
+        <p className="prose">
           Whether the scores are honest is itself measured. Each claim's score at publication is
           recorded permanently, even after later bumps change what the item displays, and compared
           against how the claim resolves: confirmed independently, debunked, or expired quiet. The
           running tally per score level is public on the{" "}
-          <a href="/log/#calibration">sweep log</a>. If our 2s turn out right as often as our 4s,
+          <a href="/system/#calibration">sweep log</a>. If our 2s turn out right as often as our 4s,
           the scale is broken and the record will show it.
         </p>
       </section>
@@ -4227,17 +4530,17 @@ export function DigestPage({ data }: { data: DataFor<"digest"> }) {
   const total = seismic.length + major.length + notable.length;
   const empty = total === 0 && movements.length === 0 && quietSweeps.length === 0;
   return (
-    <Layout current="log">
+    <Layout current="system">
       <h1 className="page-title">weekly digest</h1>
       <p className="lede">
         The last {windowDays} days at a glance: the week's items by importance, the scores that
-        moved, and the sweeps that were quiet. <a href="/log/">← sweep log</a>
+        moved, and the sweeps that were quiet. <a href="/system/">← sweep log</a>
       </p>
       <p className="dim mono">
         // {from} to {to} · {total} item{total === 1 ? "" : "s"}
       </p>
       {empty ? (
-        <p className="empty">// nothing to report in the last {windowDays} days</p>
+        <p className="empty">Nothing to report in the last {windowDays} days</p>
       ) : (
         <>
           {seismic.length > 0 && (
@@ -4308,11 +4611,17 @@ function formatSweepTimestamp(at: string): string {
 }
 
 /** One sweep's panel: timestamp, counters, summary, passes, SNR moves,
-    and coverage tags. Shared by /log and the monthly archive pages. */
+    and coverage tags. Shared by /system and the monthly archive pages. */
 function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
   return (
     <section className="panel">
       <div className="card-meta">
+        <span
+          className={`sweep-status ${s.added > 0 ? "sweep-status-live" : "sweep-status-quiet"}`}
+          aria-hidden="true"
+        >
+          {s.added > 0 ? "●" : "◆"}
+        </span>
         <span>{formatSweepTimestamp(s.at)}</span>
         <span className="chip">+{s.added}</span>
         <span className="chip">~{s.updated}</span>
@@ -4322,7 +4631,7 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
       <p className="sweep-summary">{s.summary}</p>
       {s.signals && (
         <p className="sweep-signals mono dim" title={s.signals.note}>
-          signals pass: {s.signals.checked} channel{s.signals.checked === 1 ? "" : "s"}{" "}
+          Signals pass: {s.signals.checked} channel{s.signals.checked === 1 ? "" : "s"}{" "}
           checked · {s.signals.x_attempted} X handle
           {s.signals.x_attempted === 1 ? "" : "s"} searched
           <span className="sweep-signals-note"> · {s.signals.note}</span>
@@ -4330,7 +4639,7 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
       )}
       {s.discovery && (
         <p className="sweep-signals mono dim" title={s.discovery.note}>
-          discovery pass: {s.discovery.queries} quer{s.discovery.queries === 1 ? "y" : "ies"}
+          Discovery pass: {s.discovery.queries} quer{s.discovery.queries === 1 ? "y" : "ies"}
           <span className="sweep-signals-note"> · {s.discovery.note}</span>
         </p>
       )}
@@ -4358,10 +4667,10 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
   );
 }
 
-/** Trailing-30-day KPI row at the top of /log. Compact fact grid, mono
+/** Trailing-30-day KPI row at the top of the /system/ log spine. Compact fact grid, mono
     data voice; each cell states exactly what it measures. All numbers are
     computed at build time (page-data-server), never stored as facts. */
-function LogKpiRow({ kpis }: { kpis: DataFor<"log">["kpis"] }) {
+function LogKpiRow({ kpis }: { kpis: DataFor<"system">["kpis"] }) {
   const cells: Array<[string, string, string]> = [
     ["items / day", kpis.itemsPerDay.toFixed(1), "published items in the window, per day"],
     ["lead domains", String(kpis.leadDomains), "distinct lead-source domains in the window"],
@@ -4385,7 +4694,7 @@ function LogKpiRow({ kpis }: { kpis: DataFor<"log">["kpis"] }) {
   return (
     <div className="log-kpis">
       <p className="dim mono kpi-caption">
-        // trailing {kpis.windowDays} days · {kpis.itemCount} item
+        Trailing {kpis.windowDays} days · {kpis.itemCount} item
         {kpis.itemCount === 1 ? "" : "s"} published
       </p>
       <div className="fact-grid">
@@ -4407,7 +4716,7 @@ function LogPresence({
   presence,
   windowDays,
 }: {
-  presence: DataFor<"log">["presence"];
+  presence: DataFor<"system">["presence"];
   windowDays: number;
 }) {
   const CAP = 20;
@@ -4416,12 +4725,12 @@ function LogPresence({
   return (
     <section className="panel" id="lead-source-presence">
       <h2>lead-source presence ({windowDays}d)</h2>
-      <p className="dim">
+      <p className="prose">
         Which outlets led the window's items, most-cited first. The lead source sets each item's
         base score, so a feed leaning on a few domains is a concentration worth seeing.
       </p>
       {presence.length === 0 ? (
-        <p className="empty">// no items in the window</p>
+        <p className="empty">No items in the window</p>
       ) : (
         <table className="profile">
           <thead>
@@ -4451,15 +4760,51 @@ function LogPresence({
   );
 }
 
-export function LogPage({ data }: { data: DataFor<"log"> }) {
+/** Compact email subscribe unit: a Buttondown embed form. Replaces the old
+ * inline /digest/ link (Florian, 2026-07-11); the /digest/ route and page
+ * are unchanged and still reachable by URL, this only removes the inbound
+ * link that pointed to it from the Log lede. */
+function SubscribeForm() {
+  return (
+    <div className="subscribe">
+      <p className="subscribe-label">the week&rsquo;s signal, mailed</p>
+      <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
+      <form
+        // Live Buttondown account (Florian, 2026-07-12): buttondown.com/vesperio.
+        action="https://buttondown.com/api/emails/embed-subscribe/vesperio"
+        method="post"
+        target="_blank"
+        className="subscribe-form"
+        aria-label="Newsletter subscription"
+      >
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@company.com"
+          className="subscribe-input"
+          aria-label="Email address"
+        />
+        <button type="submit" className="subscribe-btn">
+          subscribe
+        </button>
+      </form>
+    </div>
+  );
+}
+
+/** The log spine of the merged /system/ page (Florian, 2026-07-11): the
+ * lede, KPI band, sweep entries, archive chips, source health, ledger,
+ * lead-source presence, and calibration. No Layout wrapper and no page
+ * title: SystemPage owns the shell and the shared <h1>. */
+function LogBody({ data }: { data: DataFor<"system"> }) {
   const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems, kpis, presence } =
     data;
   return (
-    <Layout current="log">
-      <h1 className="page-title">sweep log</h1>
+    <div className="system-log">
       <p className="lede">
         Every sweep the machine ran, including the quiet ones. No items is a valid result; an
-        unexplained gap is not. <a href="/digest/">weekly digest →</a>
+        unexplained gap is not.
       </p>
       <p className="dim mono">
         {totals.count} sweep{totals.count === 1 ? "" : "s"} · +{totals.added} added · ~
@@ -4467,17 +4812,17 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
       </p>
       <LogKpiRow kpis={kpis} />
       {sweeps.length === 0 ? (
-        <p className="empty">// no sweeps logged yet</p>
+        <p className="empty">No sweeps logged yet</p>
       ) : (
         sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
       )}
       {archiveMonths.length > 0 && (
         <section className="panel" id="archive">
           <h2>archive</h2>
-          <p className="dim mono">// older sweeps, by month</p>
+          <p className="dim mono sec-mark">Older sweeps, by month</p>
           <div className="tag-row">
             {archiveMonths.map((m) => (
-              <a key={m} className="chip chip-tag" href={`/log/${m}/`}>
+              <a key={m} className="chip chip-tag" href={`/system/${m}/`}>
                 {m}
               </a>
             ))}
@@ -4486,13 +4831,13 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
       )}
       <section className="panel" id="source-health">
         <h2>source health</h2>
-        <p className="dim">
+        <p className="prose">
           Sources the harvester currently cannot use: dead means the fetch itself fails (three
           consecutive failures; re-probed weekly), stale means the source answers but its content
           stopped moving. An honest gap list beats a silent one.
         </p>
         {sourceProblems.length === 0 ? (
-          <p className="empty">// every registered source is fetchable and fresh</p>
+          <p className="empty">Every registered source is fetchable and fresh</p>
         ) : (
           <ul className="mono dim">
             {sourceProblems.map((s) => (
@@ -4505,14 +4850,14 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
       </section>
       <section className="panel" id="source-ledger">
         <h2>source ledger</h2>
-        <p className="dim">
+        <p className="prose">
           Rolling per-source reliability record (90-day window): strikes for claims that lost a
           same-metric contradiction, credits for claims that started low and were later confirmed.
           Machine-owned, human-audited; demotions and recoveries follow the thresholds in the
           public spec.
         </p>
         {ledgerSources.length === 0 ? (
-          <p className="empty">// no reliability events recorded yet</p>
+          <p className="empty">No reliability events recorded yet</p>
         ) : (
           <table className="profile">
             <thead>
@@ -4541,7 +4886,7 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
       <LogPresence presence={presence} windowDays={kpis.windowDays} />
       <section className="panel" id="calibration">
         <h2>calibration</h2>
-        <p className="dim">
+        <p className="prose">
           Whether the scores are honest is itself measured: every claim records its SNR at
           publication and how it later resolved. Confirmed means the claim reached SNR 4+
           independent of any whitelist floor, or a direct source landed; debunked means it lost a
@@ -4549,7 +4894,7 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
           expired without a signal either way.
         </p>
         {calibrationBuckets.length === 0 ? (
-          <p className="empty">// no scored claims recorded yet</p>
+          <p className="empty">No scored claims recorded yet</p>
         ) : (
           <table className="profile">
             <thead>
@@ -4581,23 +4926,49 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
           </table>
         )}
       </section>
+    </div>
+  );
+}
+
+/** The merged System page (Florian, 2026-07-11): Stats and Log fused at
+ * /system/. Desktop grid = the log spine on the LEFT (the page's backbone:
+ * lede, KPIs, sweeps, ledger, calibration, archive) and the stats rail
+ * STICKY on the right (~340px). Mobile stacks to one column with the stats
+ * band FIRST (CSS order), then the log. Both old URLs (/stats/, /log/)
+ * 301-redirect here via public/_redirects; the anchor ids on every stat
+ * block are preserved so #launch-cadence etc. keep resolving. */
+export function SystemPage({
+  data,
+  generatedAt,
+}: {
+  data: DataFor<"system">;
+  generatedAt: string;
+}) {
+  return (
+    <Layout current="system">
+      <h1 className="page-title">system</h1>
+      <div className="system-grid">
+        <LogBody data={data} />
+        <StatsRail hero={data.hero} blocks={data.blocks} generatedAt={generatedAt} />
+      </div>
     </Layout>
   );
 }
 
-/** A month's archived sweeps, rendered from the same entry component as /log. */
+/** A month's archived sweeps, rendered from the same entry component as the
+ * /system/ log spine. */
 export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
   return (
-    <Layout current="log">
-      <h1 className="page-title">// sweep log · {data.month}</h1>
+    <Layout current="system">
+      <h1 className="page-title sec-mark">sweep log · {data.month}</h1>
       <p className="lede">Archived sweep entries from {data.month}.</p>
       {data.sweeps.length === 0 ? (
-        <p className="empty">// no sweeps in this month</p>
+        <p className="empty">No sweeps in this month</p>
       ) : (
         data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
       )}
       <p>
-        <a href="/log/">Back to the sweep log</a>
+        <a href="/system/">Back to the sweep log</a>
       </p>
     </Layout>
   );

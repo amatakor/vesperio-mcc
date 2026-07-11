@@ -11,10 +11,12 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
+  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 import type { ConstellationDomain } from "../data/schema";
+import { CONE_DEFAULTS } from "./ground";
 
 /**
  * Scroll container with a fully bespoke scrollbar: the native scrollbar
@@ -120,18 +122,41 @@ export interface RailCategory {
   rows: RailRow[];
 }
 
+/** One ground-station operator group (round 4): KSAT, SSC, then the
+ * independents; expands to per-station toggle rows like a fleet. */
+export interface RailGsOperator {
+  id: string;
+  label: string;
+  /** Any station of this operator enabled. */
+  on: boolean;
+  collapsed: boolean;
+  stations: { key: string; name: string; on: boolean }[];
+}
+
 export interface RailProps {
   categories: RailCategory[];
   trackedTotal: number;
   allOff: boolean;
   spaceports: { on: boolean; count: number | null };
   facilities: { on: boolean; count: number | null };
+  groundStations: {
+    on: boolean;
+    count: number | null;
+    /** Whole-group expander state (collapse key "gs"). */
+    collapsed: boolean;
+    operators: RailGsOperator[];
+  };
   onToggleCloud(slug: string): void;
   onFocus(slug: string): void;
   onToggleCategoryCloud(id: ConstellationDomain): void;
   onToggleCollapse(key: string): void;
   onToggleSpaceports(): void;
   onToggleFacilities(): void;
+  onToggleGroundStations(): void;
+  /** Per-station toggle; key is the station name. */
+  onToggleStation(key: string): void;
+  /** Operator group toggle (all of its stations, fleet grammar). */
+  onToggleStationOperator(id: string): void;
   onRestoreDefaults(): void;
 }
 
@@ -183,10 +208,19 @@ function OrbToggle({
   );
 }
 
-function Row({ row, p }: { row: RailRow; p: RailProps }) {
+function Row({ row, colorToken, p }: { row: RailRow; colorToken: string; p: RailProps }) {
   const loading = row.status === "loading";
+  // When focused, the highlight carries this row's domain neon: the inset
+  // left edge and a faint background tint both read from --rl-focus-neon
+  // (set only on the focused row; orbits.css falls back to --n7 otherwise).
+  const focusStyle = row.focused
+    ? ({ "--rl-focus-neon": `var(${colorToken})` } as CSSProperties)
+    : undefined;
   return (
-    <div className={`rl-row${row.child ? " rl-child" : ""}${row.focused ? " rl-focused" : ""}`}>
+    <div
+      className={`rl-row${row.child ? " rl-child" : ""}${row.focused ? " rl-focused" : ""}`}
+      style={focusStyle}
+    >
       <span className="rl-cell-exp">
         {row.fleet && (
           <button
@@ -279,11 +313,98 @@ export function LayerRail(p: RailProps) {
               />
               <span />
             </div>
-            {!cat.collapsed && cat.rows.map((row) => <Row key={row.slug} row={row} p={p} />)}
+            {!cat.collapsed &&
+              cat.rows.map((row) => (
+                <Row key={row.slug} row={row} colorToken={cat.colorToken} p={p} />
+              ))}
           </div>
         ))}
 
         <div className="rl-ground-label">GROUND</div>
+        {/* Ground stations lead the GROUND group (Florian, 2026-07-12) and
+            replicate the constellation tree grammar 1:1 (round 7):
+            category header row (like EO) > operator group rows (like
+            fleets: expander + count + SAT toggle) > indented station child
+            rows. Same classes, same mechanics; only the ORB focus column
+            stays empty (nothing to focus). */}
+        <div className="rl-row rl-cat">
+          <span className="rl-cell-exp">
+            {p.groundStations.operators.length > 0 && (
+              <button
+                type="button"
+                className="rl-exp"
+                aria-label={
+                  p.groundStations.collapsed
+                    ? "Expand ground stations"
+                    : "Collapse ground stations"
+                }
+                onClick={() => p.onToggleCollapse("gs")}
+              >
+                {p.groundStations.collapsed ? "+" : "−"}
+              </button>
+            )}
+          </span>
+          <span className="rl-cat-name">
+            <i className="rl-swatch" style={{ background: "var(--neon-reserve)" }} />
+            GROUND STATIONS
+          </span>
+          <span className="rl-count">{p.groundStations.count ?? ""}</span>
+          <SatToggle
+            on={p.groundStations.on}
+            label={`${p.groundStations.on ? "Hide" : "Show"} every ground station`}
+            onClick={p.onToggleGroundStations}
+          />
+          <span />
+        </div>
+        {!p.groundStations.collapsed &&
+          p.groundStations.operators.map((op) => (
+            <div key={op.id}>
+              {/* Operators indent one step under the category, stations a
+                  second step (Florian, 2026-07-11: the flush-left operator
+                  rows read as siblings of GROUND STATIONS, not children). */}
+              <div className="rl-row rl-child">
+                <span className="rl-cell-exp">
+                  <button
+                    type="button"
+                    className="rl-exp"
+                    aria-label={op.collapsed ? `Expand ${op.label}` : `Collapse ${op.label}`}
+                    onClick={() => p.onToggleCollapse(`gs:${op.id}`)}
+                  >
+                    {op.collapsed ? "+" : "−"}
+                  </button>
+                </span>
+                <span className="rl-name">{op.label}</span>
+                <span className="rl-count">{op.stations.length}</span>
+                <SatToggle
+                  on={op.on}
+                  label={`${op.on ? "Hide" : "Show"} every ${op.label} station`}
+                  onClick={() => p.onToggleStationOperator(op.id)}
+                />
+                <span />
+              </div>
+              {!op.collapsed &&
+                op.stations.map((st) => (
+                  <div key={st.key} className="rl-row rl-child rl-child2">
+                    <span className="rl-cell-exp">
+                      <span className="rl-tree" aria-hidden="true" />
+                    </span>
+                    <span className="rl-name">{st.name.toUpperCase()}</span>
+                    <span className="rl-count" />
+                    <SatToggle
+                      on={st.on}
+                      label={`${st.on ? "Hide" : "Show"} ${st.name}`}
+                      onClick={() => p.onToggleStation(st.key)}
+                    />
+                    <span />
+                  </div>
+                ))}
+            </div>
+          ))}
+        {p.groundStations.on && (
+          <div className="rl-foot-note">
+            CONES: {CONE_DEFAULTS.minElevDeg}&deg; MIN ELEVATION
+          </div>
+        )}
         <div className="rl-row">
           <span />
           <span className="rl-name">SPACEPORTS</span>

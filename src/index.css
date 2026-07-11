@@ -260,14 +260,43 @@
 
   --bg-inset: #ffffff;
 
-  --acc-green: #128a38;
-  --acc-red: #d12619;
+  /* Accent policy on paper (Florian, 2026-07-11): the light theme keeps
+     the SAME bright accents as night wherever they hold on paper; the
+     darkened ink variant is the deliberate alternative for hues that
+     physically vanish on a light ground (the volt -> volt-ink precedent).
+     Bright green (#39ff6a) and cyan (#00f0ff) sit near 1.3:1 on paper --
+     invisible, not dull -- so those two keep ink values; cyan is also the
+     running-text link color and must stay readable. Everything else
+     carries the night hue unchanged. */
+  --acc-green: #128a38; /* ink: bright green unreadable on paper */
+  --acc-red: #ff2e1e;
   --acc-yellow: #ffff00; /* fills only, black text — unchanged */
-  --acc-orange: #c56a00;
-  --acc-cyan: #007a87;
-  --acc-blue: #2666d1;
-  --acc-magenta: #c217a0;
-  --acc-uv: #7434d6;
+  --acc-orange: #ff8a00;
+  --acc-cyan: #007a87; /* ink: links must stay legible on paper */
+  --acc-blue: #2e7cff;
+  --acc-magenta: #ff2ed2;
+  --acc-uv: #8c45ff;
+
+  /* Chip/badge grammar in light mode (2026-07-11): the -dim token is the
+     RECEDING border, the base accent the STRONGER text -- softer border,
+     stronger text, one hue. The dark block hand-picks its dims; the light
+     block overrode only the BASE accents, so border and text collapsed to
+     the same value (NOTABLE read border == text). Each dim below is the
+     accent mixed 60% toward the page ground (--n0), tuned so the border
+     recedes from the text yet keeps >= 2:1 contrast on the --n1 /
+     --bg-panel card grounds; the guide's 45% failed 2:1 for green, orange,
+     and cyan, so 60% is the floor. FILLED badges (MAJOR yellow, SEISMIC
+     red) use the base accent as a solid fill and are unaffected. */
+  --acc-green-dim: color-mix(in srgb, var(--acc-green) 60%, var(--n0));
+  --acc-red-dim: color-mix(in srgb, var(--acc-red) 60%, var(--n0));
+  /* yellow is fill-only in light mode (never a border); it cannot reach
+     2:1 on a light ground at any mix, kept here for grammar completeness. */
+  --acc-yellow-dim: color-mix(in srgb, var(--acc-yellow) 60%, var(--n0));
+  --acc-orange-dim: color-mix(in srgb, var(--acc-orange) 60%, var(--n0));
+  --acc-cyan-dim: color-mix(in srgb, var(--acc-cyan) 60%, var(--n0));
+  --acc-blue-dim: color-mix(in srgb, var(--acc-blue) 60%, var(--n0));
+  --acc-magenta-dim: color-mix(in srgb, var(--acc-magenta) 60%, var(--n0));
+  --acc-uv-dim: color-mix(in srgb, var(--acc-uv) 60%, var(--n0));
 
   --shell-accent: var(--volt-ink);
   --focus-ring: var(--volt-ink);
@@ -324,6 +353,29 @@ p {
   font-family: var(--font-ui);
 }
 
+/* READING VOICE (four-voice scheme, Florian 2026-07-11): the fourth voice
+   and the ONLY normal-case one. IBM Plex Sans 14/400/1.6, sentence case,
+   primary ink on the page ground — for long multi-sentence prose the
+   reader actually sits with: the About Q&A answers, the methodology and
+   stats/log explanatory paragraphs, and the item page's what-happened /
+   why-it-matters explainer. The other three voices are unchanged: sans
+   caps stays the DISPLAY voice (titles), mono caps the label voice (tags,
+   chips, labels), mono normal case the DATA voice (blurbs, taglines,
+   captions, ledes, and everything rendered from data). Proportional
+   figures, not the body's tabular data figures — this is reading, not a
+   table. */
+.prose {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-1);
+  font-variant-numeric: normal;
+  max-width: 46rem;
+}
+
 /* MONO IS NEVER BOLD: cap every bold element at 500 (counts, names,
    filled badges, panel titles). Emphasis comes from color, tracking,
    or size — never weight. */
@@ -343,6 +395,18 @@ h5,
 h6,
 th {
   font-weight: 500;
+}
+/* Heading floor (Florian, 2026-07-11, typography round 2): an unclassed
+   section heading is a mono-caps instrument label, never big mono in
+   normal case (browser h2 size in the body mono read as a lowercase
+   sentence shouting). Display-voice and register classes (page-title,
+   card-headline, .qa h2, modal/profile registers) override as before. */
+h2,
+h3,
+h4 {
+  font-size: 11px;
+  letter-spacing: var(--ls-inst);
+  text-transform: uppercase;
 }
 
 /* Links are cyan constants in both themes; hover goes primary. */
@@ -420,9 +484,10 @@ input,
 
 /* ---------------------------------------------------------- masthead */
 
-/* Top bar (V1.1): 64px, inset ground, 2px n7 rule below. Brand lockup =
-   Negative Star mark tile + Space Grotesk wordmark (lowercase, square
-   ALWAYS-LIT i-dot) + "/ SPACE INTELLIGENCE" in the label register. */
+/* Top bar (V1.1): 64px, inset ground, 1px shell-accent rule below. Brand
+   lockup = Negative Star mark tile + Space Grotesk wordmark (lowercase,
+   square ALWAYS-LIT i-dot) + "/ NEW SPACE INTELLIGENCE" in the label
+   register. */
 .masthead {
   display: flex;
   flex-wrap: wrap;
@@ -433,11 +498,33 @@ input,
      rule 44c): no band surface in either theme — the dark theme always
      read this way because band and page were both near-black, and the
      light theme now matches. The brand and nav align flush with the
-     content edge; the 2px rule below is the masthead's only mark. */
+     content edge; the hairline below is the masthead's only mark —
+     1px shell accent (Florian, 2026-07-11: thinner, volt; volt-ink on
+     paper via the themed token). */
   margin: 0 0 var(--sp-6);
   padding: var(--sp-2) 0;
-  background: var(--bg);
-  border-bottom: 2px solid var(--n7);
+  /* Sticky top bar (Florian, 2026-07-11): the news masonry scrolls behind
+     it, so the ground must be OPAQUE — --bg-page (the V1.1 page-ground
+     token; the old --bg alias resolved to it). z-index 100 clears the card
+     grid and the volt card-hover frames (z-index 2) and the cat/snr
+     popovers (30/40), and stays under the item modal backdrop (500) that
+     is meant to cover the header. On /mcc/ the header lives in a short
+     .orbits-head-shell that holds only the masthead, so sticky degrades to
+     normal flow there (nothing to stick over) — no misbehavior. */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--shell-accent);
+  /* Full-bleed ground (fix, 2026-07-11): the sticky bar must cover the
+     page gutters too, or card edges and hover frames scroll up visibly
+     beside it (Florian's "line into the menu"). Negative margins bleed
+     the ground and hairline to the window edges; the same gutter returns
+     as padding so brand and nav hold the content line. */
+  margin-left: calc(-1 * var(--gutter-page));
+  margin-right: calc(-1 * var(--gutter-page));
+  padding-left: var(--gutter-page);
+  padding-right: var(--gutter-page);
 }
 
 .brand {
@@ -529,44 +616,186 @@ input,
   margin-left: auto;
 }
 .nav a {
+  position: relative;
   color: var(--text-2);
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: var(--ls-label);
   padding: 0 0 5px;
-  border-bottom: 2px solid transparent;
 }
-.nav a:hover {
-  color: var(--text-1);
-  /* Underline preview in a neutral: hover hints at the volt underline
-     the active tab carries (tuning round 5). */
-  border-bottom-color: var(--border-2);
+/* Selection-fill hover (Florian picked variant 02, 2026-07-11, from the
+   six-way demo): the label floods volt with ink text, the site's own
+   selection grammar. A ::before block grows left->right (WIDTH animated,
+   never transform); the label ink flips just after the flood passes.
+   The ACTIVE tab keeps the volt underline — position is a rule, action is
+   a flood. Bracket controls (theme toggle, subscribe, support) opt out via
+   :not(.nav-support) and keep the neutral hint. */
+.nav a:not(.nav-support):not(.coffee-btn) {
+  padding: 3px 5px 5px;
+  z-index: 0;
 }
+.nav a:not(.nav-support):not(.coffee-btn)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  /* Selection tokens, not --shell-accent: the flood stays literal VOLT on
+     both themes, exactly like ::selection ("fills keep their hue"). */
+  background: var(--selection-bg);
+  transition: width 130ms ease-out;
+  z-index: -1;
+}
+.nav a:not(.nav-support):not(.coffee-btn):hover {
+  color: var(--selection-fg, #0a0a0a);
+  transition: color 90ms ease-out 40ms;
+}
+.nav a:not(.nav-support):not(.coffee-btn):hover::before {
+  width: 100%;
+}
+/* Active tab: the volt rule marks position; it stays under the flood. */
 .nav a[aria-current="page"] {
   color: var(--text-1);
-  border-bottom-color: var(--shell-accent);
 }
-.nav a[aria-current="page"]:hover {
-  border-bottom-color: var(--shell-accent);
+.nav a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--shell-accent);
 }
-/* Theme switch: bracket-style control at the right end of the nav. */
+/* 12px nav glyphs (Stats bar-chart, Log ledger): seat on the mono cap row
+   and follow currentColor. The underline sweep above still runs on them. */
+.nav-glyph {
+  display: inline-block;
+  vertical-align: middle;
+  width: 12px;
+  height: 12px;
+  margin-bottom: 1px;
+}
+/* Nav badge controls (Florian, 2026-07-12, glyph-pack badge reference):
+   SUBSCRIBE and BUY ME A COFFEE share the BADGE grammar exactly —
+   dim-hue border + colored text + leading glyph. Accent is themed (volt
+   on night, volt-ink on paper); the border is the accent receded 45%
+   toward the page ground, like the chip dims. 24px badge height, roomy
+   padding. Hover brightens the border to the full accent; never filled.
+   The pair lives in .nav-controls, its own masthead cluster, so narrow
+   windows can seat it apart from the word menu. */
+.nav-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.nav-controls .nav-badge {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 24px;
+  padding: 0 var(--sp-4);
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--shell-accent) 55%, var(--bg-page));
+  color: var(--shell-accent);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.nav-controls .nav-badge::before {
+  /* The pack's glyphs, ≤12px, in the text hue: + = add (subscribe);
+     the coffee badge carries a drawn cup (inline .badge-glyph SVG). */
+  font-size: 9px;
+  line-height: 1;
+}
+.nav-controls .nav-badge-sub::before {
+  content: "+";
+  font-size: 11px;
+}
+.nav-controls .nav-badge .badge-glyph {
+  display: block;
+  flex: none;
+}
+.nav-controls .nav-badge:hover {
+  border-color: var(--shell-accent);
+}
+@media (max-width: 40rem) {
+  /* The coffee badge collapses to the cup alone: the affordance stays,
+     the label's ~130px goes back to the bar (it used to hide outright). */
+  .nav-controls .nav-badge-coffee {
+    width: 24px;
+    padding: 0;
+    justify-content: center;
+  }
+  .nav-controls .nav-badge-coffee .nav-badge-label {
+    display: none;
+  }
+}
+
+/* Theme switch (Florian, 2026-07-12, third round: drawn SVG sun/moon —
+   the font glyphs read as dingbats). The sun's rays are square-cut, the
+   moon carries the brand mark's square star; both follow currentColor.
+   Same vertical metrics as the nav links (3/5 padding, the 2026-07-12
+   alignment lock). */
 .theme-toggle {
   appearance: none;
   background: none;
   border: 0;
-  padding: 0 0 5px;
+  position: relative;
+  padding: 3px 0 5px;
   cursor: pointer;
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: var(--ls-label);
+  line-height: 1;
+  align-self: center;
   color: var(--text-3);
-  border-bottom: 2px solid transparent;
+}
+.theme-toggle svg {
+  display: block;
 }
 .theme-toggle:hover {
   color: var(--text-1);
-  border-bottom-color: var(--border-2);
+}
+
+/* Narrow-window masthead (Florian, 2026-07-12: "janky when resized").
+   Below the single-row fit (~1130px content) the bar becomes a deliberate
+   two-row grid: brand + tag + framed badges on the first row, the word
+   menu (with the theme switch) flush left on its own full-width second
+   row. The old flex wrap dropped the whole nav right-aligned under a
+   dead half-bar, then orphaned the coffee badge onto a third row. */
+@media (max-width: 72rem) {
+  .masthead {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .brand-tag {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .nav-controls {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-left: 0;
+  }
+}
+@media (max-width: 30rem) {
+  /* Phone widths: tighten the word gap so the menu holds one line as
+     long as it can; when it does wrap, rows stay flush left. */
+  .nav {
+    gap: var(--sp-2) var(--sp-3);
+  }
 }
 
 /* ------------------------------------------------------------ orbits */
@@ -1668,6 +1897,25 @@ a.card-details:hover {
 .item-page .panel h2::before {
   content: "// ";
 }
+/* Section mark (Florian, 2026-07-11, amended same day: "when you use //
+   they should be colored — add a little bit of life"): the "// " prefix is
+   the site's section accent, rendered in the shell accent (volt on night,
+   volt-ink on paper). It is a 2-character glyph, not running text, so it
+   sits inside the governed-mode glyph allowance. Heading text stays ink. */
+.panel h2::before,
+.qa h2::before {
+  content: "// ";
+  color: var(--shell-accent);
+}
+/* The comment-register notes ("No items match...") and marked titles get
+   the same accented slashes via ::before; their strings no longer carry a
+   literal "// " so the mark can take the accent. */
+.empty::before,
+.kpi-caption::before,
+.sec-mark::before {
+  content: "// ";
+  color: var(--shell-accent);
+}
 .panel p {
   margin-bottom: 0;
 }
@@ -1875,6 +2123,12 @@ a.card-details:hover {
 .item-page p {
   font-size: var(--fs-body);
   line-height: var(--lh-body);
+}
+/* The reading voice outranks .item-page p's data-voice size on the item
+   page (the explainer's what-happened / why-it-matters paragraphs). */
+.item-page p.prose {
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .for-who {
@@ -2287,6 +2541,100 @@ table.profile td.src-cell a,
 }
 .log-kpis .fact-value {
   font-size: var(--fs-h2);
+}
+
+/* Email subscribe unit (Florian, 2026-07-11): replaces the /digest/ inline
+   link on Log with a compact newsletter signup. Buttondown embed form;
+   mirrors .filter-input / .cat-btn grammar at the second control height
+   (32px). No volt here (reserved for hero elements). */
+.subscribe {
+  margin: var(--sp-4) 0 var(--sp-6);
+}
+/* Masthead seat (Florian, 2026-07-11): the subscribe unit drops from a
+   [SUBSCRIBE] bracket control as a compact panel under the sticky bar,
+   right-anchored, page ground + hairline. Inside the panel the unit
+   sheds its page margins. */
+.nav-subscribe {
+  position: relative;
+  display: inline-flex;
+}
+.subscribe-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 336px;
+  max-width: calc(100vw - 2 * var(--gutter-page));
+  background: var(--bg-page);
+  border: 1px solid var(--border-2);
+  padding: var(--sp-4);
+}
+.subscribe-panel .subscribe {
+  margin: 0;
+}
+.subscribe-label {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 0 0 var(--sp-1);
+}
+.subscribe-copy {
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  color: var(--text-2);
+  margin: 0 0 var(--sp-3);
+}
+.subscribe-form {
+  display: flex;
+  gap: var(--sp-2);
+  max-width: 28rem;
+}
+.subscribe-input {
+  flex: 1;
+  min-width: 0;
+  height: var(--h-control);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-2);
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-size: var(--fs-body);
+  padding: 0 var(--sp-3);
+}
+.subscribe-input::placeholder {
+  color: var(--text-3);
+}
+.subscribe-input:focus {
+  outline: none;
+  border-color: var(--text-1);
+}
+.subscribe-btn {
+  height: var(--h-control);
+  background: none;
+  border: 1px solid var(--border-2);
+  color: var(--text-1);
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  padding: 0 var(--sp-4);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.subscribe-btn:hover {
+  border-color: var(--text-1);
+  color: var(--text-1);
+}
+@media (max-width: 26rem) {
+  .subscribe-form {
+    flex-direction: column;
+    max-width: none;
+  }
+  .subscribe-btn {
+    width: 100%;
+  }
 }
 
 /* Weekly digest list: unfenced rows separated by a top hairline, display
@@ -2842,9 +3190,10 @@ a.sig-card.entity-card:hover .ent-p-vehicle {
 }
 
 .stat-answer {
+  /* The answer is the reading voice (.prose supplies sans 14/400/1.6);
+     this selector keeps only the accent rule and measure. */
   border-left: 2px solid var(--border-2);
   padding-left: var(--sp-3);
-  font-weight: 500;
   max-width: 46rem;
 }
 
@@ -2877,12 +3226,10 @@ details.cite[open] summary {
   margin-top: 2.25rem;
   padding-top: 1.1rem;
 }
-.stat-block h2 {
-  font-size: 1.05rem;
-  text-transform: none;
-}
+/* (stat-block h2 size/case now governed by the shared .qa h2/.stat-block
+   h2 section register; only the link color remains local.) */
 .stat-block h2 a {
-  color: var(--text-1);
+  color: var(--text-3);
 }
 
 table.stat-table th {
@@ -2938,7 +3285,74 @@ table.stat-table td.num {
   color: var(--dim);
 }
 
+/* ------------------------------------------------------------- system */
+
+/* The merged Stats + Log page (Florian, 2026-07-11). Desktop: the log
+   spine flexes on the LEFT (the page's backbone) and the stats rail is a
+   sticky ~340px column on the RIGHT, offset below the sticky masthead
+   (--header-h). Mobile: one column with the stats band FIRST (CSS order),
+   then the log. Gap on the 4px grid. */
+.system-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: var(--sp-7);
+  align-items: start;
+}
+.system-log,
+.system-rail {
+  min-width: 0;
+}
+@media (min-width: 64rem) {
+  .system-rail {
+    position: sticky;
+    top: calc(var(--header-h) + var(--sp-4));
+    align-self: start;
+    /* A long rail (hero + eight stat blocks) stays reachable while pinned:
+       cap it to the viewport under the sticky bar and let it scroll in
+       its own track rather than run off-screen. */
+    max-height: calc(100vh - var(--header-h) - var(--sp-6));
+    overflow-y: auto;
+  }
+}
+@media (max-width: 64rem) {
+  .system-grid {
+    grid-template-columns: 1fr;
+  }
+  /* Stats band first on mobile, then the log spine. */
+  .system-rail {
+    order: -1;
+  }
+}
+/* The rail's own header uses the unclassed-h2 mono-caps instrument label
+   register (the .stat-block h2s below keep the sans-caps section register
+   from the shared .qa/.stat-block rule). */
+.system-rail-title {
+  margin: 0 0 var(--sp-2);
+}
+.system-rail-lede {
+  margin-top: 0;
+}
+
 /* -------------------------------------------------------------- about */
+
+/* Section display heading (Florian, 2026-07-11, typography round 2): the
+   DISPLAY voice at section scale — sans caps light, between the page
+   title (28/200) and card headlines (21/300). Replaces the browser-bold
+   default the About/Stats section h2s fell back to (five registers on one
+   page read as mess; heavy mono in normal case is banned outright). A top
+   hairline marks the section per the one-frame-per-section grammar. */
+.qa h2,
+.stat-block h2 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-1);
+  border-top: 1px solid var(--border-1);
+  padding-top: var(--sp-4);
+  margin: var(--sp-7) 0 var(--sp-3);
+}
 
 .qa h3 {
   font-family: var(--font-ui);
@@ -2987,6 +3401,12 @@ table.stat-table td.num {
    line); cap them at the reading measure the item pages use. */
 .sweep-summary {
   max-width: 80ch;
+}
+/* No sentence starts lowercase anywhere on the site (Florian, 2026-07-11).
+   Summaries are machine-written records rendered verbatim; this guards the
+   display without touching the stored text. */
+.sweep-summary::first-letter {
+  text-transform: uppercase;
 }
 .sweep-signals {
   font-size: 0.72rem;
@@ -3271,15 +3691,19 @@ a.sig-card:hover .sig-p-x {
 .reg-section {
   margin-top: 1.5rem;
 }
+/* Browser grid (rework 2026-07-11): group pane(s) on the left, one full-width
+   card-stack region on the right (the old entity-list pane and detail panel
+   merged); the -4 variant name survives for the constellations' extra
+   domain pane. */
 .reg-browser {
   display: grid;
-  grid-template-columns: 15rem 17rem 1fr;
+  grid-template-columns: 15rem 1fr;
   border: 1px solid var(--line);
   min-height: 24rem;
   margin-top: 0.75rem;
 }
 .reg-browser-4 {
-  grid-template-columns: 11rem 15rem 15rem 1fr;
+  grid-template-columns: 11rem 15rem 1fr;
 }
 @media (max-width: 60rem) {
   .reg-browser,
@@ -3319,6 +3743,14 @@ a.sig-card:hover .sig-p-x {
      inline flow elsewhere (e.g. the profile h1). */
   display: flex;
   align-items: center;
+}
+/* Count register beside a pane-head label. An explicit margin (not a JSX
+   whitespace text node, which the flex container collapses) keeps the
+   label and count from fusing into "DOMAIN3" / "PROVIDER24". */
+.reg-pane-count {
+  margin-left: var(--sp-2);
+  color: var(--text-3);
+  font-weight: 400;
 }
 .reg-row {
   display: flex;
@@ -3363,25 +3795,33 @@ a.sig-card:hover .sig-p-x {
 .reg-row.selected .reg-chev {
   color: var(--text-1);
 }
-/* Company/fleet profile button pinned at the top of an entity pane. */
-.reg-profile-link {
+/* The card-stack region: the selected group's entities as full-width cards,
+   one over the other, topped by the company-profile bar. */
+.reg-stack {
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+}
+.reg-stack .reg-card {
+  margin: 0;
+}
+/* Full-width company-profile bar at the top of the stack: the cyan action
+   register on a panel-ground bar card. */
+.reg-profile-bar {
   display: block;
+  border: 1px solid var(--border-1);
+  background: var(--bg-panel);
+  padding: var(--sp-3) var(--pad-panel);
   font-family: var(--font-ui);
   font-size: var(--fs-label);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
   color: var(--link);
-  padding: var(--sp-2) var(--sp-3);
-  border-bottom: 1px solid var(--border-1);
 }
-.reg-profile-link:hover {
+.reg-profile-bar:hover {
   background: var(--bg-raised);
+  border-color: var(--border-2);
   color: var(--link-hover);
-}
-
-.reg-preview {
-  padding-bottom: 0.75rem;
 }
 .reg-card {
   display: block;
@@ -3502,6 +3942,40 @@ a.sig-card:hover .sig-p-x {
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
   color: var(--link);
+}
+/* Hero-spec color (Florian's explicit ruling 2026-07-11, DESIGN_TUNING_LOG
+   rule 63): REGISTRY CARD SPEC VALUES ONLY may carry role color, overriding
+   the "no role color on counts" default for this one surface. The card sets
+   --card-acc per entity domain (CARD_ACCENT in pages.tsx, mirroring the
+   orbits domain palette in governed --acc-* tokens, light-ink overrides
+   included). Scope stays tight: the dd figure and the 2px tile edge; labels,
+   prose, dates, and names remain neutral. */
+.reg-card .reg-spec {
+  border-left: 2px solid var(--card-acc, var(--border-1));
+}
+.reg-card .reg-spec dd {
+  color: var(--card-acc, var(--text-1));
+}
+/* Overview excerpt clamps to a few lines so cards stay compact. */
+.reg-card .reg-snippet {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Status glyph inside a badge: role color rides the glyph only (≤12px,
+   governed mode), the badge text stays neutral. */
+.stat-glyph {
+  font-size: 9px;
+  line-height: 1;
+  margin-right: 0.35em;
+}
+.stat-glyph-live {
+  color: var(--status-live);
+}
+.stat-glyph-state {
+  color: var(--status-critical);
 }
 .reg-footnote {
   font-size: 0.8rem;
@@ -3676,6 +4150,11 @@ a.sig-card:hover .sig-p-x {
   width: 19rem;
   font-size: 0.66rem;
   border: 1px solid var(--border-2);
+  /* Positioned flush at the trigger edge (no spatial gap); this extra top
+     padding is the transparent hover bridge that keeps the pointer inside
+     the popover on the way down from the mark, so its link is reachable
+     (2026-07-11). The 250ms close timer covers the flip-up case. */
+  padding-top: 16px;
 }
 .snr-pop-head {
   display: flex;
@@ -3736,6 +4215,46 @@ a.sig-card:hover .sig-p-x {
   gap: 12px;
   margin-bottom: 12px;
 }
+/* Impact badge + its tier popover (2026-07-11): reuses the SNR card
+   popover shell and mechanics (.snr-pop-card, useHoverPopover). The
+   wrapper is relative so the fixed panel anchors to the badge, and
+   inline-flex keeps the badge inline in the card meta row / item band. */
+.impact-badge {
+  position: relative;
+  display: inline-flex;
+}
+.impact-row {
+  align-items: center;
+}
+/* Tier column: the item's own tier renders as its real badge, the rest as
+   a muted label; the min-width keeps the one-line reads aligned. */
+.impact-pop-tier {
+  display: inline-flex;
+  align-items: center;
+  min-width: 6.5em;
+  flex: 0 0 auto;
+}
+.impact-tier-muted {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  color: var(--text-3);
+}
+.impact-desc-muted {
+  color: var(--text-3);
+}
+.impact-desc-self {
+  color: var(--text-1);
+}
+/* Infinite-scroll trip wire at the foot of the home feed (2026-07-11):
+   an off-screen marker the IntersectionObserver watches to append the
+   next batch; the 800px rootMargin prefetches before it is in view. */
+.feed-sentinel {
+  height: 1px;
+  width: 100%;
+}
 .chip-disputed {
   border-color: var(--acc-orange-dim);
   color: var(--acc-orange);
@@ -3774,8 +4293,22 @@ a.sig-card:hover .sig-p-x {
 .snr-up { color: var(--acc-green); }
 .snr-down { color: var(--acc-orange); }
 
+/* Sweep status glyph (Florian, 2026-07-11): one ≤12px unicode mark on each
+   sweep's meta row. ● LIVE (green) when the sweep shipped new items, ◆
+   TELEMETRY (cyan) on a zero-add sweep — checked, nothing new. Role color
+   as a glyph only, never on running text; the ▲ alert state is deliberately
+   unused (SweepLogEntry records no failure state to key it on). */
+.sweep-status {
+  font-size: 10px;
+  line-height: 1;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+.sweep-status-live { color: var(--acc-green); }
+.sweep-status-quiet { color: var(--acc-cyan); }
+
 /* --------------------------------------------- sweep clock hover (54)
-   The clock links to /log/ and announces it with the instrument's own
+   The clock links to /system/ and announces it with the instrument's own
    negative (stated values, the rule-53 method; the invert of volt lands
    on the palette's UV): paper face, UV flood and digits, magenta ARMED,
    the standard volt hover frame. Footer stays put like every card. */

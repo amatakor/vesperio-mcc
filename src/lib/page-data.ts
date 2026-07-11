@@ -119,9 +119,17 @@ export type PageData =
       outlets: SignalsFile["outlets"];
       avatars: Record<string, string>;
     }
-  | { page: "stats"; hero: HeroStats; blocks: StatBlock[] }
   | {
-      page: "log";
+      /**
+       * The merged /system/ page (Florian, 2026-07-11): the sweep log (the
+       * spine) plus the public stat indices (the rail). Carries both the
+       * former "log" and "stats" data slices; SystemPage lays them out.
+       */
+      page: "system";
+      // --- stats rail ---
+      hero: HeroStats;
+      blocks: StatBlock[];
+      // --- log spine ---
       sweeps: SweepLogEntry[];
       /** Lifetime counters over ALL sweeps (the window shows a subset). */
       totals: { added: number; updated: number; held: number; count: number };

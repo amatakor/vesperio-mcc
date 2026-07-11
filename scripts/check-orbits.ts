@@ -16,6 +16,7 @@ import {
   validateElementsFile,
   validateSpaceportsFile,
   validateFacilitiesFile,
+  validateGroundStationsFile,
   validateStatsFile,
 } from "./lib/validate";
 
@@ -84,5 +85,11 @@ if (facilities !== undefined) {
   }
 }
 
-console.log(`check-orbits: ${elementsCount} elements files + spaceports + facilities`);
+const groundStationsPath = join(DATA_DIR, "ground-stations.json");
+const groundStations = loadJson(groundStationsPath, errors);
+if (groundStations !== undefined) errors.push(...validateGroundStationsFile(groundStations));
+
+console.log(
+  `check-orbits: ${elementsCount} elements files + spaceports + facilities + ground stations`,
+);
 report("check-orbits", errors);

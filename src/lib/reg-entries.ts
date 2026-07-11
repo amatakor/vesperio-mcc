@@ -103,7 +103,9 @@ export function constellationEntries(constellations: ConstellationProfile[]): Re
     else if (c.sats_launched_total.value !== null)
       specs.push({ label: "launched", value: String(c.sats_launched_total.value) });
     if (c.resolution_m?.value != null) specs.push({ label: "resolution", value: `${c.resolution_m.value} m` });
-    specs.push({ label: "domain", value: DOMAIN_LABEL[kind] ?? kind });
+    // Domain is a tag, not prose: the tile renders it in caps (Florian,
+    // 2026-07-11, registry casing pass).
+    specs.push({ label: "domain", value: (DOMAIN_LABEL[kind] ?? kind).toUpperCase() });
     return {
       slug: c.slug,
       name: c.name,

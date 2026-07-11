@@ -473,6 +473,9 @@ export function ViewCluster(p: ViewClusterProps) {
             <span>
               <i className="gm gm-ring" /> ACTIVITY &lt; 30D
             </span>
+            <span>
+              <i className="gm gm-diamond" /> GROUND STATION
+            </span>
           </div>
         </div>
       )}

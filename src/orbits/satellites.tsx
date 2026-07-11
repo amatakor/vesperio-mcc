@@ -261,14 +261,16 @@ export function Satellites({
     const pos = new Float32Array(plan.total * 3);
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     g.setAttribute("color", new THREE.BufferAttribute(new Float32Array(plan.total * 3), 3));
-    // Per-point size scale (tuning round 10): the mega-constellations
-    // overwhelm the map at full thickness, so connectivity dots render
-    // at 0.6x; every other category keeps the standard disc.
+    // Per-point size scale: the mega-constellations overwhelm the map
+    // at full thickness, so connectivity dots render smaller than the
+    // standard disc. 0.6x (tuning round 10) -> 0.5x (round 11 rule 34)
+    // -> 0.45x -> 0.35x (Florian 2026-07-11/12; 0.25 and 0.3 tried live,
+    // settled at 0.35).
     const dotScaleArr = new Float32Array(plan.total).fill(1);
     for (const { entry, start, count } of plan.segments) {
       const cat = orbitCatalog.find((e) => e.slug === entry.slug)?.category;
       if (cat === "connectivity") {
-        for (let i = 0; i < count; i++) dotScaleArr[start + i] = 0.5;
+        for (let i = 0; i < count; i++) dotScaleArr[start + i] = 0.35;
       }
     }
     g.setAttribute("aDot", new THREE.BufferAttribute(dotScaleArr, 1));
@@ -406,10 +408,11 @@ export function Satellites({
         );
         sprite.renderOrder = 10;
         // Width follows the texture's true aspect (tuning round 9);
-        // 0.038 height = round-12 size reduction (~15%).
-        const w0 = 0.038 * ((map.image as HTMLCanvasElement).width / 64);
+        // 0.023 height (Florian 2026-07-12, two steps: 0.038 -> 0.028 -> 0.023,
+        // "even smaller").
+        const w0 = 0.023 * ((map.image as HTMLCanvasElement).width / 64);
         sprite.userData.w0 = w0;
-        sprite.scale.set(w0, 0.038, 1);
+        sprite.scale.set(w0, 0.023, 1);
         // Anchor left of the texture just right of the glyph.
         sprite.center.set(-0.12 * (0.36 / w0), 0.5);
         return sprite;
@@ -502,7 +505,7 @@ export function Satellites({
             // 2.8 is the reference distance of the default desktop view.
             const k = dist / 2.8;
             const w0 = (sprite.userData.w0 as number) ?? 0.36;
-            sprite.scale.set(w0 * k, 0.038 * k, 1);
+            sprite.scale.set(w0 * k, 0.023 * k, 1);
           }
         }
       }

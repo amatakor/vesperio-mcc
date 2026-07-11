@@ -128,11 +128,11 @@ export function headFor(path: string): Head {
         description: "A hand-curated list of people worth following in the new space economy.",
         canonical,
       };
-    case "stats":
+    case "system":
       return {
-        title: "Stats | Vesperio",
+        title: "System | Vesperio",
         description:
-          "Public indices computed from Vesperio data: items tracked, launch events by provider, satellites on orbit. Citable, with retrieval dates.",
+          "The machine's calibration in the open: every sweep it ran and why, plus the public indices computed from its data. Citable, with retrieval dates.",
         canonical,
       };
     case "about":
@@ -156,13 +156,6 @@ export function headFor(path: string): Head {
           "The last seven days at a glance: the week's items by importance, the scores that moved, and the sweeps that were quiet.",
         canonical,
       };
-    case "log":
-      return {
-        title: "Sweep log | Vesperio",
-        description:
-          "Every sweep the machine ran: what was added, what was held, and why quiet days were quiet.",
-        canonical,
-      };
     case "log-archive":
       return {
         title: `Sweep log, ${route.month} | Vesperio`,
@@ -183,12 +176,11 @@ export function listRoutes(): string[] {
     "/mcc/",
     "/registry/",
     "/signals/",
-    "/stats/",
     "/about/",
     "/methodology/",
     "/digest/",
-    "/log/",
-    ...logArchiveMonths(sweeps).map((m) => `/log/${m}/`),
+    "/system/",
+    ...logArchiveMonths(sweeps).map((m) => `/system/${m}/`),
     ...CATEGORIES.map((c) => `/news/${c}/`),
     "/kind/commentary/",
     ...items.map((i) => `/item/${i.id}/`),

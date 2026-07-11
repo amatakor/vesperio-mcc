@@ -14,11 +14,10 @@ import {
   SpaceportPage,
   OrgPage,
   SignalsPage,
-  StatsPage,
+  SystemPage,
   AboutPage,
   MethodologyPage,
   DigestPage,
-  LogPage,
   LogArchivePage,
   NotFoundPage,
 } from "./pages";
@@ -67,16 +66,14 @@ export default function App({
       return d?.page === "org" ? <OrgPage data={d} /> : <NotFoundPage />;
     case "signals":
       return d?.page === "signals" ? <SignalsPage data={d} /> : <NotFoundPage />;
-    case "stats":
-      return d?.page === "stats" ? <StatsPage data={d} generatedAt={generatedAt} /> : <NotFoundPage />;
     case "about":
       return <AboutPage />;
     case "methodology":
       return <MethodologyPage />;
     case "digest":
       return d?.page === "digest" ? <DigestPage data={d} /> : <NotFoundPage />;
-    case "log":
-      return d?.page === "log" ? <LogPage data={d} /> : <NotFoundPage />;
+    case "system":
+      return d?.page === "system" ? <SystemPage data={d} generatedAt={generatedAt} /> : <NotFoundPage />;
     case "log-archive":
       return d?.page === "log-archive" ? <LogArchivePage data={d} /> : <NotFoundPage />;
     case "not-found":

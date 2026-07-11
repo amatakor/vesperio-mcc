@@ -30,6 +30,7 @@ import {
   SIGNAL_WHITELIST,
   CHANNEL_STATUSES,
   FACILITY_TYPES,
+  GROUND_STATION_PRECISIONS,
   OMM_STRING_FIELDS,
   OMM_NUMBER_FIELDS,
 } from "../../src/data/schema";
@@ -1349,6 +1350,47 @@ export function validateFacilitiesFile(data: unknown): string[] {
     checkNoEmDash(reqString(f, "blurb", path, errors), `${path}.blurb`, errors);
     if (!isHttpUrl(f.source_url)) {
       errors.push(`${path}.source_url: required http(s) URL; no source, no pin`);
+    }
+  });
+  return errors;
+}
+
+export function validateGroundStationsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["ground-stations.json: root must be an object"];
+  if (!(typeof data.as_of === "string" && isValidDate(data.as_of))) {
+    errors.push("ground-stations.json.as_of: required YYYY-MM-DD date");
+  }
+  if (!Array.isArray(data.ground_stations)) {
+    errors.push("ground-stations.json.ground_stations: required array");
+    return errors;
+  }
+  data.ground_stations.forEach((s, i) => {
+    const path = `ground_stations[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    checkNoEmDash(reqString(s, "name", path, errors), `${path}.name`, errors);
+    reqString(s, "operator", path, errors);
+    reqString(s, "country", path, errors);
+    checkLatLon(s, path, errors);
+    if (!GROUND_STATION_PRECISIONS.includes(s.precision as never)) {
+      errors.push(
+        `${path}.precision: "${String(s.precision)}" not in [${GROUND_STATION_PRECISIONS.join(", ")}]`,
+      );
+    }
+    if (!isHttpUrl(s.source_url)) {
+      errors.push(`${path}.source_url: required http(s) URL; no source, no pin`);
+    }
+    if (s.coords_source_url !== undefined && !isHttpUrl(s.coords_source_url)) {
+      errors.push(`${path}.coords_source_url: must be an http(s) URL when present`);
+    }
+    if (s.precision === "locality" && !isHttpUrl(s.coords_source_url)) {
+      errors.push(`${path}.coords_source_url: required for "locality" rows (position claim)`);
+    }
+    if (!(typeof s.as_of === "string" && isValidDate(s.as_of))) {
+      errors.push(`${path}.as_of: required YYYY-MM-DD date`);
     }
   });
   return errors;

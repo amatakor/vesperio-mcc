@@ -1184,3 +1184,213 @@ one that holds.
 
 IMPLEMENTATION: --acc-cyan added to the [data-theme="light"]
 .ocol-left/.ostatus desktop remap block (orbits.css).
+
+## 59 · Pre-v1.0 tweak set: masthead hairline goes volt; the MCC clock joins the count as ink
+
+RULE (Florian, 2026-07-11, pre-v1.0 pass): (a) the masthead's bottom
+rule thins from 2px n7 to a 1px shell-accent hairline — volt on night,
+volt-ink on paper via the themed token; Florian's request is the
+per-element volt sign-off. (b) The MCC LCD launch clock renders
+volt-ink #64C400 in both themes, matching the satellites-tracked count
+(supersedes 58i's parenthetical "the LCD clocks keep true volt" FOR THE
+MCC CLOCK ONLY; the news sweep face keeps volt digits per 52d). (c) The
+brand tag reads "/ NEW SPACE INTELLIGENCE" (renamed from "/ SPACE
+INTELLIGENCE"). (d) The site ships the Negative Star mark as favicon:
+SVG plus 32px PNG plus 180px apple-touch tile, geometry identical to
+.brand-mark.
+
+IMPLEMENTATION: .masthead border-bottom 1px var(--shell-accent),
+.brand-tag copy (index.css, pages.tsx); .lcd-lit/.lcd-comma
+var(--volt-ink) (orbits.css); public/favicon.svg, favicon-32.png,
+apple-touch-icon.png + index.html head links.
+
+## 60 · Typography gains a fourth voice: a normal-case reading register
+
+RULE (Florian, 2026-07-11): the type system adds a fourth voice for the
+long prose a reader actually sits with. The three existing voices are
+unchanged — IBM Plex Sans caps is the DISPLAY voice (titles), IBM Plex
+Mono caps is the LABEL voice (tags, chips, labels), IBM Plex Mono normal
+case is the DATA voice (blurbs, taglines, citations, captions, ledes,
+and everything rendered from data). The new READING voice is IBM Plex
+Sans in NORMAL case: 14/400/1.6, sentence case, primary ink on the page
+ground, proportional (non-tabular) figures. It clothes multi-sentence
+authored prose only: the About Q&A answers and impact-tier explainer,
+the methodology body paragraphs, the stats block answers, the log
+section descriptions (source health / ledger / calibration / lead-source
+presence), and the item PAGE explainer's what-happened and why-it-matters
+paragraphs. The mono voice keeps every one-line lede, every tagline,
+every `//` note, all card copy (cards are untouched — the whole card
+explainer stays mono), the item modal, and all data rendered from
+items.json / state.json / stats verbatim. Section headings stay the
+sitewide lowercase mono labels. Authored prose was audited for the
+sentence-case recase in the same pass and found already sentence-cased;
+the only lowercase authored strings left are the house-style lowercase
+section headings and the sitewide `//` comment-register notes, both
+labels, deliberately unchanged.
+
+IMPLEMENTATION: .prose class (index.css, near the copy-voice block) at
+sans 14/400/1.6, text-transform none, --text-1, font-variant-numeric
+normal, 46rem measure; .item-page p.prose override to outrank
+.item-page p's data-voice size; font-weight dropped from .stat-answer so
+.prose's 400 governs (its border-left accent and measure stay).
+className="prose" applied on the AboutPage Q&A + impact answers,
+MethodologyPage body paragraphs (the dim under-table footnote stays
+mono), StatsPage stat-answer, LogPage/LogPresence section descriptions
+(dim → prose), and the ItemPage what-happened / why-it-matters
+paragraphs (pages.tsx).
+
+## 61 · Round-2 corrections: full-bleed bar, bright paper accents, selection-fill hover, the heading floor
+
+RULE (Florian, 2026-07-11, after the first pre-v1.0 review): (a) the
+sticky masthead grounds the FULL viewport width (negative gutter
+margins, gutter returned as padding) so card edges never scroll up
+beside it. (b) Accent policy on paper: the light theme carries the SAME
+bright accents as night (red, orange, blue, magenta, uv); the darkened
+ink variant is reserved for hues that physically vanish on paper
+(green, cyan ~1.3:1) — the volt/volt-ink logic generalized. (c) Nav
+hover is the SELECTION FILL (variant 02 of the six-way demo): the label
+floods literal volt (selection tokens, both themes) with ink text; the
+active tab keeps the volt underline (position is a rule, action is a
+flood). (d) HEADING FLOOR: an unclassed h2-h4 renders as the mono-caps
+instrument label (11px/500/ls-inst/uppercase); big mono in normal case
+is banned outright. (e) The subscribe unit lives in the masthead as a
+[SUBSCRIBE] bracket control dropping a right-anchored panel.
+
+IMPLEMENTATION: .masthead negative-margin bleed; light [data-theme]
+accent overrides + policy comment; .nav a ::before volt flood +
+aria-current ::after rule; global h2-h4 floor + .qa/.stat-block h2
+section register (sans 16/300 caps, top hairline); SubscribeControl in
+pages.tsx, .subscribe-panel in index.css.
+
+## 62 · Stats and Log merge into one /system/ page
+
+RULE (Florian, 2026-07-11): the Stats page and the Log page fuse into a
+single page at a NEW url /system/. It reads as the machine's calibration
+in the open. DESKTOP is a two-column grid: the LOG is the spine on the
+LEFT (lede, KPI band, sweep entries, source health, source ledger,
+lead-source presence, calibration, archive) and the STATS RAIL is a
+STICKY ~340px column on the RIGHT (the hero tiles + every stat block,
+each keeping its anchor id, table, method note, and cite-this element).
+MOBILE stacks to one column with the STATS BAND FIRST (CSS order), then
+the log. Both old urls redirect: /stats/ and /log/ 301 to /system/, and
+the log archive months move under /system/ (/log/* -> /system/:splat).
+Anchor ids on the stat blocks are unchanged so #launch-cadence and peers
+keep resolving; fragments survive a 301 client-side. Section headings
+follow the round-2 registers: the log's unclassed h2s stay the mono-caps
+instrument label, the stat-block h2s keep the sans-caps section register.
+The /stats.json ENDPOINT stays exactly as is, but the page urls it
+embeds (each block's anchor and citation string) update from /stats/# to
+/system/#.
+
+NAV: the two separate glyph items (bar-chart for Stats, ledger-lines for
+Log) collapse into ONE /system/ item — a 12px currentColor glyph of
+three ascending bars standing ON a baseline rule with a shorter second
+rule beneath (bars = the indices, rules = the ledger), aria-label +
+title "System". The selection-fill hover and active-underline mechanics
+carry over unchanged (it is still a nav link like any word).
+
+IMPLEMENTATION: new "system" Route + PageData variant merging the former
+stats and log slices (routes.ts, page-data.ts, page-data-server.ts,
+routes-server.ts listRoutes/headFor); log-archive months matched and
+emitted under /system/. pages.tsx: StatsRail (aside) + LogBody (div)
+fragments extracted from the deleted StatsPage/LogPage and composed by a
+new SystemPage under one <h1>; LogArchivePage, the sweep-clock link, the
+digest and methodology cross-links, and the About Q&A copy repointed to
+/system/. cite()/statsJson anchors -> /system/# (stats.ts). .system-grid
+/.system-rail layout in index.css (sticky top calc(--header-h + --sp-4),
+gap --sp-7, single column + rail order -1 below 64rem). public/_redirects
+created with the two 301s + the /log/* splat.
+
+## 63 · Registry card stack; hero-spec values carry the domain accent
+
+RULE (Florian, 2026-07-11, registry index rework): the registry
+browser keeps its pane MENU (constellations: domain + operator panes;
+other sections: their one group pane), but the entity-list pane and
+the detail panel merge into ONE card-stack region: the selected
+group's entities render as full-width cards, one after the other,
+topped by a full-width cyan COMPANY PROFILE bar when the group has a
+profile (omitted when absent, or when it would only duplicate a lone
+card's own link).
+
+COLOR AMENDMENT (his explicit ruling, "add color to the hero specs,
+be creative but logical, systematic"): REGISTRY CARD SPEC VALUES ONLY
+(the .reg-spec dd figures and a 2px left tile edge) carry a role
+color, overriding the "no role color on counts" default for this one
+surface. The system is the orbits domain palette translated into the
+governed --acc-* tokens so the light theme's ink overrides apply: eo
+green, connectivity magenta, iot cyan, launch vehicles orange,
+spaceports uv, ecosystem blue. Labels stay dim; running prose, dates,
+and names stay neutral. Status badges may carry a role-color glyph
+(≤12px: ● live green for operational, ◆ orange for development or
+planned states), text neutral, per the glyph pack.
+
+IMPLEMENTATION: PaneBrowser card stack + CARD_ACCENT map + RegCard
+--card-acc (pages.tsx); .reg-stack, .reg-profile-bar, .reg-spec
+accent rules, .stat-glyph-* (index.css). The fused pane-head counts
+("PROVIDER24") fixed via .reg-pane-count with an explicit margin.
+
+## 64 · Connectivity dots — 0.45x
+
+RULE: the connectivity dot factor drops to 0.45x (Florian 2026-07-11,
+"dim the connectivity satellite cloud again. Half a step down. Still
+too overwhelming"): rule 34's step was 0.6 -> 0.5, so half that delta
+further lands at 0.45. Same `aDot` per-point size attribute, one draw
+call; every other category keeps the full disc. Theme-independent (the
+factor scales point size, not the neon token, so the light theme's
+--neon-connectivity remap is untouched).
+
+## 64 (amended) · Connectivity blanket to 0.35x
+
+RULE (Florian, 2026-07-12: "Reduce the connectivity sats to 0.25"):
+the connectivity dot scale settles at 0.35x. Path: rule 64's 0.45
+-> 0.25 tried live and ruled too dim -> 0.3 -> 0.35 (final round,
+same session). Every other domain cloud unchanged.
+
+IMPLEMENTATION: dotScaleArr connectivity fill 0.35 (satellites.tsx).
+
+## 65 · Theme switch — drawn sun/moon
+
+RULE (Florian, 2026-07-12, third round: "a more elegant and beautiful
+way... sun/moon is a good direction"): the theme switch is a DRAWN
+15px SVG pair, not a font glyph (the U+2600/U+263E route read as
+dingbats and needed a symbol-font stack). Sun on night, moon on
+paper — still naming the theme the click goes TO. House vocabulary:
+the sun's eight rays are square-cut strokes off a filled disc; the
+moon is a crescent carrying the brand mark's SQUARE STAR beside it.
+Both follow currentColor (text-3, text-1 on hover); no new color
+roles. Vertical seat unchanged (3/5 padding, text-top within 0.1px
+of the word row).
+
+IMPLEMENTATION: inline SVGs in ThemeToggle (pages.tsx);
+.theme-toggle svg display block, symbol font stack removed
+(index.css).
+
+## 66 · Coffee badge — drawn cup glyph
+
+RULE (Florian, 2026-07-12: "a coffee glyph in the buy me a coffee
+button?"): the support badge's leading glyph is a drawn 11px
+mono-line coffee cup (square body, square handle, two steam ticks,
+1.1px stroke, currentColor) replacing the glyph-pack ◆. Badge
+grammar otherwise untouched: dim-accent border, accent text, never
+filled.
+
+IMPLEMENTATION: inline .badge-glyph SVG in the coffee anchor
+(pages.tsx); ◆ ::before rule dropped (index.css).
+
+## 67 · Masthead narrow-window grid
+
+RULE (Florian, 2026-07-12: "menu behavior is janky when the window
+is resized and made narrow. Solve that."): below the single-row fit
+(72rem) the masthead becomes a deliberate two-row GRID — brand + tag
++ the framed badge pair on row one (badges right), the word menu
+with the theme switch flush left on its own full-width row two. The
+old flex wrap dropped the whole nav right-aligned under a dead
+half-bar (~1100px), then orphaned the coffee badge onto a third row
+(~760px). At 40rem the coffee badge collapses to the CUP ALONE
+(24px square; it used to hide outright) and the tag hides as before;
+at 30rem the word gap tightens (8/12) so phone widths wrap into
+clean flush-left rows.
+
+IMPLEMENTATION: .nav-controls cluster split out of .nav (pages.tsx
+Masthead); @media 72rem masthead grid, 40rem cup collapse via
+.nav-badge-label display none, 30rem .nav gap (index.css).

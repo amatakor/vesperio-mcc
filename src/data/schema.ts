@@ -1056,6 +1056,43 @@ export interface OrbitsFacilitiesFile {
   facilities: OrbitsFacility[];
 }
 
+export const GROUND_STATION_PRECISIONS = ["site", "locality"] as const;
+export type GroundStationPrecision = (typeof GROUND_STATION_PRECISIONS)[number];
+
+/**
+ * One hand-curated commercial ground-station complex in
+ * ground-stations.json. Same editorial rule as facilities: every entry
+ * needs a citable source_url stating the claim the popup makes (this
+ * operator, this site); no source, no pin.
+ */
+export interface OrbitsGroundStation {
+  name: string;
+  /** Free-form operator name (KSAT, SSC, Telespazio, ...); not a slug. */
+  operator: string;
+  country: string;
+  lat: number;
+  lon: number;
+  /**
+   * "site": source_url states both the operator's station and its
+   * coordinates. "locality": source_url states the operator has a station
+   * at this named place (existence claim leads); the coordinates are the
+   * locality's, cited separately in coords_source_url (position claim).
+   */
+  precision: GroundStationPrecision;
+  /** Page stating the operator-has-a-station-here claim. */
+  source_url: string;
+  /** Coordinate source for "locality" rows; absent when source_url covers it. */
+  coords_source_url?: string;
+  /** YYYY-MM-DD retrieval date for the cited facts. */
+  as_of: string;
+}
+
+/** ground-stations.json; hand-curated commercial ground-station network. */
+export interface OrbitsGroundStationsFile {
+  as_of: string;
+  ground_stations: OrbitsGroundStation[];
+}
+
 /** One weekly bucket in the stats.json flow chart. */
 export interface OrbitsWeekBucket {
   /** ISO date (UTC midnight) the 7-day bucket starts. */

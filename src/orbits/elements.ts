@@ -7,6 +7,7 @@
 import type {
   OrbitsElementsFile,
   OrbitsFacilitiesFile,
+  OrbitsGroundStationsFile,
   OrbitsSpaceportsFile,
   OrbitsStarsFile,
   OrbitsStatsFile,
@@ -55,6 +56,15 @@ export function loadFacilities(): Promise<OrbitsFacilitiesFile | null> {
     .then((res) => (res.ok ? (res.json() as Promise<OrbitsFacilitiesFile>) : null))
     .catch(() => null);
   return facilitiesPromise;
+}
+
+let groundStationsPromise: Promise<OrbitsGroundStationsFile | null> | null = null;
+
+export function loadGroundStations(): Promise<OrbitsGroundStationsFile | null> {
+  groundStationsPromise ??= fetch("/data/orbits/ground-stations.json")
+    .then((res) => (res.ok ? (res.json() as Promise<OrbitsGroundStationsFile>) : null))
+    .catch(() => null);
+  return groundStationsPromise;
 }
 
 let starsPromise: Promise<OrbitsStarsFile | null> | null = null;

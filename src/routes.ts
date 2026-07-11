@@ -25,11 +25,10 @@ export type Route =
   | { page: "spaceport"; slug: string }
   | { page: "org"; slug: string }
   | { page: "signals" }
-  | { page: "stats" }
   | { page: "about" }
   | { page: "methodology" }
   | { page: "digest" }
-  | { page: "log" }
+  | { page: "system" }
   | { page: "log-archive"; month: string }
   | { page: "not-found" };
 
@@ -46,11 +45,10 @@ export function matchRoute(pathname: string): Route {
   if (p === "/mcc/") return { page: "orbits" };
   if (p === "/registry/") return { page: "registry" };
   if (p === "/signals/") return { page: "signals" };
-  if (p === "/stats/") return { page: "stats" };
   if (p === "/about/") return { page: "about" };
   if (p === "/methodology/") return { page: "methodology" };
   if (p === "/digest/") return { page: "digest" };
-  if (p === "/log/") return { page: "log" };
+  if (p === "/system/") return { page: "system" };
 
   const feedPage = p.match(/^\/feed\/(\d+)\/$/);
   if (feedPage) {
@@ -58,7 +56,9 @@ export function matchRoute(pathname: string): Route {
     return n >= 2 ? { page: "feed-page", n } : { page: "not-found" };
   }
 
-  const logMonth = p.match(/^\/log\/(\d{4}-\d{2})\/$/);
+  // Log archive months now live under /system/ (the merged page); the old
+  // /log/YYYY-MM/ paths 301-redirect via public/_redirects.
+  const logMonth = p.match(/^\/system\/(\d{4}-\d{2})\/$/);
   if (logMonth) return { page: "log-archive", month: logMonth[1]! };
 
   const item = p.match(/^\/item\/([^/]+)\/$/);

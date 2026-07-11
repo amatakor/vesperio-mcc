@@ -216,12 +216,15 @@
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--clock);
+  /* Volt-ink, matching the satellites-tracked count (Florian,
+     2026-07-11): the MCC clock joins the count as printed ink, both
+     themes. The news sweep face keeps --clock volt (rule 52d). */
+  color: var(--volt-ink);
 }
 .lcd-comma {
   font-family: var(--mono);
   font-weight: 500;
-  color: var(--clock);
+  color: var(--volt-ink);
   font-size: 0.62em;
   padding: 0 2px;
 }
@@ -602,7 +605,9 @@
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-bottom: 7px solid var(--dim);
+  /* Matches the shipped spaceport mark color (#ff6905, tuner-locked
+     2026-07-11), same sync as the activity ring below. */
+  border-bottom: 7px solid #ff6905;
 }
 .gm-sq {
   width: 7px;
@@ -619,7 +624,18 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 1px solid var(--live);
+  /* Matches the shipped spaceport ripple color (#ff6905, tuner-locked
+     2026-07-11); the old --live green predates the color sync. */
+  border: 1px solid #ff6905;
+}
+/* Ground-station diamond, matching the canvas marker and its cones
+   (#00ff2a, tuner-locked 2026-07-11). The static rotate is the glyph's
+   shape, not a hover effect. */
+.gm-diamond {
+  width: 6px;
+  height: 6px;
+  border: 1px solid #00ff2a;
+  transform: rotate(45deg);
 }
 
 /* ------------------------------------------------------------ layer rail */
@@ -808,6 +824,11 @@
   color: var(--text-2);
   padding-left: 6px;
 }
+/* Second tree level (ground stations under their operator): one more
+   indent step so the hierarchy reads without ambiguity. */
+.rl-child2 .rl-name {
+  padding-left: 16px;
+}
 .rl-name-loading {
   color: var(--dim);
 }
@@ -861,9 +882,18 @@
   opacity: 0.4;
 }
 
-.rl-focused {
-  background: var(--bg-raised);
-  box-shadow: inset 2px 0 var(--n7);
+/* A focused constellation row wears its own domain neon: the inset left
+   edge takes the token and the background a faint tint of it. --rl-focus-neon
+   is set inline on the focused row (rail.tsx); the --n7 fallback preserves
+   the neutral highlight for any focus surface that does not set it. The
+   tint stays at 12% so the normal row ink keeps its contrast in both
+   themes (dark --bg-raised #161616, light #e4e4de). The :hover variant
+   keeps the tint from being masked by the generic .rl-row:hover raise
+   (equal specificity, later in the file, so it wins). */
+.rl-focused,
+.rl-focused:hover {
+  background: color-mix(in srgb, var(--rl-focus-neon, var(--n7)) 12%, var(--bg-raised));
+  box-shadow: inset 2px 0 var(--rl-focus-neon, var(--n7));
 }
 .rl-focused .rl-name {
   font-weight: 500;
@@ -871,12 +901,26 @@
 }
 
 .rl-ground-label {
-  font-size: 7px;
-  letter-spacing: 2px;
-  color: var(--dim);
+  /* Same register as the CONSTELLATION column header (.rl-cols): the two
+     section labels of one rail read at one size (Florian, 2026-07-12). */
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text-2);
   padding: 10px 14px 4px;
   border-top: 1px solid var(--line);
   margin-top: 6px;
+}
+
+/* Receiving-cone assumption line, shown under the GROUND STATIONS row
+   when the layer is on: the shipped minimum-elevation mask (the
+   cones are station-centric and no longer track constellation altitude).
+   Dim mono, indented to clear the row's toggle column. */
+.rl-foot-note {
+  font-size: 7px;
+  letter-spacing: 1.2px;
+  color: var(--dim);
+  padding: 2px 14px 6px 20px;
+  font-variant-numeric: tabular-nums;
 }
 
 .rl-key {
@@ -1274,4 +1318,114 @@
     background: rgba(10, 10, 10, 0.28);
     border-color: rgba(10, 10, 10, 0.55); /* dark frame; the paper border glared */
   }
+}
+
+/* ------------------------------------------------ DEV cone tuner (?tune=1)
+
+   Development-only panel for tuning the ground-station receiving cones
+   before a value is committed (scene.tsx gates it on ?tune=1; it never
+   renders for normal viewers). Instrument register, MCC panel chrome,
+   floating over the globe window's bottom-left. */
+.cone-tuner {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 3;
+  width: 236px;
+  padding: 10px 12px 12px;
+  font-family: var(--mono);
+  color: var(--dim);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cone-tuner .ct-head {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 7px;
+}
+.cone-tuner .ct-row {
+  display: grid;
+  grid-template-columns: 66px 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.cone-tuner .ct-label {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: var(--dim);
+}
+.cone-tuner .ct-val {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: var(--fg);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cone-tuner .ct-range {
+  width: 100%;
+  height: 16px;
+  accent-color: var(--acc);
+  cursor: pointer;
+}
+.cone-tuner .ct-color {
+  width: 100%;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+}
+.cone-tuner .ct-json {
+  margin-top: 2px;
+  padding: 6px 8px;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.4px;
+  line-height: 1.4;
+  color: var(--fg);
+  background: var(--bg-inset);
+  border: 1px solid var(--line);
+  text-align: left;
+  word-break: break-all;
+  cursor: pointer;
+}
+.cone-tuner .ct-json:hover {
+  border-color: var(--acc);
+}
+.cone-tuner .ct-seg {
+  grid-column: 2 / 4;
+  display: grid;
+  /* Fits both the 4-option cone STYLE seg and the 3-option EFFECT seg. */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 3px;
+}
+.cone-tuner .ct-seg-btn {
+  padding: 4px 0;
+  font-family: var(--mono);
+  font-size: 7px;
+  letter-spacing: 0.8px;
+  color: var(--dim);
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.cone-tuner .ct-seg-btn:hover {
+  color: var(--fg);
+}
+.cone-tuner .ct-seg-on {
+  color: var(--fg);
+  border-color: var(--acc);
+  background: var(--bg-inset);
+}
+.cone-tuner .ct-sub {
+  margin-top: 4px;
+  font-size: 7px;
+  letter-spacing: 1.6px;
+  color: var(--dim-deep);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
 }

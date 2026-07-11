@@ -37,6 +37,7 @@ import "./orbits.css";
 import type {
   OmmRecord,
   OrbitsFacility,
+  OrbitsGroundStation,
   OrbitsSpaceport,
   OrbitsStatsFile,
 } from "../data/schema";
@@ -50,9 +51,22 @@ import {
   orbitCatalog,
 } from "./catalog";
 import { maxApogeeSceneUnits } from "./kepler";
-import { loadElements, loadFacilities, loadSpaceports, loadStats } from "./elements";
+import {
+  loadElements,
+  loadFacilities,
+  loadGroundStations,
+  loadSpaceports,
+  loadStats,
+} from "./elements";
 import { latLonToVec3, occludedByGlobe } from "./geo";
-import { GroundMarkers, type GroundPick } from "./ground";
+import {
+  GroundMarkers,
+  CONE_DEFAULTS,
+  sanitizeConeParams,
+  type ConeParams,
+  type GroundPick,
+} from "./ground";
+import { ConeTuner } from "./cone-tuner";
 import { FooterBar, HudColumn, ViewCluster } from "./chrome";
 import { LayerRail, type RailCategory, type RailRow } from "./rail";
 import { Popup, type PopupField } from "./popup";
@@ -83,6 +97,9 @@ export function token(name: string): string {
   if (!v) throw new Error(`missing theme token ${name}`);
   return v;
 }
+
+/** One localStorage key for the whole DEV cone tuner state. */
+const CONE_STORAGE_KEY = "orbits:cone-tuner";
 
 // ---------------------------------------------------------- geometry
 
@@ -544,9 +561,6 @@ function readSceneTokens() {
     accent: token(RESERVE_TOKEN),
     alert: token("--alert"),
     acc: token("--acc"),
-    // Neon mint-green of the LIVE lamp, for the spaceport activity ripple
-    // (Florian 2026-07-08; retargeted from the deleted --snr-5, same value).
-    ripple: token("--live"),
     fg: token("--mcc-fg"),
     // Selection is volt (rule 46, Florian 2026-07-10): the picked
     // satellite's orbit renders in the shell accent, volt on night,
@@ -605,6 +619,69 @@ export default function Scene() {
   const [facilities, setFacilities] = useState<OrbitsFacility[] | null>(null);
   const [facilitiesAsOf, setFacilitiesAsOf] = useState<string | null>(null);
   void facilitiesAsOf;
+  // Ground stations (round 7 rework, Florian: "the menu logic is
+  // broken"). The old model stacked an independent layer flag
+  // (showGroundStations) on top of a per-station disabled set with no
+  // reconciliation: all children off left the master lit over an empty
+  // globe, and master off->on visibly did nothing. ONE source of truth
+  // now: the ENABLED station-name set. Every level follows the fleet
+  // grammar (lit = any descendant on; click = all on / all off), layer
+  // visibility is derived (any station enabled), and the default empty
+  // set is the old "layer off". Data loads eagerly (16-entry static
+  // file) so the tree, counts, and toggles exist before first enable.
+  const [groundStations, setGroundStations] = useState<OrbitsGroundStation[] | null>(null);
+  useEffect(() => {
+    void loadGroundStations().then((file) => {
+      if (file) {
+        setGroundStations(file.ground_stations);
+        // Ground stations default ON at load (Florian, 2026-07-12):
+        // seed the enabled set with every station once the data lands.
+        // Session-only, like the other layer toggles.
+        setEnabledStations(new Set(file.ground_stations.map((s) => s.name)));
+      }
+    });
+  }, []);
+  const [enabledStations, setEnabledStations] = useState<ReadonlySet<string>>(new Set());
+  const showGroundStations = enabledStations.size > 0;
+  const visibleGroundStations = useMemo(
+    () => (groundStations ? groundStations.filter((s) => enabledStations.has(s.name)) : null),
+    [groundStations, enabledStations],
+  );
+  // Exactly three rail groups (round 7): KSAT, SSC, OTHERS.
+  const gsGroupOf = (s: OrbitsGroundStation): string =>
+    s.operator === "KSAT" ? "KSAT" : s.operator === "SSC" ? "SSC" : "OTHERS";
+  const toggleStation = useCallback((key: string) => {
+    setEnabledStations((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }, []);
+  // Group toggle, fleet grammar: any on -> all off, none on -> all on.
+  const toggleStationOperator = useCallback(
+    (id: string) => {
+      const names = (groundStations ?? []).filter((s) => gsGroupOf(s) === id).map((s) => s.name);
+      if (names.length === 0) return;
+      setEnabledStations((prev) => {
+        const anyOn = names.some((n) => prev.has(n));
+        const next = new Set(prev);
+        for (const n of names) {
+          if (anyOn) next.delete(n);
+          else next.add(n);
+        }
+        return next;
+      });
+    },
+    [groundStations],
+  );
+  // Master toggle, same grammar over every station.
+  const toggleGroundStations = useCallback(() => {
+    if (!groundStations) return;
+    setEnabledStations((prev) =>
+      prev.size > 0 ? new Set() : new Set(groundStations.map((s) => s.name)),
+    );
+  }, [groundStations]);
 
   // 6A chrome state: HUD stats feed, VIEW controls, rail collapse map.
   const [stats, setStats] = useState<OrbitsStatsFile | null>(null);
@@ -665,7 +742,12 @@ export default function Scene() {
     }
   }, [collapse]);
   const toggleCollapse = useCallback((key: string) => {
-    setCollapse((prev) => ({ ...prev, [key]: !prev[key] }));
+    // Unseeded keys must flip from their EFFECTIVE default, not from
+    // undefined: categories default open; fleets are seeded at init; the
+    // ground-station tree ("gs", "gs:<operator>", round 4) defaults
+    // collapsed and its keys only exist once toggled.
+    const fallback = key.startsWith("cat:") ? false : true;
+    setCollapse((prev) => ({ ...prev, [key]: !(prev[key] ?? fallback) }));
   }, []);
 
   // Selection state. The deep link (?constellation=slug) preselects.
@@ -851,7 +933,6 @@ export default function Scene() {
       }
     });
   }, [showFacilities, facilities]);
-
   const clearSelection = useCallback(() => {
     setBootIss(false);
     setSelection(null);
@@ -860,6 +941,19 @@ export default function Scene() {
     arcWantRef.current = null;
     post({ type: "watch", id: null });
   }, [post]);
+
+  // A station disabled in the rail cannot stay selected: its marker just
+  // left the globe, so the popup goes with it (round 4).
+  useEffect(() => {
+    const sel = selectionRef.current;
+    if (
+      sel?.kind === "ground" &&
+      sel.pick.kind === "ground-station" &&
+      !enabledStations.has(sel.pick.station.name)
+    ) {
+      clearSelection();
+    }
+  }, [enabledStations, clearSelection]);
 
   const pickSat = useCallback(
     (sat: PickedSat) => {
@@ -1054,6 +1148,36 @@ export default function Scene() {
       rows,
     });
   }
+  // Ground-station groups for the rail: KSAT and SSC
+  // (the two multi-site networks), then OTHERS for everything
+  // else (round 7: exactly three groups). Child rows drop a leading
+  // group prefix from the station name (KSAT Svalbard -> SVALBARD) like
+  // fleet children do; OTHERS keeps full names.
+  const gsOperators = useMemo(() => {
+    if (!groundStations) return [];
+    const byGroup = new Map<string, OrbitsGroundStation[]>([
+      ["KSAT", []],
+      ["SSC", []],
+      ["OTHERS", []],
+    ]);
+    for (const s of groundStations) byGroup.get(gsGroupOf(s))!.push(s);
+    return [...byGroup.entries()]
+      .filter(([, stations]) => stations.length > 0)
+      .map(([group, stations]) => ({
+        id: group,
+        label: group,
+        collapsed: collapse[`gs:${group}`] ?? true,
+        on: stations.some((s) => enabledStations.has(s.name)),
+        stations: stations.map((s) => ({
+          key: s.name,
+          name: s.name.startsWith(`${group} `) ? s.name.slice(group.length + 1) : s.name,
+          on: enabledStations.has(s.name),
+        })),
+      }));
+    // gsGroupOf is a pure module-scope-style helper defined inline.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groundStations, enabledStations, collapse]);
+
   const trackedRows = catalogTree.reduce(
     (a, n) => a + 1 + n.children.length,
     0,
@@ -1118,6 +1242,38 @@ export default function Scene() {
       }),
     [focusSlugs, shellSegs, colorBySlug, colors.accent],
   );
+
+  // DEV tuner (Florian 2026-07-11, rounds 2-6): live play for the
+  // ground-station cones and the active-spaceport effect, gated on
+  // ?tune=1. Values persist in one localStorage key and, while the panel
+  // is open, drive the scene live; normal viewers get the shipped look.
+  // Stored state is ALWAYS run through sanitizeConeParams: older or
+  // hand-edited JSON (missing fields, wrong types, junk values) merges
+  // with the defaults instead of ever reaching the scene raw.
+  const tuneOn = useMemo(
+    () => new URLSearchParams(window.location.search).get("tune") === "1",
+    [],
+  );
+  const [coneTune, setConeTune] = useState<ConeParams>(() => {
+    try {
+      const saved = localStorage.getItem(CONE_STORAGE_KEY);
+      if (saved) return sanitizeConeParams(JSON.parse(saved));
+    } catch {
+      // localStorage unavailable or unparseable; fall through to defaults.
+    }
+    return CONE_DEFAULTS;
+  });
+  useEffect(() => {
+    if (!tuneOn) return;
+    try {
+      localStorage.setItem(CONE_STORAGE_KEY, JSON.stringify(coneTune));
+    } catch {
+      // Best-effort persistence only.
+    }
+  }, [coneTune, tuneOn]);
+  // The scene reads the tuner only while it is open; otherwise the
+  // shipped committed look (CONE_DEFAULTS, every field a Florian final).
+  const coneParams: ConeParams = tuneOn ? coneTune : CONE_DEFAULTS;
 
   // Camera fit: the globe plus generous air for the LEO cloud, widened
   // if a MEO layer is ever enabled, stepped by the VIEW zoom buttons.
@@ -1203,6 +1359,22 @@ export default function Scene() {
         secondaryLabel: registrySlug && sp.info_url ? "Source (LL2)" : null,
       };
     }
+    if (pick.kind === "ground-station") {
+      const g = pick.station;
+      return {
+        title: g.name,
+        swatchToken: RESERVE_TOKEN,
+        fields: [
+          { label: "OPERATOR", value: g.operator },
+          { label: "COUNTRY", value: g.country || "?" },
+          { label: "TYPE", value: "GROUND STATION" },
+        ],
+        href: g.source_url,
+        hrefLabel: "Source",
+        secondaryHref: null as string | null,
+        secondaryLabel: null as string | null,
+      };
+    }
     const f = pick.facility;
     const href = registryHrefForOperator(f.operator_slug);
     return {
@@ -1239,7 +1411,9 @@ export default function Scene() {
       const t =
         sel.pick.kind === "spaceport"
           ? { lat: sel.pick.spaceport.lat, lon: sel.pick.spaceport.lon }
-          : { lat: sel.pick.facility.lat, lon: sel.pick.facility.lon };
+          : sel.pick.kind === "ground-station"
+            ? { lat: sel.pick.station.lat, lon: sel.pick.station.lon }
+            : { lat: sel.pick.facility.lat, lon: sel.pick.facility.lon };
       return toWorld(latLonToVec3(t.lat, t.lon, 1.005));
     }
     // Interpolate the selected satellite's position, matching the layer.
@@ -1393,11 +1567,13 @@ export default function Scene() {
               <GroundMarkers
                 spaceports={spaceports}
                 facilities={facilities}
+                groundStations={visibleGroundStations}
                 showSpaceports={showSpaceports}
                 showFacilities={showFacilities}
+                showGroundStations={showGroundStations}
+                coneParams={coneParams}
                 baseColor={colors.coast}
                 accentColor={colors.accent}
-                pulseColor={colors.ripple}
                 recentIds={recentIds}
                 reducedMotion={reducedMotion}
                 selected={selection?.kind === "ground" ? selection.pick : null}
@@ -1414,6 +1590,7 @@ export default function Scene() {
         <div className="ostatus">
           STATUS: LIVE <i className="hud-live-dot" />
         </div>
+        {tuneOn && <ConeTuner params={coneTune} onChange={setConeTune} />}
         {popup && (
           <div ref={popupEl} className="opopup-anchor">
             <Popup
@@ -1436,6 +1613,12 @@ export default function Scene() {
             allOff={enabled.size === 0}
             spaceports={{ on: showSpaceports, count: spaceports?.length ?? null }}
             facilities={{ on: showFacilities, count: facilities?.length ?? null }}
+            groundStations={{
+              on: showGroundStations,
+              count: groundStations?.length ?? null,
+              collapsed: collapse["gs"] ?? true,
+              operators: gsOperators,
+            }}
             onToggleCloud={toggleConstellation}
             onFocus={(slug) =>
               selectConstellation(selectedConstellation === slug ? null : slug)
@@ -1444,6 +1627,9 @@ export default function Scene() {
             onToggleCollapse={toggleCollapse}
             onToggleSpaceports={() => setShowSpaceports((v) => !v)}
             onToggleFacilities={() => setShowFacilities((v) => !v)}
+            onToggleGroundStations={toggleGroundStations}
+            onToggleStation={toggleStation}
+            onToggleStationOperator={toggleStationOperator}
             onRestoreDefaults={() => setEnabled(new Set(orbitCatalog.map((e) => e.slug)))}
           />
           <ViewCluster

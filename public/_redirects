@@ -1,0 +1,7 @@
+# Stats + Log merged into /system/ (Florian, 2026-07-11). 301s so the old
+# URLs and their inbound links keep resolving; URL fragments survive a 301
+# client-side, so /stats/#launch-cadence still lands on its anchor.
+/stats/ /system/ 301
+/log/ /system/ 301
+# Log archive months moved under /system/ (e.g. /log/2026-07/ -> /system/2026-07/).
+/log/* /system/:splat 301
