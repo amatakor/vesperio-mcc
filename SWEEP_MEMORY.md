@@ -1222,3 +1222,45 @@ a newer entry if a lesson changes.
   procedure's own mandated outputs (sweep-draft.json) are writable.
   Filtering candidates.json by hand via grep -B/-A on the raw JSON
   worked fine as the substitute for a scratch script.
+
+## Full-source-list re-check, ~1h20m gap (2026-07-11, interactive)
+
+- 2026-07-11-G: In this interactive session (not the scheduled workflow),
+  shell output redirection (`>` and `tee`) into repo-root paths was
+  blocked by the permission gate even though the target directory was
+  the session's own allowed working directory; plain (non-redirected)
+  Bash commands and the Write tool both worked without friction. Where
+  a script's output needs paging, use `sed -n 'X,Yp'` / `grep -B/-A` on
+  the direct command output rather than trying to redirect it to a
+  scratch file first.
+- 2026-07-11-H: Dispatching parallel general-purpose subagents (5-6 at
+  a time, each handling a small named batch of HTML sources or signals
+  channels with explicit anti-fabrication instructions) worked well for
+  the mechanical fetch-and-report legs of a sweep (fetch-list's 30 HTML
+  sources, signals-context's 16 fetchable channels) and kept the main
+  session's context small; each batch returned clean structured JSON
+  with verbatim excerpts, no fabricated dates caught on spot-check.
+- 2026-07-11-I: Umbra flipped unverified->dead this run after a third
+  consecutive documented failure (2026-07-06, 2026-07-08, 2026-07-11),
+  all the same failure mode (a static nav/footer shell at /blog with no
+  dated posts); Capella flipped verified->stale after its listing
+  showed the identical May 4, 2026 top post across three-plus sweeps
+  spanning over two months (reachable, real content, just not moving).
+  Both changes recorded with dated notes and (for Umbra) fail_count:3.
+- 2026-07-11-J: Confirms 2026-07-08-C on a much narrower gap: this run's
+  candidates-context window_start was 2 full days back even though the
+  real gap since state.json's lastSweep was only ~1h12m; grepping the
+  raw candidate list for `published_at` timestamps actually after
+  lastSweep (not window_start) found only 6 in-window entries, all
+  junk/off-topic. A discovery pass this narrow can still legitimately
+  surface known stories (MDA/CLS acquisition, Agnikul/ICEYE MoU) that
+  read as "new" to a search engine but are already published under
+  existing ids -- always cross-check a WebSearch hit's date and the
+  existing[] list before treating it as a miss.
+- 2026-07-11-K: A Space Force/Boeing $2B MUOS Service Life Extension
+  contract (narrowband military satcom, first satellite delivery not
+  until 2031) surfaced in discovery and was treated as out of scope:
+  Boeing is a heritage prime and MUOS is a decades-old legacy program
+  getting sustainment funding, not a new-space commercial capability --
+  same exclusion logic as the 2026-07-05-Q Aeolus-2 precedent, applied
+  here to a legacy DoD satcom program rather than an ESA science one.
