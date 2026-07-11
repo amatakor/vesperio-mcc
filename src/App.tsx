@@ -16,6 +16,8 @@ import {
   SignalsPage,
   StatsPage,
   AboutPage,
+  MethodologyPage,
+  DigestPage,
   LogPage,
   LogArchivePage,
   NotFoundPage,
@@ -69,6 +71,10 @@ export default function App({
       return d?.page === "stats" ? <StatsPage data={d} generatedAt={generatedAt} /> : <NotFoundPage />;
     case "about":
       return <AboutPage />;
+    case "methodology":
+      return <MethodologyPage />;
+    case "digest":
+      return d?.page === "digest" ? <DigestPage data={d} /> : <NotFoundPage />;
     case "log":
       return d?.page === "log" ? <LogPage data={d} /> : <NotFoundPage />;
     case "log-archive":

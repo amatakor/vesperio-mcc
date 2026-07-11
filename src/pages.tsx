@@ -171,7 +171,7 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
         <p>
           Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy</a>
+          <a href="/about/">Verification policy</a> · <a href="/methodology/">How the SNR score works</a>
         </p>
         <p className="footer-feeds">
           category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
@@ -3971,6 +3971,235 @@ export function AboutPage() {
   );
 }
 
+// ------------------------------------------------------------- methodology
+
+/** Reader-facing SNR scale: the 1-5 meanings, rewritten from the spec
+    for a commercial reader (the spec table is written for the agent). */
+const SNR_SCALE: Array<[number, string]> = [
+  [
+    1,
+    "Low confidence. A single source, a rumour, or an out-of-pattern claim with little behind it.",
+  ],
+  [
+    2,
+    "A little more: more than one source, or one usually-reliable source, or an early signal a later report matched.",
+  ],
+  [
+    3,
+    "A few reputable sources: trade press, established media, or an industry-leader account.",
+  ],
+  [
+    4,
+    "Widely reported: many sources, an established aggregator, or a long-standing claim nothing has contradicted.",
+  ],
+  [
+    5,
+    "Quasi-certainty. The actor itself or an official record: a release on the company's own site, an official filing, or direct observational data.",
+  ],
+];
+
+export function MethodologyPage() {
+  return (
+    <Layout>
+      <h1 className="page-title">how the SNR score works</h1>
+      <p className="lede">
+        Every item on this site carries a signal-to-noise score from 1 to 5, and every scored
+        registry figure carries one too. The score is not an opinion about whether a claim is
+        important; it is a reading of how well the sources support it. Here is what the number means
+        and how it is worked out.
+      </p>
+
+      <section className="panel">
+        <h2>the scale</h2>
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>score</th>
+              <th>what it means</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SNR_SCALE.map(([n, meaning]) => (
+              <tr key={n}>
+                <th scope="row">SNR {n}</th>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section className="panel">
+        <h2>where a score starts</h2>
+        <p>
+          The best source attached to an item sets a starting tier. A first-party source or an
+          official record starts at 5. A press-wire copy or an established aggregator starts at 4.
+          Trade or mainstream press starts at 3. An informal post starts at 1. The copy always names
+          who said what, so a low base tier is never hidden: it is shown alongside the claim.
+        </p>
+      </section>
+
+      <section className="panel">
+        <h2>how corroboration moves it</h2>
+        <p>
+          Independent corroboration raises a score, and each kind of corroboration counts once: a
+          second independent source, a fourth, and pickup by a mainstream outlet beyond the first
+          reporter. Syndicated copies of one story count as a single source, not as many, so
+          reprinting a wire report does not inflate the number.
+        </p>
+        <p>
+          Corroboration is also tested, not assumed. For a claim that rests on second-hand
+          reporting, we actively search for other coverage; a search that comes back empty costs
+          one point. A direct source proves its own statement and pays no such penalty.
+        </p>
+        <p>
+          There is a ceiling. No amount of second-hand corroboration reaches 5. Wide reporting is a
+          4; a 5 is reserved for a direct source: the actor speaking for itself, or an official
+          record.
+        </p>
+      </section>
+
+      <section className="panel">
+        <h2>claims that have to earn it</h2>
+        <p>
+          An out-of-pattern or extraordinary claim starts at 1 whatever its source count, and climbs
+          only as corroboration arrives or as it survives uncontested. A claim nothing contradicts
+          for two weeks earns one point, once, and never past 4. A matching later event lifts a weak
+          score of 1 or 2 by one point and attaches its source.
+        </p>
+        <p>
+          When two sources disagree on the same figure, the better-sourced one leads. Two equally
+          sourced claims that conflict are both marked disputed and stay visible, with both sides
+          shown, until a person reconciles them.
+        </p>
+      </section>
+
+      <section className="panel">
+        <h2>the signals-list floor</h2>
+        <p>
+          A person on our hand-curated signals list, posting on topic, floors a factual claim at 4
+          as an observer, or at 5 when the actor is speaking about itself. Jokes, opinions, and
+          off-topic posts get no floor. A first-party superlative is attributed, never scored or
+          repeated as fact.
+        </p>
+      </section>
+
+      <section className="panel">
+        <h2>stored, shown, and checked</h2>
+        <p>
+          Every score is saved with its full calculation at the moment it was set: the base source
+          tier and every adjustment since. You can open that calculation under any score mark on the
+          site. Scores move over an item's life as corroboration, contradiction, or uncontested time
+          changes the picture, and every move is logged.
+        </p>
+        <p>
+          Whether the scores are honest is itself measured. Each claim's score at publication is
+          recorded and compared against how it later resolves; the running tally is on the{" "}
+          <a href="/log/#calibration">sweep log</a>.
+        </p>
+      </section>
+    </Layout>
+  );
+}
+
+// ------------------------------------------------------------------ digest
+
+/** One item row in the weekly digest: headline link, tagline, date, chip. */
+function DigestList({ items }: { items: DataFor<"digest">["seismic"] }) {
+  return (
+    <ul className="digest-list">
+      {items.map((it) => (
+        <li key={it.id} className="digest-item">
+          <div className="card-meta">
+            <a className="chip" href={`/news/${it.category}/`}>
+              {it.category}
+            </a>
+            <span className="date">{it.date}</span>
+          </div>
+          <h3 className="digest-headline">
+            <a href={`/item/${it.id}/`}>{it.headline}</a>
+          </h3>
+          <p className="digest-tagline">{it.tagline}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function DigestPage({ data }: { data: DataFor<"digest"> }) {
+  const { seismic, major, notable, movements, quietSweeps, from, to, windowDays } = data;
+  const total = seismic.length + major.length + notable.length;
+  const empty = total === 0 && movements.length === 0 && quietSweeps.length === 0;
+  return (
+    <Layout current="log">
+      <h1 className="page-title">weekly digest</h1>
+      <p className="lede">
+        The last {windowDays} days at a glance: the week's items by importance, the scores that
+        moved, and the sweeps that were quiet. <a href="/log/">← sweep log</a>
+      </p>
+      <p className="dim mono">
+        // {from} to {to} · {total} item{total === 1 ? "" : "s"}
+      </p>
+      {empty ? (
+        <p className="empty">// nothing to report in the last {windowDays} days</p>
+      ) : (
+        <>
+          {seismic.length > 0 && (
+            <section className="panel">
+              <h2>seismic</h2>
+              <DigestList items={seismic} />
+            </section>
+          )}
+          {major.length > 0 && (
+            <section className="panel">
+              <h2>major</h2>
+              <DigestList items={major} />
+            </section>
+          )}
+          {notable.length > 0 && (
+            <section className="panel">
+              <h2>notable</h2>
+              <DigestList items={notable} />
+            </section>
+          )}
+          {movements.length > 0 && (
+            <section className="panel">
+              <h2>snr movements this week</h2>
+              <ul className="snr-moves">
+                {movements.map((m) => (
+                  <li key={`${m.id}-${m.from}-${m.to}`}>
+                    <a href={`/item/${m.id}/`}>{m.id}</a>{" "}
+                    <span className={m.to > m.from ? "snr-up" : "snr-down"}>
+                      {m.from}→{m.to}
+                    </span>{" "}
+                    <span className="dim">{m.reason}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {quietSweeps.length > 0 && (
+            <section className="panel">
+              <h2>quiet sweeps</h2>
+              <p className="dim">
+                Sweeps that added nothing, and why. A quiet day explained is a trust signal, not a
+                gap.
+              </p>
+              <ul className="mono dim">
+                {quietSweeps.map((s) => (
+                  <li key={s.at}>
+                    {formatSweepTimestamp(s.at)} · {s.summary}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </>
+      )}
+    </Layout>
+  );
+}
+
 // --------------------------------------------------------------------- log
 
 function formatSweepTimestamp(at: string): string {
@@ -4033,19 +4262,114 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
   );
 }
 
+/** Trailing-30-day KPI row at the top of /log. Compact fact grid, mono
+    data voice; each cell states exactly what it measures. All numbers are
+    computed at build time (page-data-server), never stored as facts. */
+function LogKpiRow({ kpis }: { kpis: DataFor<"log">["kpis"] }) {
+  const cells: Array<[string, string, string]> = [
+    ["items / day", kpis.itemsPerDay.toFixed(1), "published items in the window, per day"],
+    ["lead domains", String(kpis.leadDomains), "distinct lead-source domains in the window"],
+    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "share of window items scored 1 or 2"],
+    [
+      "crossfeed queued",
+      String(kpis.crossfeedQueued),
+      "registry crossfeed candidates queued, proposed in the window",
+    ],
+    [
+      "claims resolved",
+      String(kpis.claimsResolved),
+      "calibration claims confirmed or debunked in the window",
+    ],
+    [
+      "signals-sourced",
+      String(kpis.signalsSourced),
+      "window items floored by a signals-list source",
+    ],
+  ];
+  return (
+    <div className="log-kpis">
+      <p className="dim mono kpi-caption">
+        // trailing {kpis.windowDays} days · {kpis.itemCount} item
+        {kpis.itemCount === 1 ? "" : "s"} published
+      </p>
+      <div className="fact-grid">
+        {cells.map(([label, value, note]) => (
+          <div className="fact-cell" key={label} title={note}>
+            <span className="fact-label">{label}</span>
+            <span className="fact-value mono">{value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Techmeme-style lead-source presence: which outlets led the window's
+    items. Full list computed server-side; capped at 20 rows here with an
+    explicit "+N more" so nothing is silently dropped. */
+function LogPresence({
+  presence,
+  windowDays,
+}: {
+  presence: DataFor<"log">["presence"];
+  windowDays: number;
+}) {
+  const CAP = 20;
+  const rows = presence.slice(0, CAP);
+  const more = presence.length - rows.length;
+  return (
+    <section className="panel" id="lead-source-presence">
+      <h2>lead-source presence ({windowDays}d)</h2>
+      <p className="dim">
+        Which outlets led the window's items, most-cited first. The lead source sets each item's
+        base score, so a feed leaning on a few domains is a concentration worth seeing.
+      </p>
+      {presence.length === 0 ? (
+        <p className="empty">// no items in the window</p>
+      ) : (
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>lead source</th>
+              <th>items</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.domain}>
+                <th scope="row">{r.domain}</th>
+                <td>{r.count}</td>
+              </tr>
+            ))}
+            {more > 0 && (
+              <tr>
+                <td className="dim" colSpan={2}>
+                  +{more} more domain{more === 1 ? "" : "s"}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
 export function LogPage({ data }: { data: DataFor<"log"> }) {
-  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems } = data;
+  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems, kpis, presence } =
+    data;
   return (
     <Layout current="log">
       <h1 className="page-title">sweep log</h1>
       <p className="lede">
         Every sweep the machine ran, including the quiet ones. No items is a valid result; an
-        unexplained gap is not.
+        unexplained gap is not. <a href="/digest/">weekly digest →</a>
       </p>
       <p className="dim mono">
         {totals.count} sweep{totals.count === 1 ? "" : "s"} · +{totals.added} added · ~
         {totals.updated} updated · {totals.held} held
       </p>
+      <LogKpiRow kpis={kpis} />
       {sweeps.length === 0 ? (
         <p className="empty">// no sweeps logged yet</p>
       ) : (
@@ -4118,6 +4442,7 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
           </table>
         )}
       </section>
+      <LogPresence presence={presence} windowDays={kpis.windowDays} />
       <section className="panel" id="calibration">
         <h2>calibration</h2>
         <p className="dim">

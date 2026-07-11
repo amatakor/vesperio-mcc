@@ -21,6 +21,7 @@ import type {
 import type { CalibrationBucket } from "../../scripts/snr/ledger";
 import type { HeroStats, StatBlock } from "./stats";
 import type { RegEntry } from "./reg-entries";
+import type { LogKpis, PresenceRow } from "./log-kpis";
 
 /** Feed-wide counts the home filter bar shows (computed at prerender). */
 export interface FeedCounts {
@@ -39,6 +40,29 @@ export interface ProfileEventRef {
 
 /** Lowercased org display name -> profile href (for entityHrefFor). */
 export type OrgHrefs = Record<string, string>;
+
+/** Compact item reference the weekly digest lists per importance tier. */
+export interface DigestItemRef {
+  id: string;
+  headline: string;
+  tagline: string;
+  date: string;
+  category: string;
+}
+
+/** One SNR movement the digest surfaces from the week's sweeps. */
+export interface DigestMovement {
+  id: string;
+  from: number;
+  to: number;
+  reason: string;
+}
+
+/** A zero-add ("quiet") sweep in the digest window, with its summary. */
+export interface DigestQuietSweep {
+  at: string;
+  summary: string;
+}
 
 export type PageData =
   | { page: "home"; items: Item[]; pageCount: number; counts: FeedCounts }
@@ -106,6 +130,10 @@ export type PageData =
       archiveMonths: string[];
       /** Sources currently dead or stale (Phase 5): the honest gap list. */
       sourceProblems: { name: string; status: "dead" | "stale" }[];
+      /** Trailing-30-day KPIs (Phase 7), computed server-side. */
+      kpis: LogKpis;
+      /** Lead-source presence over the same window, full sorted list. */
+      presence: PresenceRow[];
     }
   | { page: "log-archive"; month: string; sweeps: SweepLogEntry[] }
   | {
@@ -115,6 +143,19 @@ export type PageData =
       vehicleLinks: { name: string; slug: string }[];
     }
   | { page: "about" }
+  | { page: "methodology" }
+  | {
+      page: "digest";
+      windowDays: number;
+      /** Inclusive event-date range of the window, YYYY-MM-DD. */
+      from: string;
+      to: string;
+      seismic: DigestItemRef[];
+      major: DigestItemRef[];
+      notable: DigestItemRef[];
+      movements: DigestMovement[];
+      quietSweeps: DigestQuietSweep[];
+    }
   | { page: "not-found" };
 
 /** Items per prerendered feed page (plan: 30-50; 50 keeps page count low). */

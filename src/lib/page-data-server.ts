@@ -8,8 +8,17 @@
 import type { Item, SweepLogEntry } from "../data/schema";
 import { CATEGORIES, DOMAIN_TAGS } from "../data/schema";
 import type { Route } from "../routes";
-import type { FeedCounts, OrgHrefs, PageData, ProfileEventRef } from "./page-data";
+import type {
+  DigestItemRef,
+  FeedCounts,
+  OrgHrefs,
+  PageData,
+  ProfileEventRef,
+} from "./page-data";
 import { FEED_PAGE_SIZE, feedPageCount, splitLogWindow } from "./page-data";
+import { computeLogKpis, leadSourcePresence } from "./log-kpis";
+import type { CrossfeedCandidateRef } from "./log-kpis";
+import registryCandidatesJson from "../data/registry-candidates.json";
 import {
   constellationEntries,
   vehicleEntries,
@@ -102,6 +111,56 @@ function logTotals(all: SweepLogEntry[]): { added: number; updated: number; held
     }),
     { added: 0, updated: 0, held: 0, count: 0 },
   );
+}
+
+/** Weekly digest window: the last 7 full days from the build moment. */
+const DIGEST_WINDOW_DAYS = 7;
+
+const digestRef = (i: Item): DigestItemRef => ({
+  id: i.id,
+  headline: i.headline,
+  tagline: i.explainer.tagline,
+  date: i.date,
+  category: i.category,
+});
+
+/**
+ * The weekly digest: the window's items grouped by importance (seismic,
+ * major, notable; noise is left out), the SNR movements the window's
+ * sweeps logged, and the window's quiet (zero-add) sweeps as the trust
+ * footer. Windowed by event date and sweep timestamp; deterministic
+ * given (dataset, now).
+ */
+function buildDigest(now: Date): Extract<PageData, { page: "digest" }> {
+  const toDay = now.toISOString().slice(0, 10);
+  const fromDay = new Date(now.getTime() - DIGEST_WINDOW_DAYS * 86_400_000)
+    .toISOString()
+    .slice(0, 10);
+  const cutoffIso = new Date(now.getTime() - DIGEST_WINDOW_DAYS * 86_400_000).toISOString();
+
+  const win = items.filter((i) => i.date >= fromDay);
+  const byImpact = (impact: Item["impact"]) =>
+    win.filter((i) => i.impact === impact).map(digestRef);
+
+  const windowSweeps = sweeps.filter((s) => s.at >= cutoffIso);
+  const movements = windowSweeps.flatMap((s) =>
+    (s.snr_movements ?? []).map((m) => ({ id: m.id, from: m.from, to: m.to, reason: m.reason })),
+  );
+  const quietSweeps = windowSweeps
+    .filter((s) => s.added === 0)
+    .map((s) => ({ at: s.at, summary: s.summary }));
+
+  return {
+    page: "digest",
+    windowDays: DIGEST_WINDOW_DAYS,
+    from: fromDay,
+    to: toDay,
+    seismic: byImpact("seismic"),
+    major: byImpact("major"),
+    notable: byImpact("notable"),
+    movements,
+    quietSweeps,
+  };
 }
 
 export function buildPageData(route: Route, generatedAt: string): PageData | null {
@@ -202,6 +261,8 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         .filter((s) => s.status === "dead" || s.status === "stale")
         .map((s) => ({ name: s.name, status: s.status as "dead" | "stale" }))
         .sort((a, b) => a.status.localeCompare(b.status) || a.name.localeCompare(b.name));
+      const candidates = (registryCandidatesJson as { candidates: CrossfeedCandidateRef[] })
+        .candidates;
       return {
         page: "log",
         sweeps: recent,
@@ -210,6 +271,8 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         calibrationBuckets,
         archiveMonths,
         sourceProblems,
+        kpis: computeLogKpis(items, ledgerSources, candidates, now),
+        presence: leadSourcePresence(items, now),
       };
     }
     case "log-archive": {
@@ -224,6 +287,10 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       };
     case "about":
       return { page: "about" };
+    case "methodology":
+      return { page: "methodology" };
+    case "digest":
+      return buildDigest(now);
     case "not-found":
       return null;
   }
