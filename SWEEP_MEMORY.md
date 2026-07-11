@@ -1264,3 +1264,38 @@ a newer entry if a lesson changes.
   getting sustainment funding, not a new-space commercial capability --
   same exclusion logic as the 2026-07-05-Q Aeolus-2 precedent, applied
   here to a legacy DoD satcom program rather than an ESA science one.
+
+- 2026-07-11: `companies` must name the concerned actor even when untracked (Space Force, UNOOSA, BRIN, national agencies render as plain text in the card footer; the entity linker adds profile links only where a registry ref exists). Leave it empty ONLY when the story genuinely names no actor (e.g. debris with no operator identified). Florian corrected four items that shipped with empty actor arrays.
+- 2026-07-11: sweep-entry summaries must be written in sentence case (every sentence starts with a capital). Florian's site-wide rule: no sentence starts lowercase anywhere. The renderer uppercases the first letter as a guard, but interior sentences are the writer's job.
+
+## Registry fill crawl (2026-07-12, interactive session, one-off)
+
+- 2026-07-12-A: Generation-specific entity slugs (blacksky-gen2) must not
+  take values from generation-agnostic pages: eoPortal's "BlackSky
+  Constellation" figures mix Gen-2 and Gen-3, and attributing the mixed
+  count to one generation failed verification. When a slug names a
+  sub-fleet, the cited sentence must name that sub-fleet.
+- 2026-07-12-B: Wikipedia infobox "website" values need the substantive
+  is-this-the-entity's-own-official-site check on the LOADED page, not
+  just a fetch: infoboxes handed us a Baikonur tour-operator site and two
+  dead Chinese-spaceport domains (expired cert, refused connection) that
+  read fine as quotes. Website fields verify by loading the VALUE URL.
+- 2026-07-12-C: When one page states two plausible numbers for the same
+  metric (Albedo: 6 initial deployment vs 24 ultimate constellation),
+  sats_planned takes the stated ultimate/target figure; the interim
+  milestone belongs in notes. Set as the verifier's fix on albedo-clarity.
+- 2026-07-12-D: A page-supported but dated claim can still be wrong to
+  ship: Wikipedia's Jilin-1 active count (130) carries its own "as of 15
+  June 2023" qualifier, three years stale, and CGSTL's own about page
+  self-contradicts (79 launched / 72 in orbit, undated). Orchestrator
+  reverted the field to null; a claimed-active count whose page-stated
+  date is years old misleads under a fresh as_of. Needs a fresher source.
+- 2026-07-12-E: pgc.umn.edu (Polar Geospatial Center commercial-imagery
+  guides) states clean constellation facts but is outside the relaxed
+  whitelist (operator/official, aggregators, press, Wikipedia); two
+  vantor fields citing it were reverted to null. Candidate source for
+  Florian to consider whitelisting: it is NSF-funded reference material.
+- 2026-07-12-F: Collector abstention discipline held: 129 of 231 targeted
+  nulls were correctly left unfilled rather than summed, derived, or
+  coerced from vague phrasing; zero-field candidate files are a valid,
+  cheap outcome. Verifier fail rate on submitted fields was 9 of 103.
