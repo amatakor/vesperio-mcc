@@ -135,6 +135,41 @@ export function matchCompanies(index: RegistryIndex, companies: string[]): strin
   return [...out];
 }
 
+/**
+ * Entity linking (plan Phase 7): each companies[] name resolved to ONE
+ * profile ref "<subdir>/<slug>" for the item's `entities` field. A name
+ * matching several entity types links its most company-like profile:
+ * organization first (a company name names the company), then
+ * constellation, vehicle, spaceport. Unresolvable names get no entry.
+ */
+const ENTITY_LINK_PREFERENCE: RegistryEntityType[] = [
+  "organization",
+  "constellation",
+  "vehicle",
+  "spaceport",
+];
+
+export function matchCompanyRefs(
+  index: RegistryIndex,
+  companies: string[],
+): { name: string; ref: string }[] {
+  const out: { name: string; ref: string }[] = [];
+  for (const name of companies) {
+    const slugs = index.byName.get(name.toLowerCase().trim()) ?? new Set<string>();
+    const refs = [...slugs]
+      .map((s) => index.bySlug.get(s))
+      .filter((r): r is RegistryEntityRef => r !== undefined)
+      .sort(
+        (a, b) =>
+          ENTITY_LINK_PREFERENCE.indexOf(a.entityType) -
+            ENTITY_LINK_PREFERENCE.indexOf(b.entityType) || a.slug.localeCompare(b.slug),
+      );
+    const best = refs[0];
+    if (best) out.push({ name, ref: `${REGISTRY_SUBDIR_BY_TYPE[best.entityType]}/${best.slug}` });
+  }
+  return out;
+}
+
 /** One attested fact from a draft item's crossfeed block. */
 export interface CrossfeedFact {
   entity_slug: string;

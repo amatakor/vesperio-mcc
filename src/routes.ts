@@ -27,6 +27,8 @@ export type Route =
   | { page: "signals" }
   | { page: "stats" }
   | { page: "about" }
+  | { page: "methodology" }
+  | { page: "digest" }
   | { page: "log" }
   | { page: "log-archive"; month: string }
   | { page: "not-found" };
@@ -46,6 +48,8 @@ export function matchRoute(pathname: string): Route {
   if (p === "/signals/") return { page: "signals" };
   if (p === "/stats/") return { page: "stats" };
   if (p === "/about/") return { page: "about" };
+  if (p === "/methodology/") return { page: "methodology" };
+  if (p === "/digest/") return { page: "digest" };
   if (p === "/log/") return { page: "log" };
 
   const feedPage = p.match(/^\/feed\/(\d+)\/$/);

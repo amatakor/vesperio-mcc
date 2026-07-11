@@ -378,3 +378,38 @@ describe("finalize-sweep crossfeed wiring", () => {
     expect(new Set(queue.candidates.map((c) => c.id)).size).toBe(2);
   });
 });
+
+// ------------------------------------------------- entity linking (Phase 7)
+
+import { matchCompanyRefs } from "../lib/crossfeed";
+
+describe("matchCompanyRefs (entity linking)", () => {
+  test("resolves direct names and curated aliases to type-qualified refs", () => {
+    const idx = loadRegistryIndex(dataDir);
+    expect(matchCompanyRefs(idx, ["ICEYE"])).toEqual([
+      { name: "ICEYE", ref: "constellations/iceye" },
+    ]);
+    expect(matchCompanyRefs(idx, ["ICEYE US"])).toEqual([
+      { name: "ICEYE US", ref: "constellations/iceye" },
+    ]);
+  });
+
+  test("unresolvable names get no entry, and each name keeps its own pairing", () => {
+    const idx = loadRegistryIndex(dataDir);
+    expect(matchCompanyRefs(idx, ["Nonexistent Corp", "ICEYE"])).toEqual([
+      { name: "ICEYE", ref: "constellations/iceye" },
+    ]);
+  });
+
+  test("a name matching several types links the organization first", () => {
+    mkdirSync(join(dataDir, "registry", "organizations"), { recursive: true });
+    writeFileSync(
+      join(dataDir, "registry", "organizations", "iceye-org.json"),
+      JSON.stringify({ slug: "iceye-org", name: "ICEYE" }, null, 2),
+    );
+    const idx = loadRegistryIndex(dataDir);
+    expect(matchCompanyRefs(idx, ["ICEYE"])).toEqual([
+      { name: "ICEYE", ref: "organizations/iceye-org" },
+    ]);
+  });
+});

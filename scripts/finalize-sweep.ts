@@ -55,6 +55,7 @@ import { recordClaim, effectiveClass } from "./snr/ledger";
 import {
   loadRegistryIndex,
   matchCompanies,
+  matchCompanyRefs,
   validateFact,
   decideFact,
 } from "./lib/crossfeed";
@@ -843,6 +844,13 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       }
     }
     delete (stamped as unknown as Obj).crossfeed;
+
+    // Entity linking (plan Phase 7): companies resolved to registry
+    // profiles through the same alias index the crossfeed uses. Names
+    // with no registry match carry no entry; an empty result stamps
+    // nothing (the field is additive and optional).
+    const entityRefs = matchCompanyRefs(registryIndex, stamped.companies);
+    if (entityRefs.length > 0) stamped.entities = entityRefs;
 
     const before = errors.length;
     validateItem(stamped, `${path} (after scoring)`, errors);

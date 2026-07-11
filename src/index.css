@@ -2276,6 +2276,53 @@ table.profile td.src-cell a,
   flex-wrap: wrap;
   margin-top: auto;
 }
+
+/* /log KPI row (Phase 7): a fact grid under the lede. Reuses .fact-grid /
+   .fact-cell; the value renders in the mono data voice at instrument size. */
+.log-kpis {
+  margin: var(--sp-4) 0 var(--sp-6);
+}
+.kpi-caption {
+  margin: 0 0 var(--sp-2);
+}
+.log-kpis .fact-value {
+  font-size: var(--fs-h2);
+}
+
+/* Weekly digest list: unfenced rows separated by a top hairline, display
+   headline over a mono tagline; mirrors the card voices without the box. */
+.digest-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.digest-item {
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--line);
+}
+.digest-item:first-child {
+  border-top: 0;
+}
+.digest-headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-headline);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  margin: var(--sp-2) 0 0;
+}
+.digest-headline a {
+  color: var(--text-1);
+}
+.digest-tagline {
+  font-family: var(--font-ui);
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  margin: var(--sp-1) 0 0;
+}
 .tl-filter {
   margin-bottom: 0.9rem;
 }
