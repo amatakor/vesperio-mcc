@@ -1148,3 +1148,15 @@ a newer entry if a lesson changes.
   feature as if it were the live feed). Treat this source as needing a
   different URL or a JS-capable render before it's reliably checkable;
   a clean 200 here is not proof of a checkable press-release listing.
+
+## Workflow sandboxing (2026-07-11, PR2)
+
+- 2026-07-11-A: scheduled runs no longer have curl (or any shell
+  fetcher); WebFetch and WebSearch are the only fetch paths, and Bash
+  is limited to the exact bun scripts the prompt mandates. Do NOT try
+  curl fallbacks that older lessons in this file mention (SEC exhibit
+  pages, unoosa.org browser user agents, rocketlabcorp.com redirects,
+  Vantor): the permission is denied and retrying wastes turns. Where
+  WebFetch cannot reach a source, record the honest fetch_note /
+  sourceHealth outcome and move on; persistent unreachability is a
+  source-health problem to surface, not to work around.

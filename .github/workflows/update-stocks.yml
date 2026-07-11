@@ -9,18 +9,37 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: data-writes
+  cancel-in-progress: false
+
 jobs:
   stocks:
+    if: github.repository == 'amatakor/vesperio-mcc'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
       - name: Fetch daily closes for listed registry entities
         run: bun scripts/fetch-stocks.ts
       - name: Commit refreshed series
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git config user.name "mcc-stocks-bot"
           git config user.email "actions@github.com"
           git add public/data/stocks/
-          git diff --cached --quiet && echo "no changes" || git commit -m "stocks: daily close refresh"
+          if git diff --cached --quiet; then
+            echo "no changes"
+            exit 0
+          fi
+          git commit -m "stocks: daily close refresh"
+          # main may have moved during the run; stock commits touch only
+          # data files, so a rebase is clean or fails loudly.
+          git pull --rebase origin main
           git push

@@ -121,8 +121,10 @@ result when nothing on-scope happened; padding is still the bug.
    queues entries from Google News query feeds (sources.json category
    mainstream_triggers). Their URLs are news.google.com REDIRECTS and
    their titles end with " - Outlet". Before drafting from one: follow
-   the redirect (curl -sIL or fetch) to the PUBLISHER page, fetch that
-   page, and use the publisher URL as the lead source, classed by the
+   the redirect with WebFetch (fetch the news.google.com URL; it
+   resolves or reports the redirect target) to the PUBLISHER page,
+   fetch that page, and use the publisher URL as the lead source,
+   classed by the
    publisher's domain (mainstream / trade / first_party per the normal
    rules). news.google.com is NEVER cited as a source. Several query
    feeds may carry the same story: one story, one candidate (the
