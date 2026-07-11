@@ -26,9 +26,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          # The agent must never see a push-capable token; the commit step
+          # injects GH_TOKEN into the remote URL explicitly.
+          persist-credentials: false
+          fetch-depth: 1
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -57,7 +62,7 @@ jobs:
           fi
 
       - name: Run the registry maintenance agent
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
@@ -71,7 +76,15 @@ jobs:
             handles that.
           claude_args: |
             --model claude-sonnet-5
-            --allowedTools "Bash(bun:*),Bash(curl:*),Read,Write,Edit,WebFetch,WebSearch"
+            --max-turns 80
+            --allowedTools "Bash(bun run build),Bash(ls:*),Read,Write(./src/data/registry/**),Edit(./src/data/registry/**),Write(./public/data/orbits/facilities.json),Edit(./public/data/orbits/facilities.json),Write(./src/data/registry-candidates.json),Edit(./src/data/registry-candidates.json),WebFetch,WebSearch"
+
+      # The load-bearing control: whatever the agent did, the working tree
+      # may only differ under the registry run's data paths (the same set
+      # the commit step stages). Anything else fails the job here, before
+      # build and push.
+      - name: Diff-scope gate (agent output confined to registry data paths)
+        run: bun scripts/check-run-diff.ts registry
 
       - name: Build must pass before any commit
         run: bun run build
