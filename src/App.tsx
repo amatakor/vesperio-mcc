@@ -1,13 +1,8 @@
 import { matchRoute } from "./routes";
-import {
-  itemById,
-  constellationBySlug,
-  vehicleBySlug,
-  spaceportBySlug,
-  orgBySlug,
-} from "./lib/data";
+import type { PageData } from "./lib/page-data";
 import {
   HomePage,
+  FeedPagePage,
   ItemPage,
   CategoryPage,
   TagPage,
@@ -22,42 +17,62 @@ import {
   StatsPage,
   AboutPage,
   LogPage,
+  LogArchivePage,
   NotFoundPage,
 } from "./pages";
 
-export default function App({ path, generatedAt }: { path: string; generatedAt: string }) {
+/**
+ * Routing is shape-only; the page's DATA decides whether the entity
+ * exists. pageData comes from the embedded #__MCC_DATA__ slice (or the
+ * dev-only in-browser builder); a well-shaped URL with no matching data
+ * renders NotFound, mirroring what the prerenderer never emitted.
+ */
+export default function App({
+  path,
+  generatedAt,
+  pageData,
+}: {
+  path: string;
+  generatedAt: string;
+  pageData: PageData | null;
+}) {
   const route = matchRoute(path);
+  const d = pageData;
   switch (route.page) {
     case "home":
-      return <HomePage />;
+      return d?.page === "home" ? <HomePage data={d} /> : <NotFoundPage />;
+    case "feed-page":
+      return d?.page === "feed-page" ? <FeedPagePage data={d} /> : <NotFoundPage />;
     case "item":
-      return <ItemPage item={itemById(route.id)!} />;
+      return d?.page === "item" ? <ItemPage item={d.item} /> : <NotFoundPage />;
     case "category":
-      return <CategoryPage category={route.category} />;
+      return d?.page === "category" ? <CategoryPage data={d} /> : <NotFoundPage />;
     case "tag":
-      return <TagPage tag={route.tag} />;
+      return d?.page === "tag" ? <TagPage data={d} /> : <NotFoundPage />;
     case "kind":
-      return <KindPage kind={route.kind} />;
+      return d?.page === "kind" ? <KindPage data={d} /> : <NotFoundPage />;
     case "orbits":
-      return <OrbitsPage />;
+      return d?.page === "orbits" ? <OrbitsPage data={d} /> : <NotFoundPage />;
     case "registry":
-      return <RegistryIndexPage />;
+      return d?.page === "registry" ? <RegistryIndexPage data={d} /> : <NotFoundPage />;
     case "constellation":
-      return <ConstellationPage profile={constellationBySlug(route.slug)!} />;
+      return d?.page === "constellation" ? <ConstellationPage data={d} /> : <NotFoundPage />;
     case "vehicle":
-      return <VehiclePage profile={vehicleBySlug(route.slug)!} />;
+      return d?.page === "vehicle" ? <VehiclePage data={d} /> : <NotFoundPage />;
     case "spaceport":
-      return <SpaceportPage profile={spaceportBySlug(route.slug)!} />;
+      return d?.page === "spaceport" ? <SpaceportPage data={d} /> : <NotFoundPage />;
     case "org":
-      return <OrgPage profile={orgBySlug(route.slug)!} />;
+      return d?.page === "org" ? <OrgPage data={d} /> : <NotFoundPage />;
     case "signals":
-      return <SignalsPage />;
+      return d?.page === "signals" ? <SignalsPage data={d} /> : <NotFoundPage />;
     case "stats":
-      return <StatsPage generatedAt={generatedAt} />;
+      return d?.page === "stats" ? <StatsPage data={d} generatedAt={generatedAt} /> : <NotFoundPage />;
     case "about":
       return <AboutPage />;
     case "log":
-      return <LogPage />;
+      return d?.page === "log" ? <LogPage data={d} /> : <NotFoundPage />;
+    case "log-archive":
+      return d?.page === "log-archive" ? <LogArchivePage data={d} /> : <NotFoundPage />;
     case "not-found":
       return <NotFoundPage />;
   }
