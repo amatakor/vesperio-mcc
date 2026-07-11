@@ -9,7 +9,8 @@
  * Exponential backoff on 429.
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 import { join } from "node:path";
 import type { OrbitsSpaceportsFile } from "../../src/data/schema";
 import { buildSpaceports, type Ll2Launch, type Ll2Location, type Ll2Pad } from "./lib";
@@ -76,7 +77,7 @@ const file: OrbitsSpaceportsFile = {
   spaceports,
 };
 mkdirSync("public/data/orbits", { recursive: true });
-writeFileSync(OUT_PATH, JSON.stringify(file, null, 2) + "\n");
+writeJsonAtomic(OUT_PATH, file);
 
 console.log(
   `fetch-spaceports: ${spaceports.length} active sites from ${locations.length} locations, ` +

@@ -26,8 +26,10 @@
  * individual source failures are logged and recorded, never fatal.
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { fetchSafeText } from "./lib/fetch-safe";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { canonicalizeUrl } from "./lib/urls";
 import { youtubeSignalChannels } from "./lib/signals";
 import type { SignalsFile, Source, SourcesFile, StateFile, SweepLogEntry } from "../src/data/schema";
@@ -551,27 +553,27 @@ async function fetchSource(
   url: string,
   conditional: ConditionalHeaders = {},
 ): Promise<{ status: number; text: string; etag: string | null; lastModified: string | null }> {
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent": UA,
-        Accept: "application/rss+xml, application/atom+xml, application/json, text/xml, */*;q=0.5",
-        ...conditionalHeaders(conditional),
-      },
-      redirect: "follow",
-      signal: ctrl.signal,
-    });
-    return {
-      status: res.status,
-      text: await res.text(),
-      etag: res.headers.get("etag"),
-      lastModified: res.headers.get("last-modified"),
-    };
-  } finally {
-    clearTimeout(timer);
-  }
+  // Routed through the shared safe fetcher (plan Phase 8, should-fix 8): it
+  // refuses unsafe URLs via isSafeUrl before connecting and re-validates
+  // every redirect hop, and caps the response body so a hostile feed cannot
+  // balloon a run. An UnsafeUrlError or ResponseTooLargeError surfaces to the
+  // per-source catch below as a normal fetch failure, not a crash. The Sweep
+  // UA, Accept header, conditional-GET headers, and etag/last-modified capture
+  // are unchanged.
+  const res = await fetchSafeText(url, {
+    timeoutMs: FETCH_TIMEOUT_MS,
+    headers: {
+      "User-Agent": UA,
+      Accept: "application/rss+xml, application/atom+xml, application/json, text/xml, */*;q=0.5",
+      ...conditionalHeaders(conditional),
+    },
+  });
+  return {
+    status: res.status,
+    text: res.text,
+    etag: res.headers.get("etag"),
+    lastModified: res.headers.get("last-modified"),
+  };
 }
 
 async function main(): Promise<void> {
@@ -749,8 +751,8 @@ async function main(): Promise<void> {
     health,
     candidates,
   };
-  writeFileSync(queuePath, JSON.stringify(out, null, 2) + "\n");
-  writeFileSync(sourcesPath, JSON.stringify(sources, null, 2) + "\n");
+  writeJsonAtomic(queuePath, out);
+  writeJsonAtomic(sourcesPath, sources);
   console.log(
     `harvest: ${targets.length} sources fetched, ${candidates.length} candidates in queue (window >= ${cutoff})`,
   );

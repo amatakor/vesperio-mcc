@@ -14,7 +14,19 @@ import {
 const errors: string[] = [];
 
 const items = loadJson("src/data/items.json", errors);
-if (items !== undefined) errors.push(...validateItemsFile(items));
+if (items !== undefined) {
+  errors.push(...validateItemsFile(items));
+  // Future-date bound (plan Phase 8): items report things that happened.
+  // Two days of slack absorbs timezone edges; anything past that is a
+  // typo or a fabricated date.
+  const limit = new Date(Date.now() + 2 * 86_400_000).toISOString().slice(0, 10);
+  const list = (items as { items?: { id?: string; date?: string }[] }).items ?? [];
+  for (const it of list) {
+    if (typeof it.date === "string" && it.date > limit) {
+      errors.push(`items.${it.id ?? "?"}: event date ${it.date} is in the future (limit ${limit})`);
+    }
+  }
+}
 
 const held = loadJson("src/data/held.json", errors);
 if (held !== undefined) errors.push(...validateHeldFile(held));

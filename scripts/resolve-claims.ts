@@ -25,7 +25,8 @@
  * catastrophic failure; an empty run is a valid result.
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 import type {
   Item,
@@ -245,8 +246,8 @@ export function runResolution(dataDir: string, today: string, nowIso: string): R
     throw new Error(`post-run validation failed, nothing written:\n  ${postErrors.join("\n  ")}`);
   }
 
-  writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2) + "\n");
-  writeFileSync(suggestionsPath, JSON.stringify(suggestions, null, 2) + "\n");
+  writeJsonAtomic(ledgerPath, ledger);
+  writeJsonAtomic(suggestionsPath, suggestions);
   return result;
 }
 

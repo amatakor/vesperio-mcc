@@ -7,7 +7,8 @@
  * in the UI. Output schema is unchanged (fetched_at, source, provider,
  * currency, symbol, closes:[[date,close]]).
  */
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 
 const OUT = "public/data/stocks";
@@ -49,16 +50,17 @@ for (const t of targets) {
       console.error(`${t.slug} (${t.symbol}): only ${closes.length} points, skipped`);
       continue;
     }
-    writeFileSync(
+    writeJsonAtomic(
       join(OUT, `${t.slug}.json`),
-      JSON.stringify({
+      {
         fetched_at: new Date().toISOString(),
         source: url,
         provider: "Yahoo Finance",
         currency: r?.meta?.currency ?? null,
         symbol: t.symbol,
         closes,
-      }) + "\n",
+      },
+      0,
     );
     ok++;
     console.log(`${t.slug}: ${closes.length} closes (${t.symbol}, ${r?.meta?.currency})`);

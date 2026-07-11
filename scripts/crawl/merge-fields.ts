@@ -6,8 +6,9 @@
  *
  * Usage: bun merge.ts --type organization --verified <dir> [--repo <root>]
  */
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 
 type Kind = "string" | "number" | "boolean" | "string[]";
 
@@ -32,8 +33,10 @@ const TYPES: Record<string, { dir: string; fields: Record<string, Kind> }> = {
   spaceport: {
     dir: "spaceports",
     fields: {
+      // launches_total is a COMPUTED field (compute-spaceport-launches.ts),
+      // never LLM-maintained; it is deliberately not fillable here.
       overview: "string", country: "string", operator: "string",
-      first_launch_date: "string", launches_total: "number",
+      first_launch_date: "string",
       status: "string", website: "string",
     },
   },
@@ -135,7 +138,7 @@ for (const file of files) {
 
   if (touched > 0) {
     if (typeof profile.notes === "string" && profile.notes.includes("pending")) profile.notes = null;
-    writeFileSync(profilePath, JSON.stringify(profile, null, 2) + "\n");
+    writeJsonAtomic(profilePath, profile);
     filled += touched;
     console.log(`${slug}: filled ${touched} (${perField.join(", ")})`);
   } else {

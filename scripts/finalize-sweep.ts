@@ -14,7 +14,8 @@
  * there is no bypass.
  */
 
-import { readFileSync, writeFileSync, unlinkSync, readdirSync } from "node:fs";
+import { readFileSync, unlinkSync, readdirSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 import type {
   Item,
@@ -1326,8 +1327,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   }
 
   // ---- write --------------------------------------------------------------
-  const write = (path: string, data: unknown) =>
-    writeFileSync(path, JSON.stringify(data, null, 2) + "\n");
+  const write = (path: string, data: unknown) => writeJsonAtomic(path, data);
   write(itemsPath, nextItems);
   write(heldPath, nextHeld);
   write(statePath, nextState);

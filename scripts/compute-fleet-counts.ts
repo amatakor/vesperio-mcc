@@ -12,8 +12,9 @@
  *
  * Usage: bun scripts/compute-fleet-counts.ts
  */
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 
 const CONSTELLATIONS = "src/data/registry/constellations";
 const ELEMENTS = "public/data/orbits";
@@ -47,7 +48,7 @@ for (const file of readdirSync(CONSTELLATIONS).filter((f) => f.endsWith(".json")
     continue;
   }
   profile.sats_active_verified = next;
-  writeFileSync(path, JSON.stringify(profile, null, 2) + "\n");
+  writeJsonAtomic(path, profile);
   filled++;
   console.log(`${profile.slug}: ${next.value} tracked (as of ${next.as_of})`);
 }

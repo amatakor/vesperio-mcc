@@ -8,7 +8,8 @@
  * scheduled refresh.
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
+import { writeJsonAtomic } from "../lib/write-json-atomic";
 
 const SOURCE = "https://raw.githubusercontent.com/brettonw/YaleBrightStarCatalog/master/bsc5-short.json";
 const OUT = "public/data/orbits/stars.json";
@@ -68,5 +69,5 @@ const file = {
   mag_limit: MAG_LIMIT,
   stars,
 };
-writeFileSync(OUT, JSON.stringify(file) + "\n");
+writeJsonAtomic(OUT, file, 0);
 console.log(`build-stars: ${stars.length} stars (mag <= ${MAG_LIMIT}), ${skipped} unparsable entries skipped`);

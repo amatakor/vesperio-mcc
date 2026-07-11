@@ -23,7 +23,8 @@
  * means those fields stay null this week, logged, not fatal.
  */
 
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 import { ll2ConfigId as ll2ConfigIdShared, ll2SearchName } from "./enrich/lib";
 
@@ -245,7 +246,7 @@ async function main(): Promise<void> {
       const last = ll2.lastByConfig.get(id);
       if (last !== undefined && fillAggregator(profile, "last_flight_date", last, ll2.lastUrl, today, reason)) changed++;
       if (changed > 0) {
-        writeFileSync(path, JSON.stringify(profile, null, 2) + "\n");
+        writeJsonAtomic(path, profile);
         filled += changed;
         console.log(`enrich: ${file}: ${changed} field(s) filled from LL2`);
       }
@@ -277,7 +278,7 @@ async function main(): Promise<void> {
             `${GCAT_ATTRIBUTION}; orgs table TStart year, exact name match`,
           )
         ) {
-          writeFileSync(join(orgsDir, f), JSON.stringify(p, null, 2) + "\n");
+          writeJsonAtomic(join(orgsDir, f), p);
           filled++;
           console.log(`enrich: ${f}: founded filled from GCAT`);
         }

@@ -299,6 +299,32 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
     errors.push(`${path}.disputed: must be a boolean when present`);
   }
 
+  // Writing-style lint (plan Phase 8, per the CLAUDE.md style list): hype
+  // voice, exclamation marks, and em dashes never publish. "milestone" is
+  // banned in headlines only; body copy may use it as a term of art (FCC
+  // deployment milestones are literally called that).
+  {
+    const HYPE = /\bgame.?chang|\brevolutionar|\bgroundbreak/i;
+    const explainer = isObj(v.explainer) ? v.explainer : {};
+    const copyFields: Array<[string, unknown]> = [
+      ["headline", v.headline],
+      ["explainer.tagline", explainer.tagline],
+      ["explainer.what_happened", explainer.what_happened],
+      ["explainer.why_it_matters", explainer.why_it_matters],
+      ["explainer.for_who", explainer.for_who],
+    ];
+    for (const [name, text] of copyFields) {
+      if (typeof text !== "string") continue;
+      if (text.includes("!")) errors.push(`${path}.${name}: exclamation marks never publish`);
+      if (text.includes("\u2014")) errors.push(`${path}.${name}: em dashes never publish`);
+      const hype = HYPE.exec(text);
+      if (hype) errors.push(`${path}.${name}: hype voice never publishes ("${hype[0]}")`);
+    }
+    if (typeof v.headline === "string" && /\bmilestone/i.test(v.headline)) {
+      errors.push(`${path}.headline: "milestone" is hype in a headline; name the actual event`);
+    }
+  }
+
   reqStringArray(v, "companies", path, errors);
 
   if (v.entities !== undefined) {
@@ -820,6 +846,11 @@ function checkSourcedFieldValue(
         ? Array.isArray(value) && value.every((x) => typeof x === "string")
         : typeof value === kind;
     if (!ok) errors.push(`${fieldPath}.value: must be null or ${kind}`);
+    // Numeric plausibility (plan Phase 8): every numeric registry fact is
+    // a count, mass, payload, or price; none can be negative or non-finite.
+    if (kind === "number" && typeof value === "number" && (!Number.isFinite(value) || value < 0)) {
+      errors.push(`${fieldPath}.value: must be a finite non-negative number`);
+    }
     // A filled value needs provenance: no source, no fact.
     if (source === null || source === undefined) {
       errors.push(`${fieldPath}: has a value but no source`);

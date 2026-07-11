@@ -1,5 +1,9 @@
 # Registry crawl tooling
 
+Status: completed one-off tooling. These prompts drove the 2026-07 registry
+backfill crawls and are kept for the record only; nothing here runs on any
+schedule. Reuse it by hand if the registry is ever refilled in bulk.
+
 The pipeline that filled the registry on 2026-07-05/06 (Tasks 13-16 and
 the QC refill). Pattern: Sonnet collector agents write candidate JSON to
 a scratch dir (one file per entity, verbatim quote per field, every
