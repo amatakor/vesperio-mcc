@@ -25,9 +25,19 @@ import stateJson from "../data/state.json";
 import sourceLedgerJson from "../data/source_ledger.json";
 import signalAvatarsJson from "../data/signal-avatars.json";
 
-export const items: Item[] = (itemsJson as ItemsFile).items
-  .slice()
-  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+// `.slice().sort()` reads as impure to Rollup, which would then retain
+// these feed/state exports (and their JSON) in ANY chunk that imports
+// something else from this module. The registry-only importers on the
+// client (orbits/catalog.ts, orbits/scene.tsx, both lazy) must NOT drag
+// item headlines or sweep summaries in, so each feed/state export is a
+// /* @__PURE__ */-annotated call: unused, Rollup drops it and its JSON;
+// used (the SSR/prerender bundle), it computes exactly as before.
+const sortedCopy = <T>(arr: T[], cmp: (a: T, b: T) => number): T[] => arr.slice().sort(cmp);
+
+export const items: Item[] = /* @__PURE__ */ sortedCopy(
+  (itemsJson as ItemsFile).items,
+  (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
+);
 
 const signalsFile = signalsJson as unknown as SignalsFile;
 export const signals = signalsFile.people;
@@ -42,11 +52,12 @@ export const ledgerSources: LedgerSource[] = (sourceLedgerJson as unknown as Sou
  * each claim resolved. Computed by the same pure function the scoring
  * engine's tests exercise; scripts/snr/ledger.ts has no runtime deps.
  */
-export const calibrationBuckets: CalibrationBucket[] = calibration(ledgerSources);
+export const calibrationBuckets: CalibrationBucket[] = /* @__PURE__ */ calibration(ledgerSources);
 
-export const sweeps: SweepLogEntry[] = (stateJson as StateFile).sweeps
-  .slice()
-  .sort((a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0));
+export const sweeps: SweepLogEntry[] = /* @__PURE__ */ sortedCopy(
+  (stateJson as StateFile).sweeps,
+  (a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0),
+);
 
 const constellationModules = import.meta.glob("../data/registry/constellations/*.json", {
   eager: true,
@@ -79,9 +90,12 @@ export function itemsByCategory(category: string): Item[] {
   return items.filter((i) => i.category === category);
 }
 
-export const allTags: string[] = [
-  ...new Set([...items.flatMap((i) => i.tags), ...DOMAIN_TAGS]),
-].sort();
+function computeAllTags(): string[] {
+  return [...new Set([...items.flatMap((i) => i.tags), ...DOMAIN_TAGS])].sort();
+}
+// Pure-annotated so it drops (with its `items` reference) from registry-only
+// client chunks; retained and computed in the SSR/prerender bundle.
+export const allTags: string[] = /* @__PURE__ */ computeAllTags();
 
 export function itemsByTag(tag: string): Item[] {
   return items.filter((i) => i.tags.includes(tag));

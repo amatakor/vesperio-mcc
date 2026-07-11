@@ -1,26 +1,19 @@
 /**
  * Route table for the static site. Paths are canonical with trailing
  * slashes; matchRoute normalizes before matching.
+ *
+ * matchRoute is SHAPE-ONLY (no dataset lookups): the client bundle must
+ * not carry the dataset, and the prerenderer only ever emits real routes
+ * (listRoutes in lib/routes-server.ts owns the existence knowledge).
+ * A well-shaped URL for a nonexistent entity renders NotFound because no
+ * page data exists for it; unknown paths get 404.html from the host.
  */
 
 import { CATEGORIES } from "./data/schema";
-import { SITE_ORIGIN } from "./lib/stats";
-import {
-  items,
-  constellations,
-  vehicles,
-  spaceports,
-  organizations,
-  itemById,
-  constellationBySlug,
-  vehicleBySlug,
-  spaceportBySlug,
-  orgBySlug,
-  allTags,
-} from "./lib/data";
 
 export type Route =
   | { page: "home" }
+  | { page: "feed-page"; n: number }
   | { page: "item"; id: string }
   | { page: "category"; category: string }
   | { page: "tag"; tag: string }
@@ -35,6 +28,7 @@ export type Route =
   | { page: "stats" }
   | { page: "about" }
   | { page: "log" }
+  | { page: "log-archive"; month: string }
   | { page: "not-found" };
 
 export function normalizePath(pathname: string): string {
@@ -54,8 +48,17 @@ export function matchRoute(pathname: string): Route {
   if (p === "/about/") return { page: "about" };
   if (p === "/log/") return { page: "log" };
 
+  const feedPage = p.match(/^\/feed\/(\d+)\/$/);
+  if (feedPage) {
+    const n = Number(feedPage[1]);
+    return n >= 2 ? { page: "feed-page", n } : { page: "not-found" };
+  }
+
+  const logMonth = p.match(/^\/log\/(\d{4}-\d{2})\/$/);
+  if (logMonth) return { page: "log-archive", month: logMonth[1]! };
+
   const item = p.match(/^\/item\/([^/]+)\/$/);
-  if (item) return itemById(item[1]!) ? { page: "item", id: item[1]! } : { page: "not-found" };
+  if (item) return { page: "item", id: item[1]! };
 
   const cat = p.match(/^\/news\/([^/]+)\/$/);
   if (cat) {
@@ -65,22 +68,16 @@ export function matchRoute(pathname: string): Route {
   }
 
   const con = p.match(/^\/registry\/constellations\/([^/]+)\/$/);
-  if (con) {
-    return constellationBySlug(con[1]!) ? { page: "constellation", slug: con[1]! } : { page: "not-found" };
-  }
+  if (con) return { page: "constellation", slug: con[1]! };
 
   const veh = p.match(/^\/registry\/vehicles\/([^/]+)\/$/);
-  if (veh) return vehicleBySlug(veh[1]!) ? { page: "vehicle", slug: veh[1]! } : { page: "not-found" };
+  if (veh) return { page: "vehicle", slug: veh[1]! };
 
   const spaceport = p.match(/^\/registry\/spaceports\/([^/]+)\/$/);
-  if (spaceport) {
-    return spaceportBySlug(spaceport[1]!)
-      ? { page: "spaceport", slug: spaceport[1]! }
-      : { page: "not-found" };
-  }
+  if (spaceport) return { page: "spaceport", slug: spaceport[1]! };
 
   const org = p.match(/^\/registry\/organizations\/([^/]+)\/$/);
-  if (org) return orgBySlug(org[1]!) ? { page: "org", slug: org[1]! } : { page: "not-found" };
+  if (org) return { page: "org", slug: org[1]! };
 
   const kind = p.match(/^\/kind\/([^/]+)\/$/);
   if (kind) {
@@ -89,148 +86,7 @@ export function matchRoute(pathname: string): Route {
   }
 
   const tag = p.match(/^\/tag\/([^/]+)\/$/);
-  if (tag) {
-    return allTags.includes(tag[1]!) ? { page: "tag", tag: tag[1]! } : { page: "not-found" };
-  }
+  if (tag) return { page: "tag", tag: tag[1]! };
 
   return { page: "not-found" };
-}
-
-export interface Head {
-  title: string;
-  description: string;
-  canonical: string;
-}
-
-const SITE_NAME = "Vesperio";
-const SITE_DESC =
-  "A machine-maintained tracker for the new space economy: Earth observation, connectivity, launch, and commercial human spaceflight.";
-
-export function headFor(path: string): Head {
-  const p = normalizePath(path);
-  const route = matchRoute(p);
-  const canonical = SITE_ORIGIN + p;
-  switch (route.page) {
-    case "home":
-      return { title: SITE_NAME, description: SITE_DESC, canonical };
-    case "item": {
-      const item = itemById(route.id)!;
-      return { title: `${item.headline} | Vesperio`, description: item.explainer.tagline, canonical };
-    }
-    case "category":
-      return {
-        title: `${route.category} news | Vesperio`,
-        description: `Tracked ${route.category} items in the new space economy, each with a primary source.`,
-        canonical,
-      };
-    case "tag":
-      return {
-        title: `#${route.tag} | Vesperio`,
-        description: `Items tagged ${route.tag} in the Vesperio feed, each with its sources and signal-to-noise score.`,
-        canonical,
-      };
-    case "kind":
-      return {
-        title: "commentary | Vesperio",
-        description:
-          "Takes and analysis from named, whitelisted voices in the new space economy. Scored for attribution, visibly tagged as commentary.",
-        canonical,
-      };
-    case "orbits":
-      return {
-        title: "MCC | Vesperio",
-        description:
-          "MCC, Vesperio's live mission control view: the constellations tracked in the Registry in 3D, with active spaceports and industry facilities. SGP4 propagation from public element sets.",
-        canonical,
-      };
-    case "registry":
-      return {
-        title: "Registry | Vesperio",
-        description:
-          "Reference profiles of constellations and launch vehicles. Every figure carries a source and an as-of date.",
-        canonical,
-      };
-    case "constellation": {
-      const c = constellationBySlug(route.slug)!;
-      return {
-        title: `${c.name} constellation profile | Vesperio`,
-        description: `Reference profile of the ${c.name} constellation with sourced, dated figures.`,
-        canonical,
-      };
-    }
-    case "vehicle": {
-      const v = vehicleBySlug(route.slug)!;
-      return {
-        title: `${v.name} launch vehicle profile | Vesperio`,
-        description: `Reference profile of the ${v.name} launch vehicle with sourced, dated figures.`,
-        canonical,
-      };
-    }
-    case "spaceport": {
-      const s = spaceportBySlug(route.slug)!;
-      return {
-        title: `${s.name} spaceport profile | Vesperio`,
-        description: `Reference profile of the ${s.name} spaceport with sourced, dated figures.`,
-        canonical,
-      };
-    }
-    case "org": {
-      const o = orgBySlug(route.slug)!;
-      return {
-        title: `${o.name} organization profile | Vesperio`,
-        description: `Reference profile of the ${o.name} organization with sourced, dated figures.`,
-        canonical,
-      };
-    }
-    case "signals":
-      return {
-        title: "Signals | Vesperio",
-        description: "A hand-curated list of people worth following in the new space economy.",
-        canonical,
-      };
-    case "stats":
-      return {
-        title: "Stats | Vesperio",
-        description:
-          "Public indices computed from Vesperio data: items tracked, launch events by provider, satellites on orbit. Citable, with retrieval dates.",
-        canonical,
-      };
-    case "about":
-      return {
-        title: "About and verification policy | Vesperio",
-        description:
-          "What Vesperio is, what it covers, and the verification policy: no primary source, no publish.",
-        canonical,
-      };
-    case "log":
-      return {
-        title: "Sweep log | Vesperio",
-        description:
-          "Every sweep the machine ran: what was added, what was held, and why quiet days were quiet.",
-        canonical,
-      };
-    case "not-found":
-      return { title: `Not found | Vesperio`, description: SITE_DESC, canonical };
-  }
-}
-
-/** Every path the prerender step must emit. */
-export function listRoutes(): string[] {
-  return [
-    "/",
-    "/mcc/",
-    "/registry/",
-    "/signals/",
-    "/stats/",
-    "/about/",
-    "/log/",
-    ...CATEGORIES.map((c) => `/news/${c}/`),
-    "/kind/commentary/",
-    ...items.map((i) => `/item/${i.id}/`),
-    ...constellations.map((c) => `/registry/constellations/${c.slug}/`),
-    ...vehicles.map((v) => `/registry/vehicles/${v.slug}/`),
-    ...spaceports.map((s) => `/registry/spaceports/${s.slug}/`),
-    ...organizations.map((o) => `/registry/organizations/${o.slug}/`),
-    ...allTags.map((t) => `/tag/${t}/`),
-  ];
 }

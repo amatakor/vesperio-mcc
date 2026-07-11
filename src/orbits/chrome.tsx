@@ -5,9 +5,25 @@
  * scene.tsx owns state and data.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { OrbitsStatsFile } from "../data/schema";
-import { items, vehicles } from "../lib/data";
+
+// ------------------------------------------------ launch/vehicle links
+
+/**
+ * Compact link lookups the countdown and vehicle rail need, threaded
+ * from OrbitsPage's PageData slice via context (chrome must not import
+ * the dataset: it would drag item headlines into the lazy scene chunk).
+ * The default is empty so SSR and any render outside a provider are safe.
+ */
+export interface OrbitsLinkData {
+  linkItems: { id: string; headline: string; tagline: string }[];
+  vehicleLinks: { name: string; slug: string }[];
+}
+
+const OrbitsLinkContext = createContext<OrbitsLinkData>({ linkItems: [], vehicleLinks: [] });
+
+export const OrbitsLinkProvider = OrbitsLinkContext.Provider;
 
 // ---------------------------------------------------------------- LCD
 
@@ -49,20 +65,22 @@ function pad2(n: number): string {
  * covering the mission when one exists, else the vehicle's registry
  * profile, else nowhere. LL2 names launches "Vehicle | Mission".
  */
-function launchHref(next: OrbitsStatsFile["upcoming"][number]): string | null {
+function launchHref(
+  next: OrbitsStatsFile["upcoming"][number],
+  links: OrbitsLinkData,
+): string | null {
   // Hyphen/space variants ("Transporter 17" vs "Transporter-17") match.
   const norm = (s: string) => s.toLowerCase().replace(/-/g, " ").replace(/\s+/g, " ");
   const missionRaw = next.name.split(" | ")[1] ?? next.name;
   const mission = norm(missionRaw.replace(/\(.*?\)/g, "").trim());
   if (mission.length >= 4) {
-    const item = items.find(
-      (i) =>
-        norm(i.headline).includes(mission) || norm(i.explainer.tagline).includes(mission),
+    const item = links.linkItems.find(
+      (i) => norm(i.headline).includes(mission) || norm(i.tagline).includes(mission),
     );
     if (item) return `/item/${item.id}/`;
   }
   const vname = next.vehicle.toLowerCase();
-  const veh = vehicles
+  const veh = links.vehicleLinks
     .filter((v) => {
       const n = v.name.toLowerCase();
       return vname.startsWith(n) || n.startsWith(vname);
@@ -74,6 +92,7 @@ function launchHref(next: OrbitsStatsFile["upcoming"][number]): string | null {
 /** Ticks locally each second; rolls to the next launch at T-0. */
 function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const [nowMs, setNowMs] = useState(() => Date.now());
+  const links = useContext(OrbitsLinkContext);
   useEffect(() => {
     const id = setInterval(() => setNowMs(Date.now()), 1000);
     return () => clearInterval(id);
@@ -89,7 +108,7 @@ function Countdown({ upcoming }: { upcoming: OrbitsStatsFile["upcoming"] }) {
   const s = Math.floor(diff / 1000) % 60;
   const netDate = new Date(next.net);
   const netLabel = `${pad2(netDate.getUTCMonth() + 1)}-${pad2(netDate.getUTCDate())} ${pad2(netDate.getUTCHours())}:${pad2(netDate.getUTCMinutes())}Z`;
-  const href = launchHref(next);
+  const href = launchHref(next, links);
 
   // The instrument shows the sign (tuning round 9): T-minus reads
   // negative, like the pad clocks.
@@ -213,15 +232,16 @@ function FlowChart({ stats }: { stats: OrbitsStatsFile }) {
 /** Where a vehicle-family row links (Florian 2026-07-06): the registry
  * vehicle profile when the family names exactly one, else the launch
  * section of the registry browser. */
-function familyHref(family: string): string {
+function familyHref(family: string, vehicleLinks: OrbitsLinkData["vehicleLinks"]): string {
   const f = family.toLowerCase();
-  const matches = vehicles.filter((v) => v.name.toLowerCase().startsWith(f));
+  const matches = vehicleLinks.filter((v) => v.name.toLowerCase().startsWith(f));
   return matches.length === 1
     ? `/registry/vehicles/${matches[0]!.slug}/`
     : "/registry/#launch";
 }
 
 function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicles_6mo"] }) {
+  const { vehicleLinks } = useContext(OrbitsLinkContext);
   const top = families.slice(0, 4);
   const rest = families.slice(4);
   const restCount = rest.reduce((a, v) => a + v.count, 0);
@@ -230,7 +250,7 @@ function VehicleBars({ vehicles: families }: { vehicles: OrbitsStatsFile["vehicl
     ...top.map((v) => ({
       label: v.family.toUpperCase(),
       count: v.count,
-      href: familyHref(v.family),
+      href: familyHref(v.family, vehicleLinks),
     })),
     ...(rest.length > 0
       ? [{ label: `OTHER (${rest.length})`, count: restCount, href: null }]

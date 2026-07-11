@@ -18,35 +18,23 @@ import type {
   GenerationRow,
   Positioning,
   ConstellationProfile,
-  VehicleProfile,
-  SpaceportProfile,
-  OrgProfile,
   SignalPerson,
+  SweepLogEntry,
 } from "./data/schema";
 import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
-import {
-  items,
-  signals,
-  signalOutlets,
-  signalAvatars,
-  constellations,
-  vehicles,
-  spaceports,
-  organizations,
-  sweeps,
-  ledgerSources,
-  calibrationBuckets,
-  itemsByTag,
-  itemsMentioning,
-  constellationChildren,
-} from "./lib/data";
-import { computeHero, computeStats } from "./lib/stats";
-import aliases from "./data/aliases.json";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
+import { OrbitsLinkProvider } from "./orbits/chrome";
+import type { PageData, ProfileEventRef, OrgHrefs } from "./lib/page-data";
+import type { RegEntry } from "./lib/reg-entries";
+import { entityHrefFor, ORG_KIND_LABEL } from "./lib/reg-entries";
+import { getAllItems, allItemsIfLoaded } from "./lib/loaders";
+
+// Per-page prop data: each page renders from its own PageData variant.
+type DataFor<P extends PageData["page"]> = Extract<PageData, { page: P }>;
 
 // -------------------------------------------------------- registry logos
 
@@ -705,9 +693,13 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     else setOpenId(null);
   };
 
-  // Fall back to the full corpus so the modal survives filter changes.
+  // Fall back to the full corpus so the modal survives filter changes, but
+  // only if it is already loaded (the home search fetches it); never block
+  // the modal on a fetch. A miss just renders from the current list.
   const openItem = openId
-    ? (list.find((i) => i.id === openId) ?? items.find((i) => i.id === openId) ?? null)
+    ? (list.find((i) => i.id === openId) ??
+        allItemsIfLoaded()?.find((i) => i.id === openId) ??
+        null)
     : null;
 
   if (list.length === 0) return <p className="empty">{emptyNote}</p>;
@@ -875,10 +867,52 @@ function matchesQuery(item: Item, q: string): boolean {
 /** Active feed filter: one category or one domain tag at a time. */
 type FeedFilter = { kind: "cat" | "tag"; value: string } | null;
 
-export function HomePage() {
+/** Foot-of-feed pager (deep archive nav): plain mono links, current page
+ * as plain text. Page 1 is the home feed at "/". */
+function Pager({ current, pageCount }: { current: number; pageCount: number }) {
+  if (pageCount <= 1) return null;
+  const hrefFor = (n: number) => (n === 1 ? "/" : `/feed/${n}/`);
+  const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
+  return (
+    <nav className="feed-pager mono" aria-label="Feed pages">
+      {current > 1 ? (
+        <a className="feed-pager-link" href={hrefFor(current - 1)}>
+          &larr; prev
+        </a>
+      ) : (
+        <span className="feed-pager-end dim">&larr; prev</span>
+      )}
+      <span className="feed-pager-nums">
+        {pages.map((n) =>
+          n === current ? (
+            <span key={n} className="feed-pager-cur" aria-current="page">
+              {n}
+            </span>
+          ) : (
+            <a key={n} className="feed-pager-link" href={hrefFor(n)}>
+              {n}
+            </a>
+          ),
+        )}
+      </span>
+      {current < pageCount ? (
+        <a className="feed-pager-link" href={hrefFor(current + 1)}>
+          next &rarr;
+        </a>
+      ) : (
+        <span className="feed-pager-end dim">next &rarr;</span>
+      )}
+    </nav>
+  );
+}
+
+export function HomePage({ data }: { data: DataFor<"home"> }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FeedFilter>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  // The full corpus, fetched lazily on the first filter/search interaction;
+  // null until it resolves, so we filter over the page-1 slice until then.
+  const [corpus, setCorpus] = useState<Item[] | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -899,29 +933,43 @@ export function HomePage() {
   }, []);
 
   const q = query.trim().toLowerCase();
+  const active = q !== "" || filter !== null;
+
+  // On the first filter/search, load the full corpus so search/filter cover
+  // every item, not just the prerendered first page. getAllItems caches.
+  useEffect(() => {
+    if (!active || corpus !== null) return;
+    let live = true;
+    void getAllItems()
+      .then((all) => {
+        if (live) setCorpus(all);
+      })
+      .catch(() => {
+        /* offline: keep filtering the page-1 slice */
+      });
+    return () => {
+      live = false;
+    };
+  }, [active, corpus]);
+
+  // Base corpus to filter: the full set once loaded, else the page-1 slice.
+  const base = corpus ?? data.items;
   const shown = useMemo(() => {
-    let list = items;
+    let list = base;
     if (filter?.kind === "cat") list = list.filter((i) => i.category === filter.value);
     if (filter?.kind === "tag") list = list.filter((i) => i.tags.includes(filter.value));
     return q === "" ? list : list.filter((i) => matchesQuery(i, q));
-  }, [q, filter]);
+  }, [q, filter, base]);
 
-  const catCounts = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const i of items) m.set(i.category, (m.get(i.category) ?? 0) + 1);
-    return m;
-  }, []);
-
-  const domainCounts = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const t of DOMAIN_TAGS) m.set(t, 0);
-    for (const i of items) {
-      for (const t of i.tags) {
-        if (m.has(t)) m.set(t, (m.get(t) ?? 0) + 1);
-      }
-    }
-    return m;
-  }, []);
+  // Counts come precomputed over the FULL corpus (from the page slice).
+  const catCounts = useMemo(
+    () => new Map(Object.entries(data.counts.categories)),
+    [data.counts.categories],
+  );
+  const domainCounts = useMemo(
+    () => new Map(Object.entries(data.counts.domains)),
+    [data.counts.domains],
+  );
 
   const pick = (next: FeedFilter) => {
     setFilter(next);
@@ -963,7 +1011,7 @@ export function HomePage() {
           onChange={(e) => setQuery(e.target.value)}
         />
         <span className="filter-tally mono">
-          {shown.length} / {items.length}
+          {shown.length} / {active ? base.length : data.counts.total}
         </span>
         {menuOpen && (
           <div className="cat-panel">
@@ -974,7 +1022,7 @@ export function HomePage() {
                 className={`cat-chip${filter === null ? " active" : ""}`}
                 onClick={() => pick(null)}
               >
-                all <span className="count">{items.length}</span>
+                all <span className="count">{data.counts.total}</span>
               </button>
               {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) =>
                 chip("cat", c, catCounts.get(c) ?? 0),
@@ -987,7 +1035,7 @@ export function HomePage() {
           </div>
         )}
       </div>
-      {(q !== "" || filter) && shown.length === 0 ? (
+      {active && shown.length === 0 ? (
         <p className="empty">// no items match: adjust filters</p>
       ) : (
         <FeedList
@@ -996,18 +1044,27 @@ export function HomePage() {
           lead={<SweepCountdownCard />}
         />
       )}
+      {!active && <Pager current={1} pageCount={data.pageCount} />}
     </Layout>
   );
 }
 
-export function CategoryPage({ category }: { category: string }) {
+/** Deep-archive feed page: the card grid and pager, no filter bar or search. */
+export function FeedPagePage({ data }: { data: DataFor<"feed-page"> }) {
   return (
     <Layout current="news">
-      <h1 className="page-title">news / {category}</h1>
-      <FeedList
-        list={items.filter((i) => i.category === category)}
-        emptyNote={`No ${category} items tracked yet.`}
-      />
+      <h1 className="page-title">// feed · page {data.n}</h1>
+      <FeedList list={data.items} emptyNote="No items on this page." />
+      <Pager current={data.n} pageCount={data.pageCount} />
+    </Layout>
+  );
+}
+
+export function CategoryPage({ data }: { data: DataFor<"category"> }) {
+  return (
+    <Layout current="news">
+      <h1 className="page-title">news / {data.category}</h1>
+      <FeedList list={data.items} emptyNote={`No ${data.category} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1015,18 +1072,15 @@ export function CategoryPage({ category }: { category: string }) {
   );
 }
 
-export function KindPage({ kind }: { kind: string }) {
+export function KindPage({ data }: { data: DataFor<"kind"> }) {
   return (
     <Layout current="news">
-      <h1 className="page-title">news / {kind}</h1>
+      <h1 className="page-title">news / {data.kind}</h1>
       <p className="lede">
         Takes and analysis from named voices, visibly tagged. The SNR scores the attribution
         (this person said this), never the opinion. Commentary never feeds the Registry.
       </p>
-      <FeedList
-        list={items.filter((i) => i.kind === kind)}
-        emptyNote="No commentary tracked yet."
-      />
+      <FeedList list={data.items} emptyNote="No commentary tracked yet." />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1034,11 +1088,11 @@ export function KindPage({ kind }: { kind: string }) {
   );
 }
 
-export function TagPage({ tag }: { tag: string }) {
+export function TagPage({ data }: { data: DataFor<"tag"> }) {
   return (
     <Layout current="news">
-      <h1 className="page-title">#{tag}</h1>
-      <FeedList list={itemsByTag(tag)} emptyNote={`No ${tag} items tracked yet.`} />
+      <h1 className="page-title">#{data.tag}</h1>
+      <FeedList list={data.items} emptyNote={`No ${data.tag} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1155,34 +1209,9 @@ export function ItemPage({ item }: { item: Item }) {
 }
 
 // --------------------------------------------------------------- registry
-
-/** Registry profile hrefs by entity name, for linking provider/operator values. */
-const ORG_HREF_BY_NAME = new Map(
-  organizations.map((o) => [o.name.toLowerCase(), `/registry/organizations/${o.slug}/`]),
-);
-
-/**
- * Curated alias map (src/data/aliases.json): unifies display names and
- * browser grouping for companies that sources phrase differently. The
- * sourced value inside each profile keeps the cited page's wording.
- */
-const CANONICAL_BY_ALIAS = new Map<string, { name: string; org?: string }>();
-for (const e of aliases.entities) {
-  CANONICAL_BY_ALIAS.set(e.name.toLowerCase(), e);
-  for (const a of e.aliases) CANONICAL_BY_ALIAS.set(a.toLowerCase(), e);
-}
-
-function canonicalName(v: string): string {
-  return CANONICAL_BY_ALIAS.get(v.toLowerCase())?.name ?? v;
-}
-
-function entityHrefFor(v: string): string | undefined {
-  const canon = CANONICAL_BY_ALIAS.get(v.toLowerCase());
-  if (canon?.org) return `/registry/organizations/${canon.org}/`;
-  return (
-    ORG_HREF_BY_NAME.get((canon?.name ?? v).toLowerCase()) ?? ORG_HREF_BY_NAME.get(v.toLowerCase())
-  );
-}
+// canonicalName/entityHrefFor and the RegEntry builders now live in
+// lib/reg-entries (server-side, over the full dataset); entityHrefFor takes
+// the page's data.orgHrefs map. Alias/org-href maps are no longer built here.
 
 /** Facts-table rows whose string value names another registry entity. */
 const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
@@ -1290,36 +1319,12 @@ function GcatAttribution({ rows }: { rows: ProfileRow[] }) {
   );
 }
 
-type EntityKind = "eo" | "connectivity" | "iot" | "vehicle" | "spaceport" | "org";
+// RegEntry/RegSpec types and the constellation/vehicle/spaceport/org entry
+// builders now live in lib/reg-entries (run server-side over the full
+// dataset; the client receives the built data.entries.* arrays). Only the
+// render-side labels and predicates remain here.
 
-/** One headline figure on a preview card: an uppercase micro-label and a mono value. */
-interface RegSpec {
-  label: string;
-  value: string;
-}
-
-interface RegEntry {
-  slug: string;
-  name: string;
-  kind: EntityKind;
-  href: string;
-  /** Grouping key: operator/provider name, region, or org kind. */
-  group: string;
-  /** Sub-grouping for constellations (fleet parent slug); null otherwise. */
-  parent: string | null;
-  affiliation: string;
-  status: string | null;
-  asOf: string | null;
-  snippet: string | null;
-  sensors: string[];
-  reusable: boolean | null;
-  /** Normalized short launch-vehicle class (heavy-lift, medium-lift, ...); null for non-vehicles or unclassifiable. */
-  vehicleClass: string | null;
-  /** Two or three headline specs, only for fields the profile states. */
-  specs: RegSpec[];
-}
-
-const KIND_LABEL: Record<EntityKind, string> = {
+const KIND_LABEL: Record<string, string> = {
   eo: "eo constellation",
   connectivity: "connectivity",
   iot: "iot / rf",
@@ -1337,145 +1342,12 @@ const REGION_LABEL: Record<string, string> = {
   "middle-east": "middle east",
 };
 
-const ORG_KIND_LABEL: Record<string, string> = {
-  manufacturer: "manufacturer",
-  "in-space-services": "in-space services",
-  "ground-segment": "ground segment",
-  institution: "institution",
-  finance: "finance",
-};
-
-const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connectivity", iot: "iot" };
-
-/** Collapse a free-text vehicle_class value to a short lift-class label; null when the source states no class we recognise. */
-function normVehicleClass(raw: string | null): string | null {
-  if (!raw) return null;
-  const s = raw.toLowerCase();
-  if (s.includes("super") && s.includes("heavy")) return "super-heavy";
-  if (s.includes("heavy")) return "heavy-lift";
-  if (s.includes("medium")) return "medium-lift";
-  if (s.includes("small")) return "small-lift";
-  return null;
-}
-
 /** Status strings are free text; treat these phrasings as operational. */
 function isOperational(status: string | null): boolean {
   return status !== null && /oper|active|in service|in operation|commercial|deployed|widespread|in use/i.test(status);
 }
 function isRetired(status: string | null): boolean {
   return status !== null && /retired/i.test(status);
-}
-
-function constellationEntries(): RegEntry[] {
-  return constellations.map((c) => {
-    const kind =
-      c.domain === "eo" ? ("eo" as const) : c.domain === "iot" ? ("iot" as const) : ("connectivity" as const);
-    const specs: RegSpec[] = [];
-    if (c.sats_active_verified.value !== null)
-      specs.push({ label: "on orbit", value: String(c.sats_active_verified.value) });
-    else if (c.sats_launched_total.value !== null)
-      specs.push({ label: "launched", value: String(c.sats_launched_total.value) });
-    if (c.resolution_m?.value != null) specs.push({ label: "resolution", value: `${c.resolution_m.value} m` });
-    specs.push({ label: "domain", value: DOMAIN_LABEL[kind] ?? kind });
-    return {
-      slug: c.slug,
-      name: c.name,
-      kind,
-      href: `/registry/constellations/${c.slug}/`,
-      group: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
-      parent: c.parent ?? null,
-      affiliation: c.operator.value ? canonicalName(c.operator.value) : "Operator unconfirmed",
-      status: c.status.value,
-      asOf: c.operator.as_of,
-      snippet: c.overview.value,
-      sensors: c.sensor_types.value ?? [],
-      reusable: null,
-      vehicleClass: null,
-      specs,
-    };
-  });
-}
-
-function vehicleEntries(): RegEntry[] {
-  return vehicles.map((v) => {
-    const specs: RegSpec[] = [];
-    if (v.payload_leo_kg.value !== null)
-      specs.push({ label: "leo payload", value: `${v.payload_leo_kg.value.toLocaleString()} kg` });
-    if (v.flights_total.value !== null)
-      specs.push({
-        label: "flights",
-        value:
-          v.flights_successful.value !== null
-            ? `${v.flights_successful.value}/${v.flights_total.value}`
-            : String(v.flights_total.value),
-      });
-    if (v.reusable.value !== null) specs.push({ label: "reusable", value: v.reusable.value ? "yes" : "no" });
-    return {
-      slug: v.slug,
-      name: v.name,
-      kind: "vehicle" as const,
-      href: `/registry/vehicles/${v.slug}/`,
-      group: v.provider.value ?? "Provider unconfirmed",
-      parent: null,
-      affiliation: v.provider.value ?? "Provider unconfirmed",
-      status: v.status.value,
-      asOf: v.provider.as_of,
-      snippet: v.overview.value,
-      sensors: [],
-      reusable: v.reusable.value,
-      vehicleClass: normVehicleClass(v.vehicle_class.value),
-      specs,
-    };
-  });
-}
-
-function spaceportEntries(): RegEntry[] {
-  return spaceports.map((s) => {
-    const specs: RegSpec[] = [];
-    if (s.launches_total.value !== null) specs.push({ label: "launches", value: String(s.launches_total.value) });
-    if (s.country.value) specs.push({ label: "country", value: s.country.value });
-    return {
-      slug: s.slug,
-      name: s.name,
-      kind: "spaceport" as const,
-      href: `/registry/spaceports/${s.slug}/`,
-      group: s.region,
-      parent: null,
-      affiliation: s.operator.value ?? "Operator unconfirmed",
-      status: s.status.value,
-      asOf: s.launches_total.as_of,
-      snippet: s.overview.value,
-      sensors: [],
-      reusable: null,
-      vehicleClass: null,
-      specs,
-    };
-  });
-}
-
-function orgEntries(): RegEntry[] {
-  return organizations.map((o) => {
-    const specs: RegSpec[] = [];
-    if (o.founded.value !== null) specs.push({ label: "founded", value: String(o.founded.value) });
-    if (o.country.value) specs.push({ label: "country", value: o.country.value });
-    specs.push({ label: "kind", value: ORG_KIND_LABEL[o.kind] ?? o.kind });
-    return {
-      slug: o.slug,
-      name: o.name,
-      kind: "org" as const,
-      href: `/registry/organizations/${o.slug}/`,
-      group: o.kind,
-      parent: null,
-      affiliation: o.kind,
-      status: o.status.value,
-      asOf: o.focus.as_of,
-      snippet: o.overview.value ?? o.focus.value,
-      sensors: [],
-      reusable: null,
-      vehicleClass: null,
-      specs,
-    };
-  });
 }
 
 /**
@@ -1666,7 +1538,7 @@ function simpleGroups(
  * is the entries within the selected domain; `all` is every constellation entry
  * (needed to detect fleet parents whose children may be filtered out).
  */
-function constellationGroups(scoped: RegEntry[], all: RegEntry[]): GroupNode[] {
+function constellationGroups(scoped: RegEntry[], all: RegEntry[], orgHrefs: OrgHrefs): GroupNode[] {
   const inScope = new Map(scoped.map((e) => [e.slug, e]));
   const nodes = new Map<string, GroupNode>();
   const nodeFor = (key: string, label: string, profileHref: string | null): GroupNode => {
@@ -1693,7 +1565,7 @@ function constellationGroups(scoped: RegEntry[], all: RegEntry[]): GroupNode[] {
       // The operator row must lead somewhere: the alias-mapped company
       // profile when one exists, else the constellation's own page (for a
       // single-constellation operator like ICEYE that IS the company page).
-      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group) ?? e.href).entries.push(e);
+      nodeFor(`op:${e.group}`, e.group, entityHrefFor(e.group, orgHrefs) ?? e.href).entries.push(e);
     }
   }
   // A parent whose children are all filtered out still previews itself.
@@ -1866,15 +1738,17 @@ interface RegSection {
 /** Registry index: four stacked sections. Text search is global; each section
  * carries its own chip set and its own active-chip state, so a filter in one
  * section can never touch another. */
-export function RegistryIndexPage() {
+export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
   // Per-section active chip; a section id maps to its active filter id or null.
   const [chip, setChip] = useState<Record<string, string | null>>({});
   const [query, setQuery] = useState("");
 
-  const allConstellations = useMemo(constellationEntries, []);
-  const allVehicles = useMemo(vehicleEntries, []);
-  const allSpaceports = useMemo(spaceportEntries, []);
-  const allOrgs = useMemo(orgEntries, []);
+  // The entry summaries are built server-side over the full dataset.
+  const allConstellations = data.entries.constellations;
+  const allVehicles = data.entries.vehicles;
+  const allSpaceports = data.entries.spaceports;
+  const allOrgs = data.entries.orgs;
+  const orgHrefs = data.orgHrefs;
   const all = useMemo(
     () => [...allConstellations, ...allVehicles, ...allSpaceports, ...allOrgs],
     [allConstellations, allVehicles, allSpaceports, allOrgs],
@@ -1887,7 +1761,7 @@ export function RegistryIndexPage() {
     label: "domain",
     keyOf: (e) => e.kind,
     order: ["eo", "connectivity", "iot"],
-    display: (k) => DOMAIN_LABEL[k] ?? k,
+    display: (k) => k,
     accent: (k) => DOMAIN_ACCENT[k],
   };
 
@@ -1904,7 +1778,7 @@ export function RegistryIndexPage() {
         <PaneBrowser
           entries={ents}
           groupLabel="provider"
-          groupsFor={simpleGroups((n) => n, (g) => entityHrefFor(g) ?? null)}
+          groupsFor={simpleGroups((n) => n, (g) => entityHrefFor(g, orgHrefs) ?? null)}
           entityAside={() => "vehicle"}
           accent={SECTION_ACCENT.launch}
         />
@@ -1923,7 +1797,7 @@ export function RegistryIndexPage() {
           entries={ents}
           superGroup={domainSuper}
           groupLabel="operator"
-          groupsFor={constellationGroups}
+          groupsFor={(scoped, allEntries) => constellationGroups(scoped, allEntries, orgHrefs)}
           entityAside={(e) => KIND_LABEL[e.kind]}
         />
       ),
@@ -2044,6 +1918,10 @@ interface ProfileMeta {
   href: string;
   siblingsBase: string;
   siblings: Array<{ slug: string; name: string; affiliation: string | null }>;
+  /** News items mentioning this entity (built server-side); the events tab. */
+  events: ProfileEventRef[];
+  /** Name -> profile href map, for linking provider/operator fact values. */
+  orgHrefs: OrgHrefs;
   breadcrumbSegment: string;
   faq: FaqItem[];
   /** Fleet parent, for constellations with a named operator-level parent profile. */
@@ -2103,10 +1981,7 @@ function Breadcrumbs({
   );
 }
 
-function EventsSection({ profile }: { profile: ProfileMeta }) {
-  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
-  // items is sorted newest-first already; itemsMentioning preserves that order.
-  const events = itemsMentioning(names);
+function EventsSection({ events }: { events: ProfileEventRef[] }) {
   if (events.length === 0) return null;
   return (
     <section id="events" className="panel">
@@ -2820,7 +2695,7 @@ function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
  * micro label, prominent value, dim meta line. Same information as the old
  * table, none of the spreadsheet reading.
  */
-function FactGrid({ rows }: { rows: ProfileRow[] }) {
+function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }) {
   const cell = (label: string, f: SourcedField<unknown>, computed: boolean) => {
     const raw = f.value;
     const text =
@@ -2834,7 +2709,9 @@ function FactGrid({ rows }: { rows: ProfileRow[] }) {
             ? raw.join(", ")
             : String(raw);
     const entityHref =
-      ENTITY_ROW_LABELS.has(label) && typeof raw === "string" ? entityHrefFor(raw) : undefined;
+      ENTITY_ROW_LABELS.has(label) && typeof raw === "string"
+        ? entityHrefFor(raw, orgHrefs)
+        : undefined;
     const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
     return (
       <div key={label} className="fact-cell">
@@ -3056,8 +2933,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const prev = idx > 0 ? ordered[idx - 1]! : null;
   const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1]! : null;
 
-  const names = [profile.name, profile.affiliation].filter((n): n is string => !!n);
-  const hasEvents = itemsMentioning(names).length > 0;
+  const hasEvents = profile.events.length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
   const orbitTab = profile.orbitTab ?? null;
   const hasOrbit =
@@ -3191,7 +3067,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           )}
           <section id="facts" className="panel">
             <h2>facts</h2>
-            <FactGrid rows={profile.rows} />
+            <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
             {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
           </section>
         </div>
@@ -3221,7 +3097,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
                   </div>
                 )}
                 <div className="orbit-facts">
-                  <FactGrid rows={orbitTab.rows} />
+                  <FactGrid rows={orbitTab.rows} orgHrefs={profile.orgHrefs} />
                 </div>
               </div>
             </section>
@@ -3230,7 +3106,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
 
         {(timeline.length > 0 || hasEvents) && (
           <div className="tab-panel" hidden={tab !== "history"}>
-            <EventsSection profile={profile} />
+            <EventsSection events={profile.events} />
             <TimelineSection history={timeline} />
           </div>
         )}
@@ -3253,8 +3129,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   );
 }
 
-export function ConstellationPage({ profile }: { profile: ConstellationProfile }) {
-  const childProfiles = constellationChildren(profile.slug);
+export function ConstellationPage({ data }: { data: DataFor<"constellation"> }) {
+  const profile = data.profile;
+  const childProfiles = data.children;
   // Fleet parents show the sum of their sub-constellations' counts when the
   // parent field itself is unsourced, marked computed in the source column.
   const countRow = (
@@ -3351,7 +3228,6 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     },
   ];
   const children = childProfiles;
-  const parent = profile.parent ? constellations.find((c) => c.slug === profile.parent) : undefined;
   const hasComputedRow = rows.some((r) => r[2] === "computed");
   const meta: ProfileMeta = {
     slug: profile.slug,
@@ -3362,7 +3238,9 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
     overview: profile.overview,
     href: `/registry/constellations/${profile.slug}/`,
     siblingsBase: "/registry/constellations/",
-    siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
+    siblings: data.siblings,
+    events: data.events,
+    orgHrefs: data.orgHrefs,
     breadcrumbSegment: "constellations",
     history: profile.events ?? [],
     stockTicker: profile.ticker ?? null,
@@ -3378,7 +3256,7 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
         .filter(Boolean)
         .join(" ") || null,
     faq,
-    parentLink: parent ? { slug: parent.slug, name: parent.name } : null,
+    parentLink: data.parent,
     children: children.map((c) => ({ slug: c.slug, name: c.name })),
     specs,
     positioning: profile.positioning ?? null,
@@ -3404,7 +3282,8 @@ export function ConstellationPage({ profile }: { profile: ConstellationProfile }
   return <ProfilePage profile={meta} />;
 }
 
-export function VehiclePage({ profile }: { profile: VehicleProfile }) {
+export function VehiclePage({ data }: { data: DataFor<"vehicle"> }) {
+  const profile = data.profile;
   const rows: Array<[string, SourcedField<unknown>]> = [
     ["provider", profile.provider],
     ["country", profile.country],
@@ -3489,7 +3368,9 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
     overview: profile.overview,
     href: `/registry/vehicles/${profile.slug}/`,
     siblingsBase: "/registry/vehicles/",
-    siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
+    siblings: data.siblings,
+    events: data.events,
+    orgHrefs: data.orgHrefs,
     breadcrumbSegment: "vehicles",
     faq,
     specs,
@@ -3510,7 +3391,8 @@ export function VehiclePage({ profile }: { profile: VehicleProfile }) {
   return <ProfilePage profile={meta} />;
 }
 
-export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
+export function SpaceportPage({ data }: { data: DataFor<"spaceport"> }) {
+  const profile = data.profile;
   const rows: Array<[string, SourcedField<unknown>]> = [
     ["country", profile.country],
     ["operator", profile.operator],
@@ -3551,9 +3433,10 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
     overview: profile.overview,
     href: `/registry/spaceports/${profile.slug}/`,
     siblingsBase: "/registry/spaceports/",
-    siblings: spaceports
-      .filter((s) => s.region === profile.region)
-      .map((s) => ({ slug: s.slug, name: s.name, affiliation: s.region })),
+    // affiliation carries the region for spaceports; narrow to same-region.
+    siblings: data.siblings.filter((s) => s.affiliation === profile.region),
+    events: data.events,
+    orgHrefs: data.orgHrefs,
     breadcrumbSegment: "spaceports",
     faq,
     specs,
@@ -3568,7 +3451,8 @@ export function SpaceportPage({ profile }: { profile: SpaceportProfile }) {
   return <ProfilePage profile={meta} />;
 }
 
-export function OrgPage({ profile }: { profile: OrgProfile }) {
+export function OrgPage({ data }: { data: DataFor<"org"> }) {
+  const profile = data.profile;
   const rows: Array<[string, SourcedField<unknown>]> = [
     ["country", profile.country],
     ["founded", profile.founded],
@@ -3576,10 +3460,10 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     ["status", profile.status],
     ["website", profile.website],
   ];
-  // Full roster, active and retired alike, matched on the vehicle's stated provider.
-  const vehicleRoster = vehicles
-    .filter((v) => v.provider.value && v.provider.value.toLowerCase() === profile.name.toLowerCase())
-    .map((v) => ({ slug: v.slug, name: v.name, status: v.status.value }))
+  // Full roster, active and retired alike, matched on the vehicle's stated
+  // provider (built server-side); sorted by name for the roster section.
+  const vehicleRoster = data.vehicleRoster
+    .slice()
     .sort((a, b) => a.name.localeCompare(b.name));
   const faq: FaqItem[] = [
     {
@@ -3607,9 +3491,10 @@ export function OrgPage({ profile }: { profile: OrgProfile }) {
     overview: profile.overview,
     href: `/registry/organizations/${profile.slug}/`,
     siblingsBase: "/registry/organizations/",
-    siblings: organizations
-      .filter((o) => o.kind === profile.kind)
-      .map((o) => ({ slug: o.slug, name: o.name, affiliation: o.kind })),
+    // affiliation carries the org kind; narrow to same-kind organizations.
+    siblings: data.siblings.filter((o) => o.affiliation === profile.kind),
+    events: data.events,
+    orgHrefs: data.orgHrefs,
     breadcrumbSegment: "organizations",
     faq,
     vehicleRoster,
@@ -3722,11 +3607,11 @@ function roleTag(role: string): string | null {
   return ROLE_TAGS.find((r) => lower.includes(r)) ?? null;
 }
 
-function SignalCard({ person }: { person: SignalPerson }) {
+function SignalCard({ person, avatars }: { person: SignalPerson; avatars: Record<string, string> }) {
   const primary =
     person.channels.find((c) => c.status === "verified_active") ?? person.channels[0];
   const followers = followerBadge(person);
-  const avatar = signalAvatars[person.id];
+  const avatar = avatars[person.id];
   const role = roleTag(person.role);
   const tags = [person.org, ...(role ? [role] : []), ...person.domains.map((d) => d.replace(/_/g, "-"))];
   return (
@@ -3778,18 +3663,24 @@ function matchesSignalQuery(p: SignalPerson, q: string): boolean {
 /** Orbits app frame: the shared masthead at the shared measure (the
  * header holds still when entering /orbits), then the stage full-bleed
  * below it; footer rendered by the scene. */
-export function OrbitsPage() {
+export function OrbitsPage({ data }: { data: DataFor<"orbits"> }) {
   return (
-    <div>
-      <div className="shell orbits-head-shell">
-        <Masthead current="mcc" />
+    <OrbitsLinkProvider
+      value={{ linkItems: data.linkItems, vehicleLinks: data.vehicleLinks }}
+    >
+      <div>
+        <div className="shell orbits-head-shell">
+          <Masthead current="mcc" />
+        </div>
+        <OrbitsStage />
       </div>
-      <OrbitsStage />
-    </div>
+    </OrbitsLinkProvider>
   );
 }
 
-export function SignalsPage() {
+export function SignalsPage({ data }: { data: DataFor<"signals"> }) {
+  const signals = data.people;
+  const signalOutlets = data.outlets;
   const [bucket, setBucket] = useState<string>("all");
   const [query, setQuery] = useState("");
   const q = query.trim().toLowerCase();
@@ -3850,7 +3741,7 @@ export function SignalsPage() {
               </h2>
               <div className="sig-grid">
                 {group.map((p) => (
-                  <SignalCard key={p.id} person={p} />
+                  <SignalCard key={p.id} person={p} avatars={data.avatars} />
                 ))}
               </div>
             </section>
@@ -3884,10 +3775,9 @@ export function SignalsPage() {
 
 // ------------------------------------------------------------------ stats
 
-export function StatsPage({ generatedAt }: { generatedAt: string }) {
-  const now = new Date(generatedAt);
-  const hero = computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations);
-  const blocks = computeStats(items, constellations, vehicles, spaceports, now);
+export function StatsPage({ data, generatedAt }: { data: DataFor<"stats">; generatedAt: string }) {
+  const hero = data.hero;
+  const blocks = data.blocks;
   return (
     <Layout current="stats">
       <h1 className="page-title">stats</h1>
@@ -4016,15 +3906,59 @@ function formatSweepTimestamp(at: string): string {
   );
 }
 
-export function LogPage() {
-  const totals = sweeps.reduce(
-    (acc, s) => ({
-      added: acc.added + s.added,
-      updated: acc.updated + s.updated,
-      held: acc.held + s.held,
-    }),
-    { added: 0, updated: 0, held: 0 },
+/** One sweep's panel: timestamp, counters, summary, passes, SNR moves,
+    and coverage tags. Shared by /log and the monthly archive pages. */
+function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
+  return (
+    <section className="panel">
+      <div className="card-meta">
+        <span>{formatSweepTimestamp(s.at)}</span>
+        <span className="chip">+{s.added}</span>
+        <span className="chip">~{s.updated}</span>
+        {s.held > 0 && <span className="chip">{s.held} held</span>}
+        {s.mode === "deep" && <span className="chip chip-deep">deep sweep</span>}
+      </div>
+      <p className="sweep-summary">{s.summary}</p>
+      {s.signals && (
+        <p className="sweep-signals mono dim" title={s.signals.note}>
+          signals pass: {s.signals.checked} channel{s.signals.checked === 1 ? "" : "s"}{" "}
+          checked · {s.signals.x_attempted} X handle
+          {s.signals.x_attempted === 1 ? "" : "s"} searched
+          <span className="sweep-signals-note"> · {s.signals.note}</span>
+        </p>
+      )}
+      {s.discovery && (
+        <p className="sweep-signals mono dim" title={s.discovery.note}>
+          discovery pass: {s.discovery.queries} quer{s.discovery.queries === 1 ? "y" : "ies"}
+          <span className="sweep-signals-note"> · {s.discovery.note}</span>
+        </p>
+      )}
+      {s.snr_movements && s.snr_movements.length > 0 && (
+        <ul className="snr-moves">
+          {s.snr_movements.map((m) => (
+            <li key={`${m.id}-${m.to}`}>
+              <a href={`/item/${m.id}/`}>{m.id}</a>{" "}
+              <span className={m.to > m.from ? "snr-up" : "snr-down"}>
+                {m.from}→{m.to}
+              </span>{" "}
+              <span className="dim">{m.reason}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="tag-row">
+        {s.coverage.map((c) => (
+          <span key={c} className="chip">
+            #{c}
+          </span>
+        ))}
+      </div>
+    </section>
   );
+}
+
+export function LogPage({ data }: { data: DataFor<"log"> }) {
+  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths } = data;
   return (
     <Layout current="log">
       <h1 className="page-title">sweep log</h1>
@@ -4033,58 +3967,26 @@ export function LogPage() {
         unexplained gap is not.
       </p>
       <p className="dim mono">
-        {sweeps.length} sweep{sweeps.length === 1 ? "" : "s"} · +{totals.added} added · ~
+        {totals.count} sweep{totals.count === 1 ? "" : "s"} · +{totals.added} added · ~
         {totals.updated} updated · {totals.held} held
       </p>
       {sweeps.length === 0 ? (
         <p className="empty">// no sweeps logged yet</p>
       ) : (
-        sweeps.map((s) => (
-          <section key={s.at} className="panel">
-            <div className="card-meta">
-              <span>{formatSweepTimestamp(s.at)}</span>
-              <span className="chip">+{s.added}</span>
-              <span className="chip">~{s.updated}</span>
-              {s.held > 0 && <span className="chip">{s.held} held</span>}
-              {s.mode === "deep" && <span className="chip chip-deep">deep sweep</span>}
-            </div>
-            <p className="sweep-summary">{s.summary}</p>
-            {s.signals && (
-              <p className="sweep-signals mono dim" title={s.signals.note}>
-                signals pass: {s.signals.checked} channel{s.signals.checked === 1 ? "" : "s"}{" "}
-                checked · {s.signals.x_attempted} X handle
-                {s.signals.x_attempted === 1 ? "" : "s"} searched
-                <span className="sweep-signals-note"> · {s.signals.note}</span>
-              </p>
-            )}
-            {s.discovery && (
-              <p className="sweep-signals mono dim" title={s.discovery.note}>
-                discovery pass: {s.discovery.queries} quer{s.discovery.queries === 1 ? "y" : "ies"}
-                <span className="sweep-signals-note"> · {s.discovery.note}</span>
-              </p>
-            )}
-            {s.snr_movements && s.snr_movements.length > 0 && (
-              <ul className="snr-moves">
-                {s.snr_movements.map((m) => (
-                  <li key={`${m.id}-${m.to}`}>
-                    <a href={`/item/${m.id}/`}>{m.id}</a>{" "}
-                    <span className={m.to > m.from ? "snr-up" : "snr-down"}>
-                      {m.from}→{m.to}
-                    </span>{" "}
-                    <span className="dim">{m.reason}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div className="tag-row">
-              {s.coverage.map((c) => (
-                <span key={c} className="chip">
-                  #{c}
-                </span>
-              ))}
-            </div>
-          </section>
-        ))
+        sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
+      )}
+      {archiveMonths.length > 0 && (
+        <section className="panel" id="archive">
+          <h2>archive</h2>
+          <p className="dim mono">// older sweeps, by month</p>
+          <div className="tag-row">
+            {archiveMonths.map((m) => (
+              <a key={m} className="chip chip-tag" href={`/log/${m}/`}>
+                {m}
+              </a>
+            ))}
+          </div>
+        </section>
       )}
       <section className="panel" id="source-ledger">
         <h2>source ledger</h2>
@@ -4163,6 +4065,24 @@ export function LogPage() {
           </table>
         )}
       </section>
+    </Layout>
+  );
+}
+
+/** A month's archived sweeps, rendered from the same entry component as /log. */
+export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
+  return (
+    <Layout current="log">
+      <h1 className="page-title">// sweep log · {data.month}</h1>
+      <p className="lede">Archived sweep entries from {data.month}.</p>
+      {data.sweeps.length === 0 ? (
+        <p className="empty">// no sweeps in this month</p>
+      ) : (
+        data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
+      )}
+      <p>
+        <a href="/log/">Back to the sweep log</a>
+      </p>
     </Layout>
   );
 }
