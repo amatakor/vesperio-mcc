@@ -1,0 +1,40 @@
+# CI gate for the trust core. Runs the scripts/__tests__/ suite and the
+# full build on every push to main (scheduled sweeps included, since they
+# commit to main twice a day) and on every pull request.
+#
+# The build script itself also runs `bun test scripts` (package.json), so
+# the data workflows' "bun run build" step gets the same gate for free;
+# this workflow is the backstop that catches anything pushed to main and
+# gates PRs before merge.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Test suite
+        run: bun test scripts
+
+      - name: Build (typecheck, tests, data validators, vite, prerender)
+        run: bun run build
