@@ -55,17 +55,33 @@ result when nothing on-scope happened; padding is still the bug.
    `html`, status `verified` or `unverified`, and NO `fetch_note`
    (a `fetch_note` marks a source our tools cannot read: JS shells,
    hard bot-blocks, stale mirrors; skip those without burning fetches).
-   Collect candidates newer than `lastSweep`, same scope filter. Record
-   source health for the sources YOU fetched, as before (first success
-   flips `unverified` to `verified`; third consecutive failure flips to
-   `dead` with a dated note and `fail_count`).
+   A status of `stale` is a soft failure: the source is reachable but
+   its content stopped moving; skip it in this pass like `dead` (the
+   harvester and the weekly re-probe own recovery), though you may
+   re-check it when a specific story points at it. Collect candidates
+   newer than `lastSweep`, same scope filter. Record source health for
+   the sources YOU fetched, as before (first success flips `unverified`
+   to `verified`; third consecutive failure flips to `dead` with a
+   dated note and `fail_count`). PROOF OF FETCH is required: every
+   sourceHealth entry that reports a SUCCESSFUL fetch of an html source
+   (status `verified` or `stale`) must carry `evidence.excerpt` (at
+   least 40 characters of verbatim visible text from the page you
+   fetched, ideally the newest headline and date) or
+   `evidence.content_sha256` (sha256 hex of the fetched body).
+   finalize-sweep rejects bare success attestations for html sources;
+   failure reports (`dead`, a failed attempt) need no evidence.
 
    **Signals pass (part of discovery, exempt from the source filter).**
    Run `bun scripts/signals-context.ts`. It prints
    `{ lastSweep, fetchable[], xSearch[], fetchableCount, xCount }` from
-   `signals.json` (read-only; you never edit it). The `fetchable`
-   channels (`site`, `substack`, `beehiiv`, `bluesky`) are the reliable
-   leg and are MANDATORY: fetch each one (use its `rss` when present)
+   `signals.json` (read-only; you never edit it). Whitelisted `youtube`
+   channels are NOT in this list: the deterministic harvester fetches
+   their feeds and their videos arrive in the candidate queue as
+   `Signals YouTube: <name>` entries; class and draft those per the
+   whitelist and video rules below like any other channel find. The
+   `fetchable` channels (`site`, `substack`, `beehiiv`, `bluesky`) are
+   the reliable leg and are MANDATORY: fetch each one (use its `rss`
+   when present)
    and collect on-scope factual posts newer than `lastSweep` as
    candidates like any other source. The `xSearch` handles are the
    best-effort leg: run targeted WebSearch for recent posts, and note
@@ -305,7 +321,7 @@ result when nothing on-scope happened; padding is still the bug.
        }
      ],
      "held": [ { "candidate": { }, "reason": "edit-queue reason, one line" } ],
-     "sourceHealth": [ { "name": "...", "status": "verified|dead", "note": "..." } ],
+     "sourceHealth": [ { "name": "...", "status": "verified|unverified|dead|stale", "note": "...", "evidence": { "excerpt": ">= 40 chars verbatim from the fetched page" } } ],
      "signalsPass": {
        "checked": ["https://spacepolicyonline.com/feed/"],
        "xAttempted": 6,

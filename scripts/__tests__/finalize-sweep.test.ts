@@ -357,6 +357,74 @@ describe("finalize-sweep rejections", () => {
     expect(result.ok).toBe(false);
     expect(result.errors.join("\n")).toContain("not found in sources.json");
   });
+
+  // ICEYE in the seeded sources.json is feed_type html: attesting a
+  // successful fetch of it needs proof (plan Phase 5, should-fix 3).
+  test("a bare success attestation for an html source is rejected", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.sourceHealth = [{ name: "ICEYE", status: "verified", note: "fetched cleanly, no new items" }];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("requires evidence.excerpt");
+  });
+
+  test("a too-short excerpt is not proof", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.sourceHealth = [
+      { name: "ICEYE", status: "verified", evidence: { excerpt: "ICEYE press page" } },
+    ];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("requires evidence.excerpt");
+  });
+
+  test("a malformed content hash is not proof", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.sourceHealth = [
+      { name: "ICEYE", status: "verified", evidence: { content_sha256: "deadbeef" } },
+    ];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("requires evidence.excerpt");
+  });
+
+  test("a real excerpt or a 64-hex hash satisfies the gate", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.sourceHealth = [
+      {
+        name: "ICEYE",
+        status: "verified",
+        evidence: {
+          excerpt: "ICEYE announces four Gen4 satellites launched on Transporter-17, July 7, 2026",
+        },
+      },
+    ];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
+
+    // Second run in the same seeded dir: attest health only, no new items
+    // (the first run already merged the fixture item).
+    const draft2 = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft2.newItems = [];
+    draft2.held = [];
+    draft2.sourceHealth = [
+      { name: "ICEYE", status: "verified", evidence: { content_sha256: "a".repeat(64) } },
+    ];
+    writeFileSync(draftPath, JSON.stringify(draft2));
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
+  });
+
+  test("failure attestations for html sources need no evidence", () => {
+    const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    draft.sourceHealth = [
+      { name: "ICEYE", status: "dead", note: "403 on three consecutive attempts", fail_count: 3 },
+    ];
+    writeFileSync(draftPath, JSON.stringify(draft));
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
+  });
 });
 
 describe("finalize-sweep merge", () => {

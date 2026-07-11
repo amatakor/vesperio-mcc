@@ -17,6 +17,8 @@ import {
   orgEntries,
 } from "./reg-entries";
 import { computeHero, computeStats } from "./stats";
+import sourcesJson from "../data/sources.json";
+import type { SourcesFile } from "../data/schema";
 import {
   items,
   itemById,
@@ -177,6 +179,11 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       };
     case "log": {
       const { recent, archiveMonths } = splitLogWindow(sweeps, now);
+      const sourceProblems = Object.values((sourcesJson as unknown as SourcesFile).categories)
+        .flat()
+        .filter((s) => s.status === "dead" || s.status === "stale")
+        .map((s) => ({ name: s.name, status: s.status as "dead" | "stale" }))
+        .sort((a, b) => a.status.localeCompare(b.status) || a.name.localeCompare(b.name));
       return {
         page: "log",
         sweeps: recent,
@@ -184,6 +191,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         ledgerSources,
         calibrationBuckets,
         archiveMonths,
+        sourceProblems,
       };
     }
     case "log-archive": {

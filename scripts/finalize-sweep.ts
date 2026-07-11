@@ -145,7 +145,18 @@ interface DraftSourceHealth {
   status: string;
   note?: string;
   fail_count?: number;
+  /**
+   * Proof of fetch (plan Phase 5, should-fix 3): an attestation that an
+   * HTML source was successfully fetched must carry either a verbatim
+   * excerpt (>= 40 chars of visible text from the fetched page) or a
+   * sha256 of the fetched body. Bare "fetched cleanly" claims for HTML
+   * sources are rejected: the other passes are gated, this one was not.
+   */
+  evidence?: { excerpt?: string; content_sha256?: string };
 }
+
+/** Minimum excerpt length for an HTML fetch attestation to count as proof. */
+const EVIDENCE_EXCERPT_MIN_CHARS = 40;
 
 interface Draft {
   newItems: unknown[];
@@ -1131,6 +1142,24 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       (typeof s.fail_count !== "number" || !Number.isInteger(s.fail_count) || s.fail_count < 0)
     ) {
       errors.push(`${path}.fail_count: must be a non-negative integer when present`);
+    }
+    // HTML fetch attestations need proof (plan Phase 5): a claimed
+    // successful fetch of an html source carries an excerpt or a body
+    // hash. Statuses that report failure (dead, unverified after a
+    // failed attempt) claim no fetch and need none.
+    const attested = allSources.find((src) => src.name === s.name);
+    const claimsSuccessfulFetch = s.status === "verified" || s.status === "stale";
+    if (attested?.feed_type === "html" && claimsSuccessfulFetch) {
+      const ev = s.evidence;
+      const okExcerpt =
+        isObj(ev) && typeof ev.excerpt === "string" && ev.excerpt.trim().length >= EVIDENCE_EXCERPT_MIN_CHARS;
+      const okHash =
+        isObj(ev) && typeof ev.content_sha256 === "string" && /^[0-9a-f]{64}$/i.test(ev.content_sha256);
+      if (!okExcerpt && !okHash) {
+        errors.push(
+          `${path}.evidence: attesting a successful fetch of html source "${s.name}" requires evidence.excerpt (>= ${EVIDENCE_EXCERPT_MIN_CHARS} chars verbatim from the page) or evidence.content_sha256 (64-hex sha256 of the fetched body)`,
+        );
+      }
     }
   });
 

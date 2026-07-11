@@ -3958,7 +3958,7 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
 }
 
 export function LogPage({ data }: { data: DataFor<"log"> }) {
-  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths } = data;
+  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems } = data;
   return (
     <Layout current="log">
       <h1 className="page-title">sweep log</h1>
@@ -3988,6 +3988,25 @@ export function LogPage({ data }: { data: DataFor<"log"> }) {
           </div>
         </section>
       )}
+      <section className="panel" id="source-health">
+        <h2>source health</h2>
+        <p className="dim">
+          Sources the harvester currently cannot use: dead means the fetch itself fails (three
+          consecutive failures; re-probed weekly), stale means the source answers but its content
+          stopped moving. An honest gap list beats a silent one.
+        </p>
+        {sourceProblems.length === 0 ? (
+          <p className="empty">// every registered source is fetchable and fresh</p>
+        ) : (
+          <ul className="mono dim">
+            {sourceProblems.map((s) => (
+              <li key={s.name}>
+                {s.status}: {s.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
       <section className="panel" id="source-ledger">
         <h2>source ledger</h2>
         <p className="dim">

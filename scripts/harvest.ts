@@ -13,6 +13,14 @@
  * the source to dead. Notes are appended only on state transitions so the
  * notes field does not grow on every quiet run.
  *
+ * Phase 5 additions (2026-07-11): conditional GETs from stored
+ * etag/last_modified validators (a 304 is healthy); a stale detector
+ * (verified sources whose newest entry stays >14 days old across 6
+ * consecutive fetches flip to "stale", fresh entries flip them back); a
+ * weekly Monday re-probe of dead feed sources (success resurrects to
+ * unverified); and the signals youtube channel feeds joining the harvest
+ * (signals.json stays read-only, health recorded in the run only).
+ *
  * No LLM, no dependencies beyond bun built-ins. Exit code is non-zero only
  * on catastrophic failure (cannot read inputs or write the queue);
  * individual source failures are logged and recorded, never fatal.
@@ -21,7 +29,8 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { canonicalizeUrl } from "./lib/urls";
-import type { Source, SourcesFile, StateFile, SweepLogEntry } from "../src/data/schema";
+import { youtubeSignalChannels } from "./lib/signals";
+import type { SignalsFile, Source, SourcesFile, StateFile, SweepLogEntry } from "../src/data/schema";
 
 const UA = "VesperioMCC-Sweep contact@vesperio.ai";
 const FETCH_TIMEOUT_MS = 25_000;
@@ -35,6 +44,12 @@ const DEEP_WINDOW_DAYS = 7;
 /** Window used when state.lastSweep is null (first run). */
 const FIRST_RUN_WINDOW_DAYS = 7;
 const DEAD_AT_FAILURES = 3;
+/** A feed entry older than this counts as "not fresh" for the stale rule. */
+export const STALE_ENTRY_AGE_DAYS = 14;
+/** Consecutive not-fresh successful fetches before a verified source flips to stale. */
+export const STALE_AFTER_SWEEPS = 6;
+/** Dead sources are re-probed on this UTC weekday (1 = Monday). */
+export const DEAD_REPROBE_UTC_DAY = 1;
 
 export interface Candidate {
   /** sha256 of the entry URL, first 16 hex chars. */
@@ -162,8 +177,40 @@ export function parseFeed(xml: string): FeedEntry[] {
       tagContent(block, "description") ??
       tagContent(block, "summary") ??
       tagContent(block, "content") ??
+      // YouTube channel Atom feeds carry the video description here.
+      tagContent(block, "media:description") ??
       "";
     entries.push({ url, title, published_at, raw_excerpt: excerptText(body) });
+  }
+  return entries;
+}
+
+/**
+ * Parses a dated HTML listing (feed_type "html_listing"): entries are
+ * blocks carrying a machine-readable data-iso-date attribute with a
+ * title link inside (UNIS Vienna's press listings are the pattern case:
+ * div.arch__item > item__title > a). Not a general HTML scraper: pages
+ * without data-iso-date entries yield [] and count as a failed parse.
+ * Listing pages carry no body text, so raw_excerpt is empty; quoted
+ * numbers must come from a direct fetch or corroborating coverage.
+ */
+export function parseHtmlListing(html: string, baseUrl: string): FeedEntry[] {
+  const entries: FeedEntry[] = [];
+  const chunks = html.split(/data-iso-date="/).slice(1);
+  for (const chunk of chunks) {
+    const dateRaw = chunk.slice(0, chunk.indexOf('"'));
+    const published_at = isoDate(dateRaw);
+    const link = /<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i.exec(chunk);
+    if (!link) continue;
+    let url: string;
+    try {
+      url = new URL(decodeEntities(link[1]!), baseUrl).toString();
+    } catch {
+      continue;
+    }
+    const title = excerptText(link[2]!);
+    if (title === "") continue;
+    entries.push({ url, title, published_at, raw_excerpt: "" });
   }
   return entries;
 }
@@ -325,11 +372,83 @@ export function applyHealth(source: Source, ok: boolean, dateStamp: string): str
   return null;
 }
 
+/**
+ * Freshness bookkeeping (plan Phase 5): applied after a SUCCESSFUL fetch.
+ * `newestSeen` is the newest entry date parsed this fetch, or null when the
+ * fetch carried no dated entries (a 304, or a feed without dates). Updates
+ * the persisted newest_entry_at high-water mark and the stale streak:
+ * STALE_AFTER_SWEEPS consecutive successful fetches whose newest entry is
+ * older than STALE_ENTRY_AGE_DAYS flip a verified source to "stale"
+ * (reachable but not fresh, a soft failure); a fresh entry flips a stale
+ * source back to verified. Sources that have never shown a dated entry are
+ * never judged. Returns a transition note or null.
+ */
+export function applyFreshness(
+  source: Source,
+  newestSeen: string | null,
+  now: Date,
+  dateStamp: string,
+): string | null {
+  const prior = source.newest_entry_at ?? null;
+  const newest = newestSeen !== null && (prior === null || newestSeen > prior) ? newestSeen : prior;
+  source.newest_entry_at = newest;
+  if (newest === null) return null;
+  const ageDays = (now.getTime() - Date.parse(newest)) / 86_400_000;
+  if (ageDays <= STALE_ENTRY_AGE_DAYS) {
+    source.stale_streak = 0;
+    if (source.status === "stale") {
+      source.status = "verified";
+      return `[${dateStamp}] harvest: fresh entry (${newest.slice(0, 10)}), recovered from stale to verified.`;
+    }
+    return null;
+  }
+  source.stale_streak = (source.stale_streak ?? 0) + 1;
+  if (source.stale_streak >= STALE_AFTER_SWEEPS && source.status === "verified") {
+    source.status = "stale";
+    return `[${dateStamp}] harvest: newest entry ${newest.slice(0, 10)} stayed older than ${STALE_ENTRY_AGE_DAYS} days across ${STALE_AFTER_SWEEPS} consecutive fetches, flipped to stale.`;
+  }
+  return null;
+}
+
+/** Dead sources get one recovery attempt per week (the resurrection path). */
+export function isDeadReprobeDay(now: Date): boolean {
+  return now.getUTCDay() === DEAD_REPROBE_UTC_DAY;
+}
+
+/**
+ * Applies a weekly re-probe outcome to a dead source. Success resurrects it
+ * to "unverified" (NOT straight to verified: the next regular harvest earns
+ * that flip); failure leaves it dead without growing fail_count or notes.
+ */
+export function applyReprobe(source: Source, ok: boolean, dateStamp: string): string | null {
+  if (!ok) return null;
+  source.status = "unverified";
+  source.fail_count = 0;
+  return `[${dateStamp}] harvest: weekly re-probe succeeded, resurrected dead source to unverified.`;
+}
+
+/** Feed types the deterministic harvester owns (everything except plain html). */
+function isFeedish(source: Source): boolean {
+  return (
+    source.feed_type === "rss_atom" ||
+    source.feed_type === "api_json" ||
+    source.feed_type === "rss" ||
+    source.feed_type === "html_listing"
+  );
+}
+
 export function isHarvestable(source: Source): boolean {
   if (source.fetch_note !== undefined) return false;
-  const feedish =
-    source.feed_type === "rss_atom" || source.feed_type === "api_json" || source.feed_type === "rss";
-  return feedish && (source.status === "verified" || source.status === "unverified");
+  return (
+    isFeedish(source) &&
+    (source.status === "verified" || source.status === "unverified" || source.status === "stale")
+  );
+}
+
+/** Dead feed sources eligible for the weekly re-probe. */
+export function isReprobeTarget(source: Source): boolean {
+  if (source.fetch_note !== undefined) return false;
+  return isFeedish(source) && source.status === "dead";
 }
 
 // ------------------------------------------------------------ sweep mode
@@ -379,7 +498,25 @@ export function overrideWindowStart(raw: string | undefined, now: Date): string 
 
 // ------------------------------------------------------------ IO main
 
-async function fetchSource(url: string): Promise<{ status: number; text: string }> {
+export interface ConditionalHeaders {
+  etag?: string | null;
+  last_modified?: string | null;
+}
+
+/** If-None-Match / If-Modified-Since headers from a source's stored validators. */
+export function conditionalHeaders(c: ConditionalHeaders): Record<string, string> {
+  const h: Record<string, string> = {};
+  if (typeof c.etag === "string" && c.etag !== "") h["If-None-Match"] = c.etag;
+  if (typeof c.last_modified === "string" && c.last_modified !== "") {
+    h["If-Modified-Since"] = c.last_modified;
+  }
+  return h;
+}
+
+async function fetchSource(
+  url: string,
+  conditional: ConditionalHeaders = {},
+): Promise<{ status: number; text: string; etag: string | null; lastModified: string | null }> {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
   try {
@@ -387,11 +524,17 @@ async function fetchSource(url: string): Promise<{ status: number; text: string 
       headers: {
         "User-Agent": UA,
         Accept: "application/rss+xml, application/atom+xml, application/json, text/xml, */*;q=0.5",
+        ...conditionalHeaders(conditional),
       },
       redirect: "follow",
       signal: ctrl.signal,
     });
-    return { status: res.status, text: await res.text() };
+    return {
+      status: res.status,
+      text: await res.text(),
+      etag: res.headers.get("etag"),
+      lastModified: res.headers.get("last-modified"),
+    };
   } finally {
     clearTimeout(timer);
   }
@@ -432,41 +575,73 @@ async function main(): Promise<void> {
     );
   }
 
-  const targets: Source[] = [];
+  const reprobeDay = isDeadReprobeDay(now);
+  const targets: { source: Source; reprobe: boolean }[] = [];
   for (const list of Object.values(sources.categories)) {
-    for (const s of list) if (isHarvestable(s)) targets.push(s);
+    for (const s of list) {
+      if (isHarvestable(s)) targets.push({ source: s, reprobe: false });
+      else if (reprobeDay && isReprobeTarget(s)) targets.push({ source: s, reprobe: true });
+    }
   }
 
   const health: SourceHealthResult[] = [];
   const incoming: { entry: FeedEntry; source_name: string }[] = [];
 
-  for (const source of targets) {
+  for (const { source, reprobe } of targets) {
     const feedUrl = source.rss ?? source.url;
     let ok = false;
+    let notModified = false;
     let status: number | null = null;
     let entries: FeedEntry[] = [];
     let detail = "";
     try {
-      const res = await fetchSource(feedUrl);
+      // Conditional GET from stored validators; a re-probe always fetches
+      // fresh (a dead source's validators are long gone or untrustworthy).
+      const res = await fetchSource(feedUrl, reprobe ? {} : source);
       status = res.status;
       if (res.status === 200) {
         entries =
-          source.feed_type === "api_json" ? parseJsonApi(res.text) : parseFeed(res.text);
+          source.feed_type === "api_json"
+            ? parseJsonApi(res.text)
+            : source.feed_type === "html_listing"
+              ? parseHtmlListing(res.text, feedUrl)
+              : parseFeed(res.text);
         ok = entries.length > 0;
         detail = ok ? `${entries.length} entries` : "200 but no entries parsed";
+        if (ok) {
+          source.etag = res.etag;
+          source.last_modified = res.lastModified;
+        }
+      } else if (res.status === 304) {
+        // Not modified: the feed is reachable and unchanged since the
+        // stored validators. Healthy, zero entries; freshness is judged
+        // from the persisted newest_entry_at high-water mark.
+        ok = true;
+        notModified = true;
+        detail = "304 not modified";
       } else {
         detail = `HTTP ${res.status}`;
       }
     } catch (e) {
       detail = e instanceof Error && e.name === "AbortError" ? "timeout" : String(e);
     }
-    const transition = applyHealth(source, ok, dateStamp);
-    if (transition) source.notes = source.notes ? `${source.notes} | ${transition}` : transition;
     const newest = entries
       .map((e) => e.published_at)
       .filter((d): d is string => d !== null)
       .sort()
       .at(-1);
+    if (reprobe) {
+      detail = `dead re-probe: ${detail}`;
+      const transition = applyReprobe(source, ok, dateStamp);
+      if (transition) source.notes = source.notes ? `${source.notes} | ${transition}` : transition;
+    } else {
+      const transition = applyHealth(source, ok, dateStamp);
+      if (transition) source.notes = source.notes ? `${source.notes} | ${transition}` : transition;
+      if (ok) {
+        const freshness = applyFreshness(source, notModified ? null : (newest ?? null), now, dateStamp);
+        if (freshness) source.notes = source.notes ? `${source.notes} | ${freshness}` : freshness;
+      }
+    }
     health.push({
       source_name: source.name,
       ok,
@@ -478,6 +653,55 @@ async function main(): Promise<void> {
     for (const entry of entries) incoming.push({ entry, source_name: source.name });
     console.log(`${ok ? "ok  " : "FAIL"} ${source.name}: ${detail}`);
     // stay polite: one fetch at a time, small gap between hosts
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
+  // Signals youtube channels (plan Phase 5): whitelisted people's channel
+  // feeds join the harvest deterministically. signals.json is READ-ONLY
+  // here, per the standing rule: no status flips, no notes; the fetch
+  // outcome is recorded in this run's health block only. Candidates are
+  // classed by the agent per the whitelist rules like any other entry.
+  let ytChannels: ReturnType<typeof youtubeSignalChannels> = [];
+  try {
+    const signals = JSON.parse(readFileSync(`${root}src/data/signals.json`, "utf8")) as SignalsFile;
+    ytChannels = youtubeSignalChannels(signals);
+  } catch (e) {
+    console.error(`harvest: signals.json unreadable, youtube pass skipped: ${String(e)}`);
+  }
+  for (const ch of ytChannels) {
+    const sourceName = `Signals YouTube: ${ch.name}`;
+    let ok = false;
+    let status: number | null = null;
+    let entries: FeedEntry[] = [];
+    let detail = "";
+    try {
+      const res = await fetchSource(ch.rss);
+      status = res.status;
+      if (res.status === 200) {
+        entries = parseFeed(res.text);
+        ok = entries.length > 0;
+        detail = ok ? `${entries.length} entries` : "200 but no entries parsed";
+      } else {
+        detail = `HTTP ${res.status}`;
+      }
+    } catch (e) {
+      detail = e instanceof Error && e.name === "AbortError" ? "timeout" : String(e);
+    }
+    const newest = entries
+      .map((e) => e.published_at)
+      .filter((d): d is string => d !== null)
+      .sort()
+      .at(-1);
+    health.push({
+      source_name: sourceName,
+      ok,
+      http_status: status,
+      entry_count: entries.length,
+      newest_entry: newest ?? null,
+      detail,
+    });
+    for (const entry of entries) incoming.push({ entry, source_name: sourceName });
+    console.log(`${ok ? "ok  " : "FAIL"} ${sourceName}: ${detail}`);
     await new Promise((r) => setTimeout(r, 500));
   }
 

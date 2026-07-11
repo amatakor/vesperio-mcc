@@ -24,6 +24,8 @@ concurrency:
 
 permissions:
   contents: write
+  # Single-job workflow: this is the scope of the failure-alert step only.
+  issues: write
 
 jobs:
   refresh:
@@ -74,3 +76,23 @@ jobs:
           # data files, so a rebase is clean or fails loudly.
           git pull --rebase origin main
           git push
+
+      # Alerting (plan Phase 5, should-fix 1): failures land in a single
+      # reusable ops issue, deduped by exact title, instead of vanishing
+      # into the Actions tab.
+      - name: File ops issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "ops: update-orbits scheduled run failing"
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          number=$(gh issue list -R "${{ github.repository }}" --state open --json number,title \
+            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
+          if [ -n "$number" ]; then
+            gh issue comment "$number" -R "${{ github.repository }}" --body "Another failing run: $RUN_URL"
+          else
+            gh issue create -R "${{ github.repository }}" --title "$TITLE" \
+              --body "Scheduled run failed: $RUN_URL"$'\n\n'"This issue is the ops alert channel for this workflow; further failures comment here (deduped by title). Close it once the cause is fixed."
+          fi

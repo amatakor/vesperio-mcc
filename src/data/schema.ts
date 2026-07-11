@@ -361,10 +361,16 @@ export interface StateFile {
 
 // -------------------------------------------------------------- sources
 
-export const SOURCE_STATUSES = ["verified", "unverified", "dead"] as const;
+export const SOURCE_STATUSES = ["verified", "unverified", "dead", "stale"] as const;
 export type SourceStatus = (typeof SOURCE_STATUSES)[number];
 
-export const FEED_TYPES = ["html", "rss", "rss_atom", "api_json"] as const;
+/**
+ * html_listing (Phase 5, 2026-07-11): a server-rendered HTML index whose
+ * entries carry machine-readable dates (data-iso-date attributes) and
+ * title links. Harvested deterministically like a feed; UNIS Vienna's
+ * UNOOSA press listing is the pattern case. Plain "html" stays agent-fetched.
+ */
+export const FEED_TYPES = ["html", "rss", "rss_atom", "api_json", "html_listing"] as const;
 export type FeedType = (typeof FEED_TYPES)[number];
 
 export const SOURCE_TIERS = [1, 2] as const;
@@ -390,6 +396,18 @@ export interface Source {
    * field; the entry stays registered so the story arrives via other routes.
    */
   fetch_note?: string;
+  /** HTTP ETag from the last successful fetch; sent back as If-None-Match. */
+  etag?: string | null;
+  /** HTTP Last-Modified from the last successful fetch; sent back as If-Modified-Since. */
+  last_modified?: string | null;
+  /** Newest entry date ever seen in this feed (ISO). Basis for the stale rule. */
+  newest_entry_at?: string | null;
+  /**
+   * Consecutive successful fetches whose newest entry stayed older than 14
+   * days. At 6 a verified source flips to "stale" (reachable but not fresh);
+   * a fresh entry flips it back to verified and resets the streak.
+   */
+  stale_streak?: number;
 }
 
 export interface SourcesFile {

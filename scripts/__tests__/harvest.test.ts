@@ -491,3 +491,239 @@ describe("Google News RSS entries", () => {
     expect(entries[0]!.published_at).toBe("2026-07-07T14:00:00.000Z");
   });
 });
+
+// ---------------------------------------------------------------- Phase 5
+
+import {
+  applyFreshness,
+  applyReprobe,
+  conditionalHeaders,
+  isDeadReprobeDay,
+  isReprobeTarget,
+  parseHtmlListing,
+  STALE_AFTER_SWEEPS,
+} from "../harvest";
+import { youtubeSignalChannels } from "../lib/signals";
+import type { SignalsFile } from "../../src/data/schema";
+
+function src(overrides: Partial<Source> = {}): Source {
+  return {
+    name: "Example",
+    url: "https://example.com/feed",
+    feed_type: "rss_atom",
+    rss: null,
+    cadence: "daily",
+    language: "en",
+    tier: 1,
+    status: "verified",
+    ...overrides,
+  };
+}
+
+describe("applyFreshness (stale detector)", () => {
+  const now = new Date("2026-07-11T12:00:00Z");
+
+  test("fresh entry resets the streak and records the high-water mark", () => {
+    const s = src({ stale_streak: 4 });
+    const note = applyFreshness(s, "2026-07-10T00:00:00.000Z", now, "2026-07-11");
+    expect(note).toBeNull();
+    expect(s.stale_streak).toBe(0);
+    expect(s.newest_entry_at).toBe("2026-07-10T00:00:00.000Z");
+    expect(s.status).toBe("verified");
+  });
+
+  test("an old newest entry increments the streak but does not flip early", () => {
+    const s = src();
+    const note = applyFreshness(s, "2026-05-01T00:00:00.000Z", now, "2026-07-11");
+    expect(note).toBeNull();
+    expect(s.stale_streak).toBe(1);
+    expect(s.status).toBe("verified");
+  });
+
+  test(`flips verified to stale at exactly ${STALE_AFTER_SWEEPS} consecutive not-fresh fetches`, () => {
+    const s = src({ stale_streak: STALE_AFTER_SWEEPS - 1 });
+    const note = applyFreshness(s, "2026-05-01T00:00:00.000Z", now, "2026-07-11");
+    expect(s.status).toBe("stale");
+    expect(note).toContain("flipped to stale");
+  });
+
+  test("a fresh entry flips a stale source back to verified", () => {
+    const s = src({ status: "stale", stale_streak: 9 });
+    const note = applyFreshness(s, "2026-07-11T01:00:00.000Z", now, "2026-07-11");
+    expect(s.status).toBe("verified");
+    expect(s.stale_streak).toBe(0);
+    expect(note).toContain("recovered from stale");
+  });
+
+  test("null newestSeen (a 304) is judged from the stored high-water mark", () => {
+    const fresh = src({ newest_entry_at: "2026-07-10T00:00:00.000Z", stale_streak: 2 });
+    applyFreshness(fresh, null, now, "2026-07-11");
+    expect(fresh.stale_streak).toBe(0);
+    const old = src({ newest_entry_at: "2026-04-01T00:00:00.000Z", stale_streak: 1 });
+    applyFreshness(old, null, now, "2026-07-11");
+    expect(old.stale_streak).toBe(2);
+  });
+
+  test("a source that has never shown a dated entry is never judged", () => {
+    const s = src();
+    const note = applyFreshness(s, null, now, "2026-07-11");
+    expect(note).toBeNull();
+    expect(s.stale_streak).toBeUndefined();
+    expect(s.newest_entry_at).toBeNull();
+  });
+
+  test("the high-water mark never regresses to an older entry", () => {
+    const s = src({ newest_entry_at: "2026-07-09T00:00:00.000Z" });
+    applyFreshness(s, "2026-06-01T00:00:00.000Z", now, "2026-07-11");
+    expect(s.newest_entry_at).toBe("2026-07-09T00:00:00.000Z");
+  });
+
+  test("unverified sources count streaks but only verified ones flip", () => {
+    const s = src({ status: "unverified", stale_streak: STALE_AFTER_SWEEPS - 1 });
+    applyFreshness(s, "2026-01-01T00:00:00.000Z", now, "2026-07-11");
+    expect(s.status).toBe("unverified");
+    expect(s.stale_streak).toBe(STALE_AFTER_SWEEPS);
+  });
+});
+
+describe("conditional GET headers", () => {
+  test("stored validators round-trip into request headers", () => {
+    expect(conditionalHeaders({ etag: '"abc123"', last_modified: "Tue, 07 Jul 2026 14:30:00 GMT" })).toEqual({
+      "If-None-Match": '"abc123"',
+      "If-Modified-Since": "Tue, 07 Jul 2026 14:30:00 GMT",
+    });
+  });
+
+  test("null, empty, and absent validators send nothing", () => {
+    expect(conditionalHeaders({})).toEqual({});
+    expect(conditionalHeaders({ etag: null, last_modified: null })).toEqual({});
+    expect(conditionalHeaders({ etag: "", last_modified: "" })).toEqual({});
+  });
+});
+
+describe("dead-source weekly re-probe", () => {
+  test("probe day is Monday UTC only", () => {
+    expect(isDeadReprobeDay(new Date("2026-07-13T05:00:00Z"))).toBe(true);
+    expect(isDeadReprobeDay(new Date("2026-07-12T05:00:00Z"))).toBe(false);
+    expect(isDeadReprobeDay(new Date("2026-07-14T05:00:00Z"))).toBe(false);
+  });
+
+  test("re-probe success resurrects to unverified, not verified", () => {
+    const s = src({ status: "dead", fail_count: 4 });
+    const note = applyReprobe(s, true, "2026-07-13");
+    expect(s.status).toBe("unverified");
+    expect(s.fail_count).toBe(0);
+    expect(note).toContain("resurrected");
+  });
+
+  test("re-probe failure leaves the source dead without growing fail_count", () => {
+    const s = src({ status: "dead", fail_count: 3 });
+    const note = applyReprobe(s, false, "2026-07-13");
+    expect(note).toBeNull();
+    expect(s.status).toBe("dead");
+    expect(s.fail_count).toBe(3);
+  });
+
+  test("only dead feed-type sources without a fetch_note are re-probe targets", () => {
+    expect(isReprobeTarget(src({ status: "dead" }))).toBe(true);
+    expect(isReprobeTarget(src({ status: "dead", feed_type: "html" }))).toBe(false);
+    expect(isReprobeTarget(src({ status: "dead", fetch_note: "JS shell" }))).toBe(false);
+    expect(isReprobeTarget(src({ status: "verified" }))).toBe(false);
+  });
+});
+
+describe("stale and html_listing sources in the harvest set", () => {
+  test("stale feed sources keep being fetched (recovery path)", () => {
+    expect(isHarvestable(src({ status: "stale" }))).toBe(true);
+  });
+  test("html_listing joins the harvester; plain html never does", () => {
+    expect(isHarvestable(src({ feed_type: "html_listing", status: "unverified" }))).toBe(true);
+    expect(isHarvestable(src({ feed_type: "html", status: "verified" }))).toBe(false);
+  });
+});
+
+describe("parseHtmlListing (UNIS Vienna pattern)", () => {
+  const UNIS = `<div class="tab-content archive__container">
+    <div class="arch__item" data-iso-date="2026-06-10T09:46:08.487">
+      <div class="item__date"><span class="std-item-date">10/06/2026</span></div>
+      <div class="item__title"><a href="/unis/en/pressrels/2026/unisos611.html">UNOOSA and JAXA select teams from El Salvador and Thailand for satellite deployment
+        from the International Space Station</a></div>
+    </div>
+    <div class="arch__item" data-iso-date="2026-06-08T12:05:19.034">
+      <div class="item__date"><span class="std-item-date">08/06/2026</span></div>
+      <div class="item__title"><a href="https://unis.unvienna.org/unis/en/pressrels/2026/unisos610.html">UN Office for Outer Space Affairs and Italian Space Agency partner to advance space law in Africa</a></div>
+    </div>
+  </div>`;
+  const BASE = "https://unis.unvienna.org/unis/en/pr/press-releases-unoosa.html";
+
+  test("extracts dated entries and resolves relative links", () => {
+    const entries = parseHtmlListing(UNIS, BASE);
+    expect(entries.length).toBe(2);
+    expect(entries[0]!.url).toBe("https://unis.unvienna.org/unis/en/pressrels/2026/unisos611.html");
+    expect(entries[0]!.title).toContain("UNOOSA and JAXA select teams");
+    expect(entries[0]!.title).not.toContain("\n");
+    expect(entries[0]!.published_at).not.toBeNull();
+    expect(entries[1]!.url).toBe("https://unis.unvienna.org/unis/en/pressrels/2026/unisos610.html");
+  });
+
+  test("a page without data-iso-date entries yields [] (counts as a failed parse)", () => {
+    expect(parseHtmlListing("<html><body><a href='/x'>Nav</a></body></html>", BASE)).toEqual([]);
+  });
+});
+
+describe("youtube signals channels join the harvest", () => {
+  const signals = {
+    meta: {},
+    outlets: [],
+    excluded: [],
+    people: [
+      {
+        id: "creator-a", name: "Creator A", whitelist: "yes",
+        channels: [
+          { type: "youtube", url: "https://youtube.com/@a", rss: "https://www.youtube.com/feeds/videos.xml?channel_id=AAA", status: "verified_active" },
+          { type: "x", handle: "a", url: "https://x.com/a", status: "verified_active" },
+        ],
+      },
+      {
+        id: "creator-b", name: "Creator B", whitelist: "yes",
+        channels: [
+          { type: "youtube", url: "https://youtube.com/@b", rss: "https://www.youtube.com/feeds/videos.xml?channel_id=BBB", status: "stale" },
+        ],
+      },
+      {
+        id: "creator-c", name: "Creator C", whitelist: "no",
+        channels: [
+          { type: "youtube", url: "https://youtube.com/@c", rss: "https://www.youtube.com/feeds/videos.xml?channel_id=CCC", status: "verified_active" },
+        ],
+      },
+      {
+        id: "creator-d", name: "Creator D", whitelist: "yes",
+        channels: [
+          { type: "youtube", url: "https://youtube.com/@d", rss: null, status: "verified_active" },
+          { type: "youtube", url: "https://youtube.com/@d2", rss: "https://www.youtube.com/feeds/videos.xml?channel_id=DDD", status: "retired" },
+        ],
+      },
+    ],
+  } as unknown as SignalsFile;
+
+  test("whitelisted verified_active and stale channels with a feed URL qualify; others never do", () => {
+    const chans = youtubeSignalChannels(signals);
+    expect(chans.map((c) => c.name).sort()).toEqual(["Creator A", "Creator B"]);
+  });
+
+  test("youtube Atom entries surface the video description as the excerpt", () => {
+    const YT = `<feed xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+      <entry>
+        <title>Starship Flight 12 explained</title>
+        <link rel="alternate" href="https://www.youtube.com/watch?v=abc123"/>
+        <published>2026-07-09T15:00:00+00:00</published>
+        <media:group><media:title>Starship Flight 12 explained</media:title>
+        <media:description>Covering the flight profile, 3 engine relights, and the booster catch.</media:description></media:group>
+      </entry>
+    </feed>`;
+    const entries = parseFeed(YT);
+    expect(entries.length).toBe(1);
+    expect(entries[0]!.url).toBe("https://www.youtube.com/watch?v=abc123");
+    expect(entries[0]!.raw_excerpt).toContain("3 engine relights");
+  });
+});
