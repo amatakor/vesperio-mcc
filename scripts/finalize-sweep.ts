@@ -49,6 +49,7 @@ import {
   validateRegistryCandidatesFile,
 } from "./lib/validate";
 import { scoreClaim } from "./snr/score";
+import { collapseCorroboration } from "./snr/corroboration";
 import { applyModifier, daysBetween, matchDecision } from "./snr/match";
 import { recordClaim, effectiveClass } from "./snr/ledger";
 import {
@@ -89,6 +90,12 @@ interface DraftScoringSource {
   outlet: string;
   class: string;
   via?: string;
+  /**
+   * The page's headline, verbatim, when the agent saw one (optional
+   * during the transition). Enables the wire-rewrite collapse: titles
+   * within SimHash Hamming distance 3 count as one corroboration unit.
+   */
+  title?: string;
 }
 interface DraftScoring {
   sources: DraftScoringSource[];
@@ -346,6 +353,9 @@ function validateSourceEntry(
   if (typeof s.outlet !== "string" || s.outlet.trim() === "") {
     errors.push(`${path}.outlet: required non-empty string`);
   }
+  if (s.title !== undefined && (typeof s.title !== "string" || s.title.trim() === "")) {
+    errors.push(`${path}.title: when present, must be the page's headline verbatim (non-empty string)`);
+  }
   const cls = s.class;
   if (!SOURCE_CLASSES.includes(cls as never)) {
     errors.push(`${path}.class: "${String(cls)}" not in [${SOURCE_CLASSES.join(", ")}]`);
@@ -540,6 +550,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   };
 
   const movements: SnrMovement[] = [];
+  const corroborationCollapses: NonNullable<SweepLogEntry["corroboration_collapses"]> = [];
   const autoHeld: DraftHeld[] = [];
 
   // ---- validate + score newItems ----------------------------------------
@@ -632,6 +643,15 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       const companies = (raw.companies as unknown[])
         .filter((c): c is string => typeof c === "string")
         .map((c) => c.toLowerCase());
+      // Alias-aware: "ISRO" and "Indian Space Research Organisation" are
+      // the same company for dedup purposes. Names resolve through the
+      // curated alias map (the same index crossfeed uses); unresolved
+      // names still compare by lowercase string.
+      const companySlugs = new Set(matchCompanies(registryIndex, companies));
+      const sharesCompany = (exCompanies: string[]): boolean =>
+        exCompanies.some((c) => companies.includes(c.toLowerCase())) ||
+        (companySlugs.size > 0 &&
+          matchCompanies(registryIndex, exCompanies).some((s) => companySlugs.has(s)));
       const ackList = Array.isArray(raw.dedup_distinct)
         ? (raw.dedup_distinct as unknown[])
         : raw.dedup_distinct !== undefined
@@ -647,7 +667,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         );
       for (const ex of items.items) {
         if (ex.category !== raw.category) continue;
-        if (!ex.companies.some((c) => companies.includes(c.toLowerCase()))) continue;
+        if (!sharesCompany(ex.companies)) continue;
         if (matchDecision({ id: ex.id, date: ex.date, snr: ex.snr }, raw.date) !== "same_event") {
           continue;
         }
@@ -674,16 +694,35 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       extraordinary = true;
     }
 
-    const mappedSources: ItemSource[] = scoring.sources.map((s) => ({
+    // Collapse the sources into corroboration units before scoring:
+    // canonical duplicates, one registrable domain, and wire rewrites
+    // (attested titles within SimHash distance 3) each count once. The
+    // item keeps the full list (minus exact duplicates); only the
+    // scoring input shrinks, and every merge is logged into the sweep
+    // entry.
+    const collapse = collapseCorroboration(
+      scoring.sources.map((s) => ({
+        url: s.url,
+        outlet: s.outlet,
+        class: resolveClass(s.url, s.class as SourceClass),
+        via: (s.via ?? "initial") as ItemSource["via"],
+        ...(s.title !== undefined ? { title: s.title } : {}),
+      })),
+    );
+    const toItemSource = (s: (typeof collapse.listed)[number]): ItemSource => ({
       url: s.url,
       outlet: s.outlet,
-      class: resolveClass(s.url, s.class as SourceClass),
+      class: s.class,
       added: today,
-      via: (s.via ?? "initial") as ItemSource["via"],
-    }));
+      via: s.via,
+    });
+    const mappedSources: ItemSource[] = collapse.listed.map(toItemSource);
+    for (const c of collapse.collapses) {
+      corroborationCollapses.push({ id: raw.id as string, ...c });
+    }
 
     const result = scoreClaim({
-      sources: mappedSources,
+      sources: collapse.representatives.map(toItemSource),
       extraordinary,
       crawl: scoring.crawl as "found_none" | "found_some" | "not_attempted",
       whitelist: scoring.whitelist,
@@ -691,6 +730,9 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       persisted: false,
       disputeDowngrade: false,
     });
+    if (collapse.singleClass !== null) {
+      result.trace.single_class_corroboration = collapse.singleClass;
+    }
 
     const stamped: Item = {
       ...(raw as unknown as Item),
@@ -972,18 +1014,35 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       }
       // Preserve original attachment dates/via for urls already on the item.
       const prior = new Map((merged.sources ?? []).map((sc) => [sc.url, sc]));
-      const rescored: ItemSource[] = r.sources.map((sc) => {
-        const existing = prior.get(sc.url);
-        return {
-          url: sc.url,
-          outlet: sc.outlet,
-          class: resolveClass(sc.url, sc.class as SourceClass),
-          added: existing?.added ?? today,
-          via: (existing?.via ?? sc.via ?? "initial") as ItemSource["via"],
-        };
+      // Same corroboration-unit collapse as the new-item path: the item
+      // keeps the full list (minus exact duplicates), scoring sees one
+      // representative per unit.
+      const rescoreCollapse = collapseCorroboration(
+        r.sources.map((sc) => {
+          const existing = prior.get(sc.url);
+          return {
+            url: sc.url,
+            outlet: sc.outlet,
+            class: resolveClass(sc.url, sc.class as SourceClass),
+            added: existing?.added ?? today,
+            via: (existing?.via ?? sc.via ?? "initial") as ItemSource["via"],
+            ...(sc.title !== undefined ? { title: sc.title } : {}),
+          };
+        }),
+      );
+      const stripTitle = (s: (typeof rescoreCollapse.listed)[number]): ItemSource => ({
+        url: s.url,
+        outlet: s.outlet,
+        class: s.class,
+        added: s.added,
+        via: s.via,
       });
+      const rescored: ItemSource[] = rescoreCollapse.listed.map(stripTitle);
+      for (const c of rescoreCollapse.collapses) {
+        corroborationCollapses.push({ id: merged.id, ...c });
+      }
       const result = scoreClaim({
-        sources: rescored,
+        sources: rescoreCollapse.representatives.map(stripTitle),
         extraordinary,
         crawl: r.crawl as "found_none" | "found_some" | "not_attempted",
         whitelist: r.whitelist,
@@ -991,6 +1050,9 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         persisted: false,
         disputeDowngrade: false,
       });
+      if (rescoreCollapse.singleClass !== null) {
+        result.trace.single_class_corroboration = rescoreCollapse.singleClass;
+      }
       const from = merged.snr;
       const history = [
         ...(merged.snr_trace.history ?? []),
@@ -1169,6 +1231,9 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     coverage: draft.coverage,
     ...(newTags.length > 0 ? { new_tags: newTags } : {}),
     ...(movements.length > 0 ? { snr_movements: movements } : {}),
+    ...(corroborationCollapses.length > 0
+      ? { corroboration_collapses: corroborationCollapses }
+      : {}),
     ...(signalsSummary !== undefined ? { signals: signalsSummary } : {}),
     ...(discoverySummary !== undefined ? { discovery: discoverySummary } : {}),
     ...(harvestMode === "deep" ? { mode: "deep" as const } : {}),

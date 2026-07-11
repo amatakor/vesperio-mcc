@@ -21,6 +21,7 @@ import {
   parseBlueskyPosts,
 } from "../harvest";
 import type { Candidate } from "../harvest";
+import { canonicalizeUrl } from "../lib/urls";
 import type { Source } from "../../src/data/schema";
 
 const RSS_FIXTURE = `<?xml version="1.0" encoding="UTF-8"?>
@@ -205,8 +206,48 @@ describe("mergeQueue", () => {
       fetchedAt,
     );
     expect(merged.length).toBe(1);
-    expect(merged[0].id).toBe(urlHash(fresh.url));
+    // New entries are keyed by the CANONICAL form of their URL.
+    expect(merged[0].id).toBe(urlHash(canonicalizeUrl(fresh.url)));
     expect(merged[0].fetched_at).toBe(fetchedAt);
+  });
+
+  test("a utm variant of an already-queued article does not queue twice", () => {
+    const merged = mergeQueue(
+      [],
+      [
+        { entry: fresh, source_name: "Example" },
+        {
+          entry: { ...fresh, url: `${fresh.url}?utm_source=rss&utm_medium=feed` },
+          source_name: "Example",
+        },
+        {
+          entry: { ...fresh, url: "https://www.example-press.com/iceye-gen4-order/" },
+          source_name: "Example",
+        },
+      ],
+      cutoff,
+      fetchedAt,
+    );
+    expect(merged.length).toBe(1);
+  });
+
+  test("a variant of an entry queued under the OLD raw hash still dedups (transition)", () => {
+    const existing: Candidate[] = [
+      {
+        // Pre-canonicalization queue entry: id is the raw-URL hash of a
+        // utm-bearing URL, kept valid (history never rewritten).
+        id: urlHash(`${fresh.url}?utm_source=rss`),
+        source_name: "Example",
+        url: `${fresh.url}?utm_source=rss`,
+        title: "t",
+        published_at: fresh.published_at,
+        raw_excerpt: "e",
+        fetched_at: "2026-07-07T00:00:00.000Z",
+      },
+    ];
+    const merged = mergeQueue(existing, [{ entry: fresh, source_name: "Example" }], cutoff, fetchedAt);
+    expect(merged.length).toBe(1);
+    expect(merged[0].id).toBe(urlHash(`${fresh.url}?utm_source=rss`));
   });
 
   test("dedups by URL hash and keeps the first-seen entry", () => {

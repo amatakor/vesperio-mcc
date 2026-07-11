@@ -202,7 +202,15 @@ result when nothing on-scope happened; padding is still the bug.
      (no penalty; never claim `found_none` for a search you did not run).
    Sources are distinct only if independent: wire rewrites and
    syndicated copies of one story count as ONE source. Do not stack
-   near-identical URLs to farm corroboration.
+   near-identical URLs to farm corroboration. This is now also
+   code-enforced at finalize: URL variants of one article (tracking
+   params, www/amp hosts), multiple pages on one domain, and sources
+   whose titles near-match collapse into ONE corroboration unit before
+   scoring, and every collapse is logged to /log. To make the title
+   collapse work, include each scoring source's page headline VERBATIM
+   as an optional `"title"` field (see the contract below); a source
+   without a title still counts, it just cannot be recognized as a
+   rewrite.
 5. **Registry crossfeed check (attested, code-enforced).** For each NEW
    item whose claims touch a registry fact (counts, statuses, dates,
    figures on a constellation/vehicle/spaceport/organization profile),
@@ -266,8 +274,8 @@ result when nothing on-scope happened; padding is still the bug.
          "secondary_urls": [],
          "scoring": {
            "sources": [
-             { "url": "...", "outlet": "SpaceNews", "class": "trade" },
-             { "url": "...", "outlet": "Reuters", "class": "mainstream", "via": "corroboration" }
+             { "url": "...", "outlet": "SpaceNews", "class": "trade", "title": "page headline, verbatim (optional but include it whenever you saw the page)" },
+             { "url": "...", "outlet": "Reuters", "class": "mainstream", "via": "corroboration", "title": "..." }
            ],
            "extraordinary": false,
            "crawl": "found_some|found_none|not_attempted",

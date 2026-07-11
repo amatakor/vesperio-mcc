@@ -20,6 +20,7 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import { canonicalizeUrl } from "./lib/urls";
 import type { Source, SourcesFile, StateFile, SweepLogEntry } from "../src/data/schema";
 
 const UA = "VesperioMCC-Sweep contact@vesperio.ai";
@@ -268,13 +269,22 @@ export function mergeQueue(
   fetchedAt: string,
 ): Candidate[] {
   const byId = new Map<string, Candidate>();
+  // Canonical-form dedup (utm variants, www./amp. hosts) without
+  // rewriting queue history: kept entries keep their original id, and
+  // this set of canonical hashes catches a variant URL of an entry that
+  // was queued under the old raw hash.
+  const seenCanonical = new Set<string>();
   for (const c of existing) {
-    if (c.published_at !== null && c.published_at >= cutoffIso) byId.set(c.id, c);
+    if (c.published_at !== null && c.published_at >= cutoffIso) {
+      byId.set(c.id, c);
+      seenCanonical.add(urlHash(canonicalizeUrl(c.url)));
+    }
   }
   for (const { entry, source_name } of incoming) {
     if (entry.published_at === null || entry.published_at < cutoffIso) continue;
-    const id = urlHash(entry.url);
-    if (byId.has(id)) continue;
+    const id = urlHash(canonicalizeUrl(entry.url));
+    if (byId.has(id) || seenCanonical.has(id)) continue;
+    seenCanonical.add(id);
     byId.set(id, {
       id,
       source_name,

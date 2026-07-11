@@ -47,8 +47,11 @@ const INDIRECT_CEILING = 4;
 
 export interface ScoreInput {
   /**
-   * Distinct, agent-deduped sources attached to the claim. The first
-   * entry is the lead (best) source whose class sets the base tier.
+   * Distinct corroboration units attached to the claim, one
+   * representative source each (finalize collapses URL variants,
+   * same-domain pages, and wire rewrites via snr/corroboration.ts
+   * before calling in). The first entry is the lead (best) source
+   * whose class sets the base tier.
    */
   sources: ItemSource[];
   /** Out-of-pattern claim: forces the base to 1 before it can climb (§2.1). */

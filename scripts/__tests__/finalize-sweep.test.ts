@@ -1075,3 +1075,147 @@ describe("deep-sweep mode stamping", () => {
     expect(readState().sweeps.at(-1)!.mode).toBeUndefined();
   });
 });
+
+describe("corroboration-unit collapse (Phase 3)", () => {
+  test("two utm variants of one article count as one source end to end", () => {
+    writeDraft({
+      newItems: [
+        baseNewItem({
+          scoring: {
+            sources: [
+              { url: "https://spacenews.com/rocket-lab/launch-report", outlet: "SpaceNews", class: "trade" },
+              { url: "https://www.spacenews.com/rocket-lab/launch-report?utm_source=rss", outlet: "SpaceNews", class: "trade" },
+            ],
+            extraordinary: false,
+            crawl: "found_some",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const stamped = readItems().items.find((i) => i.id.includes("rocket-lab"))!;
+    // One unit: base trade 3, no corroboration bump, one listed source.
+    expect(stamped.snr).toBe(3);
+    expect(stamped.sources).toHaveLength(1);
+    expect(stamped.snr_trace.modifiers.some((m) => m.type === "corroboration_2plus")).toBe(false);
+    const entry = readState().sweeps.at(-1)!;
+    expect(entry.corroboration_collapses).toEqual([
+      {
+        id: stamped.id,
+        kept: "https://spacenews.com/rocket-lab/launch-report",
+        dropped: "https://www.spacenews.com/rocket-lab/launch-report?utm_source=rss",
+        rule: "canonical_duplicate",
+      },
+    ]);
+  });
+
+  test("an AP story plus two syndicated rewrites yields one corroboration unit and logs the collapses", () => {
+    const TITLE = "Rocket Lab launches Electron mission for confidential EO customer";
+    writeDraft({
+      newItems: [
+        baseNewItem({
+          source_url: "https://apnews.com/article/rocket-lab-electron",
+          scoring: {
+            sources: [
+              { url: "https://apnews.com/article/rocket-lab-electron", outlet: "AP", class: "mainstream", title: TITLE },
+              { url: "https://syndicated-one.com/wire/rl", outlet: "Syndicated One", class: "mainstream", title: TITLE },
+              { url: "https://syndicated-two.com/news/rl", outlet: "Syndicated Two", class: "mainstream", title: TITLE },
+            ],
+            extraordinary: false,
+            crawl: "found_some",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const stamped = readItems().items.find((i) => i.id.includes("rocket-lab"))!;
+    // One unit despite three domains: no corroboration bump, base mainstream 3.
+    expect(stamped.snr).toBe(3);
+    expect(stamped.sources).toHaveLength(3); // all stay listed on the item
+    expect(stamped.snr_trace.modifiers.some((m) => m.type === "corroboration_2plus")).toBe(false);
+    const entry = readState().sweeps.at(-1)!;
+    expect(entry.corroboration_collapses!.map((c) => c.rule)).toEqual([
+      "wire_rewrite",
+      "wire_rewrite",
+    ]);
+  });
+
+  test("genuinely distinct domains still corroborate, and all-trade coverage sets the mix flag", () => {
+    writeDraft({
+      newItems: [
+        baseNewItem({
+          scoring: {
+            sources: [
+              { url: "https://spacenews.com/rocket-lab/launch-report", outlet: "SpaceNews", class: "trade" },
+              { url: "https://payloadspace.com/rocket-lab-electron", outlet: "Payload", class: "trade" },
+            ],
+            extraordinary: false,
+            crawl: "found_some",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+    const stamped = readItems().items.find((i) => i.id.includes("rocket-lab"))!;
+    expect(stamped.snr).toBe(4); // trade 3 + corroboration_2plus
+    expect(stamped.snr_trace.single_class_corroboration).toBe("trade");
+    expect(readState().sweeps.at(-1)!.corroboration_collapses).toBeUndefined();
+  });
+});
+
+describe("alias-aware dedup (Phase 3)", () => {
+  test("ISRO and Indian Space Research Organisation dedupe across sweeps via aliases.json", () => {
+    // Registry profile + alias map: both names resolve to the slug isro.
+    mkdirSync(join(dataDir, "registry", "organizations"), { recursive: true });
+    writeFileSync(
+      join(dataDir, "registry", "organizations", "isro.json"),
+      JSON.stringify({ slug: "isro", name: "ISRO" }, null, 2),
+    );
+    writeFileSync(
+      join(dataDir, "aliases.json"),
+      JSON.stringify(
+        {
+          entities: [
+            {
+              name: "Indian Space Research Organisation",
+              org: "isro",
+              aliases: ["ISRO"],
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    );
+    // An existing ISRO item from a prior sweep.
+    const items = readItems();
+    items.items.push({
+      ...(existingItem as ItemsFile["items"][number]),
+      id: "2026-07-02-isro-pslv-eo-launch",
+      date: "2026-07-02",
+      headline: "ISRO launches PSLV with a commercial EO payload",
+      category: "launch",
+      tags: ["india"],
+      companies: ["ISRO"],
+    });
+    writeFileSync(join(dataDir, "items.json"), JSON.stringify(items, null, 2));
+    // A new draft for the same event window naming the long form.
+    writeDraft({
+      newItems: [
+        baseNewItem({
+          companies: ["Indian Space Research Organisation"],
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("same-event match");
+    expect(result.errors.join("\n")).toContain("2026-07-02-isro-pslv-eo-launch");
+  });
+});
