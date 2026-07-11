@@ -456,6 +456,22 @@ describe("finalize-sweep rejections", () => {
 });
 
 describe("finalize-sweep merge", () => {
+  test("new items get entities stamped from the registry alias index (Phase 7)", () => {
+    mkdirSync(join(dataDir, "registry", "organizations"), { recursive: true });
+    writeFileSync(
+      join(dataDir, "registry", "organizations", "rocket-lab.json"),
+      JSON.stringify({ slug: "rocket-lab", name: "Rocket Lab" }, null, 2),
+    );
+    useDraftFixture("draft-valid.json");
+    const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-07-05T05:00:00.000Z") });
+    expect(result.ok).toBe(true);
+    const merged = readItems().items.find((i) => i.companies.includes("Rocket Lab"))!;
+    expect(merged.entities).toEqual([{ name: "Rocket Lab", ref: "organizations/rocket-lab" }]);
+    // The seeded existing item has no registry match and stays unstamped.
+    const existing = readItems().items.find((i) => i.id === existingItem.id)!;
+    expect(existing.entities).toBeUndefined();
+  });
+
   test("a valid draft merges into all four data files and deletes the draft", () => {
     useDraftFixture("draft-valid.json");
     const now = new Date("2026-07-05T05:00:00.000Z");
