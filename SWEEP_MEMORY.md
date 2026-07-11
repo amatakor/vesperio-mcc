@@ -1188,3 +1188,37 @@ a newer entry if a lesson changes.
   (2026-07-06-L/JJ's free-corroboration pattern) is where a
   single-source-filtered run still adds value beyond the 1-2 genuinely
   new items it finds.
+
+## Full-source-list re-check, ~15min gap (2026-07-11)
+
+- 2026-07-11-D: A ~15-minute-gap unfiltered re-check (immediately after
+  the prior 06:53 UTC sweep) is a legitimate sweep shape and correctly
+  produced zero items: the harvester queue had exactly one candidate
+  published after lastSweep in the whole ~530-entry file (an off-topic
+  Bluesky opinion post on the Long March 10B recovery, discarded
+  silently), all ~29 checked HTML-only sources (feed_type html,
+  verified/unverified, no fetch_note) showed no content newer than the
+  prior sweep, the signals rotation completed the 6 channels left
+  unchecked last run (Anatoly Zak YouTube, Andrew Parsonson substack,
+  Scott Manley, Tim Dodd, Marcus House, Felix Schlang -- all quiet,
+  europeanspaceflight.substack.com still 403s), and an 8-query
+  discovery pass surfaced only already-published stories, one
+  routine/out-of-scope Starlink launch, and one old (Dec 2025) ISRO
+  LVM3/AST SpaceMobile launch resurfacing in search with a misleading
+  "Wednesday" framing (2026-07-08-E pattern again). rocketlabcorp.com/
+  updates/ 403'd this run (intermittent Cloudflare gate, consistent
+  with the standing note); not flipped, just one more documented
+  failure in the ongoing pattern.
+- 2026-07-11-E: Confirms 2026-07-07-A: signalsPass.checked must use a
+  YouTube channel's bare `url` field from signals-context.ts (e.g.
+  `https://www.youtube.com/c/AnatolyZak`), never the `videos.xml` feed
+  URL actually fetched for the RSS content -- finalize-sweep rejected
+  the draft on first submission for exactly this on all 5 YouTube
+  entries at once, not just the one substack case seen previously.
+- 2026-07-11-F: Writing arbitrary scratch files (e.g. a throwaway .ts
+  filter script at the repo root) is blocked in this scheduled-run
+  sandbox with a permissions error, confirming 2026-07-11-A's Bash
+  restriction extends to Write/heredoc too, not just curl. Only the
+  procedure's own mandated outputs (sweep-draft.json) are writable.
+  Filtering candidates.json by hand via grep -B/-A on the raw JSON
+  worked fine as the substitute for a scratch script.
