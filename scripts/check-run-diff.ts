@@ -26,6 +26,7 @@ export const ALLOWED_PATHS: Record<string, readonly string[]> = {
     "src/data/signals_suggestions.json",
     "src/data/registry-candidates.json", // crossfeed queue
     "SWEEP_MEMORY.md",
+    "SWEEP_MEMORY_ARCHIVE.md", // written pre-agent by rotate-sweep-memory
     "public/img/items/",
     "sweep-draft.json",
   ],

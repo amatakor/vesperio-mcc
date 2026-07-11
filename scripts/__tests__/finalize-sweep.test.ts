@@ -417,6 +417,34 @@ describe("finalize-sweep rejections", () => {
     expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
   });
 
+  test("a successful merge stamps every queue candidate consumed; a rejected draft stamps nothing", () => {
+    const queue = {
+      generated_at: "2026-07-05T04:30:00.000Z",
+      window_start: "2026-07-03T04:30:00.000Z",
+      mode: "normal",
+      health: [],
+      candidates: [
+        { id: "aaa", source_name: "S", url: "https://e.com/a", title: "A", published_at: "2026-07-04T00:00:00.000Z", raw_excerpt: "", fetched_at: "2026-07-05T04:30:00.000Z" },
+        { id: "bbb", source_name: "S", url: "https://e.com/b", title: "B", published_at: "2026-07-04T00:00:00.000Z", raw_excerpt: "", fetched_at: "2026-07-05T04:30:00.000Z" },
+      ],
+    };
+    writeFileSync(join(dataDir, "candidates.json"), JSON.stringify(queue, null, 2));
+
+    // Rejected draft first: the queue must stay unstamped for the retry.
+    const bad = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
+    bad.sourceHealth = [{ name: "Not A Source", status: "verified" }];
+    writeFileSync(draftPath, JSON.stringify(bad));
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(false);
+    let onDisk = JSON.parse(readFileSync(join(dataDir, "candidates.json"), "utf8"));
+    expect(onDisk.candidates.every((c: { consumed?: boolean }) => c.consumed === undefined)).toBe(true);
+
+    // Successful merge: every entry stamped.
+    useDraftFixture("draft-valid.json");
+    expect(finalizeSweep({ dataDir, draftPath }).ok).toBe(true);
+    onDisk = JSON.parse(readFileSync(join(dataDir, "candidates.json"), "utf8"));
+    expect(onDisk.candidates.every((c: { consumed?: boolean }) => c.consumed === true)).toBe(true);
+  });
+
   test("failure attestations for html sources need no evidence", () => {
     const draft = JSON.parse(readFileSync(join(FIXTURES, "draft-valid.json"), "utf8"));
     draft.sourceHealth = [

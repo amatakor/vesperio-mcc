@@ -1326,6 +1326,25 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   write(sourcesPath, nextSources);
   write(ledgerPath, nextLedger);
   write(queuePath, nextQueue);
+
+  // Consumed markers (plan Phase 6): a successful merge means every entry
+  // now in the queue was triaged this sweep (presented via
+  // candidates-context or deterministically filtered by it). Stamping them
+  // stops the 48h window overlap re-feeding the same entries to the next
+  // sweep; deep sweeps still re-examine them, flagged. A rejected draft
+  // stamps nothing, so a retried sweep sees the identical queue.
+  const candidatesPath = join(opts.dataDir, "candidates.json");
+  try {
+    const queue = JSON.parse(readFileSync(candidatesPath, "utf8")) as {
+      candidates?: { consumed?: boolean }[];
+    };
+    if (Array.isArray(queue.candidates)) {
+      for (const c of queue.candidates) c.consumed = true;
+      write(candidatesPath, queue);
+    }
+  } catch {
+    // no queue file (test dataDirs, first run): nothing to stamp
+  }
   unlinkSync(opts.draftPath);
 
   return {
