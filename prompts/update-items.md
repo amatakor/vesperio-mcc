@@ -36,7 +36,17 @@ result when nothing on-scope happened; padding is still the bug.
 2. **Discovery.** The window is always the full gap since `lastSweep`;
    never narrow it to a fixed number of hours. Two legs, in order:
 
-   **Queue first.** Read `src/data/candidates.json`. The deterministic
+   **Queue first.** Run `bun scripts/candidates-context.ts` and work from
+   its output; do NOT read `src/data/candidates.json` directly (the queue
+   file carries every entry in the window including ones earlier sweeps
+   already triaged; the context script emits only what this run needs).
+   The output is `{ mode, health, candidates[], filtered }`: candidates
+   are the untriaged entries after a deterministic junk prefilter
+   (counted in `filtered`, never silent), with syndicated near-duplicate
+   titles collapsed into one entry whose `alt` list carries the variant
+   URLs and outlets. Treat an entry's `alt` list as free queue
+   corroboration for the same story. After a successful finalize, every
+   queue entry is stamped consumed and stops re-appearing. The deterministic
    harvester (`scripts/harvest.ts`, runs before you) has already fetched
    every feed-capable source (feed_type `rss_atom` / `api_json`) and
    normalized the entries. Work through the queue: filter against the
@@ -47,14 +57,16 @@ result when nothing on-scope happened; padding is still the bug.
    paraphrase; paraphrased numbers are fabrication risks). When the
    excerpt is too thin to draft from, fetch the entry's URL directly.
    Do not re-fetch feeds the harvester already covered; its per-source
-   results are in the queue file's `health` block, and it maintains
+   results are in the context output's `health` block, and it maintains
    `fail_count`/status flips for feed sources in code.
 
-   **Direct fetch for HTML-only sources.** Then work through
-   `src/data/sources.json` and fetch only the sources with feed_type
-   `html`, status `verified` or `unverified`, and NO `fetch_note`
-   (a `fetch_note` marks a source our tools cannot read: JS shells,
-   hard bot-blocks, stale mirrors; skip those without burning fetches).
+   **Direct fetch for HTML-only sources.** Then run
+   `bun scripts/fetch-list.ts` and fetch exactly the sources it lists;
+   do NOT read `src/data/sources.json` whole (the list IS the rule you
+   used to apply by hand: feed_type `html`, status `verified` or
+   `unverified`, no `fetch_note`; a `fetch_note` marks a source our
+   tools cannot read: JS shells, hard bot-blocks, stale mirrors; the
+   `skipped` counts in the output account for every exclusion).
    A status of `stale` is a soft failure: the source is reachable but
    its content stopped moving; skip it in this pass like `dead` (the
    harvester and the weekly re-probe own recovery), though you may
@@ -156,12 +168,14 @@ result when nothing on-scope happened; padding is still the bug.
    silently; a substantive take from a whitelisted person may draft as
    commentary.
 
-   **Deep sweep (mode: "deep" in candidates.json).** The harvester
-   escalates automatically after 2 consecutive zero-add sweeps (or a
-   forced run): the queue then covers 7 DAYS, not the normal gap.
-   When the mode is deep: re-examine the ENTIRE queue including
-   candidates earlier sweeps dismissed (dedup against `existing[]`
-   still applies); check EVERY fetchable signals channel (budget
+   **Deep sweep (mode: "deep" in the candidates-context output).** The
+   harvester escalates automatically after 2 consecutive zero-add
+   sweeps (or a forced run): the queue then covers 7 DAYS, not the
+   normal gap. When the mode is deep, candidates-context re-emits
+   entries earlier sweeps already triaged, flagged
+   `previously_presented`: re-examine them all (dedup against
+   `existing[]` still applies); check EVERY fetchable signals channel
+   (budget
    lifted to 30 fetches, no rotation skips); run 10-12 discovery
    queries covering the whole matrix at once; and name the deep sweep
    and its trigger in the draft summary. Quiet honesty is unchanged: a
@@ -185,9 +199,11 @@ result when nothing on-scope happened; padding is still the bug.
    headline) as an exact quoted phrase; add actor + the event's
    distinguishing noun and the program or contract name as variants.
    Then fetch the strongest distinct hits. Also check the
-   candidates.json queue itself for the same story from other outlets
-   before concluding anything: the Google News feeds routinely carry
-   one event from several publishers, and queue corroboration is free.
+   candidates-context output itself for the same story from other
+   outlets before concluding anything, starting with the entry's own
+   `alt` list: the Google News feeds routinely carry one event from
+   several publishers, syndicated variants are pre-grouped there, and
+   queue corroboration is free.
    The bar for "found_none": a reader repeating your quoted-headline
    search 20 seconds later must find nothing you did not. A found_none
    that a trivial search contradicts is a published falsehood about

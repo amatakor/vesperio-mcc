@@ -61,6 +61,14 @@ export interface Candidate {
   /** Verbatim text from the feed entry (tags stripped, entities decoded), untruncated up to ~2000 chars. */
   raw_excerpt: string;
   fetched_at: string;
+  /**
+   * Stamped by finalize-sweep after a successful merge: this entry was
+   * triaged by a sweep (presented in its candidates-context or
+   * deterministically filtered). The context emitter skips consumed
+   * entries on normal sweeps so the 48h window overlap stops re-feeding
+   * them; deep sweeps re-examine them, flagged.
+   */
+  consumed?: boolean;
 }
 
 export interface SourceHealthResult {
