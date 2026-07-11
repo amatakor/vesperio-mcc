@@ -164,6 +164,12 @@ export interface SnrTrace {
   final: SnrValue;
   scorer_version: number;
   history?: SnrHistoryEntry[];
+  /**
+   * Coverage-mix flag: set when the claim has 2+ corroboration units
+   * and every unit shares one source class (e.g. all trade press).
+   * Display-only, never moves the score.
+   */
+  single_class_corroboration?: SourceClass;
 }
 
 /**
@@ -312,6 +318,18 @@ export interface SweepLogEntry {
   new_tags?: string[];
   /** SNR movements this sweep (upgrades, downgrades, disputes); rendered on /log. */
   snr_movements?: { id: string; from: SnrValue; to: SnrValue; reason: string }[];
+  /**
+   * Corroboration collapses this sweep: sources merged into one
+   * corroboration unit before scoring (canonical duplicates, one
+   * domain, wire rewrites). Rendered on /log so the collapse is
+   * visible machine behavior, never silent.
+   */
+  corroboration_collapses?: {
+    id: string;
+    kept: string;
+    dropped: string;
+    rule: "canonical_duplicate" | "same_domain" | "wire_rewrite";
+  }[];
   /**
    * Signals-pass outcome: how many whitelisted fetchable channels were
    * checked, how many X handles were searched best-effort, and one line on
