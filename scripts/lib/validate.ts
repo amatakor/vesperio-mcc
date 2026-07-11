@@ -25,6 +25,7 @@ import {
   ORG_KINDS,
   HEADLINE_MAX_CHARS,
   TAGLINE_MAX_CHARS,
+  ENTITY_REF_RE,
   SIGNAL_BUCKETS,
   SIGNAL_WHITELIST,
   CHANNEL_STATUSES,
@@ -299,6 +300,26 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   }
 
   reqStringArray(v, "companies", path, errors);
+
+  if (v.entities !== undefined) {
+    if (!Array.isArray(v.entities)) {
+      errors.push(`${path}.entities: must be an array when present`);
+    } else {
+      const companies = Array.isArray(v.companies) ? (v.companies as unknown[]) : [];
+      v.entities.forEach((e, i) => {
+        if (!isObj(e) || typeof e.name !== "string" || typeof e.ref !== "string") {
+          errors.push(`${path}.entities[${i}]: must be { name, ref }`);
+          return;
+        }
+        if (!ENTITY_REF_RE.test(e.ref)) {
+          errors.push(`${path}.entities[${i}].ref: "${e.ref}" must be <entityType>/<slug>`);
+        }
+        if (!companies.includes(e.name)) {
+          errors.push(`${path}.entities[${i}].name: "${e.name}" is not in companies[]`);
+        }
+      });
+    }
+  }
 
   if (!isHttpUrl(v.source_url)) {
     errors.push(`${path}.source_url: required http(s) URL (the lead source)`);

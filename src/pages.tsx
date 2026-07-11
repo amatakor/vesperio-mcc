@@ -208,10 +208,81 @@ function signed(n: number): string {
   return n > 0 ? `+${n}` : String(n);
 }
 
+/**
+ * Company names with registry-profile links where the item's stamped
+ * entities resolve them (plan Phase 7); plain text otherwise. Used on
+ * cards (inside the clickable article, so links stop propagation) and
+ * item pages.
+ */
+function CompanyLinks({ item, sep = " · " }: { item: Item; sep?: string }) {
+  const refFor = (name: string) => item.entities?.find((e) => e.name === name)?.ref;
+  return (
+    <>
+      {item.companies.map((name, i) => {
+        const ref = refFor(name);
+        return (
+          <span key={name + i}>
+            {i > 0 && sep}
+            {ref ? (
+              <a className="company-link" href={`/registry/${ref}/`} onClick={(e) => e.stopPropagation()}>
+                {name}
+              </a>
+            ) : (
+              name
+            )}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+/**
+ * The two axes fused into the integer (C3.2, Admiralty-style): what the
+ * lead source is worth on its own, and what the corroboration record
+ * added or cost. Rendered as summary lines above the per-step rows; the
+ * displayed score stays the fused integer.
+ */
+const CORROBORATION_MODIFIERS = new Set([
+  "corroboration_2plus",
+  "corroboration_4plus",
+  "mainstream_pickup",
+  "corroboration_none",
+  "reinforcement",
+]);
+
+function SnrAxes({ trace }: { trace: SnrTrace }) {
+  const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
+  const sum = corr.reduce((n, m) => n + m.delta, 0);
+  const corrText =
+    corr.length === 0
+      ? "untested (no corroboration modifier applies)"
+      : `${signed(sum)} from ${corr.length} rule${corr.length === 1 ? "" : "s"}`;
+  return (
+    <span className="snr-pop-axes">
+      <span className="snr-pop-row">
+        <span className="snr-pop-delta">src</span>
+        <span>source class: tier {trace.base.tier} on its own</span>
+      </span>
+      <span className="snr-pop-row">
+        <span className="snr-pop-delta">cor</span>
+        <span>corroboration: {corrText}</span>
+      </span>
+      {trace.single_class_corroboration && (
+        <span className="snr-pop-row">
+          <span className="snr-pop-delta">mix</span>
+          <span>corroboration is single-class (all {trace.single_class_corroboration})</span>
+        </span>
+      )}
+    </span>
+  );
+}
+
 /** The stored calculation, one row per step; shared by popover and panel. */
 function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed?: boolean }) {
   return (
     <>
+      <SnrAxes trace={trace} />
       <span className="snr-pop-row">
         <span className="snr-pop-delta">{trace.base.tier}</span>
         <span>
@@ -251,7 +322,12 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
           ))}
         </span>
       )}
-      <span className="snr-pop-foot">scorer v{trace.scorer_version}</span>
+      <span className="snr-pop-foot">
+        scorer v{trace.scorer_version} ·{" "}
+        <a href="/methodology/" onClick={(e) => e.stopPropagation()}>
+          how scores work
+        </a>
+      </span>
     </>
   );
 }
@@ -467,7 +543,7 @@ function Card({
         <SnrLed snr={item.snr} trace={item.snr_trace} onCard />
         <span className="card-foot-div" aria-hidden="true" />
         <span className="card-companies" title={item.companies.join(" · ")}>
-          {item.companies.join(" · ")}
+          <CompanyLinks item={item} />
         </span>
         <a className="card-details" href={`/item/${item.id}/`}>
           {sources} source{sources === 1 ? "" : "s"} →
@@ -815,7 +891,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           </div>
           <div className="modal-right">
             <h2 className="modal-title">{item.headline}</h2>
-            <p className="actor">{item.companies.join(" · ") || item.category}</p>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
             <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
@@ -1143,7 +1219,7 @@ export function ItemPage({ item }: { item: Item }) {
           </div>
           <div className="item-main">
             <h1 className="page-title">{item.headline}</h1>
-            <p className="actor">{item.companies.join(" · ") || item.category}</p>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
             <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
@@ -1174,7 +1250,7 @@ export function ItemPage({ item }: { item: Item }) {
               <h2>quick facts</h2>
               <dl className="kv">
                 <dt>Companies</dt>
-                <dd>{item.companies.join(", ") || "none listed"}</dd>
+                <dd>{item.companies.length > 0 ? <CompanyLinks item={item} sep=", " /> : "none listed"}</dd>
                 <dt>Category</dt>
                 <dd>{item.category}</dd>
                 <dt>Impact</dt>

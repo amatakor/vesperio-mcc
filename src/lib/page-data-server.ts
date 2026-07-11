@@ -65,13 +65,31 @@ function orgHrefs(): OrgHrefs {
   return map;
 }
 
-function eventRefs(names: (string | null | undefined)[]): ProfileEventRef[] {
-  return itemsMentioning(names.filter((n): n is string => Boolean(n))).map((i) => ({
-    id: i.id,
-    impact: i.impact,
-    date: i.date,
-    headline: i.headline,
-  }));
+/**
+ * Items for a profile's "news events" list. Entity-linked items (plan
+ * Phase 7: finalize stamps companies resolved through the alias map)
+ * match by exact ref; the legacy name/headline match stays as the net
+ * for older or unstamped items, alias-aware via itemsMentioning.
+ */
+function eventRefs(
+  names: (string | null | undefined)[],
+  entityRef?: string,
+): ProfileEventRef[] {
+  const byName = itemsMentioning(names.filter((n): n is string => Boolean(n)));
+  const byRef =
+    entityRef === undefined
+      ? []
+      : items.filter((i) => i.entities?.some((e) => e.ref === entityRef));
+  const seen = new Set<string>();
+  return [...byRef, ...byName]
+    .filter((i) => (seen.has(i.id) ? false : (seen.add(i.id), true)))
+    .sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id))
+    .map((i) => ({
+      id: i.id,
+      impact: i.impact,
+      date: i.date,
+      headline: i.headline,
+    }));
 }
 
 function logTotals(all: SweepLogEntry[]): { added: number; updated: number; held: number; count: number } {
@@ -126,7 +144,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       return {
         page: "constellation",
         profile,
-        events: eventRefs([profile.name, profile.operator.value]),
+        events: eventRefs([profile.name, profile.operator.value], `constellations/${profile.slug}`),
         children: constellationChildren(profile.slug),
         parent: parent ? { slug: parent.slug, name: parent.name } : null,
         siblings: constellations.map((c) => ({ slug: c.slug, name: c.name, affiliation: c.operator.value })),
@@ -139,7 +157,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       return {
         page: "vehicle",
         profile,
-        events: eventRefs([profile.name, profile.provider.value]),
+        events: eventRefs([profile.name, profile.provider.value], `vehicles/${profile.slug}`),
         siblings: vehicles.map((v) => ({ slug: v.slug, name: v.name, affiliation: v.provider.value })),
         orgHrefs: orgHrefs(),
       };
@@ -150,7 +168,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       return {
         page: "spaceport",
         profile,
-        events: eventRefs([profile.name, profile.operator.value]),
+        events: eventRefs([profile.name, profile.operator.value], `spaceports/${profile.slug}`),
         siblings: spaceports.map((s) => ({ slug: s.slug, name: s.name, affiliation: s.region })),
         orgHrefs: orgHrefs(),
       };
@@ -161,7 +179,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       return {
         page: "org",
         profile,
-        events: eventRefs([profile.name]),
+        events: eventRefs([profile.name], `organizations/${profile.slug}`),
         vehicleRoster: vehicles
           .filter((v) => v.provider.value === profile.name)
           .map((v) => ({ slug: v.slug, name: v.name, status: v.status.value })),

@@ -212,6 +212,22 @@ export const SEED_TAGS = [
 export const HEADLINE_MAX_CHARS = 90;
 export const TAGLINE_MAX_CHARS = 140;
 
+/**
+ * A company name on an item resolved to a registry profile (plan Phase 7,
+ * entity linking). `name` is the exact companies[] string it resolves;
+ * `ref` is "<entityType>/<slug>" (e.g. "organizations/rocket-lab"), so
+ * the profile href is derivable without a lookup map. Stamped by
+ * finalize-sweep through the same alias index the crossfeed uses; the
+ * 2026-07-11 backfill migration stamped existing items. Additive and
+ * optional: names with no registry match simply carry no entry.
+ */
+export interface ItemEntity {
+  name: string;
+  ref: string;
+}
+
+export const ENTITY_REF_RE = /^(constellations|vehicles|spaceports|organizations)\/[a-z0-9][a-z0-9-]*$/;
+
 export interface Explainer {
   /** One sentence, max ~140 chars. The event in plain words. */
   tagline: string;
@@ -269,6 +285,8 @@ export interface Item {
   category: Category;
   impact: Impact;
   companies: string[];
+  /** companies[] names resolved to registry profiles (see ItemEntity). */
+  entities?: ItemEntity[];
   /** Lead source: the best source attached to the item. Required. */
   source_url: string;
   secondary_urls: string[];
