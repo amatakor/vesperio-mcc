@@ -122,6 +122,13 @@ field shapes exactly (any of those profiles is a template).
   stated. All scored fields take eoPortal's aggregator class: `"snr": 4`,
   `"tier": "canonical"`, trace per the section below. Null-fill and
   upgrade only, as everywhere in the registry.
+- **Status is a word, not a sentence** (Florian, 2026-07-12; the build
+  now rejects status values over 32 chars): the profile header renders
+  `status` as a chip. Record a short stated status ("active",
+  "operational", "in development", "deploying", "retired", "licensed");
+  a present-tense description of current operation supports "active".
+  Generation roadmaps, ownership structures, and event narratives belong
+  in the overview, timeline, or notes, never in `status`.
 - **Quantified beats vague** (`revisit` especially): a stated figure
   ("under 6 hour global revisit", "twice daily") outranks a stated
   vagueness ("multiple times per day"). A vague value already in a

@@ -802,14 +802,24 @@ function SweepLcd({ value }: { value: string }) {
 function SweepFace({
   digits,
   schedule,
+  hold,
 }: {
   digits: string;
   schedule: { last: string | null; next: string | null; local: string | null };
+  /** Scheduler-late state (Florian, 2026-07-12): the slot passed but the
+      deployed data predates it. Null when the countdown is nominal. */
+  hold: { heldFor: string } | null;
 }) {
   return (
     <div className="sweep-layer">
-      <span className="sweep-lab">T-MINUS NEXT SWEEP</span>
-      <span className="sweep-armed">● ARMED</span>
+      <span className="sweep-lab">{hold ? "SWEEP WINDOW REACHED" : "T-MINUS NEXT SWEEP"}</span>
+      {hold ? (
+        <span className="sweep-armed sweep-hold">
+          <span className="hold-dot">●</span> HOLD
+        </span>
+      ) : (
+        <span className="sweep-armed">● ARMED</span>
+      )}
       <div className="sweep-mid">
         <SweepLcd value={digits} />
       </div>
@@ -819,10 +829,14 @@ function SweepFace({
       <span className="sweep-lab sweep-sched">
         {schedule.last && <span>LAST {schedule.last}</span>}
         <span>SWEEPS EVERY 12H</span>
-        {schedule.next && (
-          <span>
-            NEXT {schedule.next} · {schedule.local} LOCAL
-          </span>
+        {hold ? (
+          <span>SCHEDULER LATE · HOLDING {hold.heldFor}</span>
+        ) : (
+          schedule.next && (
+            <span>
+              NEXT {schedule.next} · {schedule.local} LOCAL
+            </span>
+          )
         )}
       </span>
     </div>
@@ -836,7 +850,7 @@ function SweepFace({
     clip-path transition glides it between ticks. Renders a placeholder
     until mounted so SSR and hydration agree; ticking never changes the
     card's height, so the masonry stays put. */
-function SweepCountdownCard() {
+function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
     const tick = () => setNow(new Date());
@@ -851,18 +865,39 @@ function SweepCountdownCard() {
   let next = "";
   let local = "";
   let elapsedPct = 0;
+  let hold: { heldFor: string } | null = null;
   if (now) {
-    const target = nextSweepAfter(now);
-    const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
-    digits = [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
-      .map((n) => String(n).padStart(2, "0"))
-      .join(":");
-    elapsedPct = (1 - Math.min(s, WINDOW_S) / WINDOW_S) * 100;
     const fmtZ = (d: Date) =>
       `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}Z`;
-    last = fmtZ(new Date(target.getTime() - WINDOW_S * 1000));
-    next = fmtZ(target);
-    local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+    // HOLD (Florian, 2026-07-12): the slot the DEPLOYED data should
+    // already cover has passed, so the countdown freezes at zero and says
+    // so, instead of silently re-arming for the next slot (GitHub cron
+    // regularly fires this repo's schedule 40-70 min late). Clears itself:
+    // the sweep commit redeploys the site with a fresh lastSweepAt.
+    // ?hold=1 forces the state for design review (the ?tune=1 pattern).
+    const dueSlot = lastSweepAt ? nextSweepAfter(new Date(lastSweepAt)) : null;
+    const forced =
+      typeof window !== "undefined" && new URLSearchParams(window.location.search).get("hold") === "1";
+    const heldMs = dueSlot ? now.getTime() - dueSlot.getTime() : 0;
+    if (forced || (dueSlot && heldMs > 0)) {
+      const mins = forced ? 41 : Math.floor(heldMs / 60000);
+      hold = { heldFor: mins < 100 ? `+${mins}M` : `+${Math.round(mins / 60)}H` };
+      digits = "00:00:00";
+      elapsedPct = 100;
+      last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
+    } else {
+      const target = nextSweepAfter(now);
+      const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
+      digits = [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60]
+        .map((n) => String(n).padStart(2, "0"))
+        .join(":");
+      elapsedPct = (1 - Math.min(s, WINDOW_S) / WINDOW_S) * 100;
+      // LAST shows the actual last sweep when the data carries one, the
+      // schedule fiction only as fallback (pre-hold-signal behavior).
+      last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : fmtZ(new Date(target.getTime() - WINDOW_S * 1000));
+      next = fmtZ(target);
+      local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+    }
   }
   const p = `${elapsedPct.toFixed(2)}%`;
   return (
@@ -871,7 +906,7 @@ function SweepCountdownCard() {
           hover announces a real destination, like every card. */}
       <a className="sweep-link" href="/system/" aria-label="Open the sweep log">
       <div className="sweep-stage">
-        <SweepFace digits={digits} schedule={{ last, next, local }} />
+        <SweepFace digits={digits} schedule={{ last, next, local }} hold={hold} />
         <div
           className="sweep-flood"
           aria-hidden="true"
@@ -879,7 +914,7 @@ function SweepCountdownCard() {
             clipPath: `polygon(0 0, calc(${p} + 31px) 0, calc(${p} - 31px) 100%, 0 100%)`,
           }}
         >
-          <SweepFace digits={digits} schedule={{ last, next, local }} />
+          <SweepFace digits={digits} schedule={{ last, next, local }} hold={hold} />
         </div>
       </div>
       </a>
@@ -913,6 +948,12 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     const pack = () => {
       grid.classList.add("is-packed");
       const cards = Array.from(grid.children) as HTMLElement[];
+      // Clearing every pin collapses the grid for one layout pass; deep in
+      // the feed the browser clamps the scroll position to the shortened
+      // document and the reader lands hundreds of cards up (Florian,
+      // 2026-07-12: infinite-scroll batches "jump back up"). Capture and
+      // restore around the repack.
+      const y = window.scrollY;
       for (const c of cards) {
         c.style.gridRowEnd = "";
         c.style.height = "";
@@ -936,6 +977,7 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
         if (!c.classList.contains("sweep-card")) c.style.height = `${h}px`;
         c.style.gridRowEnd = `span ${h - 1}`;
       });
+      if (window.scrollY !== y) window.scrollTo(0, y);
     };
     let raf = 0;
     const schedule = () => {
@@ -1372,7 +1414,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
         <FeedList
           list={visibleList}
           emptyNote="No items yet. The first sweep has not run."
-          lead={<SweepCountdownCard />}
+          lead={<SweepCountdownCard lastSweepAt={data.lastSweepAt} />}
         />
       )}
       {hasMore && <div ref={sentinelRef} className="feed-sentinel" aria-hidden="true" />}

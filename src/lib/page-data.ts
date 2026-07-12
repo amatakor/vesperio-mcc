@@ -65,7 +65,7 @@ export interface DigestQuietSweep {
 }
 
 export type PageData =
-  | { page: "home"; items: Item[]; pageCount: number; counts: FeedCounts }
+  | { page: "home"; items: Item[]; pageCount: number; counts: FeedCounts; lastSweepAt: string | null }
   | { page: "feed-page"; n: number; items: Item[]; pageCount: number; counts: FeedCounts }
   | { page: "item"; item: Item }
   | { page: "category"; category: string; items: Item[] }

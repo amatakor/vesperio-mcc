@@ -37,6 +37,7 @@ import {
   signalOutlets,
   signalAvatars,
   sweeps,
+  lastSweepAt,
   ledgerSources,
   calibrationBuckets,
   constellations,
@@ -167,7 +168,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
   const now = new Date(generatedAt);
   switch (route.page) {
     case "home":
-      return { page: "home", items: feedPage(1), pageCount: feedPageCount(items.length), counts: feedCounts() };
+      return { page: "home", items: feedPage(1), pageCount: feedPageCount(items.length), counts: feedCounts(), lastSweepAt };
     case "feed-page": {
       const list = feedPage(route.n);
       if (list.length === 0) return null;

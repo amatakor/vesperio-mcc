@@ -1310,11 +1310,24 @@ a.chip:hover {
   color: #39ff6a; /* literal: the green status glyph must not theme */
   margin: 0;
 }
+/* HOLD (Florian, 2026-07-12: the scheduler-late signal): countdown frozen
+   at zero, label flips ARMED -> HOLD in the MCC activity amber (#ff6905,
+   literal like the armed green; hue = Florian's to tune). */
+.sweep-hold,
+.sweep-hold .hold-dot {
+  color: #ff6905;
+}
 .sweep-flood .sweep-lab,
 .sweep-flood .sweep-armed,
 [data-theme="light"] .sweep-card .sweep-flood .sweep-lab,
 [data-theme="light"] .sweep-card .sweep-flood .sweep-armed {
   color: #0a0a0a;
+}
+/* During a hold the flood covers the full face; the label text re-inks
+   black like everything on the flood, the amber DOT alone survives as
+   the status glyph. */
+.sweep-flood .sweep-hold .hold-dot {
+  color: #ff6905;
 }
 /* LCD centered in the area below the label row. */
 .sweep-mid {

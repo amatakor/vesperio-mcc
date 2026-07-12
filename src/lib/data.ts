@@ -59,6 +59,10 @@ export const sweeps: SweepLogEntry[] = /* @__PURE__ */ sortedCopy(
   (a, b) => (a.at < b.at ? 1 : a.at > b.at ? -1 : 0),
 );
 
+/** When the deployed data last saw a sweep; the countdown's HOLD signal
+    compares the schedule against this, not against wishful thinking. */
+export const lastSweepAt: string | null = (stateJson as StateFile).lastSweep ?? null;
+
 const constellationModules = import.meta.glob("../data/registry/constellations/*.json", {
   eager: true,
 }) as Record<string, { default: ConstellationProfile }>;

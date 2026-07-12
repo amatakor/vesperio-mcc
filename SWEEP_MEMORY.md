@@ -1367,6 +1367,7 @@ a newer entry if a lesson changes.
   multi-agent prompt for unresolved placeholders before dispatching,
   especially when reusing a prompt template across parallel agents.
 
+
 ## Narrow same-day re-check, unfiltered full source list, ~42min gap (2026-07-12, second)
 
 - 2026-07-12-M: ITU Space Network filings (SNL) loaded real portal content on
@@ -1424,3 +1425,13 @@ a newer entry if a lesson changes.
   anti-fabrication instructions, per the 2026-07-11-H pattern) confirmed
   nothing anywhere was newer than the cutoff. Zero items is the correct,
   fully-checked outcome, not an under-covered run.
+- 2026-07-12-T: Reading a failed run's permission_denials_count: healthy
+  sweeps show ~3-6 denials (allowlist friction: the agent probes an
+  ad-hoc Bash line, gets denied, routes around it via allowed tools).
+  denials ~= num_turns means a fail-closed denial STORM in the
+  permission layer (45/45 on the 05:41 dispatch, transient, identical
+  config succeeded 20 min later): re-dispatch before debugging config.
+  Separately, GitHub cron lag of 40-70 min is real and platform-side;
+  a "missed" slot may still fire. show_full_output on update-items
+  exposes the transcript for exactly this triage.
+
