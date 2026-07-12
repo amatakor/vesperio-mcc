@@ -246,7 +246,7 @@ export function Masthead({ current }: { current?: string }) {
             <line x1="3.6" y1="1" x2="3.6" y2="3" />
             <line x1="5.9" y1="1" x2="5.9" y2="3" />
           </svg>
-          <span className="nav-badge-label">SUPPORT ON KO-FI</span>
+          <span className="nav-badge-label">BUY ME A COFFEE</span>
         </a>
       </span>
     </header>
@@ -5270,20 +5270,23 @@ function LogPresence({
   );
 }
 
-/** Compact email subscribe unit: a Buttondown embed form. Replaces the old
- * inline /digest/ link (Florian, 2026-07-11); the /digest/ route and page
- * are unchanged and still reachable by URL, this only removes the inbound
- * link that pointed to it from the Log lede. */
+/** Compact email subscribe unit: a native Buttondown embed form posting to
+ * the live account (buttondown.com/vesperio, Florian 2026-07-12) in THIS
+ * tab. Deliberately no target="_blank" (popup blockers swallowed the whole
+ * submission silently) and no fetch/XHR (Buttondown risk-screens posts; a
+ * challenged submission answers 400 with a "Verify Your Subscription" page
+ * the human must SEE and complete — a background fetch reports success
+ * while recording nothing; both failure modes verified 2026-07-12). The
+ * same-tab native post always renders Buttondown's response: confirmation
+ * on success, the verification page when challenged. */
 function SubscribeForm() {
   return (
     <div className="subscribe">
       <p className="subscribe-label">The week&rsquo;s signal, mailed</p>
       <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
       <form
-        // Live Buttondown account (Florian, 2026-07-12): buttondown.com/vesperio.
         action="https://buttondown.com/api/emails/embed-subscribe/vesperio"
         method="post"
-        target="_blank"
         className="subscribe-form"
         aria-label="Newsletter subscription"
       >
