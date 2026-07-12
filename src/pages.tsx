@@ -224,17 +224,29 @@ export function Masthead({ current }: { current?: string }) {
             aria-current={label === current ? "page" : undefined}
             className={label === "mcc" ? "nav-mcc" : undefined}
           >
-            {label === "mcc" && (
-              /* The live-view marker (Florian, 2026-07-12): one volt dot in a
-                 flat orbit around the word, themed via --dot, still under
-                 prefers-reduced-motion. */
-              <span className="mcc-orbit" aria-hidden="true">
-                <span className="mcc-orbit-spin">
-                  <span className="mcc-orbit-sat" />
+            {label === "mcc" ? (
+              <>
+                {/* The live-view marker, v2 (Florian, 2026-07-12): three volt
+                    sats with trails on tilted shells, electron-style; each
+                    passes in front of the word on the near arc and behind it
+                    on the far arc (animated stacking + dimming). Off under
+                    prefers-reduced-motion. */}
+                <span className="mcc-orbit" aria-hidden="true">
+                  <span className="mcc-orbit-shell mcc-shell-a">
+                    <span className="mcc-orbit-sat" />
+                  </span>
+                  <span className="mcc-orbit-shell mcc-shell-b">
+                    <span className="mcc-orbit-sat" />
+                  </span>
+                  <span className="mcc-orbit-shell mcc-shell-c">
+                    <span className="mcc-orbit-sat" />
+                  </span>
                 </span>
-              </span>
+                <span className="nav-mcc-label">{label}</span>
+              </>
+            ) : (
+              label
             )}
-            {label}
           </a>
         ))}
         {/* The theme switch rides with the words; the two framed badges
