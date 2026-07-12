@@ -4376,8 +4376,9 @@ const QA: Array<[string, string]> = [
 /** Engine pipeline diagram, color-coded by owner (Florian round 2,
     2026-07-12): cyan = deterministic code, magenta = the drafting agent,
     green = data files, yellow = the human editor, bright frame = the
-    reader-facing output. Arrows carry the function each hand-off performs;
-    the two long rails are the human-reviewed source-discovery loop. */
+    reader-facing output. Geometry (round 3): 140px boxes on a 184px
+    column rhythm leave 44px gaps, wide enough for every centered wire
+    label; nothing sits on a border. */
 function EngineDiagram() {
   const lbl = {
     fill: "var(--text-1)",
@@ -4386,7 +4387,7 @@ function EngineDiagram() {
     fontWeight: 500,
     letterSpacing: "0.08em",
   } as const;
-  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8.5, fontWeight: 400 } as const;
+  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8, fontWeight: 400 } as const;
   const wireLbl = { ...lbl, fill: "var(--text-3)", fontSize: 7.5, fontWeight: 400 } as const;
   const wire = { stroke: "var(--text-3)", strokeWidth: 1, fill: "none", markerEnd: "url(#eng-arr)" } as const;
   const OWNER = {
@@ -4396,7 +4397,7 @@ function EngineDiagram() {
     human: "var(--acc-yellow-dim)",
     out: "var(--text-1)",
   };
-  const Box = ({ x, y, w = 152, h = 56, owner, title, s1, s2 }: {
+  const Box = ({ x, y, w = 140, h = 56, owner, title, s1, s2 }: {
     x: number; y: number; w?: number; h?: number;
     owner: keyof typeof OWNER; title: string; s1?: string; s2?: string;
   }) => (
@@ -4432,54 +4433,54 @@ function EngineDiagram() {
       ))}
 
       {/* row 1: intake */}
-      <Box x={28} y={40} owner="data" title="SOURCE REGISTRY" s1="98 REGISTERED FEEDS," s2="PAGES + SIGNAL CHANNELS" />
-      <Box x={208} y={40} owner="code" title="HARVESTER" s1="DETERMINISTIC FETCH," s2="SYNDICATE COLLAPSE" />
-      <Box x={388} y={40} owner="data" title="CANDIDATE QUEUE" s1="TRIAGED ONCE," s2="THEN CONSUMED" />
-      <Box x={568} y={40} owner="agent" title="DISCOVERY" s1="OPEN-WEB QUERY MATRIX," s2="WHITELISTED CHANNELS" />
-      <line x1={180} y1={68} x2={206} y2={68} {...wire} />
-      <text x={193} y={84} textAnchor="middle" {...wireLbl}>FETCH</text>
-      <line x1={360} y1={68} x2={386} y2={68} {...wire} />
+      <Box x={28} y={40} owner="data" title="SOURCE REGISTRY" s1="98 REGISTERED FEEDS," s2="PAGES, SIGNAL CHANNELS" />
+      <Box x={212} y={40} owner="code" title="HARVESTER" s1="DETERMINISTIC FETCH," s2="SYNDICATE COLLAPSE" />
+      <Box x={396} y={40} owner="data" title="CANDIDATE QUEUE" s1="TRIAGED ONCE," s2="THEN CONSUMED" />
+      <Box x={580} y={40} owner="agent" title="DISCOVERY" s1="OPEN-WEB QUERIES," s2="WHITELISTED CHANNELS" />
+      <line x1={168} y1={68} x2={210} y2={68} {...wire} />
+      <text x={189} y={84} textAnchor="middle" {...wireLbl}>FETCH</text>
+      <line x1={352} y1={68} x2={394} y2={68} {...wire} />
       <text x={373} y={84} textAnchor="middle" {...wireLbl}>QUEUE</text>
 
       {/* row 2: judgment and arithmetic, right to left */}
-      <Box x={388} y={168} owner="agent" title="SWEEP AGENT" s1="SCOPES, CRAWLS, DRAFTS," s2="ATTESTS ITS SOURCES" />
-      <Box x={208} y={168} owner="code" title="FINALIZE GATE" s1="VALIDATES, DEDUPS," s2="COMPUTES EVERY SCORE" />
+      <Box x={396} y={168} owner="agent" title="SWEEP AGENT" s1="SCOPES, CRAWLS, DRAFTS," s2="ATTESTS ITS SOURCES" />
+      <Box x={212} y={168} owner="code" title="FINALIZE GATE" s1="VALIDATES, DEDUPS," s2="COMPUTES EVERY SCORE" />
       <Box x={28} y={168} owner="data" title="DATA FILES" s1="ITEMS, TRACES, LOG," s2="GIT-VERSIONED" />
-      <polyline points="464,96 464,166" {...wire} />
-      <text x={470} y={130} {...wireLbl}>TRIAGE</text>
-      <polyline points="644,96 644,196 542,196" {...wire} />
-      <text x={650} y={130} {...wireLbl}>FINDS</text>
-      <line x1={388} y1={196} x2={362} y2={196} {...wire} />
+      <polyline points="466,96 466,166" {...wire} />
+      <text x={472} y={130} {...wireLbl}>TRIAGE</text>
+      <polyline points="650,96 650,196 538,196" {...wire} />
+      <text x={656} y={130} {...wireLbl}>FINDS</text>
+      <line x1={396} y1={196} x2={354} y2={196} {...wire} />
       <text x={375} y={212} textAnchor="middle" {...wireLbl}>DRAFT</text>
-      <line x1={208} y1={196} x2={182} y2={196} {...wire} />
-      <text x={195} y={212} textAnchor="middle" {...wireLbl}>MERGE</text>
+      <line x1={212} y1={196} x2={170} y2={196} {...wire} />
+      <text x={191} y={212} textAnchor="middle" {...wireLbl}>MERGE</text>
 
       {/* row 3: outputs and records */}
       <Box x={28} y={296} owner="code" title="SITE BUILD" s1="SCHEMA CHECKS," s2="EVERY ROUTE STATIC" />
-      <Box x={208} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
-      <Box x={388} y={296} owner="data" title="HELD QUEUE" s1="OPEN QUESTIONS;" s2="ANSWERS FEED NEXT SWEEP" />
-      <Box x={568} y={296} owner="data" title="SOURCE LEDGER" s1="STRIKES + CREDITS PER" s2="CLAIM, 90-DAY WINDOW" />
-      <polyline points="104,224 104,294" {...wire} />
-      <text x={110} y={262} {...wireLbl}>BUILD</text>
-      <line x1={180} y1={324} x2={206} y2={324} {...wire} />
-      <text x={193} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
-      <polyline points="284,224 284,268 464,268 464,294" {...wire} />
-      <text x={296} y={262} {...wireLbl}>OPEN QUESTIONS</text>
-      <polyline points="340,224 340,246 644,246 644,294" {...wire} markerStart="url(#eng-arr)" />
-      <text x={366} y={240} {...wireLbl}>CALIBRATION CLAIMS DOWN, SOURCE CLASSES BACK UP</text>
+      <Box x={212} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
+      <Box x={396} y={296} owner="data" title="HELD QUEUE" s1="OPEN QUESTIONS; ANSWERS" s2="FEED THE NEXT SWEEP" />
+      <Box x={580} y={296} owner="data" title="SOURCE LEDGER" s1="STRIKES + CREDITS PER" s2="CLAIM, 90-DAY WINDOW" />
+      <polyline points="98,224 98,294" {...wire} />
+      <text x={104} y={262} {...wireLbl}>BUILD</text>
+      <line x1={168} y1={324} x2={210} y2={324} {...wire} />
+      <text x={189} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
+      <polyline points="282,224 282,268 466,268 466,294" {...wire} />
+      <text x={294} y={262} {...wireLbl}>OPEN QUESTIONS</text>
+      <polyline points="330,224 330,246 650,246 650,294" {...wire} markerStart="url(#eng-arr)" />
+      <text x={356} y={240} {...wireLbl}>CALIBRATION CLAIMS DOWN, SOURCE CLASSES BACK UP</text>
 
       {/* row 4: the human seam */}
-      <Box x={388} y={404} h={48} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
-      <polyline points="464,352 464,402" {...wire} />
-      <text x={470} y={382} {...wireLbl}>RULES</text>
+      <Box x={396} y={404} h={48} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
+      <polyline points="466,352 466,402" {...wire} />
+      <text x={472} y={382} {...wireLbl}>RULES</text>
 
-      {/* discovery suggestions rail: agent finds -> human reviews */}
-      <polyline points="720,68 736,68 736,428 542,428" {...wire} />
+      {/* discovery suggestions rail: agent finds, human reviews */}
+      <polyline points="720,68 736,68 736,428 538,428" {...wire} />
       <text x={748} y={248} textAnchor="middle" {...wireLbl} transform="rotate(90 748 248)">SUGGESTED SOURCES + VOICES</text>
 
       {/* human-approved sources rail: back into the registry */}
-      <polyline points="388,428 12,428 12,68 26,68" {...wire} />
-      <text x={120} y={444} {...wireLbl}>NEW SOURCES, HUMAN-REVIEWED</text>
+      <polyline points="396,428 12,428 12,68 26,68" {...wire} />
+      <text x={204} y={444} textAnchor="middle" {...wireLbl}>NEW SOURCES, HUMAN-REVIEWED</text>
     </svg>
   );
 }
