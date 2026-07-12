@@ -43,18 +43,39 @@ function fillTemplate(template: string, head: Head, html: string, pageDataJson: 
     pageDataJson === null
       ? ""
       : `<script type="application/json" id="__MCC_DATA__">${escapeJsonForScript(pageDataJson)}</script>`;
+  // Link-preview card (Florian, 2026-07-12): WhatsApp/Instagram/Slack/X all
+  // read these Open Graph tags. One shared 1200x630 image (the live MCC
+  // view, public/img/social-card.jpg) with per-page title/description.
+  // Origin comes from the canonical URL so nothing here hardcodes the host.
+  const origin = new URL(head.canonical).origin;
+  const cardUrl = `${origin}/img/social-card.jpg`;
+  const socialTags = [
+    `<meta property="og:site_name" content="Vesperio" />`,
+    `<meta property="og:type" content="website" />`,
+    `<meta property="og:title" content="${escapeAttr(head.title)}" />`,
+    `<meta property="og:description" content="${escapeAttr(head.description)}" />`,
+    `<meta property="og:url" content="${escapeAttr(head.canonical)}" />`,
+    `<meta property="og:image" content="${cardUrl}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:image" content="${cardUrl}" />`,
+  ].join("\n    ");
   const out = template
     .replace(/<title>.*?<\/title>/, `<title>${escapeAttr(head.title)}</title>`)
     .replace(
       /<meta\s+name="description"[\s\S]*?\/>/,
       `<meta name="description" content="${escapeAttr(head.description)}" />`,
     )
-    .replace(/<!--canonical-->/, `<link rel="canonical" href="${escapeAttr(head.canonical)}" />`)
+    .replace(
+      /<!--canonical-->/,
+      `<link rel="canonical" href="${escapeAttr(head.canonical)}" />\n    ${socialTags}`,
+    )
     .replace(
       /<div id="root">.*?<\/div>/,
       () => `<div id="root" data-generated-at="${generatedAt}">${html}</div>${dataScript}`,
     );
-  if (!out.includes('rel="canonical"') || !out.includes("data-generated-at")) {
+  if (!out.includes('rel="canonical"') || !out.includes("data-generated-at") || !out.includes('property="og:image"')) {
     throw new Error("prerender: template placeholders not found; index.html changed shape");
   }
   return out;
