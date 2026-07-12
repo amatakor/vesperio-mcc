@@ -1366,3 +1366,32 @@ a newer entry if a lesson changes.
   both agents triage with zero dedup context; always re-read a
   multi-agent prompt for unresolved placeholders before dispatching,
   especially when reusing a prompt template across parallel agents.
+
+## Narrow same-day re-check, unfiltered full source list, ~42min gap (2026-07-12, second)
+
+- 2026-07-12-M: ITU Space Network filings (SNL) loaded real portal content on
+  direct fetch this run (first success since it was added as `unverified`);
+  flipped to `verified` per the mechanical rule even though it's still not a
+  dated filing list (confirms 2026-07-06-P's "clunky, phase-2 hardening
+  target" characterization, just no longer failing outright).
+- 2026-07-12-N: A day-old Forbes piece on SpaceX's post-IPO stock decline
+  ("down 25% since June IPO", verified via direct fetch, published Jul 10)
+  is not a fresh event: every figure in it (the $1.8T valuation, the $25B
+  bond sale, the $60B stock acquisition) restates facts already covered by
+  existing items (2026-06-12-spacex-nasdaq-ipo, 2026-06-23-spacex-25b-bond-offering,
+  2026-06-16-spacex-cursor-acquisition, 2026-07-07-spacex-wall-street-price-targets).
+  A stock-price move on an already-fully-covered mega-story is routine market
+  commentary, not a new discrete fact with its own date; left undrafted per
+  the 2026-07-12-K precedent rather than treated as a Florian-ruling "chase
+  it" case (that ruling is for events NEVER covered before, not sequels to
+  heavily-published ones).
+- 2026-07-12-O: Confirms the EchoStar/DISH DBS Chapter 11 scope exclusion
+  (2026-07-05-J) still holds on a later variant of the same story (the
+  actual Jun 30 filing, prompted by the delayed AT&T spectrum sale): legacy
+  pay-TV and terrestrial wireless subsidiaries stay out of scope regardless
+  of a SpaceX spectrum-purchase angle woven into later coverage.
+- 2026-07-12-P: Rocket Factory Augsburg's `/media` listing rendered almost
+  entirely undated legacy items again this run (same shape noted in
+  2026-07-06-S/2026-07-06-Z); worth a structural-touch fix to find a better
+  dated feed for RFA, since a WebFetch summary of this page is not reliably
+  usable for freshness checks.
