@@ -461,6 +461,17 @@ seismic rumour is seismic AND low-SNR, and the gate automatically
 queues seismic items at SNR 1-2 for Florian's review while they
 publish.
 
+Launches are never discarded as routine cadence (Florian ruling,
+2026-07-12, revoking SWEEP_MEMORY 2026-07-06-I). Every on-scope
+orbital launch publishes: routine megaconstellation batches (Starlink,
+SpaceSail/G60, Guowang, Kuiper and peers) at `noise`, US and Chinese
+cadence treated identically. Before setting a launch item's impact,
+read the article BODY, not just the headline: a reuse record, a first,
+a failure, or an anomaly raises impact above noise (the July 9 B1067
+record was lost to a headline-shape discard). Two launches by the same
+provider inside 7 days are distinct events, not dedup matches; attest
+them with `dedup_distinct: [{ id, reason }]` on the item.
+
 ## Hard reminders
 
 - Zero fabricated URLs, figures, or dates. Ever.
