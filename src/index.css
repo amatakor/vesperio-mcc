@@ -4472,3 +4472,14 @@ table.profile th,
 table.stat-table th {
   font-weight: 500;
 }
+
+/* Item page title lives in the narrow left rail (Florian, 2026-07-12,
+   round 3): it takes the modal-title register instead of the full
+   28px page-title so it fits the column. */
+.item-side-title.page-title {
+  font-size: clamp(21px, 2.2vw, 25px);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  margin: 0 0 var(--sp-2);
+  overflow-wrap: anywhere;
+}

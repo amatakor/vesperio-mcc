@@ -713,8 +713,7 @@ function Card({
       data-item-id={item.id}
       onClick={open}
     >
-      {/* Headline above the artwork (Florian, 2026-07-12): the title leads
-          the card, left-aligned; the image follows it. */}
+      <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
@@ -727,7 +726,6 @@ function Card({
       <h2 className="card-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
-      <CardMedia item={item} />
       <p className="card-tagline">{item.explainer.tagline}</p>
       {item.impact === "seismic" && (
         <p className="card-extra">{item.explainer.what_happened}</p>
@@ -1123,6 +1121,11 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         </div>
         <div className="modal-body">
           <div className="modal-left">
+            {/* Title module leads the LEFT column, above the artwork
+                (Florian, 2026-07-12, round 3). */}
+            <h2 className="modal-title">{item.headline}</h2>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image ? (
               <>
                 <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1141,9 +1144,6 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             <SourceList item={item} />
           </div>
           <div className="modal-right">
-            <h2 className="modal-title">{item.headline}</h2>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1500,6 +1500,11 @@ export function ItemPage({ item }: { item: Item }) {
         </div>
         <div className="item-cols">
           <div className="item-side">
+            {/* Title module leads the LEFT column, above the artwork
+                (Florian, 2026-07-12, round 3). */}
+            <h1 className="page-title item-side-title">{item.headline}</h1>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image && (
               <figure className="item-figure">
                 <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1518,9 +1523,6 @@ export function ItemPage({ item }: { item: Item }) {
             <SourceList item={item} />
           </div>
           <div className="item-main">
-            <h1 className="page-title">{item.headline}</h1>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>
