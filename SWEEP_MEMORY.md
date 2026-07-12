@@ -1435,3 +1435,29 @@ a newer entry if a lesson changes.
   a "missed" slot may still fire. show_full_output on update-items
   exposes the transcript for exactly this triage.
 
+
+## Timeline fill crawl (2026-07-12, interactive session, one-off)
+
+- 2026-07-12-U: A press release's publication dateline is not the event
+  date when the body says "yesterday"/"Sunday": two launch dates shipped
+  one day late this way (Sentinel-3 contract, Falcon 9 CRS-1). Check the
+  body's relative-date framing before trusting the header date.
+- 2026-07-12-V: Verifier "fix" verdicts must write the corrected value
+  INTO the event's own field (date/headline/quote); one verifier put a
+  date correction only in its reason text and the deterministic merge
+  carried the wrong date. Verify prompts now say so explicitly; the
+  orchestrator audit (compare original_value to the stored value when
+  the reason mentions a correction) caught the one case in 72 fixes.
+- 2026-07-12-W: Wire-syndication hosts (globenewswire, prnewswire,
+  businesswire copies on other domains) are NOT eligible event sources
+  even when they carry the company's own release text verbatim; ~10
+  events failed on this. The company's own newsroom or a dated
+  joint-announcement page on an involved party's domain is the fix.
+  Operator IR domains (iridium.com, investors.globalstar.com) 403 this
+  fetcher, so Gunter's/SpaceNews fallbacks are often the practical path.
+- 2026-07-12-X: Headline scope-creep is the dominant collector defect on
+  timelines: true-but-unsourced enrichment ("completing the
+  constellation", launch site/vehicle names, "first fully successful")
+  imported from adjacent events or general knowledge onto a page that
+  states only the bare fact. Verifiers trimmed dozens; collector prompts
+  should say "treat each event's cited page in isolation".
