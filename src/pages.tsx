@@ -865,10 +865,17 @@ function Card({
 
 // ------------------------------------------------------ sweep countdown
 
-/** News sweep schedule, UTC hours. Mirrors the cron in
-    .github/workflows/update-items.yml ("0 5,17 * * *"); keep in sync by
-    hand, the workflow file is not readable from the client. */
+/** News sweep schedule, UTC hours. The workflow cron actually fires at
+    minute 15 ("15 5,17 * * *", the anti-pile-up offset; keep in sync by
+    hand, the workflow file is not readable from the client) but the clock
+    deliberately displays the NOMINAL top-of-hour schedule (Florian,
+    2026-07-12: the offset is plumbing, not a promise). HOLD_GRACE below
+    absorbs the offset plus a normal run before the clock cries late. */
 const SWEEP_UTC_HOURS = [5, 17];
+/** Offset (15m) + agent run (~20m) + Pages deploy (~2m) + margin. HOLD
+    now means "genuinely overdue", not "the deliberate off-minute cron is
+    doing its normal work". */
+const HOLD_GRACE_MS = 45 * 60_000;
 
 function nextSweepAfter(now: Date): Date {
   for (const h of SWEEP_UTC_HOURS) {
@@ -973,21 +980,32 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
     const fmtZ = (d: Date) =>
       `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}Z`;
     // HOLD (Florian, 2026-07-12): the slot the DEPLOYED data should
-    // already cover has passed, so the countdown freezes at zero and says
-    // so, instead of silently re-arming for the next slot (GitHub cron
-    // regularly fires this repo's schedule 40-70 min late). Clears itself:
-    // the sweep commit redeploys the site with a fresh lastSweepAt.
-    // ?hold=1 forces the state for design review (the ?tune=1 pattern).
+    // already cover has passed by more than HOLD_GRACE_MS, so the
+    // countdown freezes at zero and says so, instead of silently
+    // re-arming for the next slot. Clears itself: the sweep commit
+    // redeploys the site with a fresh lastSweepAt. ?hold=1 forces the
+    // state for design review (the ?tune=1 pattern).
     const dueSlot = lastSweepAt ? nextSweepAfter(new Date(lastSweepAt)) : null;
     const forced =
       typeof window !== "undefined" && new URLSearchParams(window.location.search).get("hold") === "1";
     const heldMs = dueSlot ? now.getTime() - dueSlot.getTime() : 0;
-    if (forced || (dueSlot && heldMs > 0)) {
+    if (forced || (dueSlot && heldMs > HOLD_GRACE_MS)) {
       const mins = forced ? 41 : Math.floor(heldMs / 60000);
       hold = { heldFor: mins < 100 ? `+${mins}M` : `+${Math.round(mins / 60)}H` };
       digits = "00:00:00";
       elapsedPct = 100;
       last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
+    } else if (dueSlot && heldMs > 0) {
+      // Grace window: the off-minute cron and a normal run are doing
+      // their work. Freeze at zero without the HOLD lamp; the sweep
+      // commit redeploys and re-arms the countdown. Without this branch
+      // the clock re-armed to the NEXT slot (a 12h jump) and then
+      // flipped back to HOLD if the scheduler was genuinely late.
+      digits = "00:00:00";
+      elapsedPct = 100;
+      last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
+      next = fmtZ(dueSlot);
+      local = dueSlot.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
     } else {
       const target = nextSweepAfter(now);
       const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
