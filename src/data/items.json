@@ -4385,30 +4385,42 @@
       "companies": [
         "NATO"
       ],
-      "source_url": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
+      "source_url": "https://www.nato.int/en/news-and-events/articles/news/2026/07/07/nato-allies-join-forces-to-develop-high-end-space-capabilities",
       "secondary_urls": [
         "https://www.nato.int/en/news-and-events/articles/news/2026/07/07/nato-allies-join-forces-to-develop-high-end-space-capabilities",
-        "https://payloadspace.com/nato-allies-plan-to-stitch-together-sovereign-space-fleets/"
+        "https://payloadspace.com/nato-allies-plan-to-stitch-together-sovereign-space-fleets/",
+        "https://www.nato.int/en/what-we-do/deterrence-and-defence/natos-approach-to-space",
+        "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
+        "https://www.satellitetoday.com/government-military/2026/07/07/nato-allies-plan-hybrid-halo-constellation/"
       ],
       "kind": "event",
-      "snr": 4,
+      "snr": 5,
       "snr_trace": {
         "base": {
-          "tier": 3,
-          "source": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
-          "reason": "base tier 3 from lead source class \"trade\" (Defense News)"
+          "tier": 5,
+          "source": "https://www.nato.int/en/news-and-events/articles/news/2026/07/07/nato-allies-join-forces-to-develop-high-end-space-capabilities",
+          "reason": "base tier 5 from lead source class \"first_party\" (NATO)"
         },
-        "modifiers": [
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2,
+        "history": [
           {
-            "type": "corroboration_2plus",
-            "delta": 1,
-            "reason": "2 distinct sources (>=2)"
+            "date": "2026-07-12",
+            "from": 4,
+            "to": 5,
+            "reason": "Lead upgraded to NATO's own 7 July announcement after Florian approved a NATO registry institution profile (2026-07-12), which makes nato.int a first-party domain under anti-spoof; NATO's approach-to-space framing page (updated 8 July, states the HALO launch) attached as an additional first-party reference. This corrects the previous update note in this run's log, which recorded the framing page as linked when that patch had in fact been a no-op (secondary_urls cannot be patched directly; links join via attach)."
           }
-        ],
-        "final": 4,
-        "scorer_version": 2
+        ]
       },
       "sources": [
+        {
+          "url": "https://www.nato.int/en/news-and-events/articles/news/2026/07/07/nato-allies-join-forces-to-develop-high-end-space-capabilities",
+          "outlet": "NATO",
+          "class": "first_party",
+          "added": "2026-07-12",
+          "via": "initial"
+        },
         {
           "url": "https://www.defensenews.com/space/2026/07/07/eight-nato-allies-launch-halo-satellite-constellation-initiative/",
           "outlet": "Defense News",
@@ -4428,6 +4440,13 @@
           "outlet": "Payload",
           "class": "trade",
           "added": "2026-07-10",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.nato.int/en/what-we-do/deterrence-and-defence/natos-approach-to-space",
+          "outlet": "NATO",
+          "class": "first_party",
+          "added": "2026-07-12",
           "via": "corroboration"
         }
       ],
@@ -9822,6 +9841,61 @@
         "origin_url": "https://www.space.com/space-exploration/launches-spacecraft/spacex-falcon-9-rocket-35th-mission-starlink-launch",
         "width": 2560,
         "height": 1440
+      }
+    },
+    {
+      "id": "2026-07-08-machi-aviation-week-halo-sda-blueprint",
+      "date": "2026-07-08",
+      "kind": "commentary",
+      "headline": "Vivienne Machi says NATO's HALO takes the SDA constellation blueprint alliance-wide",
+      "explainer": {
+        "tagline": "Per Aviation Week's Vivienne Machi: NATO signaled the SDA concept \"may be evolving into a blueprint for organizing allied space.\"",
+        "what_happened": "Vivienne Machi, Aviation Week's military space editor, argues in a July 8 Debrief analysis that NATO's new HALO initiative extends the US Space Development Agency's proliferated-constellation approach beyond a US-only experiment, writing that NATO signaled the concept \"may be evolving into a blueprint for organizing allied space.\" The full piece sits behind Aviation Week's subscriber paywall; the quoted assessment is from its open preview.",
+        "why_it_matters": "Machi's frame matters commercially: the SDA model she cites was built on spreading proliferated-constellation buys across commercial manufacturers, and if it becomes NATO's organizing template, the national suppliers already reported behind HALO contributions (ICEYE, Kongsberg Defence & Aerospace, Space Norway, per Payload) look like the early shape of an allied vendor base rather than one-off picks. As context: the US SDA separately runs an unrelated procurement effort also named HALO; the two should not be conflated."
+      },
+      "tags": [
+        "europe"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "NATO"
+      ],
+      "source_url": "https://aviationweek.com/space/satellites/debrief-natos-new-halo-brings-sda-network-across-atlantic",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://aviationweek.com/space/satellites/debrief-natos-new-halo-brings-sda-network-across-atlantic",
+          "reason": "base tier 3 from lead source class \"trade\" (Aviation Week)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://aviationweek.com/space/satellites/debrief-natos-new-halo-brings-sda-network-across-atlantic",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-07-12",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-07-12T08:37:48.223Z",
+      "image": {
+        "src": "/img/items/2026-07-08-machi-aviation-week-halo-sda-blueprint.jpg",
+        "credit": "Image: aviationweek.com",
+        "origin_url": "https://aviationweek.com/space/satellites/debrief-natos-new-halo-brings-sda-network-across-atlantic",
+        "width": 1000,
+        "height": 563
       }
     }
   ]

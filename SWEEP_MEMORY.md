@@ -1489,3 +1489,18 @@ a newer entry if a lesson changes.
   under the old precedent (e.g. the July 4 SpaceSail batch, Xinhua) is
   queued in held.json for Florian; do not backfill old cadence
   launches until he rules.
+- 2026-07-12-E: updates[].patch cannot add links: finalize rebuilds
+  secondary_urls from the existing item plus attach entries, so a patch
+  touching secondary_urls is a silent no-op that still counts as "1
+  updated". Post-hoc links join via attach with an honest class; a lead
+  upgrade needs patch.source_url plus a full rescore block (the gate's
+  own error message says so).
+- 2026-07-12-F: the anti-spoof host set only reads registry website
+  values that parse as URLs. Ten profiles carried schemeless values
+  ("www.nato.int" style) and their first-party/official paths silently
+  never worked; the CSA and IN-SPACe classing failures in the backfill
+  notes trace to this. All ten normalized to https:// form 2026-07-12.
+  Always write registry website values as full URLs.
+- 2026-07-12-G: batch interactive edits into ONE finalize. Every
+  finalize demands its own attested 6-query discovery matrix, so three
+  sequential finalizes in one session cost three matrix passes.
