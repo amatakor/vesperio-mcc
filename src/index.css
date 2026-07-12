@@ -4729,3 +4729,27 @@ table.stat-table th {
   text-align: justify;
   hyphens: auto;
 }
+
+/* Rulebook grids on About (Florian, 2026-07-12): the same accounting
+   notation the SNR ledger uses. Signed deltas and rule tags sit on one
+   right-aligned gutter; one rule per line. */
+.rule-grid {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+  margin: 0.8rem 0;
+  max-width: 62rem;
+  font-size: var(--fs-body);
+  color: var(--text-1);
+}
+.rule-delta {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding-top: 1px;
+  color: var(--text-2);
+}
