@@ -258,15 +258,20 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
       <Masthead current={current} />
       <main>{children}</main>
       <footer className="footer">
+        <p className="footer-mission">
+          Machine-maintained. Every item links its sources and wears its signal-to-noise score.
+          Missing a story is acceptable; publishing a false one as fact is not.
+        </p>
         <p>
-          Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
-          story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy →</a> · <a href="/about/#methodology">How the SNR score works →</a>
+          <a href="/about/">Verification policy →</a> ·{" "}
+          <a href="/about/#methodology">How the SNR score works →</a> ·{" "}
+          <a href="/system/">Sweep log →</a> · <a href="/stats.json">stats.json →</a>
         </p>
         <p className="footer-feeds">
-          category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
-          <a href="/tag/iot/">iot</a> · <a href="/tag/launch/">launch</a>
+          Category feeds: <a href="/tag/eo/">EO</a> · <a href="/tag/connectivity/">Connectivity</a> ·{" "}
+          <a href="/tag/iot/">IoT</a> · <a href="/tag/launch/">Launch</a>
         </p>
+        <p className="footer-ident">Vesperio / new space intelligence · © 2026</p>
       </footer>
     </div>
   );
@@ -5173,24 +5178,26 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
     data voice; each cell states exactly what it measures. All numbers are
     computed at build time (page-data-server), never stored as facts. */
 function LogKpiRow({ kpis }: { kpis: DataFor<"system">["kpis"] }) {
+  // Tooltip notes are UPPERCASE in source: native title bubbles cannot be
+  // styled, and /system/ renders no lowercase anywhere (Florian, 2026-07-12).
   const cells: Array<[string, string, string]> = [
-    ["items / day", kpis.itemsPerDay.toFixed(1), "published items in the window, per day"],
-    ["lead domains", String(kpis.leadDomains), "distinct lead-source domains in the window"],
-    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "share of window items scored 1 or 2"],
+    ["items / day", kpis.itemsPerDay.toFixed(1), "PUBLISHED ITEMS IN THE WINDOW, PER DAY"],
+    ["lead domains", String(kpis.leadDomains), "DISTINCT LEAD-SOURCE DOMAINS IN THE WINDOW"],
+    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "SHARE OF WINDOW ITEMS SCORED 1 OR 2"],
     [
       "crossfeed queued",
       String(kpis.crossfeedQueued),
-      "registry crossfeed candidates queued, proposed in the window",
+      "REGISTRY CROSSFEED CANDIDATES QUEUED, PROPOSED IN THE WINDOW",
     ],
     [
       "claims resolved",
       String(kpis.claimsResolved),
-      "calibration claims confirmed or debunked in the window",
+      "CALIBRATION CLAIMS CONFIRMED OR DEBUNKED IN THE WINDOW",
     ],
     [
       "signals-sourced",
       String(kpis.signalsSourced),
-      "window items floored by a signals-list source",
+      "WINDOW ITEMS FLOORED BY A SIGNALS-LIST SOURCE",
     ],
   ];
   return (
@@ -5462,16 +5469,18 @@ export function SystemPage({
 export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
   return (
     <Layout current="system">
-      <h1 className="page-title sec-mark">sweep log · {data.month}</h1>
-      <p className="lede">Archived sweep entries from {data.month}.</p>
-      {data.sweeps.length === 0 ? (
-        <p className="empty">No sweeps in this month</p>
-      ) : (
-        data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
-      )}
-      <p>
-        <a href="/system/">Back to the sweep log</a>
-      </p>
+      <div className="log-archive">
+        <h1 className="page-title sec-mark">sweep log · {data.month}</h1>
+        <p className="lede">Archived sweep entries from {data.month}.</p>
+        {data.sweeps.length === 0 ? (
+          <p className="empty">No sweeps in this month</p>
+        ) : (
+          data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
+        )}
+        <p>
+          <a href="/system/">Back to the sweep log</a>
+        </p>
+      </div>
     </Layout>
   );
 }

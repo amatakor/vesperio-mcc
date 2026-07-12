@@ -1490,3 +1490,32 @@ PROCESS (rule 69-73 rounds): zoom-inspect rendered output
 (element.style.zoom then screenshot) BEFORE reporting a visual as
 done; verify hover states with the pointer actually parked on the
 element.
+
+## 74 · Footers are centered colophons
+
+RULE (Florian, 2026-07-12 pre-v1 pass): both footers center. The site
+footer is a four-row colophon in the mono label register (10px caps,
+dim): mission line, action links (verification policy / SNR score /
+sweep log / stats.json), category feeds, identity line ("VESPERIO /
+NEW SPACE INTELLIGENCE · © 2026"), each row on a 46rem measure with
+--sp-2 rhythm and --sp-5 before the identity line; the shell's bottom
+inset closes the page. The MCC status bar joins the same grammar:
+justify-content center with flex-wrap (attribution and freshness stack
+as centered rows when the stage narrows), 10px/500/.08em (the 8px face
+was off-system), padding 12px 0.
+
+## 75 · /system/ is one instrument surface
+
+RULE (Florian, 2026-07-12: "no lowercase stuff anywhere"): the merged
+/system/ page (and /system/YYYY-MM/ archives via .log-archive)
+uppercases at the CONTAINER, extending rule 70. The reading-voice
+opt-out (.prose) is overridden inside it: machine records and index
+answers read as chrome. Exemptions: the cite-this citation string
+(copy-paste artifact) keeps its case; native tooltips can't be CSS-
+transformed, so the KPI title notes are uppercase in source.
+Paragraphs of equal width (rule 71 applied): every text block on the
+log spine and rail shares the 46rem measure, justified with
+auto-hyphenation — summaries, signals/discovery lines, panel prose,
+ledes, hero sentence. The 80ch sweep measure is retired. SNR movement
+downgrades recolored orange -> red per rule 72 (sign colors
+everywhere the notation appears).

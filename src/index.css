@@ -3408,53 +3408,80 @@ table.stat-table td.num {
 
 /* ------------------------------------------------------------- footer */
 
+/* Site footer (Florian, 2026-07-12 pre-v1 pass): centered colophon, one
+   register (mono label voice), even rhythm. Mission line, action links,
+   category feeds, identity line; the shell's bottom inset closes it. */
 .footer {
   margin-top: var(--sp-8);
   border-top: 1px solid var(--border-1);
-  padding-top: var(--sp-4);
+  padding: var(--sp-5) 0 0;
   color: var(--text-3);
+  font-family: var(--font-ui);
   font-size: var(--fs-micro);
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
+  text-align: center;
+}
+.footer p {
+  margin: 0 auto;
+  max-width: 46rem;
+}
+.footer p + p {
+  margin-top: var(--sp-2);
 }
 .footer a {
   color: var(--link);
 }
-.footer-feeds {
-  font-family: var(--font-ui);
-  font-size: var(--fs-micro);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-label);
-}
-.footer-feeds a {
-  color: var(--link);
-}
-.footer-feeds a:hover {
+.footer a:hover {
   color: var(--link-hover);
+}
+.footer .footer-ident {
+  margin-top: var(--sp-5);
 }
 
 /* ---------------------------------------------------------------- log */
 
-/* Sweep summaries were running the full 1176px panel (~150 chars a
-   line); cap them at the reading measure the item pages use. */
+/* Paragraphs of equal width (Florian, 2026-07-12; rule 71 one-edge): every
+   text block on the log spine shares the 46rem reading measure and
+   justifies to it, so paragraphs render as equal-width blocks. */
 .sweep-summary {
-  max-width: 80ch;
-}
-/* No sentence starts lowercase anywhere on the site (Florian, 2026-07-11).
-   Summaries are machine-written records rendered verbatim; this guards the
-   display without touching the stored text. */
-.sweep-summary::first-letter {
-  text-transform: uppercase;
+  max-width: 46rem;
+  text-align: justify;
+  hyphens: auto;
 }
 .sweep-signals {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
-  max-width: 80ch;
+  max-width: 46rem;
+  text-align: justify;
+  hyphens: auto;
 }
-.sweep-signals-note {
+
+/* /system/ is one instrument surface (Florian, 2026-07-12: "no lowercase
+   anywhere"): uppercase at the CONTAINER per the caps-as-a-system rule.
+   The reading-voice opt-out (.prose) is overridden here — machine records
+   and index answers read as chrome. The one exemption is the citation
+   string, which readers copy-paste verbatim. Covers the merged /system/
+   grid and the /system/YYYY-MM/ archive pages. */
+.system-grid,
+.log-archive {
+  text-transform: uppercase;
+}
+.system-grid .prose,
+.log-archive .prose {
+  text-transform: inherit;
+  text-align: justify;
+  hyphens: auto;
+}
+.system-grid .citation code {
   text-transform: none;
-  letter-spacing: 0;
+}
+.system-grid .lede,
+.log-archive .lede,
+.system-grid .hero-sentence {
+  text-align: justify;
+  hyphens: auto;
 }
 
 /* ------------------------------------------------------------ signals */
@@ -4330,8 +4357,10 @@ a.sig-card:hover .sig-p-x {
   font-family: var(--mono);
   font-size: 0.75rem;
 }
+/* Scoring deltas color by sign EVERYWHERE the notation appears (rule 72):
+   positive green, negative red. Matches the item ledger's convention. */
 .snr-up { color: var(--acc-green); }
-.snr-down { color: var(--acc-orange); }
+.snr-down { color: var(--acc-red); }
 
 /* Sweep status glyph (Florian, 2026-07-11): one ≤12px unicode mark on each
    sweep's meta row. ● LIVE (green) when the sweep shipped new items, ◆
