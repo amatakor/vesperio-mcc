@@ -89,8 +89,8 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
-  ["/registry/", "registry"],
   ["/mcc/", "mcc"],
+  ["/registry/", "registry"],
   ["/signals/", "signals"],
   ["/system/", "system"],
   ["/about/", "about"],
@@ -218,7 +218,22 @@ export function Masthead({ current }: { current?: string }) {
       <span className="brand-tag">/ NEW SPACE INTELLIGENCE</span>
       <nav className="nav">
         {NAV_LINKS.map(([href, label]) => (
-          <a key={href} href={href} aria-current={label === current ? "page" : undefined}>
+          <a
+            key={href}
+            href={href}
+            aria-current={label === current ? "page" : undefined}
+            className={label === "mcc" ? "nav-mcc" : undefined}
+          >
+            {label === "mcc" && (
+              /* The live-view marker (Florian, 2026-07-12): one volt dot in a
+                 flat orbit around the word, themed via --dot, still under
+                 prefers-reduced-motion. */
+              <span className="mcc-orbit" aria-hidden="true">
+                <span className="mcc-orbit-spin">
+                  <span className="mcc-orbit-sat" />
+                </span>
+              </span>
+            )}
             {label}
           </a>
         ))}
@@ -376,7 +391,7 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
       </span>
       {trace.modifiers.map((m, i) => (
         <span key={i} className="snr-pop-row">
-          <span className="snr-pop-delta">{signed(m.delta)}</span>
+          <span className={`snr-pop-delta ${m.delta > 0 ? "delta-pos" : m.delta < 0 ? "delta-neg" : "delta-zero"}`}>{signed(m.delta)}</span>
           <span>
             {m.reason}
             {m.source && (
@@ -467,7 +482,7 @@ function SnrLedger({ item }: { item: Item }) {
         </span>
         {trace.modifiers.map((m, i) => (
           <Fragment key={i}>
-            <span className="snrl-delta">{signed(m.delta)}</span>
+            <span className={`snrl-delta ${m.delta > 0 ? "delta-pos" : m.delta < 0 ? "delta-neg" : "delta-zero"}`}>{signed(m.delta)}</span>
             <span>
               {m.reason}
               {m.source && (
@@ -4734,18 +4749,18 @@ export function AboutPage() {
         <div className="qa-pair">
           <h3>how corroboration moves it</h3>
           <div className="rule-grid">
-            <span className="rule-delta">+1</span>
+            <span className="rule-delta delta-pos">+1</span>
             <span>A second distinct unit.</span>
-            <span className="rule-delta">+1</span>
+            <span className="rule-delta delta-pos">+1</span>
             <span>A fourth distinct unit.</span>
-            <span className="rule-delta">+1</span>
+            <span className="rule-delta delta-pos">+1</span>
             <span>Pickup by a mainstream outlet beyond the lead reporter.</span>
-            <span className="rule-delta">-1</span>
+            <span className="rule-delta delta-neg">-1</span>
             <span>
               A corroboration crawl that ran and found nothing. "Nothing else reports this" is a
               claim about the world; it should hurt to be wrong about it.
             </span>
-            <span className="rule-delta">0</span>
+            <span className="rule-delta delta-zero">0</span>
             <span>
               A crawl the budget never reached: recorded as not attempted, never dressed up as a
               result. Direct sources prove their own statements and pay no crawl penalty.
@@ -4760,12 +4775,12 @@ export function AboutPage() {
         <div className="qa-pair">
           <h3>scores keep moving after publication</h3>
           <div className="rule-grid">
-            <span className="rule-delta">+1</span>
+            <span className="rule-delta delta-pos">+1</span>
             <span>
               REINFORCEMENT: a matching event lands 8 to 30 days after an item published at 1 or
               2. Once per item. Early, not wrong, and the score says so retroactively.
             </span>
-            <span className="rule-delta">+1</span>
+            <span className="rule-delta delta-pos">+1</span>
             <span>
               PERSISTENCE: 14 days uncontested, once, never past 4. Time is weak evidence; it
               counts a little and caps early.
@@ -4794,12 +4809,12 @@ export function AboutPage() {
         <div className="qa-pair">
           <h3>when sources disagree</h3>
           <div className="rule-grid">
-            <span className="rule-delta">0</span>
+            <span className="rule-delta delta-zero">0</span>
             <span>
               Different metrics (launched satellites versus operational ones): annotated, never
               punished. Both numbers can be true.
             </span>
-            <span className="rule-delta">-1</span>
+            <span className="rule-delta delta-neg">-1</span>
             <span>Same metric, unequal sourcing: the better-sourced side leads, the loser pays.</span>
             <span className="rule-delta">HOLD</span>
             <span>
@@ -4815,7 +4830,7 @@ export function AboutPage() {
             <span>A whitelisted person states an on-topic fact on a verified channel.</span>
             <span className="rule-delta">&ge; 5</span>
             <span>The person speaks for the actor concerned, about itself.</span>
-            <span className="rule-delta">0</span>
+            <span className="rule-delta delta-zero">0</span>
             <span>Jokes, opinions, off-topic posts: no floor.</span>
           </div>
           <p className="prose">
@@ -4833,7 +4848,7 @@ export function AboutPage() {
             </span>
             <span className="rule-delta">&le; 4</span>
             <span>A press-wire copy caps until the actor's own domain confirms.</span>
-            <span className="rule-delta">0</span>
+            <span className="rule-delta delta-zero">0</span>
             <span>
               A superlative in a release ("largest constellation") is attributed as a statement,
               never scored or repeated as fact.

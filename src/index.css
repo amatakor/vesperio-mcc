@@ -4753,3 +4753,63 @@ table.stat-table th {
   padding-top: 1px;
   color: var(--text-2);
 }
+
+/* MCC nav marker (Florian, 2026-07-12): one volt dot in a flattened
+   orbit around the word, marking the live view. Square dot (no
+   rounding), themed via --dot, dimmed on the far arc for depth,
+   still under prefers-reduced-motion. */
+.nav .nav-mcc {
+  position: relative;
+}
+.mcc-orbit {
+  position: absolute;
+  inset: -8px -12px;
+  transform: scaleY(0.4);
+  pointer-events: none;
+}
+.mcc-orbit-spin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  animation: mcc-orbit-spin 4.5s linear infinite;
+}
+.mcc-orbit-sat {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  background: var(--dot);
+  transform: translateX(30px);
+  animation: mcc-orbit-depth 4.5s linear infinite;
+}
+@keyframes mcc-orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes mcc-orbit-depth {
+  0%, 46% { opacity: 1; }
+  54%, 92% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mcc-orbit-spin,
+  .mcc-orbit-sat {
+    animation: none;
+  }
+}
+
+/* Scoring deltas color by sign (Florian, 2026-07-12): positive green,
+   negative red, zero orange. Small mono glyphs, within the 90/9/1
+   color budget; applies to the About rule grids, the score hover
+   popovers, and the item-detail ledger alike. */
+.delta-pos {
+  color: var(--acc-green);
+}
+.delta-neg {
+  color: var(--acc-red);
+}
+.delta-zero {
+  color: var(--acc-orange);
+}
