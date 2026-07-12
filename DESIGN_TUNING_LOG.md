@@ -1519,3 +1519,11 @@ summaries, signals/discovery lines, SNR movement notes, panel prose,
 ledes, hero sentence. The 80ch sweep measure is retired. SNR movement
 downgrades recolored orange -> red per rule 72 (sign colors
 everywhere the notation appears).
+
+AMENDMENT (same day, "balance the system page"): the /system/ grid is
+two balanced instruments: the log spine caps at 48rem (46rem text +
+1rem panel padding a side; sweep frames carry no dead width) and the
+INDICES rail breathes clamp(340px, 30vw, 30rem) instead of the fixed
+340px. justify-content: space-between hands leftover width to the
+middle seam; the gap is the floor when space is tight. Verified at
+1600 (spine 768 / seam 296 / rail 480), 1280, and the mobile stack.
