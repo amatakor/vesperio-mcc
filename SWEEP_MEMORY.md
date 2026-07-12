@@ -1461,3 +1461,31 @@ a newer entry if a lesson changes.
   imported from adjacent events or general knowledge onto a page that
   states only the bare fact. Verifiers trimmed dozens; collector prompts
   should say "treat each event's cited page in isolation".
+
+## Launch cadence ruling, interactive investigation (2026-07-12)
+
+- 2026-07-12-A: RULING (Florian, 2026-07-12, supersedes 2026-07-06-I):
+  routine megaconstellation batch launches (Starlink, SpaceSail/G60,
+  Guowang, Kuiper and peers) PUBLISH at noise. CLAUDE.md's impact scale
+  is the rule as written: a scheduled launch succeeding on schedule is
+  the canonical noise example, and noise is a publishable tier, not an
+  exclusion. Never discard an orbital launch candidate as "routine
+  cadence"; the 2026-07-06-I not-itemized standard is revoked. Equal
+  weight still applies: US and Chinese cadence launches get the same
+  treatment, now by both publishing.
+- 2026-07-12-B: The discard that exposed this classified launch
+  candidates by HEADLINE SHAPE and never read the body: the consumed
+  space.com "35th mission" piece contained the fact that B1067 had
+  extended the fleet reuse record to 36 flights on July 9, an event
+  this feed itemized when the record was set at 35. Before setting any
+  launch item's impact, scan the article body for records, firsts,
+  failures, and anomalies; they raise impact above noise.
+- 2026-07-12-C: Two launches by the same provider inside 7 days are
+  DISTINCT events (different mission/booster), not dedup matches;
+  attest them with dedup_distinct [{id, reason}], which the gate
+  supports (finalize-sweep, SNR_PLAN A2). Both July 9-11 Falcon 9
+  items merged clean first pass this way.
+- 2026-07-12-D: Retroactivity of 2026-07-12-A for launches discarded
+  under the old precedent (e.g. the July 4 SpaceSail batch, Xinhua) is
+  queued in held.json for Florian; do not backfill old cadence
+  launches until he rules.
