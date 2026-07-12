@@ -246,7 +246,7 @@ export function Masthead({ current }: { current?: string }) {
             <line x1="3.6" y1="1" x2="3.6" y2="3" />
             <line x1="5.9" y1="1" x2="5.9" y2="3" />
           </svg>
-          <span className="nav-badge-label">SUPPORT ON KO-FI</span>
+          <span className="nav-badge-label">BUY ME A COFFEE</span>
         </a>
       </span>
     </header>
@@ -5270,35 +5270,68 @@ function LogPresence({
   );
 }
 
-/** Compact email subscribe unit: a Buttondown embed form. Replaces the old
- * inline /digest/ link (Florian, 2026-07-11); the /digest/ route and page
- * are unchanged and still reachable by URL, this only removes the inbound
- * link that pointed to it from the Log lede. */
+/** Compact email subscribe unit posting to the live Buttondown account
+ * (buttondown.com/vesperio, Florian 2026-07-12). Hydrated path: fetch the
+ * embed endpoint directly (no-cors form POST; the endpoint 302s to a
+ * confirmation page we cannot read) and confirm inline. The old
+ * target="_blank" native post is retired: popup blockers swallowed the
+ * whole submission silently. No-JS fallback: the same form posts natively
+ * in THIS tab and lands on Buttondown's own confirmation page. */
+const SUBSCRIBE_ACTION = "https://buttondown.com/api/emails/embed-subscribe/vesperio";
+
 function SubscribeForm() {
+  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
   return (
     <div className="subscribe">
       <p className="subscribe-label">The week&rsquo;s signal, mailed</p>
-      <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
-      <form
-        // Live Buttondown account (Florian, 2026-07-12): buttondown.com/vesperio.
-        action="https://buttondown.com/api/emails/embed-subscribe/vesperio"
-        method="post"
-        target="_blank"
-        className="subscribe-form"
-        aria-label="Newsletter subscription"
-      >
-        <input
-          type="email"
-          name="email"
-          required
-          placeholder="you@company.com"
-          className="subscribe-input"
-          aria-label="Email address"
-        />
-        <button type="submit" className="subscribe-btn">
-          subscribe
-        </button>
-      </form>
+      {state === "done" ? (
+        <p className="subscribe-copy" role="status">
+          Recorded. Check your inbox to confirm the subscription.
+        </p>
+      ) : (
+        <>
+          <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
+          <form
+            action={SUBSCRIBE_ACTION}
+            method="post"
+            className="subscribe-form"
+            aria-label="Newsletter subscription"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const email = String(new FormData(e.currentTarget).get("email") ?? "");
+              if (!email) return;
+              setState("sending");
+              fetch(SUBSCRIBE_ACTION, {
+                method: "POST",
+                mode: "no-cors",
+                body: new URLSearchParams({ email }),
+              })
+                .then(() => setState("done"))
+                .catch(() => setState("error"));
+            }}
+          >
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="you@company.com"
+              className="subscribe-input"
+              aria-label="Email address"
+            />
+            <button type="submit" className="subscribe-btn" disabled={state === "sending"}>
+              {state === "sending" ? "sending" : "subscribe"}
+            </button>
+          </form>
+          {state === "error" && (
+            <p className="subscribe-copy" role="status">
+              Could not reach the list. Subscribe directly at{" "}
+              <a href="https://buttondown.com/vesperio" target="_blank" rel="noopener">
+                buttondown.com/vesperio →
+              </a>
+            </p>
+          )}
+        </>
+      )}
     </div>
   );
 }
