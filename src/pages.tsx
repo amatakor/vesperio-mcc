@@ -87,42 +87,31 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** Live tuning panel for the MCC nav orbit (Florian, 2026-07-12).
-    Renders only with ?orbitlab in the URL; writes the --orb-* CSS
-    variables the shells read. The values readout at the bottom is the
-    handoff: copy it into chat and the winning recipe becomes the
-    defaults. */
-const ORBIT_DIALS: Array<[string, string, number, number, number, string]> = [
+/** Live tuning panel for the MCC nav marker (Florian, 2026-07-12).
+    Renders only with ?orbitlab in the URL; writes the --pass-* CSS
+    variables the flyby reads. Copy the readout line into chat and the
+    winning recipe becomes the defaults. */
+const PASS_DIALS: Array<[string, string, number, number, number, string]> = [
   // [var, label, min, max, step, unit]
-  ["--orb-r", "radius", 14, 44, 1, "px"],
-  ["--orb-flat", "flatten", 0.15, 1, 0.01, ""],
-  ["--orb-dot", "dot size", 2, 6, 0.5, "px"],
-  ["--orb-trail", "trail", 0, 26, 1, "px"],
-  ["--orb-trail-o", "trail glow", 0, 1, 0.05, ""],
+  ["--pass-cycle", "cycle", 3, 16, 0.5, "s"],
+  ["--pass-span", "span", 18, 60, 1, "px"],
+  ["--pass-apex", "apex", -16, 0, 1, "px"],
+  ["--pass-dot", "dot size", 2, 6, 0.5, "px"],
+  ["--pass-trail", "trail", 0, 24, 1, "px"],
+  ["--pass-trail-o", "trail glow", 0, 1, 0.05, ""],
 ];
-const ORBIT_SHELLS: Array<[string, number, number]> = [
-  // [shell key, default duration, default tilt]
-  ["a", 4.2, 50],
-  ["b", 5.2, -50],
-  ["c", 6.4, 0],
-];
+const PASS_UNITLESS = new Set(["--pass-trail-o"]);
 function OrbitLab() {
   const [open, setOpen] = useState(false);
   const [vals, setVals] = useState<Record<string, number>>({
-    "--orb-r": 28,
-    "--orb-flat": 0.38,
-    "--orb-dot": 3,
-    "--orb-trail": 10,
-    "--orb-trail-o": 0.55,
-    "dur-a": 4.2,
-    "dur-b": 5.2,
-    "dur-c": 6.4,
-    "tilt-a": 50,
-    "tilt-b": -50,
-    "tilt-c": 0,
+    "--pass-cycle": 7,
+    "--pass-span": 34,
+    "--pass-apex": -7,
+    "--pass-dot": 3,
+    "--pass-trail": 10,
+    "--pass-trail-o": 0.5,
   });
-  const [dirs, setDirs] = useState<Record<string, boolean>>({ a: false, b: true, c: false });
-  const [show, setShow] = useState<Record<string, boolean>>({ a: true, b: true, c: true });
+  const [reverse, setReverse] = useState(false);
   useEffect(() => {
     setOpen(window.location.search.includes("orbitlab"));
   }, []);
@@ -130,31 +119,23 @@ function OrbitLab() {
     if (!open) return;
     const r = document.documentElement.style;
     for (const [k, v] of Object.entries(vals)) {
-      if (k.startsWith("--")) {
-        const unit = k === "--orb-flat" || k === "--orb-trail-o" ? "" : "px";
-        r.setProperty(k, `${v}${unit}`);
-      }
+      if (k === "--pass-cycle") r.setProperty(k, `${v}s`);
+      else if (PASS_UNITLESS.has(k)) r.setProperty(k, `${v}`);
+      else r.setProperty(k, `${v}px`);
     }
-    for (const [key, d, t] of ORBIT_SHELLS) {
-      void d;
-      void t;
-      r.setProperty(`--orb-${key}-dur`, `${vals[`dur-${key}`]}s`);
-      r.setProperty(`--orb-${key}-tilt`, `${vals[`tilt-${key}`]}deg`);
-      r.setProperty(`--orb-${key}-dir`, dirs[key] ? "reverse" : "normal");
-      r.setProperty(`--orb-${key}-show`, show[key] ? "inline" : "none");
-    }
-  }, [open, vals, dirs, show]);
+    r.setProperty("--pass-dir", reverse ? "reverse" : "normal");
+  }, [open, vals, reverse]);
   if (!open) return null;
   const set = (k: string) => (e: { target: { value: string } }) =>
     setVals((v) => ({ ...v, [k]: Number(e.target.value) }));
-  const readout = [
-    ...Object.entries(vals).map(([k, v]) => `${k}=${v}`),
-    ...ORBIT_SHELLS.map(([k]) => `${k}:${dirs[k] ? "rev" : "fwd"}${show[k] ? "" : ",off"}`),
-  ].join(" ");
+  const readout =
+    Object.entries(vals)
+      .map(([k, v]) => `${k.replace("--pass-", "")}=${v}`)
+      .join(" ") + (reverse ? " dir=rev" : " dir=fwd");
   return (
     <div className="orbit-lab">
-      <h4>orbit lab</h4>
-      {ORBIT_DIALS.map(([k, label, min, max, step, unit]) => (
+      <h4>pass lab</h4>
+      {PASS_DIALS.map(([k, label, min, max, step, unit]) => (
         <div className="orbit-lab-row" key={k}>
           <span>{label}</span>
           <input type="range" min={min} max={max} step={step} value={vals[k]} onChange={set(k)} />
@@ -164,39 +145,14 @@ function OrbitLab() {
           </span>
         </div>
       ))}
-      {ORBIT_SHELLS.map(([key]) => (
-        <div className="orbit-lab-shell" key={key}>
-          <div className="orbit-lab-shell-head">
-            <span>shell {key}</span>
-            <span>
-              <button
-                type="button"
-                className={show[key] ? "on" : ""}
-                onClick={() => setShow((v) => ({ ...v, [key]: !v[key] }))}
-              >
-                {show[key] ? "on" : "off"}
-              </button>{" "}
-              <button
-                type="button"
-                className={dirs[key] ? "on" : ""}
-                onClick={() => setDirs((v) => ({ ...v, [key]: !v[key] }))}
-              >
-                {dirs[key] ? "reverse" : "forward"}
-              </button>
-            </span>
-          </div>
-          <div className="orbit-lab-row">
-            <span>period</span>
-            <input type="range" min={1.5} max={12} step={0.1} value={vals[`dur-${key}`]} onChange={set(`dur-${key}`)} />
-            <span className="orbit-lab-val">{vals[`dur-${key}`]}s</span>
-          </div>
-          <div className="orbit-lab-row">
-            <span>tilt</span>
-            <input type="range" min={-90} max={90} step={1} value={vals[`tilt-${key}`]} onChange={set(`tilt-${key}`)} />
-            <span className="orbit-lab-val">{vals[`tilt-${key}`]}&deg;</span>
-          </div>
+      <div className="orbit-lab-shell">
+        <div className="orbit-lab-shell-head">
+          <span>direction</span>
+          <button type="button" className={reverse ? "on" : ""} onClick={() => setReverse(!reverse)}>
+            {reverse ? "right to left" : "left to right"}
+          </button>
         </div>
-      ))}
+      </div>
       <div className="orbit-lab-out">{readout}</div>
     </div>
   );
@@ -341,21 +297,14 @@ export function Masthead({ current }: { current?: string }) {
           >
             {label === "mcc" ? (
               <>
-                {/* The live-view marker, v2 (Florian, 2026-07-12): three volt
-                    sats with trails on tilted shells, electron-style; each
-                    passes in front of the word on the near arc and behind it
-                    on the far arc (animated stacking + dimming). Off under
+                {/* The live-view marker, v3 (Florian, 2026-07-12): a
+                    satellite pass. The word stays clean; every few seconds
+                    one volt dot rises on the left, arcs over MCC, and sets
+                    on the right with a short trail. Dials are CSS variables
+                    driven live by ?orbitlab. Off under
                     prefers-reduced-motion. */}
                 <span className="mcc-orbit" aria-hidden="true">
-                  <span className="mcc-orbit-shell mcc-shell-a">
-                    <span className="mcc-orbit-sat" />
-                  </span>
-                  <span className="mcc-orbit-shell mcc-shell-b">
-                    <span className="mcc-orbit-sat" />
-                  </span>
-                  <span className="mcc-orbit-shell mcc-shell-c">
-                    <span className="mcc-orbit-sat" />
-                  </span>
+                  <span className="mcc-pass-sat" />
                 </span>
                 <span className="nav-mcc-label">{label}</span>
               </>

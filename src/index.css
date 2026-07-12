@@ -4754,13 +4754,13 @@ table.stat-table th {
   color: var(--text-2);
 }
 
-/* MCC nav marker v3 (Florian, 2026-07-12): electron shells. Three volt
-   sats with trails on tilted planes; shells counter-rotate and their
-   orbits cross through the word. Every dial is a CSS variable so the
-   ?orbitlab panel can drive it live. Each shell's stacking flips
-   mid-cycle around the label's z:1, so sats pass in front of the word
-   on the near arc and behind it on the far arc. Off under
-   prefers-reduced-motion. */
+/* MCC nav marker v4 (Florian, 2026-07-12): a satellite pass. The word
+   stays clean most of the cycle; one volt dot rises on the left, arcs
+   shallowly over the label, and sets on the right with a short trail,
+   like a pass over a ground station. All dials are CSS variables
+   (?orbitlab drives them live). The --pass-t* stops shape the moving
+   segment of the timeline; the rest of the cycle is idle sky.
+   Off under prefers-reduced-motion. */
 .nav .nav-mcc {
   position: relative;
 }
@@ -4773,76 +4773,55 @@ table.stat-table th {
   inset: -10px -14px;
   pointer-events: none;
 }
-.mcc-orbit-shell {
+.mcc-pass-sat {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 0;
-  height: 0;
-}
-.mcc-shell-a {
-  display: var(--orb-a-show, inline);
-  animation: mcc-shell-a var(--orb-a-dur, 4.2s) linear infinite;
-  animation-direction: var(--orb-a-dir, normal);
-}
-.mcc-shell-b {
-  display: var(--orb-b-show, inline);
-  animation: mcc-shell-b var(--orb-b-dur, 5.2s) linear infinite;
-  animation-direction: var(--orb-b-dir, reverse);
-  animation-delay: -1.8s;
-}
-.mcc-shell-c {
-  display: var(--orb-c-show, inline);
-  animation: mcc-shell-c var(--orb-c-dur, 6.4s) linear infinite;
-  animation-direction: var(--orb-c-dir, normal);
-  animation-delay: -3.5s;
-}
-.mcc-orbit-sat {
-  position: absolute;
-  width: var(--orb-dot, 3px);
-  height: var(--orb-dot, 3px);
-  margin: calc(var(--orb-dot, 3px) / -2) 0 0 calc(var(--orb-dot, 3px) / -2);
+  width: var(--pass-dot, 3px);
+  height: var(--pass-dot, 3px);
+  margin: calc(var(--pass-dot, 3px) / -2) 0 0 calc(var(--pass-dot, 3px) / -2);
   background: var(--dot);
-  transform: translateX(var(--orb-r, 28px));
+  opacity: 0;
+  animation: mcc-pass var(--pass-cycle, 7s) linear infinite;
+  animation-direction: var(--pass-dir, normal);
 }
-.mcc-orbit-sat::after {
+.mcc-pass-sat::after {
   content: "";
   position: absolute;
-  left: 0.5px;
-  bottom: var(--orb-dot, 3px);
-  width: 2px;
-  height: var(--orb-trail, 10px);
-  background: linear-gradient(to top, var(--dot), transparent);
-  opacity: var(--orb-trail-o, 0.55);
+  right: 100%;
+  top: 0.5px;
+  height: 2px;
+  width: var(--pass-trail, 10px);
+  background: linear-gradient(to left, var(--dot), transparent);
+  opacity: var(--pass-trail-o, 0.5);
 }
-@keyframes mcc-shell-a {
-  0% { transform: rotate(var(--orb-a-tilt, 50deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
-  45% { opacity: 1; z-index: 2; }
-  55% { opacity: 0.3; z-index: 0; }
-  90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(var(--orb-a-tilt, 50deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
-}
-@keyframes mcc-shell-b {
-  0% { transform: rotate(var(--orb-b-tilt, -50deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
-  45% { opacity: 1; z-index: 2; }
-  55% { opacity: 0.3; z-index: 0; }
-  90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(var(--orb-b-tilt, -50deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
-}
-@keyframes mcc-shell-c {
-  0% { transform: rotate(var(--orb-c-tilt, 0deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
-  45% { opacity: 1; z-index: 2; }
-  55% { opacity: 0.3; z-index: 0; }
-  90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(var(--orb-c-tilt, 0deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
+@keyframes mcc-pass {
+  0% {
+    transform: translate(calc(var(--pass-span, 34px) * -1), 2px);
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  9% {
+    transform: translate(0px, var(--pass-apex, -7px));
+    opacity: 1;
+  }
+  16% {
+    opacity: 1;
+  }
+  18% {
+    transform: translate(var(--pass-span, 34px), 2px);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(var(--pass-span, 34px), 2px);
+    opacity: 0;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mcc-orbit-shell {
+  .mcc-pass-sat {
     animation: none;
-  }
-  .mcc-shell-b,
-  .mcc-shell-c {
-    display: none;
   }
 }
 
