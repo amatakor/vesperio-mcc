@@ -4483,3 +4483,17 @@ table.stat-table th {
   margin: 0 0 var(--sp-2);
   overflow-wrap: anywhere;
 }
+
+/* Item modal: ONLY the right column scrolls (Florian, 2026-07-12).
+   The left title/image/sources module is a fixed plate; the artwork
+   caps its height so long headlines and source lists still fit the
+   plate on short viewports. Mobile keeps the single-column scroll. */
+@media (min-width: 48rem) {
+  .modal-left {
+    overflow-y: hidden;
+  }
+  .modal-media img {
+    max-height: 42svh;
+    object-fit: cover;
+  }
+}
