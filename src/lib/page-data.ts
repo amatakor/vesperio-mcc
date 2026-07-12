@@ -151,7 +151,6 @@ export type PageData =
       vehicleLinks: { name: string; slug: string }[];
     }
   | { page: "about" }
-  | { page: "methodology" }
   | {
       page: "digest";
       windowDays: number;

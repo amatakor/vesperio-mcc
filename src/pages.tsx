@@ -261,7 +261,7 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
         <p>
           Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy →</a> · <a href="/methodology/">How the SNR score works →</a>
+          <a href="/about/">Verification policy →</a> · <a href="/about/#methodology">How the SNR score works →</a>
         </p>
         <p className="footer-feeds">
           category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
@@ -406,7 +406,7 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
       )}
       <span className="snr-pop-foot">
         Scorer v{trace.scorer_version} ·{" "}
-        <a href="/methodology/" onClick={(e) => e.stopPropagation()}>
+        <a href="/about/#methodology" onClick={(e) => e.stopPropagation()}>
           how scores work
         </a>
       </span>
@@ -505,7 +505,7 @@ function SnrLedger({ item }: { item: Item }) {
       )}
       <div className="snrl-foot">
         <span>scorer v{trace.scorer_version}</span>
-        <a href="/methodology/">how scores work &rarr;</a>
+        <a href="/about/#methodology">how scores work &rarr;</a>
       </div>
     </div>
   );
@@ -4476,7 +4476,7 @@ function EngineDiagram() {
 
       {/* discovery suggestions rail: agent finds, human reviews */}
       <polyline points="720,68 736,68 736,428 538,428" {...wire} />
-      <text x={748} y={248} textAnchor="middle" {...wireLbl} transform="rotate(90 748 248)">SUGGESTED SOURCES + VOICES</text>
+      <text x={727} y={248} textAnchor="middle" {...wireLbl} transform="rotate(90 727 248)">SUGGESTED SOURCES + VOICES</text>
 
       {/* human-approved sources rail: back into the registry */}
       <polyline points="396,428 12,428 12,68 26,68" {...wire} />
@@ -4660,9 +4660,169 @@ export function AboutPage() {
           above 4. A vetted expert on the signals whitelist floors an on-topic factual claim at 4
           as an observer and 5 when the concerned party speaks about itself. Scores move over an
           item's life, traces are append-only, and every movement renders on the public log. The
-          full rulebook, worked examples included, lives on the{" "}
-          <a href="/methodology/">methodology page</a>.
+          full rulebook follows.
         </p>
+        <div id="methodology">
+<div className="qa-pair">
+        <h3>where a score starts</h3>
+        <p className="prose">
+          The best source attached to an item sets the base tier. First-party statements, official
+          records, and directly computed data start at 5. Press-wire copy and established
+          aggregators start at 4. Trade and mainstream press start at 3, as does a person on our
+          curated signals list before any floor applies. An informal but identifiable source
+          starts at 1. Sources that cannot be named at all do not publish, whatever else they
+          would score.
+        </p>
+        <p className="prose">
+          The test for first-party is strict: could the linked page be wrong about the fact
+          without the actor or an official record being wrong? If yes, it is not first-party. And
+          a source that has repeatedly burned us can lose its class entirely (see grading, below).
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>what counts as one source</h3>
+        <p className="prose">
+          Before corroboration is counted, sources are collapsed into corroboration units, because
+          syndication is the cheapest way to fake breadth. URL variants of one article are one
+          unit. Multiple pages on one registrable domain are one unit. And two articles whose
+          headlines are near-identical are one unit even across domains: headlines are fingerprinted
+          (a 64-bit SimHash over normalized title words) and anything within a Hamming distance of
+          3 is treated as the same wire story rewritten. The item keeps every link for the reader;
+          the units drive the math; every collapse is logged in the sweep entry on the log.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>how corroboration moves it</h3>
+        <p className="prose">
+          Independent corroboration raises a score, and each rule fires at most once per claim: a
+          second distinct unit, a fourth, and pickup by a mainstream outlet beyond the lead
+          reporter. Corroboration is tested, not assumed: for any claim resting on second-hand
+          reporting, the machine actively searches the open web for other coverage. A search that
+          ran and found nothing costs one point, because "nothing else reports this" is itself a
+          claim about the world and it should hurt to be wrong about it. A direct source proves
+          its own statement and pays no such penalty; and a search that never ran (the sweep's
+          crawl budget ran out first) costs nothing, but is recorded as not attempted rather than
+          dressed up as a result.
+        </p>
+        <p className="prose">
+          There is a hard ceiling. No amount of second-hand corroboration reaches 5. Wide
+          reporting IS the definition of 4; 5 is reserved for a direct source, the actor speaking
+          for itself or an official record.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>scores keep moving after publication</h3>
+        <p className="prose">
+          Two rules lift a score with time, both bounded, both automatic, both visible:
+        </p>
+        <p className="prose">
+          <strong>Reinforcement.</strong> When a matching event lands 8 to 30 days after an item
+          published at SNR 1 or 2, the item is bumped by one and the new source is attached. An
+          early lone signal that later reporting matches was early, not wrong, and the score says
+          so retroactively. Once per item, only from 1 or 2, only inside the window.
+        </p>
+        <p className="prose">
+          <strong>Persistence.</strong> An item still below 4 that survives 14 days with nothing
+          contradicting it earns one point, once, and can never pass 4 this way. Time is weak
+          evidence; it counts a little and caps early.
+        </p>
+        <p className="prose">
+          Every movement, up or down, is appended to the item's stored calculation and listed in
+          that sweep's entry on the log. Trace history is append-only: earlier steps are never
+          rewritten to flatter the present score.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>claims that have to earn it</h3>
+        <p className="prose">
+          An out-of-pattern or extraordinary claim starts at 1 whatever its source count, and
+          climbs only through corroboration and survival. Any claim big enough to reshape the
+          market whose best source is below first-party is treated as extraordinary automatically,
+          by code, and additionally queued for human review even while it publishes. Extraordinary
+          claims are the honest-calibration stress test: they run on the same rules, just from the
+          bottom.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>when sources disagree</h3>
+        <p className="prose">
+          A mismatch of metrics (one source counts launched satellites, another counts operational
+          ones) is annotated, never punished: both numbers can be true. A genuine conflict on the
+          same metric lets the better-sourced side lead and costs the loser a point. Two equally
+          sourced claims that conflict are both marked disputed, kept visible side by side, and
+          queued for a human ruling; the site never quietly picks a winner it cannot justify.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>the signals-list floor</h3>
+        <p className="prose">
+          The signals page lists people we have individually verified and chosen to trust. When
+          one of them states an on-topic fact on a verified channel, the claim is floored at 4 as
+          an observer, and at 5 when the person speaks for the actor concerned about itself. The
+          floor covers factual statements only: jokes, opinions, and off-topic posts get nothing.
+          The list is curated by a human and the software that ingests the web cannot edit it.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>fakes and spoofs</h3>
+        <p className="prose">
+          Fake press releases are a documented attack on trackers like this one, so the two
+          highest source classes are gated by domain: a page only counts as first-party or
+          official record when its domain matches the actor's registry-recorded website or an
+          official register. A press-wire copy of an announcement caps at 4 until the actor's own
+          domain confirms it. A superlative in a first-party release ("largest constellation") is
+          attributed as a statement, never scored or repeated as fact.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>sources are graded too</h3>
+        <p className="prose">
+          Every source domain carries a rolling reliability record, rendered on the log: strikes
+          for claims that lost a same-metric contradiction, credits for claims that started at 1
+          or 2 and were later confirmed. Repeated strikes inside a 90-day window demote a source's
+          class in future scoring; demotion decays, and confirmed claims win the class back.
+          Sources that repeatedly produce independently confirmed early claims are suggested for
+          the signals list, but a human makes that call.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>what the score is not</h3>
+        <p className="prose">
+          It is not importance. Importance is the separate impact label (seismic, major, notable,
+          noise), and the two axes are independent: a seismic rumour is seismic AND low-SNR at the
+          same time. It is not an endorsement of opinions: commentary items score the attribution
+          (this person said this, here), never the take itself. And it is not a promise of truth;
+          it is a promise that the confidence shown matches the evidence held.
+        </p>
+      </div>
+
+      <div className="qa-pair">
+        <h3>stored, shown, and checked</h3>
+        <p className="prose">
+          Every score is saved with its full calculation at the moment it was set: the base
+          source tier, every adjustment since, and the two components (source class and
+          corroboration) that fused into the integer. You can open that calculation under any
+          score mark on the site.
+        </p>
+        <p className="prose">
+          Whether the scores are honest is itself measured. Each claim's score at publication is
+          recorded permanently, even after later bumps change what the item displays, and compared
+          against how the claim resolves: confirmed independently, debunked, or expired quiet. The
+          running tally per score level is public on the{" "}
+          <a href="/system/#calibration">sweep log</a>. If our 2s turn out right as often as our 4s,
+          the scale is broken and the record will show it.
+        </p>
+      </div>
+        </div>
         <div className="qa-pair" id="impact">
           <h3>The four impact tiers</h3>
           <table className="tier-table">
@@ -4788,204 +4948,7 @@ const SNR_SCALE: Array<[number, string]> = [
   ],
 ];
 
-export function MethodologyPage() {
-  return (
-    <Layout>
-      <h1 className="page-title">how the SNR score works</h1>
-      <p className="lede">
-        Every item on this site carries a signal-to-noise score from 1 to 5, and every scored
-        registry figure carries one too. The score is not an opinion about whether a claim is
-        important; it is a reading of how well the sources support it. Publishing an early signal
-        at SNR 1 is the system working as intended. Publishing a weak claim dressed as a certainty
-        is the failure it exists to prevent. Here is the whole mechanism.
-      </p>
 
-      <section className="panel">
-        <h2>the scale</h2>
-        <table className="tier-table">
-          <tbody>
-            {SNR_SCALE.map(([n, meaning]) => (
-              <tr key={n}>
-                <th scope="row">
-                  <SnrLed snr={n} />
-                  <span className="tier-tag">
-                    {n}/5 · {SNR_WORDS[n]}
-                  </span>
-                </th>
-                <td>{meaning}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="dim">
-          The math is code, not judgment calls: a deterministic scoring engine computes every
-          score from recorded inputs, and the agent that drafts an item can attest facts about its
-          sources but can never set the number.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>where a score starts</h2>
-        <p className="prose">
-          The best source attached to an item sets the base tier. First-party statements, official
-          records, and directly computed data start at 5. Press-wire copy and established
-          aggregators start at 4. Trade and mainstream press start at 3, as does a person on our
-          curated signals list before any floor applies. An informal but identifiable source
-          starts at 1. Sources that cannot be named at all do not publish, whatever else they
-          would score.
-        </p>
-        <p className="prose">
-          The test for first-party is strict: could the linked page be wrong about the fact
-          without the actor or an official record being wrong? If yes, it is not first-party. And
-          a source that has repeatedly burned us can lose its class entirely (see grading, below).
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>what counts as one source</h2>
-        <p className="prose">
-          Before corroboration is counted, sources are collapsed into corroboration units, because
-          syndication is the cheapest way to fake breadth. URL variants of one article are one
-          unit. Multiple pages on one registrable domain are one unit. And two articles whose
-          headlines are near-identical are one unit even across domains: headlines are fingerprinted
-          (a 64-bit SimHash over normalized title words) and anything within a Hamming distance of
-          3 is treated as the same wire story rewritten. The item keeps every link for the reader;
-          the units drive the math; every collapse is logged in the sweep entry on the log.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>how corroboration moves it</h2>
-        <p className="prose">
-          Independent corroboration raises a score, and each rule fires at most once per claim: a
-          second distinct unit, a fourth, and pickup by a mainstream outlet beyond the lead
-          reporter. Corroboration is tested, not assumed: for any claim resting on second-hand
-          reporting, the machine actively searches the open web for other coverage. A search that
-          ran and found nothing costs one point, because "nothing else reports this" is itself a
-          claim about the world and it should hurt to be wrong about it. A direct source proves
-          its own statement and pays no such penalty; and a search that never ran (the sweep's
-          crawl budget ran out first) costs nothing, but is recorded as not attempted rather than
-          dressed up as a result.
-        </p>
-        <p className="prose">
-          There is a hard ceiling. No amount of second-hand corroboration reaches 5. Wide
-          reporting IS the definition of 4; 5 is reserved for a direct source, the actor speaking
-          for itself or an official record.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>scores keep moving after publication</h2>
-        <p className="prose">
-          Two rules lift a score with time, both bounded, both automatic, both visible:
-        </p>
-        <p className="prose">
-          <strong>Reinforcement.</strong> When a matching event lands 8 to 30 days after an item
-          published at SNR 1 or 2, the item is bumped by one and the new source is attached. An
-          early lone signal that later reporting matches was early, not wrong, and the score says
-          so retroactively. Once per item, only from 1 or 2, only inside the window.
-        </p>
-        <p className="prose">
-          <strong>Persistence.</strong> An item still below 4 that survives 14 days with nothing
-          contradicting it earns one point, once, and can never pass 4 this way. Time is weak
-          evidence; it counts a little and caps early.
-        </p>
-        <p className="prose">
-          Every movement, up or down, is appended to the item's stored calculation and listed in
-          that sweep's entry on the log. Trace history is append-only: earlier steps are never
-          rewritten to flatter the present score.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>claims that have to earn it</h2>
-        <p className="prose">
-          An out-of-pattern or extraordinary claim starts at 1 whatever its source count, and
-          climbs only through corroboration and survival. Any claim big enough to reshape the
-          market whose best source is below first-party is treated as extraordinary automatically,
-          by code, and additionally queued for human review even while it publishes. Extraordinary
-          claims are the honest-calibration stress test: they run on the same rules, just from the
-          bottom.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>when sources disagree</h2>
-        <p className="prose">
-          A mismatch of metrics (one source counts launched satellites, another counts operational
-          ones) is annotated, never punished: both numbers can be true. A genuine conflict on the
-          same metric lets the better-sourced side lead and costs the loser a point. Two equally
-          sourced claims that conflict are both marked disputed, kept visible side by side, and
-          queued for a human ruling; the site never quietly picks a winner it cannot justify.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>the signals-list floor</h2>
-        <p className="prose">
-          The signals page lists people we have individually verified and chosen to trust. When
-          one of them states an on-topic fact on a verified channel, the claim is floored at 4 as
-          an observer, and at 5 when the person speaks for the actor concerned about itself. The
-          floor covers factual statements only: jokes, opinions, and off-topic posts get nothing.
-          The list is curated by a human and the software that ingests the web cannot edit it.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>fakes and spoofs</h2>
-        <p className="prose">
-          Fake press releases are a documented attack on trackers like this one, so the two
-          highest source classes are gated by domain: a page only counts as first-party or
-          official record when its domain matches the actor's registry-recorded website or an
-          official register. A press-wire copy of an announcement caps at 4 until the actor's own
-          domain confirms it. A superlative in a first-party release ("largest constellation") is
-          attributed as a statement, never scored or repeated as fact.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>sources are graded too</h2>
-        <p className="prose">
-          Every source domain carries a rolling reliability record, rendered on the log: strikes
-          for claims that lost a same-metric contradiction, credits for claims that started at 1
-          or 2 and were later confirmed. Repeated strikes inside a 90-day window demote a source's
-          class in future scoring; demotion decays, and confirmed claims win the class back.
-          Sources that repeatedly produce independently confirmed early claims are suggested for
-          the signals list, but a human makes that call.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>what the score is not</h2>
-        <p className="prose">
-          It is not importance. Importance is the separate impact label (seismic, major, notable,
-          noise), and the two axes are independent: a seismic rumour is seismic AND low-SNR at the
-          same time. It is not an endorsement of opinions: commentary items score the attribution
-          (this person said this, here), never the take itself. And it is not a promise of truth;
-          it is a promise that the confidence shown matches the evidence held.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>stored, shown, and checked</h2>
-        <p className="prose">
-          Every score is saved with its full calculation at the moment it was set: the base
-          source tier, every adjustment since, and the two components (source class and
-          corroboration) that fused into the integer. You can open that calculation under any
-          score mark on the site.
-        </p>
-        <p className="prose">
-          Whether the scores are honest is itself measured. Each claim's score at publication is
-          recorded permanently, even after later bumps change what the item displays, and compared
-          against how the claim resolves: confirmed independently, debunked, or expired quiet. The
-          running tally per score level is public on the{" "}
-          <a href="/system/#calibration">sweep log</a>. If our 2s turn out right as often as our 4s,
-          the scale is broken and the record will show it.
-        </p>
-      </section>
-    </Layout>
-  );
-}
 
 // ------------------------------------------------------------------ digest
 

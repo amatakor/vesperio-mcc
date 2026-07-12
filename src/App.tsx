@@ -16,7 +16,6 @@ import {
   SignalsPage,
   SystemPage,
   AboutPage,
-  MethodologyPage,
   DigestPage,
   LogArchivePage,
   NotFoundPage,
@@ -68,8 +67,6 @@ export default function App({
       return d?.page === "signals" ? <SignalsPage data={d} /> : <NotFoundPage />;
     case "about":
       return <AboutPage />;
-    case "methodology":
-      return <MethodologyPage />;
     case "digest":
       return d?.page === "digest" ? <DigestPage data={d} /> : <NotFoundPage />;
     case "system":

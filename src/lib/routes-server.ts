@@ -142,13 +142,6 @@ export function headFor(path: string): Head {
           "What Vesperio is, what it covers, and the verification policy: no primary source, no publish.",
         canonical,
       };
-    case "methodology":
-      return {
-        title: "How the SNR score works | Vesperio",
-        description:
-          "The signal-to-noise score explained for readers: what 1 to 5 means, how the base source class, corroboration, and time move a score, and how the scores are checked for honesty.",
-        canonical,
-      };
     case "digest":
       return {
         title: "Weekly digest | Vesperio",
@@ -177,7 +170,6 @@ export function listRoutes(): string[] {
     "/registry/",
     "/signals/",
     "/about/",
-    "/methodology/",
     "/digest/",
     "/system/",
     ...logArchiveMonths(sweeps).map((m) => `/system/${m}/`),

@@ -285,8 +285,6 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
       };
     case "about":
       return { page: "about" };
-    case "methodology":
-      return { page: "methodology" };
     case "digest":
       return buildDigest(now);
     case "not-found":
