@@ -497,6 +497,53 @@ export function InertialFrame({
   return <group ref={groupRef}>{children}</group>;
 }
 
+/** One-shot load pitch (Florian, 2026-07-12, part of the ISS load aim):
+ * when the station rides a high latitude, the tilted front view can put
+ * it outside the frame at the closer default zoom. If its projected
+ * vertical NDC exceeds the target, orbit the camera just enough (bisected
+ * against the real fov and distance) to clamp it back into view. The
+ * globe stays centered (lookAt origin); Reset restores the plain front
+ * view as before. */
+function LoadPitch({
+  pendingRef,
+}: {
+  pendingRef: MutableRefObject<{ yw: number; zw: number } | null>;
+}) {
+  const { camera } = useThree();
+  useFrame(() => {
+    const p = pendingRef.current;
+    if (!p) return;
+    pendingRef.current = null;
+    const persp = camera as THREE.PerspectiveCamera;
+    const d = persp.position.length();
+    if (!Number.isFinite(d) || d < 1e-3) return;
+    const t = Math.tan((persp.fov * Math.PI) / 360);
+    const TARGET = 0.8;
+    const ndcAt = (chi: number) => {
+      const y = p.yw * Math.cos(chi) - p.zw * Math.sin(chi);
+      const z = p.yw * Math.sin(chi) + p.zw * Math.cos(chi);
+      return y / ((d - z) * t);
+    };
+    const n0 = ndcAt(0);
+    if (!Number.isFinite(n0) || Math.abs(n0) <= TARGET) return;
+    // Full centering (camera boresight through the station) is the far
+    // bound; bisect down to the clamp target so the composition moves as
+    // little as possible.
+    let lo = 0;
+    let hi = Math.atan2(p.yw, p.zw);
+    for (let i = 0; i < 32; i++) {
+      const mid = (lo + hi) / 2;
+      if (Math.abs(ndcAt(mid)) > TARGET) lo = mid;
+      else hi = mid;
+    }
+    const chi = hi;
+    persp.position.set(0, d * Math.sin(chi), d * Math.cos(chi));
+    persp.up.set(0, 1, 0);
+    persp.lookAt(0, 0, 0);
+  });
+  return null;
+}
+
 /** Snaps the camera to the front view and the spin to zero when `nonce`
  * changes. */
 function CameraReset({
@@ -693,13 +740,13 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  // Default zoom by frame: every floating-panel width opens at the base
-  // fit — FitCamera now measures the true space between the panels
-  // (Florian 2026-07-10), so the old one-step-wider mid default is
-  // gone. Mobile keeps two steps wider to clear the stacked panels.
+  // Default zoom by frame: desktop opens ONE STEP CLOSER than the base
+  // panel-gap fit (Florian, 2026-07-12; the [+]/[-] steps, clamps, wheel,
+  // and FitCamera math are unchanged, and Reset returns here). Mobile
+  // keeps two steps wider than base to clear the stacked panels.
   const defaultZoom = () => {
     if (window.matchMedia("(max-width: 900px)").matches) return -2;
-    return 0;
+    return 1;
   };
   const [zoomStep, setZoomStep] = useState(defaultZoom);
   const [resetNonce, setResetNonce] = useState(0);
@@ -790,6 +837,15 @@ export default function Scene() {
   // Axis-locked manual drag: last pointer X while the primary button is
   // down; null when not dragging.
   const dragLastX = useRef<number | null>(null);
+  // Load aim (Florian, 2026-07-12): the first snapshot that carries the
+  // ISS spins the globe so the station faces the camera. Refs, not state:
+  // snapshots never re-render, and the aim must lose to any user drag.
+  const aimOrderRef = useRef<LayoutEntry[] | null>(null);
+  const issAimedRef = useRef(false);
+  const userSpunRef = useRef(false);
+  // The station's post-aim world position, handed to LoadPitch (which
+  // clamps it into frame when a high latitude would crop it).
+  const aimPitchRef = useRef<{ yw: number; zw: number } | null>(null);
   // Wheel zoom (tuning round 8): scroll steps the same FitCamera zoom
   // the [+]/[-] buttons drive. Non-passive so the page never scrolls
   // under the globe; deltas accumulate so trackpads step sanely.
@@ -840,6 +896,7 @@ export default function Scene() {
         });
       } else if (msg.type === "layout") {
         buffersRef.current = { prev: null, next: null, prevTime: 0, nextTime: 0 };
+        aimOrderRef.current = msg.order;
         setLayout(msg.order);
       } else if (msg.type === "snapshot") {
         const b = buffersRef.current;
@@ -849,6 +906,49 @@ export default function Scene() {
           prevTime: b.nextTime,
           nextTime: msg.time,
         };
+        // Load aim: center the ISS to the camera once real positions
+        // exist. The spin group lives INSIDE the axial-tilt group (a
+        // rotation about the camera's own Z axis), so a point on the spin
+        // frame's front meridian still lands off the screen's center line
+        // by an offset that grows with its height. Solve for world x = 0:
+        // with tilt Rz(phi) after spin Ry(theta), x_world =
+        // r sin(alpha+theta) cos(phi) - y sin(phi), which zeroes at
+        // theta = asin((y/r) tan(phi)) - alpha. AutoSpin and drags then
+        // behave exactly as before.
+        if (!issAimedRef.current && !userSpunRef.current && spinGroup.current && aimOrderRef.current) {
+          let index = 0;
+          for (const entry of aimOrderRef.current) {
+            if (entry.slug !== "iss") {
+              index += entry.ids.length;
+              continue;
+            }
+            if (entry.ids.length > 0) {
+              const p = buffersRef.current.next!;
+              const x = p[index * 3];
+              const y = p[index * 3 + 1];
+              const z = p[index * 3 + 2];
+              const r = x !== undefined && z !== undefined ? Math.hypot(x, z) : 0;
+              if (
+                x !== undefined && y !== undefined && z !== undefined &&
+                Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z) &&
+                r > 1e-6
+              ) {
+                const tiltRad = (-AXIAL_TILT_DEG * Math.PI) / 180;
+                const s = Math.max(-1, Math.min(1, (y / r) * Math.tan(tiltRad)));
+                spinGroup.current.rotation.y = Math.asin(s) - Math.atan2(x, z);
+                // World position after spin + tilt (x_world = 0 by
+                // construction; the tilt is about Z, so z is unchanged).
+                // LoadPitch clamps it into frame.
+                aimPitchRef.current = {
+                  yw: r * s * Math.sin(tiltRad) + y * Math.cos(tiltRad),
+                  zw: r * Math.sqrt(1 - s * s),
+                };
+                issAimedRef.current = true;
+              }
+            }
+            break;
+          }
+        }
       } else if (msg.type === "watch") {
         const sel = selectionRef.current;
         if (sel?.kind === "sat" && sel.sat.id === msg.id) {
@@ -1506,6 +1606,7 @@ export default function Scene() {
             dragLastX.current = e.clientX;
             if (dx === 0 || !spinGroup.current) return;
             spinGroup.current.rotation.y += dx * 0.006;
+            userSpunRef.current = true;
             if (autoRotateRef.current) setAutoRotate(false);
           }}
           onPointerUp={() => {
@@ -1584,6 +1685,7 @@ export default function Scene() {
           </group>
           <PopupAnchor getWorldPos={getPopupWorldPos} popupEl={popupEl} />
           <CameraReset nonce={resetNonce} spinRef={spinGroup} />
+          <LoadPitch pendingRef={aimPitchRef} />
           <AutoSpin on={autoRotate && !reducedMotion} spinRef={spinGroup} />
           <Controls enableRotate={!axisLock} onInteract={() => setAutoRotate(false)} />
         </Canvas>
