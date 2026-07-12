@@ -2255,6 +2255,9 @@ table.profile td.src-cell a,
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   margin-bottom: 0.4rem;
+  /* Label register, not prose (Florian, 2026-07-12: "registry / vehicles /
+     Long March 11" read lowercase): the trail is structural mono, caps. */
+  text-transform: uppercase;
 }
 .source-line {
   font-size: 0.78rem;
@@ -2367,10 +2370,15 @@ table.profile td.src-cell a,
 .profile-tab:hover {
   color: var(--text-1);
 }
-/* Active section: volt selection (fill keeps its hue in both themes). */
+/* Active section: the page's DOMAIN accent, not volt (Florian, 2026-07-12:
+   volt read too bright here; "use the color of whatever domain it is in").
+   --reg-acc is stamped on the profile root (eo green, connectivity magenta,
+   iot cyan, vehicles orange, spaceports uv, orgs blue); the label flips to
+   the page ground so the fill stays readable on the light theme's ink-dark
+   accents too. */
 .profile-tab.active {
-  color: #000;
-  background: var(--volt);
+  color: var(--bg-page);
+  background: var(--reg-acc, var(--volt));
 }
 .tab-panel[hidden] {
   display: none;
@@ -3985,7 +3993,8 @@ a.sig-card:hover .sig-p-x {
 .reg-footnote {
   font-size: 0.8rem;
   margin-top: 1rem;
-  max-width: 46rem;
+  /* Full content width (Florian, 2026-07-12): the note runs as wide as
+     the registry panes above it, no reading-measure cap here. */
 }
 
 /* Task 15: profile history timelines. A vertical rail with square

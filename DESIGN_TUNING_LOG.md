@@ -1394,3 +1394,29 @@ clean flush-left rows.
 IMPLEMENTATION: .nav-controls cluster split out of .nav (pages.tsx
 Masthead); @media 72rem masthead grid, 40rem cup collapse via
 .nav-badge-label display none, 30rem .nav gap (index.css).
+
+## 68 · Registry casing, details tab, domain-accent active tab
+
+RULE (Florian, 2026-07-12 morning, four-point registry pass):
+(a) CASING: the profile breadcrumb ("REGISTRY / VEHICLES / ...") is
+label register, CSS-uppercased; org KIND values are tags, not prose —
+caps in the card tile and the pane's kind rows ("LAUNCH SERVICES",
+"MANUFACTURER"); the missing launch-services entry joined
+ORG_KIND_LABEL so the raw slug never renders.
+(b) "SPECS" is renamed "DETAILS" everywhere the reader sees it (tab
+label, "details & sensors" when imaging modes exist, "// KEY DETAILS"
+panel): "specs" fits vehicles and spacecraft, not spaceports or
+organizations. Tab ids and #specs anchors unchanged.
+(c) The registry index footnote runs the full pane width (the 46rem
+reading measure came off; Florian: as wide as the registry table).
+(d) ACTIVE PROFILE TAB carries the page's DOMAIN accent, not volt
+(Florian: volt "too bright" here): fill var(--reg-acc) — eo green,
+connectivity magenta, iot cyan, vehicles orange, spaceports uv, orgs
+blue — with the label in var(--bg-page) so the light theme's ink-dark
+accents stay readable. One fewer volt surface; the selection-fill
+grammar elsewhere is untouched.
+
+IMPLEMENTATION: .breadcrumbs text-transform, .profile-tab.active,
+.reg-footnote (index.css); ORG_KIND_LABEL + kind tile uppercase
+(reg-entries.ts); org pane group labels, tab labels, key-details
+heading (pages.tsx).

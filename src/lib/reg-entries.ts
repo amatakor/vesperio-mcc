@@ -76,6 +76,7 @@ const DOMAIN_LABEL: Record<string, string> = { eo: "eo", connectivity: "connecti
 
 export const ORG_KIND_LABEL: Record<string, string> = {
   manufacturer: "manufacturer",
+  "launch-services": "launch services",
   "in-space-services": "in-space services",
   "ground-segment": "ground segment",
   institution: "institution",
@@ -187,7 +188,9 @@ export function orgEntries(organizations: OrgProfile[]): RegEntry[] {
     const specs: RegSpec[] = [];
     if (o.founded.value !== null) specs.push({ label: "founded", value: String(o.founded.value) });
     if (o.country.value) specs.push({ label: "country", value: o.country.value });
-    specs.push({ label: "kind", value: ORG_KIND_LABEL[o.kind] ?? o.kind });
+    // Kind is a tag, not prose: caps like the DOMAIN tile (Florian,
+    // 2026-07-12: "launch-services, manufacturer" read lowercase).
+    specs.push({ label: "kind", value: (ORG_KIND_LABEL[o.kind] ?? o.kind).toUpperCase() });
     return {
       slug: o.slug,
       name: o.name,

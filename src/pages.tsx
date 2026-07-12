@@ -2183,7 +2183,9 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
         <PaneBrowser
           entries={ents}
           groupLabel="kind"
-          groupsFor={simpleGroups((k) => ORG_KIND_LABEL[k] ?? k, () => null)}
+          // Kind rows are category labels, not names: caps (Florian,
+          // 2026-07-12 casing pass), unlike the proper-cased company panes.
+          groupsFor={simpleGroups((k) => (ORG_KIND_LABEL[k] ?? k).toUpperCase(), () => null)}
           accent={SECTION_ACCENT.ecosystem}
         />
       ),
@@ -2774,7 +2776,7 @@ function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | nul
   if (cells.length < 2) return null;
   return (
     <section id="specs" className="panel">
-      <h2>key specs</h2>
+      <h2>key details</h2>
       <div className="specs-grid">
         {cells.map((c) => (
           <div key={c.field} id={`spec-${c.field}`} className="spec-cell">
@@ -3303,7 +3305,10 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   }
 
   const tabs: Array<[string, string]> = [["overview", "overview"]];
-  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "specs & sensors" : "specs"]);
+  // Display label is "details" (Florian, 2026-07-12: "specs" fits vehicles
+  // and spacecraft, not spaceports or organizations); the tab id and its
+  // #specs deep-link anchors stay unchanged.
+  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "details & sensors" : "details"]);
   if (hasOrbit) tabs.push(["orbit", "orbit"]);
   if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
   if (hasSources) tabs.push(["sources", "sources"]);
