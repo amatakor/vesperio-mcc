@@ -1121,6 +1121,17 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         </div>
         <div className="modal-body">
           <div className="modal-left">
+            <div className="src-band">
+              // sources · {srcEntriesOf(item).length} attached
+            </div>
+            <SourceList item={item} />
+          </div>
+          <div className="modal-right">
+            {/* Title before artwork (Florian, 2026-07-12): the headline leads
+                the reading order; the image sits under it in this column. */}
+            <h2 className="modal-title">{item.headline}</h2>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image ? (
               <>
                 <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1133,15 +1144,6 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
                 </p>
               </>
             ) : null}
-            <div className="src-band">
-              // sources · {srcEntriesOf(item).length} attached
-            </div>
-            <SourceList item={item} />
-          </div>
-          <div className="modal-right">
-            <h2 className="modal-title">{item.headline}</h2>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1173,7 +1175,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
               ))}
             </div>
             <p>
-              <a href={`/item/${item.id}/`}>full page →</a>
+              <a href={`/item/${item.id}/`}>FULL PAGE →</a>
             </p>
           </div>
         </div>
@@ -1378,7 +1380,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
           ref={inputRef}
           type="text"
           className="filter-input"
-          placeholder="/ search"
+          placeholder="/ SEARCH"
           aria-label="Search items"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -1498,6 +1500,17 @@ export function ItemPage({ item }: { item: Item }) {
         </div>
         <div className="item-cols">
           <div className="item-side">
+            <div className="src-band">
+              // sources · {srcEntriesOf(item).length} attached
+            </div>
+            <SourceList item={item} />
+          </div>
+          <div className="item-main">
+            {/* Title before artwork (Florian, 2026-07-12): the headline leads
+                the reading order; the image sits under it in this column. */}
+            <h1 className="page-title">{item.headline}</h1>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image && (
               <figure className="item-figure">
                 <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1510,15 +1523,6 @@ export function ItemPage({ item }: { item: Item }) {
                 </figcaption>
               </figure>
             )}
-            <div className="src-band">
-              // sources · {srcEntriesOf(item).length} attached
-            </div>
-            <SourceList item={item} />
-          </div>
-          <div className="item-main">
-            <h1 className="page-title">{item.headline}</h1>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>
@@ -1573,7 +1577,7 @@ export function ItemPage({ item }: { item: Item }) {
               ))}
             </div>
             <p>
-              <a href="/">Back to the feed</a>
+              <a href="/">BACK TO THE FEED</a>
             </p>
           </div>
         </div>
@@ -2241,7 +2245,7 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
         <input
           type="text"
           className="filter-input reg-search"
-          placeholder="/ filter: entity, operator or provider..."
+          placeholder="/ FILTER: ENTITY, OPERATOR OR PROVIDER..."
           aria-label="Search registry"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -3518,7 +3522,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <RelatedSection profile={profile} related={related} prev={prev} next={next} />
           <LogoCredit slug={profile.slug} />
           <p>
-            <a href="/registry/">Back to the registry</a>
+            <a href="/registry/">BACK TO THE REGISTRY</a>
           </p>
         </footer>
       </div>
@@ -4116,7 +4120,7 @@ export function SignalsPage({ data }: { data: DataFor<"signals"> }) {
         <input
           type="text"
           className="filter-input sig-search"
-          placeholder="/ search name, handle, topic"
+          placeholder="/ SEARCH NAME, HANDLE, TOPIC"
           aria-label="Search signals"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -4282,40 +4286,322 @@ const QA: Array<[string, string]> = [
   ],
 ];
 
+/** Engine pipeline diagram. House style: hairline boxes, mono caps labels,
+    no rounding, theme tokens only. */
+function EngineDiagram() {
+  const box = { fill: "var(--bg-panel)", stroke: "var(--border-2)", strokeWidth: 1 };
+  const lbl = {
+    fill: "var(--text-1)",
+    fontFamily: "'IBM Plex Mono', monospace",
+    fontSize: 10,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
+  } as const;
+  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8.5, fontWeight: 400 } as const;
+  const wire = { stroke: "var(--border-2)", strokeWidth: 1 } as const;
+  return (
+    <svg viewBox="0 0 720 318" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
+      {/* row 1: intake */}
+      <rect x="8" y="24" width="128" height="56" {...box} />
+      <text x="20" y="44" {...lbl}>SOURCES</text>
+      <text x="20" y="58" {...sub}>98 REGISTERED FEEDS,</text>
+      <text x="20" y="69" {...sub}>PAGES + SIGNALS + WEB</text>
+
+      <rect x="176" y="24" width="128" height="56" {...box} />
+      <text x="188" y="44" {...lbl}>HARVESTER</text>
+      <text x="188" y="58" {...sub}>DETERMINISTIC FETCH,</text>
+      <text x="188" y="69" {...sub}>SYNDICATE COLLAPSE</text>
+
+      <rect x="344" y="24" width="128" height="56" {...box} />
+      <text x="356" y="44" {...lbl}>QUEUE</text>
+      <text x="356" y="58" {...sub}>CANDIDATES, TRIAGED</text>
+      <text x="356" y="69" {...sub}>ONCE, THEN CONSUMED</text>
+
+      <rect x="512" y="24" width="128" height="56" {...box} />
+      <text x="524" y="44" {...lbl}>SWEEP AGENT</text>
+      <text x="524" y="58" {...sub}>SCOPES, CRAWLS,</text>
+      <text x="524" y="69" {...sub}>DRAFTS + ATTESTS</text>
+
+      <line x1="136" y1="52" x2="176" y2="52" {...wire} />
+      <line x1="304" y1="52" x2="344" y2="52" {...wire} />
+      <line x1="472" y1="52" x2="512" y2="52" {...wire} />
+
+      {/* drop to row 2 */}
+      <line x1="576" y1="80" x2="576" y2="122" {...wire} />
+
+      {/* row 2: gate and outputs, right to left */}
+      <rect x="512" y="122" width="128" height="56" {...box} />
+      <text x="524" y="142" {...lbl}>FINALIZE GATE</text>
+      <text x="524" y="156" {...sub}>VALIDATES, DEDUPS,</text>
+      <text x="524" y="167" {...sub}>COMPUTES EVERY SCORE</text>
+
+      <rect x="344" y="122" width="128" height="56" {...box} />
+      <text x="356" y="142" {...lbl}>DATA FILES</text>
+      <text x="356" y="156" {...sub}>ITEMS, TRACES, LOG,</text>
+      <text x="356" y="167" {...sub}>LEDGER. GIT-VERSIONED</text>
+
+      <rect x="176" y="122" width="128" height="56" {...box} />
+      <text x="188" y="142" {...lbl}>STATIC SITE</text>
+      <text x="188" y="156" {...sub}>EVERY PAGE PRERENDERED,</text>
+      <text x="188" y="167" {...sub}>NO DATABASE, NO BACKEND</text>
+
+      <line x1="512" y1="150" x2="472" y2="150" {...wire} />
+      <line x1="344" y1="150" x2="304" y2="150" {...wire} />
+
+      {/* held queue, above the gate's reject path */}
+      <rect x="512" y="238" width="128" height="52" {...box} />
+      <text x="524" y="258" {...lbl}>HELD QUEUE</text>
+      <text x="524" y="272" {...sub}>OPEN QUESTIONS FOR</text>
+      <text x="524" y="283" {...sub}>THE HUMAN EDITOR</text>
+      <line x1="576" y1="178" x2="576" y2="238" {...wire} />
+
+      {/* ledger feedback loop */}
+      <rect x="344" y="238" width="128" height="52" {...box} />
+      <text x="356" y="258" {...lbl}>SOURCE LEDGER</text>
+      <text x="356" y="272" {...sub}>STRIKES + CREDITS FEED</text>
+      <text x="356" y="283" {...sub}>BACK INTO SOURCE CLASSES</text>
+      <line x1="408" y1="178" x2="408" y2="238" {...wire} />
+      <line x1="344" y1="264" x2="60" y2="264" {...wire} />
+      <line x1="60" y1="264" x2="60" y2="80" {...wire} />
+
+      <text x="652" y="55" {...sub}>TWICE</text>
+      <text x="652" y="66" {...sub}>DAILY</text>
+    </svg>
+  );
+}
+
+/** Scoring anatomy diagram: attested inputs, deterministic engine, stored output. */
+function ScoringDiagram() {
+  const box = { fill: "var(--bg-panel)", stroke: "var(--border-2)", strokeWidth: 1 };
+  const lbl = {
+    fill: "var(--text-1)",
+    fontFamily: "'IBM Plex Mono', monospace",
+    fontSize: 10,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
+  } as const;
+  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8.5, fontWeight: 400 } as const;
+  const wire = { stroke: "var(--border-2)", strokeWidth: 1 } as const;
+  return (
+    <svg viewBox="0 0 720 208" role="img" aria-label="SNR SCORING ANATOMY" style={{ width: "100%", height: "auto", display: "block" }}>
+      <rect x="8" y="20" width="200" height="168" {...box} />
+      <text x="20" y="40" {...lbl}>INPUTS (ATTESTED)</text>
+      <text x="20" y="62" {...sub}>LEAD SOURCE CLASS</text>
+      <text x="20" y="78" {...sub}>EVERY SOURCE, WITH ITS CLASS</text>
+      <text x="20" y="94" {...sub}>CORROBORATION CRAWL OUTCOME</text>
+      <text x="20" y="110" {...sub}>EXTRAORDINARY-CLAIM FLAG</text>
+      <text x="20" y="126" {...sub}>WHITELIST STANDING</text>
+      <text x="20" y="150" {...sub}>THE AGENT SWEARS TO FACTS.</text>
+      <text x="20" y="162" {...sub}>IT NEVER WRITES A NUMBER.</text>
+
+      <rect x="260" y="20" width="200" height="168" {...box} />
+      <text x="272" y="40" {...lbl}>ENGINE (CODE)</text>
+      <text x="272" y="62" {...sub}>BASE TIER FROM LEAD CLASS</text>
+      <text x="272" y="78" {...sub}>WIRE REWRITES COLLAPSE TO ONE</text>
+      <text x="272" y="94" {...sub}>+1 PER CORROBORATION RULE</text>
+      <text x="272" y="110" {...sub}>ANTI-SPOOF DOMAIN CHECKS</text>
+      <text x="272" y="126" {...sub}>CEILINGS, FLOORS, PERSISTENCE</text>
+      <text x="272" y="150" {...sub}>DETERMINISTIC: SAME INPUTS,</text>
+      <text x="272" y="162" {...sub}>SAME SCORE, EVERY TIME.</text>
+
+      <rect x="512" y="20" width="200" height="168" {...box} />
+      <text x="524" y="40" {...lbl}>OUTPUT (STORED)</text>
+      <text x="524" y="62" {...sub}>SNR 1-5, DRAWN AS BARS</text>
+      <text x="524" y="78" {...sub}>FULL TRACE, APPEND-ONLY</text>
+      <text x="524" y="94" {...sub}>EVERY MOVE ON THE PUBLIC LOG</text>
+      <text x="524" y="110" {...sub}>CALIBRATION CLAIM IN LEDGER</text>
+      <text x="524" y="150" {...sub}>SCORE AT PUBLICATION IS KEPT</text>
+      <text x="524" y="162" {...sub}>AND CHECKED AGAINST OUTCOME.</text>
+
+      <line x1="208" y1="104" x2="260" y2="104" {...wire} />
+      <line x1="460" y1="104" x2="512" y2="104" {...wire} />
+    </svg>
+  );
+}
+
+const ABOUT_IMPACT_TIERS: Array<[string, string]> = [
+  [
+    "SEISMIC",
+    "Reshapes competitive dynamics: major M&A between tracked operators, an operator failure or bankruptcy, a flagship program cancelled, the first flight of a new orbital vehicle. A seismic claim resting on weak sourcing is auto-queued for human review while it publishes.",
+  ],
+  [
+    "MAJOR",
+    "A commercial director acts on it or briefs the team the same day: a contract or funding round with a stated value that changes the actor's trajectory, a regulatory grant or denial that changes what an operator may sell or where, a first-of-kind capability offered on commercial terms. The stated-value test is hard: the money or market access must be in the source, never inferred.",
+  ],
+  [
+    "NOTABLE",
+    "Worth the morning read: a routine-sized or unvalued award, an ordinary funding round, a milestone arriving on schedule, a partnership with named scope but unstated money. Commentary items cap here.",
+  ],
+  [
+    "NOISE",
+    "Belongs in the record, not the push: a scheduled launch succeeding on schedule, a routine product update, a minor partnership without stated money, capacity, or regulatory effect. Routine megaconstellation batch launches publish here, US and Chinese cadence alike.",
+  ],
+];
+
 export function AboutPage() {
   return (
     <Layout current="about">
       <h1 className="page-title">about</h1>
       <p className="lede">
-        Vesperio tracks the commercial space economy and the events that move it. Coverage of Chinese,
-        Indian, Japanese, and European activity gets equal weight to US activity.
+        Vesperio is a machine-maintained tracker for the new space economy. A deterministic data
+        engine sweeps the industry twice a day, publishes everything on-scope at an honest
+        confidence score, and shows its work: every source, every calculation, every correction,
+        on the record. This page is the whole system, documented.
       </p>
+
+      <section id="concept" className="qa">
+        <h2>The site and the concept</h2>
+        <p className="prose">
+          Vesperio covers commercial Earth observation, connectivity constellations, launch,
+          commercial human spaceflight, and the regulatory, financial, procurement, and
+          geopolitical events that move them. Chinese, Indian, Japanese, and European activity
+          gets equal weight to US activity. Coverage arrives on four surfaces: a news feed with a
+          plain-English explainer per event, a registry of reference profiles for constellations,
+          vehicles, spaceports, and organizations, computed statistics served with citation
+          anchors, and a public log of every sweep the machine runs.
+        </p>
+        <p className="prose">
+          The product promise is honest calibration. Nothing on-scope is withheld for sourcing
+          reasons; instead, every item and every scored registry fact carries a visible
+          signal-to-noise score from 1 to 5 whose calculation is stored and shown. A reader should
+          never catch this site claiming more confidence than its sources support. Publishing an
+          early signal at SNR 1 is the model working; publishing a weak claim dressed as a
+          certainty is the failure the whole system exists to prevent. Whether the scores are
+          honest is itself measured: each claim's score at publication is recorded and compared
+          against how the claim resolves.
+        </p>
+      </section>
+
+      <section id="engine" className="qa">
+        <h2>The data engine</h2>
+        <p className="prose">
+          The engine separates fetching, judgment, and arithmetic, and trusts each to a different
+          worker. A deterministic harvester fetches every feed-capable source on schedule,
+          normalizes the entries, and collapses syndicated retellings of one story into a single
+          candidate. A sweeping agent then works the queue: it filters against the published
+          scope, fetches the pages feeds cannot cover, reads the whitelisted expert channels, runs
+          an open-web discovery pass across a fixed query matrix, and crawls for corroboration on
+          every candidate within a per-sweep fetch budget. What the agent produces is only a
+          draft: facts, copy, and sworn statements about its sources.
+        </p>
+        <figure className="prose">
+          <EngineDiagram />
+        </figure>
+        <p className="prose">
+          The finalize gate is where drafts become data, and it is code, not prose. It validates
+          the schema, enforces deduplication as arithmetic rather than agent memory, collapses
+          wire rewrites into single corroboration units, verifies that first-party and
+          official-record claims come from domains the registry actually records for the actor,
+          computes every SNR score from the attested inputs, stamps the full trace, and records a
+          calibration claim for each scored source in the ledger. A draft that skipped a mandatory
+          pass, hand-wrote a score, or misclassified a source is rejected with the reason stated.
+          The agent cannot bypass the gate, and the scheduled runs cannot reach anything else: they
+          run without push credentials, with fetching as their only network capability, behind a
+          diff guard that fails the run if anything outside the data files changed.
+        </p>
+        <p className="prose">
+          Two feedback loops close the system. The source ledger scores the sources themselves: a
+          claim that loses a same-metric contradiction is a strike against the source that carried
+          it, a claim that started low and was later confirmed is a credit (early, not wrong), and
+          repeated strikes demote a source's class inside a rolling window until confirmed claims
+          win it back. The held queue is the human seam: schema conflicts, genuine same-metric
+          contradictions, and open scope questions queue for the editor instead of being silently
+          decided, and every quiet sweep still writes a public log entry saying why it was quiet.
+        </p>
+      </section>
+
+      <section id="snr" className="qa">
+        <h2>SNR and impact tiers</h2>
+        <p className="prose">
+          Confidence and importance are independent axes, scored separately on every item. SNR
+          reads how well the sources support the claim; impact reads how much the event matters
+          commercially. A seismic rumour is seismic and low-SNR at once, and the two never blend.
+        </p>
+        <figure className="prose">
+          <ScoringDiagram />
+        </figure>
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>score</th>
+              <th>what it means</th>
+            </tr>
+          </thead>
+          <tbody>
+            {SNR_SCALE.map(([n, meaning]) => (
+              <tr key={n}>
+                <th scope="row">SNR {n}</th>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="prose">
+          The mechanics in brief: the lead source's class sets the base tier, corroboration raises
+          it once per rule (a second distinct source, a fourth, pickup by a mainstream outlet
+          beyond the lead), and no amount of indirect corroboration reaches 5, which is reserved
+          for direct sources: the actor itself or an official record. Extraordinary claims start
+          at 1 regardless of source count. Fourteen uncontested days earn one point, once, never
+          above 4. A vetted expert on the signals whitelist floors an on-topic factual claim at 4
+          as an observer and 5 when the concerned party speaks about itself. Scores move over an
+          item's life, traces are append-only, and every movement renders on the public log. The
+          full rulebook, worked examples included, lives on the{" "}
+          <a href="/methodology/">methodology page</a>.
+        </p>
+        <div className="qa-pair" id="impact">
+          <h3>The four impact tiers</h3>
+          <table className="profile">
+            <tbody>
+              {ABOUT_IMPACT_TIERS.map(([tier, meaning]) => (
+                <tr key={tier}>
+                  <th scope="row">{tier}</th>
+                  <td>{meaning}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="prose">
+            When torn between two tiers, the machine takes the lower one. The feed's credibility
+            is spent on restraint.
+          </p>
+        </div>
+      </section>
+
+      <section id="registry-method" className="qa">
+        <h2>How the registry is populated</h2>
+        <p className="prose">
+          Registry profiles are reference data, so the bar is different from news: a fact needs
+          SNR 3 or better to enter at all, and it enters as one of two tiers. Facts at SNR 3 are
+          provisional, visibly badged, and never adjudicate a dispute; facts at SNR 4 and 5,
+          first-party statements, Wikipedia reference fields, and computed figures are canonical.
+          Every field carries its source URL and an as-of date. Unknown fields stay null: nothing
+          is ever estimated, interpolated, or summed across sources.
+        </p>
+        <p className="prose">
+          Population runs through four channels. First, computed pipelines: satellite counts
+          derive from public orbital catalogs and launch cadence from the Launch Library, and
+          these figures are authoritative only for exactly what they measure, cataloged objects on
+          a date, never for claims like operational or announced. Second, the news crossfeed:
+          when a published item states a registry-grade metric, the value queues for the matching
+          profile after a like-for-like test, filling only null fields, never overwriting.
+          Third, scheduled maintenance: a weekly run refreshes factual fields from primary pages
+          and established aggregators, appending sourced values without restructuring anything.
+          Fourth, curated crawls reviewed by the editor. Source preference is fixed at every step:
+          primary beats aggregator, aggregator beats Wikipedia and press, a quantified figure
+          beats a vague one, and a disputed field keeps both claims visible with their own scores.
+          Structural changes, new fields or new entities, happen only through reviewed changes,
+          never inside a scheduled run.
+        </p>
+      </section>
+
       <section id="verification-policy" className="qa">
-        <h2>Verification policy</h2>
+        <h2>FAQ</h2>
         {QA.map(([q, a]) => (
           <div className="qa-pair" key={q}>
             <h3>{q}</h3>
             <p className="prose">{a}</p>
           </div>
         ))}
-      </section>
-      <section className="qa">
-        <h2>Impact tiers</h2>
-        <div className="qa-pair" id="impact">
-          <h3>What do the impact tiers mean?</h3>
-          <p className="prose">
-            Every item carries one of four importance tiers. Seismic reshapes competitive
-            dynamics: major M&amp;A, an operator failure, a flagship program cancelled, the first
-            flight of a new vehicle. Major is something a commercial director acts on the same day:
-            a contract or funding round with a stated value that changes the actor's trajectory, or
-            a regulatory grant or denial that changes what an operator may sell. Notable is worth
-            the morning read: a routine-sized award, an ordinary funding round, a milestone on
-            schedule. Noise is logged for the record, not pushed: a scheduled launch succeeding, a
-            routine product update, a minor partnership. Importance and confidence are independent
-            axes: a seismic rumour is seismic and low-SNR at once. When torn between two tiers, the
-            lower one wins.
-          </p>
-        </div>
       </section>
     </Layout>
   );

@@ -4374,3 +4374,35 @@ a.sig-card:hover .sig-p-x {
 .sweep-card:hover .sweep-flood .sweep-armed {
   color: #f5f5f5;
 }
+
+/* ---------------------------------------------------------------------------
+   NO LOWERCASE ANYWHERE (Florian, 2026-07-12). Every piece of UI chrome
+   renders uppercase; the exemptions are article prose (.prose, explainer
+   bodies, registry overview/value text), where case carries meaning, and
+   data values with units (nm/km/m), which uppercase would corrupt. */
+.modal-close,
+.source-line,
+.footer,
+.logo-credit,
+.attribution,
+.modal-credit,
+.item-figure figcaption,
+.kv dd,
+.src-link {
+  text-transform: uppercase;
+}
+
+/* Registry profile title: the monogram tile centers on the title line via
+   flex instead of the old baseline-shift hack (misaligned logos,
+   Florian, 2026-07-12). */
+.page-title.profile-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.profile-title .reg-logo {
+  vertical-align: unset;
+  margin-right: 0;
+  flex: none;
+}
