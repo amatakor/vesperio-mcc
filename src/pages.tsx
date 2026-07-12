@@ -4629,6 +4629,16 @@ export function AboutPage() {
       <section id="snr" className="qa">
         <h2>SNR and impact tiers</h2>
         <p className="prose">
+          The name is borrowed from signal engineering. In a radio receiver, the signal-to-noise
+          ratio measures how much of what comes through the antenna is the transmission you want
+          versus the static behind it; a high ratio means you can trust what you are hearing, a
+          low one means the message may be an artifact of the noise. Space news has the same
+          physics: for every event there is a small amount of genuine, verifiable information and
+          an unbounded amount of static around it, syndicated rewrites, rumours, embellished
+          claims, outright fakes. The SNR score is this site's reading of that ratio for each
+          claim: how much verified signal stands behind it relative to the noise it arrived in.
+        </p>
+        <p className="prose">
           Confidence and importance are independent axes, scored separately on every item. SNR
           reads how well the sources support the claim; impact reads how much the event matters
           commercially. A seismic rumour is seismic and low-SNR at once, and the two never blend.
