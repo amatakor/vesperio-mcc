@@ -3338,7 +3338,13 @@ table.stat-table td.num {
    then the log. Gap on the 4px grid. */
 .system-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  /* Balanced two-column page (Florian, 2026-07-12): the log spine caps at
+     the panel-hugging measure (46rem text + 1rem panel padding a side) so
+     sweep frames carry no dead width, and the rail breathes between 340px
+     and 30rem instead of the old fixed 340. space-between hands any
+     leftover to the middle seam; gap stays the floor when space is tight. */
+  grid-template-columns: minmax(0, 48rem) clamp(340px, 30vw, 30rem);
+  justify-content: space-between;
   gap: var(--sp-7);
   align-items: start;
 }
