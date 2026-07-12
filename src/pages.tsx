@@ -87,41 +87,98 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** MCC marker lab (Florian, 2026-07-12): the four-way switcher plus
-    fine-tuning dials for the winning ATOM effect. Geometry dials
-    rewrite the SVG attributes directly (SMIL paths cannot read CSS
-    variables); speed changes clone-swap the electron to restart its
-    motion. Renders only with ?orbitlab in the URL. */
-const MCC_FX: Array<[string, string]> = [
-  ["atom", "electrons on drawn rails"],
-  ["ripple", "expanding rings"],
-  ["breathe", "brightness pulse"],
-  ["scan", "survey line sweep"],
+/** Atom geometry (Florian's recipe, 2026-07-12): tilt 30, rx 19.5,
+    ry 7.5, glow .35, electrons r=1, period 1s, third rail on. Rendered
+    TWICE with complementary half clips so electrons truly disappear
+    behind the label: the back layer (z0) owns the top arcs, the front
+    layer (z2) the bottom arcs, and the word sits at z1 between them.
+    Staggered negative begins keep the three electrons out of phase.
+    On hover the atom powers up: rails to full volt, electrons flip
+    bright, and each gains a two-dot train (opacity only, no transform,
+    no glow). */
+const ATOM_D = "M -19.5,0 A 19.5,7.5 0 1,1 19.5,0 A 19.5,7.5 0 1,1 -19.5,0";
+const ATOM_RAILS: Array<{ key: string; tilt: number; begin: number; reverse?: boolean }> = [
+  { key: "a", tilt: -30, begin: 0 },
+  { key: "b", tilt: 30, begin: -0.33, reverse: true },
+  { key: "c", tilt: 90, begin: -0.67 },
 ];
-const ATOM_DIALS: Array<[string, string, number, number, number, string]> = [
+function AtomSvg({ layer }: { layer: "f" | "b" }) {
+  const motion = (r: (typeof ATOM_RAILS)[number], lag: number) => ({
+    dur: "1s",
+    begin: `${r.begin + lag}s`,
+    repeatCount: "indefinite",
+    ...(r.reverse ? { keyPoints: "1;0", keyTimes: "0;1", calcMode: "linear" } : {}),
+  });
+  return (
+    <svg className={`atom-${layer}`} viewBox="-27 -14 54 28" aria-hidden="true">
+      <defs>
+        <clipPath id={`mcc-clip-${layer}`}>
+          <rect x="-27" y={layer === "f" ? 0 : -14} width="54" height="14" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#mcc-clip-${layer})`}>
+        {ATOM_RAILS.map((r) => (
+          <g
+            key={r.key}
+            className={`fx-atom-rail fx-atom-rail-${r.key}`}
+            transform={`rotate(${r.tilt})`}
+          >
+            <ellipse rx="19.5" ry="7.5" />
+            <path id={`mcc-orb-${r.key}-${layer}`} d={ATOM_D} fill="none" stroke="none" />
+            <circle r="1" className="fx-atom-e">
+              <animateMotion {...motion(r, 0)}>
+                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
+              </animateMotion>
+            </circle>
+            <circle r="0.75" className="fx-atom-t">
+              <animateMotion {...motion(r, 0.07)}>
+                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
+              </animateMotion>
+            </circle>
+            <circle r="0.55" className="fx-atom-t">
+              <animateMotion {...motion(r, 0.14)}>
+                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
+              </animateMotion>
+            </circle>
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/** MCC marker + masonry halo lab (Florian, 2026-07-12). Atom dials
+    rewrite both SVG layers' attributes directly (SMIL paths cannot
+    read CSS variables); the period dial clone-swaps electrons to
+    restart their clocks in sync. Halo dials drive the --halo-* CSS
+    variables the card hover reads. ?orbitlab only. */
+const ATOM_LAB_DIALS: Array<[string, string, number, number, number, string]> = [
   ["tilt", "rail tilt", 8, 88, 1, "deg"],
   ["rx", "size", 14, 27, 0.5, "px"],
   ["ry", "flatten", 3, 13, 0.5, "px"],
-  ["glow", "rail glow", 0.1, 0.8, 0.05, ""],
-  ["dot", "electron", 1, 3.2, 0.1, "px"],
-  ["durA", "period a", 1.5, 9, 0.1, "s"],
-  ["durB", "period b", 1.5, 9, 0.1, "s"],
-  ["durC", "period c", 1.5, 9, 0.1, "s"],
+  ["glow", "rail glow", 0.1, 1, 0.05, ""],
+  ["dot", "electron", 0.6, 3, 0.1, "px"],
+  ["period", "period", 0.5, 6, 0.1, "s"],
+];
+const HALO_DIALS: Array<[string, string, number, number, number, string]> = [
+  ["blur", "halo depth", 4, 64, 1, "px"],
+  ["spread", "halo reach", 0, 16, 1, "px"],
+  ["alpha", "halo intensity", 5, 100, 5, "%"],
 ];
 function OrbitLab() {
   const [open, setOpen] = useState(false);
   const [fx, setFx] = useState("atom");
-  const [railC, setRailC] = useState(false);
+  const [railC, setRailC] = useState(true);
   const [v, setV] = useState<Record<string, number>>({
-    tilt: 24,
-    rx: 21,
-    ry: 7,
-    glow: 0.3,
-    dot: 1.7,
-    durA: 3.4,
-    durB: 4.6,
-    durC: 5.8,
+    tilt: 30,
+    rx: 19.5,
+    ry: 7.5,
+    glow: 0.35,
+    dot: 1,
+    period: 1,
   });
+  const [halo, setHalo] = useState<Record<string, number>>({ blur: 26, spread: 0, alpha: 55 });
+  const [haloBorder, setHaloBorder] = useState(true);
   useEffect(() => {
     setOpen(window.location.search.includes("orbitlab"));
   }, []);
@@ -131,42 +188,52 @@ function OrbitLab() {
     const root = document.documentElement.style;
     root.setProperty("--atom-glow", String(v.glow));
     root.setProperty("--atom-c-show", railC ? "inline" : "none");
-    const svg = document.querySelector(".mcc-fx-atom svg");
-    if (!svg) return;
     const d = `M ${-v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${-v.rx},0`;
-    const tilts = [-v.tilt, v.tilt, 90];
-    const durs = [v.durA, v.durB, v.durC];
-    svg.querySelectorAll("g.fx-atom-rail").forEach((g, i) => {
-      g.setAttribute("transform", `rotate(${tilts[i]})`);
-      g.querySelector("ellipse")?.setAttribute("rx", String(v.rx));
-      g.querySelector("ellipse")?.setAttribute("ry", String(v.ry));
-      g.querySelector("path")?.setAttribute("d", d);
-      const circ = g.querySelector("circle");
-      if (!circ) return;
-      circ.setAttribute("r", String(v.dot));
-      const am = circ.querySelector("animateMotion");
-      if (am && am.getAttribute("dur") !== `${durs[i]}s`) {
-        am.setAttribute("dur", `${durs[i]}s`);
-        const clone = circ.cloneNode(true);
-        circ.replaceWith(clone);
+    const tilts: Record<string, number> = { a: -v.tilt, b: v.tilt, c: 90 };
+    for (const svg of document.querySelectorAll(".mcc-fx-atom svg")) {
+      for (const key of ["a", "b", "c"]) {
+        const g = svg.querySelector(`.fx-atom-rail-${key}`);
+        if (!g) continue;
+        g.setAttribute("transform", `rotate(${tilts[key]})`);
+        const el = g.querySelector("ellipse");
+        el?.setAttribute("rx", String(v.rx));
+        el?.setAttribute("ry", String(v.ry));
+        g.querySelector("path")?.setAttribute("d", d);
+        g.querySelectorAll("circle").forEach((c, i) => {
+          c.setAttribute("r", String(v.dot * [1, 0.75, 0.55][i]));
+          const am = c.querySelector("animateMotion");
+          if (am && am.getAttribute("dur") !== `${v.period}s`) {
+            am.setAttribute("dur", `${v.period}s`);
+            const clone = c.cloneNode(true);
+            c.replaceWith(clone);
+          }
+        });
       }
-    });
+    }
   }, [open, fx, railC, v]);
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement.style;
+    root.setProperty("--halo-blur", `${halo.blur}px`);
+    root.setProperty("--halo-spread", `${halo.spread}px`);
+    root.setProperty("--halo-a", `${halo.alpha}%`);
+    root.setProperty("--halo-border-c", haloBorder ? "var(--shell-accent)" : "var(--n5)");
+  }, [open, halo, haloBorder]);
   if (!open) return null;
-  const set = (k: string) => (e: { target: { value: string } }) =>
-    setVals(k, Number(e.target.value));
-  function setVals(k: string, n: number) {
-    setV((old) => ({ ...old, [k]: n }));
-  }
+  const setAtom = (k: string) => (e: { target: { value: string } }) =>
+    setV((old) => ({ ...old, [k]: Number(e.target.value) }));
+  const setH = (k: string) => (e: { target: { value: string } }) =>
+    setHalo((old) => ({ ...old, [k]: Number(e.target.value) }));
   const readout =
-    Object.entries(v)
-      .map(([k, n]) => `${k}=${n}`)
-      .join(" ") + ` railC=${railC ? "on" : "off"} fx=${fx}`;
+    Object.entries(v).map(([k, n]) => `${k}=${n}`).join(" ") +
+    ` railC=${railC ? "on" : "off"} · halo ` +
+    Object.entries(halo).map(([k, n]) => `${k}=${n}`).join(" ") +
+    ` border=${haloBorder ? "volt" : "quiet"}`;
   return (
     <div className="orbit-lab">
       <h4>mcc fx lab</h4>
       <div className="orbit-lab-shell-head">
-        {MCC_FX.map(([key]) => (
+        {["atom", "ripple", "breathe", "scan"].map((key) => (
           <button key={key} type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
             {key}
           </button>
@@ -174,10 +241,10 @@ function OrbitLab() {
       </div>
       {fx === "atom" && (
         <>
-          {ATOM_DIALS.map(([k, label, min, max, step, unit]) => (
+          {ATOM_LAB_DIALS.map(([k, label, min, max, step, unit]) => (
             <div className="orbit-lab-row" key={k}>
               <span>{label}</span>
-              <input type="range" min={min} max={max} step={step} value={v[k]} onChange={set(k)} />
+              <input type="range" min={min} max={max} step={step} value={v[k]} onChange={setAtom(k)} />
               <span className="orbit-lab-val">
                 {v[k]}
                 {unit}
@@ -194,6 +261,24 @@ function OrbitLab() {
           </div>
         </>
       )}
+      <div className="orbit-lab-shell">
+        <div className="orbit-lab-shell-head">
+          <span>card halo</span>
+          <button type="button" className={haloBorder ? "on" : ""} onClick={() => setHaloBorder(!haloBorder)}>
+            {haloBorder ? "volt border" : "quiet border"}
+          </button>
+        </div>
+        {HALO_DIALS.map(([k, label, min, max, step, unit]) => (
+          <div className="orbit-lab-row" key={k}>
+            <span>{label}</span>
+            <input type="range" min={min} max={max} step={step} value={halo[k]} onChange={setH(k)} />
+            <span className="orbit-lab-val">
+              {halo[k]}
+              {unit}
+            </span>
+          </div>
+        ))}
+      </div>
       <div className="orbit-lab-out">{readout}</div>
     </div>
   );
@@ -352,56 +437,8 @@ export function Masthead({ current }: { current?: string }) {
                   </span>
                   <span className="mcc-fx mcc-fx-breathe" />
                   <span className="mcc-fx mcc-fx-atom">
-                    <svg viewBox="-27 -14 54 28" aria-hidden="true">
-                      <g className="fx-atom-rail" transform="rotate(-24)">
-                        <ellipse rx="21" ry="7" />
-                        <path
-                          id="mcc-orb-a"
-                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
-                          fill="none"
-                          stroke="none"
-                        />
-                        <circle r="1.7" className="fx-atom-e">
-                          <animateMotion dur="3.4s" repeatCount="indefinite">
-                            <mpath href="#mcc-orb-a" />
-                          </animateMotion>
-                        </circle>
-                      </g>
-                      <g className="fx-atom-rail" transform="rotate(24)">
-                        <ellipse rx="21" ry="7" />
-                        <path
-                          id="mcc-orb-b"
-                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
-                          fill="none"
-                          stroke="none"
-                        />
-                        <circle r="1.7" className="fx-atom-e">
-                          <animateMotion
-                            dur="4.6s"
-                            repeatCount="indefinite"
-                            keyPoints="1;0"
-                            keyTimes="0;1"
-                            calcMode="linear"
-                          >
-                            <mpath href="#mcc-orb-b" />
-                          </animateMotion>
-                        </circle>
-                      </g>
-                      <g className="fx-atom-rail fx-atom-rail-c" transform="rotate(90)">
-                        <ellipse rx="21" ry="7" />
-                        <path
-                          id="mcc-orb-c"
-                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
-                          fill="none"
-                          stroke="none"
-                        />
-                        <circle r="1.7" className="fx-atom-e">
-                          <animateMotion dur="5.8s" repeatCount="indefinite">
-                            <mpath href="#mcc-orb-c" />
-                          </animateMotion>
-                        </circle>
-                      </g>
-                    </svg>
+                    <AtomSvg layer="b" />
+                    <AtomSvg layer="f" />
                   </span>
                   <span className="mcc-fx mcc-fx-scan" />
                 </span>

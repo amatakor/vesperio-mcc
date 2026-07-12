@@ -4778,10 +4778,8 @@ table.stat-table th {
   position: absolute;
   inset: 0;
 }
-:root:not([data-mcc-fx]) .mcc-fx-atom,
 :root[data-mcc-fx="ripple"] .mcc-fx-ripple,
 :root[data-mcc-fx="breathe"] .mcc-fx-breathe,
-:root[data-mcc-fx="atom"] .mcc-fx-atom,
 :root[data-mcc-fx="scan"] .mcc-fx-scan {
   display: block;
 }
@@ -4842,10 +4840,19 @@ table.stat-table th {
   }
 }
 
-/* ATOM: electrons on drawn rails, counter-rotating, crossing through
-   the word. Rails are faint; dots full volt. */
+/* ATOM: electrons on drawn rails, crossing through the word with TRUE
+   occlusion: the back SVG layer (z0) owns the top arcs and sits behind
+   the label (z1), the front layer (z2) owns the bottom arcs. Hover is
+   the power-up (Florian, 2026-07-12): rails to full volt, electrons
+   flip bright, and each electron's train fades in. Opacity and color
+   only: no transforms, no glow. */
 .mcc-fx-atom {
-  z-index: 2;
+  display: none;
+}
+:root:not([data-mcc-fx]) .mcc-fx-atom,
+:root[data-mcc-fx="atom"] .mcc-fx-atom {
+  display: block;
+  z-index: auto;
 }
 .mcc-fx-atom svg {
   position: absolute;
@@ -4856,17 +4863,39 @@ table.stat-table th {
   margin: -14px 0 0 -27px;
   overflow: visible;
 }
+.mcc-fx-atom svg.atom-b {
+  z-index: 0;
+}
+.mcc-fx-atom svg.atom-f {
+  z-index: 2;
+}
 .fx-atom-rail ellipse {
   fill: none;
   stroke: var(--dot);
   stroke-width: 0.75;
-  opacity: var(--atom-glow, 0.3);
+  opacity: var(--atom-glow, 0.35);
+  transition: opacity 120ms linear;
 }
 .fx-atom-rail-c {
-  display: var(--atom-c-show, none);
+  display: var(--atom-c-show, inline);
 }
 .fx-atom-e {
   fill: var(--dot);
+}
+.fx-atom-t {
+  fill: var(--dot);
+  opacity: 0;
+  transition: opacity 140ms linear;
+}
+.nav-mcc:hover .fx-atom-rail ellipse {
+  opacity: 1;
+}
+.nav-mcc:hover .fx-atom-e {
+  fill: var(--text-1);
+}
+.nav-mcc:hover .fx-atom-t {
+  fill: var(--text-1);
+  opacity: 0.85;
 }
 
 /* SCAN: a survey line sweeps the word, then idle sky. */
@@ -5025,4 +5054,18 @@ table.stat-table th {
 }
 [data-theme="light"] .sweep-card {
   border-color: var(--border-2);
+}
+
+/* Masonry hover halo (Florian, 2026-07-12: explicit amendment to the
+   no-glow rule, this hover only): the volt beams INSIDE the card via
+   an inset bloom; the ?orbitlab halo dials drive depth, reach,
+   intensity, and whether the border also lights. */
+.card:not(.card-seismic):hover {
+  box-shadow: inset 0 0 var(--halo-blur, 26px) var(--halo-spread, 0px)
+    color-mix(in srgb, var(--volt) var(--halo-a, 55%), transparent);
+  border-color: var(--halo-border-c, var(--shell-accent));
+}
+.sweep-card:hover {
+  box-shadow: inset 0 0 var(--halo-blur, 26px) var(--halo-spread, 0px)
+    color-mix(in srgb, var(--volt) var(--halo-a, 55%), transparent);
 }
