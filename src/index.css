@@ -3220,6 +3220,11 @@ a.sig-card.entity-card:hover .ent-p-vehicle {
   font-family: var(--sans);
   font-size: 0.85rem;
 }
+/* Tile labels are stored lowercase; the no-lowercase-starts rule guards
+   the display (Florian, 2026-07-12). */
+.tile-label::first-letter {
+  text-transform: uppercase;
+}
 .tile-sub {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -3450,6 +3455,13 @@ table.stat-table td.num {
   text-align: justify;
   hyphens: auto;
 }
+/* No sentence starts lowercase anywhere on the site (Florian, 2026-07-11;
+   reaffirmed 2026-07-12: normal case is allowed, lowercase STARTS are not).
+   Summaries are machine-written records rendered verbatim; this guards the
+   display without touching the stored text. */
+.sweep-summary::first-letter {
+  text-transform: uppercase;
+}
 .sweep-signals {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
@@ -3457,26 +3469,15 @@ table.stat-table td.num {
   text-align: justify;
   hyphens: auto;
 }
-
-/* /system/ is one instrument surface (Florian, 2026-07-12: "no lowercase
-   anywhere"): uppercase at the CONTAINER per the caps-as-a-system rule.
-   The reading-voice opt-out (.prose) is overridden here — machine records
-   and index answers read as chrome. The one exemption is the citation
-   string, which readers copy-paste verbatim. Covers the merged /system/
-   grid and the /system/YYYY-MM/ archive pages. */
-.system-grid,
-.log-archive {
-  text-transform: uppercase;
-}
-.system-grid .prose,
-.log-archive .prose {
-  text-transform: inherit;
-  text-align: justify;
-  hyphens: auto;
-}
-.system-grid .citation code {
+.sweep-signals-note {
   text-transform: none;
+  letter-spacing: 0;
 }
+
+/* /system/ text blocks share the measure and justify like the sweep spine
+   (rule 71 applied to the merged page and its archive months). */
+.system-grid .prose,
+.log-archive .prose,
 .system-grid .lede,
 .log-archive .lede,
 .system-grid .hero-sentence {

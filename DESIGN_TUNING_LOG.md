@@ -1504,18 +1504,18 @@ justify-content center with flex-wrap (attribution and freshness stack
 as centered rows when the stage narrows), 10px/500/.08em (the 8px face
 was off-system), padding 12px 0.
 
-## 75 · /system/ is one instrument surface
+## 75 · /system/ typography: no lowercase STARTS, one measure
 
-RULE (Florian, 2026-07-12: "no lowercase stuff anywhere"): the merged
-/system/ page (and /system/YYYY-MM/ archives via .log-archive)
-uppercases at the CONTAINER, extending rule 70. The reading-voice
-opt-out (.prose) is overridden inside it: machine records and index
-answers read as chrome. Exemptions: the cite-this citation string
-(copy-paste artifact) keeps its case; native tooltips can't be CSS-
-transformed, so the KPI title notes are uppercase in source.
-Paragraphs of equal width (rule 71 applied): every text block on the
-log spine and rail shares the 46rem measure, justified with
-auto-hyphenation — summaries, signals/discovery lines, panel prose,
+RULE (Florian, 2026-07-12, clarified same day): "no lowercase" means
+no sentence or label STARTS lowercase; normal case is allowed. A
+container-wide uppercase on /system/ was built and REVERTED — do not
+re-propose. What holds: ::first-letter guards on machine-rendered
+text (sweep summaries, stat tile labels) and uppercase-in-source for
+native tooltips (title bubbles can't be CSS-guarded); data values
+(domains, slugs, category names) stay as data. Paragraphs of equal
+width (rule 71 applied): every text block on the log spine and rail
+shares the 46rem measure, justified with auto-hyphenation —
+summaries, signals/discovery lines, SNR movement notes, panel prose,
 ledes, hero sentence. The 80ch sweep measure is retired. SNR movement
 downgrades recolored orange -> red per rule 72 (sign colors
 everywhere the notation appears).

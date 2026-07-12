@@ -235,17 +235,18 @@ export function Masthead({ current }: { current?: string }) {
         <SubscribeControl />
         {/* Support button (Florian, 2026-07-11, corrected same day): FRAMED,
             never filled — accent border + accent text — at the FAR RIGHT of
-            the menu. Links buymeacoffee.com/vesperio (Florian, 2026-07-12).
+            the menu. Links ko-fi.com/vesperio (Florian switched from
+            Buy Me a Coffee, 2026-07-12).
             The cup glyph is drawn (Florian, 2026-07-12: a real coffee cup,
             not the ◆); on narrow windows the badge collapses to the cup. */}
-        <a className="coffee-btn nav-badge nav-badge-coffee" href="https://buymeacoffee.com/vesperio" target="_blank" rel="noopener">
+        <a className="coffee-btn nav-badge nav-badge-coffee" href="https://ko-fi.com/vesperio" target="_blank" rel="noopener">
           <svg className="badge-glyph" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.1">
             <rect x="1.5" y="4.5" width="6.5" height="5.5" />
             <path d="M8 5.5h2.2v2.6H8" />
             <line x1="3.6" y1="1" x2="3.6" y2="3" />
             <line x1="5.9" y1="1" x2="5.9" y2="3" />
           </svg>
-          <span className="nav-badge-label">BUY ME A COFFEE</span>
+          <span className="nav-badge-label">SUPPORT ON KO-FI</span>
         </a>
       </span>
     </header>
@@ -5178,26 +5179,26 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
     data voice; each cell states exactly what it measures. All numbers are
     computed at build time (page-data-server), never stored as facts. */
 function LogKpiRow({ kpis }: { kpis: DataFor<"system">["kpis"] }) {
-  // Tooltip notes are UPPERCASE in source: native title bubbles cannot be
-  // styled, and /system/ renders no lowercase anywhere (Florian, 2026-07-12).
+  // Tooltip notes start uppercase in source (no sentence starts lowercase,
+  // Florian): native title bubbles cannot be styled by CSS guards.
   const cells: Array<[string, string, string]> = [
-    ["items / day", kpis.itemsPerDay.toFixed(1), "PUBLISHED ITEMS IN THE WINDOW, PER DAY"],
-    ["lead domains", String(kpis.leadDomains), "DISTINCT LEAD-SOURCE DOMAINS IN THE WINDOW"],
-    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "SHARE OF WINDOW ITEMS SCORED 1 OR 2"],
+    ["items / day", kpis.itemsPerDay.toFixed(1), "Published items in the window, per day"],
+    ["lead domains", String(kpis.leadDomains), "Distinct lead-source domains in the window"],
+    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "Share of window items scored 1 or 2"],
     [
       "crossfeed queued",
       String(kpis.crossfeedQueued),
-      "REGISTRY CROSSFEED CANDIDATES QUEUED, PROPOSED IN THE WINDOW",
+      "Registry crossfeed candidates queued, proposed in the window",
     ],
     [
       "claims resolved",
       String(kpis.claimsResolved),
-      "CALIBRATION CLAIMS CONFIRMED OR DEBUNKED IN THE WINDOW",
+      "Calibration claims confirmed or debunked in the window",
     ],
     [
       "signals-sourced",
       String(kpis.signalsSourced),
-      "WINDOW ITEMS FLOORED BY A SIGNALS-LIST SOURCE",
+      "Window items floored by a signals-list source",
     ],
   ];
   return (
@@ -5276,7 +5277,7 @@ function LogPresence({
 function SubscribeForm() {
   return (
     <div className="subscribe">
-      <p className="subscribe-label">the week&rsquo;s signal, mailed</p>
+      <p className="subscribe-label">The week&rsquo;s signal, mailed</p>
       <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
       <form
         // Live Buttondown account (Florian, 2026-07-12): buttondown.com/vesperio.
