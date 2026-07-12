@@ -4470,7 +4470,7 @@ function EngineDiagram() {
       <text x={356} y={240} {...wireLbl}>CALIBRATION CLAIMS DOWN, SOURCE CLASSES BACK UP</text>
 
       {/* row 4: the human seam */}
-      <Box x={396} y={404} h={48} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
+      <Box x={396} y={404} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
       <polyline points="466,352 466,402" {...wire} />
       <text x={472} y={382} {...wireLbl}>RULES</text>
 
