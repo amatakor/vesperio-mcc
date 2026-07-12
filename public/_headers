@@ -1,0 +1,14 @@
+# Cloudflare Pages _headers — defense in depth for re-hosted media.
+#
+# Fetched logos/thumbnails (including SVGs) are stored under /img/ and served
+# from our own origin. SVGs are documents: even after the parse-and-allowlist
+# sanitizer (scripts/lib/sanitize-svg.ts), we lock the whole /img/ tree down so
+# a hypothetical future sanitizer bypass still cannot script on the origin.
+#
+# default-src 'none'  -> no scripts, fetches, frames, workers, etc.
+# style-src 'unsafe-inline' -> allow inline presentation styling SVGs may carry
+# sandbox             -> serve as a unique opaque origin with all capabilities
+#                        (scripts, forms, same-origin) disabled by default.
+/img/*
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+  X-Content-Type-Options: nosniff

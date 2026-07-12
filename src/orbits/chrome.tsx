@@ -359,6 +359,10 @@ export function HudColumn({
 }) {
   return (
     <div className="hud">
+      {/* MCC's only h1 (QC hardening 2026-07-13): the page chrome had no
+          top-level heading. Visually hidden; the HUD's own module labels
+          stay the sighted heading language. */}
+      <h1 className="sr-only">MCC: live orbital view</h1>
       <SatCount tracked={tracked} asOf={asOf} />
       {stats && (
         <>

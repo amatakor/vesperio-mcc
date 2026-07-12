@@ -37,9 +37,20 @@ function inWindow(date: string, today: string): boolean {
   return d >= 0 && d <= LEDGER_WINDOW_DAYS;
 }
 
-/** Events within the rolling ledger window (SNR_PLAN.md §A4). */
+/**
+ * Events within the rolling ledger window (SNR_PLAN.md §A4).
+ *
+ * An event is windowed by its claim's PUBLICATION date, not by the date
+ * the resolution landed (QC P1-4, 2026-07-13): demotion compares strikes
+ * against claims, and claims are windowed by publication, so dating the
+ * two sides differently let a strike outlive its cohort by the >= 14-day
+ * resolution lag and mis-drive effectiveClass long after the offending
+ * claim had aged out. Events whose claim is not on this source (or whose
+ * claim id no longer resolves) fall back to their own date.
+ */
 export function windowEvents(source: LedgerSource, today: string): LedgerEvent[] {
-  return source.events.filter((e) => inWindow(e.date, today));
+  const claimDates = new Map(source.claims.map((c) => [c.claim, c.date]));
+  return source.events.filter((e) => inWindow(claimDates.get(e.claim) ?? e.date, today));
 }
 
 /** Claims first scored within the rolling ledger window. */

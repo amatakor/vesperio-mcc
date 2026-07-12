@@ -73,7 +73,7 @@ import { Popup, type PopupField } from "./popup";
 import { Satellites, type PickedSat, type SnapshotBuffers } from "./satellites";
 import { Stars } from "./stars";
 import type { LayoutEntry, WorkerIn, WorkerOut } from "./types";
-import { CATEGORY_TOKENS, RESERVE_TOKEN } from "./types";
+import { CATEGORY_TOKENS, RESERVE_TOKEN, SNAPSHOT_CADENCE_MS } from "./types";
 
 const GLOBE_RADIUS = 1;
 const OCEAN_RADIUS = 0.995; // occluder
@@ -87,6 +87,12 @@ export const AXIAL_TILT_DEG = 23.44;
  * holds on screen), eastward like the real one. Rad/s; ~150s per turn,
  * matching the old camera-orbit pace. */
 const SPIN_RAD_PER_S = (2 * Math.PI) / 150;
+
+/** Worker snapshot cadence while the tab is hidden or backgrounded (QC
+ * hardening 2026-07-13): rare enough to idle the ~12,300-satellite
+ * propagation without tearing down worker state, mirroring the registry
+ * mini's IDLE_CADENCE_MS (src/orbits/mini3d-scene.tsx). */
+const IDLE_CADENCE_MS = 60000;
 
 // ------------------------------------------------------------- theme
 
@@ -975,6 +981,73 @@ export default function Scene() {
     };
   }, []);
 
+  // Background throttling (QC hardening 2026-07-13): the full scene
+  // propagates ~12,300 satellites every second and renders every frame
+  // even when the tab is hidden or backgrounded. Same gate as the
+  // registry mini (src/orbits/mini3d-scene.tsx lines ~170-196): an
+  // IntersectionObserver on the canvas wrap plus document.hidden decide
+  // whether the view is actually visible; either being false idles the
+  // worker's snapshot cadence and switches the Canvas to on-demand
+  // rendering (see the Canvas frameloop prop below).
+  const [sceneVisible, setSceneVisible] = useState(true);
+  useEffect(() => {
+    const el = wrapRef.current;
+    let onScreen = true;
+    const update = () => setSceneVisible(onScreen && !document.hidden);
+    const io =
+      el && "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entries) => {
+              onScreen = entries.some((e) => e.isIntersecting);
+              update();
+            },
+            { threshold: 0.05 },
+          )
+        : null;
+    if (io && el) io.observe(el);
+    document.addEventListener("visibilitychange", update);
+    update();
+    return () => {
+      io?.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, []);
+
+  // WebGL context-loss recovery (QC hardening 2026-07-13): a mid-session
+  // GPU context loss otherwise leaves a permanently blank canvas with no
+  // handlers to recover it. glCanvas is captured from Canvas's onCreated
+  // once the renderer exists; the listeners live on that DOM node and are
+  // torn down whenever it changes or the scene unmounts.
+  const [glCanvas, setGlCanvas] = useState<HTMLCanvasElement | null>(null);
+  const [contextLost, setContextLost] = useState(false);
+  useEffect(() => {
+    if (!glCanvas) return;
+    const onLost = (e: Event) => {
+      // preventDefault is what allows the browser to fire
+      // webglcontextrestored later; without it the loss is permanent.
+      e.preventDefault();
+      setContextLost(true);
+    };
+    const onRestored = () => {
+      setContextLost(false);
+    };
+    glCanvas.addEventListener("webglcontextlost", onLost, false);
+    glCanvas.addEventListener("webglcontextrestored", onRestored, false);
+    return () => {
+      glCanvas.removeEventListener("webglcontextlost", onLost);
+      glCanvas.removeEventListener("webglcontextrestored", onRestored);
+    };
+  }, [glCanvas]);
+
+  // Nothing worth rendering or propagating while the tab is hidden,
+  // off-screen, or the GPU context is lost: one flag idles the worker's
+  // snapshot cadence and switches the Canvas to on-demand rendering (see
+  // the Canvas frameloop prop below).
+  const renderActive = sceneVisible && !contextLost;
+  useEffect(() => {
+    post({ type: "cadence", ms: renderActive ? SNAPSHOT_CADENCE_MS : IDLE_CADENCE_MS });
+  }, [renderActive, post]);
+
   // Load element files once per constellation and hand them to the worker.
   useEffect(() => {
     for (const entry of orbitCatalog) {
@@ -1622,10 +1695,16 @@ export default function Scene() {
           camera={{ position: [0, 0, 2.7], fov: 45 }}
           dpr={[1, 2]}
           gl={{ antialias: true, alpha: true }}
-          onCreated={({ raycaster }) => {
+          // "demand" (not "never") while hidden/off-screen/context-lost:
+          // the scene still paints its mount/state frames, matching the
+          // registry mini's pattern, and resumes "always" the moment
+          // renderActive flips back.
+          frameloop={renderActive ? "always" : "demand"}
+          onCreated={({ raycaster, gl }) => {
             // Tap-friendly pick radius (~10px, spec 4: touch-first,
             // primary selection is tap).
             raycaster.params.Points.threshold = 0.04;
+            setGlCanvas(gl.domElement);
           }}
           onPointerMissed={() => {
             const down = downPos.current;
@@ -1691,8 +1770,26 @@ export default function Scene() {
           <AutoSpin on={autoRotate && !reducedMotion} spinRef={spinGroup} />
           <Controls enableRotate={!axisLock} onInteract={() => setAutoRotate(false)} />
         </Canvas>
+        {contextLost && (
+          // WebGL context-loss fallback (QC hardening 2026-07-13): reuses
+          // the styling/placement of the WebGL-unsupported card
+          // (src/orbits/stage.tsx Fallback, reason "no-webgl") via the
+          // shared .orbits-fallback classes, positioned as an overlay over
+          // the now-blank canvas instead of the whole-page state. Stays up
+          // until webglcontextrestored fires; if it never does, this is
+          // the permanent state.
+          <div className="orbits-fallback orbits-fallback-overlay">
+            <div className="orbits-fallback-card opanel6">
+              <div className="orbits-fallback-title">3D VIEW INTERRUPTED</div>
+              <p>
+                The browser reclaimed the graphics context for this view. It will resume
+                automatically if the browser restores it.
+              </p>
+            </div>
+          </div>
+        )}
         <div className="ostatus">
-          STATUS: LIVE <i className="hud-live-dot" />
+          STATUS: {contextLost ? "RECONNECTING" : "LIVE"} <i className="hud-live-dot" />
         </div>
         {tuneOn && <ConeTuner params={coneTune} onChange={setConeTune} />}
         {popup && (

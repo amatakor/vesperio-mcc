@@ -260,8 +260,8 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
     errors.push(`${path}.kind: "${String(v.kind)}" not in [${ITEM_KINDS.join(", ")}]`);
   }
   // Commentary is a take, not an event; it never interrupts anyone's Monday.
-  if (v.kind === "commentary" && v.impact === "seismic") {
-    errors.push(`${path}.impact: commentary caps at "notable"; a seismic take is still just a take`);
+  if (v.kind === "commentary" && (v.impact === "seismic" || v.impact === "major")) {
+    errors.push(`${path}.impact: commentary caps at "notable"; a ${String(v.impact)} take is still just a take`);
   }
 
   // Every published item carries its SNR score and the stored trace.
@@ -368,8 +368,10 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
     } else {
       const img = v.image;
       const src = reqString(img, "src", `${path}.image`, errors);
-      if (src !== null && !src.startsWith("/img/") && !isHttpUrl(src)) {
-        errors.push(`${path}.image.src: must be a /img/ path or an http(s) URL`);
+      // Re-hosted paths only (QC 2026-07-13): an external URL here would
+      // bypass every gate of the deterministic thumb pipeline.
+      if (src !== null && !src.startsWith("/img/")) {
+        errors.push(`${path}.image.src: must be a re-hosted /img/ path (the fetch-thumbs pipeline output)`);
       }
       reqString(img, "credit", `${path}.image`, errors);
       if (!isHttpUrl(img.origin_url)) {
@@ -874,6 +876,7 @@ function checkSourcedFieldValue(
       errors.push(`${fieldPath}.snr: must be an integer 1-5`);
     } else {
       validateSnrTrace(v.snr_trace, v.snr, `${fieldPath}.snr_trace`, errors);
+      checkRegistryFactProvenance(v.snr_trace, fieldPath, errors);
       if (value === null || value === undefined) {
         errors.push(`${fieldPath}: snr present on a null value`);
       }
@@ -1146,6 +1149,95 @@ const ORG_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> 
   ["website", "string"],
 ];
 
+/**
+ * Exhaustive per-type key sets (QC P1-3, 2026-07-13). validateRegistryProfile
+ * used to check only the keys it knew about, so a scheduled run (or a
+ * prompt-injected one) could smuggle arbitrary new fields past the
+ * validator. Unknown keys now reject; new fields land only via reviewed
+ * structural PRs that extend these sets.
+ */
+const REGISTRY_COMMON_KEYS = [
+  "slug",
+  "name",
+  "entity_type",
+  "notes",
+  "ticker",
+  "stock_symbol",
+  "events",
+  "positioning",
+];
+const ALLOWED_PROFILE_KEYS: Record<
+  "constellation" | "vehicle" | "spaceport" | "organization",
+  Set<string>
+> = {
+  constellation: new Set([
+    ...REGISTRY_COMMON_KEYS,
+    "domain",
+    "parent",
+    "orbits",
+    "imaging_modes",
+    "generations",
+    ...CONSTELLATION_FIELDS.map(([k]) => k),
+    ...CONSTELLATION_OPTIONAL_FIELDS.map(([k]) => k),
+  ]),
+  vehicle: new Set([
+    ...REGISTRY_COMMON_KEYS,
+    "variant",
+    ...VEHICLE_FIELDS.map(([k]) => k),
+    ...VEHICLE_OPTIONAL_FIELDS.map(([k]) => k),
+  ]),
+  spaceport: new Set([
+    ...REGISTRY_COMMON_KEYS,
+    "region",
+    "ll2_location_id",
+    ...SPACEPORT_FIELDS.map(([k]) => k),
+  ]),
+  organization: new Set([...REGISTRY_COMMON_KEYS, "kind", ...ORG_FIELDS.map(([k]) => k)]),
+};
+
+/**
+ * Registry scoring anti-spoof (QC P1-2, 2026-07-13). The registry
+ * maintenance agent hand-attests each fact's snr/tier from a prompt
+ * lookup table; nothing checked the claimed base tier against the source
+ * that supposedly earned it, so an injected press page claiming
+ * "snr": 5, "tier": "canonical" would ship. The base tier of a scored
+ * registry fact is now capped by what its host's class earns
+ * (SNR_SPEC 2.3): computed/official-record hosts 5, the canonical
+ * aggregators 4, everything else press-tier 3. Corroborated climbs above
+ * the base stay legal; a dishonest base does not. First-party and
+ * Wikipedia facts are unscored by rule, so they never reach this gate.
+ */
+const REGISTRY_DIRECT_HOSTS = ["celestrak.org", "space-track.org", "thespacedevs.com", "itu.int"];
+const REGISTRY_AGGREGATOR_HOSTS = ["space.skyrocket.de", "eoportal.org", "planet4589.org"];
+
+function registryBaseTierCeiling(sourceUrl: string): number {
+  let host: string;
+  try {
+    host = new URL(sourceUrl).hostname.toLowerCase();
+  } catch {
+    return 1;
+  }
+  const matches = (base: string): boolean => host === base || host.endsWith("." + base);
+  if (host.endsWith(".gov") || REGISTRY_DIRECT_HOSTS.some(matches)) return 5;
+  if (REGISTRY_AGGREGATOR_HOSTS.some(matches)) return 4;
+  return 3;
+}
+
+/** Applied to every scored SourcedField's trace by checkSourcedFieldValue. */
+function checkRegistryFactProvenance(trace: unknown, fieldPath: string, errors: string[]): void {
+  if (!isObj(trace) || !isObj(trace.base)) return; // shape errors surface in validateSnrTrace
+  const base = trace.base;
+  if (typeof base.source !== "string" || typeof base.tier !== "number") return;
+  const ceiling = registryBaseTierCeiling(base.source);
+  if (base.tier > ceiling) {
+    errors.push(
+      `${fieldPath}.snr_trace.base: tier ${base.tier} claimed for host of "${base.source}", ` +
+        `which earns at most ${ceiling} (computed/official 5, canonical aggregators 4, press 3); ` +
+        `reclassify the base honestly`,
+    );
+  }
+}
+
 // --------------------------------------------------------------- orbits
 
 function checkLatLon(o: Obj, path: string, errors: string[]): void {
@@ -1413,9 +1505,19 @@ export function validateRegistryProfile(
   if (data.entity_type !== expectedType) {
     errors.push(`${path}.entity_type: must be "${expectedType}"`);
   }
+  // Exhaustive keys (QC P1-3): unknown keys reject, so a scheduled run
+  // cannot smuggle a new field past the validator.
+  for (const k of Object.keys(data)) {
+    if (!ALLOWED_PROFILE_KEYS[expectedType].has(k)) {
+      errors.push(
+        `${path}.${k}: unknown key (structural registry edits land only via reviewed PRs that extend the validator)`,
+      );
+    }
+  }
   if (data.notes !== undefined && data.notes !== null && typeof data.notes !== "string") {
     errors.push(`${path}.notes: must be null or a string when present`);
   }
+  if (typeof data.notes === "string") checkNoEmDash(data.notes, `${path}.notes`, errors);
 
   if (data.ticker !== undefined) {
     checkSourcedField(data as Obj, "ticker", "string", path, errors);
@@ -1489,6 +1591,14 @@ export function validateRegistryProfile(
   }
   // Registry v2: positioning is allowed on all four profile types.
   checkPositioning(data, path, errors);
+  // The overview renders as body copy; the house em-dash rule applies to
+  // it and to notes like any other on-site prose (QC 2026-07-13).
+  {
+    const ov = (data as Obj).overview;
+    if (isObj(ov) && typeof ov.value === "string") {
+      checkNoEmDash(ov.value, `${path}.overview.value`, errors);
+    }
+  }
   // Status is a chip on the profile header: a short stated status word,
   // never a sentence (Florian, 2026-07-12, after 17 profiles shipped
   // generation roadmaps and ownership structures as their "status").

@@ -900,7 +900,12 @@ function SweepLcd({ value }: { value: string }) {
       <span className="sweep-lcd-ghost" aria-hidden="true">
         {value.replace(/[0-9-]/g, "8")}
       </span>
-      <span className="sweep-lcd-lit">{value}</span>
+      {/* The digits tick every second; the aside's aria-label (derived from
+          minutes, not seconds) carries the accessible announcement instead
+          of this text, so it doesn't get read out on every tick. */}
+      <span className="sweep-lcd-lit" aria-hidden="true">
+        {value}
+      </span>
     </span>
   );
 }
@@ -976,6 +981,11 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
   let local = "";
   let elapsedPct = 0;
   let hold: { heldFor: string } | null = null;
+  // Human-readable stand-in for the ticking digits (which are aria-hidden):
+  // derived from minutes, not seconds, so the string is only ever the same
+  // 59 seconds out of 60 and React only touches the DOM attribute on the
+  // minute rollover, not once a second.
+  let ariaLabel = "Time until the next news sweep";
   if (now) {
     const fmtZ = (d: Date) =>
       `${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}Z`;
@@ -995,6 +1005,7 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
       digits = "00:00:00";
       elapsedPct = 100;
       last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
+      ariaLabel = `Sweep window reached, running ${mins} minute${mins === 1 ? "" : "s"} late`;
     } else if (dueSlot && heldMs > 0) {
       // Grace window: the off-minute cron and a normal run are doing
       // their work. Freeze at zero without the HOLD lamp; the sweep
@@ -1006,6 +1017,7 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
       last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
       next = fmtZ(dueSlot);
       local = dueSlot.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+      ariaLabel = "Sweep window reached";
     } else {
       const target = nextSweepAfter(now);
       const s = Math.max(0, Math.round((target.getTime() - now.getTime()) / 1000));
@@ -1018,11 +1030,13 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
       last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : fmtZ(new Date(target.getTime() - WINDOW_S * 1000));
       next = fmtZ(target);
       local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+      const minsLeft = Math.max(0, Math.ceil(s / 60));
+      ariaLabel = `Next sweep in ${minsLeft} minute${minsLeft === 1 ? "" : "s"}`;
     }
   }
   const p = `${elapsedPct.toFixed(2)}%`;
   return (
-    <aside className="sweep-card" role="timer" aria-label="Time until the next news sweep">
+    <aside className="sweep-card" role="timer" aria-label={ariaLabel}>
       {/* The clock is the door to the sweep log (rule 54): the negative
           hover announces a real destination, like every card. */}
       <a className="sweep-link" href="/system/" aria-label="Open the sweep log">
@@ -1197,13 +1211,72 @@ function SourceList({ item }: { item: Item }) {
   );
 }
 
+/** Focusable descendants of a container, in DOM (tab) order, restricted to
+    elements actually reachable by keyboard (visible, not disabled, not
+    explicitly removed from the tab order). Used to trap Tab inside a modal. */
+function getFocusable(container: HTMLElement): HTMLElement[] {
+  const nodes = container.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  );
+  // getClientRects() catches display:none and detached nodes without the
+  // offsetParent pitfall (offsetParent is null for position:fixed elements
+  // even when they're visible, which this modal can legitimately use).
+  return Array.from(nodes).filter((el) => el.getClientRects().length > 0);
+}
+
 /** In-feed item overlay: band with impact and SNR, media and sources
     left, explainer right. Esc, the close button, and the backdrop all
-    close it; the full prerendered page stays one click away. */
+    close it; the full prerendered page stays one click away. Follows the
+    WAI-ARIA dialog pattern: focus moves into the dialog on open, Tab/
+    Shift+Tab are trapped among its own focusable elements, and focus
+    returns to whatever triggered the open once it closes. */
 function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
+  const dialogRef = useRef<HTMLElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<Element | null>(null);
+
+  // Move focus in on mount, restore it on unmount. Empty deps: this is the
+  // open/close lifecycle, not a reaction to `item` changing while the modal
+  // stays mounted (e.g. history back/forward between two open items), which
+  // intentionally leaves focus wherever the reader put it.
+  useEffect(() => {
+    triggerRef.current = document.activeElement;
+    closeBtnRef.current?.focus();
+    return () => {
+      const el = triggerRef.current;
+      if (el instanceof HTMLElement) el.focus();
+    };
+  }, []);
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const focusable = getFocusable(dialog);
+      if (focusable.length === 0) {
+        // Nothing to tab to: keep focus pinned on the dialog itself rather
+        // than letting it leak out to the page behind the backdrop.
+        e.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0]!;
+      const last = focusable[focusable.length - 1]!;
+      const activeIndex = focusable.indexOf(document.activeElement as HTMLElement);
+      // Every Tab press is handled explicitly (never left to native tab
+      // order) so the trap holds regardless of what else is in the page's
+      // DOM order around the modal.
+      e.preventDefault();
+      if (e.shiftKey) {
+        (activeIndex <= 0 ? last : focusable[activeIndex - 1]!).focus();
+      } else {
+        (activeIndex === -1 || activeIndex === focusable.length - 1 ? first : focusable[activeIndex + 1]!).focus();
+      }
     }
     document.addEventListener("keydown", onKey);
     const prev = document.documentElement.style.overflow;
@@ -1225,6 +1298,8 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         role="dialog"
         aria-modal="true"
         aria-label={item.headline}
+        tabIndex={-1}
+        ref={dialogRef}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`modal-band modal-band-${item.impact}`}>
@@ -1236,7 +1311,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <span className="date">{item.date}</span>
-          <button type="button" className="modal-close" onClick={onClose}>
+          <button type="button" className="modal-close" ref={closeBtnRef} onClick={onClose}>
             × esc
           </button>
         </div>
@@ -1250,7 +1325,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             {item.image ? (
               <>
                 <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
-                  <img src={item.image.src} alt={item.headline} />
+                  <img src={item.image.src} alt="" />
                 </div>
                 <p className="modal-credit">
                   <a href={item.image.origin_url} rel="noopener">
@@ -1482,6 +1557,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
 
   return (
     <Layout current="news">
+      <h1 className="sr-only">Vesperio: new space intelligence</h1>
       <div className="filter-bar">
         <button
           type="button"
@@ -1624,7 +1700,7 @@ export function ItemPage({ item }: { item: Item }) {
             {item.image && (
               <figure className="item-figure">
                 <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
-                  <img src={item.image.src} alt={item.headline} />
+                  <img src={item.image.src} alt="" />
                 </div>
                 <figcaption className="dim">
                   <a href={item.image.origin_url} rel="noopener">
@@ -1921,10 +1997,14 @@ function matchesRegQuery(e: RegEntry, q: string): boolean {
 function statusBadge(status: string | null): { text: string; glyph: "live" | "state" | null } | null {
   if (isOperational(status)) return { text: "operational", glyph: "live" };
   if (!status || status.length > 24) return null;
+  // Display casing is normalized here, at render, only: the underlying data
+  // keeps whatever casing the source used ("Active" / "active" / "In
+  // Development"), this just lowercases the chip text so drift doesn't show.
+  // Distinct words (e.g. "active" vs "operational") are never merged.
   const s = status.toLowerCase();
   if (/plan|develop|deploy|early deployment|manufactur|engineering/.test(s))
-    return { text: status, glyph: "state" };
-  return { text: status, glyph: null };
+    return { text: s, glyph: "state" };
+  return { text: s, glyph: null };
 }
 
 /**
@@ -3526,7 +3606,11 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <div className="profile-chips">
             {profile.headerChips.map((c) => (
               <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
-                {c.label}
+                {/* Status casing drifts in the source data ("Active" /
+                    "active" / "In Development"); normalize to lowercase at
+                    render only, never touching the stored value. Non-status
+                    chips (sensor types, country) keep their sourced casing. */}
+                {c.kind === "status" ? c.label.toLowerCase() : c.label}
               </span>
             ))}
           </div>

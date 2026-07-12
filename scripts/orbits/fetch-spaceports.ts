@@ -11,6 +11,7 @@
 
 import { mkdirSync } from "node:fs";
 import { writeJsonAtomic } from "../lib/write-json-atomic";
+import { fetchCapped } from "../lib/fetch-capped";
 import { join } from "node:path";
 import type { OrbitsSpaceportsFile } from "../../src/data/schema";
 import { buildSpaceports, type Ll2Launch, type Ll2Location, type Ll2Pad } from "./lib";
@@ -28,7 +29,7 @@ let requestCount = 0;
 async function fetchJson(url: string): Promise<unknown> {
   for (let attempt = 0; ; attempt++) {
     requestCount++;
-    const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    const res = await fetchCapped(url, { headers: { "user-agent": USER_AGENT } });
     if (res.status === 429 && attempt < RETRIES) {
       const retryAfter = Number(res.headers.get("retry-after"));
       const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
@@ -39,7 +40,7 @@ async function fetchJson(url: string): Promise<unknown> {
       continue;
     }
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-    return res.json();
+    return JSON.parse(res.text);
   }
 }
 

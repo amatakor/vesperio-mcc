@@ -110,6 +110,34 @@ export function youtubeSignalChannels(signals: SignalsFile): YoutubeSignalChanne
   return out;
 }
 
+export interface WhitelistFloorChannel {
+  personId: string;
+  name: string;
+  org: string;
+  /** The channel URL as recorded in signals.json. */
+  url: string;
+}
+
+/**
+ * Every verified-active channel of every whitelisted person, ALL channel
+ * types (X included: the floor applies to a post however it was found;
+ * FETCHABLE_CHANNEL_TYPES only governs the enforced fetching leg). This is
+ * the membership list the whitelist SNR floor is checked against: a source
+ * claiming class "whitelist" must live under one of these URLs, or it is
+ * not a whitelisted signal at all.
+ */
+export function whitelistFloorChannels(signals: SignalsFile): WhitelistFloorChannel[] {
+  const out: WhitelistFloorChannel[] = [];
+  for (const p of signals.people) {
+    if (!isWhitelisted(p)) continue;
+    for (const c of p.channels) {
+      if (c.status !== "verified_active") continue;
+      out.push({ personId: p.id, name: p.name, org: p.org, url: c.url });
+    }
+  }
+  return out;
+}
+
 /**
  * The best-effort leg: whitelisted people's verified-active X handles.
  * Surfaced to the agent for WebSearch + syndication retrieval, but never

@@ -9,6 +9,7 @@
  */
 import { mkdirSync, readdirSync, readFileSync } from "node:fs";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
+import { fetchCapped } from "./lib/fetch-capped";
 import { join } from "node:path";
 
 const OUT = "public/data/stocks";
@@ -30,12 +31,12 @@ let ok = 0;
 for (const t of targets) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(t.symbol)}?range=2y&interval=1d`;
   try {
-    const res = await fetch(url, { headers: { "user-agent": UA } });
+    const res = await fetchCapped(url, { headers: { "user-agent": UA } });
     if (!res.ok) {
       console.error(`${t.slug} (${t.symbol}): HTTP ${res.status}, skipped`);
       continue;
     }
-    const data = (await res.json()) as any;
+    const data = JSON.parse(res.text) as any;
     const r = data?.chart?.result?.[0];
     const ts: number[] = r?.timestamp ?? [];
     const closesRaw: Array<number | null> = r?.indicators?.quote?.[0]?.close ?? [];
