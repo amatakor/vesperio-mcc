@@ -4406,3 +4406,69 @@ a.sig-card:hover .sig-p-x {
   margin-right: 0;
   flex: none;
 }
+
+/* ---------------------------------------------------------------------------
+   REGISTRY CAPS, AS A SYSTEM (Florian, 2026-07-12, round 2). Instead of
+   chasing individual strings, the registry surfaces uppercase at the
+   container and opt OUT the two places where sentence case carries
+   sourced meaning: the overview paragraph and the entry snippets (both
+   render verbatim sourced prose). Everything else on these surfaces is
+   chrome and renders caps. */
+.registry-profile,
+.reg-index {
+  text-transform: uppercase;
+}
+.registry-profile .overview-block,
+.reg-index .reg-snippet {
+  text-transform: none;
+}
+/* Form controls carry a UA text-transform of their own and never inherit
+   the container rule; force them back into the caps system. */
+.registry-profile button,
+.registry-profile input,
+.registry-profile select,
+.reg-index button,
+.reg-index input,
+.reg-index select {
+  text-transform: inherit;
+}
+
+/* ONE RIGHT EDGE PER PAGE (Florian, 2026-07-12): every block on a registry
+   profile spans the same profile measure; no module gets a private width.
+   The hairlines, the overview, the stock chart, the tables, and the
+   timeline all end on the same vertical. */
+.overview-block {
+  max-width: none;
+}
+.stock-chart {
+  max-width: none;
+}
+.tl-title {
+  max-width: none;
+}
+.timeline li > span + span {
+  max-width: none;
+}
+
+/* About shares the same discipline at the reading measure: prose, tables,
+   and diagrams all cap at the 46rem text measure, one aligned edge. */
+.qa table,
+.qa figure {
+  max-width: 46rem;
+}
+.qa figure {
+  margin: 1.2rem 0;
+  padding: 0;
+}
+
+/* Data tables sit BELOW the sans prose in the type scale (mono is the
+   data voice: 12.5/400, never larger or heavier than the 14px sans it
+   accompanies; MONO IS NEVER BOLD). */
+table.profile,
+table.stat-table {
+  font-size: var(--fs-body);
+}
+table.profile th,
+table.stat-table th {
+  font-weight: 500;
+}

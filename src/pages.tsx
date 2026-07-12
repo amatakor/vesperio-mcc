@@ -713,7 +713,8 @@ function Card({
       data-item-id={item.id}
       onClick={open}
     >
-      <CardMedia item={item} />
+      {/* Headline above the artwork (Florian, 2026-07-12): the title leads
+          the card, left-aligned; the image follows it. */}
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
@@ -726,6 +727,7 @@ function Card({
       <h2 className="card-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
+      <CardMedia item={item} />
       <p className="card-tagline">{item.explainer.tagline}</p>
       {item.impact === "seismic" && (
         <p className="card-extra">{item.explainer.what_happened}</p>
@@ -1121,17 +1123,6 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         </div>
         <div className="modal-body">
           <div className="modal-left">
-            <div className="src-band">
-              // sources · {srcEntriesOf(item).length} attached
-            </div>
-            <SourceList item={item} />
-          </div>
-          <div className="modal-right">
-            {/* Title before artwork (Florian, 2026-07-12): the headline leads
-                the reading order; the image sits under it in this column. */}
-            <h2 className="modal-title">{item.headline}</h2>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image ? (
               <>
                 <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1144,6 +1135,15 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
                 </p>
               </>
             ) : null}
+            <div className="src-band">
+              // sources · {srcEntriesOf(item).length} attached
+            </div>
+            <SourceList item={item} />
+          </div>
+          <div className="modal-right">
+            <h2 className="modal-title">{item.headline}</h2>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1500,17 +1500,6 @@ export function ItemPage({ item }: { item: Item }) {
         </div>
         <div className="item-cols">
           <div className="item-side">
-            <div className="src-band">
-              // sources · {srcEntriesOf(item).length} attached
-            </div>
-            <SourceList item={item} />
-          </div>
-          <div className="item-main">
-            {/* Title before artwork (Florian, 2026-07-12): the headline leads
-                the reading order; the image sits under it in this column. */}
-            <h1 className="page-title">{item.headline}</h1>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image && (
               <figure className="item-figure">
                 <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1523,6 +1512,15 @@ export function ItemPage({ item }: { item: Item }) {
                 </figcaption>
               </figure>
             )}
+            <div className="src-band">
+              // sources · {srcEntriesOf(item).length} attached
+            </div>
+            <SourceList item={item} />
+          </div>
+          <div className="item-main">
+            <h1 className="page-title">{item.headline}</h1>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>
@@ -2240,6 +2238,7 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
 
   return (
     <Layout current="registry">
+      <div className="reg-index">
       <div className="reg-head">
         <h1 className="page-title">registry</h1>
         <input
@@ -2299,6 +2298,7 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
         a group, then an entity, to open its profile; every figure carries its source and as-of
         date, and unknown fields stay unknown. Numbers refresh on the weekly maintenance sweep.
       </p>
+      </div>
     </Layout>
   );
 }
@@ -4286,10 +4286,12 @@ const QA: Array<[string, string]> = [
   ],
 ];
 
-/** Engine pipeline diagram. House style: hairline boxes, mono caps labels,
-    no rounding, theme tokens only. */
+/** Engine pipeline diagram, color-coded by owner (Florian round 2,
+    2026-07-12): cyan = deterministic code, magenta = the drafting agent,
+    green = data files, yellow = the human editor, bright frame = the
+    reader-facing output. Arrows carry the function each hand-off performs;
+    the two long rails are the human-reviewed source-discovery loop. */
 function EngineDiagram() {
-  const box = { fill: "var(--bg-panel)", stroke: "var(--border-2)", strokeWidth: 1 };
   const lbl = {
     fill: "var(--text-1)",
     fontFamily: "'IBM Plex Mono', monospace",
@@ -4298,74 +4300,99 @@ function EngineDiagram() {
     letterSpacing: "0.08em",
   } as const;
   const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8.5, fontWeight: 400 } as const;
-  const wire = { stroke: "var(--border-2)", strokeWidth: 1 } as const;
+  const wireLbl = { ...lbl, fill: "var(--text-3)", fontSize: 7.5, fontWeight: 400 } as const;
+  const wire = { stroke: "var(--text-3)", strokeWidth: 1, fill: "none", markerEnd: "url(#eng-arr)" } as const;
+  const OWNER = {
+    code: "var(--acc-cyan-dim)",
+    agent: "var(--acc-magenta-dim)",
+    data: "var(--acc-green-dim)",
+    human: "var(--acc-yellow-dim)",
+    out: "var(--text-1)",
+  };
+  const Box = ({ x, y, w = 152, h = 56, owner, title, s1, s2 }: {
+    x: number; y: number; w?: number; h?: number;
+    owner: keyof typeof OWNER; title: string; s1?: string; s2?: string;
+  }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} fill="var(--bg-panel)" stroke={OWNER[owner]} strokeWidth={owner === "out" ? 1.5 : 1} />
+      <text x={x + 12} y={y + 20} {...lbl}>{title}</text>
+      {s1 && <text x={x + 12} y={y + 34} {...sub}>{s1}</text>}
+      {s2 && <text x={x + 12} y={y + 45} {...sub}>{s2}</text>}
+    </g>
+  );
   return (
-    <svg viewBox="0 0 720 318" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
+    <svg viewBox="0 0 740 468" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
+      <defs>
+        <marker id="eng-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 z" fill="var(--text-3)" />
+        </marker>
+      </defs>
+
+      {/* legend */}
+      {(
+        [
+          ["code", "CODE"],
+          ["agent", "AGENT"],
+          ["data", "DATA"],
+          ["human", "HUMAN"],
+          ["out", "OUTPUT"],
+        ] as const
+      ).map(([k, name], i) => (
+        <g key={k}>
+          <rect x={28 + i * 120} y={6} width={10} height={10} fill="none" stroke={OWNER[k]} strokeWidth={k === "out" ? 1.5 : 1} />
+          <text x={44 + i * 120} y={15} {...sub}>{name}</text>
+        </g>
+      ))}
+
       {/* row 1: intake */}
-      <rect x="8" y="24" width="128" height="56" {...box} />
-      <text x="20" y="44" {...lbl}>SOURCES</text>
-      <text x="20" y="58" {...sub}>98 REGISTERED FEEDS,</text>
-      <text x="20" y="69" {...sub}>PAGES + SIGNALS + WEB</text>
+      <Box x={28} y={40} owner="data" title="SOURCE REGISTRY" s1="98 REGISTERED FEEDS," s2="PAGES + SIGNAL CHANNELS" />
+      <Box x={208} y={40} owner="code" title="HARVESTER" s1="DETERMINISTIC FETCH," s2="SYNDICATE COLLAPSE" />
+      <Box x={388} y={40} owner="data" title="CANDIDATE QUEUE" s1="TRIAGED ONCE," s2="THEN CONSUMED" />
+      <Box x={568} y={40} owner="agent" title="DISCOVERY" s1="OPEN-WEB QUERY MATRIX," s2="WHITELISTED CHANNELS" />
+      <line x1={180} y1={68} x2={206} y2={68} {...wire} />
+      <text x={181} y={62} {...wireLbl}>FETCH</text>
+      <line x1={360} y1={68} x2={386} y2={68} {...wire} />
+      <text x={358} y={62} {...wireLbl}>QUEUE</text>
 
-      <rect x="176" y="24" width="128" height="56" {...box} />
-      <text x="188" y="44" {...lbl}>HARVESTER</text>
-      <text x="188" y="58" {...sub}>DETERMINISTIC FETCH,</text>
-      <text x="188" y="69" {...sub}>SYNDICATE COLLAPSE</text>
+      {/* row 2: judgment and arithmetic, right to left */}
+      <Box x={388} y={168} owner="agent" title="SWEEP AGENT" s1="SCOPES, CRAWLS, DRAFTS," s2="ATTESTS ITS SOURCES" />
+      <Box x={208} y={168} owner="code" title="FINALIZE GATE" s1="VALIDATES, DEDUPS," s2="COMPUTES EVERY SCORE" />
+      <Box x={28} y={168} owner="data" title="DATA FILES" s1="ITEMS, TRACES, LOG," s2="GIT-VERSIONED" />
+      <polyline points="464,96 464,166" {...wire} />
+      <text x={470} y={130} {...wireLbl}>TRIAGE</text>
+      <polyline points="644,96 644,196 542,196" {...wire} />
+      <text x={650} y={130} {...wireLbl}>FINDS</text>
+      <line x1={388} y1={196} x2={362} y2={196} {...wire} />
+      <text x={352} y={188} {...wireLbl}>DRAFT</text>
+      <line x1={208} y1={196} x2={182} y2={196} {...wire} />
+      <text x={172} y={188} {...wireLbl}>MERGE</text>
 
-      <rect x="344" y="24" width="128" height="56" {...box} />
-      <text x="356" y="44" {...lbl}>QUEUE</text>
-      <text x="356" y="58" {...sub}>CANDIDATES, TRIAGED</text>
-      <text x="356" y="69" {...sub}>ONCE, THEN CONSUMED</text>
+      {/* row 3: outputs and records */}
+      <Box x={28} y={296} owner="code" title="SITE BUILD" s1="SCHEMA CHECKS," s2="EVERY ROUTE STATIC" />
+      <Box x={208} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
+      <Box x={388} y={296} owner="data" title="HELD QUEUE" s1="OPEN QUESTIONS;" s2="ANSWERS FEED NEXT SWEEP" />
+      <Box x={568} y={296} owner="data" title="SOURCE LEDGER" s1="STRIKES + CREDITS PER" s2="CLAIM, 90-DAY WINDOW" />
+      <polyline points="104,224 104,294" {...wire} />
+      <text x={110} y={262} {...wireLbl}>BUILD</text>
+      <line x1={180} y1={324} x2={206} y2={324} {...wire} />
+      <text x={168} y={290} {...wireLbl}>PUBLISH</text>
+      <polyline points="284,224 284,268 464,268 464,294" {...wire} />
+      <text x={296} y={262} {...wireLbl}>OPEN QUESTIONS</text>
+      <polyline points="340,224 340,246 644,246 644,294" {...wire} markerStart="url(#eng-arr)" />
+      <text x={366} y={240} {...wireLbl}>CALIBRATION CLAIMS DOWN, SOURCE CLASSES BACK UP</text>
 
-      <rect x="512" y="24" width="128" height="56" {...box} />
-      <text x="524" y="44" {...lbl}>SWEEP AGENT</text>
-      <text x="524" y="58" {...sub}>SCOPES, CRAWLS,</text>
-      <text x="524" y="69" {...sub}>DRAFTS + ATTESTS</text>
+      {/* row 4: the human seam */}
+      <Box x={388} y={404} h={48} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
+      <polyline points="464,352 464,402" {...wire} />
+      <text x={470} y={382} {...wireLbl}>RULES</text>
 
-      <line x1="136" y1="52" x2="176" y2="52" {...wire} />
-      <line x1="304" y1="52" x2="344" y2="52" {...wire} />
-      <line x1="472" y1="52" x2="512" y2="52" {...wire} />
+      {/* discovery suggestions rail: agent finds -> human reviews */}
+      <polyline points="720,68 730,68 730,428 542,428" {...wire} />
+      <text x={738} y={250} {...wireLbl} transform="rotate(90 738 250)">SUGGESTED SOURCES + VOICES</text>
 
-      {/* drop to row 2 */}
-      <line x1="576" y1="80" x2="576" y2="122" {...wire} />
-
-      {/* row 2: gate and outputs, right to left */}
-      <rect x="512" y="122" width="128" height="56" {...box} />
-      <text x="524" y="142" {...lbl}>FINALIZE GATE</text>
-      <text x="524" y="156" {...sub}>VALIDATES, DEDUPS,</text>
-      <text x="524" y="167" {...sub}>COMPUTES EVERY SCORE</text>
-
-      <rect x="344" y="122" width="128" height="56" {...box} />
-      <text x="356" y="142" {...lbl}>DATA FILES</text>
-      <text x="356" y="156" {...sub}>ITEMS, TRACES, LOG,</text>
-      <text x="356" y="167" {...sub}>LEDGER. GIT-VERSIONED</text>
-
-      <rect x="176" y="122" width="128" height="56" {...box} />
-      <text x="188" y="142" {...lbl}>STATIC SITE</text>
-      <text x="188" y="156" {...sub}>EVERY PAGE PRERENDERED,</text>
-      <text x="188" y="167" {...sub}>NO DATABASE, NO BACKEND</text>
-
-      <line x1="512" y1="150" x2="472" y2="150" {...wire} />
-      <line x1="344" y1="150" x2="304" y2="150" {...wire} />
-
-      {/* held queue, above the gate's reject path */}
-      <rect x="512" y="238" width="128" height="52" {...box} />
-      <text x="524" y="258" {...lbl}>HELD QUEUE</text>
-      <text x="524" y="272" {...sub}>OPEN QUESTIONS FOR</text>
-      <text x="524" y="283" {...sub}>THE HUMAN EDITOR</text>
-      <line x1="576" y1="178" x2="576" y2="238" {...wire} />
-
-      {/* ledger feedback loop */}
-      <rect x="344" y="238" width="128" height="52" {...box} />
-      <text x="356" y="258" {...lbl}>SOURCE LEDGER</text>
-      <text x="356" y="272" {...sub}>STRIKES + CREDITS FEED</text>
-      <text x="356" y="283" {...sub}>BACK INTO SOURCE CLASSES</text>
-      <line x1="408" y1="178" x2="408" y2="238" {...wire} />
-      <line x1="344" y1="264" x2="60" y2="264" {...wire} />
-      <line x1="60" y1="264" x2="60" y2="80" {...wire} />
-
-      <text x="652" y="55" {...sub}>TWICE</text>
-      <text x="652" y="66" {...sub}>DAILY</text>
+      {/* human-approved sources rail: back into the registry */}
+      <polyline points="388,428 12,428 12,68 26,68" {...wire} />
+      <text x={120} y={444} {...wireLbl}>NEW SOURCES, HUMAN-REVIEWED</text>
     </svg>
   );
 }
@@ -4577,20 +4604,56 @@ export function AboutPage() {
           Every field carries its source URL and an as-of date. Unknown fields stay null: nothing
           is ever estimated, interpolated, or summed across sources.
         </p>
+        <p className="prose">Population runs through four channels:</p>
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>channel</th>
+              <th>what enters</th>
+              <th>cadence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">COMPUTED</th>
+              <td>
+                Satellite counts from public orbital catalogs, launch cadence from the Launch
+                Library. Authoritative only for exactly what they measure: cataloged objects on a
+                date, never claims like operational or announced.
+              </td>
+              <td>DAILY</td>
+            </tr>
+            <tr>
+              <th scope="row">CROSSFEED</th>
+              <td>
+                Registry-grade metrics stated by published news items, after a like-for-like
+                metric test. Fills only null fields, never overwrites.
+              </td>
+              <td>EVERY SWEEP</td>
+            </tr>
+            <tr>
+              <th scope="row">MAINTENANCE</th>
+              <td>
+                Factual-field refresh from primary pages and established aggregators. Appends
+                sourced values; never restructures a profile.
+              </td>
+              <td>WEEKLY</td>
+            </tr>
+            <tr>
+              <th scope="row">CURATED</th>
+              <td>
+                Fill crawls and new profiles, built interactively and reviewed by the editor
+                before merge. The only channel that may add fields or entities.
+              </td>
+              <td>REVIEWED</td>
+            </tr>
+          </tbody>
+        </table>
         <p className="prose">
-          Population runs through four channels. First, computed pipelines: satellite counts
-          derive from public orbital catalogs and launch cadence from the Launch Library, and
-          these figures are authoritative only for exactly what they measure, cataloged objects on
-          a date, never for claims like operational or announced. Second, the news crossfeed:
-          when a published item states a registry-grade metric, the value queues for the matching
-          profile after a like-for-like test, filling only null fields, never overwriting.
-          Third, scheduled maintenance: a weekly run refreshes factual fields from primary pages
-          and established aggregators, appending sourced values without restructuring anything.
-          Fourth, curated crawls reviewed by the editor. Source preference is fixed at every step:
-          primary beats aggregator, aggregator beats Wikipedia and press, a quantified figure
-          beats a vague one, and a disputed field keeps both claims visible with their own scores.
-          Structural changes, new fields or new entities, happen only through reviewed changes,
-          never inside a scheduled run.
+          Source preference is fixed at every step: primary beats aggregator, aggregator beats
+          Wikipedia and press, a quantified figure beats a vague one, and a disputed field keeps
+          both claims visible with their own scores. Structural changes, new fields or new
+          entities, happen only through reviewed changes, never inside a scheduled run.
         </p>
       </section>
 
