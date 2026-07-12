@@ -43,19 +43,27 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      # Per-step timeouts (2026-07-12): the 07-11 16:30 run hung in a fetch
+      # until the 20-minute job timeout cancelled everything. A stuck fetch
+      # now fails its own step in minutes, the ops alert fires, and the next
+      # scheduled slot self-heals. No auto-retry against CelesTrak: their
+      # usage policy's stop-on-error instruction governs (CLAUDE.md).
       - name: Fetch orbital elements (CelesTrak)
+        timeout-minutes: 5
         run: bun scripts/orbits/fetch-elements.ts
 
       - name: Recompute verified fleet counts from element sets
         run: bun scripts/compute-fleet-counts.ts
 
       - name: Fetch spaceports (Launch Library 2)
+        timeout-minutes: 5
         run: bun scripts/orbits/fetch-spaceports.ts
 
       - name: Recompute spaceport launch totals from the fresh LL2 data
         run: bun scripts/compute-spaceport-launches.ts
 
       - name: Fetch HUD stats (Launch Library 2 + SATCAT)
+        timeout-minutes: 5
         run: bun scripts/orbits/fetch-stats.ts
 
       - name: Build must pass before any commit

@@ -61,7 +61,9 @@ jobs:
   sweep:
     if: github.repository == 'amatakor/vesperio-mcc'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # Two agent attempts fit (retry design, Florian 2026-07-12): a deep
+    # sweep runs ~26 min; harvest + build + prerender bookend it.
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
@@ -84,7 +86,21 @@ jobs:
       - name: Rotate sweep memory (mechanical, lossless, pre-agent)
         run: bun scripts/rotate-sweep-memory.ts
 
-      - name: Run the sweep agent
+      # Retry design (Florian, 2026-07-12, after two one-off agent failures
+      # in 24h): the sweep must not depend on a single agent attempt.
+      # Snapshot the pre-agent tree (harvest + rotation changes); attempt 1
+      # may fail without killing the job; a goal-state check (sweep entry
+      # written AND diff confined to sweep data paths) decides whether a
+      # clean-slate attempt 2 runs. The hard gates below are unchanged and
+      # still guard whatever the last attempt produced.
+      - name: Snapshot the pre-agent tree (retry baseline)
+        run: |
+          git diff > /tmp/pre-agent.patch || true
+          git ls-files --others --exclude-standard > /tmp/pre-agent-untracked.txt || true
+
+      - name: Run the sweep agent (attempt 1)
+        id: sweep1
+        continue-on-error: true
         uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -94,6 +110,65 @@ jobs:
           # repo contain nothing secret; the transcript is the evidence.
           show_full_output: true
           prompt: |
+            Read CLAUDE.md, SWEEP_MEMORY.md, and prompts/update-items.md in
+            full, then execute the sweep procedure in prompts/update-items.md
+            exactly. You draft sweep-draft.json and run
+            `bun scripts/finalize-sweep.ts` to merge it; never edit
+            src/data/items.json, held.json, state.json, or sources.json
+            directly. Do not commit or push; the workflow handles that.
+
+            Source filter for this run (comma-separated names, empty =
+            the full source list): walk only these sources for
+            DISCOVERY, and record source health only for them:
+            "${{ inputs.source_filter }}".
+            The deterministic harvester has already filled
+            src/data/candidates.json from every feed-capable source;
+            consume that queue first per prompts/update-items.md.
+            The filter does NOT constrain the corroboration crawl or
+            the signals pass; both run open-web per
+            prompts/update-items.md.
+
+            ${{ inputs.extra_instructions }}
+          claude_args: |
+            --model claude-sonnet-5
+            --max-turns 150
+            --allowedTools "Bash(bun scripts/sweep-context.ts),Bash(bun scripts/sweep-context.ts:*),Bash(bun scripts/signals-context.ts),Bash(bun scripts/signals-context.ts:*),Bash(bun scripts/candidates-context.ts),Bash(bun scripts/candidates-context.ts:*),Bash(bun scripts/fetch-list.ts),Bash(bun scripts/fetch-list.ts:*),Bash(bun scripts/finalize-sweep.ts),Bash(bun scripts/finalize-sweep.ts:*),Read,Write(./sweep-draft.json),Edit(./sweep-draft.json),Write(./SWEEP_MEMORY.md),Edit(./SWEEP_MEMORY.md),WebFetch,WebSearch"
+
+      - name: Goal-state check (did attempt 1 deliver?)
+        id: goal1
+        run: |
+          set -euo pipefail
+          ok=true
+          if git diff --quiet -- src/data/state.json; then
+            echo "::warning::Attempt 1 ended without writing a sweep entry."
+            ok=false
+          elif ! bun scripts/check-run-diff.ts sweep; then
+            echo "::warning::Attempt 1 touched paths outside the sweep data scope."
+            ok=false
+          fi
+          echo "ok=$ok" >> "$GITHUB_OUTPUT"
+
+      - name: Reset to the pre-agent tree (attempt 1 missed the goal)
+        if: steps.goal1.outputs.ok != 'true'
+        run: |
+          set -euo pipefail
+          git checkout -- .
+          git clean -fd
+          if [ -s /tmp/pre-agent.patch ]; then git apply /tmp/pre-agent.patch; fi
+
+      - name: Run the sweep agent (attempt 2, clean slate)
+        if: steps.goal1.outputs.ok != 'true'
+        uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
+          prompt: |
+            NOTE: this is an automatic RETRY. A previous attempt in this same
+            run failed to complete the sweep (it either wrote no sweep entry
+            or strayed outside its permitted paths) and the working tree has
+            been reset to the clean pre-sweep state. Run the full procedure
+            from the beginning.
+
             Read CLAUDE.md, SWEEP_MEMORY.md, and prompts/update-items.md in
             full, then execute the sweep procedure in prompts/update-items.md
             exactly. You draft sweep-draft.json and run
