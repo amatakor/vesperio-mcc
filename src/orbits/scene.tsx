@@ -740,13 +740,15 @@ export default function Scene() {
   // axis, so the tilt never changes; unlocked frees the camera orbit.
   const [axisLock, setAxisLock] = useState(true);
   const [labelsOn, setLabelsOn] = useState(true);
-  // Default zoom by frame: desktop opens ONE STEP CLOSER than the base
-  // panel-gap fit (Florian, 2026-07-12; the [+]/[-] steps, clamps, wheel,
-  // and FitCamera math are unchanged, and Reset returns here). Mobile
-  // keeps two steps wider than base to clear the stacked panels.
+  // Default zoom by frame: desktop opens HALF a step closer than the base
+  // panel-gap fit (Florian, 2026-07-12; a full step read as too much).
+  // fitRadius takes fractional steps (0.82^z); the [+]/[-] buttons, wheel,
+  // clamps, and FitCamera math are unchanged and step whole units from
+  // here, and Reset returns here. Mobile keeps two steps wider than base
+  // to clear the stacked panels.
   const defaultZoom = () => {
     if (window.matchMedia("(max-width: 900px)").matches) return -2;
-    return 1;
+    return 0.5;
   };
   const [zoomStep, setZoomStep] = useState(defaultZoom);
   const [resetNonce, setResetNonce] = useState(0);
