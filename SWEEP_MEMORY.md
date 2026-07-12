@@ -1366,3 +1366,12 @@ a newer entry if a lesson changes.
   both agents triage with zero dedup context; always re-read a
   multi-agent prompt for unresolved placeholders before dispatching,
   especially when reusing a prompt template across parallel agents.
+- 2026-07-12-M: Reading a failed run's permission_denials_count: healthy
+  sweeps show ~3-6 denials (allowlist friction: the agent probes an
+  ad-hoc Bash line, gets denied, routes around it via allowed tools).
+  denials ~= num_turns means a fail-closed denial STORM in the
+  permission layer (45/45 on the 05:41 dispatch, transient, identical
+  config succeeded 20 min later): re-dispatch before debugging config.
+  Separately, GitHub cron lag of 40-70 min is real and platform-side;
+  a "missed" slot may still fire. show_full_output on update-items
+  exposes the transcript for exactly this triage.

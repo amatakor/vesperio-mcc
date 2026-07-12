@@ -1489,6 +1489,17 @@ export function validateRegistryProfile(
   }
   // Registry v2: positioning is allowed on all four profile types.
   checkPositioning(data, path, errors);
+  // Status is a chip on the profile header: a short stated status word,
+  // never a sentence (Florian, 2026-07-12, after 17 profiles shipped
+  // generation roadmaps and ownership structures as their "status").
+  {
+    const status = (data as Obj).status;
+    if (isObj(status) && typeof status.value === "string" && status.value.length > 32) {
+      errors.push(
+        `${path}.status: ${status.value.length} chars; a status is a short stated word ("active", "in development", "retired"), not a sentence`,
+      );
+    }
+  }
   return errors;
 }
 

@@ -6,6 +6,18 @@ go-live. Data commits (news sweeps, orbit refreshes, registry
 maintenance) deploy continuously and are not versioned; this log tracks
 the platform itself.
 
+## v1.01 — unreleased
+
+The sweep countdown gains a HOLD state: when a scheduled sweep slot has
+passed but the deployed data predates it (GitHub fires this repo's cron
+40-70 minutes late some days), the clock freezes at zero under the full
+volt flood and reads HOLD with the minutes elapsed, instead of silently
+re-arming for the next slot. The LAST label now shows the actual last
+sweep time from the site's own data. Guards from the same session: the
+build rejects registry status values over 32 characters (statuses are
+chips, not sentences) and the maintenance prompt spells out the
+convention.
+
 ## v1.0 — pending
 
 The launch baseline: the full platform as built through 2026-07-12,
