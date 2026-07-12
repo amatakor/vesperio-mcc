@@ -20,5 +20,8 @@ receiving cones, registry fill crawl (91 sourced fields) and timeline
 crawl, sweep-clock HOLD signal (the countdown freezes at zero and says
 SCHEDULER LATE instead of silently re-arming when a sweep slot passes
 unserved) with the honest LAST timestamp, the status-is-a-word build
-guard, and the infinite-scroll fix (the masonry repack no longer yanks
-the reader to the top when cards re-measure mid-scroll).
+guard, the infinite-scroll fix (the masonry repack no longer yanks
+the reader to the top when cards re-measure mid-scroll), and the
+launch-cadence policy guard (2026-07-12: routine megaconstellation
+batch launches always publish at noise, US and Chinese alike; launch
+candidates are judged from the article body, never the headline).
