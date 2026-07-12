@@ -87,73 +87,41 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** Live tuning panel for the MCC nav marker (Florian, 2026-07-12).
-    Renders only with ?orbitlab in the URL; writes the --pass-* CSS
-    variables the flyby reads. Copy the readout line into chat and the
-    winning recipe becomes the defaults. */
-const PASS_DIALS: Array<[string, string, number, number, number, string]> = [
-  // [var, label, min, max, step, unit]
-  ["--pass-cycle", "cycle", 3, 16, 0.5, "s"],
-  ["--pass-span", "span", 18, 60, 1, "px"],
-  ["--pass-apex", "apex", -16, 0, 1, "px"],
-  ["--pass-dot", "dot size", 2, 6, 0.5, "px"],
-  ["--pass-trail", "trail", 0, 24, 1, "px"],
-  ["--pass-trail-o", "trail glow", 0, 1, 0.05, ""],
+/** Option switcher for the MCC nav marker (Florian, 2026-07-12).
+    Renders only with ?orbitlab in the URL; sets data-mcc-fx on <html>,
+    which the CSS variants read. Fine-tuning dials return once an
+    option wins. */
+const MCC_FX: Array<[string, string]> = [
+  ["ripple", "expanding rings, spaceport style"],
+  ["breathe", "brightness pulse, spaceport style"],
+  ["atom", "electrons on drawn rails"],
+  ["scan", "survey line sweep"],
 ];
-const PASS_UNITLESS = new Set(["--pass-trail-o"]);
 function OrbitLab() {
   const [open, setOpen] = useState(false);
-  const [vals, setVals] = useState<Record<string, number>>({
-    "--pass-cycle": 7,
-    "--pass-span": 34,
-    "--pass-apex": -7,
-    "--pass-dot": 3,
-    "--pass-trail": 10,
-    "--pass-trail-o": 0.5,
-  });
-  const [reverse, setReverse] = useState(false);
+  const [fx, setFx] = useState("ripple");
   useEffect(() => {
     setOpen(window.location.search.includes("orbitlab"));
   }, []);
   useEffect(() => {
     if (!open) return;
-    const r = document.documentElement.style;
-    for (const [k, v] of Object.entries(vals)) {
-      if (k === "--pass-cycle") r.setProperty(k, `${v}s`);
-      else if (PASS_UNITLESS.has(k)) r.setProperty(k, `${v}`);
-      else r.setProperty(k, `${v}px`);
-    }
-    r.setProperty("--pass-dir", reverse ? "reverse" : "normal");
-  }, [open, vals, reverse]);
+    document.documentElement.dataset.mccFx = fx;
+  }, [open, fx]);
   if (!open) return null;
-  const set = (k: string) => (e: { target: { value: string } }) =>
-    setVals((v) => ({ ...v, [k]: Number(e.target.value) }));
-  const readout =
-    Object.entries(vals)
-      .map(([k, v]) => `${k.replace("--pass-", "")}=${v}`)
-      .join(" ") + (reverse ? " dir=rev" : " dir=fwd");
   return (
     <div className="orbit-lab">
-      <h4>pass lab</h4>
-      {PASS_DIALS.map(([k, label, min, max, step, unit]) => (
-        <div className="orbit-lab-row" key={k}>
-          <span>{label}</span>
-          <input type="range" min={min} max={max} step={step} value={vals[k]} onChange={set(k)} />
-          <span className="orbit-lab-val">
-            {vals[k]}
-            {unit}
-          </span>
+      <h4>mcc fx lab</h4>
+      {MCC_FX.map(([key, blurb]) => (
+        <div className="orbit-lab-shell" key={key}>
+          <div className="orbit-lab-shell-head">
+            <span>{blurb}</span>
+            <button type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
+              {key}
+            </button>
+          </div>
         </div>
       ))}
-      <div className="orbit-lab-shell">
-        <div className="orbit-lab-shell-head">
-          <span>direction</span>
-          <button type="button" className={reverse ? "on" : ""} onClick={() => setReverse(!reverse)}>
-            {reverse ? "right to left" : "left to right"}
-          </button>
-        </div>
-      </div>
-      <div className="orbit-lab-out">{readout}</div>
+      <div className="orbit-lab-out">active: {fx}</div>
     </div>
   );
 }
@@ -297,14 +265,58 @@ export function Masthead({ current }: { current?: string }) {
           >
             {label === "mcc" ? (
               <>
-                {/* The live-view marker, v3 (Florian, 2026-07-12): a
-                    satellite pass. The word stays clean; every few seconds
-                    one volt dot rises on the left, arcs over MCC, and sets
-                    on the right with a short trail. Dials are CSS variables
-                    driven live by ?orbitlab. Off under
+                {/* The live-view marker, option gallery (Florian,
+                    2026-07-12): four candidate effects, switched live by
+                    the ?orbitlab panel via data-mcc-fx on <html>. RIPPLE
+                    (default) and BREATHE borrow the spaceport pulse
+                    language; ATOM is the electron effect with its rails
+                    drawn; SCAN is a passing survey line. All off under
                     prefers-reduced-motion. */}
                 <span className="mcc-orbit" aria-hidden="true">
-                  <span className="mcc-pass-sat" />
+                  <span className="mcc-fx mcc-fx-ripple">
+                    <span className="fx-ring fx-ring-1" />
+                    <span className="fx-ring fx-ring-2" />
+                  </span>
+                  <span className="mcc-fx mcc-fx-breathe" />
+                  <span className="mcc-fx mcc-fx-atom">
+                    <svg viewBox="-27 -14 54 28" aria-hidden="true">
+                      <g className="fx-atom-rail" transform="rotate(-24)">
+                        <ellipse rx="21" ry="7" />
+                        <path
+                          id="mcc-orb-a"
+                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
+                          fill="none"
+                          stroke="none"
+                        />
+                        <circle r="1.7" className="fx-atom-e">
+                          <animateMotion dur="3.4s" repeatCount="indefinite">
+                            <mpath href="#mcc-orb-a" />
+                          </animateMotion>
+                        </circle>
+                      </g>
+                      <g className="fx-atom-rail" transform="rotate(24)">
+                        <ellipse rx="21" ry="7" />
+                        <path
+                          id="mcc-orb-b"
+                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
+                          fill="none"
+                          stroke="none"
+                        />
+                        <circle r="1.7" className="fx-atom-e">
+                          <animateMotion
+                            dur="4.6s"
+                            repeatCount="indefinite"
+                            keyPoints="1;0"
+                            keyTimes="0;1"
+                            calcMode="linear"
+                          >
+                            <mpath href="#mcc-orb-b" />
+                          </animateMotion>
+                        </circle>
+                      </g>
+                    </svg>
+                  </span>
+                  <span className="mcc-fx mcc-fx-scan" />
                 </span>
                 <span className="nav-mcc-label">{label}</span>
               </>
