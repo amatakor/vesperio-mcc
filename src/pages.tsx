@@ -948,6 +948,12 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     const pack = () => {
       grid.classList.add("is-packed");
       const cards = Array.from(grid.children) as HTMLElement[];
+      // Clearing every pin collapses the grid for one layout pass; deep in
+      // the feed the browser clamps the scroll position to the shortened
+      // document and the reader lands hundreds of cards up (Florian,
+      // 2026-07-12: infinite-scroll batches "jump back up"). Capture and
+      // restore around the repack.
+      const y = window.scrollY;
       for (const c of cards) {
         c.style.gridRowEnd = "";
         c.style.height = "";
@@ -971,6 +977,7 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
         if (!c.classList.contains("sweep-card")) c.style.height = `${h}px`;
         c.style.gridRowEnd = `span ${h - 1}`;
       });
+      if (window.scrollY !== y) window.scrollTo(0, y);
     };
     let raf = 0;
     const schedule = () => {
