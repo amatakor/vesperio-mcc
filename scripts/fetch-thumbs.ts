@@ -27,6 +27,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
 import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
@@ -269,6 +270,7 @@ interface Download {
   src: string;
   file: string;
   dim: { w: number; h: number } | null;
+  sha256: string;
 }
 
 /** Download an og:image; reject unknown formats, oversized payloads, tiny
@@ -299,7 +301,7 @@ async function downloadImage(url: string, id: string): Promise<Download | null> 
     mkdirSync(OUT_DIR, { recursive: true });
     const file = `${id}.${ext}`;
     writeFileSync(join(OUT_DIR, file), buf);
-    return { src: `/img/items/${file}`, file, dim };
+    return { src: `/img/items/${file}`, file, dim, sha256: createHash("sha256").update(buf).digest("hex") };
   } catch (e) {
     console.error(`fetch-thumbs: image download failed for ${url}: ${String(e)}`);
     return null;
@@ -320,19 +322,27 @@ function stockFor(sourceUrl: string, stock: StockMap): ItemImage | null {
 }
 
 /** Walk the ranked candidates; first photo wins, a logo-shaped image is held
-    as fallback only. Every trial file except the winner's is deleted. */
+    as fallback only. Every trial file except the winner's is deleted.
+    `taken` maps image sha256 -> owner item id: two items citing the same
+    article must not wear identical artwork (the B1067/B1071 case), so a
+    candidate whose bytes already belong to another item is skipped and the
+    walk moves to the next candidate or the text tile. */
 async function imageFromSources(
   item: { id: string; source_url: string; secondary_urls?: string[]; sources?: { url: string; class: string }[] },
+  taken: Map<string, string>,
 ): Promise<ItemImage | null> {
   const written = new Set<string>();
-  let logoFallback: (ItemImage & { file: string }) | null = null;
+  let logoFallback: (ItemImage & { file: string; sha256: string }) | null = null;
 
-  const finish = (winner: (ItemImage & { file: string }) | null): ItemImage | null => {
+  const finish = (
+    winner: (ItemImage & { file: string; sha256: string }) | null,
+  ): ItemImage | null => {
     for (const f of written) {
       if (!winner || f !== winner.file) rmSync(join(OUT_DIR, f), { force: true });
     }
     if (!winner) return null;
-    const { file: _file, ...img } = winner;
+    taken.set(winner.sha256, item.id);
+    const { file: _file, sha256: _sha, ...img } = winner;
     return img;
   };
 
@@ -343,12 +353,18 @@ async function imageFromSources(
     const dl = await downloadImage(metaImage, item.id);
     if (!dl) continue;
     written.add(dl.file);
+    const owner = taken.get(dl.sha256);
+    if (owner !== undefined && owner !== item.id) {
+      console.log(`${item.id}: candidate from ${cand.url} already worn by ${owner}, skipped`);
+      continue;
+    }
     const host = hostOf(cand.url) ?? cand.url;
-    const img: ItemImage & { file: string } = {
+    const img: ItemImage & { file: string; sha256: string } = {
       src: dl.src,
       credit: `Image: ${host}`,
       origin_url: cand.url,
       file: dl.file,
+      sha256: dl.sha256,
     };
     if (fitFor(dl.dim)) {
       // Logo-shaped: usable, but keep looking for a real photo first.
@@ -368,7 +384,11 @@ async function main(): Promise<void> {
   // --redo id1,id2,...: forget these items' current decision and files.
   const redoArg = process.argv.find((a) => a.startsWith("--redo"));
   const redoIds = new Set(
-    (redoArg?.includes("=") ? redoArg.split("=")[1]! : process.argv[process.argv.indexOf("--redo") + 1] ?? "")
+    (redoArg === undefined
+      ? ""
+      : redoArg.includes("=")
+        ? redoArg.split("=")[1]!
+        : (process.argv[process.argv.indexOf("--redo") + 1] ?? ""))
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean),
@@ -382,6 +402,18 @@ async function main(): Promise<void> {
     delete (item as { image?: unknown }).image;
     for (const f of readdirSync(OUT_DIR)) {
       if (f.startsWith(id + ".")) rmSync(join(OUT_DIR, f), { force: true });
+    }
+  }
+
+  // Hashes of every image already on disk, keyed to the item that wears it
+  // (files are named <item-id>.<ext>), so this run cannot hand a second
+  // item artwork another card already uses.
+  const taken = new Map<string, string>();
+  if (existsSync(OUT_DIR)) {
+    for (const f of readdirSync(OUT_DIR)) {
+      const dot = f.lastIndexOf(".");
+      if (dot <= 0) continue;
+      taken.set(createHash("sha256").update(readFileSync(join(OUT_DIR, f))).digest("hex"), f.slice(0, dot));
     }
   }
 
@@ -403,7 +435,7 @@ async function main(): Promise<void> {
       };
     }
 
-    if (!image) image = await imageFromSources(item);
+    if (!image) image = await imageFromSources(item, taken);
     if (!image) image = stockFor(item.source_url, stock);
 
     if (image) {
