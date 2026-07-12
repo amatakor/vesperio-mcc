@@ -1504,3 +1504,59 @@ a newer entry if a lesson changes.
 - 2026-07-12-G: batch interactive edits into ONE finalize. Every
   finalize demands its own attested 6-query discovery matrix, so three
   sequential finalizes in one session cost three matrix passes.
+
+## Normal-mode sweep, ~8h35m gap, unfiltered full source list (2026-07-12, fourth)
+
+- 2026-07-12-H: TASK 2026-07-08-I2 COMPLETE. Chased the Airbus/Leonardo/
+  Thales "Project Bromo" space-merger MOU and OHB's antitrust opposition,
+  both never covered. Published both dated on their actual event dates
+  (2025-10-23 MOU, 2025-11-07 OHB opposition) per the standing "chase old
+  important events" ruling, months outside this run's discovery window.
+  Corroboration lesson: Airbus's own MOU release (airbus.com) and
+  Leonardo's (leonardo.com) both FAIL the anti-spoof gate as first_party
+  -- Airbus's registry `website` is `space-solutions.airbus.com`, not
+  `www.airbus.com` (sibling subdomain, same trap as 2026-07-06-W/FF), and
+  Leonardo has no registry profile at all (2026-07-07-K pattern). Led
+  with Via Satellite instead (trade, gate-safe) and linked airbus.com
+  unscored in secondary_urls; the item still landed SNR 3 on 4 distinct
+  trade sources (avitrader.com and airdatanews.com, both aviation-trade
+  outlets not previously in sources.json, turned out to be independently
+  fetchable same-day writeups, not wire rewrites of one release).
+- 2026-07-12-I: spacenews.com returned HTTP 429 on every WebFetch attempt
+  this entire session (4+ tries, ~90 minutes apart, never recovered) --
+  a session-long outage, not the usual transient one-off. Left a
+  candidate (NASA/SpaceX commercial-crew contract extension, ~$1.7B per
+  search snippets only) undrafted rather than sourcing figures from a
+  WebSearch summary alone; flag for a future sweep to pick up once
+  spacenews.com is reachable again.
+- 2026-07-12-J: A EU-institution financing story (Intesa Sanpaolo/EIB/ESA
+  space-lending facility for Italian aerospace SMEs, announced 2026-07-08,
+  never covered) hit the SAME gate trap as non-US government domains
+  (2026-07-08-F2/Q): eib.org is not in FIXED_OFFICIAL_HOSTS (only
+  `europa.eu` is, and eib.org doesn't match it) and neither EIB nor Intesa
+  Sanpaolo have registry profiles, so their own pages can't be classed
+  official_record/first_party despite being genuinely the concerned
+  parties. Led with Italpress (Italian national wire agency, mainstream)
+  instead, corroborated by Devdiscourse (informal), linked eib.org and
+  group.intesasanpaolo.com unscored -- landed SNR 4. Worth remembering
+  Italpress and Devdiscourse as fetchable outlets for Italy-adjacent
+  space-finance stories.
+- 2026-07-12-K: This run's harvester queue (63 candidates after prefilter)
+  was almost entirely SpaceX stock/IPO clickbait (Motley Fool, Yahoo
+  Finance, Benzinga, Seeking Alpha framing SpaceX's Nasdaq-100 listing,
+  price targets, "Ex-Elon" ETFs) plus FAA/Bluesky launch-schedule chatter
+  for a forward-scheduled Starship Flight 13 (not yet flown, correctly
+  left for a future sweep per 2026-07-09-G) -- zero genuine new-space
+  events survived triage from the queue itself; everything drafted this
+  run came from the discovery pass. A fully quiet direct-fetch (25 HTML
+  sources) and signals pass (17/17 channels) confirms this wasn't an
+  under-covered run, just a queue saturated with financial-media noise.
+- 2026-07-12-L: A one-off scope call: ISRO's Gaganyaan crew-module
+  qualification-test milestone (widely covered, isro.gov.in +
+  many Indian outlets) was discarded silently as out of scope -- no
+  commercial contractor or contract is named in any version of the
+  story, and CLAUDE.md's human-spaceflight scope requires "contracts and
+  outcomes affect commercial providers." A pure national crewed-program
+  test milestone with zero commercial angle stated reads the same as the
+  Aeolus-2/NATO-HALO/NASA-STRIDE institutional-exclusion precedents, just
+  clear enough this time to discard rather than hold.
