@@ -245,7 +245,7 @@ export function Masthead({ current }: { current?: string }) {
             <line x1="3.6" y1="1" x2="3.6" y2="3" />
             <line x1="5.9" y1="1" x2="5.9" y2="3" />
           </svg>
-          <span className="nav-badge-label">BUY ME A COFFEE ↗</span>
+          <span className="nav-badge-label">BUY ME A COFFEE</span>
         </a>
       </span>
     </header>

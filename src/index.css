@@ -747,6 +747,11 @@ input,
   border: 0;
   position: relative;
   padding: 3px 0 5px;
+  /* Centered between ABOUT and SUBSCRIBE (Florian, 2026-07-12): the nav
+     words carry 5px inner padding the bare glyph lacks, so the raw gaps
+     measured 25px left vs 16px right. -5px eats the phantom padding,
+     +4px pads toward the badge: 20px visual air on both sides. */
+  margin: 0 4px 0 -5px;
   cursor: pointer;
   line-height: 1;
   align-self: center;
