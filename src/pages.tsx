@@ -4408,7 +4408,7 @@ function EngineDiagram() {
     </g>
   );
   return (
-    <svg viewBox="0 0 740 468" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
+    <svg viewBox="0 0 752 468" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
       <defs>
         <marker id="eng-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path d="M0,0 L8,4 L0,8 z" fill="var(--text-3)" />
@@ -4437,9 +4437,9 @@ function EngineDiagram() {
       <Box x={388} y={40} owner="data" title="CANDIDATE QUEUE" s1="TRIAGED ONCE," s2="THEN CONSUMED" />
       <Box x={568} y={40} owner="agent" title="DISCOVERY" s1="OPEN-WEB QUERY MATRIX," s2="WHITELISTED CHANNELS" />
       <line x1={180} y1={68} x2={206} y2={68} {...wire} />
-      <text x={181} y={62} {...wireLbl}>FETCH</text>
+      <text x={193} y={84} textAnchor="middle" {...wireLbl}>FETCH</text>
       <line x1={360} y1={68} x2={386} y2={68} {...wire} />
-      <text x={358} y={62} {...wireLbl}>QUEUE</text>
+      <text x={373} y={84} textAnchor="middle" {...wireLbl}>QUEUE</text>
 
       {/* row 2: judgment and arithmetic, right to left */}
       <Box x={388} y={168} owner="agent" title="SWEEP AGENT" s1="SCOPES, CRAWLS, DRAFTS," s2="ATTESTS ITS SOURCES" />
@@ -4450,9 +4450,9 @@ function EngineDiagram() {
       <polyline points="644,96 644,196 542,196" {...wire} />
       <text x={650} y={130} {...wireLbl}>FINDS</text>
       <line x1={388} y1={196} x2={362} y2={196} {...wire} />
-      <text x={352} y={188} {...wireLbl}>DRAFT</text>
+      <text x={375} y={212} textAnchor="middle" {...wireLbl}>DRAFT</text>
       <line x1={208} y1={196} x2={182} y2={196} {...wire} />
-      <text x={172} y={188} {...wireLbl}>MERGE</text>
+      <text x={195} y={212} textAnchor="middle" {...wireLbl}>MERGE</text>
 
       {/* row 3: outputs and records */}
       <Box x={28} y={296} owner="code" title="SITE BUILD" s1="SCHEMA CHECKS," s2="EVERY ROUTE STATIC" />
@@ -4462,7 +4462,7 @@ function EngineDiagram() {
       <polyline points="104,224 104,294" {...wire} />
       <text x={110} y={262} {...wireLbl}>BUILD</text>
       <line x1={180} y1={324} x2={206} y2={324} {...wire} />
-      <text x={168} y={290} {...wireLbl}>PUBLISH</text>
+      <text x={193} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
       <polyline points="284,224 284,268 464,268 464,294" {...wire} />
       <text x={296} y={262} {...wireLbl}>OPEN QUESTIONS</text>
       <polyline points="340,224 340,246 644,246 644,294" {...wire} markerStart="url(#eng-arr)" />
@@ -4474,8 +4474,8 @@ function EngineDiagram() {
       <text x={470} y={382} {...wireLbl}>RULES</text>
 
       {/* discovery suggestions rail: agent finds -> human reviews */}
-      <polyline points="720,68 730,68 730,428 542,428" {...wire} />
-      <text x={738} y={250} {...wireLbl} transform="rotate(90 738 250)">SUGGESTED SOURCES + VOICES</text>
+      <polyline points="720,68 736,68 736,428 542,428" {...wire} />
+      <text x={748} y={248} textAnchor="middle" {...wireLbl} transform="rotate(90 748 248)">SUGGESTED SOURCES + VOICES</text>
 
       {/* human-approved sources rail: back into the registry */}
       <polyline points="388,428 12,428 12,68 26,68" {...wire} />
@@ -4535,19 +4535,19 @@ function ScoringDiagram() {
 
 const ABOUT_IMPACT_TIERS: Array<[string, string]> = [
   [
-    "SEISMIC",
+    "seismic",
     "Reshapes competitive dynamics: major M&A between tracked operators, an operator failure or bankruptcy, a flagship program cancelled, the first flight of a new orbital vehicle. A seismic claim resting on weak sourcing is auto-queued for human review while it publishes.",
   ],
   [
-    "MAJOR",
+    "major",
     "A commercial director acts on it or briefs the team the same day: a contract or funding round with a stated value that changes the actor's trajectory, a regulatory grant or denial that changes what an operator may sell or where, a first-of-kind capability offered on commercial terms. The stated-value test is hard: the money or market access must be in the source, never inferred.",
   ],
   [
-    "NOTABLE",
+    "notable",
     "Worth the morning read: a routine-sized or unvalued award, an ordinary funding round, a milestone arriving on schedule, a partnership with named scope but unstated money. Commentary items cap here.",
   ],
   [
-    "NOISE",
+    "noise",
     "Belongs in the record, not the push: a scheduled launch succeeding on schedule, a routine product update, a minor partnership without stated money, capacity, or regulatory effect. Routine megaconstellation batch launches publish here, US and Chinese cadence alike.",
   ],
 ];
@@ -4634,17 +4634,16 @@ export function AboutPage() {
         <figure className="prose">
           <ScoringDiagram />
         </figure>
-        <table className="profile">
-          <thead>
-            <tr>
-              <th>score</th>
-              <th>what it means</th>
-            </tr>
-          </thead>
+        <table className="tier-table">
           <tbody>
             {SNR_SCALE.map(([n, meaning]) => (
               <tr key={n}>
-                <th scope="row">SNR {n}</th>
+                <th scope="row">
+                  <SnrLed snr={n} />
+                  <span className="tier-tag">
+                    {n}/5 · {SNR_WORDS[n]}
+                  </span>
+                </th>
                 <td>{meaning}</td>
               </tr>
             ))}
@@ -4664,11 +4663,13 @@ export function AboutPage() {
         </p>
         <div className="qa-pair" id="impact">
           <h3>The four impact tiers</h3>
-          <table className="profile">
+          <table className="tier-table">
             <tbody>
               {ABOUT_IMPACT_TIERS.map(([tier, meaning]) => (
                 <tr key={tier}>
-                  <th scope="row">{tier}</th>
+                  <th scope="row">
+                    <span className={`chip chip-${tier}`}>{tier}</span>
+                  </th>
                   <td>{meaning}</td>
                 </tr>
               ))}
@@ -4798,17 +4799,16 @@ export function MethodologyPage() {
 
       <section className="panel">
         <h2>the scale</h2>
-        <table className="profile">
-          <thead>
-            <tr>
-              <th>score</th>
-              <th>what it means</th>
-            </tr>
-          </thead>
+        <table className="tier-table">
           <tbody>
             {SNR_SCALE.map(([n, meaning]) => (
               <tr key={n}>
-                <th scope="row">SNR {n}</th>
+                <th scope="row">
+                  <SnrLed snr={n} />
+                  <span className="tier-tag">
+                    {n}/5 · {SNR_WORDS[n]}
+                  </span>
+                </th>
                 <td>{meaning}</td>
               </tr>
             ))}
