@@ -1299,3 +1299,70 @@ a newer entry if a lesson changes.
   nulls were correctly left unfilled rather than summed, derived, or
   coerced from vague phrasing; zero-field candidate files are a valid,
   cheap outcome. Verifier fail rate on submitted fields was 9 of 103.
+
+## Deep sweep, ~21h25m gap, unfiltered full source list (2026-07-12)
+
+- 2026-07-12-G: A search-engine WebSearch summary can silently splice
+  together two different years' events under one headline: "ISRO
+  LVM3-M6 BlueBird Block-2" search results blended a genuinely old
+  December 19, 2025 launch (confirmed by direct-fetching ISRO's own
+  mission page, which states the date plainly) with phrasing that read
+  as current ("Indian rocket launches AST SpaceMobile's next-gen
+  BlueBird 6 satellite"). Treated as stale and dropped only after a
+  direct fetch of the primary page; a WebSearch summary's tense/framing
+  is not proof of recency, confirms 2026-07-08-E on a new source shape.
+- 2026-07-12-H: Two different national wire services independently
+  covering the same event (JAXA/MHI's RV-X reusable-rocket hop test:
+  AP via ABC News, and Kyodo News via Nikkei Asia) count as TWO distinct
+  corroboration sources, not one -- the "one story, one source" collapse
+  rule is for reprints/rewrites of the SAME wire text, not for two wire
+  services each producing their own independent copy of a story. Worth
+  a direct fetch to confirm the byline actually says a different wire
+  (Nikkei's page plainly credited "(Kyodo)", not AP) before assuming a
+  second outlet is just an AP mirror.
+- 2026-07-12-I: A secondary/tertiary aggregator that explicitly credits
+  another outlet as its source (Venture Intelligence's Pixxel-Temasek
+  writeup stated it was citing Mint) is not independent corroboration
+  even though it lives on a different domain with different wording --
+  same handling as a wire-service reprint. Left the Pixxel funding-round
+  item single-sourced (NewsBytes, informal, crawl found_none) rather
+  than double-counting Venture Intelligence; it shipped honestly at
+  SNR 1, which is the model working for a still-unclosed, single-outlet
+  funding report.
+- 2026-07-12-J: Before treating a triage pass's "free corroboration"
+  finding as a fresh attach, check the target item's CURRENT sources/
+  secondary_urls array in items.json, not just the candidate queue --
+  confirms 2026-07-06-JJ on a much larger scale this run: of 11
+  candidate free-corroboration URLs two parallel triage agents surfaced
+  across a 791-entry deep-mode queue, 9 were already attached (most
+  from sweeps earlier the same day) and only 2 (Via Satellite on NSSL
+  Lane 1, SpacePolicyOnline on ispace/Starship) were genuinely new. A
+  triage agent working from a point-in-time snapshot of `existing[]`
+  cannot know what a same-day sweep already attached.
+- 2026-07-12-K: A company's own year-old press release resurfacing in a
+  fresh trade-press feature (Orbitworks' Altair constellation: primary
+  announcement dated May 2025, re-covered by a CNN feature July 9 2026)
+  is not a new event unless the new coverage states a new discrete fact
+  with its own date; CNN's piece was paywalled/geo-blocked (HTTP 451)
+  so the "is anything actually new here" question couldn't be answered
+  and the candidate was dropped rather than drafted on the strength of
+  a fresh publish date alone. Same caution applied to a Bundeswehr
+  SATCOMBw Stage 4 lead (OSINT Bluesky reposts) whose only substantive
+  reporting traced to March 2026 primary coverage, and a "Tiangong
+  critical problem" headline that turned out to describe a Nov
+  2025-May 2026 crisis already resolved (Shenzhou 22 rescue, crew
+  returned May 29) -- all three dropped silently as stale rather than
+  held, since holding is for genuine scope questions, not for stories
+  that turn out to predate the window.
+- 2026-07-12-L: Splitting a large deep-mode candidate queue (791 entries,
+  8460 lines of context output) across two parallel background triage
+  agents by line-range, each given the FULL existing[] dedup list and
+  the scope rules verbatim, worked well and stayed under any single
+  agent's context budget; both returned independently useful shortlists
+  plus a `free_corroboration` list (see 2026-07-12-J on verifying those)
+  in under 6 minutes each. Pitfall hit once and caught before launch:
+  a copy-paste placeholder (`[PASTE_EXISTING_LIST]`) left in the first
+  attempt's prompt instead of the actual dedup list would have made
+  both agents triage with zero dedup context; always re-read a
+  multi-agent prompt for unresolved placeholders before dispatching,
+  especially when reusing a prompt template across parallel agents.
