@@ -4859,8 +4859,8 @@ table.stat-table th {
   left: 50%;
   top: 50%;
   width: 54px;
-  height: 28px;
-  margin: -14px 0 0 -27px;
+  height: 48px;
+  margin: -24px 0 0 -27px;
   overflow: visible;
 }
 .mcc-fx-atom svg.atom-b {
@@ -5056,16 +5056,16 @@ table.stat-table th {
   border-color: var(--border-2);
 }
 
-/* Masonry hover halo (Florian, 2026-07-12: explicit amendment to the
-   no-glow rule, this hover only): the volt beams INSIDE the card via
-   an inset bloom; the ?orbitlab halo dials drive depth, reach,
-   intensity, and whether the border also lights. */
-.card:not(.card-seismic):hover {
-  box-shadow: inset 0 0 var(--halo-blur, 26px) var(--halo-spread, 0px)
-    color-mix(in srgb, var(--volt) var(--halo-a, 55%), transparent);
-  border-color: var(--halo-border-c, var(--shell-accent));
-}
-.sweep-card:hover {
-  box-shadow: inset 0 0 var(--halo-blur, 26px) var(--halo-spread, 0px)
-    color-mix(in srgb, var(--volt) var(--halo-a, 55%), transparent);
+/* Masonry hover frame v2 (Florian, 2026-07-12): the frame is an
+   overlay ring painted ABOVE the card's content, thumbnail included,
+   so nothing occludes it and it never shares a seam with a neighbor.
+   2px volt, crisp, no glow. */
+.card:not(.card-seismic):hover::after,
+.sweep-card:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--shell-accent);
+  pointer-events: none;
+  z-index: 5;
 }

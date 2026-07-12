@@ -110,10 +110,10 @@ function AtomSvg({ layer }: { layer: "f" | "b" }) {
     ...(r.reverse ? { keyPoints: "1;0", keyTimes: "0;1", calcMode: "linear" } : {}),
   });
   return (
-    <svg className={`atom-${layer}`} viewBox="-27 -14 54 28" aria-hidden="true">
+    <svg className={`atom-${layer}`} viewBox="-27 -24 54 48" aria-hidden="true">
       <defs>
         <clipPath id={`mcc-clip-${layer}`}>
-          <rect x="-27" y={layer === "f" ? 0 : -14} width="54" height="14" />
+          <rect x="-27" y={layer === "f" ? 0 : -24} width="54" height="24" />
         </clipPath>
       </defs>
       <g clipPath={`url(#mcc-clip-${layer})`}>
@@ -160,11 +160,6 @@ const ATOM_LAB_DIALS: Array<[string, string, number, number, number, string]> = 
   ["dot", "electron", 0.6, 3, 0.1, "px"],
   ["period", "period", 0.5, 6, 0.1, "s"],
 ];
-const HALO_DIALS: Array<[string, string, number, number, number, string]> = [
-  ["blur", "halo depth", 4, 64, 1, "px"],
-  ["spread", "halo reach", 0, 16, 1, "px"],
-  ["alpha", "halo intensity", 5, 100, 5, "%"],
-];
 function OrbitLab() {
   const [open, setOpen] = useState(false);
   const [fx, setFx] = useState("atom");
@@ -177,8 +172,6 @@ function OrbitLab() {
     dot: 1,
     period: 1,
   });
-  const [halo, setHalo] = useState<Record<string, number>>({ blur: 26, spread: 0, alpha: 55 });
-  const [haloBorder, setHaloBorder] = useState(true);
   useEffect(() => {
     setOpen(window.location.search.includes("orbitlab"));
   }, []);
@@ -211,24 +204,11 @@ function OrbitLab() {
       }
     }
   }, [open, fx, railC, v]);
-  useEffect(() => {
-    if (!open) return;
-    const root = document.documentElement.style;
-    root.setProperty("--halo-blur", `${halo.blur}px`);
-    root.setProperty("--halo-spread", `${halo.spread}px`);
-    root.setProperty("--halo-a", `${halo.alpha}%`);
-    root.setProperty("--halo-border-c", haloBorder ? "var(--shell-accent)" : "var(--n5)");
-  }, [open, halo, haloBorder]);
   if (!open) return null;
   const setAtom = (k: string) => (e: { target: { value: string } }) =>
     setV((old) => ({ ...old, [k]: Number(e.target.value) }));
-  const setH = (k: string) => (e: { target: { value: string } }) =>
-    setHalo((old) => ({ ...old, [k]: Number(e.target.value) }));
   const readout =
-    Object.entries(v).map(([k, n]) => `${k}=${n}`).join(" ") +
-    ` railC=${railC ? "on" : "off"} · halo ` +
-    Object.entries(halo).map(([k, n]) => `${k}=${n}`).join(" ") +
-    ` border=${haloBorder ? "volt" : "quiet"}`;
+    Object.entries(v).map(([k, n]) => `${k}=${n}`).join(" ") + ` railC=${railC ? "on" : "off"}`;
   return (
     <div className="orbit-lab">
       <h4>mcc fx lab</h4>
@@ -261,24 +241,6 @@ function OrbitLab() {
           </div>
         </>
       )}
-      <div className="orbit-lab-shell">
-        <div className="orbit-lab-shell-head">
-          <span>card halo</span>
-          <button type="button" className={haloBorder ? "on" : ""} onClick={() => setHaloBorder(!haloBorder)}>
-            {haloBorder ? "volt border" : "quiet border"}
-          </button>
-        </div>
-        {HALO_DIALS.map(([k, label, min, max, step, unit]) => (
-          <div className="orbit-lab-row" key={k}>
-            <span>{label}</span>
-            <input type="range" min={min} max={max} step={step} value={halo[k]} onChange={setH(k)} />
-            <span className="orbit-lab-val">
-              {halo[k]}
-              {unit}
-            </span>
-          </div>
-        ))}
-      </div>
       <div className="orbit-lab-out">{readout}</div>
     </div>
   );
