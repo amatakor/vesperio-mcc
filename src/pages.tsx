@@ -4556,6 +4556,7 @@ const ABOUT_IMPACT_TIERS: Array<[string, string]> = [
 export function AboutPage() {
   return (
     <Layout current="about">
+      <div className="about-page">
       <h1 className="page-title">about</h1>
       <p className="lede">
         Vesperio is a machine-maintained tracker for the new space economy. A deterministic data
@@ -4755,6 +4756,7 @@ export function AboutPage() {
           </div>
         ))}
       </section>
+      </div>
     </Layout>
   );
 }
