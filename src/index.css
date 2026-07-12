@@ -1233,6 +1233,7 @@ a.chip:hover {
   min-width: 0;
   overflow: hidden;
   padding: 0;
+  position: relative;
 }
 /* Daylight face (rule 52, supersedes rule 2's constant black here):
    the MCC launch clock's smoked treatment, translated — translucent
@@ -1415,7 +1416,7 @@ a.chip:hover {
    just inside it (flush, no gap), above all content, thumbnail
    included. --shell-accent stays the theme-aware token (volt on dark,
    volt-ink on bright). */
-.card:not(.card-seismic)::after {
+.card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1424,8 +1425,8 @@ a.chip:hover {
   pointer-events: none;
   transition: border-width 100ms ease-out;
 }
-.card:not(.card-seismic):hover::after {
-  border-width: 3px;
+.card:hover::after {
+  border-width: 2px;
 }
 .card:not(.card-seismic):hover .card-headline a,
 .card:not(.card-seismic):hover .card-tagline,
@@ -1630,7 +1631,6 @@ a.chip:hover {
    negative). Fills keep their fills; the foot stays put. */
 .card-seismic:hover {
   background: #0000ff; /* literal invert of the #ffff00 ground */
-  border-color: var(--shell-accent);
   z-index: 2;
 }
 .card-seismic:hover .card-headline a,
@@ -4371,7 +4371,7 @@ a.sig-card:hover .sig-p-x {
   transition: border-width 100ms ease-out;
 }
 .sweep-card:hover::after {
-  border-width: 3px;
+  border-width: 2px;
 }
 
 .sweep-card:hover .sweep-flood {
