@@ -87,165 +87,6 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** Atom geometry (Florian's recipe, 2026-07-12): tilt 30, rx 19.5,
-    ry 7.5, glow .35, electrons r=1, period 1s, third rail on. Rendered
-    TWICE with complementary half clips so electrons truly disappear
-    behind the label: the back layer (z0) owns the top arcs, the front
-    layer (z2) the bottom arcs, and the word sits at z1 between them.
-    Staggered negative begins keep the three electrons out of phase.
-    On hover the atom powers up: rails to full volt, electrons flip
-    bright, and each gains a two-dot train (opacity only, no transform,
-    no glow). */
-const ATOM_D = "M -19.5,0 A 19.5,7.5 0 1,1 19.5,0 A 19.5,7.5 0 1,1 -19.5,0";
-const ATOM_RAILS: Array<{ key: string; tilt: number; begin: number; reverse?: boolean }> = [
-  { key: "a", tilt: -30, begin: 0 },
-  { key: "b", tilt: 30, begin: -0.33, reverse: true },
-  { key: "c", tilt: 90, begin: -0.67 },
-];
-function AtomSvg({ layer }: { layer: "f" | "b" }) {
-  const motion = (r: (typeof ATOM_RAILS)[number], lag: number) => ({
-    dur: "1s",
-    begin: `${r.begin + lag}s`,
-    repeatCount: "indefinite",
-    ...(r.reverse ? { keyPoints: "1;0", keyTimes: "0;1", calcMode: "linear" } : {}),
-  });
-  return (
-    <svg className={`atom-${layer}`} viewBox="-27 -24 54 48" aria-hidden="true">
-      <defs>
-        <clipPath id={`mcc-clip-${layer}`}>
-          <rect x="-27" y={layer === "f" ? 0 : -24} width="54" height="24" />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#mcc-clip-${layer})`}>
-        {ATOM_RAILS.map((r) => (
-          <g
-            key={r.key}
-            className={`fx-atom-rail fx-atom-rail-${r.key}`}
-            transform={`rotate(${r.tilt})`}
-          >
-            <ellipse rx="19.5" ry="7.5" />
-            <path id={`mcc-orb-${r.key}-${layer}`} d={ATOM_D} fill="none" stroke="none" />
-            <circle r="1" className="fx-atom-e">
-              <animateMotion {...motion(r, 0)}>
-                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
-              </animateMotion>
-            </circle>
-            <circle r="0.75" className="fx-atom-t">
-              <animateMotion {...motion(r, 0.07)}>
-                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
-              </animateMotion>
-            </circle>
-            <circle r="0.55" className="fx-atom-t">
-              <animateMotion {...motion(r, 0.14)}>
-                <mpath href={`#mcc-orb-${r.key}-${layer}`} />
-              </animateMotion>
-            </circle>
-          </g>
-        ))}
-      </g>
-    </svg>
-  );
-}
-
-/** MCC marker + masonry halo lab (Florian, 2026-07-12). Atom dials
-    rewrite both SVG layers' attributes directly (SMIL paths cannot
-    read CSS variables); the period dial clone-swaps electrons to
-    restart their clocks in sync. Halo dials drive the --halo-* CSS
-    variables the card hover reads. ?orbitlab only. */
-const ATOM_LAB_DIALS: Array<[string, string, number, number, number, string]> = [
-  ["tilt", "rail tilt", 8, 88, 1, "deg"],
-  ["rx", "size", 14, 27, 0.5, "px"],
-  ["ry", "flatten", 3, 13, 0.5, "px"],
-  ["glow", "rail glow", 0.1, 1, 0.05, ""],
-  ["dot", "electron", 0.6, 3, 0.1, "px"],
-  ["period", "period", 0.5, 6, 0.1, "s"],
-];
-function OrbitLab() {
-  const [open, setOpen] = useState(false);
-  const [fx, setFx] = useState("atom");
-  const [railC, setRailC] = useState(true);
-  const [v, setV] = useState<Record<string, number>>({
-    tilt: 30,
-    rx: 19.5,
-    ry: 7.5,
-    glow: 0.35,
-    dot: 1,
-    period: 1,
-  });
-  useEffect(() => {
-    setOpen(window.location.search.includes("orbitlab"));
-  }, []);
-  useEffect(() => {
-    if (!open) return;
-    document.documentElement.dataset.mccFx = fx;
-    const root = document.documentElement.style;
-    root.setProperty("--atom-glow", String(v.glow));
-    root.setProperty("--atom-c-show", railC ? "inline" : "none");
-    const d = `M ${-v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${-v.rx},0`;
-    const tilts: Record<string, number> = { a: -v.tilt, b: v.tilt, c: 90 };
-    for (const svg of document.querySelectorAll(".mcc-fx-atom svg")) {
-      for (const key of ["a", "b", "c"]) {
-        const g = svg.querySelector(`.fx-atom-rail-${key}`);
-        if (!g) continue;
-        g.setAttribute("transform", `rotate(${tilts[key]})`);
-        const el = g.querySelector("ellipse");
-        el?.setAttribute("rx", String(v.rx));
-        el?.setAttribute("ry", String(v.ry));
-        g.querySelector("path")?.setAttribute("d", d);
-        g.querySelectorAll("circle").forEach((c, i) => {
-          c.setAttribute("r", String(v.dot * [1, 0.75, 0.55][i]));
-          const am = c.querySelector("animateMotion");
-          if (am && am.getAttribute("dur") !== `${v.period}s`) {
-            am.setAttribute("dur", `${v.period}s`);
-            const clone = c.cloneNode(true);
-            c.replaceWith(clone);
-          }
-        });
-      }
-    }
-  }, [open, fx, railC, v]);
-  if (!open) return null;
-  const setAtom = (k: string) => (e: { target: { value: string } }) =>
-    setV((old) => ({ ...old, [k]: Number(e.target.value) }));
-  const readout =
-    Object.entries(v).map(([k, n]) => `${k}=${n}`).join(" ") + ` railC=${railC ? "on" : "off"}`;
-  return (
-    <div className="orbit-lab">
-      <h4>mcc fx lab</h4>
-      <div className="orbit-lab-shell-head">
-        {["atom", "ripple", "breathe", "scan"].map((key) => (
-          <button key={key} type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
-            {key}
-          </button>
-        ))}
-      </div>
-      {fx === "atom" && (
-        <>
-          {ATOM_LAB_DIALS.map(([k, label, min, max, step, unit]) => (
-            <div className="orbit-lab-row" key={k}>
-              <span>{label}</span>
-              <input type="range" min={min} max={max} step={step} value={v[k]} onChange={setAtom(k)} />
-              <span className="orbit-lab-val">
-                {v[k]}
-                {unit}
-              </span>
-            </div>
-          ))}
-          <div className="orbit-lab-shell">
-            <div className="orbit-lab-shell-head">
-              <span>third rail (vertical)</span>
-              <button type="button" className={railC ? "on" : ""} onClick={() => setRailC(!railC)}>
-                {railC ? "on" : "off"}
-              </button>
-            </div>
-          </div>
-        </>
-      )}
-      <div className="orbit-lab-out">{readout}</div>
-    </div>
-  );
-}
-
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
   ["/mcc/", "mcc"],
@@ -377,38 +218,8 @@ export function Masthead({ current }: { current?: string }) {
       <span className="brand-tag">/ NEW SPACE INTELLIGENCE</span>
       <nav className="nav">
         {NAV_LINKS.map(([href, label]) => (
-          <a
-            key={href}
-            href={href}
-            aria-current={label === current ? "page" : undefined}
-            className={label === "mcc" ? "nav-mcc" : undefined}
-          >
-            {label === "mcc" ? (
-              <>
-                {/* The live-view marker, option gallery (Florian,
-                    2026-07-12): four candidate effects, switched live by
-                    the ?orbitlab panel via data-mcc-fx on <html>. RIPPLE
-                    (default) and BREATHE borrow the spaceport pulse
-                    language; ATOM is the electron effect with its rails
-                    drawn; SCAN is a passing survey line. All off under
-                    prefers-reduced-motion. */}
-                <span className="mcc-orbit" aria-hidden="true">
-                  <span className="mcc-fx mcc-fx-ripple">
-                    <span className="fx-ring fx-ring-1" />
-                    <span className="fx-ring fx-ring-2" />
-                  </span>
-                  <span className="mcc-fx mcc-fx-breathe" />
-                  <span className="mcc-fx mcc-fx-atom">
-                    <AtomSvg layer="b" />
-                    <AtomSvg layer="f" />
-                  </span>
-                  <span className="mcc-fx mcc-fx-scan" />
-                </span>
-                <span className="nav-mcc-label">{label}</span>
-              </>
-            ) : (
-              label
-            )}
+          <a key={href} href={href} aria-current={label === current ? "page" : undefined}>
+            {label}
           </a>
         ))}
         {/* The theme switch rides with the words; the two framed badges
@@ -445,7 +256,6 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
   return (
     <div className="shell">
       <Masthead current={current} />
-      <OrbitLab />
       <main>{children}</main>
       <footer className="footer">
         <p>
