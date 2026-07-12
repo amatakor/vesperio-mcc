@@ -87,41 +87,114 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** Option switcher for the MCC nav marker (Florian, 2026-07-12).
-    Renders only with ?orbitlab in the URL; sets data-mcc-fx on <html>,
-    which the CSS variants read. Fine-tuning dials return once an
-    option wins. */
+/** MCC marker lab (Florian, 2026-07-12): the four-way switcher plus
+    fine-tuning dials for the winning ATOM effect. Geometry dials
+    rewrite the SVG attributes directly (SMIL paths cannot read CSS
+    variables); speed changes clone-swap the electron to restart its
+    motion. Renders only with ?orbitlab in the URL. */
 const MCC_FX: Array<[string, string]> = [
-  ["ripple", "expanding rings, spaceport style"],
-  ["breathe", "brightness pulse, spaceport style"],
   ["atom", "electrons on drawn rails"],
+  ["ripple", "expanding rings"],
+  ["breathe", "brightness pulse"],
   ["scan", "survey line sweep"],
+];
+const ATOM_DIALS: Array<[string, string, number, number, number, string]> = [
+  ["tilt", "rail tilt", 8, 88, 1, "deg"],
+  ["rx", "size", 14, 27, 0.5, "px"],
+  ["ry", "flatten", 3, 13, 0.5, "px"],
+  ["glow", "rail glow", 0.1, 0.8, 0.05, ""],
+  ["dot", "electron", 1, 3.2, 0.1, "px"],
+  ["durA", "period a", 1.5, 9, 0.1, "s"],
+  ["durB", "period b", 1.5, 9, 0.1, "s"],
+  ["durC", "period c", 1.5, 9, 0.1, "s"],
 ];
 function OrbitLab() {
   const [open, setOpen] = useState(false);
-  const [fx, setFx] = useState("ripple");
+  const [fx, setFx] = useState("atom");
+  const [railC, setRailC] = useState(false);
+  const [v, setV] = useState<Record<string, number>>({
+    tilt: 24,
+    rx: 21,
+    ry: 7,
+    glow: 0.3,
+    dot: 1.7,
+    durA: 3.4,
+    durB: 4.6,
+    durC: 5.8,
+  });
   useEffect(() => {
     setOpen(window.location.search.includes("orbitlab"));
   }, []);
   useEffect(() => {
     if (!open) return;
     document.documentElement.dataset.mccFx = fx;
-  }, [open, fx]);
+    const root = document.documentElement.style;
+    root.setProperty("--atom-glow", String(v.glow));
+    root.setProperty("--atom-c-show", railC ? "inline" : "none");
+    const svg = document.querySelector(".mcc-fx-atom svg");
+    if (!svg) return;
+    const d = `M ${-v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${v.rx},0 A ${v.rx},${v.ry} 0 1,1 ${-v.rx},0`;
+    const tilts = [-v.tilt, v.tilt, 90];
+    const durs = [v.durA, v.durB, v.durC];
+    svg.querySelectorAll("g.fx-atom-rail").forEach((g, i) => {
+      g.setAttribute("transform", `rotate(${tilts[i]})`);
+      g.querySelector("ellipse")?.setAttribute("rx", String(v.rx));
+      g.querySelector("ellipse")?.setAttribute("ry", String(v.ry));
+      g.querySelector("path")?.setAttribute("d", d);
+      const circ = g.querySelector("circle");
+      if (!circ) return;
+      circ.setAttribute("r", String(v.dot));
+      const am = circ.querySelector("animateMotion");
+      if (am && am.getAttribute("dur") !== `${durs[i]}s`) {
+        am.setAttribute("dur", `${durs[i]}s`);
+        const clone = circ.cloneNode(true);
+        circ.replaceWith(clone);
+      }
+    });
+  }, [open, fx, railC, v]);
   if (!open) return null;
+  const set = (k: string) => (e: { target: { value: string } }) =>
+    setVals(k, Number(e.target.value));
+  function setVals(k: string, n: number) {
+    setV((old) => ({ ...old, [k]: n }));
+  }
+  const readout =
+    Object.entries(v)
+      .map(([k, n]) => `${k}=${n}`)
+      .join(" ") + ` railC=${railC ? "on" : "off"} fx=${fx}`;
   return (
     <div className="orbit-lab">
       <h4>mcc fx lab</h4>
-      {MCC_FX.map(([key, blurb]) => (
-        <div className="orbit-lab-shell" key={key}>
-          <div className="orbit-lab-shell-head">
-            <span>{blurb}</span>
-            <button type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
-              {key}
-            </button>
+      <div className="orbit-lab-shell-head">
+        {MCC_FX.map(([key]) => (
+          <button key={key} type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
+            {key}
+          </button>
+        ))}
+      </div>
+      {fx === "atom" && (
+        <>
+          {ATOM_DIALS.map(([k, label, min, max, step, unit]) => (
+            <div className="orbit-lab-row" key={k}>
+              <span>{label}</span>
+              <input type="range" min={min} max={max} step={step} value={v[k]} onChange={set(k)} />
+              <span className="orbit-lab-val">
+                {v[k]}
+                {unit}
+              </span>
+            </div>
+          ))}
+          <div className="orbit-lab-shell">
+            <div className="orbit-lab-shell-head">
+              <span>third rail (vertical)</span>
+              <button type="button" className={railC ? "on" : ""} onClick={() => setRailC(!railC)}>
+                {railC ? "on" : "off"}
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-      <div className="orbit-lab-out">active: {fx}</div>
+        </>
+      )}
+      <div className="orbit-lab-out">{readout}</div>
     </div>
   );
 }
@@ -311,6 +384,20 @@ export function Masthead({ current }: { current?: string }) {
                             calcMode="linear"
                           >
                             <mpath href="#mcc-orb-b" />
+                          </animateMotion>
+                        </circle>
+                      </g>
+                      <g className="fx-atom-rail fx-atom-rail-c" transform="rotate(90)">
+                        <ellipse rx="21" ry="7" />
+                        <path
+                          id="mcc-orb-c"
+                          d="M -21,0 A 21,7 0 1,1 21,0 A 21,7 0 1,1 -21,0"
+                          fill="none"
+                          stroke="none"
+                        />
+                        <circle r="1.7" className="fx-atom-e">
+                          <animateMotion dur="5.8s" repeatCount="indefinite">
+                            <mpath href="#mcc-orb-c" />
                           </animateMotion>
                         </circle>
                       </g>

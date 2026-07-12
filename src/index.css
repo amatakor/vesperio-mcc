@@ -632,7 +632,9 @@ input,
    a flood. Bracket controls (theme toggle, subscribe, support) opt out via
    :not(.nav-support) and keep the neutral hint. */
 .nav a:not(.nav-support):not(.coffee-btn) {
-  padding: 3px 5px 5px;
+  /* Balanced vertical padding (Florian, 2026-07-12): 3/5 floated the
+     words ~1.3px above the framed badges' word centers. */
+  padding: 4.5px 5px 3.5px;
   z-index: 0;
 }
 .nav a:not(.nav-support):not(.coffee-btn)::before {
@@ -4776,7 +4778,7 @@ table.stat-table th {
   position: absolute;
   inset: 0;
 }
-:root:not([data-mcc-fx]) .mcc-fx-ripple,
+:root:not([data-mcc-fx]) .mcc-fx-atom,
 :root[data-mcc-fx="ripple"] .mcc-fx-ripple,
 :root[data-mcc-fx="breathe"] .mcc-fx-breathe,
 :root[data-mcc-fx="atom"] .mcc-fx-atom,
@@ -4858,7 +4860,10 @@ table.stat-table th {
   fill: none;
   stroke: var(--dot);
   stroke-width: 0.75;
-  opacity: 0.3;
+  opacity: var(--atom-glow, 0.3);
+}
+.fx-atom-rail-c {
+  display: var(--atom-c-show, none);
 }
 .fx-atom-e {
   fill: var(--dot);
