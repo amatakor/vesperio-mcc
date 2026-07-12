@@ -4457,13 +4457,13 @@ function EngineDiagram() {
 
       {/* row 3: outputs and records */}
       <Box x={28} y={296} owner="code" title="SITE BUILD" s1="SCHEMA CHECKS," s2="EVERY ROUTE STATIC" />
-      <Box x={212} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
+      <Box x={228} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
       <Box x={396} y={296} owner="data" title="HELD QUEUE" s1="OPEN QUESTIONS; ANSWERS" s2="FEED THE NEXT SWEEP" />
       <Box x={580} y={296} owner="data" title="SOURCE LEDGER" s1="STRIKES + CREDITS PER" s2="CLAIM, 90-DAY WINDOW" />
       <polyline points="98,224 98,294" {...wire} />
       <text x={104} y={262} {...wireLbl}>BUILD</text>
-      <line x1={168} y1={324} x2={210} y2={324} {...wire} />
-      <text x={189} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
+      <line x1={168} y1={324} x2={226} y2={324} {...wire} />
+      <text x={197} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
       <polyline points="282,224 282,268 466,268 466,294" {...wire} />
       <text x={294} y={262} {...wireLbl}>OPEN QUESTIONS</text>
       <polyline points="330,224 330,246 650,246 650,294" {...wire} markerStart="url(#eng-arr)" />
