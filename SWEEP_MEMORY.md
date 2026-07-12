@@ -1395,3 +1395,32 @@ a newer entry if a lesson changes.
   2026-07-06-S/2026-07-06-Z); worth a structural-touch fix to find a better
   dated feed for RFA, since a WebFetch summary of this page is not reliably
   usable for freshness checks.
+
+## Narrow same-day re-check, unfiltered full source list, ~14min gap (2026-07-12, third)
+
+- 2026-07-12-Q: NGA / NRO's contract-announcements page flipped verified ->
+  stale this run: the newest visible award has now read "2026-01-20" across
+  five consecutive checks (07-06, 07-08, 07-11, and twice on 07-12) with
+  zero movement despite being a genuinely dated content page (unlike RFA's
+  perpetually-undated listing, which is a different failure mode). Same
+  precedent as Capella's stale flip (2026-07-11-I): reachable, real content,
+  just not moving. Re-check occasionally rather than treating every 200 as
+  fresh.
+- 2026-07-12-R: europeanspaceflight.com itself (not just its substack
+  mirror) 403'd on a direct WebFetch this run, a new failure mode for the
+  bare site (prior notes, e.g. 2026-07-09-F, had it 403ing intermittently
+  but this is the first time both the site and the substack feed failed in
+  the same run back to back). Not yet flipped to dead/stale; the site has
+  recovered before. Andrew Parsonson's Bluesky account remains a working
+  fallback leg for his content when both the site and substack are down.
+- 2026-07-12-S: A ~14-minute re-check gap (harvester `window_start` showed
+  a misleading 2-day span again, confirming 2026-07-08-C/2026-07-11-J —
+  always filter candidates against the real `lastSweep` stamp, not
+  `window_start`) produced a genuinely empty queue: only 2 leftover
+  candidates, both out-of-scope investment-clickbait about SpaceX/AT&T
+  stock price moves, not space-industry events at all. Checking all 26
+  HTML sources plus all 16 signals channels directly (dispatched as 5
+  parallel background subagents, each with the lastSweep cutoff and
+  anti-fabrication instructions, per the 2026-07-11-H pattern) confirmed
+  nothing anywhere was newer than the cutoff. Zero items is the correct,
+  fully-checked outcome, not an under-covered run.
