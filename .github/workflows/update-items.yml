@@ -44,7 +44,13 @@ on:
         required: false
         default: ""
   schedule:
-    - cron: "0 5,17 * * *"   # launch cadence: twice daily, 05:00/17:00 UTC
+    # Twice daily. Minute 15, not 0 (Florian, 2026-07-12): GitHub's shared
+    # scheduler is most congested at the top of the hour and fired this
+    # repo's :00 crons 40-170 min late; an off-minute dodges the pile-up
+    # (ai-tldr's :03-:16 sweeps land on time). The site's sweep clock still
+    # displays the nominal 05:00/17:00 schedule; its HOLD grace absorbs
+    # this offset plus normal run time.
+    - cron: "15 5,17 * * *"
 
 concurrency:
   group: data-writes
