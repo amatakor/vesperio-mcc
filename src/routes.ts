@@ -26,7 +26,6 @@ export type Route =
   | { page: "org"; slug: string }
   | { page: "signals" }
   | { page: "about" }
-  | { page: "methodology" }
   | { page: "digest" }
   | { page: "system" }
   | { page: "log-archive"; month: string }
@@ -46,7 +45,6 @@ export function matchRoute(pathname: string): Route {
   if (p === "/registry/") return { page: "registry" };
   if (p === "/signals/") return { page: "signals" };
   if (p === "/about/") return { page: "about" };
-  if (p === "/methodology/") return { page: "methodology" };
   if (p === "/digest/") return { page: "digest" };
   if (p === "/system/") return { page: "system" };
 

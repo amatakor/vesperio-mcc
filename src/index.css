@@ -632,7 +632,9 @@ input,
    a flood. Bracket controls (theme toggle, subscribe, support) opt out via
    :not(.nav-support) and keep the neutral hint. */
 .nav a:not(.nav-support):not(.coffee-btn) {
-  padding: 3px 5px 5px;
+  /* Balanced vertical padding (Florian, 2026-07-12): 3/5 floated the
+     words ~1.3px above the framed badges' word centers. */
+  padding: 4.5px 5px 3.5px;
   z-index: 0;
 }
 .nav a:not(.nav-support):not(.coffee-btn)::before {
@@ -1231,6 +1233,7 @@ a.chip:hover {
   min-width: 0;
   overflow: hidden;
   padding: 0;
+  position: relative;
 }
 /* Daylight face (rule 52, supersedes rule 2's constant black here):
    the MCC launch clock's smoked treatment, translated — translucent
@@ -1406,13 +1409,24 @@ a.chip:hover {
    keeps its own photographic-negative treatment (excluded via :not). */
 .card:not(.card-seismic):hover {
   background: var(--n7);
-  /* Volt hover frame (fix 2, 2026-07-10): --shell-accent is volt on dark,
-     volt-ink on bright (same theme-aware token as the nav underline and
-     the wordmark's always-lit dot), so the frame reads correctly in both
-     themes without a new color role. Seismic carries the same frame via
-     its own hover rule (rule 53). */
-  border-color: var(--shell-accent);
   z-index: 2;
+}
+/* Volt hover frame v3 (Florian, 2026-07-12, supersedes fix 2): the gray
+   grid border never changes; on hover a volt band grows INWARD from
+   just inside it (flush, no gap), above all content, thumbnail
+   included. --shell-accent stays the theme-aware token (volt on dark,
+   volt-ink on bright). */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0 solid var(--shell-accent);
+  z-index: 5;
+  pointer-events: none;
+  transition: border-width 100ms ease-out;
+}
+.card:hover::after {
+  border-width: 2px;
 }
 .card:not(.card-seismic):hover .card-headline a,
 .card:not(.card-seismic):hover .card-tagline,
@@ -1617,7 +1631,6 @@ a.chip:hover {
    negative). Fills keep their fills; the foot stays put. */
 .card-seismic:hover {
   background: #0000ff; /* literal invert of the #ffff00 ground */
-  border-color: var(--shell-accent);
   z-index: 2;
 }
 .card-seismic:hover .card-headline a,
@@ -4346,9 +4359,21 @@ a.sig-card:hover .sig-p-x {
 }
 .sweep-card:hover {
   background: #e3e3df; /* the dark-grey face's negative: paper grey, not white */
-  border-color: var(--shell-accent);
   z-index: 2;
 }
+.sweep-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0 solid var(--shell-accent);
+  z-index: 5;
+  pointer-events: none;
+  transition: border-width 100ms ease-out;
+}
+.sweep-card:hover::after {
+  border-width: 2px;
+}
+
 .sweep-card:hover .sweep-flood {
   background: #5200ff; /* invert of volt #adff00 */
 }
@@ -4374,3 +4399,400 @@ a.sig-card:hover .sig-p-x {
 .sweep-card:hover .sweep-flood .sweep-armed {
   color: #f5f5f5;
 }
+
+/* ---------------------------------------------------------------------------
+   NO LOWERCASE ANYWHERE (Florian, 2026-07-12). Every piece of UI chrome
+   renders uppercase; the exemptions are article prose (.prose, explainer
+   bodies, registry overview/value text), where case carries meaning, and
+   data values with units (nm/km/m), which uppercase would corrupt. */
+.modal-close,
+.source-line,
+.footer,
+.logo-credit,
+.attribution,
+.modal-credit,
+.item-figure figcaption,
+.kv dd,
+.src-link {
+  text-transform: uppercase;
+}
+
+/* Registry profile title: the monogram tile centers on the title line via
+   flex instead of the old baseline-shift hack (misaligned logos,
+   Florian, 2026-07-12). */
+.page-title.profile-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.profile-title .reg-logo {
+  vertical-align: unset;
+  margin-right: 0;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------------------
+   REGISTRY CAPS, AS A SYSTEM (Florian, 2026-07-12, round 2). Instead of
+   chasing individual strings, the registry surfaces uppercase at the
+   container and opt OUT the two places where sentence case carries
+   sourced meaning: the overview paragraph and the entry snippets (both
+   render verbatim sourced prose). Everything else on these surfaces is
+   chrome and renders caps. */
+.registry-profile,
+.reg-index {
+  text-transform: uppercase;
+}
+.registry-profile .overview-block,
+.reg-index .reg-snippet {
+  text-transform: none;
+}
+/* Form controls carry a UA text-transform of their own and never inherit
+   the container rule; force them back into the caps system. */
+.registry-profile button,
+.registry-profile input,
+.registry-profile select,
+.reg-index button,
+.reg-index input,
+.reg-index select {
+  text-transform: inherit;
+}
+
+/* ONE RIGHT EDGE PER PAGE (Florian, 2026-07-12): every block on a registry
+   profile spans the same profile measure; no module gets a private width.
+   The hairlines, the overview, the stock chart, the tables, and the
+   timeline all end on the same vertical. */
+.overview-block {
+  max-width: none;
+}
+.stock-chart {
+  max-width: none;
+}
+.tl-title {
+  max-width: none;
+}
+.timeline li > span + span {
+  max-width: none;
+}
+
+/* About shares the same discipline at the reading measure: prose, tables,
+   and diagrams all cap at the 46rem text measure, one aligned edge. */
+.qa table,
+.qa figure {
+  max-width: 46rem;
+}
+.qa figure {
+  margin: 1.2rem 0;
+  padding: 0;
+}
+
+/* Data tables sit BELOW the sans prose in the type scale (mono is the
+   data voice: 12.5/400, never larger or heavier than the 14px sans it
+   accompanies; MONO IS NEVER BOLD). */
+table.profile,
+table.stat-table {
+  font-size: var(--fs-body);
+}
+table.profile th,
+table.stat-table th {
+  font-weight: 500;
+}
+
+/* Item page title lives in the narrow left rail (Florian, 2026-07-12,
+   round 3): it takes the modal-title register instead of the full
+   28px page-title so it fits the column. */
+.item-side-title.page-title {
+  font-size: clamp(21px, 2.2vw, 25px);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+  margin: 0 0 var(--sp-2);
+  overflow-wrap: anywhere;
+}
+
+/* Item modal: ONLY the right column scrolls (Florian, 2026-07-12).
+   The left title/image/sources module is a fixed plate; the artwork
+   caps its height so long headlines and source lists still fit the
+   plate on short viewports. Mobile keeps the single-column scroll. */
+@media (min-width: 48rem) {
+  .modal-left {
+    overflow-y: hidden;
+  }
+  .modal-media img {
+    max-height: 42svh;
+    object-fit: cover;
+  }
+}
+
+/* SNR trace rows and score popovers are instrument readouts and render
+   caps like all chrome (Florian, 2026-07-12): the stored trace reasons
+   are append-only data written lowercase by the engine, so the caps
+   live here at the display layer. Empty states join the same register. */
+.snr-pop-row,
+.snr-pop-foot,
+.snr-pop-hist,
+.empty {
+  text-transform: uppercase;
+}
+
+/* The title module in the modal's left plate gets the same breathing
+   room the right column has always had (Florian, 2026-07-12); the
+   artwork below it stays full-bleed. */
+.modal-left .modal-title {
+  padding: 1.1rem 1.4rem 0;
+}
+.modal-left .actor {
+  padding: 0 1.4rem;
+}
+.modal-left .tagline-acc {
+  padding: 0 1.4rem;
+  margin-bottom: 1.1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   SNR LEDGER (Florian redesign, 2026-07-12). The item detail's scoring
+   section reads as one instrument: hero row (LED bars + verdict left,
+   display numeral right, shared baseline), an axes strip, the
+   calculation as an accounting ledger whose signed deltas sit on one
+   right-aligned gutter, a sum row, and a label-register footer. Mono
+   never exceeds 500; the numeral is the only display-size element. */
+.snrl {
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.snrl-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-3);
+}
+.snrl-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  align-items: flex-start;
+}
+.snrl-word {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-2);
+}
+.snrl-hero-num {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+.snrl-num {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 200;
+  color: var(--text-1);
+}
+.snrl-den {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-left: var(--sp-1);
+}
+.snrl-grid {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--text-1);
+}
+.snrl-tag,
+.snrl-delta {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.snrl-tag {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.snrl-delta {
+  color: var(--text-1);
+}
+.snrl-axes {
+  border-top: 1px solid var(--border-1);
+  padding: var(--sp-3) 0;
+  color: var(--text-2);
+}
+.snrl-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  border-top: 1px solid var(--border-1);
+  padding: var(--sp-3) 0 var(--sp-2);
+}
+.snrl-ledger {
+  padding-bottom: var(--sp-3);
+}
+.snrl-grid a {
+  color: var(--link);
+}
+.snrl-grid a:hover {
+  color: var(--link-hover);
+}
+.snrl-sum {
+  border-top: 1px solid var(--border-2);
+  padding-top: var(--sp-2);
+  color: var(--text-2);
+}
+.snrl-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  border-top: 1px solid var(--border-1);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-2);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.snrl-foot a {
+  color: var(--link);
+}
+.snrl-foot a:hover {
+  color: var(--link-hover);
+}
+
+/* Ledger hero: the LED bars scale up to hero size without SnrLed's own
+   numeral/word (the ledger supplies those on its own grid). */
+.snrl-hero .snr-led-cell {
+  width: 22px;
+  height: 22px;
+}
+
+/* One inset for the whole left plate (Florian, 2026-07-12): the artwork
+   and the sources module align to the same 1.4rem content edge the
+   title block uses; nothing in the plate runs full-bleed anymore. */
+.modal-left .modal-media {
+  margin: 0 1.4rem;
+  border: 1px solid var(--line);
+}
+.modal-left .modal-credit {
+  padding: 0.35rem 1.4rem;
+  border-bottom: 0;
+}
+.modal-left .src-band {
+  padding: 0.55rem 1.4rem;
+}
+.modal-left .src-list li {
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
+}
+
+/* Tier tables on About (Florian, 2026-07-12): the real marks do the
+   talking. First column shrinks to its content (LED bars or impact
+   chip), meanings take the rest; horizontal hairlines only, no cell
+   grid. */
+.tier-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+.tier-table th,
+.tier-table td {
+  border: 0;
+  border-top: 1px solid var(--border-1);
+  padding: 12px 0;
+  text-align: left;
+  vertical-align: top;
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--text-1);
+}
+.tier-table tr:last-child th,
+.tier-table tr:last-child td {
+  border-bottom: 1px solid var(--border-1);
+}
+.tier-table th {
+  width: 1%;
+  white-space: nowrap;
+  padding-right: var(--sp-5);
+}
+.tier-table .tier-tag {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* About reads at the module measure (Florian, 2026-07-12): the whole
+   page, prose and modules alike, shares one 62rem edge, matching the
+   registry profiles. */
+.about-page .lede,
+.about-page .qa p,
+.about-page .qa .prose,
+.about-page .qa table,
+.about-page .qa figure {
+  max-width: 62rem;
+}
+
+/* About paragraphs justify (Florian, 2026-07-12); hyphenation keeps the
+   word spacing even at the 62rem measure. */
+.about-page .qa p,
+.about-page .lede {
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Rulebook grids on About (Florian, 2026-07-12): the same accounting
+   notation the SNR ledger uses. Signed deltas and rule tags sit on one
+   right-aligned gutter; one rule per line. */
+.rule-grid {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+  margin: 0.8rem 0;
+  max-width: 62rem;
+  font-size: var(--fs-body);
+  color: var(--text-1);
+}
+.rule-delta {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding-top: 1px;
+  color: var(--text-2);
+}
+
+/* Scoring deltas color by sign (Florian, 2026-07-12): positive green,
+   negative red, zero orange. Small mono glyphs, within the 90/9/1
+   color budget; applies to the About rule grids, the score hover
+   popovers, and the item-detail ledger alike. */
+.delta-pos {
+  color: var(--acc-green);
+}
+.delta-neg {
+  color: var(--acc-red);
+}
+.delta-zero {
+  color: var(--acc-orange);
+}
+
+
+
+

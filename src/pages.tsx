@@ -4,7 +4,7 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
   ReactNode,
 } from "react";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 // useLayoutEffect runs before the browser paints (so the masonry packs with no
 // gap flash), but warns during SSR; fall back to useEffect on the server.
@@ -89,8 +89,8 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
-  ["/registry/", "registry"],
   ["/mcc/", "mcc"],
+  ["/registry/", "registry"],
   ["/signals/", "signals"],
   ["/system/", "system"],
   ["/about/", "about"],
@@ -261,7 +261,7 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
         <p>
           Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
           story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy →</a> · <a href="/methodology/">How the SNR score works →</a>
+          <a href="/about/">Verification policy →</a> · <a href="/about/#methodology">How the SNR score works →</a>
         </p>
         <p className="footer-feeds">
           category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
@@ -376,7 +376,7 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
       </span>
       {trace.modifiers.map((m, i) => (
         <span key={i} className="snr-pop-row">
-          <span className="snr-pop-delta">{signed(m.delta)}</span>
+          <span className={`snr-pop-delta ${m.delta > 0 ? "delta-pos" : m.delta < 0 ? "delta-neg" : "delta-zero"}`}>{signed(m.delta)}</span>
           <span>
             {m.reason}
             {m.source && (
@@ -406,11 +406,108 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
       )}
       <span className="snr-pop-foot">
         Scorer v{trace.scorer_version} ·{" "}
-        <a href="/methodology/" onClick={(e) => e.stopPropagation()}>
+        <a href="/about/#methodology" onClick={(e) => e.stopPropagation()}>
           how scores work
         </a>
       </span>
     </>
+  );
+}
+
+/** Item-detail scoring readout (Florian redesign, 2026-07-12): an
+    instrument ledger. Hero row (LEDs + verdict left, display numeral
+    right), an axes strip, the calculation as an accounting ledger with
+    the deltas on one right-aligned gutter, a sum row, and a footer.
+    The hover popover keeps its own compact renderer (SnrTraceRows). */
+function SnrLedger({ item }: { item: Item }) {
+  const trace = item.snr_trace;
+  const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
+  const corrSum = corr.reduce((n, m) => n + m.delta, 0);
+  const history = trace.history ?? [];
+  return (
+    <div className="snrl">
+      <div className="snrl-hero">
+        <div className="snrl-hero-left">
+          <SnrLed snr={item.snr} />
+          <span className="snrl-word">
+            {SNR_WORDS[item.snr]}
+            {item.disputed && <span className="chip chip-disputed">disputed</span>}
+            {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
+          </span>
+        </div>
+        <div className="snrl-hero-num" aria-label={`SNR ${item.snr} of 5`}>
+          <span className="snrl-num">{item.snr}</span>
+          <span className="snrl-den">/5</span>
+        </div>
+      </div>
+      <div className="snrl-grid snrl-axes">
+        <span className="snrl-tag">lead</span>
+        <span>tier {trace.base.tier} of 5 on its own</span>
+        <span className="snrl-tag">corrob</span>
+        <span>
+          {corr.length === 0
+            ? "not tested yet"
+            : `${signed(corrSum)} earned from ${corr.length} rule${corr.length === 1 ? "" : "s"}`}
+        </span>
+        {trace.single_class_corroboration && (
+          <>
+            <span className="snrl-tag">mix</span>
+            <span>one source class ({trace.single_class_corroboration})</span>
+          </>
+        )}
+      </div>
+      <div className="snrl-label">calculation</div>
+      <div className="snrl-grid snrl-ledger">
+        <span className="snrl-delta">{trace.base.tier}</span>
+        <span>
+          {trace.base.reason}{" "}
+          <a href={trace.base.source} rel="noopener">
+            {hostOf(trace.base.source)}
+          </a>
+        </span>
+        {trace.modifiers.map((m, i) => (
+          <Fragment key={i}>
+            <span className={`snrl-delta ${m.delta > 0 ? "delta-pos" : m.delta < 0 ? "delta-neg" : "delta-zero"}`}>{signed(m.delta)}</span>
+            <span>
+              {m.reason}
+              {m.source && (
+                <>
+                  {" "}
+                  <a href={m.source} rel="noopener">
+                    {hostOf(m.source)}
+                  </a>
+                </>
+              )}
+            </span>
+          </Fragment>
+        ))}
+      </div>
+      <div className="snrl-grid snrl-sum">
+        <span className="snrl-delta">= {trace.final ?? item.snr}</span>
+        <span>current score, recomputed by the engine on every change</span>
+      </div>
+      {history.length > 0 && (
+        <>
+          <div className="snrl-label">movements</div>
+          <div className="snrl-grid snrl-ledger">
+            {history.map((h, i) => (
+              <Fragment key={i}>
+                <span className="snrl-delta">
+                  {h.from}&rarr;{h.to}
+                </span>
+                <span>
+                  {h.date} · {h.reason}
+                </span>
+              </Fragment>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="snrl-foot">
+        <span>scorer v{trace.scorer_version}</span>
+        <a href="/about/#methodology">how scores work &rarr;</a>
+      </div>
+    </div>
   );
 }
 
@@ -1121,6 +1218,11 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         </div>
         <div className="modal-body">
           <div className="modal-left">
+            {/* Title module leads the LEFT column, above the artwork
+                (Florian, 2026-07-12, round 3). */}
+            <h2 className="modal-title">{item.headline}</h2>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image ? (
               <>
                 <div className={`modal-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1139,9 +1241,6 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             <SourceList item={item} />
           </div>
           <div className="modal-right">
-            <h2 className="modal-title">{item.headline}</h2>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1158,12 +1257,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             )}
             <section className="panel">
               <h2>signal-to-noise</h2>
-              <div className="snr-panel">
-                <SnrLed snr={item.snr} size="hero" />
-              </div>
-              <div className="snr-trace-inline">
-                <SnrTraceRows trace={item.snr_trace} />
-              </div>
+              <SnrLedger item={item} />
             </section>
             <div className="tag-row">
               {item.tags.map((t) => (
@@ -1173,7 +1267,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
               ))}
             </div>
             <p>
-              <a href={`/item/${item.id}/`}>full page →</a>
+              <a href={`/item/${item.id}/`}>FULL PAGE →</a>
             </p>
           </div>
         </div>
@@ -1378,7 +1472,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
           ref={inputRef}
           type="text"
           className="filter-input"
-          placeholder="/ search"
+          placeholder="/ SEARCH"
           aria-label="Search items"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -1498,6 +1592,11 @@ export function ItemPage({ item }: { item: Item }) {
         </div>
         <div className="item-cols">
           <div className="item-side">
+            {/* Title module leads the LEFT column, above the artwork
+                (Florian, 2026-07-12, round 3). */}
+            <h1 className="page-title item-side-title">{item.headline}</h1>
+            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
+            <p className="tagline-acc">{item.explainer.tagline}</p>
             {item.image && (
               <figure className="item-figure">
                 <div className={`item-figure-media${item.image.fit === "contain" ? " media-contain" : ""}`}>
@@ -1516,9 +1615,6 @@ export function ItemPage({ item }: { item: Item }) {
             <SourceList item={item} />
           </div>
           <div className="item-main">
-            <h1 className="page-title">{item.headline}</h1>
-            <p className="actor">{item.companies.length > 0 ? <CompanyLinks item={item} /> : item.category}</p>
-            <p className="tagline-acc">{item.explainer.tagline}</p>
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>
@@ -1535,14 +1631,7 @@ export function ItemPage({ item }: { item: Item }) {
             )}
             <section className="panel">
               <h2>signal-to-noise</h2>
-              <div className="snr-panel">
-                <SnrLed snr={item.snr} size="hero" />
-                {item.disputed && <span className="chip chip-disputed">disputed</span>}
-        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
-              </div>
-              <div className="snr-trace-inline">
-                <SnrTraceRows trace={item.snr_trace} />
-              </div>
+              <SnrLedger item={item} />
             </section>
             <section className="panel">
               <h2>quick facts</h2>
@@ -1573,7 +1662,7 @@ export function ItemPage({ item }: { item: Item }) {
               ))}
             </div>
             <p>
-              <a href="/">Back to the feed</a>
+              <a href="/">BACK TO THE FEED</a>
             </p>
           </div>
         </div>
@@ -2236,12 +2325,13 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
 
   return (
     <Layout current="registry">
+      <div className="reg-index">
       <div className="reg-head">
         <h1 className="page-title">registry</h1>
         <input
           type="text"
           className="filter-input reg-search"
-          placeholder="/ filter: entity, operator or provider..."
+          placeholder="/ FILTER: ENTITY, OPERATOR OR PROVIDER..."
           aria-label="Search registry"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -2295,6 +2385,7 @@ export function RegistryIndexPage({ data }: { data: DataFor<"registry"> }) {
         a group, then an entity, to open its profile; every figure carries its source and as-of
         date, and unknown fields stay unknown. Numbers refresh on the weekly maintenance sweep.
       </p>
+      </div>
     </Layout>
   );
 }
@@ -3518,7 +3609,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           <RelatedSection profile={profile} related={related} prev={prev} next={next} />
           <LogoCredit slug={profile.slug} />
           <p>
-            <a href="/registry/">Back to the registry</a>
+            <a href="/registry/">BACK TO THE REGISTRY</a>
           </p>
         </footer>
       </div>
@@ -4116,7 +4207,7 @@ export function SignalsPage({ data }: { data: DataFor<"signals"> }) {
         <input
           type="text"
           className="filter-input sig-search"
-          placeholder="/ search name, handle, topic"
+          placeholder="/ SEARCH NAME, HANDLE, TOPIC"
           aria-label="Search signals"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -4282,16 +4373,595 @@ const QA: Array<[string, string]> = [
   ],
 ];
 
+/** Engine pipeline diagram, color-coded by owner (Florian round 2,
+    2026-07-12): cyan = deterministic code, magenta = the drafting agent,
+    green = data files, yellow = the human editor, bright frame = the
+    reader-facing output. Geometry (round 3): 140px boxes on a 184px
+    column rhythm leave 44px gaps, wide enough for every centered wire
+    label; nothing sits on a border. */
+function EngineDiagram() {
+  const lbl = {
+    fill: "var(--text-1)",
+    fontFamily: "'IBM Plex Mono', monospace",
+    fontSize: 10,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
+  } as const;
+  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8, fontWeight: 400 } as const;
+  const wireLbl = { ...lbl, fill: "var(--text-3)", fontSize: 7.5, fontWeight: 400 } as const;
+  const wire = { stroke: "var(--text-3)", strokeWidth: 1, fill: "none", markerEnd: "url(#eng-arr)" } as const;
+  const OWNER = {
+    code: "var(--acc-cyan-dim)",
+    agent: "var(--acc-magenta-dim)",
+    data: "var(--acc-green-dim)",
+    human: "var(--acc-yellow-dim)",
+    out: "var(--text-1)",
+  };
+  const Box = ({ x, y, w = 140, h = 56, owner, title, s1, s2 }: {
+    x: number; y: number; w?: number; h?: number;
+    owner: keyof typeof OWNER; title: string; s1?: string; s2?: string;
+  }) => (
+    <g>
+      <rect x={x} y={y} width={w} height={h} fill="var(--bg-panel)" stroke={OWNER[owner]} strokeWidth={owner === "out" ? 1.5 : 1} />
+      <text x={x + 12} y={y + 20} {...lbl}>{title}</text>
+      {s1 && <text x={x + 12} y={y + 34} {...sub}>{s1}</text>}
+      {s2 && <text x={x + 12} y={y + 45} {...sub}>{s2}</text>}
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 752 468" role="img" aria-label="DATA ENGINE PIPELINE" style={{ width: "100%", height: "auto", display: "block" }}>
+      <defs>
+        <marker id="eng-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 z" fill="var(--text-3)" />
+        </marker>
+      </defs>
+
+      {/* legend */}
+      {(
+        [
+          ["code", "CODE"],
+          ["agent", "AGENT"],
+          ["data", "DATA"],
+          ["human", "HUMAN"],
+          ["out", "OUTPUT"],
+        ] as const
+      ).map(([k, name], i) => (
+        <g key={k}>
+          <rect x={28 + i * 120} y={6} width={10} height={10} fill="none" stroke={OWNER[k]} strokeWidth={k === "out" ? 1.5 : 1} />
+          <text x={44 + i * 120} y={15} {...sub}>{name}</text>
+        </g>
+      ))}
+
+      {/* row 1: intake */}
+      <Box x={28} y={40} owner="data" title="SOURCE REGISTRY" s1="98 REGISTERED FEEDS," s2="PAGES, SIGNAL CHANNELS" />
+      <Box x={212} y={40} owner="code" title="HARVESTER" s1="DETERMINISTIC FETCH," s2="SYNDICATE COLLAPSE" />
+      <Box x={396} y={40} owner="data" title="CANDIDATE QUEUE" s1="TRIAGED ONCE," s2="THEN CONSUMED" />
+      <Box x={580} y={40} owner="agent" title="DISCOVERY" s1="OPEN-WEB QUERIES," s2="WHITELISTED CHANNELS" />
+      <line x1={168} y1={68} x2={210} y2={68} {...wire} />
+      <text x={189} y={84} textAnchor="middle" {...wireLbl}>FETCH</text>
+      <line x1={352} y1={68} x2={394} y2={68} {...wire} />
+      <text x={373} y={84} textAnchor="middle" {...wireLbl}>QUEUE</text>
+
+      {/* row 2: judgment and arithmetic, right to left */}
+      <Box x={396} y={168} owner="agent" title="SWEEP AGENT" s1="SCOPES, CRAWLS, DRAFTS," s2="ATTESTS ITS SOURCES" />
+      <Box x={212} y={168} owner="code" title="FINALIZE GATE" s1="VALIDATES, DEDUPS," s2="COMPUTES EVERY SCORE" />
+      <Box x={28} y={168} owner="data" title="DATA FILES" s1="ITEMS, TRACES, LOG," s2="GIT-VERSIONED" />
+      <polyline points="466,96 466,166" {...wire} />
+      <text x={472} y={130} {...wireLbl}>TRIAGE</text>
+      <polyline points="650,96 650,196 538,196" {...wire} />
+      <text x={656} y={130} {...wireLbl}>FINDS</text>
+      <line x1={396} y1={196} x2={354} y2={196} {...wire} />
+      <text x={375} y={212} textAnchor="middle" {...wireLbl}>DRAFT</text>
+      <line x1={212} y1={196} x2={170} y2={196} {...wire} />
+      <text x={191} y={212} textAnchor="middle" {...wireLbl}>MERGE</text>
+
+      {/* row 3: outputs and records */}
+      <Box x={28} y={296} owner="code" title="SITE BUILD" s1="SCHEMA CHECKS," s2="EVERY ROUTE STATIC" />
+      <Box x={228} y={296} owner="out" title="READER" s1="VESPERIO.AI · RSS" s2="· STATS.JSON" />
+      <Box x={396} y={296} owner="data" title="HELD QUEUE" s1="OPEN QUESTIONS; ANSWERS" s2="FEED THE NEXT SWEEP" />
+      <Box x={580} y={296} owner="data" title="SOURCE LEDGER" s1="STRIKES + CREDITS PER" s2="CLAIM, 90-DAY WINDOW" />
+      <polyline points="98,224 98,294" {...wire} />
+      <text x={104} y={262} {...wireLbl}>BUILD</text>
+      <line x1={168} y1={324} x2={226} y2={324} {...wire} />
+      <text x={197} y={340} textAnchor="middle" {...wireLbl}>PUBLISH</text>
+      <polyline points="282,224 282,268 466,268 466,294" {...wire} />
+      <text x={294} y={262} {...wireLbl}>OPEN QUESTIONS</text>
+      <polyline points="330,224 330,246 650,246 650,294" {...wire} markerStart="url(#eng-arr)" />
+      <text x={356} y={240} {...wireLbl}>CALIBRATION CLAIMS DOWN, SOURCE CLASSES BACK UP</text>
+
+      {/* row 4: the human seam */}
+      <Box x={396} y={404} owner="human" title="HUMAN EDITOR" s1="RULES ON HELD ITEMS," s2="APPROVES NEW SOURCES" />
+      <polyline points="466,352 466,402" {...wire} />
+      <text x={472} y={382} {...wireLbl}>RULES</text>
+
+      {/* discovery suggestions rail: agent finds, human reviews */}
+      <polyline points="720,68 736,68 736,428 538,428" {...wire} />
+      <text x={727} y={248} textAnchor="middle" {...wireLbl} transform="rotate(90 727 248)">SUGGESTED SOURCES + VOICES</text>
+
+      {/* human-approved sources rail: back into the registry */}
+      <polyline points="396,428 12,428 12,68 26,68" {...wire} />
+      <text x={204} y={444} textAnchor="middle" {...wireLbl}>NEW SOURCES, HUMAN-REVIEWED</text>
+    </svg>
+  );
+}
+
+/** Scoring anatomy diagram: attested inputs, deterministic engine, stored output. */
+function ScoringDiagram() {
+  const box = { fill: "var(--bg-panel)", stroke: "var(--border-2)", strokeWidth: 1 };
+  const lbl = {
+    fill: "var(--text-1)",
+    fontFamily: "'IBM Plex Mono', monospace",
+    fontSize: 10,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
+  } as const;
+  const sub = { ...lbl, fill: "var(--text-3)", fontSize: 8.5, fontWeight: 400 } as const;
+  const wire = { stroke: "var(--border-2)", strokeWidth: 1 } as const;
+  return (
+    <svg viewBox="0 0 720 208" role="img" aria-label="SNR SCORING ANATOMY" style={{ width: "100%", height: "auto", display: "block" }}>
+      <rect x="8" y="20" width="200" height="168" {...box} />
+      <text x="20" y="40" {...lbl}>INPUTS (ATTESTED)</text>
+      <text x="20" y="62" {...sub}>LEAD SOURCE CLASS</text>
+      <text x="20" y="78" {...sub}>EVERY SOURCE, WITH ITS CLASS</text>
+      <text x="20" y="94" {...sub}>CORROBORATION CRAWL OUTCOME</text>
+      <text x="20" y="110" {...sub}>EXTRAORDINARY-CLAIM FLAG</text>
+      <text x="20" y="126" {...sub}>WHITELIST STANDING</text>
+      <text x="20" y="150" {...sub}>THE AGENT SWEARS TO FACTS.</text>
+      <text x="20" y="162" {...sub}>IT NEVER WRITES A NUMBER.</text>
+
+      <rect x="260" y="20" width="200" height="168" {...box} />
+      <text x="272" y="40" {...lbl}>ENGINE (CODE)</text>
+      <text x="272" y="62" {...sub}>BASE TIER FROM LEAD CLASS</text>
+      <text x="272" y="78" {...sub}>WIRE REWRITES COLLAPSE TO ONE</text>
+      <text x="272" y="94" {...sub}>+1 PER CORROBORATION RULE</text>
+      <text x="272" y="110" {...sub}>ANTI-SPOOF DOMAIN CHECKS</text>
+      <text x="272" y="126" {...sub}>CEILINGS, FLOORS, PERSISTENCE</text>
+      <text x="272" y="150" {...sub}>DETERMINISTIC: SAME INPUTS,</text>
+      <text x="272" y="162" {...sub}>SAME SCORE, EVERY TIME.</text>
+
+      <rect x="512" y="20" width="200" height="168" {...box} />
+      <text x="524" y="40" {...lbl}>OUTPUT (STORED)</text>
+      <text x="524" y="62" {...sub}>SNR 1-5, DRAWN AS BARS</text>
+      <text x="524" y="78" {...sub}>FULL TRACE, APPEND-ONLY</text>
+      <text x="524" y="94" {...sub}>EVERY MOVE ON THE PUBLIC LOG</text>
+      <text x="524" y="110" {...sub}>CALIBRATION CLAIM IN LEDGER</text>
+      <text x="524" y="150" {...sub}>SCORE AT PUBLICATION IS KEPT</text>
+      <text x="524" y="162" {...sub}>AND CHECKED AGAINST OUTCOME.</text>
+
+      <line x1="208" y1="104" x2="260" y2="104" {...wire} />
+      <line x1="460" y1="104" x2="512" y2="104" {...wire} />
+    </svg>
+  );
+}
+
+const ABOUT_IMPACT_TIERS: Array<[string, string]> = [
+  [
+    "seismic",
+    "Reshapes competitive dynamics: major M&A between tracked operators, an operator failure or bankruptcy, a flagship program cancelled, the first flight of a new orbital vehicle. A seismic claim resting on weak sourcing is auto-queued for human review while it publishes.",
+  ],
+  [
+    "major",
+    "A commercial director acts on it or briefs the team the same day: a contract or funding round with a stated value that changes the actor's trajectory, a regulatory grant or denial that changes what an operator may sell or where, a first-of-kind capability offered on commercial terms. The stated-value test is hard: the money or market access must be in the source, never inferred.",
+  ],
+  [
+    "notable",
+    "Worth the morning read: a routine-sized or unvalued award, an ordinary funding round, a milestone arriving on schedule, a partnership with named scope but unstated money. Commentary items cap here.",
+  ],
+  [
+    "noise",
+    "Belongs in the record, not the push: a scheduled launch succeeding on schedule, a routine product update, a minor partnership without stated money, capacity, or regulatory effect. Routine megaconstellation batch launches publish here, US and Chinese cadence alike.",
+  ],
+];
+
 export function AboutPage() {
   return (
     <Layout current="about">
+      <div className="about-page">
       <h1 className="page-title">about</h1>
       <p className="lede">
-        Vesperio tracks the commercial space economy and the events that move it. Coverage of Chinese,
-        Indian, Japanese, and European activity gets equal weight to US activity.
+        Vesperio is a machine-maintained tracker for the new space economy. A deterministic data
+        engine sweeps the industry twice a day, publishes everything on-scope at an honest
+        confidence score, and shows its work: every source, every calculation, every correction,
+        on the record. This page is the whole system, documented.
       </p>
+
+      <section id="concept" className="qa">
+        <h2>The site and the concept</h2>
+        <p className="prose">
+          Vesperio covers commercial Earth observation, connectivity constellations, launch,
+          commercial human spaceflight, and the regulatory, financial, procurement, and
+          geopolitical events that move them. Chinese, Indian, Japanese, and European activity
+          gets equal weight to US activity. Coverage arrives on four surfaces: a news feed with a
+          plain-English explainer per event, a registry of reference profiles for constellations,
+          vehicles, spaceports, and organizations, computed statistics served with citation
+          anchors, and a public log of every sweep the machine runs.
+        </p>
+        <p className="prose">
+          The product promise is honest calibration. Nothing on-scope is withheld for sourcing
+          reasons; instead, every item and every scored registry fact carries a visible
+          signal-to-noise score from 1 to 5 whose calculation is stored and shown. A reader should
+          never catch this site claiming more confidence than its sources support. Publishing an
+          early signal at SNR 1 is the model working; publishing a weak claim dressed as a
+          certainty is the failure the whole system exists to prevent. Whether the scores are
+          honest is itself measured: each claim's score at publication is recorded and compared
+          against how the claim resolves.
+        </p>
+      </section>
+
+      <section id="engine" className="qa">
+        <h2>The data engine</h2>
+        <p className="prose">
+          The engine separates fetching, judgment, and arithmetic, and trusts each to a different
+          worker. A deterministic harvester fetches every feed-capable source on schedule,
+          normalizes the entries, and collapses syndicated retellings of one story into a single
+          candidate. A sweeping agent then works the queue: it filters against the published
+          scope, fetches the pages feeds cannot cover, reads the whitelisted expert channels, runs
+          an open-web discovery pass across a fixed query matrix, and crawls for corroboration on
+          every candidate within a per-sweep fetch budget. What the agent produces is only a
+          draft: facts, copy, and sworn statements about its sources.
+        </p>
+        <figure className="prose">
+          <EngineDiagram />
+        </figure>
+        <p className="prose">
+          The finalize gate is where drafts become data, and it is code, not prose. It validates
+          the schema, enforces deduplication as arithmetic rather than agent memory, collapses
+          wire rewrites into single corroboration units, verifies that first-party and
+          official-record claims come from domains the registry actually records for the actor,
+          computes every SNR score from the attested inputs, stamps the full trace, and records a
+          calibration claim for each scored source in the ledger. A draft that skipped a mandatory
+          pass, hand-wrote a score, or misclassified a source is rejected with the reason stated.
+          The agent cannot bypass the gate, and the scheduled runs cannot reach anything else: they
+          run without push credentials, with fetching as their only network capability, behind a
+          diff guard that fails the run if anything outside the data files changed.
+        </p>
+        <p className="prose">
+          Two feedback loops close the system. The source ledger scores the sources themselves: a
+          claim that loses a same-metric contradiction is a strike against the source that carried
+          it, a claim that started low and was later confirmed is a credit (early, not wrong), and
+          repeated strikes demote a source's class inside a rolling window until confirmed claims
+          win it back. The held queue is the human seam: schema conflicts, genuine same-metric
+          contradictions, and open scope questions queue for the editor instead of being silently
+          decided, and every quiet sweep still writes a public log entry saying why it was quiet.
+        </p>
+      </section>
+
+      <section id="snr" className="qa">
+        <h2>SNR and impact tiers</h2>
+        <p className="prose">
+          The name is borrowed from signal engineering. In a radio receiver, the signal-to-noise
+          ratio measures how much of what comes through the antenna is the transmission you want
+          versus the static behind it; a high ratio means you can trust what you are hearing, a
+          low one means the message may be an artifact of the noise. Space news has the same
+          physics: for every event there is a small amount of genuine, verifiable information and
+          an unbounded amount of static around it, syndicated rewrites, rumours, embellished
+          claims, outright fakes. The SNR score is this site's reading of that ratio for each
+          claim: how much verified signal stands behind it relative to the noise it arrived in.
+        </p>
+        <p className="prose">
+          Confidence and importance are independent axes, scored separately on every item. SNR
+          reads how well the sources support the claim; impact reads how much the event matters
+          commercially. A seismic rumour is seismic and low-SNR at once, and the two never blend.
+        </p>
+        <figure className="prose">
+          <ScoringDiagram />
+        </figure>
+        <table className="tier-table">
+          <tbody>
+            {SNR_SCALE.map(([n, meaning]) => (
+              <tr key={n}>
+                <th scope="row">
+                  <SnrLed snr={n} />
+                  <span className="tier-tag">
+                    {n}/5 · {SNR_WORDS[n]}
+                  </span>
+                </th>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="prose">
+          The mechanics in brief: the lead source's class sets the base tier, corroboration raises
+          it once per rule (a second distinct source, a fourth, pickup by a mainstream outlet
+          beyond the lead), and no amount of indirect corroboration reaches 5, which is reserved
+          for direct sources: the actor itself or an official record. Extraordinary claims start
+          at 1 regardless of source count. Fourteen uncontested days earn one point, once, never
+          above 4. A vetted expert on the signals whitelist floors an on-topic factual claim at 4
+          as an observer and 5 when the concerned party speaks about itself. Scores move over an
+          item's life, traces are append-only, and every movement renders on the public log. The
+          full rulebook follows.
+        </p>
+        <div id="methodology">
+        <div className="qa-pair">
+          <h3>where a score starts</h3>
+          <table className="tier-table">
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <SnrLed snr={5} />
+                  <span className="tier-tag">STARTS AT 5</span>
+                </th>
+                <td>First-party statements, official records, directly computed data.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <SnrLed snr={4} />
+                  <span className="tier-tag">STARTS AT 4</span>
+                </th>
+                <td>Press-wire copy and established aggregators.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <SnrLed snr={3} />
+                  <span className="tier-tag">STARTS AT 3</span>
+                </th>
+                <td>Trade and mainstream press; a whitelisted voice before any floor applies.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <SnrLed snr={1} />
+                  <span className="tier-tag">STARTS AT 1</span>
+                </th>
+                <td>Informal but identifiable sources. A source no one can name never publishes.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p className="prose">
+            The first-party test is strict: could the linked page be wrong about the fact without
+            the actor or an official record being wrong? If yes, it is not first-party.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>what counts as one source</h3>
+          <div className="rule-grid">
+            <span className="rule-delta">= 1</span>
+            <span>URL variants of one article.</span>
+            <span className="rule-delta">= 1</span>
+            <span>Multiple pages on one registrable domain.</span>
+            <span className="rule-delta">= 1</span>
+            <span>
+              Near-identical headlines across domains (64-bit SimHash fingerprint, Hamming
+              distance 3 or less): one wire story, rewritten.
+            </span>
+          </div>
+          <p className="prose">
+            Syndication is the cheapest way to fake breadth, so sources collapse into units before
+            any corroboration is counted. The item keeps every link for the reader; the units
+            drive the math; every collapse is logged.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>how corroboration moves it</h3>
+          <div className="rule-grid">
+            <span className="rule-delta delta-pos">+1</span>
+            <span>A second distinct unit.</span>
+            <span className="rule-delta delta-pos">+1</span>
+            <span>A fourth distinct unit.</span>
+            <span className="rule-delta delta-pos">+1</span>
+            <span>Pickup by a mainstream outlet beyond the lead reporter.</span>
+            <span className="rule-delta delta-neg">-1</span>
+            <span>
+              A corroboration crawl that ran and found nothing. "Nothing else reports this" is a
+              claim about the world; it should hurt to be wrong about it.
+            </span>
+            <span className="rule-delta delta-zero">0</span>
+            <span>
+              A crawl the budget never reached: recorded as not attempted, never dressed up as a
+              result. Direct sources prove their own statements and pay no crawl penalty.
+            </span>
+          </div>
+          <p className="prose">
+            Each rule fires at most once per claim, and there is a hard ceiling: no amount of
+            second-hand corroboration reaches 5. Wide reporting IS the definition of 4; 5 is
+            reserved for the actor speaking for itself or an official record.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>scores keep moving after publication</h3>
+          <div className="rule-grid">
+            <span className="rule-delta delta-pos">+1</span>
+            <span>
+              REINFORCEMENT: a matching event lands 8 to 30 days after an item published at 1 or
+              2. Once per item. Early, not wrong, and the score says so retroactively.
+            </span>
+            <span className="rule-delta delta-pos">+1</span>
+            <span>
+              PERSISTENCE: 14 days uncontested, once, never past 4. Time is weak evidence; it
+              counts a little and caps early.
+            </span>
+          </div>
+          <p className="prose">
+            Every movement is appended to the stored calculation and listed on the log. History is
+            append-only: earlier steps are never rewritten to flatter the present score.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>extraordinary claims</h3>
+          <div className="rule-grid">
+            <span className="rule-delta">&rarr; 1</span>
+            <span>
+              An out-of-pattern claim resets to 1 whatever its source count and climbs only
+              through corroboration and survival.
+            </span>
+            <span className="rule-delta">&rarr; 1</span>
+            <span>
+              Any market-reshaping claim led by anything below first-party: extraordinary
+              automatically, by code, and queued for human review even while it publishes.
+            </span>
+          </div>
+        </div>
+        <div className="qa-pair">
+          <h3>when sources disagree</h3>
+          <div className="rule-grid">
+            <span className="rule-delta delta-zero">0</span>
+            <span>
+              Different metrics (launched satellites versus operational ones): annotated, never
+              punished. Both numbers can be true.
+            </span>
+            <span className="rule-delta delta-neg">-1</span>
+            <span>Same metric, unequal sourcing: the better-sourced side leads, the loser pays.</span>
+            <span className="rule-delta">HOLD</span>
+            <span>
+              Same metric, equal sourcing: both claims marked disputed, kept visible side by side,
+              queued for a human ruling.
+            </span>
+          </div>
+        </div>
+        <div className="qa-pair">
+          <h3>the signals-list floor</h3>
+          <div className="rule-grid">
+            <span className="rule-delta">&ge; 4</span>
+            <span>A whitelisted person states an on-topic fact on a verified channel.</span>
+            <span className="rule-delta">&ge; 5</span>
+            <span>The person speaks for the actor concerned, about itself.</span>
+            <span className="rule-delta delta-zero">0</span>
+            <span>Jokes, opinions, off-topic posts: no floor.</span>
+          </div>
+          <p className="prose">
+            The list is curated by a human; the software that ingests the web cannot edit it.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>fakes and spoofs</h3>
+          <div className="rule-grid">
+            <span className="rule-delta">GATE</span>
+            <span>
+              First-party and official record count only when the domain matches the actor's
+              registry-recorded website or an official register. Fake press releases are a
+              documented attack.
+            </span>
+            <span className="rule-delta">&le; 4</span>
+            <span>A press-wire copy caps until the actor's own domain confirms.</span>
+            <span className="rule-delta delta-zero">0</span>
+            <span>
+              A superlative in a release ("largest constellation") is attributed as a statement,
+              never scored or repeated as fact.
+            </span>
+          </div>
+        </div>
+        <div className="qa-pair">
+          <h3>sources are graded too</h3>
+          <div className="rule-grid">
+            <span className="rule-delta">STRIKE</span>
+            <span>A claim that lost a same-metric contradiction.</span>
+            <span className="rule-delta">CREDIT</span>
+            <span>A claim that started at 1 or 2 and was later confirmed. Early, not wrong.</span>
+          </div>
+          <p className="prose">
+            Repeated strikes inside a rolling 90-day window demote a source's class in future
+            scoring; demotion decays, and confirmed claims win the class back. Sources that keep
+            producing independently confirmed early claims are suggested for the signals list; a
+            human makes that call.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>what the score is not</h3>
+          <p className="prose">
+            Not importance: that is the impact label, an independent axis, and a seismic rumour is
+            seismic AND low-SNR at once. Not an endorsement of opinions: commentary items score
+            the attribution, never the take. And not a promise of truth: a promise that the
+            confidence shown matches the evidence held.
+          </p>
+        </div>
+        <div className="qa-pair">
+          <h3>stored, shown, and checked</h3>
+          <p className="prose">
+            Every score is saved with its full calculation and can be opened under any mark on the
+            site. Each claim's score at publication is kept permanently, even after later bumps,
+            and compared against how the claim resolves: confirmed, debunked, or expired quiet.
+            The running tally per level is public on the{" "}
+            <a href="/system/#calibration">sweep log</a>. If our 2s turn out right as often as our
+            4s, the scale is broken and the record will show it.
+          </p>
+        </div>
+        </div>
+        <div className="qa-pair" id="impact">
+          <h3>The four impact tiers</h3>
+          <table className="tier-table">
+            <tbody>
+              {ABOUT_IMPACT_TIERS.map(([tier, meaning]) => (
+                <tr key={tier}>
+                  <th scope="row">
+                    <span className={`chip chip-${tier}`}>{tier}</span>
+                  </th>
+                  <td>{meaning}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className="prose">
+            When torn between two tiers, the machine takes the lower one. The feed's credibility
+            is spent on restraint.
+          </p>
+        </div>
+      </section>
+
+      <section id="registry-method" className="qa">
+        <h2>How the registry is populated</h2>
+        <p className="prose">
+          Registry profiles are reference data, so the bar is different from news: a fact needs
+          SNR 3 or better to enter at all, and it enters as one of two tiers. Facts at SNR 3 are
+          provisional, visibly badged, and never adjudicate a dispute; facts at SNR 4 and 5,
+          first-party statements, Wikipedia reference fields, and computed figures are canonical.
+          Every field carries its source URL and an as-of date. Unknown fields stay null: nothing
+          is ever estimated, interpolated, or summed across sources.
+        </p>
+        <p className="prose">Population runs through four channels:</p>
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>channel</th>
+              <th>what enters</th>
+              <th>cadence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">COMPUTED</th>
+              <td>
+                Satellite counts from public orbital catalogs, launch cadence from the Launch
+                Library. Authoritative only for exactly what they measure: cataloged objects on a
+                date, never claims like operational or announced.
+              </td>
+              <td>DAILY</td>
+            </tr>
+            <tr>
+              <th scope="row">CROSSFEED</th>
+              <td>
+                Registry-grade metrics stated by published news items, after a like-for-like
+                metric test. Fills only null fields, never overwrites.
+              </td>
+              <td>EVERY SWEEP</td>
+            </tr>
+            <tr>
+              <th scope="row">MAINTENANCE</th>
+              <td>
+                Factual-field refresh from primary pages and established aggregators. Appends
+                sourced values; never restructures a profile.
+              </td>
+              <td>WEEKLY</td>
+            </tr>
+            <tr>
+              <th scope="row">CURATED</th>
+              <td>
+                Fill crawls and new profiles, built interactively and reviewed by the editor
+                before merge. The only channel that may add fields or entities.
+              </td>
+              <td>REVIEWED</td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="prose">
+          Source preference is fixed at every step: primary beats aggregator, aggregator beats
+          Wikipedia and press, a quantified figure beats a vague one, and a disputed field keeps
+          both claims visible with their own scores. Structural changes, new fields or new
+          entities, happen only through reviewed changes, never inside a scheduled run.
+        </p>
+      </section>
+
       <section id="verification-policy" className="qa">
-        <h2>Verification policy</h2>
+        <h2>FAQ</h2>
         {QA.map(([q, a]) => (
           <div className="qa-pair" key={q}>
             <h3>{q}</h3>
@@ -4299,24 +4969,7 @@ export function AboutPage() {
           </div>
         ))}
       </section>
-      <section className="qa">
-        <h2>Impact tiers</h2>
-        <div className="qa-pair" id="impact">
-          <h3>What do the impact tiers mean?</h3>
-          <p className="prose">
-            Every item carries one of four importance tiers. Seismic reshapes competitive
-            dynamics: major M&amp;A, an operator failure, a flagship program cancelled, the first
-            flight of a new vehicle. Major is something a commercial director acts on the same day:
-            a contract or funding round with a stated value that changes the actor's trajectory, or
-            a regulatory grant or denial that changes what an operator may sell. Notable is worth
-            the morning read: a routine-sized award, an ordinary funding round, a milestone on
-            schedule. Noise is logged for the record, not pushed: a scheduled launch succeeding, a
-            routine product update, a minor partnership. Importance and confidence are independent
-            axes: a seismic rumour is seismic and low-SNR at once. When torn between two tiers, the
-            lower one wins.
-          </p>
-        </div>
-      </section>
+      </div>
     </Layout>
   );
 }
@@ -4348,205 +5001,7 @@ const SNR_SCALE: Array<[number, string]> = [
   ],
 ];
 
-export function MethodologyPage() {
-  return (
-    <Layout>
-      <h1 className="page-title">how the SNR score works</h1>
-      <p className="lede">
-        Every item on this site carries a signal-to-noise score from 1 to 5, and every scored
-        registry figure carries one too. The score is not an opinion about whether a claim is
-        important; it is a reading of how well the sources support it. Publishing an early signal
-        at SNR 1 is the system working as intended. Publishing a weak claim dressed as a certainty
-        is the failure it exists to prevent. Here is the whole mechanism.
-      </p>
 
-      <section className="panel">
-        <h2>the scale</h2>
-        <table className="profile">
-          <thead>
-            <tr>
-              <th>score</th>
-              <th>what it means</th>
-            </tr>
-          </thead>
-          <tbody>
-            {SNR_SCALE.map(([n, meaning]) => (
-              <tr key={n}>
-                <th scope="row">SNR {n}</th>
-                <td>{meaning}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <p className="dim">
-          The math is code, not judgment calls: a deterministic scoring engine computes every
-          score from recorded inputs, and the agent that drafts an item can attest facts about its
-          sources but can never set the number.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>where a score starts</h2>
-        <p className="prose">
-          The best source attached to an item sets the base tier. First-party statements, official
-          records, and directly computed data start at 5. Press-wire copy and established
-          aggregators start at 4. Trade and mainstream press start at 3, as does a person on our
-          curated signals list before any floor applies. An informal but identifiable source
-          starts at 1. Sources that cannot be named at all do not publish, whatever else they
-          would score.
-        </p>
-        <p className="prose">
-          The test for first-party is strict: could the linked page be wrong about the fact
-          without the actor or an official record being wrong? If yes, it is not first-party. And
-          a source that has repeatedly burned us can lose its class entirely (see grading, below).
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>what counts as one source</h2>
-        <p className="prose">
-          Before corroboration is counted, sources are collapsed into corroboration units, because
-          syndication is the cheapest way to fake breadth. URL variants of one article are one
-          unit. Multiple pages on one registrable domain are one unit. And two articles whose
-          headlines are near-identical are one unit even across domains: headlines are fingerprinted
-          (a 64-bit SimHash over normalized title words) and anything within a Hamming distance of
-          3 is treated as the same wire story rewritten. The item keeps every link for the reader;
-          the units drive the math; every collapse is logged in the sweep entry on the log.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>how corroboration moves it</h2>
-        <p className="prose">
-          Independent corroboration raises a score, and each rule fires at most once per claim: a
-          second distinct unit, a fourth, and pickup by a mainstream outlet beyond the lead
-          reporter. Corroboration is tested, not assumed: for any claim resting on second-hand
-          reporting, the machine actively searches the open web for other coverage. A search that
-          ran and found nothing costs one point, because "nothing else reports this" is itself a
-          claim about the world and it should hurt to be wrong about it. A direct source proves
-          its own statement and pays no such penalty; and a search that never ran (the sweep's
-          crawl budget ran out first) costs nothing, but is recorded as not attempted rather than
-          dressed up as a result.
-        </p>
-        <p className="prose">
-          There is a hard ceiling. No amount of second-hand corroboration reaches 5. Wide
-          reporting IS the definition of 4; 5 is reserved for a direct source, the actor speaking
-          for itself or an official record.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>scores keep moving after publication</h2>
-        <p className="prose">
-          Two rules lift a score with time, both bounded, both automatic, both visible:
-        </p>
-        <p className="prose">
-          <strong>Reinforcement.</strong> When a matching event lands 8 to 30 days after an item
-          published at SNR 1 or 2, the item is bumped by one and the new source is attached. An
-          early lone signal that later reporting matches was early, not wrong, and the score says
-          so retroactively. Once per item, only from 1 or 2, only inside the window.
-        </p>
-        <p className="prose">
-          <strong>Persistence.</strong> An item still below 4 that survives 14 days with nothing
-          contradicting it earns one point, once, and can never pass 4 this way. Time is weak
-          evidence; it counts a little and caps early.
-        </p>
-        <p className="prose">
-          Every movement, up or down, is appended to the item's stored calculation and listed in
-          that sweep's entry on the log. Trace history is append-only: earlier steps are never
-          rewritten to flatter the present score.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>claims that have to earn it</h2>
-        <p className="prose">
-          An out-of-pattern or extraordinary claim starts at 1 whatever its source count, and
-          climbs only through corroboration and survival. Any claim big enough to reshape the
-          market whose best source is below first-party is treated as extraordinary automatically,
-          by code, and additionally queued for human review even while it publishes. Extraordinary
-          claims are the honest-calibration stress test: they run on the same rules, just from the
-          bottom.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>when sources disagree</h2>
-        <p className="prose">
-          A mismatch of metrics (one source counts launched satellites, another counts operational
-          ones) is annotated, never punished: both numbers can be true. A genuine conflict on the
-          same metric lets the better-sourced side lead and costs the loser a point. Two equally
-          sourced claims that conflict are both marked disputed, kept visible side by side, and
-          queued for a human ruling; the site never quietly picks a winner it cannot justify.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>the signals-list floor</h2>
-        <p className="prose">
-          The signals page lists people we have individually verified and chosen to trust. When
-          one of them states an on-topic fact on a verified channel, the claim is floored at 4 as
-          an observer, and at 5 when the person speaks for the actor concerned about itself. The
-          floor covers factual statements only: jokes, opinions, and off-topic posts get nothing.
-          The list is curated by a human and the software that ingests the web cannot edit it.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>fakes and spoofs</h2>
-        <p className="prose">
-          Fake press releases are a documented attack on trackers like this one, so the two
-          highest source classes are gated by domain: a page only counts as first-party or
-          official record when its domain matches the actor's registry-recorded website or an
-          official register. A press-wire copy of an announcement caps at 4 until the actor's own
-          domain confirms it. A superlative in a first-party release ("largest constellation") is
-          attributed as a statement, never scored or repeated as fact.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>sources are graded too</h2>
-        <p className="prose">
-          Every source domain carries a rolling reliability record, rendered on the log: strikes
-          for claims that lost a same-metric contradiction, credits for claims that started at 1
-          or 2 and were later confirmed. Repeated strikes inside a 90-day window demote a source's
-          class in future scoring; demotion decays, and confirmed claims win the class back.
-          Sources that repeatedly produce independently confirmed early claims are suggested for
-          the signals list, but a human makes that call.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>what the score is not</h2>
-        <p className="prose">
-          It is not importance. Importance is the separate impact label (seismic, major, notable,
-          noise), and the two axes are independent: a seismic rumour is seismic AND low-SNR at the
-          same time. It is not an endorsement of opinions: commentary items score the attribution
-          (this person said this, here), never the take itself. And it is not a promise of truth;
-          it is a promise that the confidence shown matches the evidence held.
-        </p>
-      </section>
-
-      <section className="panel">
-        <h2>stored, shown, and checked</h2>
-        <p className="prose">
-          Every score is saved with its full calculation at the moment it was set: the base
-          source tier, every adjustment since, and the two components (source class and
-          corroboration) that fused into the integer. You can open that calculation under any
-          score mark on the site.
-        </p>
-        <p className="prose">
-          Whether the scores are honest is itself measured. Each claim's score at publication is
-          recorded permanently, even after later bumps change what the item displays, and compared
-          against how the claim resolves: confirmed independently, debunked, or expired quiet. The
-          running tally per score level is public on the{" "}
-          <a href="/system/#calibration">sweep log</a>. If our 2s turn out right as often as our 4s,
-          the scale is broken and the record will show it.
-        </p>
-      </section>
-    </Layout>
-  );
-}
 
 // ------------------------------------------------------------------ digest
 
