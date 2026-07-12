@@ -3338,15 +3338,24 @@ table.stat-table td.num {
    then the log. Gap on the 4px grid. */
 .system-grid {
   display: grid;
-  /* Balanced two-column page (Florian, 2026-07-12): the log spine caps at
-     the panel-hugging measure (46rem text + 1rem panel padding a side) so
-     sweep frames carry no dead width, and the rail breathes between 340px
-     and 30rem instead of the old fixed 340. space-between hands any
-     leftover to the middle seam; gap stays the floor when space is tight. */
-  grid-template-columns: minmax(0, 48rem) clamp(340px, 30vw, 30rem);
-  justify-content: space-between;
+  /* Balanced two-column page (Florian, 2026-07-12, second round): the log
+     spine takes whatever width remains and its text fills it dynamically
+     (override below); the INDICES rail breathes between 340px and 30rem
+     instead of the old fixed 340. */
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 30vw, 30rem);
   gap: var(--sp-7);
   align-items: start;
+}
+/* On the two-column /system/ page the spine's text blocks give up the
+   46rem cap and fill the column: the measure is set by the grid, not the
+   paragraph. Justification keeps every paragraph the same width. The
+   /system/YYYY-MM/ archive pages are single-column and keep the cap. */
+.system-log .lede,
+.system-log .prose,
+.system-log .sweep-summary,
+.system-log .sweep-signals,
+.system-log .snr-moves {
+  max-width: none;
 }
 .system-log,
 .system-rail {

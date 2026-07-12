@@ -1527,3 +1527,11 @@ INDICES rail breathes clamp(340px, 30vw, 30rem) instead of the fixed
 340px. justify-content: space-between hands leftover width to the
 middle seam; the gap is the floor when space is tight. Verified at
 1600 (spine 768 / seam 296 / rail 480), 1280, and the mobile stack.
+
+AMENDMENT 2 (same day, supersedes the 48rem spine cap): "make the log
+take whatever space remains" — the spine is minmax(0, 1fr) and its
+text blocks DROP the 46rem cap on the two-column page (max-width:
+none; the grid sets the measure, justification keeps paragraphs
+equal-width at any size). The rail clamp and the middle gap floor
+stay; space-between is gone. Single-column /system/YYYY-MM/ archive
+pages keep the 46rem cap.
