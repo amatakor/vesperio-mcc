@@ -1490,3 +1490,48 @@ PROCESS (rule 69-73 rounds): zoom-inspect rendered output
 (element.style.zoom then screenshot) BEFORE reporting a visual as
 done; verify hover states with the pointer actually parked on the
 element.
+
+## 74 · Footers are centered colophons
+
+RULE (Florian, 2026-07-12 pre-v1 pass): both footers center. The site
+footer is a four-row colophon in the mono label register (10px caps,
+dim): mission line, action links (verification policy / SNR score /
+sweep log / stats.json), category feeds, identity line ("VESPERIO /
+NEW SPACE INTELLIGENCE · © 2026"), each row on a 46rem measure with
+--sp-2 rhythm and --sp-5 before the identity line; the shell's bottom
+inset closes the page. The MCC status bar joins the same grammar:
+justify-content center with flex-wrap (attribution and freshness stack
+as centered rows when the stage narrows), 10px/500/.08em (the 8px face
+was off-system), padding 12px 0.
+
+## 75 · /system/ typography: no lowercase STARTS, one measure
+
+RULE (Florian, 2026-07-12, clarified same day): "no lowercase" means
+no sentence or label STARTS lowercase; normal case is allowed. A
+container-wide uppercase on /system/ was built and REVERTED — do not
+re-propose. What holds: ::first-letter guards on machine-rendered
+text (sweep summaries, stat tile labels) and uppercase-in-source for
+native tooltips (title bubbles can't be CSS-guarded); data values
+(domains, slugs, category names) stay as data. Paragraphs of equal
+width (rule 71 applied): every text block on the log spine and rail
+shares the 46rem measure, justified with auto-hyphenation —
+summaries, signals/discovery lines, SNR movement notes, panel prose,
+ledes, hero sentence. The 80ch sweep measure is retired. SNR movement
+downgrades recolored orange -> red per rule 72 (sign colors
+everywhere the notation appears).
+
+AMENDMENT (same day, "balance the system page"): the /system/ grid is
+two balanced instruments: the log spine caps at 48rem (46rem text +
+1rem panel padding a side; sweep frames carry no dead width) and the
+INDICES rail breathes clamp(340px, 30vw, 30rem) instead of the fixed
+340px. justify-content: space-between hands leftover width to the
+middle seam; the gap is the floor when space is tight. Verified at
+1600 (spine 768 / seam 296 / rail 480), 1280, and the mobile stack.
+
+AMENDMENT 2 (same day, supersedes the 48rem spine cap): "make the log
+take whatever space remains" — the spine is minmax(0, 1fr) and its
+text blocks DROP the 46rem cap on the two-column page (max-width:
+none; the grid sets the measure, justification keeps paragraphs
+equal-width at any size). The rail clamp and the middle gap floor
+stay; space-between is gone. Single-column /system/YYYY-MM/ archive
+pages keep the 46rem cap.

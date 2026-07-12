@@ -3220,6 +3220,11 @@ a.sig-card.entity-card:hover .ent-p-vehicle {
   font-family: var(--sans);
   font-size: 0.85rem;
 }
+/* Tile labels are stored lowercase; the no-lowercase-starts rule guards
+   the display (Florian, 2026-07-12). */
+.tile-label::first-letter {
+  text-transform: uppercase;
+}
 .tile-sub {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -3333,9 +3338,24 @@ table.stat-table td.num {
    then the log. Gap on the 4px grid. */
 .system-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
+  /* Balanced two-column page (Florian, 2026-07-12, second round): the log
+     spine takes whatever width remains and its text fills it dynamically
+     (override below); the INDICES rail breathes between 340px and 30rem
+     instead of the old fixed 340. */
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 30vw, 30rem);
   gap: var(--sp-7);
   align-items: start;
+}
+/* On the two-column /system/ page the spine's text blocks give up the
+   46rem cap and fill the column: the measure is set by the grid, not the
+   paragraph. Justification keeps every paragraph the same width. The
+   /system/YYYY-MM/ archive pages are single-column and keep the cap. */
+.system-log .lede,
+.system-log .prose,
+.system-log .sweep-summary,
+.system-log .sweep-signals,
+.system-log .snr-moves {
+  max-width: none;
 }
 .system-log,
 .system-rail {
@@ -3408,40 +3428,50 @@ table.stat-table td.num {
 
 /* ------------------------------------------------------------- footer */
 
+/* Site footer (Florian, 2026-07-12 pre-v1 pass): centered colophon, one
+   register (mono label voice), even rhythm. Mission line, action links,
+   category feeds, identity line; the shell's bottom inset closes it. */
 .footer {
   margin-top: var(--sp-8);
   border-top: 1px solid var(--border-1);
-  padding-top: var(--sp-4);
+  padding: var(--sp-5) 0 0;
   color: var(--text-3);
+  font-family: var(--font-ui);
   font-size: var(--fs-micro);
   font-weight: 500;
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
+  text-align: center;
+}
+.footer p {
+  margin: 0 auto;
+  max-width: 46rem;
+}
+.footer p + p {
+  margin-top: var(--sp-2);
 }
 .footer a {
   color: var(--link);
 }
-.footer-feeds {
-  font-family: var(--font-ui);
-  font-size: var(--fs-micro);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-label);
-}
-.footer-feeds a {
-  color: var(--link);
-}
-.footer-feeds a:hover {
+.footer a:hover {
   color: var(--link-hover);
+}
+.footer .footer-ident {
+  margin-top: var(--sp-5);
 }
 
 /* ---------------------------------------------------------------- log */
 
-/* Sweep summaries were running the full 1176px panel (~150 chars a
-   line); cap them at the reading measure the item pages use. */
+/* Paragraphs of equal width (Florian, 2026-07-12; rule 71 one-edge): every
+   text block on the log spine shares the 46rem reading measure and
+   justifies to it, so paragraphs render as equal-width blocks. */
 .sweep-summary {
-  max-width: 80ch;
+  max-width: 46rem;
+  text-align: justify;
+  hyphens: auto;
 }
-/* No sentence starts lowercase anywhere on the site (Florian, 2026-07-11).
+/* No sentence starts lowercase anywhere on the site (Florian, 2026-07-11;
+   reaffirmed 2026-07-12: normal case is allowed, lowercase STARTS are not).
    Summaries are machine-written records rendered verbatim; this guards the
    display without touching the stored text. */
 .sweep-summary::first-letter {
@@ -3450,11 +3480,24 @@ table.stat-table td.num {
 .sweep-signals {
   font-size: 0.72rem;
   letter-spacing: 0.04em;
-  max-width: 80ch;
+  max-width: 46rem;
+  text-align: justify;
+  hyphens: auto;
 }
 .sweep-signals-note {
   text-transform: none;
   letter-spacing: 0;
+}
+
+/* /system/ text blocks share the measure and justify like the sweep spine
+   (rule 71 applied to the merged page and its archive months). */
+.system-grid .prose,
+.log-archive .prose,
+.system-grid .lede,
+.log-archive .lede,
+.system-grid .hero-sentence {
+  text-align: justify;
+  hyphens: auto;
 }
 
 /* ------------------------------------------------------------ signals */
@@ -4329,9 +4372,16 @@ a.sig-card:hover .sig-p-x {
   margin: 8px 0 0;
   font-family: var(--mono);
   font-size: 0.75rem;
+  /* Same measure as every other text block on the log spine (rule 75);
+     without it the movement notes ran the full panel width. */
+  max-width: 46rem;
+  text-align: justify;
+  hyphens: auto;
 }
+/* Scoring deltas color by sign EVERYWHERE the notation appears (rule 72):
+   positive green, negative red. Matches the item ledger's convention. */
 .snr-up { color: var(--acc-green); }
-.snr-down { color: var(--acc-orange); }
+.snr-down { color: var(--acc-red); }
 
 /* Sweep status glyph (Florian, 2026-07-11): one ≤12px unicode mark on each
    sweep's meta row. ● LIVE (green) when the sweep shipped new items, ◆

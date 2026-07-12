@@ -235,17 +235,18 @@ export function Masthead({ current }: { current?: string }) {
         <SubscribeControl />
         {/* Support button (Florian, 2026-07-11, corrected same day): FRAMED,
             never filled — accent border + accent text — at the FAR RIGHT of
-            the menu. Links buymeacoffee.com/vesperio (Florian, 2026-07-12).
+            the menu. Links ko-fi.com/vesperio (Florian switched from
+            Buy Me a Coffee, 2026-07-12).
             The cup glyph is drawn (Florian, 2026-07-12: a real coffee cup,
             not the ◆); on narrow windows the badge collapses to the cup. */}
-        <a className="coffee-btn nav-badge nav-badge-coffee" href="https://buymeacoffee.com/vesperio" target="_blank" rel="noopener">
+        <a className="coffee-btn nav-badge nav-badge-coffee" href="https://ko-fi.com/vesperio" target="_blank" rel="noopener">
           <svg className="badge-glyph" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.1">
             <rect x="1.5" y="4.5" width="6.5" height="5.5" />
             <path d="M8 5.5h2.2v2.6H8" />
             <line x1="3.6" y1="1" x2="3.6" y2="3" />
             <line x1="5.9" y1="1" x2="5.9" y2="3" />
           </svg>
-          <span className="nav-badge-label">BUY ME A COFFEE</span>
+          <span className="nav-badge-label">SUPPORT ON KO-FI</span>
         </a>
       </span>
     </header>
@@ -258,15 +259,20 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
       <Masthead current={current} />
       <main>{children}</main>
       <footer className="footer">
+        <p className="footer-mission">
+          Machine-maintained. Every item links its sources and wears its signal-to-noise score.
+          Missing a story is acceptable; publishing a false one as fact is not.
+        </p>
         <p>
-          Machine-maintained. Every item links its sources and wears its signal-to-noise score. Missing a
-          story is acceptable; publishing a false one as fact is not.{" "}
-          <a href="/about/">Verification policy →</a> · <a href="/about/#methodology">How the SNR score works →</a>
+          <a href="/about/">Verification policy →</a> ·{" "}
+          <a href="/about/#methodology">How the SNR score works →</a> ·{" "}
+          <a href="/system/">Sweep log →</a> · <a href="/stats.json">stats.json →</a>
         </p>
         <p className="footer-feeds">
-          category feeds: <a href="/tag/eo/">eo</a> · <a href="/tag/connectivity/">connectivity</a> ·{" "}
-          <a href="/tag/iot/">iot</a> · <a href="/tag/launch/">launch</a>
+          Category feeds: <a href="/tag/eo/">EO</a> · <a href="/tag/connectivity/">Connectivity</a> ·{" "}
+          <a href="/tag/iot/">IoT</a> · <a href="/tag/launch/">Launch</a>
         </p>
+        <p className="footer-ident">Vesperio / new space intelligence · © 2026</p>
       </footer>
     </div>
   );
@@ -5173,24 +5179,26 @@ function SweepEntry({ sweep: s }: { sweep: SweepLogEntry }) {
     data voice; each cell states exactly what it measures. All numbers are
     computed at build time (page-data-server), never stored as facts. */
 function LogKpiRow({ kpis }: { kpis: DataFor<"system">["kpis"] }) {
+  // Tooltip notes start uppercase in source (no sentence starts lowercase,
+  // Florian): native title bubbles cannot be styled by CSS guards.
   const cells: Array<[string, string, string]> = [
-    ["items / day", kpis.itemsPerDay.toFixed(1), "published items in the window, per day"],
-    ["lead domains", String(kpis.leadDomains), "distinct lead-source domains in the window"],
-    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "share of window items scored 1 or 2"],
+    ["items / day", kpis.itemsPerDay.toFixed(1), "Published items in the window, per day"],
+    ["lead domains", String(kpis.leadDomains), "Distinct lead-source domains in the window"],
+    ["snr ≤2 share", `${kpis.pctLowSnr}%`, "Share of window items scored 1 or 2"],
     [
       "crossfeed queued",
       String(kpis.crossfeedQueued),
-      "registry crossfeed candidates queued, proposed in the window",
+      "Registry crossfeed candidates queued, proposed in the window",
     ],
     [
       "claims resolved",
       String(kpis.claimsResolved),
-      "calibration claims confirmed or debunked in the window",
+      "Calibration claims confirmed or debunked in the window",
     ],
     [
       "signals-sourced",
       String(kpis.signalsSourced),
-      "window items floored by a signals-list source",
+      "Window items floored by a signals-list source",
     ],
   ];
   return (
@@ -5269,7 +5277,7 @@ function LogPresence({
 function SubscribeForm() {
   return (
     <div className="subscribe">
-      <p className="subscribe-label">the week&rsquo;s signal, mailed</p>
+      <p className="subscribe-label">The week&rsquo;s signal, mailed</p>
       <p className="subscribe-copy">One email a week. The same feed, ranked, nothing extra.</p>
       <form
         // Live Buttondown account (Florian, 2026-07-12): buttondown.com/vesperio.
@@ -5462,16 +5470,18 @@ export function SystemPage({
 export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
   return (
     <Layout current="system">
-      <h1 className="page-title sec-mark">sweep log · {data.month}</h1>
-      <p className="lede">Archived sweep entries from {data.month}.</p>
-      {data.sweeps.length === 0 ? (
-        <p className="empty">No sweeps in this month</p>
-      ) : (
-        data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
-      )}
-      <p>
-        <a href="/system/">Back to the sweep log</a>
-      </p>
+      <div className="log-archive">
+        <h1 className="page-title sec-mark">sweep log · {data.month}</h1>
+        <p className="lede">Archived sweep entries from {data.month}.</p>
+        {data.sweeps.length === 0 ? (
+          <p className="empty">No sweeps in this month</p>
+        ) : (
+          data.sweeps.map((s) => <SweepEntry key={s.at} sweep={s} />)
+        )}
+        <p>
+          <a href="/system/">Back to the sweep log</a>
+        </p>
+      </div>
     </Layout>
   );
 }

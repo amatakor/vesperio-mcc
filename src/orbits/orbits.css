@@ -957,18 +957,26 @@
 
 /* -------------------------------------------------------------- footer */
 
+/* MCC status footer (Florian, 2026-07-12 pre-v1 pass): centered like the
+   site footer, one register (10px label voice, was 8px off-system).
+   Attribution and freshness center as one line and wrap to two centered
+   rows when the stage narrows. */
 .obar {
   flex: none;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 16px;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 2px;
   border-top: 1px solid var(--line);
-  padding: 10px 0;
+  padding: 12px 0;
   font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.8px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   color: var(--dim);
+  text-align: center;
 }
 .obar-attr {
   min-width: 0;
