@@ -4497,3 +4497,14 @@ table.stat-table th {
     object-fit: cover;
   }
 }
+
+/* SNR trace rows and score popovers are instrument readouts and render
+   caps like all chrome (Florian, 2026-07-12): the stored trace reasons
+   are append-only data written lowercase by the engine, so the caps
+   live here at the display layer. Empty states join the same register. */
+.snr-pop-row,
+.snr-pop-foot,
+.snr-pop-hist,
+.empty {
+  text-transform: uppercase;
+}
