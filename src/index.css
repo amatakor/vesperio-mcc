@@ -4522,3 +4522,133 @@ table.stat-table th {
   padding: 0 1.4rem;
   margin-bottom: 1.1rem;
 }
+
+/* ---------------------------------------------------------------------------
+   SNR LEDGER (Florian redesign, 2026-07-12). The item detail's scoring
+   section reads as one instrument: hero row (LED bars + verdict left,
+   display numeral right, shared baseline), an axes strip, the
+   calculation as an accounting ledger whose signed deltas sit on one
+   right-aligned gutter, a sum row, and a label-register footer. Mono
+   never exceeds 500; the numeral is the only display-size element. */
+.snrl {
+  display: flex;
+  flex-direction: column;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.snrl-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-3);
+}
+.snrl-hero-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  align-items: flex-start;
+}
+.snrl-word {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--text-2);
+}
+.snrl-hero-num {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+}
+.snrl-num {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 200;
+  color: var(--text-1);
+}
+.snrl-den {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-left: var(--sp-1);
+}
+.snrl-grid {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  column-gap: var(--sp-3);
+  row-gap: var(--sp-2);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--text-1);
+}
+.snrl-tag,
+.snrl-delta {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.snrl-tag {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.snrl-delta {
+  color: var(--text-1);
+}
+.snrl-axes {
+  border-top: 1px solid var(--border-1);
+  padding: var(--sp-3) 0;
+  color: var(--text-2);
+}
+.snrl-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  border-top: 1px solid var(--border-1);
+  padding: var(--sp-3) 0 var(--sp-2);
+}
+.snrl-ledger {
+  padding-bottom: var(--sp-3);
+}
+.snrl-grid a {
+  color: var(--link);
+}
+.snrl-grid a:hover {
+  color: var(--link-hover);
+}
+.snrl-sum {
+  border-top: 1px solid var(--border-2);
+  padding-top: var(--sp-2);
+  color: var(--text-2);
+}
+.snrl-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  border-top: 1px solid var(--border-1);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-2);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+}
+.snrl-foot a {
+  color: var(--link);
+}
+.snrl-foot a:hover {
+  color: var(--link-hover);
+}
+
+/* Ledger hero: the LED bars scale up to hero size without SnrLed's own
+   numeral/word (the ledger supplies those on its own grid). */
+.snrl-hero .snr-led-cell {
+  width: 22px;
+  height: 22px;
+}

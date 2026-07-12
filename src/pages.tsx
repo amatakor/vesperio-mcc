@@ -4,7 +4,7 @@ import type {
   KeyboardEvent as ReactKeyboardEvent,
   ReactNode,
 } from "react";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 // useLayoutEffect runs before the browser paints (so the masonry packs with no
 // gap flash), but warns during SSR; fall back to useEffect on the server.
@@ -411,6 +411,103 @@ function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed
         </a>
       </span>
     </>
+  );
+}
+
+/** Item-detail scoring readout (Florian redesign, 2026-07-12): an
+    instrument ledger. Hero row (LEDs + verdict left, display numeral
+    right), an axes strip, the calculation as an accounting ledger with
+    the deltas on one right-aligned gutter, a sum row, and a footer.
+    The hover popover keeps its own compact renderer (SnrTraceRows). */
+function SnrLedger({ item }: { item: Item }) {
+  const trace = item.snr_trace;
+  const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
+  const corrSum = corr.reduce((n, m) => n + m.delta, 0);
+  const history = trace.history ?? [];
+  return (
+    <div className="snrl">
+      <div className="snrl-hero">
+        <div className="snrl-hero-left">
+          <SnrLed snr={item.snr} />
+          <span className="snrl-word">
+            {SNR_WORDS[item.snr]}
+            {item.disputed && <span className="chip chip-disputed">disputed</span>}
+            {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
+          </span>
+        </div>
+        <div className="snrl-hero-num" aria-label={`SNR ${item.snr} of 5`}>
+          <span className="snrl-num">{item.snr}</span>
+          <span className="snrl-den">/5</span>
+        </div>
+      </div>
+      <div className="snrl-grid snrl-axes">
+        <span className="snrl-tag">lead</span>
+        <span>tier {trace.base.tier} of 5 on its own</span>
+        <span className="snrl-tag">corrob</span>
+        <span>
+          {corr.length === 0
+            ? "not tested yet"
+            : `${signed(corrSum)} earned from ${corr.length} rule${corr.length === 1 ? "" : "s"}`}
+        </span>
+        {trace.single_class_corroboration && (
+          <>
+            <span className="snrl-tag">mix</span>
+            <span>one source class ({trace.single_class_corroboration})</span>
+          </>
+        )}
+      </div>
+      <div className="snrl-label">calculation</div>
+      <div className="snrl-grid snrl-ledger">
+        <span className="snrl-delta">{trace.base.tier}</span>
+        <span>
+          {trace.base.reason}{" "}
+          <a href={trace.base.source} rel="noopener">
+            {hostOf(trace.base.source)}
+          </a>
+        </span>
+        {trace.modifiers.map((m, i) => (
+          <Fragment key={i}>
+            <span className="snrl-delta">{signed(m.delta)}</span>
+            <span>
+              {m.reason}
+              {m.source && (
+                <>
+                  {" "}
+                  <a href={m.source} rel="noopener">
+                    {hostOf(m.source)}
+                  </a>
+                </>
+              )}
+            </span>
+          </Fragment>
+        ))}
+      </div>
+      <div className="snrl-grid snrl-sum">
+        <span className="snrl-delta">= {trace.final ?? item.snr}</span>
+        <span>current score, recomputed by the engine on every change</span>
+      </div>
+      {history.length > 0 && (
+        <>
+          <div className="snrl-label">movements</div>
+          <div className="snrl-grid snrl-ledger">
+            {history.map((h, i) => (
+              <Fragment key={i}>
+                <span className="snrl-delta">
+                  {h.from}&rarr;{h.to}
+                </span>
+                <span>
+                  {h.date} · {h.reason}
+                </span>
+              </Fragment>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="snrl-foot">
+        <span>scorer v{trace.scorer_version}</span>
+        <a href="/methodology/">how scores work &rarr;</a>
+      </div>
+    </div>
   );
 }
 
@@ -1160,12 +1257,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             )}
             <section className="panel">
               <h2>signal-to-noise</h2>
-              <div className="snr-panel">
-                <SnrLed snr={item.snr} size="hero" />
-              </div>
-              <div className="snr-trace-inline">
-                <SnrTraceRows trace={item.snr_trace} />
-              </div>
+              <SnrLedger item={item} />
             </section>
             <div className="tag-row">
               {item.tags.map((t) => (
@@ -1539,14 +1631,7 @@ export function ItemPage({ item }: { item: Item }) {
             )}
             <section className="panel">
               <h2>signal-to-noise</h2>
-              <div className="snr-panel">
-                <SnrLed snr={item.snr} size="hero" />
-                {item.disputed && <span className="chip chip-disputed">disputed</span>}
-        {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
-              </div>
-              <div className="snr-trace-inline">
-                <SnrTraceRows trace={item.snr_trace} />
-              </div>
+              <SnrLedger item={item} />
             </section>
             <section className="panel">
               <h2>quick facts</h2>
