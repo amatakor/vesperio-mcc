@@ -87,44 +87,6 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
-/** Card hover gallery switcher (Florian, 2026-07-12). Renders only
-    with ?hoverlab in the URL; sets data-hover-fx on <html>. "shipped"
-    clears the attribute and restores the default invert hover. */
-const HOVER_FX: Array<[string, string]> = [
-  ["shipped", "current: invert + volt frame"],
-  ["reticle", "viewfinder corner ticks"],
-  ["selection", "headline floods volt"],
-  ["scanline", "one line sweeps down"],
-  ["meter", "volt bar rises on the left edge"],
-  ["focus", "the rest of the field dims"],
-];
-function HoverLab() {
-  const [open, setOpen] = useState(false);
-  const [fx, setFx] = useState("shipped");
-  useEffect(() => {
-    setOpen(window.location.search.includes("hoverlab"));
-  }, []);
-  useEffect(() => {
-    if (!open) return;
-    if (fx === "shipped") delete document.documentElement.dataset.hoverFx;
-    else document.documentElement.dataset.hoverFx = fx;
-  }, [open, fx]);
-  if (!open) return null;
-  return (
-    <div className="hover-lab">
-      <h4>card hover lab</h4>
-      {HOVER_FX.map(([key, blurb]) => (
-        <div className="hover-lab-row" key={key}>
-          <span>{blurb}</span>
-          <button type="button" className={fx === key ? "on" : ""} onClick={() => setFx(key)}>
-            {key}
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
   ["/mcc/", "mcc"],
@@ -294,7 +256,6 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
   return (
     <div className="shell">
       <Masthead current={current} />
-      <HoverLab />
       <main>{children}</main>
       <footer className="footer">
         <p>

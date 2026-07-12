@@ -1406,38 +1406,45 @@ a.chip:hover {
    so the light theme inverts correctly (dark panel, paper copy). z-index
    lifts it above -1px-margin neighbors so its edge stays clean. Seismic
    keeps its own photographic-negative treatment (excluded via :not). */
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover {
+.card:not(.card-seismic):hover {
   background: var(--n7);
-  /* Volt hover frame (fix 2, 2026-07-10): --shell-accent is volt on dark,
-     volt-ink on bright (same theme-aware token as the nav underline and
-     the wordmark's always-lit dot), so the frame reads correctly in both
-     themes without a new color role. Seismic carries the same frame via
-     its own hover rule (rule 53). */
-  border-color: var(--shell-accent);
   z-index: 2;
 }
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .card-headline a,
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .card-tagline,
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .card-extra,
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .card-meta,
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .card-meta .date {
+/* Volt hover frame v2 (Florian, 2026-07-12, supersedes fix 2): the frame
+   moves INSIDE the card, an inset ring drawn above all content
+   (thumbnail included); the resting border never changes.
+   --shell-accent stays the theme-aware token (volt on dark, volt-ink
+   on bright). */
+.card:not(.card-seismic):hover::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--shell-accent);
+  z-index: 5;
+  pointer-events: none;
+}
+.card:not(.card-seismic):hover .card-headline a,
+.card:not(.card-seismic):hover .card-tagline,
+.card:not(.card-seismic):hover .card-extra,
+.card:not(.card-seismic):hover .card-meta,
+.card:not(.card-seismic):hover .card-meta .date {
   color: var(--bg-page);
 }
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .chip {
+.card:not(.card-seismic):hover .chip {
   border-color: var(--bg-page);
   color: var(--bg-page);
 }
 /* Filled badges keep their fills under inversion; only outlines flip. */
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .chip-major {
+.card:not(.card-seismic):hover .chip-major {
   background: var(--acc-yellow);
   border-color: var(--acc-yellow);
   color: #000;
 }
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .chip-notable {
+.card:not(.card-seismic):hover .chip-notable {
   border-color: var(--acc-blue-dim);
   color: var(--acc-blue-dim);
 }
-:root:not([data-hover-fx]) .card:not(.card-seismic):hover .chip-seismic {
+.card:not(.card-seismic):hover .chip-seismic {
   background: var(--acc-red);
   border-color: var(--acc-red);
   color: #fff;
@@ -4348,8 +4355,15 @@ a.sig-card:hover .sig-p-x {
 }
 .sweep-card:hover {
   background: #e3e3df; /* the dark-grey face's negative: paper grey, not white */
-  border-color: var(--shell-accent);
   z-index: 2;
+}
+.sweep-card:hover::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border: 1px solid var(--shell-accent);
+  z-index: 5;
+  pointer-events: none;
 }
 .sweep-card:hover .sweep-flood {
   background: #5200ff; /* invert of volt #adff00 */
@@ -4773,168 +4787,3 @@ table.stat-table th {
 
 
 
-/* ---------------------------------------------------------------------------
-   CARD HOVER GALLERY (Florian, 2026-07-12): five border-neutral hover
-   treatments behind data-hover-fx, driven live by the ?hoverlab panel.
-   The shipped invert hover stays the default when the lab is off. The
-   card border is never touched by any variant; the z-lift stays. No
-   transforms, no gradients, no glow. */
-:root[data-hover-fx] .card:not(.card-seismic):hover {
-  z-index: 2;
-}
-
-/* 1 RETICLE: viewfinder corner ticks step in at the corners. The ticks
-   are pseudo-element marks, not the card border. */
-:root[data-hover-fx="reticle"] .card:not(.card-seismic)::before,
-:root[data-hover-fx="reticle"] .card:not(.card-seismic)::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  opacity: 0;
-  z-index: 5;
-  pointer-events: none;
-  transition: opacity 140ms linear, top 140ms ease-out, left 140ms ease-out,
-    right 140ms ease-out, bottom 140ms ease-out;
-}
-:root[data-hover-fx="reticle"] .card:not(.card-seismic)::before {
-  top: 14px;
-  left: 14px;
-  border-top: 2px solid var(--shell-accent);
-  border-left: 2px solid var(--shell-accent);
-}
-:root[data-hover-fx="reticle"] .card:not(.card-seismic)::after {
-  bottom: 14px;
-  right: 14px;
-  border-bottom: 2px solid var(--shell-accent);
-  border-right: 2px solid var(--shell-accent);
-}
-:root[data-hover-fx="reticle"] .card:not(.card-seismic):hover::before {
-  opacity: 1;
-  top: 6px;
-  left: 6px;
-}
-:root[data-hover-fx="reticle"] .card:not(.card-seismic):hover::after {
-  opacity: 1;
-  bottom: 6px;
-  right: 6px;
-}
-
-/* 2 SELECTION: the headline floods volt like selected text, the site's
-   own selection grammar; the rest of the card stays put. */
-:root[data-hover-fx="selection"] .card:not(.card-seismic):hover .card-headline a {
-  background: var(--shell-accent);
-  color: var(--night);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
-/* 3 SCANLINE: one volt line sweeps down the card, then fades. */
-:root[data-hover-fx="scanline"] .card:not(.card-seismic)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 2px;
-  background: var(--shell-accent);
-  opacity: 0;
-  z-index: 5;
-  pointer-events: none;
-}
-:root[data-hover-fx="scanline"] .card:not(.card-seismic):hover::after {
-  animation: card-scan 700ms ease-out forwards;
-}
-@keyframes card-scan {
-  0% {
-    top: 0;
-    opacity: 0.95;
-  }
-  85% {
-    opacity: 0.95;
-  }
-  100% {
-    top: calc(100% - 2px);
-    opacity: 0;
-  }
-}
-
-/* 4 METER: a volt bar rises along the inside left edge, the modal
-   band's stripe grammar. */
-:root[data-hover-fx="meter"] .card:not(.card-seismic)::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 3px;
-  height: 0;
-  background: var(--shell-accent);
-  z-index: 5;
-  pointer-events: none;
-  transition: height 240ms ease-out;
-}
-:root[data-hover-fx="meter"] .card:not(.card-seismic):hover::before {
-  height: 100%;
-}
-
-/* 5 FOCUS: no ornament at all; every other card dims and the hovered
-   one holds full brightness. */
-:root[data-hover-fx="focus"] .cards:hover .card:not(:hover) {
-  opacity: 0.5;
-}
-:root[data-hover-fx="focus"] .card {
-  transition: opacity 160ms linear;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :root[data-hover-fx] .card::before,
-  :root[data-hover-fx] .card::after,
-  :root[data-hover-fx="focus"] .card {
-    transition: none;
-    animation: none;
-  }
-}
-
-/* The ?hoverlab panel, same registers as the retired orbit lab. */
-.hover-lab {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 90;
-  width: 260px;
-  background: var(--bg-panel);
-  border: 1px solid var(--border-2);
-  padding: 12px 14px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-2);
-}
-.hover-lab h4 {
-  margin: 0 0 8px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--text-1);
-}
-.hover-lab-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 5px 0;
-}
-.hover-lab button {
-  border: 1px solid var(--border-2);
-  background: none;
-  color: var(--text-1);
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  padding: 3px 8px;
-  cursor: pointer;
-}
-.hover-lab button.on {
-  border-color: var(--shell-accent);
-  color: var(--shell-accent);
-}
