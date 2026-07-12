@@ -1420,3 +1420,73 @@ IMPLEMENTATION: .breadcrumbs text-transform, .profile-tab.active,
 .reg-footnote (index.css); ORG_KIND_LABEL + kind tile uppercase
 (reg-entries.ts); org pane group labels, tab labels, key-details
 heading (pages.tsx).
+
+## 69 · Card hover: inward volt band, immutable grid
+
+RULE (Florian, 2026-07-12, supersedes rule "fix 2" volt border
+recolor): the masonry grid's gray border NEVER changes. On hover the
+face inverts as before and a 2px volt band grows INWARD from just
+inside the border (100ms ease-out), drawn as an overlay ABOVE all card
+content, thumbnails included. Applies to every card: standard, seismic
+(over its blue negative), and the sweep clock. --shell-accent stays
+the theme token. Geometry chosen by Florian from a three-option
+question (flush line / inward band / inset ring): inward band.
+REJECTED on the way, do not re-propose: border-color recolor on hover
+(shared-seam breakage), inset ring with a gap, inset glow "halo"
+(inset shadows paint UNDER children; thumbnails always occlude it),
+five-variant gallery (reticle / selection / scanline / meter / focus).
+
+IMPLEMENTATION: .card::after / .sweep-card::after border-width 0 to
+2px, z-index 5; .sweep-card gained position: relative (without it the
+overlay anchored to the page: a site-wide frame on clock hover).
+
+## 70 · Caps as a system
+
+RULE (Florian, 2026-07-12: "no lowercase anywhere"): all UI chrome
+renders uppercase. Registry surfaces (.registry-profile, .reg-index)
+uppercase at the CONTAINER with named opt-outs: overview paragraphs
+and entry snippets (verbatim sourced prose). Everywhere else, chrome
+classes carry the transform (esc control, source-as-of lines, footer,
+credits, quick-facts values, pagers, placeholders, SNR trace rows and
+popovers, empty states). Data values with units (nm/km/m) and article
+explainer prose stay as authored: uppercasing corrupts units and
+readability. Form controls need text-transform: inherit (UA default
+blocks the container rule).
+
+## 71 · One edge per page
+
+RULE (Florian, 2026-07-12): a page's blocks share ONE right edge; no
+module gets a private width. Registry profiles: overview, stock chart,
+tables, and timeline all span the profile measure. About: everything
+(prose, tables, diagrams) shares a 62rem measure, justified with
+auto-hyphenation. The two-tier look (hairlines wider than paragraphs)
+is retired.
+
+## 72 · About is the white paper; SNR reads as an instrument ledger
+
+RULE (Florian, 2026-07-12): /about/ is the single system document
+(concept, engine diagram with owner color legend, full SNR rulebook,
+tiers, registry channels, FAQ); /methodology/ is retired into
+/about/#methodology with 301s. Rulebook renders as ledger-notation
+rule grids; tier tables wear the real LED marks and impact chips. The
+item detail's signal-to-noise section is an instrument ledger: hero
+LED row + 52/200 numeral, axes strip, signed deltas on one
+right-aligned gutter, sum row, movements, label-register footer.
+Scoring deltas color by sign EVERYWHERE the notation appears: positive
+green, negative red, zero orange (small mono glyphs, within the color
+budget).
+
+## 73 · Masthead: order, alignment, and a plain MCC
+
+RULE (Florian, 2026-07-12): menu order NEWS · MCC · REGISTRY · SIGNALS
+· SYSTEM · ABOUT. Nav link vertical padding balanced (4.5/3.5, was
+0/5 underline reserve) so word centers align with the framed badges
+within 0.2px. The MCC nav word stays PLAIN: the animated markers
+(orbiting sat, satellite pass, ripple/breathe/scan, the two-layer
+occluding atom) were all built, reviewed, and REVERTED by Florian; do
+not re-propose without a new brief.
+
+PROCESS (rule 69-73 rounds): zoom-inspect rendered output
+(element.style.zoom then screenshot) BEFORE reporting a visual as
+done; verify hover states with the pointer actually parked on the
+element.
