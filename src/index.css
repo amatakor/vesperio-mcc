@@ -4754,12 +4754,13 @@ table.stat-table th {
   color: var(--text-2);
 }
 
-/* MCC nav marker v2 (Florian, 2026-07-12): three volt sats with trails
-   on tilted shells, electron-style, orbiting the word. Each shell is
-   its own stacking layer whose z-index flips mid-cycle, so a sat
-   passes IN FRONT of the label on the near arc and disappears BEHIND
-   it on the far arc (the label sits at z:1 between the two states).
-   Square dots, themed via --dot, off under prefers-reduced-motion. */
+/* MCC nav marker v3 (Florian, 2026-07-12): electron shells. Three volt
+   sats with trails on tilted planes; shells counter-rotate and their
+   orbits cross through the word. Every dial is a CSS variable so the
+   ?orbitlab panel can drive it live. Each shell's stacking flips
+   mid-cycle around the label's z:1, so sats pass in front of the word
+   on the near arc and behind it on the far arc. Off under
+   prefers-reduced-motion. */
 .nav .nav-mcc {
   position: relative;
 }
@@ -4780,56 +4781,60 @@ table.stat-table th {
   height: 0;
 }
 .mcc-shell-a {
-  animation: mcc-shell-a 4.2s linear infinite;
+  display: var(--orb-a-show, inline);
+  animation: mcc-shell-a var(--orb-a-dur, 4.2s) linear infinite;
+  animation-direction: var(--orb-a-dir, normal);
 }
 .mcc-shell-b {
-  animation: mcc-shell-b 5.4s linear infinite;
+  display: var(--orb-b-show, inline);
+  animation: mcc-shell-b var(--orb-b-dur, 5.2s) linear infinite;
+  animation-direction: var(--orb-b-dir, reverse);
   animation-delay: -1.8s;
 }
 .mcc-shell-c {
-  animation: mcc-shell-c 6.6s linear infinite;
-  animation-delay: -4s;
+  display: var(--orb-c-show, inline);
+  animation: mcc-shell-c var(--orb-c-dur, 6.4s) linear infinite;
+  animation-direction: var(--orb-c-dir, normal);
+  animation-delay: -3.5s;
 }
 .mcc-orbit-sat {
   position: absolute;
-  width: 3px;
-  height: 3px;
-  margin: -1.5px 0 0 -1.5px;
+  width: var(--orb-dot, 3px);
+  height: var(--orb-dot, 3px);
+  margin: calc(var(--orb-dot, 3px) / -2) 0 0 calc(var(--orb-dot, 3px) / -2);
   background: var(--dot);
-  transform: translateX(30px);
+  transform: translateX(var(--orb-r, 28px));
 }
-/* The train: a short tangential tail fading against the direction of
-   motion (clockwise spin at +X moves down, so the trail points up). */
 .mcc-orbit-sat::after {
   content: "";
   position: absolute;
   left: 0.5px;
-  bottom: 3px;
+  bottom: var(--orb-dot, 3px);
   width: 2px;
-  height: 11px;
+  height: var(--orb-trail, 10px);
   background: linear-gradient(to top, var(--dot), transparent);
-  opacity: 0.55;
+  opacity: var(--orb-trail-o, 0.55);
 }
 @keyframes mcc-shell-a {
-  0% { transform: rotate(-18deg) scaleY(0.38) rotate(0deg); opacity: 1; z-index: 2; }
+  0% { transform: rotate(var(--orb-a-tilt, 50deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
   45% { opacity: 1; z-index: 2; }
   55% { opacity: 0.3; z-index: 0; }
   90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(-18deg) scaleY(0.38) rotate(360deg); opacity: 1; z-index: 2; }
+  100% { transform: rotate(var(--orb-a-tilt, 50deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
 }
 @keyframes mcc-shell-b {
-  0% { transform: rotate(0deg) scaleY(0.42) rotate(0deg); opacity: 1; z-index: 2; }
+  0% { transform: rotate(var(--orb-b-tilt, -50deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
   45% { opacity: 1; z-index: 2; }
   55% { opacity: 0.3; z-index: 0; }
   90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(0deg) scaleY(0.42) rotate(360deg); opacity: 1; z-index: 2; }
+  100% { transform: rotate(var(--orb-b-tilt, -50deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
 }
 @keyframes mcc-shell-c {
-  0% { transform: rotate(16deg) scaleY(0.36) rotate(0deg); opacity: 1; z-index: 2; }
+  0% { transform: rotate(var(--orb-c-tilt, 0deg)) scaleY(var(--orb-flat, 0.38)) rotate(0deg); opacity: 1; z-index: 2; }
   45% { opacity: 1; z-index: 2; }
   55% { opacity: 0.3; z-index: 0; }
   90% { opacity: 0.3; z-index: 0; }
-  100% { transform: rotate(16deg) scaleY(0.36) rotate(360deg); opacity: 1; z-index: 2; }
+  100% { transform: rotate(var(--orb-c-tilt, 0deg)) scaleY(var(--orb-flat, 0.38)) rotate(360deg); opacity: 1; z-index: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mcc-orbit-shell {
@@ -4839,6 +4844,83 @@ table.stat-table th {
   .mcc-shell-c {
     display: none;
   }
+}
+
+/* The ?orbitlab control panel (dev tool, hidden unless the query flag
+   is present). House registers: mono labels, hairlines, no rounding. */
+.orbit-lab {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 90;
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-2);
+  padding: 12px 14px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.orbit-lab h4 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--text-1);
+}
+.orbit-lab-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr 2.6rem;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+}
+.orbit-lab-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--shell-accent);
+}
+.orbit-lab-val {
+  text-align: right;
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+.orbit-lab-shell {
+  border-top: 1px solid var(--border-1);
+  margin-top: 8px;
+  padding-top: 6px;
+}
+.orbit-lab-shell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+.orbit-lab button {
+  border: 1px solid var(--border-2);
+  background: none;
+  color: var(--text-1);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.orbit-lab button.on {
+  border-color: var(--shell-accent);
+  color: var(--shell-accent);
+}
+.orbit-lab-out {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-1);
+  color: var(--text-3);
+  text-transform: none;
+  font-weight: 400;
+  word-break: break-all;
+  user-select: all;
 }
 
 /* Scoring deltas color by sign (Florian, 2026-07-12): positive green,
@@ -4862,5 +4944,14 @@ table.stat-table th {
   border-color: var(--n5);
 }
 [data-theme="light"] .card {
+  border-color: var(--border-2);
+}
+
+/* The sweep clock wears the same border as its masonry neighbors
+   (Florian, 2026-07-12): n5 on dark, standard on light. */
+.sweep-card {
+  border-color: var(--n5);
+}
+[data-theme="light"] .sweep-card {
   border-color: var(--border-2);
 }

@@ -87,6 +87,121 @@ function RegistryLogo({ slug, name, size }: { slug: string; name: string; size?:
 
 // ------------------------------------------------------------------ layout
 
+/** Live tuning panel for the MCC nav orbit (Florian, 2026-07-12).
+    Renders only with ?orbitlab in the URL; writes the --orb-* CSS
+    variables the shells read. The values readout at the bottom is the
+    handoff: copy it into chat and the winning recipe becomes the
+    defaults. */
+const ORBIT_DIALS: Array<[string, string, number, number, number, string]> = [
+  // [var, label, min, max, step, unit]
+  ["--orb-r", "radius", 14, 44, 1, "px"],
+  ["--orb-flat", "flatten", 0.15, 1, 0.01, ""],
+  ["--orb-dot", "dot size", 2, 6, 0.5, "px"],
+  ["--orb-trail", "trail", 0, 26, 1, "px"],
+  ["--orb-trail-o", "trail glow", 0, 1, 0.05, ""],
+];
+const ORBIT_SHELLS: Array<[string, number, number]> = [
+  // [shell key, default duration, default tilt]
+  ["a", 4.2, 50],
+  ["b", 5.2, -50],
+  ["c", 6.4, 0],
+];
+function OrbitLab() {
+  const [open, setOpen] = useState(false);
+  const [vals, setVals] = useState<Record<string, number>>({
+    "--orb-r": 28,
+    "--orb-flat": 0.38,
+    "--orb-dot": 3,
+    "--orb-trail": 10,
+    "--orb-trail-o": 0.55,
+    "dur-a": 4.2,
+    "dur-b": 5.2,
+    "dur-c": 6.4,
+    "tilt-a": 50,
+    "tilt-b": -50,
+    "tilt-c": 0,
+  });
+  const [dirs, setDirs] = useState<Record<string, boolean>>({ a: false, b: true, c: false });
+  const [show, setShow] = useState<Record<string, boolean>>({ a: true, b: true, c: true });
+  useEffect(() => {
+    setOpen(window.location.search.includes("orbitlab"));
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const r = document.documentElement.style;
+    for (const [k, v] of Object.entries(vals)) {
+      if (k.startsWith("--")) {
+        const unit = k === "--orb-flat" || k === "--orb-trail-o" ? "" : "px";
+        r.setProperty(k, `${v}${unit}`);
+      }
+    }
+    for (const [key, d, t] of ORBIT_SHELLS) {
+      void d;
+      void t;
+      r.setProperty(`--orb-${key}-dur`, `${vals[`dur-${key}`]}s`);
+      r.setProperty(`--orb-${key}-tilt`, `${vals[`tilt-${key}`]}deg`);
+      r.setProperty(`--orb-${key}-dir`, dirs[key] ? "reverse" : "normal");
+      r.setProperty(`--orb-${key}-show`, show[key] ? "inline" : "none");
+    }
+  }, [open, vals, dirs, show]);
+  if (!open) return null;
+  const set = (k: string) => (e: { target: { value: string } }) =>
+    setVals((v) => ({ ...v, [k]: Number(e.target.value) }));
+  const readout = [
+    ...Object.entries(vals).map(([k, v]) => `${k}=${v}`),
+    ...ORBIT_SHELLS.map(([k]) => `${k}:${dirs[k] ? "rev" : "fwd"}${show[k] ? "" : ",off"}`),
+  ].join(" ");
+  return (
+    <div className="orbit-lab">
+      <h4>orbit lab</h4>
+      {ORBIT_DIALS.map(([k, label, min, max, step, unit]) => (
+        <div className="orbit-lab-row" key={k}>
+          <span>{label}</span>
+          <input type="range" min={min} max={max} step={step} value={vals[k]} onChange={set(k)} />
+          <span className="orbit-lab-val">
+            {vals[k]}
+            {unit}
+          </span>
+        </div>
+      ))}
+      {ORBIT_SHELLS.map(([key]) => (
+        <div className="orbit-lab-shell" key={key}>
+          <div className="orbit-lab-shell-head">
+            <span>shell {key}</span>
+            <span>
+              <button
+                type="button"
+                className={show[key] ? "on" : ""}
+                onClick={() => setShow((v) => ({ ...v, [key]: !v[key] }))}
+              >
+                {show[key] ? "on" : "off"}
+              </button>{" "}
+              <button
+                type="button"
+                className={dirs[key] ? "on" : ""}
+                onClick={() => setDirs((v) => ({ ...v, [key]: !v[key] }))}
+              >
+                {dirs[key] ? "reverse" : "forward"}
+              </button>
+            </span>
+          </div>
+          <div className="orbit-lab-row">
+            <span>period</span>
+            <input type="range" min={1.5} max={12} step={0.1} value={vals[`dur-${key}`]} onChange={set(`dur-${key}`)} />
+            <span className="orbit-lab-val">{vals[`dur-${key}`]}s</span>
+          </div>
+          <div className="orbit-lab-row">
+            <span>tilt</span>
+            <input type="range" min={-90} max={90} step={1} value={vals[`tilt-${key}`]} onChange={set(`tilt-${key}`)} />
+            <span className="orbit-lab-val">{vals[`tilt-${key}`]}&deg;</span>
+          </div>
+        </div>
+      ))}
+      <div className="orbit-lab-out">{readout}</div>
+    </div>
+  );
+}
+
 const NAV_LINKS: Array<[string, string]> = [
   ["/", "news"],
   ["/mcc/", "mcc"],
@@ -283,6 +398,7 @@ export function Layout({ children, current }: { children: ReactNode; current?: s
   return (
     <div className="shell">
       <Masthead current={current} />
+      <OrbitLab />
       <main>{children}</main>
       <footer className="footer">
         <p>
