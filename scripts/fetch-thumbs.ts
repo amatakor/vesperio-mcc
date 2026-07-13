@@ -40,8 +40,8 @@ const OUT_DIR = "public/img/items";
 
 /** Image sanity gates: reject favicons/trackers and banner/skyscraper ad
     shapes. Applied only when the header yields dimensions. */
-const MIN_DIMENSION = 200;
-const MAX_ASPECT = 3; // reject wider than 3:1 or taller than 1:3
+export const MIN_DIMENSION = 200;
+export const MAX_ASPECT = 3; // reject wider than 3:1 or taller than 1:3
 
 /** Storage re-encode (image-weight audit, 2026-07-13): every winning
     raster is re-encoded to WebP at this quality, capped to this width
@@ -82,7 +82,7 @@ const EXT_BY_TYPE: Record<string, string> = {
  * Handles the four formats this pipeline stores (png, gif, webp, jpeg);
  * returns null on anything it cannot parse (treated as a photo).
  */
-function imageSize(buf: Uint8Array): { w: number; h: number } | null {
+export function imageSize(buf: Uint8Array): { w: number; h: number } | null {
   const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
   const at = (i: number) => buf[i]!;
   // PNG: IHDR width/height are big-endian at offsets 16 and 20.
@@ -290,7 +290,7 @@ interface Download {
  * original bytes untouched. Returns null when the original should be
  * kept as-is.
  */
-async function reencodeForStorage(buf: Uint8Array, ext: string): Promise<Buffer | null> {
+export async function reencodeForStorage(buf: Uint8Array, ext: string): Promise<Buffer | null> {
   if (ext === "svg") return null;
   try {
     const probe = await sharp(buf, { animated: true }).metadata();
@@ -515,4 +515,6 @@ async function main(): Promise<void> {
   console.log(`fetch-thumbs: ${stamped} item(s) stamped, ${refit} refit, ${sized} sized`);
 }
 
-await main();
+// Guarded so scripts/set-item-image.ts can import the gate helpers
+// without firing the whole pipeline.
+if (import.meta.main) await main();
