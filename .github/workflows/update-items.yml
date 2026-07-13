@@ -258,8 +258,41 @@ jobs:
             exit 1
           fi
 
-      - name: Harvest item artwork (og:image or licensed stock)
-        run: bun scripts/fetch-thumbs.ts
+      - name: Stage item-artwork candidates (og:image + article figures, own sources only)
+        run: bun scripts/fetch-thumbs.ts --collect
+
+      # Sealed, bounded artwork judge (Florian, 2026-07-13): ranks each
+      # item's staged candidates against a fixed editorial rubric. Read-only
+      # plus ONE writable file; it cannot touch data, and on any failure
+      # --apply falls back to the og-image-first manifest order (the
+      # pre-judge behavior). Haiku: bounded classification, cheapest tier.
+      - name: Judge artwork candidates
+        continue-on-error: true
+        uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            If the file .image-judge/manifest.json does not exist, do
+            nothing and finish. Otherwise read it. For each entry in
+            items[], view every candidate image file (paths are
+            .image-judge/<file>) with the Read tool, then rank the
+            candidates BEST FIRST as news-card artwork by exactly this
+            rubric and nothing else: a real photograph of the story's
+            subject beats any other real photograph, which beats concept
+            art or renders, which beat abstract or stock-style graphics,
+            which beat charts, diagrams, and logos. Then write
+            .image-judge/ranking.json as one JSON object:
+            {"<item-id>": {"order": ["<file>", ...], "reason": "<one short line>"}, ...}
+            covering every item in the manifest, using only file names
+            that appear in the manifest. Do nothing else.
+          claude_args: |
+            --model claude-haiku-4-5
+            --max-turns 40
+            --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup"
+            --allowedTools "Read,Write(./.image-judge/ranking.json)"
+
+      - name: Apply judged artwork (falls back to og:image order, then licensed stock)
+        run: bun scripts/fetch-thumbs.ts --apply
 
       - name: Build must pass before any commit
         run: bun run build
