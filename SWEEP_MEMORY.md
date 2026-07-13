@@ -1599,3 +1599,39 @@ a newer entry if a lesson changes.
   existing[] -- confirms the standing discipline of checking existing[]
   before treating any discovery/queue hit as new, even when its wording
   reads like breaking news.
+
+## Narrow same-day re-check, ~47min gap, unfiltered full source list (2026-07-13, second)
+
+- 2026-07-13-F: A sensationalized Futurism queue-candidate headline
+  ("Chinese Spacecraft Approaches Mysterious Object Near Earth") traced to
+  a genuinely never-covered, real science-category event: Tianwen-2's July
+  6 arrival at 20km of near-Earth asteroid Kamo'oalewa (2016 HO3) and its
+  first images, widely reported (SpaceNews, Xinhua, Space.com, Scientific
+  American) but never drafted by any prior sweep. CASC's own newsroom
+  (english.spacechina.com, registry-matched first_party per 2026-07-10-G)
+  had independently covered it too, giving a clean first_party lead.
+  Published dated to the July 6 CNSA/CASC announcement per the standing
+  event-date convention, at SNR 5. Don't dismiss a clickbait-framed queue
+  title on sight; check what the underlying event actually is before
+  discarding it as noise.
+- 2026-07-13-G: Similarly, a Bluesky daily-roundup post's one-line mention
+  ("ESA contracts a company to build an asteroid-landing cubesat") led to
+  a second never-covered event: ESA's July 2 contract with Spain's EMXYS
+  to build the Don Quijote CubeSat lander for the Ramses/Apophis mission
+  (a "provider selection" event, explicitly a science-category example
+  per CLAUDE.md). ESA's own registry-matched domain was first_party and
+  direct; europeanspaceflight.com (which apparently broke the story first,
+  per Andrew Parsonson's July 11 Bluesky post) was 403'd again, consistent
+  with the standing intermittent-block pattern -- led with ESA's own page
+  instead and treated the contract-value figure some secondary blogs
+  quoted (~EUR 10M) as unverifiable since only the blocked source stated
+  it; omitted rather than guessed, per the hard "numbers copied, not
+  paraphrased, or omit them" rule.
+- 2026-07-13-H: A genuinely quiet ~47-minute gap (all 24 HTML-only sources
+  and all 17 signals channels dispatched to parallel background agents,
+  8-query discovery matrix run directly) produced zero in-window
+  candidates from any of those legs -- both published items this run came
+  from chasing older, indirectly-surfaced events per the standing
+  "chase important events predating the window" ruling, not from the
+  window itself. Confirms narrow re-checks are legitimate even when their
+  headline yield is entirely off-window in origin.
