@@ -305,14 +305,17 @@ export async function reencodeForStorage(buf: Uint8Array, ext: string): Promise<
   }
 }
 
-/** Download an og:image; reject unknown formats, oversized payloads, tiny
-    images, and ad shapes (banners/skyscrapers). Writes {id}.{ext}; the
-    caller cleans up rejected/unused files. */
-async function downloadImage(url: string, id: string): Promise<Download | null> {
+/** Download an image through every gate (safe fetch, known raster format,
+    minimum dimensions, no ad shapes) and write it re-encoded into `dir`
+    as `baseName.<ext>`. The caller cleans up rejected/unused files. */
+async function downloadTo(
+  url: string,
+  dir: string,
+  baseName: string,
+): Promise<Download | null> {
   try {
     // Through the shared safe fetcher: SSRF guard on the URL and each
-    // redirect hop, body capped at MAX_BYTES. Nothing is written on
-    // failure, unchanged; only the previously-silent error is now logged.
+    // redirect hop, body capped at MAX_BYTES.
     const res = await fetchSafe(url, {
       timeoutMs: 20000,
       maxBytes: MAX_BYTES,
@@ -330,17 +333,22 @@ async function downloadImage(url: string, id: string): Promise<Download | null> 
       const aspect = dim.w / dim.h;
       if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) return null; // ad banner shape
     }
-    mkdirSync(OUT_DIR, { recursive: true });
+    mkdirSync(dir, { recursive: true });
     const reencoded = await reencodeForStorage(buf, ext);
     const outExt = reencoded ? "webp" : ext;
     const outBuf = reencoded ?? buf;
-    const file = `${id}.${outExt}`;
-    writeFileSync(join(OUT_DIR, file), outBuf);
+    const file = `${baseName}.${outExt}`;
+    writeFileSync(join(dir, file), outBuf);
     return { src: `/img/items/${file}`, file, dim, sha256: createHash("sha256").update(outBuf).digest("hex") };
   } catch (e) {
     console.error(`fetch-thumbs: image download failed for ${url}: ${String(e)}`);
     return null;
   }
+}
+
+/** Download an og:image into the live items dir as {id}.{ext}. */
+async function downloadImage(url: string, id: string): Promise<Download | null> {
+  return downloadTo(url, OUT_DIR, id);
 }
 
 function stockFor(sourceUrl: string, stock: StockMap): ItemImage | null {
@@ -411,10 +419,202 @@ async function imageFromSources(
   return finish(logoFallback);
 }
 
+// ---------------------------------------------------------------- judge mode
+// The artwork judge (Florian, 2026-07-13): a page's og:image is sometimes
+// a generic header graphic while the real photograph sits in the article
+// body. In the sweep workflow the pipeline runs in two phases around one
+// sealed, bounded model step: `--collect` stages EVERY gate-passing
+// candidate (og:image plus in-article figures, all from the item's own
+// source pages) under .image-judge/ with a manifest; the workflow's judge
+// step (Haiku, Read-only plus one Write) ranks each item's candidates
+// against a fixed editorial rubric; `--apply` stamps each item's
+// best-ranked candidate and falls back to the manifest's og-image-first
+// order when the judge wrote nothing. Run with no flags, this file
+// behaves exactly as before (og:image only) for local use.
+
+const JUDGE_DIR = ".image-judge";
+const MAX_JUDGE_CANDIDATES = 5;
+
+interface StagedCandidate {
+  /** File name inside JUDGE_DIR. */
+  file: string;
+  /** The image URL the bytes came from. */
+  url: string;
+  /** The source page the image belongs to (credit + origin link). */
+  page: string;
+  /** Logo-shaped per the fit heuristic: judged, but sorted last. */
+  logo_shaped: boolean;
+  sha256: string;
+}
+
+interface JudgeManifest {
+  items: { id: string; candidates: StagedCandidate[] }[];
+}
+
+/** In-article image URLs (figures first), absolute, deduped, capped. */
+function findArticleFigures(html: string, baseUrl: string): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  const push = (raw: string): void => {
+    try {
+      const abs = new URL(raw, baseUrl).toString();
+      if (!/^https?:\/\//i.test(abs)) return;
+      if (seen.has(abs)) return;
+      seen.add(abs);
+      out.push(abs);
+    } catch {
+      /* unparseable src */
+    }
+  };
+  const figures = html.match(/<figure[\s\S]{0,2000}?<\/figure>/gi) ?? [];
+  for (const fig of figures) {
+    const m = fig.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (m) push(m[1]!);
+  }
+  let m: RegExpExecArray | null;
+  const imgRe = /<img[^>]+src=["']([^"']+)["'][^>]*>/gi;
+  while ((m = imgRe.exec(html)) !== null) push(m[1]!);
+  return out.slice(0, 8);
+}
+
+/** Stage every gate-passing candidate for one item under JUDGE_DIR. */
+async function collectCandidates(item: {
+  id: string;
+  source_url: string;
+  secondary_urls?: string[];
+  sources?: { url: string; class: string }[];
+}): Promise<StagedCandidate[]> {
+  const staged: StagedCandidate[] = [];
+  const seenSha = new Set<string>();
+  let n = 0;
+  for (const cand of await candidatesFor(item)) {
+    if (staged.length >= MAX_JUDGE_CANDIDATES) break;
+    const html = await fetchText(cand.url);
+    if (!html) continue;
+    const metaImage = findMetaImage(html);
+    const urls = [...(metaImage ? [metaImage] : []), ...findArticleFigures(html, cand.url)];
+    for (const url of urls) {
+      if (staged.length >= MAX_JUDGE_CANDIDATES) break;
+      const dl = await downloadTo(url, JUDGE_DIR, `${item.id}.cand-${n++}`);
+      if (!dl) continue;
+      if (seenSha.has(dl.sha256)) {
+        rmSync(join(JUDGE_DIR, dl.file), { force: true });
+        continue;
+      }
+      seenSha.add(dl.sha256);
+      staged.push({
+        file: dl.file,
+        url,
+        page: cand.url,
+        logo_shaped: fitFor(dl.dim) === "contain",
+        sha256: dl.sha256,
+      });
+    }
+  }
+  // og-image-first within class order is already the walk order; push
+  // logo-shaped candidates to the back so the no-judge fallback matches
+  // the old "photo beats logo" behavior.
+  staged.sort((a, b) => Number(a.logo_shaped) - Number(b.logo_shaped));
+  return staged;
+}
+
+/** Phase 1: stage candidates + manifest for every item without artwork. */
+async function collectMain(data: ItemsFile): Promise<void> {
+  rmSync(JUDGE_DIR, { recursive: true, force: true });
+  const manifest: JudgeManifest = { items: [] };
+  for (const item of data.items) {
+    if (item.image !== undefined) continue;
+    const candidates = await collectCandidates(item);
+    if (candidates.length > 0) manifest.items.push({ id: item.id, candidates });
+    console.log(`${item.id}: ${candidates.length} candidate(s) staged`);
+  }
+  if (manifest.items.length > 0) {
+    writeJsonAtomic(join(JUDGE_DIR, "manifest.json"), manifest);
+  }
+  console.log(`fetch-thumbs --collect: ${manifest.items.length} item(s) staged for judging`);
+}
+
+/** Phase 2 (after the judge step): stamp winners, clean the staging dir. */
+async function applyMain(data: ItemsFile, itemsPath: string, stock: StockMap): Promise<void> {
+  let manifest: JudgeManifest = { items: [] };
+  let ranking: Record<string, { order?: string[]; reason?: string }> = {};
+  try {
+    manifest = JSON.parse(readFileSync(join(JUDGE_DIR, "manifest.json"), "utf8")) as JudgeManifest;
+  } catch {
+    /* nothing staged */
+  }
+  try {
+    ranking = JSON.parse(readFileSync(join(JUDGE_DIR, "ranking.json"), "utf8")) as typeof ranking;
+  } catch {
+    console.log("fetch-thumbs --apply: no ranking.json; using og-image-first order");
+  }
+  const byId = new Map(manifest.items.map((m) => [m.id, m.candidates]));
+
+  const taken = new Map<string, string>();
+  if (existsSync(OUT_DIR)) {
+    for (const f of readdirSync(OUT_DIR)) {
+      const dot = f.lastIndexOf(".");
+      if (dot <= 0) continue;
+      taken.set(createHash("sha256").update(readFileSync(join(OUT_DIR, f))).digest("hex"), f.slice(0, dot));
+    }
+  }
+
+  let stamped = 0;
+  for (const item of data.items) {
+    if (item.image !== undefined) continue;
+    let image: ItemImage | null = null;
+
+    const staged = byId.get(item.id) ?? [];
+    if (staged.length > 0) {
+      const judged = ranking[item.id]?.order ?? [];
+      const inManifest = new Map(staged.map((c) => [c.file, c]));
+      const order: StagedCandidate[] = [
+        ...judged.map((f) => inManifest.get(f)).filter((c): c is StagedCandidate => c !== undefined),
+        ...staged.filter((c) => !judged.includes(c.file)),
+      ];
+      for (const cand of order) {
+        const owner = taken.get(cand.sha256);
+        if (owner !== undefined && owner !== item.id) continue; // two cards never wear one image
+        const ext = cand.file.slice(cand.file.lastIndexOf(".") + 1);
+        const outFile = `${item.id}.${ext}`;
+        mkdirSync(OUT_DIR, { recursive: true });
+        writeFileSync(join(OUT_DIR, outFile), readFileSync(join(JUDGE_DIR, cand.file)));
+        taken.set(cand.sha256, item.id);
+        const host = hostOf(cand.page) ?? cand.page;
+        image = { src: `/img/items/${outFile}`, credit: `Image: ${host}`, origin_url: cand.page };
+        const why = ranking[item.id]?.reason;
+        console.log(`${item.id}: judged winner ${cand.file}${why ? ` (${why})` : " (fallback order)"}`);
+        break;
+      }
+    }
+
+    if (!image) image = stockFor(item.source_url, stock);
+    if (image) {
+      const fit = fitForLocalSrc(image.src);
+      if (fit) image.fit = fit;
+      const dims = dimsForLocalSrc(image.src);
+      if (dims) {
+        image.width = dims.w;
+        image.height = dims.h;
+      }
+    }
+    item.image = image; // may be null: text-only card, and we stop retrying
+    stamped++;
+    console.log(`${item.id}: ${image ? image.src : "no image, text-only"}`);
+  }
+
+  rmSync(JUDGE_DIR, { recursive: true, force: true });
+  if (stamped > 0) writeJsonAtomic(itemsPath, data);
+  console.log(`fetch-thumbs --apply: ${stamped} item(s) stamped`);
+}
+
 async function main(): Promise<void> {
   const itemsPath = "src/data/items.json";
   const data = JSON.parse(readFileSync(itemsPath, "utf8")) as ItemsFile;
   const stock = JSON.parse(readFileSync("src/data/stock-images.json", "utf8")) as StockMap;
+
+  if (process.argv.includes("--collect")) return collectMain(data);
+  if (process.argv.includes("--apply")) return applyMain(data, itemsPath, stock);
 
   // --redo id1,id2,...: forget these items' current decision and files.
   const redoArg = process.argv.find((a) => a.startsWith("--redo"));
