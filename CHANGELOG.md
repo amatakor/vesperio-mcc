@@ -74,6 +74,13 @@ four new MCC layers for Iridium, Globalstar, Qianfan, and Guowang
 sweep countdown's spoken label now says hours and minutes instead of
 raw minutes.
 
+The science category (2026-07-13): dated program events of deep-space
+and planetary science missions joined the scope (launches, arrivals,
+landings, sample returns, provider selections, major failures), with
+the commercial supply chain as the editorial angle; routine ops,
+paper results, and evergreen explainers stay out. Futurism joined the
+monitored sources.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
