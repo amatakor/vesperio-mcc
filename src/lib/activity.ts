@@ -1,14 +1,10 @@
 /**
- * Feed recency (Florian, 2026-07-13). Items wear their honest EVENT
- * date, so a late-discovered story (published today about a July 6
- * arrival) used to sink straight to its slot in the date-sorted feed:
- * the sweep log said "+2" while the feed's top looked unchanged.
- *
- * The feed now orders by LAST ACTIVITY: the day the item was published
- * or last substantively updated (a new source attached, a score moved).
- * The card still shows the event date; when activity trails the event
- * by 3+ days, a chip says why the item sits where it does ("tracked
- * 07-13" for late discoveries, "updated 07-13" for resurfaced items),
+ * Feed recency (Florian, 2026-07-13, revised same day). Items sort by
+ * their honest EVENT date; a late-discovered story files straight into
+ * its date slot (the reader's archive stays chronological). What DOES
+ * resurface an item is a substantive post-publication update: a new
+ * corroborating source attached or a score movement. Those float the
+ * item back up wearing an "updated MM-DD" chip next to its event date,
  * so the feed never implies an old event just happened.
  *
  * Pure functions on item data only (no clock): the server prerender
@@ -21,33 +17,27 @@ import type { Item } from "../data/schema";
     aging, not news; it never counts as activity. */
 const PERSISTENCE_REASON = "persistence window";
 
-/** The last day something happened TO the item: publication, a source
-    attached, or a score movement (except the persistence bump). */
+/**
+ * The item's feed-order date: its event date, unless something happened
+ * TO the item after its publication day (initial sourcing and scoring
+ * happen ON the publication day and do not count).
+ */
 export function activityAt(i: Item): string {
-  let a = (i.publishDate ?? i.date).slice(0, 10);
+  const pub = (i.publishDate ?? i.date).slice(0, 10);
+  let a = i.date;
   for (const s of i.sources ?? []) {
-    if (s.added > a) a = s.added;
+    if (s.added > pub && s.added > a) a = s.added;
   }
   for (const h of i.snr_trace.history ?? []) {
     if (h.reason.includes(PERSISTENCE_REASON)) continue;
-    if (h.date > a) a = h.date;
+    if (h.date > pub && h.date > a) a = h.date;
   }
   return a;
 }
 
-function daysBetween(a: string, b: string): number {
-  return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 86_400_000);
-}
-
-/**
- * The recency chip, or null for items whose activity matches their
- * event date (the common case: published the day it happened).
- * "tracked MM-DD": late discovery, published well after the event.
- * "updated MM-DD": resurfaced by post-publication activity.
- */
+/** The "updated MM-DD" chip, or null for items sitting in their own
+    event-date slot (the common case). */
 export function freshnessChip(i: Item): string | null {
   const act = activityAt(i);
-  if (daysBetween(i.date, act) < 3) return null;
-  const pub = (i.publishDate ?? i.date).slice(0, 10);
-  return act > pub ? `updated ${act.slice(5)}` : `tracked ${act.slice(5)}`;
+  return act > i.date ? `updated ${act.slice(5)}` : null;
 }

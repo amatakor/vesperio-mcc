@@ -35,10 +35,11 @@ import signalAvatarsJson from "../data/signal-avatars.json";
 // used (the SSR/prerender bundle), it computes exactly as before.
 const sortedCopy = <T>(arr: T[], cmp: (a: T, b: T) => number): T[] => arr.slice().sort(cmp);
 
-// Feed order = last ACTIVITY, not event date (Florian, 2026-07-13): a
-// late-discovered or substantively updated item surfaces at the top
-// wearing its honest event date plus a "tracked"/"updated" chip
-// (src/lib/activity.ts), instead of sinking unseen into the archive.
+// Feed order = event date, EXCEPT items with substantive
+// post-publication updates (new source, score movement), which
+// resurface wearing an "updated MM-DD" chip (Florian, 2026-07-13:
+// late discoveries file into their date slot; only real developments
+// float back up). See src/lib/activity.ts.
 export const items: Item[] = /* @__PURE__ */ sortedCopy(
   (itemsJson as ItemsFile).items,
   (a, b) => {
