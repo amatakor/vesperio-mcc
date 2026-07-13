@@ -64,3 +64,12 @@ attributions and as-of dates stepped up one ink for WCAG contrast, the
 light theme got a visible focus ring, and the commentary impact cap
 moved from notable to major (seismic stays events-only; Florian,
 2026-07-13).
+
+The registry and MCC additions (2026-07-13): Soyuz-2, Proton-M, and
+Angara A5 vehicle profiles; GPS, Galileo, BeiDou, and GLONASS
+constellation profiles under the new navigation domain, deliberately
+without MCC layers (their medium-Earth orbits overwhelm the view);
+four new MCC layers for Iridium, Globalstar, Qianfan, and Guowang
+(the satellites-tracked count rose from 12,300 to 12,781); and the
+sweep countdown's spoken label now says hours and minutes instead of
+raw minutes.
