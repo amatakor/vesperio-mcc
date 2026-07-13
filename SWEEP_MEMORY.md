@@ -1560,3 +1560,42 @@ a newer entry if a lesson changes.
   test milestone with zero commercial angle stated reads the same as the
   Aeolus-2/NATO-HALO/NASA-STRIDE institutional-exclusion precedents, just
   clear enough this time to discard rather than hold.
+
+## Normal-mode sweep, ~13h gap, unfiltered full source list (2026-07-13)
+
+- 2026-07-13-A: A genuinely never-covered, month-old M&A story surfaced
+  through the discovery pass, not the queue: Voyager Technologies' June 2
+  agreement to acquire Astrobotic (~$300M, cash+stock) predates even the
+  2026-07-05-J 30-day backfill's source list and window, so no prior sweep
+  had a path to it. Chased and published dated on the June 2 announcement
+  per the standing 2026-07-08-I2 ruling (a further application, after
+  Project Bromo/OHB and IRIDE). Worth periodically re-running broad "space
+  company acquisition/funding" discovery queries even on narrow-gap
+  sweeps; this kind of gap doesn't self-heal from the harvester queue
+  alone.
+- 2026-07-13-B: Voyager Technologies' registry `website`
+  (`voyagertechnologies.com`) matches its press-release domain directly, no
+  subdomain trap (contrast ULA/Q4-IR/Airbus cases) -- first_party classing
+  passed the anti-spoof gate cleanly on the first attempt. Astrobotic
+  itself has no registry profile, so its own press release was linked
+  unscored in secondary_urls per the 2026-07-07-K pattern rather than
+  double-counted as a second first_party source.
+- 2026-07-13-C: technical.ly (Pittsburgh-focused regional tech-business
+  outlet) produced genuine independent reporting on the Astrobotic deal --
+  a direct quote from an Astrobotic spokesperson not in the press release,
+  plus original Pittsburgh/CMU-spinout context -- confirmed via direct
+  fetch, not a wire rewrite. Usable as a trade-tier corroboration source
+  for Pittsburgh-based space companies (Astrobotic) going forward.
+- 2026-07-13-D: A queue candidate resurfacing an old FCC filing under
+  sensational framing ("SpaceX asks to launch one million satellites...
+  Kardashev II", a Ukrainian-site rewrite dated today) traced back to a
+  January 30 / February 4, 2026 FCC filing already stale by five-plus
+  months -- same resurfacing-old-news trap as 2026-07-08-E/2026-07-12-G,
+  confirmed via direct search before drafting anything.
+- 2026-07-13-E: Two queue candidates that read as fresh (a Queensland beach
+  space-debris story, an FCC Reflect Orbital space-mirror approval) both
+  checked out as real events but were already published under existing ids
+  (2026-07-06 and 2026-07-09 respectively) once cross-checked against
+  existing[] -- confirms the standing discipline of checking existing[]
+  before treating any discovery/queue hit as new, even when its wording
+  reads like breaking news.
