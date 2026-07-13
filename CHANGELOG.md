@@ -88,6 +88,15 @@ an "updated" chip beside its unchanged date, so readers see the
 development without the feed ever implying an old event just
 happened.
 
+The artwork pipeline grew taste (2026-07-13): item thumbnails now
+consider a page's in-article photographs alongside its og:image, and
+when several candidates pass the gates, a sealed bounded model step
+ranks them (real photograph beats concept art beats stock graphic
+beats chart), with its one-line reasoning logged per item and a full
+fallback to the old behavior on any failure. A companion tool lets
+Florian override any item's artwork with another image from the
+item's own sources through the same gates.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
