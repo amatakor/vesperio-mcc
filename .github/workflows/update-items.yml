@@ -180,6 +180,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-5
             --max-turns 150
+            --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup"
             --allowedTools "Bash(bun scripts/sweep-context.ts),Bash(bun scripts/sweep-context.ts:*),Bash(bun scripts/signals-context.ts),Bash(bun scripts/signals-context.ts:*),Bash(bun scripts/candidates-context.ts),Bash(bun scripts/candidates-context.ts:*),Bash(bun scripts/fetch-list.ts),Bash(bun scripts/fetch-list.ts:*),Bash(bun scripts/finalize-sweep.ts),Bash(bun scripts/finalize-sweep.ts:*),Read,Write(./sweep-draft.json),Edit(./sweep-draft.json),Write(./SWEEP_MEMORY.md),Edit(./SWEEP_MEMORY.md),WebFetch,WebSearch"
 
       - name: Goal-state check (did attempt 1 deliver?)
@@ -239,6 +240,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-5
             --max-turns 150
+            --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup"
             --allowedTools "Bash(bun scripts/sweep-context.ts),Bash(bun scripts/sweep-context.ts:*),Bash(bun scripts/signals-context.ts),Bash(bun scripts/signals-context.ts:*),Bash(bun scripts/candidates-context.ts),Bash(bun scripts/candidates-context.ts:*),Bash(bun scripts/fetch-list.ts),Bash(bun scripts/fetch-list.ts:*),Bash(bun scripts/finalize-sweep.ts),Bash(bun scripts/finalize-sweep.ts:*),Read,Write(./sweep-draft.json),Edit(./sweep-draft.json),Write(./SWEEP_MEMORY.md),Edit(./SWEEP_MEMORY.md),WebFetch,WebSearch"
 
       # The load-bearing control: whatever the agent did, the working tree
