@@ -306,7 +306,7 @@ describe("cross-category dedup net", () => {
   });
 });
 
-describe("commentary impact cap covers major", () => {
+describe("commentary impact caps at major (Florian, 2026-07-13)", () => {
   const commentaryBase = {
     ...existingItem,
     id: "2026-07-02-analyst-take",
@@ -320,11 +320,11 @@ describe("commentary impact cap covers major", () => {
     return errors.filter((e) => e.includes("caps at"));
   };
 
-  test("major commentary is rejected", () => {
-    expect(errorsFor("major").join("\n")).toContain('caps at "notable"');
+  test("seismic commentary is rejected: that tier is events-only", () => {
+    expect(errorsFor("seismic").join("\n")).toContain('caps at "major"');
   });
-  test("seismic commentary is still rejected", () => {
-    expect(errorsFor("seismic").join("\n")).toContain('caps at "notable"');
+  test("major commentary passes the cap", () => {
+    expect(errorsFor("major")).toEqual([]);
   });
   test("notable commentary passes the cap", () => {
     expect(errorsFor("notable")).toEqual([]);

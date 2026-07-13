@@ -259,9 +259,12 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
   if (!ITEM_KINDS.includes(v.kind as never)) {
     errors.push(`${path}.kind: "${String(v.kind)}" not in [${ITEM_KINDS.join(", ")}]`);
   }
-  // Commentary is a take, not an event; it never interrupts anyone's Monday.
-  if (v.kind === "commentary" && (v.impact === "seismic" || v.impact === "major")) {
-    errors.push(`${path}.impact: commentary caps at "notable"; a ${String(v.impact)} take is still just a take`);
+  // Commentary is a take, not an event. A take can be major (Florian,
+  // 2026-07-13, raised from notable), but the seismic tier stays reserved
+  // for things that happened; when a take moves the world, the consequence
+  // publishes as its own event at whatever impact it earns.
+  if (v.kind === "commentary" && v.impact === "seismic") {
+    errors.push(`${path}.impact: commentary caps at "major"; seismic is reserved for events`);
   }
 
   // Every published item carries its SNR score and the stored trace.
