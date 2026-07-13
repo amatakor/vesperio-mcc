@@ -25,6 +25,7 @@ import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
+import { freshnessChip } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
 import { OrbitsLinkProvider } from "./orbits/chrome";
@@ -824,6 +825,7 @@ function Card({
         <ImpactBadge impact={item.impact} variant="chip" />
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
+        {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
         <span className="date">{item.date}</span>
       </div>
       <h2 className="card-headline">
@@ -1319,6 +1321,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
+          {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
           <span className="date">{item.date}</span>
           <button type="button" className="modal-close" ref={closeBtnRef} onClick={onClose}>
             × esc
@@ -1697,6 +1700,7 @@ export function ItemPage({ item }: { item: Item }) {
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
           <SnrLed snr={item.snr} trace={item.snr_trace} />
+          {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
           <span className="date">{item.date}</span>
         </div>
         <div className="item-cols">
