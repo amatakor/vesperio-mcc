@@ -81,6 +81,13 @@ the commercial supply chain as the editorial angle; routine ops,
 paper results, and evergreen explainers stay out. Futurism joined the
 monitored sources.
 
+The feed learned to resurface developments (2026-07-13): items keep
+filing by their honest event date, but one that gains a corroborating
+source or a score movement after publication floats back up wearing
+an "updated" chip beside its unchanged date, so readers see the
+development without the feed ever implying an old event just
+happened.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
