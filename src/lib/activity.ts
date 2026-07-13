@@ -35,9 +35,18 @@ export function activityAt(i: Item): string {
   return a;
 }
 
-/** The "updated MM-DD" chip, or null for items sitting in their own
+// Day-month, never month-day (Florian, 2026-07-13): "updated 07-12"
+// reads as 7 December to a European; "updated 12 Jul" is unambiguous
+// in every locale. Hand-rolled, no locale APIs: the server prerender
+// and client hydration must produce identical bytes.
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+function dayMonth(date: string): string {
+  return `${Number(date.slice(8, 10))} ${MONTHS[Number(date.slice(5, 7)) - 1]}`;
+}
+
+/** The "updated <d Mon>" chip, or null for items sitting in their own
     event-date slot (the common case). */
 export function freshnessChip(i: Item): string | null {
   const act = activityAt(i);
-  return act > i.date ? `updated ${act.slice(5)}` : null;
+  return act > i.date ? `updated ${dayMonth(act)}` : null;
 }
