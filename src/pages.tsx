@@ -984,7 +984,16 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
   // Human-readable stand-in for the ticking digits (which are aria-hidden):
   // derived from minutes, not seconds, so the string is only ever the same
   // 59 seconds out of 60 and React only touches the DOM attribute on the
-  // minute rollover, not once a second.
+  // minute rollover, not once a second. Long waits speak hours and minutes
+  // ("7 hours 47 minutes", Florian 2026-07-13), never "467 minutes".
+  const fmtMinutes = (m: number): string => {
+    const h = Math.floor(m / 60);
+    const rest = m % 60;
+    const hours = `${h} hour${h === 1 ? "" : "s"}`;
+    const minutes = `${rest} minute${rest === 1 ? "" : "s"}`;
+    if (h === 0) return minutes;
+    return rest === 0 ? hours : `${hours} ${minutes}`;
+  };
   let ariaLabel = "Time until the next news sweep";
   if (now) {
     const fmtZ = (d: Date) =>
@@ -1005,7 +1014,7 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
       digits = "00:00:00";
       elapsedPct = 100;
       last = lastSweepAt ? fmtZ(new Date(lastSweepAt)) : "";
-      ariaLabel = `Sweep window reached, running ${mins} minute${mins === 1 ? "" : "s"} late`;
+      ariaLabel = `Sweep window reached, running ${fmtMinutes(mins)} late`;
     } else if (dueSlot && heldMs > 0) {
       // Grace window: the off-minute cron and a normal run are doing
       // their work. Freeze at zero without the HOLD lamp; the sweep
@@ -1031,7 +1040,7 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
       next = fmtZ(target);
       local = target.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
       const minsLeft = Math.max(0, Math.ceil(s / 60));
-      ariaLabel = `Next sweep in ${minsLeft} minute${minsLeft === 1 ? "" : "s"}`;
+      ariaLabel = `Next sweep in ${fmtMinutes(minsLeft)}`;
     }
   }
   const p = `${elapsedPct.toFixed(2)}%`;
