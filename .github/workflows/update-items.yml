@@ -44,13 +44,16 @@ on:
         required: false
         default: ""
   schedule:
-    # Twice daily. Minute 15, not 0 (Florian, 2026-07-12): GitHub's shared
-    # scheduler is most congested at the top of the hour and fired this
-    # repo's :00 crons 40-170 min late; an off-minute dodges the pile-up
-    # (ai-tldr's :03-:16 sweeps land on time). The site's sweep clock still
-    # displays the nominal 05:00/17:00 schedule; its HOLD grace absorbs
-    # this offset plus normal run time.
-    - cron: "15 5,17 * * *"
+    # FALLBACK ONLY (Florian, 2026-07-13). The PRIMARY trigger is the
+    # Cloudflare Worker cron (infra/sweep-trigger/), which calls the
+    # dispatch API at exactly 05:15/17:15 UTC: GitHub's shared scheduler
+    # fired this repo's morning crons 2h+ late or dropped them outright
+    # (2026-07-12 and -13), and no off-minute choice dodges a backlogged
+    # queue. This late cron only exists so a broken Worker cannot silence
+    # the sweep; the guard job below skips it when the primary already
+    # swept, so it never costs a duplicate agent run. The daily
+    # health-check dead-man's switch alerts when BOTH trigger paths fail.
+    - cron: "45 6,18 * * *"
 
 concurrency:
   group: data-writes
@@ -64,8 +67,47 @@ permissions:
   issues: write
 
 jobs:
-  sweep:
+  # Freshness guard for the fallback cron: a scheduled run is skipped when
+  # a sweep already landed in the last 3 hours (the Worker-dispatched run
+  # for this slot). Manual and API dispatches always run: workflow_dispatch
+  # IS the primary trigger's event, and a human dispatching twice means it.
+  guard:
     if: github.repository == 'amatakor/vesperio-mcc'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Skip the fallback when the primary trigger already swept
+        id: decide
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "dispatch event: always runs"
+            exit 0
+          fi
+          age=$(python3 - <<'EOF'
+          import json, datetime
+          last = json.load(open("src/data/state.json"))["lastSweep"]
+          dt = datetime.datetime.fromisoformat(last.replace("Z", "+00:00"))
+          print(int((datetime.datetime.now(datetime.timezone.utc) - dt).total_seconds()))
+          EOF
+          )
+          if [ "$age" -lt 10800 ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "fallback skipped: last sweep ${age}s ago (< 3h), the primary trigger covered this slot"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "fallback engaged: last sweep ${age}s ago, the primary trigger missed this slot"
+          fi
+
+  sweep:
+    needs: guard
+    if: github.repository == 'amatakor/vesperio-mcc' && needs.guard.outputs.run == 'true'
     runs-on: ubuntu-latest
     # Two agent attempts fit (retry design, Florian 2026-07-12): a deep
     # sweep runs ~26 min; harvest + build + prerender bookend it.
