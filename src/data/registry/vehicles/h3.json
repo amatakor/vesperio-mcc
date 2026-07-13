@@ -108,21 +108,9 @@
     "as_of": "2026-07-05"
   },
   "last_flight_date": {
-    "value": "2025-12-22",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&offset=100&mode=normal",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&offset=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": "2026-06-12",
+    "source": "https://global.jaxa.jp/press/2026/06/20260612-1_e.html",
+    "as_of": "2026-07-13"
   },
   "next_flight_date": {
     "value": "2026-08-06",
@@ -175,7 +163,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded.",
+  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). last_flight_date corrected from 2025-12-22 to 2026-06-12 (JAXA flight No.6, the boosterless H3-30S debut) using JAXA's own first-party press release, already the source for the matching events-list entry; the field had gone stale relative to the events already on file. flights_total (8) and flights_successful (6), sourced from Wikipedia as_of 2026-07-05 (after the June flight), already appear to include it per the SpaceNews item in items.json (id 2026-06-12-jaxa-h3-30s-first-flight, which counts the June 12 flight as H3's eighth overall); left unchanged, not independently re-verified this run. next_flight_date (2026-08-06, LL as_of 2026-07-05) not re-checked (LL unreachable); left as-is.",
   "payload_gto_kg": {
     "value": 6500,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",

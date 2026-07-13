@@ -32,7 +32,7 @@
   },
   "sats_active_claimed": {
     "value": 31,
-    "source": "https://en.wikipedia.org/wiki/List_of_GPS_satellites",
+    "source": "https://www.gps.gov/space-segment",
     "as_of": "2026-07-13"
   },
   "sats_active_verified": {
@@ -96,7 +96,7 @@
     "source": "https://en.wikipedia.org/wiki/Global_Positioning_System",
     "as_of": "2026-07-13"
   },
-  "notes": "Added 2026-07-13 on Florian's instruction, for competitive context against commercial connectivity/IoT constellations. Government-owned system: orbits deliberately set to null (MEO ~20,200 km would break the MCC 3D LEO view) and no celestrak fields filled. All sources used were Wikipedia (unscored) or first-party government/manufacturer pages (unscored); no aggregator or single-press sourcing was needed, so no field carries an snr block. sats_launched_total left null (2026-07-13): Wikipedia's List of GPS satellites states 83 BUILT (31 operational, 41 retired, 2 lost at launch, 1 never launched) but never states a launched total; deriving 82 from the breakdown would violate the no-summing rule.",
+  "notes": "Added 2026-07-13 on Florian's instruction, for competitive context against commercial connectivity/IoT constellations. Government-owned system: orbits deliberately set to null (MEO ~20,200 km would break the MCC 3D LEO view) and no celestrak fields filled. All sources used were Wikipedia (unscored) or first-party government/manufacturer pages (unscored); no aggregator or single-press sourcing was needed, so no field carries an snr block. sats_launched_total left null (2026-07-13): Wikipedia's List of GPS satellites states 83 BUILT (31 operational, 41 retired, 2 lost at launch, 1 never launched) but never states a launched total; deriving 82 from the breakdown would violate the no-summing rule. Weekly maintenance (2026-07-13): confirmed the 31-operational figure against the first-party gps.gov space-segment page, which independently states 31 operational satellites (not including decommissioned on-orbit spares) and the 24-satellite, 95%-availability service commitment baseline; sats_active_claimed source upgraded to this first-party page.",
   "generations": [
     {
       "name": "GPS III",

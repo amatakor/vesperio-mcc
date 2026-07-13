@@ -163,9 +163,21 @@
     "tier": "canonical"
   },
   "status": {
-    "value": null,
-    "source": null,
-    "as_of": null
+    "value": "operational",
+    "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/blacksky-constellation",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states the constellation 'currently contains 19 operational microsatellites' (weekly maintenance null-fill, 2026-07-13)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "website": {
     "value": "https://blacksky.com",
@@ -225,7 +237,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "BlackSky's Gen-2 smallsats (Global 1-19 numbering). eoPortal EO spec backfill (2026-07-09) from the BlackSky Constellation mission page: each Gen-2 satellite carries the SV-24 (Spaceview-24) imaging telescope at 1 m spatial resolution (at 500 km), panchromatic and color imagery, with a planned constellation revisit of a few hours or less; image frames are 30 km2 (frame area, not a swath), so swath_km left null. Page last updated Jul 2, 2025.",
+  "notes": "BlackSky's Gen-2 smallsats (Global 1-19 numbering). eoPortal EO spec backfill (2026-07-09) from the BlackSky Constellation mission page: each Gen-2 satellite carries the SV-24 (Spaceview-24) imaging telescope at 1 m spatial resolution (at 500 km), panchromatic and color imagery, with a planned constellation revisit of a few hours or less; image frames are 30 km2 (frame area, not a swath), so swath_km left null. Page last updated Jul 2, 2025. Weekly maintenance 2026-07-13: status null-filled from the same eoPortal page ('currently contains 19 operational microsatellites'). orbit deliberately left null: the same page's stated altitude/inclination ('Sun-synchronous orbits, altitudes 430-701 km, inclinations 42-59 degrees') is physically inconsistent (a single sun-synchronous orbit does not span that inclination range) and conflicts with the fleet parent's own first-party description of a 'mid-inclination low Earth orbit'; flagging rather than writing a contradictory figure.",
   "events": [
     {
       "date": "2018-12-03",

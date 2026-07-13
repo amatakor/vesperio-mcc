@@ -80,14 +80,38 @@
     "tier": "canonical"
   },
   "sats_launched_total": {
-    "value": 14,
-    "source": "https://fr.wikipedia.org/wiki/GHGSat",
-    "as_of": "2026-07-08"
+    "value": 16,
+    "source": "https://www.wastedive.com/news/ghgsat-methane-satellite-launch-cop30/806773/",
+    "as_of": "2026-07-13",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://www.wastedive.com/news/ghgsat-methane-satellite-launch-cop30/806773/",
+        "reason": "trade press (Waste Dive, Dec 2, 2025), states 'The company now has 16 satellites orbiting the earth and taking measurement of industrial facilities for greenhouse gas emission leaks'; single source, no corroboration crawl run this maintenance pass"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
   },
   "sats_active_claimed": {
-    "value": 12,
-    "source": "https://fr.wikipedia.org/wiki/GHGSat",
-    "as_of": "2026-07-08"
+    "value": 16,
+    "source": "https://www.wastedive.com/news/ghgsat-methane-satellite-launch-cop30/806773/",
+    "as_of": "2026-07-13",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://www.wastedive.com/news/ghgsat-methane-satellite-launch-cop30/806773/",
+        "reason": "trade press (Waste Dive, Dec 2, 2025); the 16-satellite figure is stated as satellites 'orbiting the earth and taking measurement', read as an active count"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
   },
   "sats_active_verified": {
     "value": 10,
@@ -134,15 +158,15 @@
     "tier": "canonical"
   },
   "latest_launch_date": {
-    "value": "2025-06-23",
-    "source": "https://space.skyrocket.de/doc_sdat/ghgsat-d.htm",
-    "as_of": "2026-07-05",
+    "value": "2026-07-07",
+    "source": "https://space.skyrocket.de/doc_sdat/ghgsat-c9.htm",
+    "as_of": "2026-07-13",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
-        "source": "https://space.skyrocket.de/doc_sdat/ghgsat-d.htm",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "source": "https://space.skyrocket.de/doc_sdat/ghgsat-c9.htm",
+        "reason": "established aggregator; page documents GHGSat-C16 (Eleonore) and GHGSat-C17 (Nuray) launched 2026-07-07 aboard SpaceX Transporter-17 from Vandenberg SLC-4E, corroborated by press search (satellitetoday.com Transporter-17 coverage)"
       },
       "modifiers": [],
       "final": 4,
@@ -196,7 +220,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "eoPortal EO spec backfill (2026-07-09): greenhouse-gas (methane/CO2) monitoring microsatellite constellation; primary sensor spatial resolution approximately 30 m with a swath width of less than 15 km (bound, so swath_km left null); imaging spectrometer observes 1600-1700 nm. Revisit not stated on the page, left null. Page last updated Jan 24, 2026.",
+  "notes": "eoPortal EO spec backfill (2026-07-09): greenhouse-gas (methane/CO2) monitoring microsatellite constellation; primary sensor spatial resolution approximately 30 m with a swath width of less than 15 km (bound, so swath_km left null); imaging spectrometer observes 1600-1700 nm. Revisit not stated on the page, left null. Page last updated Jan 24, 2026. Weekly maintenance (2026-07-13): the fr.wikipedia 14/12 figures were stale. Gunter's Space Page (two catalog pages, ghgsat-d.htm and ghgsat-c9.htm) individually documents 18 named satellites through GHGSat-C17 (Eleonore/C16 and Nuray/C17 launched 2026-07-07 on Transporter-17), but per the no-summing-across-pages rule that count was not written as a field value. Instead sats_launched_total/sats_active_claimed were set to 16, the last figure explicitly stated by a single source (Waste Dive, Dec 2, 2025, pre-dating the C16/C17 launch). This likely undercounts the true current total by 2; flagged for Florian rather than estimated. latest_launch_date was updated to the Gunter's-documented 2026-07-07 launch since that is a single-page dated fact, not a summed total.",
   "events": [
     {
       "date": "2016-06-22",
@@ -245,6 +269,18 @@
       "headline": "GHGSat wins CAD 2 million Canadian Space Agency award for methane spectrometer",
       "source": "https://www.asc-csa.gc.ca/eng/news/articles/2024/2024-01-17-csa-awards-6-million-support-technology-demonstration-in-space.asp",
       "as_of": "2026-07-05"
+    },
+    {
+      "date": "2025-11-28",
+      "headline": "GHGSat launches GHGSat-C14 (Teodor) and GHGSat-C15 (Laila) on SpaceX Transporter-15",
+      "source": "https://space.skyrocket.de/doc_sdat/ghgsat-c9.htm",
+      "as_of": "2026-07-13"
+    },
+    {
+      "date": "2026-07-07",
+      "headline": "GHGSat launches GHGSat-C16 (Eleonore) and GHGSat-C17 (Nuray) on SpaceX Transporter-17",
+      "source": "https://space.skyrocket.de/doc_sdat/ghgsat-c9.htm",
+      "as_of": "2026-07-13"
     }
   ]
 }

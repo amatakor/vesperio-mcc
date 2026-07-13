@@ -147,7 +147,23 @@
     },
     "tier": "canonical"
   },
-  "notes": "Maxar Intelligence web pages redirect to vantor.com as of 2026-07-05. Company page states 30 cm-class and 15 cm HD imagery; Legion satellite counts not stated. eoPortal EO spec backfill (2026-07-09): native GSD at nadir 0.29 m panchromatic / 0.48 m multispectral, pan-sharpened to 15 cm; 9 km swath at nadir; up to 15 revisits per day; panchromatic (450-800 nm) plus eight multispectral bands (Coastal to NIR). Six-satellite constellation. Page last updated Apr 12, 2025.",
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 0.29,
+      "swath_km": 9,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+      "as_of": "2026-07-13"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 0.48,
+      "swath_km": 9,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-legion",
+      "as_of": "2026-07-13"
+    }
+  ],
+  "notes": "Maxar Intelligence web pages redirect to vantor.com as of 2026-07-05. Company page states 30 cm-class and 15 cm HD imagery; Legion satellite counts not stated. eoPortal EO spec backfill (2026-07-09): native GSD at nadir 0.29 m panchromatic / 0.48 m multispectral, pan-sharpened to 15 cm; 9 km swath at nadir; up to 15 revisits per day; panchromatic (450-800 nm) plus eight multispectral bands (Coastal to NIR). Six-satellite constellation. Page last updated Apr 12, 2025. imaging_modes rows added 2026-07-13 (bonus EO spec task, reconfirmed against the same eoPortal page: Table 2 gives GSD at nadir 0.29 m panchromatic / 0.48 m multispectral, both against the single stated 9 km swath at nadir).",
   "events": [
     {
       "date": "2017",

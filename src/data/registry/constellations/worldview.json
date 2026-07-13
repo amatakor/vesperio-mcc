@@ -88,7 +88,110 @@
     "source": "https://vantor.com/company/constellation/",
     "as_of": "2026-07-05"
   },
-  "notes": "Maxar's legacy WorldView satellites; WorldView Legion has its own profile. Maxar Intelligence rebranded to Vantor. Seeded for the Orbits surface on Florian's instruction (2026-07-05); sats_active_claimed filled 2026-07-09. sats_launched_total and status stay null: no single page states a combined cumulative-launched figure or fleet-wide status word for this WorldView-plus-GeoEye-1 grouping (WorldView-4 retired 2019, reentered 2021, per Wikipedia/Space.com) without summing across sources, which this site's rules disallow.",
+  "resolution_m": {
+    "value": 0.31,
+    "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states WorldView-3 achieves '31 cm in the panchromatic band at nadir'; this is WorldView-3's own figure, the highest-resolution member of the legacy fleet grouped in this profile, not a fleet-wide statement covering WorldView-1/2 or GeoEye-1 (registry v2 EO spec backfill, bonus task, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 13.1,
+    "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+        "reason": "eoPortal mission page; page states 'The satellite covers a ground swath of 13.1km'; WorldView-3 specific figure"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "revisit": {
+    "value": "WorldView-3: under one day for any location at 1 m resolution or better; about 4.5 days at 20 degrees off-nadir or less",
+    "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+        "reason": "eoPortal mission page; page states 'WorldView-3 delivers a revisit time of under one day for any given location on Earth with a 1 m ground resolution or better. Revisit times for an off-nadir angle of 20º or less is on the order of 4.5 days.'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "Panchromatic 450-800 nm",
+      "VNIR multispectral (8 bands, 400-1040 nm range)",
+      "SWIR (8 bands, 1195-2365 nm range)",
+      "CAVIS (12 bands, 405-2245 nm range)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+        "reason": "eoPortal mission page; page states the instrument carries '29 total bands: 1 panchromatic (450-800 nm), 8 multispectral VNIR bands (400-1040 nm range), 8 SWIR bands (1195-2365 nm range), and 12 CAVIS bands (405-2245 nm range)'; WorldView-3 specific"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic (WorldView-3)",
+      "resolution_m": 0.31,
+      "swath_km": 13.1,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+      "as_of": "2026-07-13"
+    },
+    {
+      "mode": "Multispectral (WorldView-3)",
+      "resolution_m": 1.24,
+      "swath_km": 13.1,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+      "as_of": "2026-07-13"
+    },
+    {
+      "mode": "SWIR (WorldView-3)",
+      "resolution_m": 3.7,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+      "as_of": "2026-07-13"
+    },
+    {
+      "mode": "CAVIS atmospheric correction (WorldView-3)",
+      "resolution_m": 30,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/worldview-3",
+      "as_of": "2026-07-13"
+    }
+  ],
+  "notes": "Maxar's legacy WorldView satellites; WorldView Legion has its own profile. Maxar Intelligence rebranded to Vantor. Seeded for the Orbits surface on Florian's instruction (2026-07-05); sats_active_claimed filled 2026-07-09. sats_launched_total and status stay null: no single page states a combined cumulative-launched figure or fleet-wide status word for this WorldView-plus-GeoEye-1 grouping (WorldView-4 retired 2019, reentered 2021, per Wikipedia/Space.com) without summing across sources, which this site's rules disallow. EO spec fields (2026-07-13, bonus task) are sourced from eoPortal's WorldView-3 mission page specifically, the sharpest and most capable member of this legacy grouping; WorldView-1, WorldView-2 and GeoEye-1 carry different (lower) resolutions not stated on this page, so these figures describe WorldView-3 rather than the fleet as a whole. Page last updated Jul 31, 2023.",
   "events": [
     {
       "date": "2007-09-18",

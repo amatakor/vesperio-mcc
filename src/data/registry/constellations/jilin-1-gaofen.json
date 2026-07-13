@@ -183,7 +183,24 @@
     },
     "tier": "canonical"
   },
-  "notes": "CGSTL's high-resolution (Gaofen) series within the Jilin-1 program. eoPortal EO spec backfill (2026-07-09) from the Jilin / Gaofen Constellation mission page: the satellite table gives the Gaofen-03 platform at 0.75 m (JL-1-GF03D, improved) / 1 m (JL-1-GF03B), 17 km swath. Spectral bands and revisit not stated per-platform on the page, left null. Page last updated Mar 3, 2025.",
+  "revisit": {
+    "value": "1.0 times per day at the equator to 2.1 times daily at 60 degrees latitude (DailyVision service)",
+    "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+    "as_of": "2026-07-13",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/jilin-con",
+        "reason": "eoPortal Jilin / Gaofen Constellation mission page (ESA-run aggregator); page states the Gaofen-03 platforms' DailyVision service provides daily imaging with revisit '1.0 times per day at the equator... to 2.1 times daily at 60 degree latitude' (registry v2 EO spec bonus backfill, cite-facts-only per terms)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "CGSTL's high-resolution (Gaofen) series within the Jilin-1 program. eoPortal EO spec backfill (2026-07-09) from the Jilin / Gaofen Constellation mission page: the satellite table gives the Gaofen-03 platform at 0.75 m (JL-1-GF03D, improved) / 1 m (JL-1-GF03B), 17 km swath. Spectral bands and revisit not stated per-platform on the page, left null. Page last updated Mar 3, 2025. Bonus EO spec task (2026-07-13): re-read the same eoPortal page for the revisit field; it states the Gaofen-03 platforms' 'DailyVision' service delivers daily imaging with revisit ranging from 1.0 times per day at the equator to 2.1 times daily at 60 degrees latitude, a quantified figure, filled below. Spectral bands still not stated on the page for any Jilin-1 sub-series; left null rather than guessed. The page also states an aspirational future-constellation target of 138 satellites and 10-minute global revisit; that is a stated plan, not a current capability, and was not entered as a fact.",
   "events": [
     {
       "date": "2019-06-05",
