@@ -14,6 +14,23 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Preload the two weights used unconditionally on first paint (mono
+         body copy, sans display voice); every other weight is optional per
+         page/element and stays lazy via @font-face font-display: swap. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/ibm-plex-mono-latin-400-normal.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="/fonts/ibm-plex-sans-latin-200-normal.woff2"
+      crossorigin
+    />
     <!--canonical-->
     <!-- Theme before paint: default dark; "light" sets data-theme on <html>.
          Kept inline so a saved light theme never flashes dark. -->

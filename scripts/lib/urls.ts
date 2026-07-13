@@ -93,23 +93,153 @@ export function canonicalizeUrl(url: string): string {
 
 /**
  * Multi-part public suffixes seen in this repo's own source and signals
- * URLs (feeds.bbci.co.uk, www.isro.gov.in) plus common peers, hardcoded
- * instead of shipping the full Public Suffix List. Any multi-part suffix
- * not in this list degrades to a plain 2-label result (e.g. an unlisted
- * "example.co.nz" would resolve to "co.nz", not "example.co.nz"); this is
- * an approximation, not a PSL implementation.
+ * URLs (feeds.bbci.co.uk, www.isro.gov.in) plus a curated set of common
+ * two-level ccTLD suffixes for the geographies this product prioritizes
+ * (China, India, Japan, Korea, Brazil and peers). Hardcoded instead of
+ * shipping the full Public Suffix List: any multi-part suffix NOT in this
+ * list degrades to a plain 2-label result (e.g. an unlisted "example.co.ke"
+ * would resolve to "co.ke", over-collapsing distinct sites), so the list is
+ * kept broad for the priority geographies but is still an approximation,
+ * not a PSL implementation.
  */
 const MULTI_PART_SUFFIXES = new Set([
+  // United Kingdom
   "co.uk",
-  "com.au",
-  "co.jp",
   "gov.uk",
   "org.uk",
-  "com.cn",
-  "co.in",
-  "gov.in",
-  "go.jp",
   "ac.uk",
+  "net.uk",
+  "sch.uk",
+  "nhs.uk",
+  "police.uk",
+  "ltd.uk",
+  "plc.uk",
+  "me.uk",
+  // Korea
+  "co.kr",
+  "ne.kr",
+  "or.kr",
+  "re.kr",
+  "go.kr",
+  "ac.kr",
+  "pe.kr",
+  // Brazil
+  "com.br",
+  "net.br",
+  "org.br",
+  "gov.br",
+  "edu.br",
+  // Japan
+  "co.jp",
+  "go.jp",
+  "or.jp",
+  "ne.jp",
+  "ac.jp",
+  "ad.jp",
+  "ed.jp",
+  "gr.jp",
+  "lg.jp",
+  // India
+  "co.in",
+  "net.in",
+  "org.in",
+  "gen.in",
+  "firm.in",
+  "ind.in",
+  "gov.in",
+  "ac.in",
+  "edu.in",
+  "res.in",
+  "nic.in",
+  // China
+  "com.cn",
+  "net.cn",
+  "org.cn",
+  "gov.cn",
+  "edu.cn",
+  "ac.cn",
+  // Taiwan
+  "com.tw",
+  "net.tw",
+  "org.tw",
+  "gov.tw",
+  "edu.tw",
+  "idv.tw",
+  // Australia
+  "com.au",
+  "net.au",
+  "org.au",
+  "edu.au",
+  "gov.au",
+  "asn.au",
+  "id.au",
+  // New Zealand
+  "co.nz",
+  "net.nz",
+  "org.nz",
+  "govt.nz",
+  "ac.nz",
+  "school.nz",
+  // South Africa
+  "co.za",
+  "org.za",
+  "net.za",
+  "gov.za",
+  "ac.za",
+  "web.za",
+  // Mexico
+  "com.mx",
+  "org.mx",
+  "net.mx",
+  "gob.mx",
+  "edu.mx",
+  // Argentina
+  "com.ar",
+  "net.ar",
+  "org.ar",
+  "gob.ar",
+  "gov.ar",
+  "edu.ar",
+  // Indonesia
+  "co.id",
+  "or.id",
+  "net.id",
+  "web.id",
+  "go.id",
+  "ac.id",
+  "sch.id",
+  "my.id",
+  "biz.id",
+  // Thailand
+  "co.th",
+  "or.th",
+  "net.th",
+  "in.th",
+  "go.th",
+  "ac.th",
+  // Turkey
+  "com.tr",
+  "net.tr",
+  "org.tr",
+  "gov.tr",
+  "edu.tr",
+  "gen.tr",
+  "web.tr",
+  "k12.tr",
+  // Poland
+  "com.pl",
+  "net.pl",
+  "org.pl",
+  "gov.pl",
+  "edu.pl",
+  // Israel
+  "co.il",
+  "org.il",
+  "net.il",
+  "gov.il",
+  "ac.il",
+  "muni.il",
+  "k12.il",
 ]);
 
 /**

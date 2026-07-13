@@ -10,6 +10,7 @@
 
 import { mkdirSync } from "node:fs";
 import { writeJsonAtomic } from "../lib/write-json-atomic";
+import { fetchCapped } from "../lib/fetch-capped";
 
 const SOURCE = "https://raw.githubusercontent.com/brettonw/YaleBrightStarCatalog/master/bsc5-short.json";
 const OUT = "public/data/orbits/stars.json";
@@ -34,12 +35,12 @@ function decToDeg(dec: string): number | null {
   return m[1] === "-" ? -v : v;
 }
 
-const res = await fetch(SOURCE);
+const res = await fetchCapped(SOURCE);
 if (!res.ok) {
   console.error(`build-stars: HTTP ${res.status} from ${SOURCE}`);
   process.exit(1);
 }
-const raw = (await res.json()) as BscEntry[];
+const raw = JSON.parse(res.text) as BscEntry[];
 
 const stars: [number, number, number][] = [];
 let skipped = 0;

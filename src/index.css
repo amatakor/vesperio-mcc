@@ -299,7 +299,15 @@
   --acc-uv-dim: color-mix(in srgb, var(--acc-uv) 60%, var(--n0));
 
   --shell-accent: var(--volt-ink);
-  --focus-ring: var(--volt-ink);
+  /* FLORIAN SIGN-OFF NEEDED (2026-07-13 QC pass): --volt-ink (#64c400) on
+     the light-theme focus ring measures 1.93:1 on the page ground (#efefea)
+     and 2.05:1 on the panel ground (#f6f6f2) -- both fail the WCAG 3:1
+     non-text minimum, so keyboard focus is nearly invisible in light mode.
+     This darkens the SAME volt hue (89deg) and saturation (100%), lightness
+     only, from 38% to 26%: #458700 measures 3.86:1 on page, 4.11:1 on
+     panel, 3.49:1 on --bg-raised (card grounds). No other role changes;
+     --shell-accent/--dot/--mark-frame keep --volt-ink untouched. */
+  --focus-ring: #458700;
   --dot: var(--volt-ink);
   /* --clock intentionally NOT overridden: LCD instruments keep their
      black ground + volt digits in both themes. */
@@ -1150,6 +1158,14 @@ a.chip:hover {
   outline: none;
   border-color: var(--shell-accent);
 }
+/* Keyboard focus keeps the border swap AND gets the sitewide ring back
+   (2026-07-13 QC pass): mouse clicks matched :focus above and stay
+   ring-free; :focus-visible has equal specificity and wins for keyboard
+   focus because it is declared after :focus. */
+.filter-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
 .filter-tally {
   color: var(--text-3);
   font-size: 12px;
@@ -1214,9 +1230,9 @@ a.chip:hover {
    clipped by a ~30° seam that glides between ticks. Shell chrome: this is
    the ONE approved volt flood, and the instrument stays black-grounded in
    both themes (the schedule footer below it DOES theme).
-   The LCD reuses the orbits-page DSEG7 face (also declared in orbits.css;
-   that chunk only loads on /mcc, so the news page needs its own
-   declaration — browsers dedupe). */
+   The LCD reuses the orbits-page DSEG7 face. This is the ONE @font-face
+   declaration for it (2026-07-13 dedupe): index.css loads globally, so it
+   also covers the /mcc/ launch clock; orbits.css must not redeclare it. */
 @font-face {
   font-family: "DSEG7 Classic";
   src: url("/fonts/DSEG7Classic-Bold.woff2") format("woff2");
@@ -1878,7 +1894,10 @@ a.card-details:hover {
   color: var(--link);
 }
 .src-num {
-  color: var(--text-3);
+  /* Ordinal marker inside the item's numbered source list: promoted from
+     --text-3 to --text-2 (WCAG AA, 2026-07-13 contrast pass) since it reads
+     as part of the source-line attribution, not pure decoration. */
+  color: var(--text-2);
   font-weight: 500;
   font-size: var(--fs-label);
 }
@@ -2252,7 +2271,10 @@ table.profile td:nth-child(4) {
   white-space: nowrap;
 }
 table.profile thead th {
-  color: var(--text-3);
+  /* Promoted from --text-3 to --text-2 (WCAG AA, 2026-07-13 contrast pass):
+     these headers label the source/as-of columns on registry-fact-adjacent
+     and log/ledger tables, not pure decoration. */
+  color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
   font-size: var(--fs-label);
@@ -2647,6 +2669,12 @@ table.profile td.src-cell a,
 .subscribe-input:focus {
   outline: none;
   border-color: var(--text-1);
+}
+/* Keyboard focus keeps the border swap AND gets the sitewide ring back
+   (2026-07-13 QC pass): see .filter-input:focus-visible for the mechanism. */
+.subscribe-input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 .subscribe-btn {
   height: var(--h-control);
@@ -3255,7 +3283,10 @@ details.cite summary {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
-  color: var(--text-3);
+  /* Promoted from --text-3 to --text-2 (WCAG AA, 2026-07-13 contrast pass):
+     this is the stat-citation disclosure control ("cite this"); its higher
+     specificity (details.cite summary) also governs .faq-item summary text. */
+  color: var(--text-2);
   cursor: pointer;
 }
 details.cite summary:hover {
@@ -4755,6 +4786,14 @@ table.stat-table th {
   border-collapse: collapse;
   width: 100%;
   margin: 1rem 0;
+  /* Narrow-viewport containment (2026-07-13 QC pass): the table element
+     itself is the scroll container (display:block lets overflow-x apply to
+     its own box while th/td keep table layout), so a 375px viewport with
+     the .tier-tag row scrolls inside the table instead of widening the
+     page. CSS-only, no markup wrapper needed. */
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .tier-table th,
 .tier-table td {
@@ -4841,6 +4880,20 @@ table.stat-table th {
 }
 .delta-zero {
   color: var(--acc-orange);
+}
+
+/* Screen-reader-only text: keeps SEO/a11y headings out of the visual
+   layout without display:none (which hides them from crawlers too). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 

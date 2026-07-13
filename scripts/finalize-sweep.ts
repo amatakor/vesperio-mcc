@@ -14,7 +14,7 @@
  * there is no bypass.
  */
 
-import { readFileSync, unlinkSync, readdirSync } from "node:fs";
+import { readFileSync, unlinkSync, readdirSync, writeFileSync, renameSync } from "node:fs";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { join } from "node:path";
 import type {
@@ -66,7 +66,9 @@ import type {
   QueueCandidate,
   RegistryCandidatesFile,
 } from "./lib/crossfeed";
-import { fetchableSignalChannels } from "./lib/signals";
+import { fetchableSignalChannels, whitelistFloorChannels } from "./lib/signals";
+import type { WhitelistFloorChannel } from "./lib/signals";
+import { titlesCollide } from "./lib/simhash";
 import type { SignalsFile } from "../src/data/schema";
 
 /**
@@ -84,6 +86,61 @@ function loadFetchableSignalUrls(dataDir: string): Set<string> {
   } catch {
     return new Set();
   }
+}
+
+/**
+ * Whitelist-floor membership (P0 hardening, 2026-07-13). The "self" floor
+ * is the one score that bypasses the direct-source ceiling, and until now
+ * it rode entirely on the agent's attestation: nothing checked that a
+ * source claimed as class "whitelist" belonged to a real signals.json
+ * person. These helpers load every verified-active channel of every
+ * whitelisted person and match source URLs against them, so a spoofed or
+ * prompt-injected "whitelist" attestation is a rejection, not a 5.
+ */
+function loadWhitelistChannels(dataDir: string): WhitelistFloorChannel[] {
+  try {
+    const signals = JSON.parse(
+      readFileSync(join(dataDir, "signals.json"), "utf8"),
+    ) as SignalsFile;
+    return whitelistFloorChannels(signals);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Normalize a URL to lowercase host + path for prefix matching, folding
+ * www. and the twitter.com/x.com rename. Returns null on unparseable URLs.
+ */
+function normalizeChannelUrl(u: string): string | null {
+  try {
+    const parsed = new URL(u);
+    let host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+    if (host === "twitter.com") host = "x.com";
+    const path = parsed.pathname.replace(/\/+$/, "").toLowerCase();
+    return host + path;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The channel a source URL belongs to, or null. A post belongs to a
+ * channel when its URL IS the channel URL or lives under it as a path
+ * (https://x.com/handle/status/123 under https://x.com/handle).
+ */
+function matchWhitelistChannel(
+  url: string,
+  channels: readonly WhitelistFloorChannel[],
+): WhitelistFloorChannel | null {
+  const n = normalizeChannelUrl(url);
+  if (n === null) return null;
+  for (const c of channels) {
+    const cn = normalizeChannelUrl(c.url);
+    if (cn === null) continue;
+    if (n === cn || n.startsWith(cn + "/")) return c;
+  }
+  return null;
 }
 
 /** The scoring block the agent supplies on each new item (contract §1). */
@@ -355,6 +412,7 @@ function validateSourceEntry(
   path: string,
   viaAllowed: readonly string[],
   registryHosts: Set<string>,
+  whitelistChannels: readonly WhitelistFloorChannel[],
   errors: string[],
 ): void {
   if (!isObj(s)) {
@@ -388,6 +446,15 @@ function validateSourceEntry(
           : "reclassify (wire_pr / trade / informal)";
       errors.push(
         `${path}: host of "${String(s.url)}" is not an official ${cls} host; ${hint}`,
+      );
+    }
+    // Whitelist membership is anti-spoofed the same way: class "whitelist"
+    // means "a signals.json person's verified-active channel", so the URL
+    // must live under one of those channels. Anything else is informal.
+    if (cls === "whitelist" && matchWhitelistChannel(s.url as string, whitelistChannels) === null) {
+      errors.push(
+        `${path}: "${String(s.url)}" is not under any whitelisted verified-active ` +
+          `signals.json channel; reclassify (informal, or the honest press class)`,
       );
     }
   }
@@ -547,6 +614,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
   const existingIds = new Set(items.items.map((i) => i.id));
   const registryHosts = loadRegistryHosts(opts.dataDir);
+  const whitelistChannels = loadWhitelistChannels(opts.dataDir);
   const registryIndex = loadRegistryIndex(opts.dataDir);
   /** Crossfeed queue entries collected from this draft's accepted items. */
   const queueAdds: QueueCandidate[] = [];
@@ -616,7 +684,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     }
     if (Array.isArray(scoring.sources)) {
       scoring.sources.forEach((s, j) => {
-        validateSourceEntry(s, `${path}.scoring.sources[${j}]`, ["initial", "corroboration"], registryHosts, errors);
+        validateSourceEntry(s, `${path}.scoring.sources[${j}]`, ["initial", "corroboration"], registryHosts, whitelistChannels, errors);
       });
       // Lead url must equal source_url.
       const lead = scoring.sources[0];
@@ -678,18 +746,71 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
             typeof a.reason === "string" &&
             a.reason.trim() !== "",
         );
+      const rawHeadline = typeof raw.headline === "string" ? raw.headline : null;
       for (const ex of items.items) {
-        if (ex.category !== raw.category) continue;
         if (!sharesCompany(ex.companies)) continue;
         if (matchDecision({ id: ex.id, date: ex.date, snr: ex.snr }, raw.date) !== "same_event") {
           continue;
         }
+        const sameCategory = ex.category === raw.category;
+        // Second net (QC 2026-07-13): a re-categorized re-report escaped
+        // the exact-category match, so near-identical headlines (SimHash,
+        // the same threshold as the wire-rewrite collapse) inside the
+        // window are presumed the same event across categories too.
+        const headlineCollision =
+          !sameCategory && rawHeadline !== null && titlesCollide(rawHeadline, ex.headline);
+        if (!sameCategory && !headlineCollision) continue;
         if (!acked(ex.id)) {
+          const basis = sameCategory
+            ? `shared company, category "${ex.category}"`
+            : `shared company, near-identical headline across categories ("${ex.category}" vs "${String(raw.category)}")`;
           errors.push(
-            `${path}: same-event match with existing "${ex.id}" (shared company, category ` +
-              `"${ex.category}", within ${DEDUP_WINDOW_DAYS} days). Draft it as an updates[] entry ` +
+            `${path}: same-event match with existing "${ex.id}" (${basis}, within ` +
+              `${DEDUP_WINDOW_DAYS} days). Draft it as an updates[] entry ` +
               `(attach/bump), or, if it is genuinely a distinct event, attest that with ` +
               `dedup_distinct: [{ "id": "${ex.id}", "reason": "..." }] on the item.`,
+          );
+        }
+      }
+    }
+
+    // ---- whitelist-floor membership gate (P0 hardening, 2026-07-13) -------
+    // A non-null scoring.whitelist asks scoreClaim to floor the item at 4
+    // (observer) or 5 (self). The floor is earned by a real whitelisted
+    // channel, never by attestation: at least one source must carry class
+    // "whitelist" and live under a verified-active signals.json channel.
+    // "self" additionally requires the matched person's org to be one of
+    // the item's companies (the concerned party speaking about itself).
+    if (
+      (scoring.whitelist === "self" || scoring.whitelist === "observer") &&
+      Array.isArray(scoring.sources)
+    ) {
+      const matched = scoring.sources
+        .filter((s) => isObj(s) && s.class === "whitelist" && typeof s.url === "string")
+        .map((s) => matchWhitelistChannel(s.url, whitelistChannels))
+        .filter((c): c is WhitelistFloorChannel => c !== null);
+      if (matched.length === 0) {
+        errors.push(
+          `${path}.scoring.whitelist: "${scoring.whitelist}" claimed, but no source of class ` +
+            `"whitelist" is under a verified-active signals.json channel; the floor is earned ` +
+            `by membership, not attested. Set whitelist to null or fix the source.`,
+        );
+      } else if (scoring.whitelist === "self") {
+        const companies = Array.isArray(raw.companies)
+          ? (raw.companies as unknown[]).filter((c): c is string => typeof c === "string")
+          : [];
+        const companySlugs = new Set(matchCompanies(registryIndex, companies));
+        const lowerCompanies = new Set(companies.map((c) => c.toLowerCase()));
+        const speaksForItself = matched.some((c) => {
+          if (lowerCompanies.has(c.org.toLowerCase())) return true;
+          return matchCompanies(registryIndex, [c.org]).some((slug) => companySlugs.has(slug));
+        });
+        if (!speaksForItself) {
+          errors.push(
+            `${path}.scoring.whitelist: "self" requires the whitelisted person's org to be one ` +
+              `of the item's companies (matched: ${matched.map((c) => `${c.name} of ${c.org}`).join("; ")} ` +
+              `vs companies [${companies.join(", ")}]); use "observer" for a whitelisted account ` +
+              `reporting on a third party`,
           );
         }
       }
@@ -914,7 +1035,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     }
     const attach = Array.isArray(u.attach) ? u.attach : [];
     attach.forEach((a, j) => {
-      validateSourceEntry(a, `${path}.attach[${j}]`, ["corroboration", "upgrade"], registryHosts, errors);
+      validateSourceEntry(a, `${path}.attach[${j}]`, ["corroboration", "upgrade"], registryHosts, whitelistChannels, errors);
     });
     const validBumps = [
       "reinforcement",
@@ -935,7 +1056,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
           errors.push(`${path}.rescore.sources: required non-empty array (lead first)`);
         } else {
           r.sources.forEach((sc, j) => {
-            validateSourceEntry(sc, `${path}.rescore.sources[${j}]`, ["initial", "corroboration", "upgrade"], registryHosts, errors);
+            validateSourceEntry(sc, `${path}.rescore.sources[${j}]`, ["initial", "corroboration", "upgrade"], registryHosts, whitelistChannels, errors);
           });
         }
         if (typeof r.extraordinary !== "boolean") {
@@ -1024,6 +1145,37 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
           `${path}.rescore.sources[0].url: lead "${lead.url}" must equal item.source_url "${merged.source_url}" (patch it first when upgrading the lead)`,
         );
         return;
+      }
+      // Whitelist-floor membership gate, same contract as the new-item path.
+      if (r.whitelist === "self" || r.whitelist === "observer") {
+        const matched = r.sources
+          .filter((sc) => isObj(sc) && sc.class === "whitelist" && typeof sc.url === "string")
+          .map((sc) => matchWhitelistChannel(sc.url, whitelistChannels))
+          .filter((c): c is WhitelistFloorChannel => c !== null);
+        if (matched.length === 0) {
+          errors.push(
+            `${path}.rescore.whitelist: "${r.whitelist}" claimed, but no source of class ` +
+              `"whitelist" is under a verified-active signals.json channel; the floor is ` +
+              `earned by membership, not attested`,
+          );
+          return;
+        }
+        if (r.whitelist === "self") {
+          const companies = merged.companies;
+          const companySlugs = new Set(matchCompanies(registryIndex, companies));
+          const lowerCompanies = new Set(companies.map((c) => c.toLowerCase()));
+          const speaksForItself = matched.some((c) => {
+            if (lowerCompanies.has(c.org.toLowerCase())) return true;
+            return matchCompanies(registryIndex, [c.org]).some((slug) => companySlugs.has(slug));
+          });
+          if (!speaksForItself) {
+            errors.push(
+              `${path}.rescore.whitelist: "self" requires the whitelisted person's org to be ` +
+                `one of the item's companies; use "observer" for a third-party report`,
+            );
+            return;
+          }
+        }
       }
       let extraordinary = r.extraordinary;
       if (
@@ -1327,13 +1479,42 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   }
 
   // ---- write --------------------------------------------------------------
+  // The six writes are one logical transaction (QC P1-1, 2026-07-13): a
+  // crash between them commits partial state (e.g. state.json updated but
+  // the ledger's calibration claim dropped) that the workflow's goal-state
+  // check cannot catch, because it can only assert state.json moved
+  // (content-identical rewrites of the others produce no git diff). True
+  // multi-file atomicity is not available on POSIX, so shrink the window
+  // to its minimum: serialize and stage ALL six temp files first (any
+  // failure there leaves every target untouched), then issue the six
+  // renames back-to-back as the final step.
+  const stagedWrites: Array<[path: string, data: unknown]> = [
+    [itemsPath, nextItems],
+    [heldPath, nextHeld],
+    [statePath, nextState],
+    [sourcesPath, nextSources],
+    [ledgerPath, nextLedger],
+    [queuePath, nextQueue],
+  ];
+  const stagedTemps: Array<[tmp: string, target: string]> = [];
+  try {
+    for (const [target, data] of stagedWrites) {
+      const tmp = `${target}.tmp.${process.pid}`;
+      writeFileSync(tmp, JSON.stringify(data, null, 2) + "\n");
+      stagedTemps.push([tmp, target]);
+    }
+  } catch (e) {
+    for (const [tmp] of stagedTemps) {
+      try {
+        unlinkSync(tmp);
+      } catch {
+        // tmp may not exist; nothing to clean up.
+      }
+    }
+    throw e;
+  }
+  for (const [tmp, target] of stagedTemps) renameSync(tmp, target);
   const write = (path: string, data: unknown) => writeJsonAtomic(path, data);
-  write(itemsPath, nextItems);
-  write(heldPath, nextHeld);
-  write(statePath, nextState);
-  write(sourcesPath, nextSources);
-  write(ledgerPath, nextLedger);
-  write(queuePath, nextQueue);
 
   // Consumed markers (plan Phase 6): a successful merge means every entry
   // now in the queue was triaged this sweep (presented via

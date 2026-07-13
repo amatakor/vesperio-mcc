@@ -40,3 +40,27 @@ aligned to the framed badges, the card hover reworked so a 2px volt
 band grows inward while the grid border never changes (seismic and
 the sweep clock included), and the thumbnail pipeline taught never to
 hand two cards the same artwork.
+
+The pre-launch QC hardening pass (2026-07-13, from the 2026-07-12
+review): the whitelist SNR floor is membership-checked against
+signals.json channels instead of trusted on attestation (the "self"
+floor additionally requires the poster's org to match the item's
+company); registry facts are capped by what their source host's class
+earns, unknown profile fields are rejected, and scheduled runs can no
+longer create or delete registry entries or touch the MCC READ blurbs;
+the six-file sweep write is staged so a crash cannot commit partial
+state; source-reliability strikes now age out with the claim they
+punish; the image fetchers refuse hostnames that resolve to private
+addresses (DNS rebinding) and carry one overall deadline; the SVG logo
+sanitizer was rebuilt parse-and-allowlist fail-closed with a
+content-security header on /img/ as a second lock; a same-company
+near-identical-headline net catches re-categorized duplicates; item
+artwork re-encoded to WebP (65 MB to 8 MB, future thumbnails encoded
+on arrival); sitemap.xml and robots.txt now ship, home and MCC carry
+their missing h1, and the 404 page stopped advertising a dead
+canonical; the item modal traps keyboard focus properly; the MCC view
+idles in hidden tabs and recovers from GPU context loss; source
+attributions and as-of dates stepped up one ink for WCAG contrast, the
+light theme got a visible focus ring, and the commentary impact cap
+moved from notable to major (seismic stays events-only; Florian,
+2026-07-13).

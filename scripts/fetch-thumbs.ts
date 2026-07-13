@@ -29,6 +29,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { join } from "node:path";
+import sharp from "sharp";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
 import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
@@ -41,6 +42,13 @@ const OUT_DIR = "public/img/items";
     shapes. Applied only when the header yields dimensions. */
 const MIN_DIMENSION = 200;
 const MAX_ASPECT = 3; // reject wider than 3:1 or taller than 1:3
+
+/** Storage re-encode (image-weight audit, 2026-07-13): every winning
+    raster is re-encoded to WebP at this quality, capped to this width
+    (never upscaled, aspect preserved). Cards render at card width; the
+    feed was carrying full press-photo resolution for no visual gain. */
+const WEBP_QUALITY = 80;
+const MAX_STORED_WIDTH = 1200;
 
 /** Social platforms whose own og:image is branding, never event artwork. */
 const SOCIAL_HOSTS = ["bsky.app", "twitter.com", "x.com", "youtube.com", "youtu.be", "linkedin.com", "facebook.com", "t.me"];
@@ -273,6 +281,30 @@ interface Download {
   sha256: string;
 }
 
+/**
+ * Re-encode a gate-passed raster for storage: WebP at WEBP_QUALITY,
+ * resized to max MAX_STORED_WIDTH (never upscaled, aspect preserved).
+ * SVGs (should this pipeline ever pass one through) and animated images
+ * (multi-frame GIF/WebP) are left alone rather than risk breaking an
+ * animation or a vector; a decode failure also falls back to the
+ * original bytes untouched. Returns null when the original should be
+ * kept as-is.
+ */
+async function reencodeForStorage(buf: Uint8Array, ext: string): Promise<Buffer | null> {
+  if (ext === "svg") return null;
+  try {
+    const probe = await sharp(buf, { animated: true }).metadata();
+    if ((probe.pages ?? 1) > 1) return null; // animated: keep original format
+    return await sharp(buf)
+      .resize({ width: MAX_STORED_WIDTH, withoutEnlargement: true })
+      .webp({ quality: WEBP_QUALITY })
+      .toBuffer();
+  } catch (e) {
+    console.error(`fetch-thumbs: webp re-encode failed, keeping original: ${String(e)}`);
+    return null;
+  }
+}
+
 /** Download an og:image; reject unknown formats, oversized payloads, tiny
     images, and ad shapes (banners/skyscrapers). Writes {id}.{ext}; the
     caller cleans up rejected/unused files. */
@@ -299,9 +331,12 @@ async function downloadImage(url: string, id: string): Promise<Download | null> 
       if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) return null; // ad banner shape
     }
     mkdirSync(OUT_DIR, { recursive: true });
-    const file = `${id}.${ext}`;
-    writeFileSync(join(OUT_DIR, file), buf);
-    return { src: `/img/items/${file}`, file, dim, sha256: createHash("sha256").update(buf).digest("hex") };
+    const reencoded = await reencodeForStorage(buf, ext);
+    const outExt = reencoded ? "webp" : ext;
+    const outBuf = reencoded ?? buf;
+    const file = `${id}.${outExt}`;
+    writeFileSync(join(OUT_DIR, file), outBuf);
+    return { src: `/img/items/${file}`, file, dim, sha256: createHash("sha256").update(outBuf).digest("hex") };
   } catch (e) {
     console.error(`fetch-thumbs: image download failed for ${url}: ${String(e)}`);
     return null;

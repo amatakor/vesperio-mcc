@@ -14,6 +14,7 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
 import { writeJsonAtomic } from "../lib/write-json-atomic";
+import { fetchCapped } from "../lib/fetch-capped";
 import { join, basename } from "node:path";
 import type { ConstellationProfile, OmmRecord, OrbitsElementsFile } from "../../src/data/schema";
 import { planElementQueries, splitRecords, stripOmm } from "./lib";
@@ -40,13 +41,13 @@ class CelestrakHttpError extends Error {}
 async function fetchGp(url: string): Promise<OmmRecord[] | null> {
   for (let attempt = 0; ; attempt++) {
     try {
-      const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+      const res = await fetchCapped(url, { headers: { "user-agent": USER_AGENT } });
       // CelesTrak 404s NAME queries with no match; that is an empty
       // result (bad mapping surfaces as a "0 records" warning), not an
       // outage worth retrying.
       if (res.status === 404) return [];
       if (!res.ok) throw new CelestrakHttpError(`HTTP ${res.status}`);
-      const text = await res.text();
+      const text = res.text;
       // CelesTrak answers "No GP data found" as plain text on empty matches.
       if (!text.trimStart().startsWith("[")) return [];
       const raw = JSON.parse(text) as unknown[];

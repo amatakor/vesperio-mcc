@@ -11,6 +11,7 @@
 
 import { mkdirSync } from "node:fs";
 import { writeJsonAtomic } from "../lib/write-json-atomic";
+import { fetchCapped, type CappedResponse } from "../lib/fetch-capped";
 import { join } from "node:path";
 import type { OrbitsStatsFile } from "../../src/data/schema";
 import { buildStats, satcatDecays, type Ll2Launch } from "./lib";
@@ -21,15 +22,19 @@ const OUT_PATH = join("public/data/orbits", "stats.json");
 const USER_AGENT = "mcc-orbits/1.0 (+https://vesperio.ai)";
 const MAX_PAGES = 5;
 const RETRIES = 3;
+// The full SATCAT CSV is legitimately large (several MB and growing); give it
+// a roomy cap while still bounding a runaway download. JSON pages use the
+// helper default.
+const SATCAT_MAX_BYTES = 64 * 1024 * 1024;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 let requestCount = 0;
 
-async function fetchWithBackoff(url: string): Promise<Response> {
+async function fetchWithBackoff(url: string, maxBytes?: number): Promise<CappedResponse> {
   for (let attempt = 0; ; attempt++) {
     requestCount++;
-    const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    const res = await fetchCapped(url, { headers: { "user-agent": USER_AGENT }, maxBytes });
     if (res.status === 429 && attempt < RETRIES) {
       const retryAfter = Number(res.headers.get("retry-after"));
       const waitMs =
@@ -52,7 +57,7 @@ async function fetchAllPages<T>(firstUrl: string): Promise<T[]> {
   const out: T[] = [];
   let url: string | null = firstUrl;
   for (let page = 0; url !== null && page < MAX_PAGES; page++) {
-    const data = (await (await fetchWithBackoff(url)).json()) as Paginated<T>;
+    const data = JSON.parse((await fetchWithBackoff(url)).text) as Paginated<T>;
     if (!Array.isArray(data.results)) throw new Error(`unexpected page shape for ${url}`);
     out.push(...data.results);
     url = data.next;
@@ -68,11 +73,11 @@ const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 3600 * 1000).toISOStrin
 const previous = await fetchAllPages<Ll2Launch>(
   `${LL2}/launches/previous/?net__gte=${encodeURIComponent(sixMonthsAgo)}&limit=100&mode=normal`,
 );
-const upcoming = ((await (
-  await fetchWithBackoff(`${LL2}/launches/upcoming/?limit=100`)
-).json()) as Paginated<Ll2Launch>).results;
+const upcoming = (
+  JSON.parse((await fetchWithBackoff(`${LL2}/launches/upcoming/?limit=100`)).text) as Paginated<Ll2Launch>
+).results;
 
-const satcatCsv = await (await fetchWithBackoff(SATCAT_URL)).text();
+const satcatCsv = (await fetchWithBackoff(SATCAT_URL, SATCAT_MAX_BYTES)).text;
 const decays = satcatDecays(satcatCsv);
 
 const stats = buildStats({ now, previous, upcoming, decays });

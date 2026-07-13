@@ -4,13 +4,10 @@
    the single allowed shadow. No border-radius (except the intentional
    ORB/legend circles), no gradients, transitions <= 100ms. */
 
-/* 7-segment LCD face for live numerals (OFL, vendored). */
-@font-face {
-  font-family: "DSEG7 Classic";
-  src: url("/fonts/DSEG7Classic-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-display: swap;
-}
+/* 7-segment LCD face for live numerals (OFL, vendored). Declared once, in
+   src/index.css (2026-07-13 dedupe): index.css loads globally (imported by
+   main.tsx) so it covers this page too, while orbits.css only loads on
+   /mcc/. Do not re-add an @font-face here. */
 
 /* --------------------------------------------------------------- frame */
 
@@ -1280,6 +1277,18 @@
   font-size: 10px;
   letter-spacing: 1.5px;
   color: var(--acc);
+}
+
+/* WebGL context-loss overlay (QC hardening 2026-07-13): the same card
+   look as the whole-page no-webgl/loading fallback above, but positioned
+   to cover the live canvas in place (inside .orbits-canvas-wrap, which is
+   already position: relative) rather than replacing the whole page. */
+.orbits-canvas-wrap .orbits-fallback-overlay {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  z-index: 3;
+  background: var(--mcc-sky);
 }
 
 /* ---------------------------------------------------------------- theme

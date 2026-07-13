@@ -97,15 +97,28 @@ describe("registrableDomain", () => {
     expect(registrableDomain("https://www.isro.gov.in/update")).toBe("isro.gov.in");
   });
 
+  test("priority-geography two-level ccTLD suffixes keep their eTLD+1", () => {
+    // The suffixes added for the geographies this product prioritizes: an
+    // unlisted suffix would over-collapse two distinct sites into one.
+    expect(registrableDomain("https://news.naver.co.kr/x")).toBe("naver.co.kr");
+    expect(registrableDomain("https://www.uol.com.br/noticias")).toBe("uol.com.br");
+    expect(registrableDomain("https://sub.example.ne.jp/x")).toBe("example.ne.jp");
+    expect(registrableDomain("https://a.b.example.org.in/x")).toBe("example.org.in");
+    expect(registrableDomain("https://www.example.com.cn/x")).toBe("example.com.cn");
+    expect(registrableDomain("https://www.example.com.tw/x")).toBe("example.com.tw");
+    expect(registrableDomain("https://www.example.co.nz/x")).toBe("example.co.nz");
+    expect(registrableDomain("https://www.example.com.au/x")).toBe("example.com.au");
+  });
+
   test("a deep subdomain collapses to the registrable domain", () => {
     expect(registrableDomain("https://ir.spire.com/press-releases")).toBe("spire.com");
     expect(registrableDomain("https://a.b.c.spacenews.com/x")).toBe("spacenews.com");
   });
 
   test("an unlisted multi-part suffix degrades to a 2-label result", () => {
-    // example.co.nz is not in MULTI_PART_SUFFIXES, so this is the
-    // documented degradation, not a bug.
-    expect(registrableDomain("https://example.co.nz/x")).toBe("co.nz");
+    // co.ke (Kenya) is deliberately not in MULTI_PART_SUFFIXES, so this is
+    // the documented degradation, not a bug.
+    expect(registrableDomain("https://example.co.ke/x")).toBe("co.ke");
   });
 
   test("garbage input returns empty string, never throws", () => {

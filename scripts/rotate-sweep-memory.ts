@@ -9,7 +9,8 @@
  * in every sweep's fixed context.
  */
 
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { writeFileAtomic } from "./lib/write-json-atomic";
 
 export const ROTATION_KEEP_DAYS = 30;
 
@@ -94,8 +95,10 @@ function main(): void {
   const existing = existsSync(archivePath) ? readFileSync(archivePath, "utf8") : ARCHIVE_HEADER;
   const appended =
     existing.trimEnd() + "\n\n" + archived.map((s) => `${s.heading}\n${s.body}`).join("\n") + "\n";
-  writeFileSync(archivePath, appended);
-  writeFileSync(memoryPath, kept.endsWith("\n") ? kept : kept + "\n");
+  // Atomic temp+rename (not bare writeFileSync): a crash mid-write must not
+  // truncate SWEEP_MEMORY.md, which carries hand-curated standing rules.
+  writeFileAtomic(archivePath, appended);
+  writeFileAtomic(memoryPath, kept.endsWith("\n") ? kept : kept + "\n");
   console.log(
     `rotate-sweep-memory: archived ${archived.length} dated section(s) older than ${ROTATION_KEEP_DAYS} days.`,
   );
