@@ -73,3 +73,10 @@ four new MCC layers for Iridium, Globalstar, Qianfan, and Guowang
 (the satellites-tracked count rose from 12,300 to 12,781); and the
 sweep countdown's spoken label now says hours and minutes instead of
 raw minutes.
+
+The sweep trigger moved off GitHub's scheduler (2026-07-13): after
+two mornings of 2h-late or dropped crons, a Cloudflare Worker
+(infra/sweep-trigger/) now calls the dispatch API at exactly
+05:15/17:15 UTC; the GitHub cron became a 06:45/18:45 fallback behind
+a freshness guard, so a missed primary costs at most 90 minutes and
+a double run costs nothing.
