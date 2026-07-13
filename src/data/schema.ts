@@ -20,6 +20,8 @@ export const CATEGORIES = [
   "incident",
   "geopolitical",
   "human-spaceflight",
+  // Science missions (Florian, 2026-07-13): dated program events only.
+  "science",
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
@@ -177,7 +179,7 @@ export interface SnrTrace {
  * stay lowercase and are logged in the sweep entry for review.
  * Domain tags: every item carries one where applicable.
  */
-export const DOMAIN_TAGS = ["eo", "connectivity", "iot", "launch", "human-spaceflight"] as const;
+export const DOMAIN_TAGS = ["eo", "connectivity", "iot", "launch", "human-spaceflight", "science"] as const;
 
 export const SEED_TAGS = [
   ...DOMAIN_TAGS,

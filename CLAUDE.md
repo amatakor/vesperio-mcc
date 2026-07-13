@@ -28,17 +28,18 @@ The platform tracks new space events: the commercial space economy and the event
 - Spaceports and launch infrastructure, orbital sites worldwide
 - The wider ecosystem where events move the commercial market: manufacturers and bus providers, in-space services (tugs, cleanup, capsules, manufacturing), ground-segment providers, institutions and regulators (space agencies, UN bodies, FCC/ITU/NOAA), and space-focused investment funds
 - Launch vehicles and launch providers, orbital only
-- Human spaceflight, active programs only, where contracts and outcomes affect commercial providers (Commercial Crew, CLD/commercial stations, Artemis awards to commercial primes). Science-only mission coverage stays out.
+- Human spaceflight, active programs only, where contracts and outcomes affect commercial providers (Commercial Crew, CLD/commercial stations, Artemis awards to commercial primes). Science-only mission coverage publishes under `science` (2026-07-13), not here.
 - Regulatory events affecting any of the above (FCC, ITU, NOAA CRSRA, export control, spectrum)
 - Government procurement of commercial space services
 - Financial events of tracked companies (funding rounds, 8-Ks, M&A, bankruptcies)
 - Geopolitical events, only via their documented commercial-space angle: an operator confirming service changes or imagery provision, sanctions or export-control notices, government statements directly concerning commercial space services in a conflict or crisis. The item reports the space-industry fact; it does not analyse the conflict.
 - Orbital-safety incidents: uncontrolled reentries, recovered debris, collisions and near-misses, and satellite losses or anomalies. These publish as `incident` even before the responsible operator is identified (Florian, 2026-07-08): tracing debris to an operator IS the commercial story (liability, deorbit compliance, insurance). Attribute to the reporting authority (a space agency, the recovering party, the outlet) and score at the SNR the sourcing earns; update the item when the operator is named. This does not reopen conflict analysis or operational-use claims, which stay out.
 - Government-owned and sovereign constellation programs (national EO or connectivity systems such as Italy's IRIDE) and their program milestones (Florian, 2026-07-08). The item publishes on the program fact; the commercial read is what it changes for operators, manufacturers, and resellers (procurement of commercial supply, marketplace access, competition with commercial operators). This supersedes the institutional-program exclusion precedent for constellation programs; science-only missions stay out per the existing rule.
+- Science missions (Florian, 2026-07-13): dated program events of deep-space and planetary science missions, national and commercial alike: launch, arrival, orbit insertion, landing, sample return, provider selection, major anomaly or failure. These publish under the `science` category. The industry read is the point of inclusion: these missions run on commercial launch, buses, instruments, and ground segment, and `why_it_matters` carries that supply-chain angle whenever the source states one (never invented). Impact: program-defining firsts reach `notable`, exceptional ones `major`; routine milestones are `noise`; `seismic` stays reserved for events that reshape the commercial market.
 - Chinese, Indian, Japanese, and European activity gets equal weight to US activity. Non-US coverage is a differentiator, not an afterthought.
 
 **Out of scope:**
-- Deep space and planetary science missions with no commercial-provider angle
+- Science-mission coverage beyond dated program events: routine operations, research results and papers, and evergreen explainers (a probe's odometer is not an event). The `science` category covers events, not the science.
 - Suborbital tourism as routine events (first flights and incidents qualify)
 - Conflict analysis, battlefield OSINT, or claims about how space assets are being used operationally, unless stated by the operator or a government on the record
 - Anonymous, unattributable rumours and personnel gossip. Attributable weak sources (an identifiable account, an informal but named outlet) publish at low SNR; sources that cannot be named at all do not publish.
@@ -115,7 +116,7 @@ Each item in `src/data/items.json`:
 
 `snr`, `snr_trace`, and `sources` are stamped by `finalize-sweep` from the draft's `scoring` block (see prompts/update-items.md); agents never hand-write them.
 
-**Categories** (exactly one): `launch`, `constellation`, `contract`, `procurement`, `regulatory`, `financial`, `product`, `partnership`, `incident`, `geopolitical`, `human-spaceflight`.
+**Categories** (exactly one): `launch`, `constellation`, `contract`, `procurement`, `regulatory`, `financial`, `product`, `partnership`, `incident`, `geopolitical`, `human-spaceflight`, `science` (added 2026-07-13).
 
 **Kind** (exactly one, default `event`): `event` is something that happened. `commentary` is a take, analysis, or position from a named voice, visibly tagged as commentary on cards and item pages. Commentary rules: the source must be a signals.json whitelisted person or a named outlet/author (anonymous takes never publish); the tagline quotes or tightly paraphrases the take with attribution; `what_happened` states who said what, where; `why_it_matters` may engage with the argument. The SNR scores the attribution ("this person said this"), never the opinion's truth; whitelist floors apply as observers. Commentary never feeds the registry and never reinforces factual items. Impact for commentary caps at `major` (Florian, 2026-07-13, raised from `notable`): `seismic` stays reserved for events, because a rumor or claim about the world is an `event` at low SNR, not commentary, and when a take itself moves the world the consequence publishes as its own event. Analyst research notes and price targets on tracked companies (a bank's SpaceX valuation, a downgrade) are `commentary`, not `financial` events: they are an attributed opinion about value, not a transaction. The tagline attributes the call ("Per Morgan Stanley:"); the copy never repeats the target as fact.
 
@@ -129,7 +130,7 @@ Each item in `src/data/items.json`:
 **SNR** (integer 1-5): computed by the scoring engine, never hand-set. See "The SNR score".
 
 **Tags**: lowercase, reuse existing tags before inventing new ones; newly coined tags are logged in the sweep entry for human review. Four tiers:
-- Domain (every item carries one where applicable): `eo`, `connectivity`, `iot`, `launch`, `human-spaceflight`
+- Domain (every item carries one where applicable): `eo`, `connectivity`, `iot`, `launch`, `human-spaceflight`, `science`
 - Modality: `sar`, `optical`, `hyperspectral`, `rf`, `ghg`, `direct-to-device`, `heavy-lift`, `smallsat-launch`, `rideshare`, `reusability`
 - Geography: `china`, `india`, `europe`, `japan`, `mena`, `us-gov`, `esa`
 - Theme: `pricing`, `export-control`, `sanctions`, `m-and-a`, `funding`, `bankruptcy`, `commercial-crew`, `commercial-stations`, `spaceport`

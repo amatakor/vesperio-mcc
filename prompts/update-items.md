@@ -21,8 +21,9 @@ starting and apply its lessons.
 ## Mission
 
 Cast a wide net over the new space economy: EO, connectivity, launch,
-commercial human spaceflight, and the regulatory, financial,
-procurement, and geopolitical events that move them. Everything
+commercial human spaceflight, science-mission program events, and the
+regulatory, financial, procurement, and geopolitical events that move
+them. Everything
 on-scope publishes; the SNR score, not withholding, carries the
 uncertainty. A single informal source is a publishable SNR-1 item when
 it is on scope and honestly labelled. Zero items is still a valid sweep
@@ -404,7 +405,8 @@ mechanical and by you where editorial:
 An item ships when all are true:
 - In scope per CLAUDE.md
 - Tagged with its domain tag (`eo`, `connectivity`, `launch`,
-  `human-spaceflight`) where one applies, per the CLAUDE.md tag tiers
+  `human-spaceflight`, `science`) where one applies, per the CLAUDE.md
+  tag tiers
 - Every source URL was fetched this run and every stated fact appears
   in a linked source; numbers copied exactly or omitted
 - The copy attributes claims ("ICEYE says", "per the FCC filing",

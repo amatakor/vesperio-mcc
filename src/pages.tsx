@@ -4686,8 +4686,8 @@ export function AboutPage() {
         <h2>The site and the concept</h2>
         <p className="prose">
           Vesperio covers commercial Earth observation, connectivity constellations, launch,
-          commercial human spaceflight, and the regulatory, financial, procurement, and
-          geopolitical events that move them. Chinese, Indian, Japanese, and European activity
+          commercial human spaceflight, science-mission program events, and the regulatory,
+          financial, procurement, and geopolitical events that move them. Chinese, Indian, Japanese, and European activity
           gets equal weight to US activity. Coverage arrives on four surfaces: a news feed with a
           plain-English explainer per event, a registry of reference profiles for constellations,
           vehicles, spaceports, and organizations, computed statistics served with citation
