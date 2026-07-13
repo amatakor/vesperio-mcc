@@ -153,6 +153,8 @@ Card and item artwork is stamped exclusively by the deterministic `scripts/fetch
 2. A curated freely licensed stock image from `src/data/stock-images.json`, keyed by source domain. Every entry records license, author, and origin URL; the map grows only via reviewed PRs with the license verified. (The SEC headquarters photo was removed 2026-07-08: one stock photo repeating across filing-sourced items, seismic ones included, reads worse than the honest text tile.)
 3. Nothing: the card and item page render text-only — no media block at all (the generated mono text tile was retired 2026-07-10, rule 57).
 
+Override (Florian, 2026-07-13): Florian, or an interactive session on his instruction, may replace an item's artwork with a SPECIFIC image from one of the item's OWN linked source pages via `bun scripts/set-item-image.ts` (the ESA report's generic og:image header vs the Ariane 6 figure in the article body). The tool enforces the same policy the pipeline does: same-source domains only, same size/shape gates, same WebP re-encode, credit and link to the origin page. Scheduled and drafting agents never run it.
+
 Never: image search results, AI-generated imagery of real events, official agency seals (legally restricted), or images hand-picked by the drafting agent. Any image is removed on request from its rights holder by setting the item's `image` to null.
 
 Signals avatars follow the same logic via `scripts/fetch-avatars.ts`: the profile picture of the exact account the card links to, re-hosted under `public/img/signals/`, initials tile when none is fetchable, removed on request from the person concerned by deleting the file and manifest entry.
