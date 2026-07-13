@@ -1,0 +1,16 @@
+# Cloudflare Worker config for the sweep trigger (see worker.js).
+# Deploy from this directory: bunx wrangler deploy
+# The GH_DISPATCH_TOKEN secret is set in the dashboard, never here.
+
+name = "vesperio-sweep-trigger"
+main = "worker.js"
+account_id = "62fd0402942178c045658ad1268a1588"
+compatibility_date = "2026-07-01"
+
+[triggers]
+# The sweep schedule the site's clock promises (05:00/17:00 nominal,
+# :15 for the same pile-up-dodging offset the GitHub cron used).
+crons = ["15 5,17 * * *"]
+
+[observability]
+enabled = true
