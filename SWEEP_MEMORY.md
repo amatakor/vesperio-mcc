@@ -1635,3 +1635,50 @@ a newer entry if a lesson changes.
   "chase important events predating the window" ruling, not from the
   window itself. Confirms narrow re-checks are legitimate even when their
   headline yield is entirely off-window in origin.
+
+## Normal-mode sweep, ~10h36m gap, unfiltered full source list (2026-07-13, third)
+
+- 2026-07-13-I: The harvester queue (130 candidates after prefilter) was
+  almost entirely SpaceX stock/IPO clickbait again (confirms 2026-07-12-K);
+  every genuine new item this run came from the discovery pass or from
+  reading a queue candidate's body past a misleading headline (Reditus
+  Space's ENOS reentry vehicle, Voyager's completed Astrobotic acquisition,
+  and a bundled SpaceNews China piece covering both the Long March 10C
+  commercial-workhorse designation and a separate company's, China
+  Commercial Rocket Co.'s, recapitalization -- drafted as two distinct
+  items citing the same source article since the two facts belong to two
+  unrelated actors).
+- 2026-07-13-J: faa.gov 403'd this run on a direct WebFetch of a specific
+  newsroom URL found via WebSearch (faa.gov/newsroom/faa-closes-spacex-
+  starship-mishap-investigation), same failure mode as other .gov domains
+  in this project (fcc.gov, sam.gov). Led with TechCrunch instead (fetched
+  cleanly, classed mainstream per existing precedent for this outlet) and
+  corroborated with a Reuters wire copy (byline Joey Roulette, read via an
+  AOL mirror since cnbc.com also 403'd) plus Space.com.
+- 2026-07-13-K: The same-company-plus-category dedup heuristic (2026-07-09-B,
+  2026-07-10-C/F) tripped twice in one run on genuinely unrelated events:
+  SpaceX + "regulatory" matched the FAA's Starship Flight 12 closure against
+  the unrelated Earthjustice orbital-data-center FCC petition (2026-07-08),
+  and European Space Agency + "financial" matched ESA's own 2026 Space
+  Economy Report against the unrelated EIB/Intesa Sanpaolo Italian-SME
+  lending facility (2026-07-08). Both cleared with dedup_distinct in one
+  pass; confirms this heuristic fires on ANY shared company (even a
+  frequently-covered mega-actor like SpaceX or an institution like ESA)
+  regardless of how unrelated the two stories are, not just the
+  multi-subsidiary or same-program shapes seen before.
+- 2026-07-13-L: A funding-round candidate that reads fresh in a queue entry
+  can be old news wearing a new publish date: SpaceNews's QOSMIC seed-round
+  piece (queued at 15:10 UTC July 13, article dateline itself misprinted
+  "July 15, 2026") turned out to be the same $3.33M round Entrackr and
+  five other Indian outlets had already covered on June 24, 2026, a full
+  three weeks earlier -- caught by checking one mirror's actual byline
+  date rather than trusting the queue's `published_at` stamp. Dropped as
+  stale; a small routine seed round doesn't qualify for the "chase
+  important events predating the window" exception (that's for
+  notable/seismic events only).
+- 2026-07-13-M: Marcia Smith's Bluesky (whitelisted signal, checked as part
+  of the mandatory fetchable-channel leg) posted the FAA Starship closure
+  fact with a faa.gov link before the item was fully drafted from the
+  harvester queue's Google News/Reuters coverage -- a useful independent
+  confirmation signal, though the formal scoring sources ended up being
+  TechCrunch/Reuters/Space.com since faa.gov itself couldn't be fetched.
