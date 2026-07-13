@@ -29,6 +29,19 @@ uncertainty. A single informal source is a publishable SNR-1 item when
 it is on scope and honestly labelled. Zero items is still a valid sweep
 result when nothing on-scope happened; padding is still the bug.
 
+## Run in the foreground, start to finish (hard rule, 2026-07-13)
+
+The 17:15 sweep that day died because the agent split the work into
+BACKGROUND agents and scheduled itself a wake-up: in this bounded CI
+run, ending your turn ends the session, the background work evaporates,
+and the run fails the sweep-entry gate. Therefore: never spawn
+background agents or subagents, never schedule wake-ups or heartbeats,
+never end your turn while any sweep work is pending. Do the passes
+yourself, sequentially. The run is finished only when
+`bun scripts/finalize-sweep.ts` has merged the draft (or you have
+reported its rejection and stopped). A turn that ends without a sweep
+entry is a failed run, not a handoff.
+
 ## The loop, per detected event
 
 1. **Briefing.** Run `bun scripts/sweep-context.ts`. It prints
