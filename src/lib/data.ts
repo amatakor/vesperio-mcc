@@ -19,6 +19,7 @@ import type {
 import { DOMAIN_TAGS } from "../data/schema";
 import { calibration } from "../../scripts/snr/ledger";
 import type { CalibrationBucket } from "../../scripts/snr/ledger";
+import { activityAt } from "./activity";
 import itemsJson from "../data/items.json";
 import signalsJson from "../data/signals.json";
 import stateJson from "../data/state.json";
@@ -34,9 +35,18 @@ import signalAvatarsJson from "../data/signal-avatars.json";
 // used (the SSR/prerender bundle), it computes exactly as before.
 const sortedCopy = <T>(arr: T[], cmp: (a: T, b: T) => number): T[] => arr.slice().sort(cmp);
 
+// Feed order = last ACTIVITY, not event date (Florian, 2026-07-13): a
+// late-discovered or substantively updated item surfaces at the top
+// wearing its honest event date plus a "tracked"/"updated" chip
+// (src/lib/activity.ts), instead of sinking unseen into the archive.
 export const items: Item[] = /* @__PURE__ */ sortedCopy(
   (itemsJson as ItemsFile).items,
-  (a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0),
+  (a, b) => {
+    const aa = activityAt(a);
+    const ba = activityAt(b);
+    if (aa !== ba) return aa < ba ? 1 : -1;
+    return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+  },
 );
 
 const signalsFile = signalsJson as unknown as SignalsFile;
