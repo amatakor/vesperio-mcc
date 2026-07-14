@@ -284,12 +284,14 @@ jobs:
             .image-judge/ranking.json as one JSON object:
             {"<item-id>": {"order": ["<file>", ...], "reason": "<one short line>"}, ...}
             covering every item in the manifest, using only file names
-            that appear in the manifest. Do nothing else.
+            that appear in the manifest. Call the Write tool with exactly
+            the relative path .image-judge/ranking.json (no leading slash,
+            no absolute path). Do nothing else.
           claude_args: |
             --model claude-haiku-4-5
             --max-turns 40
             --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup"
-            --allowedTools "Read,Write(./.image-judge/ranking.json)"
+            --allowedTools "Read,Write(.image-judge/ranking.json),Write(./.image-judge/ranking.json),Write(/${{ github.workspace }}/.image-judge/ranking.json)"
 
       - name: Apply judged artwork (falls back to og:image order, then licensed stock)
         run: bun scripts/fetch-thumbs.ts --apply

@@ -152,6 +152,20 @@ function fitFor(dim: { w: number; h: number } | null): "contain" | undefined {
   return ratio >= 0.85 && ratio <= 1.18 && Math.max(dim.w, dim.h) <= 900 ? "contain" : undefined;
 }
 
+/**
+ * Logo-suspect for candidate ORDERING (never display): near-square at any
+ * size. Press photographs are almost never 1:1; og:image logos frequently
+ * are, and they come at 1024x1024 as often as 400x400 (the Flexell logo,
+ * 2026-07-14, sailed past fitFor's 900px display cap and outranked the
+ * article's real photograph). A near-square candidate stays usable, it
+ * just yields to any non-square one when no judge ranking exists.
+ */
+export function logoShaped(dim: { w: number; h: number } | null): boolean {
+  if (!dim || dim.w <= 0 || dim.h <= 0) return false;
+  const ratio = dim.w / dim.h;
+  return ratio >= 0.85 && ratio <= 1.18;
+}
+
 /** Reads the on-disk file for a re-hosted image src and returns its fit. */
 function fitForLocalSrc(src: string): "contain" | undefined {
   if (!src.startsWith("/img/items/")) return undefined; // external/stock: leave as cover
@@ -409,7 +423,7 @@ async function imageFromSources(
       file: dl.file,
       sha256: dl.sha256,
     };
-    if (fitFor(dl.dim)) {
+    if (logoShaped(dl.dim)) {
       // Logo-shaped: usable, but keep looking for a real photo first.
       if (!logoFallback) logoFallback = img;
       continue;
@@ -506,7 +520,7 @@ async function collectCandidates(item: {
         file: dl.file,
         url,
         page: cand.url,
-        logo_shaped: fitFor(dl.dim) === "contain",
+        logo_shaped: logoShaped(dl.dim),
         sha256: dl.sha256,
       });
     }
@@ -546,7 +560,17 @@ async function applyMain(data: ItemsFile, itemsPath: string, stock: StockMap): P
   try {
     ranking = JSON.parse(readFileSync(join(JUDGE_DIR, "ranking.json"), "utf8")) as typeof ranking;
   } catch {
-    console.log("fetch-thumbs --apply: no ranking.json; using og-image-first order");
+    if (manifest.items.length > 0) {
+      // Staged candidates with no ranking means the judge step ran and
+      // wrote nothing (2026-07-14: a Write permission mismatch silently
+      // degraded a full sweep to fallback order). Surface it as a GitHub
+      // Actions warning so a broken judge is visible on the run page.
+      console.log(
+        `::warning::fetch-thumbs --apply: judge wrote no ranking.json for ${manifest.items.length} staged item(s); using og-image-first order`,
+      );
+    } else {
+      console.log("fetch-thumbs --apply: no ranking.json; using og-image-first order");
+    }
   }
   const byId = new Map(manifest.items.map((m) => [m.id, m.candidates]));
 

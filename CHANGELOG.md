@@ -97,6 +97,18 @@ fallback to the old behavior on any failure. A companion tool lets
 Florian override any item's artwork with another image from the
 item's own sources through the same gates.
 
+The artwork judge got its pen back (2026-07-15): its first day in
+production, the judge ranked candidates for two full sweeps but a
+too-strict write permission silently discarded every ranking, and the
+fallback order shipped a 1024x1024 company logo over the article's
+real photograph because the logo detector only recognized logos up to
+900px. The write permission now accepts every spelling of the ranking
+file's path (still that one file, the judge's seal unchanged), a
+judge that writes nothing now raises a visible warning on the run
+page instead of degrading silently, and the fallback's logo test is
+size-independent, so a near-square image of any size yields to a real
+photograph.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
