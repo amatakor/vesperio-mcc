@@ -1682,3 +1682,48 @@ a newer entry if a lesson changes.
   harvester queue's Google News/Reuters coverage -- a useful independent
   confirmation signal, though the formal scoring sources ended up being
   TechCrunch/Reuters/Space.com since faa.gov itself couldn't be fetched.
+
+## Normal-mode sweep, ~10h11m gap, unfiltered full source list (2026-07-14)
+
+- 2026-07-14-A: First application of the 2026-07-12-A megaconstellation-cadence
+  ruling since it was written: drafted a single routine Starlink batch launch
+  (Starlink Group 15-14, Vandenberg, no reuse record or first) at impact
+  `noise`, sourced to Launch Library (computed) plus NASASpaceflight's preview
+  (trade). No sweep in the ~10 days since the ruling had actually itemized a
+  non-record Starlink batch despite dozens flying; this run did, per the
+  written rule's plain text ("never discard... routine batches... publish at
+  noise"). Needed `dedup_distinct` against three other SpaceX/launch-category
+  items inside 7 days (a Rocket Lab CFO commentary item and two other boosters'
+  reuse-record launches) -- the same-company-plus-category dedup heuristic
+  fires on any two SpaceX launch items regardless of which booster/mission.
+  Flag for Florian: if the intent was narrower than the literal text (e.g.
+  only cadence launches that are otherwise slow news days, or one per
+  provider per sweep), the rule as written will itemize every non-record
+  Starlink/Guowang/G60 batch every sweep going forward.
+- 2026-07-14-B: finalize-sweep's anti-spoof gate (`FIXED_OFFICIAL_HOSTS` in
+  scripts/finalize-sweep.ts) has no `.mil` rule, only `.gov` and a fixed list
+  (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
+  itu.int, unoosa.org, europa.eu). A genuine SDA press release on sda.mil
+  (Space Development Agency, an official DoD source) cannot be classed
+  `official_record` even though it's exactly the kind of source that class
+  exists for. Worked around it by leading with a trade source (SpaceNews)
+  that covers the full two-company story and attaching the contractor's own
+  newsroom page (first_party, registry-matched) as corroboration instead.
+  Worth a structural-touch fix to add `.mil` (or specific SDA/Space Force
+  hosts) to the fixed official-host list.
+- 2026-07-14-C: Two independent trade/regional outlets covering the same
+  government press release in their own words (SDA's L3Harris/Sierra Space
+  Tranche 3 award: SpaceNews + Via Satellite; Sonatel's Gandoul teleport
+  upgrade: Via Satellite + Space in Africa + TechAfrica News) counted as
+  distinct corroboration sources, not a wire rewrite -- each had its own
+  framing/quotes rather than reprinting one press release's exact text,
+  consistent with the 2026-07-12-H JAXA/RV-X precedent (two wire services)
+  extended here to two/three trade outlets on one government or corporate
+  release.
+- 2026-07-14-D: A Google News RSS redirect URL for a NASA Science blog post
+  ("NASA's SunRISE Mission Changes Launch Vehicle to SpaceX Falcon Heavy")
+  failed to resolve via WebFetch (confirms 2026-07-08-C2's dead-redirect
+  pattern), but a plain WebSearch for the exact headline surfaced the direct
+  science.nasa.gov URL, which fetched cleanly as a first-party/official
+  .gov source. Try a headline WebSearch before giving up on a Google News
+  redirect that won't resolve.
