@@ -1772,3 +1772,63 @@ a newer entry if a lesson changes.
   2026-07-11-B on a new script, not just `bun run build`); did not
   retry past one attempt since finalize-sweep's own internal validators
   already confirmed a clean merge ("merged 1 new, 0 updated, 0 held").
+
+## Normal-mode sweep, ~8h12m gap, unfiltered full source list (2026-07-14, third)
+
+- 2026-07-14-J: `bun run build` was denied twice by this interactive
+  session's permission gate; per 2026-07-11-B/2026-07-14-I, stopped after
+  two attempts and relied on finalize-sweep's own schema/anti-spoof
+  validation ("merged 6 new, 0 updated, 1 held") plus a read-only `jq`
+  spot-check of the merged items instead. This gate denial for
+  build/check scripts (as opposed to read-only `bun scripts/*-context.ts`
+  reads) looks like a standing property of this session type, not a
+  one-off.
+- 2026-07-14-K: A company's own newsroom (`news.flyfrontier.com`) is a
+  genuine first-party press release, but finalize-sweep's anti-spoof gate
+  rejects `first_party` for ANY domain not in `FIXED_OFFICIAL_HOSTS` or
+  the registry's recorded hosts -- and airlines like Frontier are not
+  registry entities (they're not a tracked constellation/vehicle/
+  spaceport/ecosystem org), so the gate has no host to match against.
+  Worked around exactly like the 2026-07-14-B SDA/.mil case: led with a
+  trade source (The Points Guy) that independently reported the same
+  facts, kept the company newsroom link in `secondary_urls` for readers,
+  and dropped it from `scoring.sources` entirely rather than mis-class it
+  as wire_pr/trade/informal.
+- 2026-07-14-L: The same-company-plus-category dedup heuristic fired
+  four separate times against four different unrelated existing items
+  from exactly one week earlier (2026-07-07, all four sharing company
+  "SpaceX"): a Wall-Street-price-target commentary, a Nasdaq-100
+  inclusion event, a Rocket Lab CFO rideshare-access quote (category
+  launch), and the original Starlink Aviation price-doubling announcement
+  (category product, matched twice: once against a new MRV launch-date
+  item and once against a commentary item that was itself a reaction to
+  that same price hike). All four cleared with one `dedup_distinct` entry
+  apiece; confirms 2026-07-14-F's finding that a single new item, or even
+  a batch of same-day items, can rack up several distinct matches against
+  one busy prior date for the same mega-actor.
+- 2026-07-14-M: A commentary item that is itself a reaction to an
+  existing factual item (a private-jet CEO's on-the-record complaint
+  about the Starlink Aviation price hike, published a week after the
+  original announcement) still needs `dedup_distinct` against that
+  original item, not an `updates[].attach` -- commentary must stand as
+  its own item and never reinforce a factual item's SNR (CLAUDE.md), so
+  treating the reaction as a distinct dedup-attested event rather than a
+  same-event update is the correct shape even though it is a direct
+  response to the earlier story.
+- 2026-07-14-N: Vivienne Machi's Aviation Week author page surfaced two
+  July 14-dated pieces; one (Northrop Grumman's MRV launch-date setting)
+  was genuinely new, the other (Space Force/Impulse Space NSSL Lane 1
+  vendor-pool piece) turned out to be her write-up of the already-
+  published July 8 event -- always check existing[] by event, not by the
+  freshness of the byline date, even for a whitelisted signal's own
+  reporting.
+- 2026-07-14-O: A month-old, conflict-adjacent government statement
+  (Iran/Fars News declaring Starlink ground stations military targets,
+  ~June 11) resurfacing today only through low-quality stock-market
+  clickbait ("Iran Just Put SpaceX in Its Crosshairs") was held rather
+  than drafted or discarded: it plausibly fits the geopolitical carve-in
+  but also reads as conflict/operational-use commentary the scope
+  otherwise excludes, and chasing it now would mean backfilling a
+  five-week-old event on the strength of financial punditry rather than
+  fresh reporting. Same pattern as 2026-07-06-J: a genuine scope question
+  belongs in `held`, not silently published or silently dropped.
