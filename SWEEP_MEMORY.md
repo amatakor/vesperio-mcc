@@ -1727,3 +1727,48 @@ a newer entry if a lesson changes.
   science.nasa.gov URL, which fetched cleanly as a first-party/official
   .gov source. Try a headline WebSearch before giving up on a Google News
   redirect that won't resolve.
+
+## Narrow same-day re-check, ~3h17m gap, unfiltered full source list (2026-07-14, second)
+
+- 2026-07-14-E: federalregister.gov qualifies as `official_record` even
+  though it's absent from `FIXED_OFFICIAL_HOSTS`: finalize-sweep's
+  anti-spoof gate has a separate, unconditional `host.endsWith(".gov")`
+  check (scripts/finalize-sweep.ts) that fires before the fixed-list/
+  registry-host checks, and federalregister.gov ends in `.gov`. Useful
+  for FAA/agency Federal Register notices generally. The document page
+  itself is bot-walled (redirects to unblock.federalregister.gov, a
+  CAPTCHA page) on a plain WebFetch, but the Federal Register's own API
+  (`federalregister.gov/api/v1/documents/<doc-number>.json`) returns the
+  title, abstract, docket number, and comment-period dates cleanly and
+  counts as fetching that same official source.
+- 2026-07-14-F: The same-company-plus-category dedup heuristic can trip
+  TWICE on one new item against two different unrelated existing items:
+  a new FAA draft-EA item on SpaceX Starship Pacific reentry zones
+  matched both 2026-07-13-faa-closes-starship-flight12-investigation
+  (same agency, different proceeding) and
+  2026-07-08-earthjustice-fcc-orbital-data-center-peis (different
+  agency entirely, FCC vs FAA, third-party petitioner) purely on
+  shared company "SpaceX" + category "regulatory" within 7 days.
+  finalize-sweep rejects until every matching existing id gets its own
+  dedup_distinct entry, not just the first one found -- read the
+  rejection message for the specific id it names and expect it may
+  need a second pass if another match exists it didn't report yet.
+- 2026-07-14-G: A Google News EO-tagged headline ("Greece Launches First
+  National Earth Observation Microsatellite") reads like new discovery
+  but was the same Hyperion GR-1 launch already published July 7 as
+  2026-07-07-open-cosmos-balearic-greece-satellites, just reframed by a
+  different outlet a week later -- confirms the standing discipline of
+  checking existing[] before drafting any queue/search hit, even ones
+  with a fresh Google News timestamp.
+- 2026-07-14-H: A europeanspaceflight.com WebSearch hit ("ESA Backs
+  EuroSpaceport's North Sea Launch Site") that reads current turned out
+  to be dated July 16, 2025 on direct fetch -- a full year stale -- and
+  doubly out of scope anyway (SpaceForest's Perun is a suborbital
+  vehicle, not the orbital-only launch-vehicle scope). A second reminder
+  that a WebSearch result's apparent freshness proves nothing; open the
+  article and read its actual dateline.
+- 2026-07-14-I: `bun scripts/check-feed.ts` was denied by the interactive
+  session's permission gate on the first attempt (confirms
+  2026-07-11-B on a new script, not just `bun run build`); did not
+  retry past one attempt since finalize-sweep's own internal validators
+  already confirmed a clean merge ("merged 1 new, 0 updated, 0 held").
