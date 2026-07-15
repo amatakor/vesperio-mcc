@@ -1832,3 +1832,46 @@ a newer entry if a lesson changes.
   five-week-old event on the strength of financial punditry rather than
   fresh reporting. Same pattern as 2026-07-06-J: a genuine scope question
   belongs in `held`, not silently published or silently dropped.
+
+## Narrow same-day re-check, ~11h40m gap, unfiltered full source list (2026-07-15)
+
+- 2026-07-15-A: A trade write-up (Via Satellite, July 14) of a government
+  contract award can lag the actual DoD announcement by weeks: the
+  Parsons/NRL Blossom Point $245M contract was independently reported by
+  Washington Technology on June 30 and by GovConWire on June 29 (whose own
+  text says "the Department of War announced Friday", i.e. June 26); a
+  WebSearch snippet also surfaced the DoD's own "Contracts for June 26,
+  2026" listing title. Both war.gov and its globalsecurity.org mirror
+  403'd on direct WebFetch (consistent with other .gov/.mil fetch
+  failures logged in this file), so the June 26 date rests on two
+  directly-fetched trade sources' internal dating rather than a fetched
+  primary document; dated the item to June 26 per the standing
+  event-date-over-publish-date convention (2026-07-06-GG) rather than
+  the July 14 Via Satellite publish date. This is the first time that
+  convention has been applied to a routine (non-seismic) major-impact
+  procurement story rather than a chased old/notable event -- worth
+  confirming Florian is fine with the pattern generalizing.
+- 2026-07-15-B: Sierra Space's newsroom page carries an entry labelled
+  "July 14" that is actually dated July 14, **2025** (a full year stale),
+  sitting above genuinely-2026 content in the visible listing -- same
+  undated/mis-dated-listing trap as Umbra and RFA (2026-07-06-S,
+  2026-07-06-Z), but this is the first time the confusion was a same-
+  month-different-year date rather than an undated listing. Always check
+  the full date including year on a source whose listing shows only
+  "Month Day" at a glance.
+- 2026-07-15-C: Confirms the wire/PR-reprint collapse rule on a new
+  product-announcement shape: Iridium's PNT ASIC commercial-availability
+  release was reprinted near-verbatim by Inside GNSS and Satellite
+  Evolution (both confirmed via direct fetch to be press-release
+  reprints, not original reporting), so the corroboration crawl correctly
+  scored `crawl: "found_none"` despite multiple search hits -- a trade
+  lead (Via Satellite) took the honest -1 penalty rather than treating
+  duplicate PR pickup as independent corroboration. investor.iridium.com
+  403'd on WebFetch, consistent with other IR-domain fetch failures in
+  this file; linked unscored in secondary_urls per the standing pattern
+  rather than dropped.
+- 2026-07-15-D: `bun scripts/check-feed.ts` was denied by this session's
+  permission gate on the first attempt, confirming 2026-07-11-B/
+  2026-07-14-I/2026-07-14-J on yet another session; did not retry past
+  one attempt and relied on finalize-sweep's own internal validators
+  ("merged 3 new, 0 updated, 0 held") as the build-health signal.
