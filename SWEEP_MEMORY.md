@@ -1875,3 +1875,80 @@ a newer entry if a lesson changes.
   2026-07-14-I/2026-07-14-J on yet another session; did not retry past
   one attempt and relied on finalize-sweep's own internal validators
   ("merged 3 new, 0 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~3h33m gap, unfiltered full source list (2026-07-15, second)
+
+- 2026-07-15-E: A whitelisted signal's post can point at a genuinely new
+  event that predates the run's own `lastSweep` cutoff without having
+  been caught by the prior sweep: Marcia Smith's Bluesky post about
+  ispace-US/Draper's NASA CLPS CP-12 task-order termination was itself
+  timestamped ~2 hours before this run's `lastSweep`, meaning the prior
+  sweep's window technically covered it but missed it (queue/signals
+  rotation gaps happen). Chased it directly via ispace's own newsroom
+  instead of treating the gap as disqualifying.
+- 2026-07-15-F: New structural gap, first time hit cleanly with no
+  workaround available: ispace (the Japanese lunar-lander company,
+  ispace-inc.com/ispace-us.com) and Draper have NO registry profile at
+  all, so `loadRegistryHosts` has nothing to match and ispace's own
+  first-party newsroom page cannot be classed `first_party`. Unlike the
+  2026-07-07-K Orbit Fab / 2026-07-08-A ArkEdge pattern (lead with a
+  gate-safe trade source instead), this event was hours old with zero
+  trade pickup yet, so there was no alternative gate-safe lead to
+  substitute. Held it in the edit queue rather than mis-classing the
+  source as `informal` (which 2026-07-14-K's Frontier/SDA precedent
+  treats as a misclassification, not a safe fallback) or dropping the
+  only source entirely (which would leave no scoring.sources at all).
+  Worth an ispace registry profile at the next structural touch; it is
+  a real, recurring actor (CLPS, Astrobotic-adjacent, HAKUTO-R) that
+  keeps tripping this gap.
+- 2026-07-15-G: A WebSearch for old-story-shaped queries can resurface a
+  same-headline-pattern story from years earlier: searching for the
+  2026 ispace/Draper CP-12 termination surfaced a 2023 SpaceNews piece
+  titled "Industry puzzled by NASA withdrawal of CLPS task order" that
+  reads as a perfect match but covers a completely different, earlier
+  CP-12 withdrawal-and-re-release episode over a foreign-ownership
+  compliance question. Confirmed via the article's own body text
+  (dated Feb 2023 events) before ruling it out as corroboration; would
+  have been a serious mis-attribution if used on headline match alone.
+- 2026-07-15-H: A discovery-pass M&A query ("space company acquisition
+  merger announced July 2026") surfaced a real, never-covered, two-week-
+  old deal (Mitsubishi Electric's July 2 acquisition of ground-station-
+  as-a-service provider Infostellar) alongside several already-published
+  deals (MDA/CLS, Rocket Lab/Iridium, Amazon/Globalstar) in the same
+  result set -- confirms 2026-07-13-A's pattern that routine discovery
+  queries, not just the harvester queue, are where predates-the-window
+  chases originate. Neither Mitsubishi Electric nor Infostellar have a
+  registry profile, so the trade lead (Via Satellite) stayed the
+  scoring source and Mitsubishi's own PR PDF landed in secondary_urls
+  unscored; every other pickup found (BusinessWire, Engineering.com,
+  MSN, Yahoo mirror) was a same-text press-release relay confirmed via
+  direct fetch (engineering.com explicitly reads as PR relay, no
+  byline/original reporting), so `crawl: "found_none"` was honest.
+- 2026-07-15-I: A Russian senator's (Dmitry Rogozin, ex-Roscosmos head)
+  on-the-record Telegram call to "systematically zero out" the Starlink
+  constellation to help Russia win the war was discarded silently as
+  conflict rhetoric, not held: unlike the 2026-07-14-O Iran
+  "military target" precedent (an administrative/policy classification,
+  held as borderline), this is pure operational-threat rhetoric with no
+  resulting commercial-space fact (no sanctions, no service change, no
+  operator confirmation) -- it fails the geopolitical carve-in's
+  "documented commercial-space angle" test more clearly than the Iran
+  case did.
+- 2026-07-15-J: Iran's "Martyr Soleimani" 24-satellite IoT constellation
+  resurfaced via a WANA News Agency piece but traces back to a
+  first-unveiled-2023 program with no fresh discrete fact in this
+  article beyond a general "launches expected 2026-2027" status;
+  discarded as stale resurfacing (2026-07-12-K pattern) rather than
+  held, distinct from the IRIDE/sovereign-constellation precedent which
+  had a genuine new dated milestone.
+- 2026-07-15-K: A rocket "arriving at the launch site for assembly and
+  testing" ahead of a launch with no firm date (Chang'e-7's Long March 5
+  arriving at Wenchang, "launch could occur around late August" per
+  Andrew Jones) does not itself meet any of the science-category
+  event types (launch, arrival-at-destination, orbit insertion, landing,
+  sample return, provider selection, anomaly) -- "arrival" in the
+  CLAUDE.md list means arrival at a science target (e.g. an asteroid),
+  not a rocket showing up at its own launch pad. Left undrafted as a
+  pre-launch logistics milestone below the inclusion bar, same
+  treatment as the ISRO Gaganyaan crew-module-test precedent
+  (2026-07-12-L): wait for the actual launch.
