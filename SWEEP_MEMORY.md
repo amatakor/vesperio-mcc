@@ -1952,3 +1952,43 @@ a newer entry if a lesson changes.
   pre-launch logistics milestone below the inclusion bar, same
   treatment as the ISRO Gaganyaan crew-module-test precedent
   (2026-07-12-L): wait for the actual launch.
+
+## Normal-mode sweep, ~8h14m gap, unfiltered full source list (2026-07-15, third)
+
+- 2026-07-15-L: A "vehicle manufacturers" funding story naming launch
+  vehicles among several unrelated customer verticals (Senra, an
+  ex-SpaceX wire-harness startup's $65M Series B) is out of scope on the
+  same logic as the 2026-07-10-A Venus Aerospace precedent: pressed via
+  direct fetch, the founder named "submarines and maritime vehicles...
+  defense vehicle systems on land, to launch vehicles, to satellites" as
+  its customer base, i.e. a diversified industrial supplier, not a
+  space-focused company with space as its primary market. Don't draft on
+  a headline's SpaceX-alumni framing alone; check what the company
+  actually sells before publishing.
+- 2026-07-15-M: A same-company-plus-category dedup hit can span exactly
+  7 days and still fire: a Loft Orbital satellite-bus purchase from
+  Airbus/Apex (category "contract") matched the July 8 Loft
+  Orbital/MaiaSpace launch-booking item, also "contract", at exactly the
+  7-day boundary. Cleared with one dedup_distinct entry; the heuristic's
+  window appears inclusive of the boundary day, not just 1-6 days back.
+- 2026-07-15-N: SES's own newsroom (ses.com) carries the exact story a
+  trade outlet (European Spaceflight) broke the same day, but SES has no
+  registry profile, so its page can't be classed first_party -- led with
+  the trade source and linked ses.com unscored in secondary_urls,
+  `crawl: "found_some"` per the 2026-07-07-K pattern (genuine confirmation
+  found, just unscoreable). Airbus's own newsroom listing (checked
+  separately this run) did not carry the story at all, confirming it's
+  worth checking a partner company's own site even when the registered
+  one (Airbus) uses a different subdomain than would pass the gate
+  anyway (space-solutions.airbus.com, not ses.com).
+- 2026-07-15-O: A Google News queue entry ("A SpaceX vet raised $65M...")
+  resolved cleanly via a direct WebSearch for the exact headline quoted,
+  confirming 2026-07-14-D's workaround on a new case: the
+  news.google.com/rss/articles/... redirect itself still returns nothing
+  useful to WebFetch (no batchexecute JS render), but quoting the
+  headline as a search phrase reliably finds the TechCrunch original.
+- 2026-07-15-P: `bun scripts/check-feed.ts` was denied by this session's
+  permission gate on the first attempt, confirming 2026-07-11-B and
+  every later entry on yet another session; did not retry past one
+  attempt and relied on finalize-sweep's own internal validators
+  ("merged 5 new, 0 updated, 0 held") as the build-health signal.
