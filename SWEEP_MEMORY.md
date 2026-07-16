@@ -1992,3 +1992,54 @@ a newer entry if a lesson changes.
   every later entry on yet another session; did not retry past one
   attempt and relied on finalize-sweep's own internal validators
   ("merged 5 new, 0 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-07-16)
+
+- 2026-07-16-A: Dedup near-miss: grepping items.json for id substrings
+  ("frontier-air", "indigo-partners") missed the actual existing id
+  ("2026-07-14-frontier-starlink-wifi-fleet") because the slug uses
+  neither company's full name pattern. Drafted a duplicate item before
+  finalize-sweep's own same-company+category dedup gate caught it and
+  named the exact id to check. Recovered by dropping the duplicate and
+  routing three genuinely new sources (SatNews, Broadband Breakfast,
+  Aviation Week) into `updates[].attach` with `bump: "corroboration_4plus"`
+  instead -- free corroboration that pushed the item past 4 distinct
+  sources. Lesson: a grep-by-guessed-slug dedup check is not a substitute
+  for reading the rejection message's exact id; better to grep the
+  candidate's core proper nouns (company name only) across the whole
+  file rather than guessing hyphenated id shapes.
+- 2026-07-16-B: Several Indian outlets (Deccan Herald, Business Standard,
+  BusinessLine, The Hindu) all 403'd on direct WebFetch this run for a
+  genuinely new, wire-corroborated story (former ISRO chief Somanath
+  joining Agnikul Cosmos's board as observer, PTI wire byline confirmed
+  via WebSearch). No fetchable mirror was found in a reasonable number of
+  tries. Dropped the candidate rather than draft from WebSearch-summary
+  prose per the hard fetched-source rule; worth a future sweep re-check
+  in case these domains recover (europeanspaceflight.com-style
+  intermittent blocks, not yet three strikes).
+- 2026-07-16-C: datacenterdynamics.com 403'd on a genuinely new,
+  never-covered story (Eutelsat's July 6 FCC filing for a 528-satellite
+  "Eutelsat Next" constellation, separate from the existing OneWeb
+  build-out). Two paywalled-but-fetchable trade alternates covered the
+  same filing with real extractable content: communicationsdaily.com and
+  spaceintelreport.com (both returned genuine article text via WebFetch
+  despite subscriber paywalls). Led with Communications Daily instead of
+  chasing the blocked DCD link.
+- 2026-07-16-D: Confirmed 2026-07-06-EE's X syndication-endpoint pattern
+  still works (Rocket Lab's own @RocketLab post on its Archimedes
+  second-stage test), but a verified official corporate X/Twitter account
+  can NOT be classed `first_party`: the anti-spoof gate only matches a
+  source's host against registry `website` values, `.gov`, or the fixed
+  official list, and x.com never matches a company's registered website
+  domain (scripts/finalize-sweep.ts `isOfficialHost`, no social-handle
+  special case). Led with Space.com (trade) instead and put the X post in
+  `secondary_urls` unscored, per the standing pattern for direct-source
+  leads the gate cannot accept.
+- 2026-07-16-E: Sierra Space's own newsroom "Sierra Space Awarded $798
+  Million Missile Defense Contract in Support of Golden Dome for America"
+  (July 13) is the same event as the already-published July 14 item
+  "L3Harris and Sierra Space win $1.75 billion SDA missile-tracking
+  award" (the $798M figure is Sierra Space's half of that combined
+  award) -- confirms checking a company's own framing of a contract award
+  against existing[] before treating it as new, even when the headline
+  emphasizes a different program name ("Golden Dome" vs. "AMDT3").
