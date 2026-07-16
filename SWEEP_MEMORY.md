@@ -2043,3 +2043,51 @@ a newer entry if a lesson changes.
   award) -- confirms checking a company's own framing of a contract award
   against existing[] before treating it as new, even when the headline
   emphasizes a different program name ("Golden Dome" vs. "AMDT3").
+
+## Normal-mode sweep, ~3h40m gap, unfiltered full source list (2026-07-16, second)
+
+- 2026-07-16-F: BusinessToday.in fetched cleanly via direct WebFetch for a
+  same-day Somanath/Agnikul Cosmos board story, while Deccan Herald and
+  India Today (both covering the identical announcement) stayed 403'd and
+  their Google News redirect URLs did not resolve either (confirms the
+  standing news.google.com/rss/articles/... dead-redirect pattern,
+  2026-08-08-C2/2026-07-14-D/2026-07-15-O, this time the WebSearch
+  fallback also failed to surface a fetchable mirror). Published on
+  BusinessToday alone with an honest `crawl: "found_none"` (-1 penalty)
+  rather than linking the 403'd Deccan Herald/India Today pages
+  unscored: those pages were never actually fetched this run, so citing
+  them in secondary_urls would have violated the "every source URL was
+  fetched this run" rule even unscored, unlike the ArkEdge/Orbit
+  Fab-pattern cases where the linked page WAS fetched but only failed
+  the anti-spoof gate.
+- 2026-07-16-G: A second confirmed two-wire-service corroboration case
+  (extends 2026-07-12-H's JAXA/RV-X AP-vs-Kyodo precedent): Belgium's
+  Galo military satellite constellation announcement (Defence Minister
+  Francken, >EUR200M, Aerospacelab named as an eligible bidder) was
+  independently reported by Anadolu Agency (English) and by Belga,
+  Belgium's own national wire (confirmed via a direct fetch of
+  parismatch.be, which explicitly bylines the piece "Belga" rather than
+  a named reporter) -- two distinct wire services, not one story
+  reprinted, so both scored. Belga's own site
+  (belganewsagency.eu/press-releases/) 403'd directly; a French regional
+  outlet carrying Belga's byline text worked as the fetchable route to
+  the same wire copy. levif.be 405'd on WebFetch (a new failure code for
+  this project, distinct from the usual 403).
+- 2026-07-16-H: europeanspaceflight.com (the bare site, not the substack
+  mirror) fetched cleanly this run after 403ing on both legs as recently
+  as 2026-07-12-R -- confirms the intermittent-block pattern is still
+  genuinely intermittent, not a slow slide to dead; worth trying the
+  direct site before assuming it needs a workaround.
+- 2026-07-16-I: A former CNSA director's (Ma Xingrui, led the agency
+  2013-2018) expulsion from the Politburo over corruption charges
+  (Bloomberg/Caixin, July 14) was widely reported but carried no stated
+  commercial-space consequence in any source checked; held as a scope
+  question this run (NATO HALO/Iran-Fars precedent) after noticing the
+  PRIOR same-day sweep (05:36 UTC entry in state.json) had already
+  looked at the identical story and silently judged it out of scope
+  rather than holding it. Two consecutive sweeps handling one genuine
+  scope-borderline candidate two different ways (silent discard vs.
+  held) isn't itself harmful, but it's worth remembering that a
+  same-day predecessor sweep's summary/signals notes are worth grepping
+  in state.json before re-relitigating a candidate that was already
+  triaged once today.
