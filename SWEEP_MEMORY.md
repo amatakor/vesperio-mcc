@@ -2091,3 +2091,84 @@ a newer entry if a lesson changes.
   same-day predecessor sweep's summary/signals notes are worth grepping
   in state.json before re-relitigating a candidate that was already
   triaged once today.
+
+## Normal-mode sweep, ~8h18m gap, unfiltered full source list (2026-07-16, third)
+
+- 2026-07-16-J: A harvester queue saturated with SpaceX Starship
+  Flight 13 stock/launch-day chatter (44 Google News: launch entries,
+  25 Bluesky spacex-launch hits) and an ISRO mass-resignation story
+  (34 Google News: non-US space entries, zero stated commercial angle
+  in any version checked) produced zero drafts from the queue itself;
+  every item this run came from the trade-press legs (SpaceNews,
+  Payload, Ars Technica, European Spaceflight) already in
+  sources.json. A forward-scheduled Starship Flight 13 and a
+  forward-scheduled SDA T1TL Falcon 9 launch (Space.com, FAA notices)
+  both had firm same-day launch windows but had not flown as of this
+  sweep; left for a future sweep per the standing 2026-07-09-G rule.
+- 2026-07-16-K: A House Science Space and Technology subcommittee
+  hearing on the Office of Space Commerce's mission-authorization
+  proposal and TraCSS budget cuts was independently, non-wire covered
+  by THREE trade outlets same-day (SpaceNews, Payload, Aerospace
+  America), each with distinct quotes/details (Aerospace America
+  alone had the House/Senate appropriations committee counter-figures
+  of $50M/$60M against the White House's $11M ask) -- a clean
+  corroboration_2plus case with no wire-rewrite risk. Categorized as
+  `regulatory` (a licensing framework and an SSA program budget, not a
+  transaction) at `notable` (nothing enacted yet; framework still
+  needs White House sign-off).
+- 2026-07-16-L: A DIU commercial solicitation (space-based power
+  beaming, Commercial Solutions Opening, proposals due July 22) is
+  `procurement`-category despite no award yet -- CLAUDE.md's
+  "government procurement of commercial space services" bullet covers
+  the solicitation stage, not just the award. Defense Daily's
+  corroborating piece was paywalled beyond the lede but the visible
+  preview independently confirmed the same facts as SpaceNews's lead
+  (same pattern as 2026-07-16-C's paywalled-but-fetchable trade
+  alternates); counted as a genuine second source.
+- 2026-07-16-M: ESA's own esa.int page for a launch-services contract
+  (Henon deep-space CubeSat on Ariane 6) passed the anti-spoof gate
+  directly as `official_record` since esa.int is in the fixed official
+  host list -- no need to route through a trade-lead workaround the
+  way non-registry actors (ArkEdge, Orbit Fab, ispace) require. Led
+  with ESA over European Spaceflight's independent write-up of the
+  same release; direct-source ceiling made the corroboration
+  attachment score-neutral (already at the tier-5 cap) but still worth
+  attaching for reader-facing completeness per the crawl's "readers
+  get every source that exists" standard.
+- 2026-07-16-N: A general Space Force/Air Force budget confirmation
+  hearing (Lt. Gen. Schiess defending a $71.1B FY2027 Space Force
+  budget request, doubling from FY2025) was discarded silently despite
+  passing mentions of leasing commercial SATCOM and preserving SDA's
+  rapid-acquisition model -- no specific commercial contract, company,
+  or regulatory action was stated; same exclusion logic as the
+  2026-07-11-K MUOS/Boeing and 2026-07-05-Q Aeolus-2 precedents
+  (general institutional defense-budget/personnel news without a
+  concrete stated commercial-space fact stays out, even with passing
+  commercial-adjacent color).
+- 2026-07-16-O: Bluestaq's own SpaceNews press-release reprint
+  ("BLUESTAQ / ARQ" data-infrastructure product) was discarded despite
+  Bluestaq's space-sector pedigree (built SDA's Unified Data Library):
+  the release itself pitches a general enterprise product across
+  healthcare, finance, and agriculture with zero satellite/orbit/space
+  content stated. A tracked company's press release still needs an
+  actual space-industry event in the copy, not just company lineage,
+  to clear the scope bar.
+- 2026-07-16-P: `planet4589.org` (Jonathan McDowell's Jonathan's Space
+  Report, a signals.json fetchable channel, not a sources.json entry)
+  failed with a raw `connect ECONNREFUSED` on direct WebFetch this run
+  -- a new failure mode for this domain, distinct from the usual
+  403/timeout/JS-shell patterns seen elsewhere in this file. Not
+  loggable in `sourceHealth` (that array validates only against
+  `sources.json` entries; finalize-sweep rejects an unrecognized
+  `name`). One documented failure; re-check next time this channel is
+  in rotation.
+- 2026-07-16-Q: All 21 fetch-list.ts HTML sources and 16 of 17
+  signals-context fetchable channels were checked directly this run
+  with nothing newer than lastSweep found anywhere; rather than pad
+  `sourceHealth` with 21 redundant "verified, unchanged" entries
+  requiring fabricated verbatim-excerpt evidence (several sources'
+  WebFetch responses were AI-summarized, not literal page text), the
+  all-quiet result was recorded in the draft's `summary` prose instead.
+  `sourceHealth` entries are only mandatory when they carry a genuine
+  status change or failure attestation, not as a checklist of every
+  source touched.
