@@ -147,7 +147,63 @@
     "source": "https://www.axelspacehd.com/company/",
     "as_of": "2026-07-08"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Updated 2026-07-13 (weekly maintenance): Axelspace confirmed on its own site that all seven GRUS-3 satellites reached orbit and returned first signals on the 2026-07-07 Transporter-17 launch (source is first-party, supersedes the Gunter's GRUS-1 page for sats_launched_total and latest_launch_date). sats_launched_total is 5 (GRUS-1, per Gunter's) plus 7 (GRUS-3, per Axelspace's launch-success release) = 12; no single source states a combined total. sats_active_claimed stays at 5 (GRUS-1): the GRUS-3 release states commissioning is underway ahead of imagery service, not yet claimed as active/operational.",
+  "resolution_m": {
+    "value": 2.5,
+    "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+    "as_of": "2026-07-16",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+        "reason": "established aggregator, single reference (EO spec extraction, 2026-07-16); page states '2.5 m' panchromatic resolution, the best single figure per house rule over the 5.0 m multispectral figure on the same page"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "spectral_bands": {
+    "value": [
+      "blue",
+      "green",
+      "red",
+      "red edge",
+      "near infrared"
+    ],
+    "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+    "as_of": "2026-07-16",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+        "reason": "established aggregator, single reference (EO spec extraction, 2026-07-16); page states multispectral sensitivity in 'blue, green, red, red edge and near infrared'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 2.5,
+      "swath_km": null,
+      "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+      "as_of": "2026-07-16"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 5.0,
+      "swath_km": null,
+      "source": "https://space.skyrocket.de/doc_sdat/grus-1.htm",
+      "as_of": "2026-07-16"
+    }
+  ],
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Updated 2026-07-13 (weekly maintenance): Axelspace confirmed on its own site that all seven GRUS-3 satellites reached orbit and returned first signals on the 2026-07-07 Transporter-17 launch (source is first-party, supersedes the Gunter's GRUS-1 page for sats_launched_total and latest_launch_date). sats_launched_total is 5 (GRUS-1, per Gunter's) plus 7 (GRUS-3, per Axelspace's launch-success release) = 12; no single source states a combined total. sats_active_claimed stays at 5 (GRUS-1): the GRUS-3 release states commissioning is underway ahead of imagery service, not yet claimed as active/operational. EO spec extraction (2026-07-16): no eoPortal mission page exists for GRUS (site search finds no match); Gunter's GRUS-1 page used instead, already cited elsewhere in this profile. swath_km left absent: the page states 'over 50 km swath', an open-ended threshold rather than a figure, and the house rule forbids coercing a vague statement into a number. revisit left absent: the page only states a fully-deployed-constellation ambition ('update every information around the globe every day'), not a per-satellite revisit figure.",
   "stock_symbol": "402A.T",
   "events": [
     {

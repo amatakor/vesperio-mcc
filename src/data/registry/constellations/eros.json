@@ -147,7 +147,57 @@
     "source": "https://imagesatintl.com/",
     "as_of": "2026-07-12"
   },
-  "notes": "ImageSat International's EROS satellites. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "resolution_m": {
+    "value": 0.3,
+    "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+    "as_of": "2026-07-16",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+        "reason": "established aggregator, single reference (EO spec extraction, 2026-07-16); page states EROS-C3 panchromatic resolution as '0.30 m', the best single figure across the fleet's generations and the best single figure per house rule over the 0.60 m multispectral figure on the same page"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 11.5,
+    "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+    "as_of": "2026-07-16",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+        "reason": "established aggregator, single reference (EO spec extraction, 2026-07-16); page states EROS-C3 swath as '11.5 km at nadir'"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 0.3,
+      "swath_km": 11.5,
+      "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+      "as_of": "2026-07-16"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 0.6,
+      "swath_km": 11.5,
+      "source": "https://space.skyrocket.de/doc_sdat/eros-c3.htm",
+      "as_of": "2026-07-16"
+    }
+  ],
+  "notes": "ImageSat International's EROS satellites. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. EO spec extraction (2026-07-16): no eoPortal mission page exists for EROS-C/C3 (site search returns only EROS-A and EROS-B pages, both earlier generations); Gunter's EROS-C3 page used instead, already cited elsewhere in this profile for the same generation's resolution figure. resolution_m and swath_km reflect EROS-C3, the fleet's current and highest-resolution generation; revisit and per-generation spectral bands were not stated on the cited page.",
   "events": [
     {
       "date": "2000-12-05",
