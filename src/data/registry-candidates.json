@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-07-15-ast-spacemobile-1b-notes-vertical-integration:ast-spacemobile.sats_launched_total",
+      "item_id": "2026-07-15-ast-spacemobile-1b-notes-vertical-integration",
+      "entity_slug": "ast-spacemobile",
+      "entity_type": "constellation",
+      "field": "sats_launched_total",
+      "value": 10,
+      "metric": "cumulative AST SpaceMobile BlueBird satellites launched, per company SEC disclosure",
+      "same_metric": true,
+      "item_snr": 4,
+      "source_url": "https://www.satellitetoday.com/connectivity/2026/07/16/ast-spacemobile-discloses-delays-to-launch-campaign-explores-vertical-integration/",
+      "action": "null_fill",
+      "proposed_on": "2026-07-17",
+      "status": "pending"
+    }
+  ]
 }

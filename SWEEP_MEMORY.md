@@ -2172,3 +2172,68 @@ a newer entry if a lesson changes.
   `sourceHealth` entries are only mandatory when they carry a genuine
   status change or failure attestation, not as a checklist of every
   source touched.
+
+## Normal-mode sweep, ~13h30m gap, unfiltered full source list (2026-07-17)
+
+- 2026-07-17-A: This interactive session blocks `curl` entirely (both
+  plain and with a descriptive User-Agent) with a bare "This command
+  requires approval" that a retry does not clear, and also blocks the
+  `Write` tool for a brand-new scratch `.ts` file outright ("you
+  haven't granted it yet", also not cleared by retrying). Neither is
+  the scheduled-run sandbox described in CLAUDE.md; this looks like a
+  property of this specific interactive session. Consequence: SEC
+  EDGAR exhibits (ex99-1.htm) that 403 on WebFetch and can't be
+  curled either are unreachable this run; fell back to a StockTitan
+  mirror of the same 8-K as `wire_pr`, per the standing 2026-07-06-FF
+  pattern, rather than forcing the primary fetch.
+- 2026-07-17-B: A Bash command whose stdout exceeds ~2KB is not
+  truncated when redirection (`>`) is unavailable: the tool auto-saves
+  the full output to a `tool-results/*.txt` file under the session
+  transcript dir and shows a 2KB preview, and that file is directly
+  Read-able (with normal pagination) for the rest. Used this to work
+  through a 151KB `candidates-context.ts` dump (133 candidates) without
+  ever needing shell redirection, which is blocked outright in this
+  session (`>` to any path, even inside the repo working directory,
+  errors "blocked... may only write to files in the allowed working
+  directories" despite the target already being one).
+- 2026-07-17-C: `bun run build` was denied by this session's
+  permission gate on two separate attempts, confirming the running
+  string of denials since 2026-07-11-B across many independent
+  sessions; relied on finalize-sweep's own validation ("merged 6 new,
+  0 updated, 0 held") plus a direct grep/spot-check of the merged
+  items' `snr` fields as the build-health signal.
+- 2026-07-17-D: The same-company-plus-category dedup heuristic's 7-day
+  window is confirmed inclusive of the exact boundary on a second,
+  cleaner case (extends 2026-07-15-M): two new SpaceX `launch` items
+  dated 2026-07-16 both matched an existing 2026-07-09 item (a Falcon 9
+  reuse-record milestone), exactly 7 days back. Both new items are
+  routine/newsworthy launches from providers/payloads unrelated to
+  that booster-record item, cleared with one `dedup_distinct` entry
+  apiece.
+- 2026-07-17-E: AST SpaceMobile's registry `sats_launched_total` field
+  was null; the company's own July 15 SEC filing (via a Via
+  Satellite/StockTitan read) states "10 satellites launched" as a
+  distinct metric from the registry's CelesTrak-computed
+  `sats_active_verified` (14, cataloged-on-orbit). Crossfed as a
+  same_metric null-fill candidate rather than treating the two figures
+  as contradicting each other.
+- 2026-07-17-F: A widely-titled Indian trade story (Reliance
+  Jio's LEO plan getting a "technical nod" from IN-SPACe, carried by
+  Developing Telecoms, TelecomTalk, and tele.net.in per the harvester
+  queue) traces to one unconfirmed ETTelecom report citing anonymous
+  government sources; only Developing Telecoms was actually fetchable
+  this run (TelecomTalk/tele.net.in's specific July 17 URLs 404'd and
+  no WebSearch fallback found a live mirror). Scored `crawl:
+  "found_none"` and a single trade source despite the apparent multi-
+  outlet spread, since a story can't be cited unless it was actually
+  fetched this run (2026-07-16-F precedent) and every route to a
+  second byline dead-ended.
+- 2026-07-17-G: A cluster of ~15 near-identical "100+ ISRO scientists
+  resign" queue entries (Google News: non-US space, spanning many
+  Indian outlets and a full day) was reviewed and left undrafted: it
+  is a government-agency personnel/brain-drain story with no company
+  named as a hiring beneficiary and no stated commercial-space fact in
+  any headline/excerpt checked, matching the standing institutional-
+  personnel exclusion (2026-07-16-N and earlier). A EurekAlert! debris
+  "tow truck" release was similarly left out as academic research
+  press coverage, not a company/industry event.
