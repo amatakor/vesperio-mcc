@@ -2237,3 +2237,56 @@ a newer entry if a lesson changes.
   personnel exclusion (2026-07-16-N and earlier). A EurekAlert! debris
   "tow truck" release was similarly left out as academic research
   press coverage, not a company/industry event.
+
+## Narrow same-day re-check, ~12.5hr gap, unfiltered full source list (2026-07-17, second)
+
+- 2026-07-17-H: This session additionally blocks WebFetch outright on
+  several major domains that have worked in prior sessions: reuters.com,
+  arstechnica.com, upi.com, and hartpunkt.de all returned either a flat
+  "unable to fetch" tool error or an HTTP 403 on the first attempt, no
+  retry helped. Worked around by using WebFetch on secondary mirrors
+  (Seeking Alpha for a Reuters/WSJ story, Teslarati/Space search-summary
+  for Starship coverage instead of Ars Technica's Rocket Report) rather
+  than treating the story as unreachable. Confirms this is a per-session
+  domain-blocklist property (2026-07-17-A already logged curl/Write
+  blocks this same session), not a universal dead-source finding --
+  don't flip sourceHealth to "dead" off one session's failures alone.
+- 2026-07-17-I: A WebSearch result can point to a URL that 404s on direct
+  fetch even seconds later (thequantuminsider.com/2026/07/09/bqp-awarded-...):
+  the search tool's index had it, WebFetch did not. Don't cite a URL you
+  couldn't actually load; substituted a second outlet (Quantum Zeitgeist)
+  that did fetch cleanly, and dated the item to the discovery date since
+  impact was noise-tier (the predates-window chase exception is for
+  notable/seismic only, per 2026-07-13-L).
+- 2026-07-17-J: A same-day company press release (HawkEye 360 via PR
+  Newswire, published 08:30 ET) and a trade outlet's write-up of the same
+  release (Via Satellite, same day, matching quotes near-verbatim) still
+  counted as two distinct scoring sources rather than one wire-rewrite
+  unit: their headlines differ enough ("...Details Tactical Direct
+  Downlink..." vs "...Proves Commercial Enabled Track Custody...") that
+  the code's title-SimHash collapse did not fire, and finalize-sweep
+  scored both, landing the item at SNR 4. Contrast with the 2026-07-15-C
+  Iridium PNT ASIC case (trade lead + literal reprints of the same text
+  scored found_none) -- the distinguishing test is whether the second
+  piece is independently *titled/framed* coverage of a release, not
+  whether it draws on the same underlying announcement.
+- 2026-07-17-K: An unconfirmed "in talks" WSJ scoop (SpaceX/Pentagon AI
+  compute capacity, "could still fall apart") was published rather than
+  held: CLAUDE.md's hard rule 5 ("weak sourcing is never a reason to
+  hold") reads as overriding the older 2026-07-05-B tier-2-tracing
+  discipline for this shape of story now that the site has an explicit
+  low-SNR-early-signal doctrine. Led with a Seeking Alpha mirror (the
+  only fetchable page with real WSJ-attributed text; wsj.com itself is
+  paywalled and reuters.com is blocked this session per 2026-07-17-H),
+  classed `informal` since Seeking Alpha is a relay/aggregator rather
+  than original reporting, crawl found_none (every other hit was the
+  same WSJ scoop mirrored). Landed at SNR 1, the honest floor. Flag for
+  Florian if tier-2-tracing should still win over rule 5 for this
+  specific "anonymous-sourced M&A/deal rumor" shape.
+- 2026-07-17-L: First time an Artemis Accords signing (Serbia, 69th
+  signatory, July 16) came up in any sweep. No stated commercial-space
+  consequence in any source checked (pure diplomatic/policy signing);
+  held as a genuine scope question rather than published or discarded,
+  same bucket as the NATO HALO and Ma Xingrui precedents. Worth a
+  standing ruling since Accords signings recur (10 in 2026 alone per
+  NASA's own count) and each one will re-raise this question otherwise.
