@@ -17,7 +17,11 @@
  * Scheduled agents never run this (not in any workflow allowlist);
  * drafting agents still never choose images.
  *
- * Usage: bun scripts/set-item-image.ts --item <id> --url <image-url> [--page <origin-page-url>]
+ * Usage: bun scripts/set-item-image.ts --item <id> --url <image-url> [--page <origin-page-url>] [--no-trim]
+ *
+ * Near-white letterbox borders are shaved automatically (see
+ * trimWhiteBorders in fetch-thumbs.ts); --no-trim keeps the image
+ * exactly as the source serves it.
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
@@ -74,7 +78,9 @@ if (dim.w < MIN_DIMENSION || dim.h < MIN_DIMENSION) fail(`too small: ${dim.w}x${
 const aspect = dim.w / dim.h;
 if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) fail(`ad-shaped aspect: ${dim.w}x${dim.h}`);
 
-const reencoded = await reencodeForStorage(buf, ext);
+const reencoded = await reencodeForStorage(buf, ext, {
+  trim: !process.argv.includes("--no-trim"),
+});
 const outExt = reencoded ? "webp" : ext;
 const outBuf = reencoded ?? Buffer.from(buf);
 const meta = await sharp(outBuf).metadata();
