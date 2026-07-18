@@ -132,6 +132,23 @@ must be near-white, at least half the image must survive, and the
 result must still pass the minimum-size gate. The manual override
 tool gets a --no-trim flag to keep an image exactly as served.
 
+The dispute machinery learned to tell time (2026-07-18): the day
+India's first private rocket reached orbit, the scoring engine
+marked the item disputed because the registry still said the vehicle
+had zero flights, on a snapshot dated ten days before the launch.
+Both statements were true on their own dates; nothing was disputed.
+Cumulative counters that only ever grow (flight counts, satellites
+launched, launches from a pad) are now superseded in time rather
+than contradicted: a higher or equal count dated after the snapshot
+proposes a registry refresh instead of engaging the dispute rules,
+while a count that goes DOWN still reconciles as a genuine conflict.
+The same fix gave disputes an honest lifecycle: they now survive
+ordinary rescores (previously any rescore silently dropped the
+downgrade while the flag stayed on), and the one way to clear a
+dispute is an explicit attested resolution whose note says why. The
+false flag on the Vikram-1 item itself was removed by hand the same
+morning.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
