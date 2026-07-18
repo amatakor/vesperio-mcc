@@ -740,6 +740,89 @@ describe("finalize-sweep merge", () => {
     expect(state.sweeps[0]!.snr_movements).toMatchObject([{ id: existingItem.id, from: 5, to: 4 }]);
   });
 
+  // Attested dispute resolution (2026-07-18, from the Vikram-1 false
+  // dispute): rescores keep a dispute's downgrade and flag by default;
+  // only dispute_resolved: true drops both.
+  function seedDisputedItem(): void {
+    const disputed = {
+      ...existingItem,
+      snr: 4,
+      snr_trace: {
+        ...existingItem.snr_trace,
+        modifiers: [{ type: "dispute", delta: -1, reason: "test fixture: lost a same-metric conflict" }],
+        final: 4,
+      },
+      disputed: true,
+    };
+    writeFileSync(
+      join(dataDir, "items.json"),
+      JSON.stringify({ items: [disputed] }, null, 2),
+    );
+  }
+  const plainRescore = {
+    sources: [{ url: existingItem.source_url, outlet: "Example Trade", class: "trade" }],
+    extraordinary: false,
+    crawl: "found_some",
+    whitelist: null,
+  };
+
+  test("a rescore of a disputed item keeps the downgrade and the flag", () => {
+    seedDisputedItem();
+    writeDraft({
+      updates: [{ id: existingItem.id, patch: {}, note: "routine rescore", rescore: plainRescore }],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.errors).toEqual([]);
+    const patched = readItems().items[0]!;
+    expect(patched.disputed).toBe(true);
+    expect(patched.snr_trace.modifiers.some((m) => m.type === "dispute")).toBe(true);
+  });
+
+  test("dispute_resolved: true clears the flag and drops the downgrade", () => {
+    seedDisputedItem();
+    writeDraft({
+      updates: [
+        {
+          id: existingItem.id,
+          patch: {},
+          note: "crossfeed same_metric misjudgment: the registry snapshot predates the event",
+          rescore: plainRescore,
+          dispute_resolved: true,
+        },
+      ],
+    });
+    // now pinned inside the 14-day persistence window so the freshly
+    // undisputed item does not immediately earn the persistence bump.
+    const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-07-05T05:00:00.000Z") });
+    expect(result.errors).toEqual([]);
+    const patched = readItems().items[0]!;
+    expect(patched.disputed).toBeUndefined();
+    expect(patched.snr_trace.modifiers.some((m) => m.type === "dispute")).toBe(false);
+    // trade lead: base 3, no dispute downgrade left.
+    expect(patched.snr).toBe(3);
+  });
+
+  test("dispute_resolved without a rescore block is rejected", () => {
+    seedDisputedItem();
+    writeDraft({
+      updates: [{ id: existingItem.id, patch: {}, note: "n", dispute_resolved: true }],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("requires a rescore block");
+  });
+
+  test("dispute_resolved on an undisputed item is rejected", () => {
+    writeDraft({
+      updates: [
+        { id: existingItem.id, patch: {}, note: "n", rescore: plainRescore, dispute_resolved: true },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("is not disputed");
+  });
+
   test("rescore and bump together are rejected", () => {
     writeDraft({
       updates: [

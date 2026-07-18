@@ -68,6 +68,21 @@ const ICEYE_PROFILE = {
   notes: null,
 };
 
+/** Mirrors the Vikram-1 profile that triggered the 2026-07-18 false
+    dispute: unscored Wikipedia flight counts (canonical SNR 5), captured
+    before the vehicle's first flight. */
+const VIKRAM_PROFILE = {
+  slug: "vikram-1",
+  name: "Vikram-1",
+  entity_type: "vehicle",
+  provider: { value: "Skyroot Aerospace", source: "https://en.wikipedia.org/wiki/Vikram-I", as_of: "2026-07-08" },
+  country: { value: "India", source: "https://en.wikipedia.org/wiki/Vikram-I", as_of: "2026-07-08" },
+  flights_total: { value: 0, source: "https://en.wikipedia.org/wiki/Vikram-I", as_of: "2026-07-08" },
+  flights_successful: { value: 0, source: "https://en.wikipedia.org/wiki/Vikram-I", as_of: "2026-07-08" },
+  first_flight_date: { value: null, source: null, as_of: null },
+  status: { value: null, source: null, as_of: null },
+};
+
 function seed(): void {
   const items: ItemsFile = { items: [] };
   const held: HeldFile = { held: [] };
@@ -90,6 +105,11 @@ function seed(): void {
   writeFileSync(
     join(dataDir, "registry", "constellations", "iceye.json"),
     JSON.stringify(ICEYE_PROFILE, null, 2),
+  );
+  mkdirSync(join(dataDir, "registry", "vehicles"), { recursive: true });
+  writeFileSync(
+    join(dataDir, "registry", "vehicles", "vikram-1.json"),
+    JSON.stringify(VIKRAM_PROFILE, null, 2),
   );
   writeFileSync(
     join(dataDir, "aliases.json"),
@@ -154,6 +174,49 @@ describe("decideFact", () => {
     const entity = index().bySlug.get("iceye")!;
     const fact = { entity_slug: "iceye", field: "sats_active_claimed", value: 41, metric: "active satellites", same_metric: true };
     expect(decideFact(fact, entity, 4)).toBe("both_disputed_queue");
+  });
+
+  // Monotonic counters (SNR_SPEC §6.6, the Vikram-1 first-flight case):
+  // a pre-event snapshot is time-superseded by a higher count, never
+  // contradicted, however canonical the snapshot.
+  test("a higher flight count after the snapshot's as_of flags a refresh, never a dispute", () => {
+    const entity = index().bySlug.get("vikram-1")!;
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: 1, metric: "orbital flight attempts", same_metric: true };
+    expect(decideFact(fact, entity, 4, "2026-07-18")).toBe("flag_refresh");
+  });
+
+  test("a monotonic supersession below the entry bar annotates instead of refreshing", () => {
+    const entity = index().bySlug.get("vikram-1")!;
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: 1, metric: "orbital flight attempts", same_metric: true };
+    expect(decideFact(fact, entity, 2, "2026-07-18")).toBe("annotate_mismatch");
+  });
+
+  test("an equal count refreshes the snapshot's as_of, no conflict", () => {
+    const entity = index().bySlug.get("vikram-1")!;
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: 0, metric: "orbital flight attempts", same_metric: true };
+    expect(decideFact(fact, entity, 4, "2026-07-18")).toBe("flag_refresh");
+  });
+
+  test("a LOWER count than a past snapshot is a genuine conflict and still disputes", () => {
+    const doctored = {
+      ...index().bySlug.get("vikram-1")!,
+      profile: { ...VIKRAM_PROFILE, flights_total: { value: 3, source: "https://en.wikipedia.org/wiki/Vikram-I", as_of: "2026-07-08" } },
+    };
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: 1, metric: "orbital flight attempts", same_metric: true };
+    // unscored Wikipedia counts as canonical 5 > item 4 -> downgrade path.
+    expect(decideFact(fact, doctored, 4, "2026-07-18")).toBe("downgrade_incoming");
+  });
+
+  test("an item dated before the snapshot does not supersede it", () => {
+    const entity = index().bySlug.get("vikram-1")!;
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: 1, metric: "orbital flight attempts", same_metric: true };
+    expect(decideFact(fact, entity, 4, "2026-07-01")).toBe("downgrade_incoming");
+  });
+
+  test("non-numeric values fall through to normal reconciliation", () => {
+    const entity = index().bySlug.get("vikram-1")!;
+    const fact = { entity_slug: "vikram-1", field: "flights_total", value: "several", metric: "orbital flight attempts", same_metric: true };
+    expect(decideFact(fact, entity, 4, "2026-07-18")).toBe("downgrade_incoming");
   });
 
   test("provisional facts never adjudicate", () => {
@@ -318,6 +381,29 @@ describe("finalize-sweep crossfeed wiring", () => {
     const items = JSON.parse(readFileSync(join(dataDir, "items.json"), "utf8")) as ItemsFile;
     expect(items.items[0]!.disputed).toBe(true);
     expect(readQueue().candidates[0]!.action).toBe("both_disputed_queue");
+  });
+
+  test("a first flight against a pre-launch flight count refreshes the registry, never disputes the item", () => {
+    // The 2026-07-18 Vikram-1 case end-to-end: unscored Wikipedia
+    // "0 flights, as_of 2026-07-08" vs a launch item dated 2026-07-18.
+    writeDraft([
+      draftItem({
+        id: "2026-07-18-iceye-vikram-first-flight",
+        date: "2026-07-18",
+        crossfeed: {
+          facts: [
+            { entity_slug: "vikram-1", field: "flights_total", value: 1, metric: "orbital flight attempts", same_metric: true },
+          ],
+        },
+      }),
+    ]);
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.errors).toEqual([]);
+    const items = JSON.parse(readFileSync(join(dataDir, "items.json"), "utf8")) as ItemsFile;
+    const item = items.items[0]!;
+    expect(item.disputed).toBeUndefined();
+    expect(item.snr_trace.modifiers.some((m) => m.type === "dispute")).toBe(false);
+    expect(readQueue().candidates[0]!.action).toBe("flag_refresh");
   });
 
   test("commentary owes no crossfeed attestation even when companies match the registry", () => {

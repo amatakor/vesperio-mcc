@@ -192,6 +192,15 @@ interface DraftUpdate {
    * is appended to it.
    */
   rescore?: DraftScoring;
+  /**
+   * Attested dispute resolution (2026-07-18, from the Vikram-1 false
+   * dispute): a rescore of a disputed item keeps its dispute downgrade
+   * and flag by default; only this explicit attestation, with the note
+   * carrying the why, drops both. Valid only alongside rescore, and only
+   * on an item that is currently disputed. This is the sole supported
+   * un-set path for `disputed`.
+   */
+  dispute_resolved?: boolean;
 }
 
 interface DraftHeld {
@@ -906,7 +915,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
           const v = validateFact(rawFact, registryIndex, `${path}.crossfeed.facts[${j}]`);
           errors.push(...v.errors);
           if (v.fact === undefined || v.entity === undefined) return;
-          const action = decideFact(v.fact, v.entity, stamped.snr);
+          const action = decideFact(v.fact, v.entity, stamped.snr, stamped.date);
           itemQueue.push({
             id: `${stamped.id}:${v.fact.entity_slug}.${v.fact.field}`,
             item_id: stamped.id,
@@ -1070,6 +1079,14 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         }
       }
     }
+    if (u.dispute_resolved !== undefined) {
+      if (u.dispute_resolved !== true) {
+        errors.push(`${path}.dispute_resolved: only \`true\` is meaningful; omit the field otherwise`);
+      }
+      if (u.rescore === undefined) {
+        errors.push(`${path}.dispute_resolved: requires a rescore block (the resolution re-bases the score)`);
+      }
+    }
 
     if (errors.length > 0) return;
 
@@ -1213,6 +1230,12 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       for (const c of rescoreCollapse.collapses) {
         corroborationCollapses.push({ id: merged.id, ...c });
       }
+      if (u.dispute_resolved === true && merged.disputed !== true) {
+        errors.push(
+          `${path}.dispute_resolved: "${u.id}" is not disputed; there is nothing to resolve`,
+        );
+        return;
+      }
       const result = scoreClaim({
         sources: rescoreCollapse.representatives.map(stripTitle),
         extraordinary,
@@ -1220,7 +1243,11 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
         whitelist: r.whitelist,
         reinforced: false,
         persisted: false,
-        disputeDowngrade: false,
+        // A dispute survives a rescore (its downgrade stays in the fresh
+        // trace) unless this update attests the dispute resolved; before
+        // 2026-07-18 every rescore silently dropped the downgrade while
+        // the flag stayed on, the worst of both.
+        disputeDowngrade: merged.disputed === true && u.dispute_resolved !== true,
       });
       if (rescoreCollapse.singleClass !== null) {
         result.trace.single_class_corroboration = rescoreCollapse.singleClass;
@@ -1234,6 +1261,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       ];
       merged.snr = result.snr;
       merged.snr_trace = history.length > 0 ? { ...result.trace, history } : result.trace;
+      if (u.dispute_resolved === true) delete merged.disputed;
       merged.sources = rescored;
       for (const sc of rescored) {
         if (sc.url !== merged.source_url && !merged.secondary_urls.includes(sc.url)) {
