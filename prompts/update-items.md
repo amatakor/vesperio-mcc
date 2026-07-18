@@ -280,6 +280,17 @@ entry is a failed run, not a handoff.
    `"crossfeed": { "facts": [], "note": "..." }`, silence is not. On a
    genuine same-metric contradiction, still state the tension in the
    item copy, attributing both sides; the score math is the gate's.
+
+   Monotonic counters (SNR_SPEC §6.6, code-enforced since 2026-07-18):
+   for cumulative counts that only grow (`flights_total`,
+   `flights_successful`, `sats_launched_total`, `launches_total`), a
+   registry snapshot dated before your item is superseded in time, not
+   contradicted; the gate routes a higher-or-equal count to a refresh
+   proposal on its own. Attest `same_metric` honestly and let the code
+   decide: do NOT pre-empt the rule by attesting `same_metric: false`
+   on a real like-for-like counter, and do NOT treat a pre-event "0"
+   as a conflict (the Vikram-1 first flight, 2026-07-18, was wrongly
+   dispute-downgraded exactly this way).
 6. **Classify sources honestly.** Every source you attach carries a
    `class`; the deterministic gate scores from it, so misclassification
    is the cardinal sin of this pipeline:
@@ -370,6 +381,13 @@ entry is a failed run, not a handoff.
    same-metric contradictions, and open editorial decisions for Florian.
    Never hold an item just because its sourcing is weak; that is what
    low SNR is for.
+
+   Disputes survive ordinary rescores: rescoring a disputed item
+   re-applies its dispute downgrade. The one supported un-set path
+   (2026-07-18) is `"dispute_resolved": true` on an update that ALSO
+   carries a `rescore` block, with the `note` saying why the dispute
+   was erroneous or is settled; the gate rejects it on an undisputed
+   item or without a rescore.
 
    Check the queue for rulings: a held entry carrying
    `decision: { verdict: "publish" }` has been approved by Florian. Draft

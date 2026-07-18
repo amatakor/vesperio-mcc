@@ -60,6 +60,23 @@ export const CROSSFEED_FIELDS: Record<RegistryEntityType, ReadonlySet<string>> =
   organization: new Set(["country", "founded", "focus", "status"]),
 };
 
+/**
+ * Cumulative counters that only ever grow (a vehicle cannot un-fly a
+ * flight). A registry snapshot of one of these dated BEFORE the item's
+ * event is time-superseded by a higher or equal incoming count, never
+ * contradicted by it (the Vikram-1 first flight, 2026-07-18: the
+ * registry's pre-launch "0 flights, as_of 2026-07-08" triggered a
+ * dispute downgrade against the launch item; both values were true on
+ * their own dates). sats_active_claimed is deliberately NOT here:
+ * active counts go down when satellites retire.
+ */
+export const MONOTONIC_COUNT_FIELDS: ReadonlySet<string> = new Set([
+  "flights_total",
+  "flights_successful",
+  "sats_launched_total",
+  "launches_total",
+]);
+
 export interface RegistryEntityRef {
   slug: string;
   entityType: RegistryEntityType;
@@ -210,6 +227,10 @@ export interface RegistryCandidatesFile {
  * Decide what a scored item fact does to the registry. Mirrors SNR_SPEC §6:
  *  - the target field is currently null -> null_fill when the item clears
  *    the SNR >= 3 entry bar, below_entry_bar otherwise (recorded, not landed)
+ *  - a monotonic counter whose registry snapshot predates the item and
+ *    whose incoming count is >= the snapshot is time-superseded, not
+ *    contradicted (SNR_SPEC §6.6) -> flag_refresh at the entry bar,
+ *    annotate_mismatch below it; the dispute machinery never engages
  *  - the target field has a value -> reconcile() applies the spec's rules
  *    (metric mismatch annotates; provisional never adjudicates; canonical
  *    wins/loses/ties by SNR).
@@ -218,12 +239,32 @@ export function decideFact(
   fact: CrossfeedFact,
   entity: RegistryEntityRef,
   itemSnr: SnrValue,
+  itemDate?: string,
 ): CrossfeedActionKind {
   const current = entity.profile[fact.field] as Obj | undefined;
   const currentValue = current === undefined ? null : (current.value ?? null);
   const isEmpty =
     currentValue === null || (Array.isArray(currentValue) && currentValue.length === 0);
   if (isEmpty) return itemSnr >= 3 ? "null_fill" : "below_entry_bar";
+
+  // Monotonic counters (SNR_SPEC §6.6): a higher-or-equal count dated on
+  // or after the registry snapshot supersedes it in time; both values
+  // were true on their own dates, so there is no contradiction to
+  // adjudicate. A LOWER count than a past snapshot stays on the normal
+  // reconcile path: a counter that goes down is a genuine conflict.
+  if (fact.same_metric && MONOTONIC_COUNT_FIELDS.has(fact.field)) {
+    const incoming = typeof fact.value === "number" ? fact.value : Number(fact.value);
+    const existing = typeof currentValue === "number" ? currentValue : Number(currentValue);
+    const asOf = current !== undefined && typeof current.as_of === "string" ? current.as_of : null;
+    if (
+      Number.isFinite(incoming) &&
+      Number.isFinite(existing) &&
+      incoming >= existing &&
+      (asOf === null || itemDate === undefined || itemDate >= asOf)
+    ) {
+      return itemSnr >= 3 ? "flag_refresh" : "annotate_mismatch";
+    }
+  }
   const snr = current !== undefined && typeof current.snr === "number" ? (current.snr as number) : undefined;
   const tier =
     current !== undefined && typeof current.tier === "string"

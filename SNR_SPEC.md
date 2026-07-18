@@ -85,6 +85,7 @@ When a new claim contradicts a registry fact:
 3. If the new claim wins (e.g., SNR 5 first-party vs an SNR 3 provisional fact), the registry fact is flagged for refresh, not silently overwritten. Refresh goes through the normal merge gates.
 4. Same-metric clash at equal SNR → both marked **disputed**, both shown, item queued for Florian.
 5. Provisional (SNR 3) registry facts never trigger downgrades of incoming claims.
+6. **Monotonic counters are superseded in time, never contradicted** (2026-07-18, from the Vikram-1 first flight: the registry's pre-launch "0 flights, as_of 2026-07-08" dispute-downgraded the launch item; both values were true on their own dates). For cumulative count fields that only ever grow (`flights_total`, `flights_successful`, `sats_launched_total`, `launches_total`), an incoming count **greater than or equal to** the registry value, from an item dated **on or after** the fact's `as_of`, is a refresh proposal (entry bar permitting), never a dispute. A count LOWER than a past snapshot remains a genuine conflict and reconciles normally. Fields that can go down (`sats_active_claimed`) are excluded. Code: `MONOTONIC_COUNT_FIELDS` in `scripts/lib/crossfeed.ts`.
 
 ## 7. Feedback loops
 
