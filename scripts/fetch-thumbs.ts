@@ -304,12 +304,58 @@ interface Download {
  * original bytes untouched. Returns null when the original should be
  * kept as-is.
  */
-export async function reencodeForStorage(buf: Uint8Array, ext: string): Promise<Buffer | null> {
+/**
+ * Shave uniform near-white letterbox borders: some publishers' og:images
+ * paste a graphic onto a white 1200x628 canvas, and the white bars read
+ * as broken card edges on both themes (Florian, 2026-07-17). Trims only
+ * when it is provably a border shave, never a content crop: all four
+ * corners must be near-white, the result must keep at least half the
+ * pixels, still pass the minimum-dimension gate, and actually be smaller.
+ * Returns null when no safe trim applies (including any decode failure).
+ */
+const TRIM_CORNER_FLOOR = 235; // each RGB channel; ~#EBEBEB and lighter
+const TRIM_THRESHOLD = 20; // sharp trim() distance from pure white
+export async function trimWhiteBorders(buf: Uint8Array): Promise<Buffer | null> {
+  try {
+    const { data, info } = await sharp(buf)
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const nearWhite = (x: number, y: number): boolean => {
+      const i = (y * info.width + x) * info.channels;
+      return (
+        data[i]! >= TRIM_CORNER_FLOOR &&
+        data[i + 1]! >= TRIM_CORNER_FLOOR &&
+        data[i + 2]! >= TRIM_CORNER_FLOOR
+      );
+    };
+    const r = info.width - 1;
+    const b = info.height - 1;
+    if (!(nearWhite(0, 0) && nearWhite(r, 0) && nearWhite(0, b) && nearWhite(r, b))) return null;
+    const trimmed = await sharp(buf)
+      .trim({ background: "#ffffff", threshold: TRIM_THRESHOLD })
+      .toBuffer();
+    const tm = await sharp(trimmed).metadata();
+    if (!tm.width || !tm.height) return null;
+    if (tm.width >= info.width && tm.height >= info.height) return null; // nothing shaved
+    if (tm.width < MIN_DIMENSION || tm.height < MIN_DIMENSION) return null;
+    if (tm.width * tm.height < 0.5 * info.width * info.height) return null; // content crop
+    return trimmed;
+  } catch {
+    return null;
+  }
+}
+
+export async function reencodeForStorage(
+  buf: Uint8Array,
+  ext: string,
+  opts: { trim?: boolean } = {},
+): Promise<Buffer | null> {
   if (ext === "svg") return null;
   try {
     const probe = await sharp(buf, { animated: true }).metadata();
     if ((probe.pages ?? 1) > 1) return null; // animated: keep original format
-    return await sharp(buf)
+    const src = opts.trim === false ? buf : ((await trimWhiteBorders(buf)) ?? buf);
+    return await sharp(src)
       .resize({ width: MAX_STORED_WIDTH, withoutEnlargement: true })
       .webp({ quality: WEBP_QUALITY })
       .toBuffer();
