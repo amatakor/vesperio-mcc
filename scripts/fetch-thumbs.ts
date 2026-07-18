@@ -202,14 +202,30 @@ function findMetaImage(html: string): string | null {
   return null;
 }
 
+/** Statuses worth one polite retry: rate limits and transient server
+    errors. A burst of same-domain fetches in one sweep can trip a 429
+    (satellitetoday.com, 2026-07-17: the HawkEye item's lead page failed
+    silently seconds after another item fetched the same domain, and a
+    press-release logo shipped as the thumbnail). */
+const RETRYABLE_STATUS = new Set([429, 500, 502, 503, 504]);
+const RETRY_DELAY_MS = 4000;
+
 async function fetchText(url: string): Promise<string | null> {
-  try {
-    const res = await fetchSafeText(url, { timeoutMs: 20000, headers: { "User-Agent": UA } });
-    if (res.status < 200 || res.status >= 300) return null;
-    return res.text;
-  } catch (e) {
-    console.error(`fetch-thumbs: page fetch failed for ${url}: ${String(e)}`);
-    return null;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await fetchSafeText(url, { timeoutMs: 20000, headers: { "User-Agent": UA } });
+      if (res.status >= 200 && res.status < 300) return res.text;
+      if (attempt === 0 && RETRYABLE_STATUS.has(res.status)) {
+        console.error(`fetch-thumbs: HTTP ${res.status} for ${url}; retrying once`);
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+        continue;
+      }
+      console.error(`fetch-thumbs: page fetch failed for ${url}: HTTP ${res.status}`);
+      return null;
+    } catch (e) {
+      console.error(`fetch-thumbs: page fetch failed for ${url}: ${String(e)}`);
+      return null;
+    }
   }
 }
 
@@ -330,12 +346,24 @@ async function downloadTo(
   try {
     // Through the shared safe fetcher: SSRF guard on the URL and each
     // redirect hop, body capped at MAX_BYTES.
-    const res = await fetchSafe(url, {
+    let res = await fetchSafe(url, {
       timeoutMs: 20000,
       maxBytes: MAX_BYTES,
       headers: { "User-Agent": UA },
     });
-    if (res.status < 200 || res.status >= 300) return null;
+    if (RETRYABLE_STATUS.has(res.status)) {
+      console.error(`fetch-thumbs: HTTP ${res.status} for ${url}; retrying once`);
+      await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+      res = await fetchSafe(url, {
+        timeoutMs: 20000,
+        maxBytes: MAX_BYTES,
+        headers: { "User-Agent": UA },
+      });
+    }
+    if (res.status < 200 || res.status >= 300) {
+      console.error(`fetch-thumbs: image download failed for ${url}: HTTP ${res.status}`);
+      return null;
+    }
     const type = (res.headers.get("content-type") ?? "").split(";")[0]!.trim();
     const ext = EXT_BY_TYPE[type];
     if (!ext) return null;
