@@ -2335,3 +2335,58 @@ a newer entry if a lesson changes.
   left undrafted as pending rather than speculatively published; will be
   a seismic-tier (first flight of a new orbital vehicle) candidate for
   the next sweep once an outcome is fetchable.
+
+## Narrow same-day re-check, ~3h gap, unfiltered full source list (2026-07-18, second)
+
+- 2026-07-18-E: Vikram-1 flew and reached orbit ~06:35 GMT, confirming
+  2026-07-18-D's flag; drafted seismic (first flight of a new orbital
+  vehicle), 4 distinct mainstream/trade sources (SpaceNews, Space.com,
+  a Reuters wire copy via a Yahoo Finance mirror -- reuters.com itself
+  not tried this run -- and india.com's live-blog, which had its own PM
+  Modi quote distinct from the wire text). A same-titled "inputs from
+  agencies" relay (devdiscourse.com, credited to ANI) was correctly
+  left out of scoring as a wire rewrite, not a fifth independent source.
+- 2026-07-18-F: CROSSFEED TRAP, self-caught same sweep: attesting
+  same_metric:true for a vehicle's flights_total/flights_successful
+  fields against a PRE-LAUNCH registry snapshot (Wikipedia's "0", as_of
+  a date before the vehicle had ever flown) triggers reconcile()'s
+  downgrade_incoming path -- the unscored/Wikipedia fact is treated as
+  canonical SNR 5, always outranks a fresh trade-led item's SNR, and the
+  item takes an automatic dispute downgrade (-1, disputed:true) even
+  though nothing is actually contested; the "0" was simply true before
+  the event and "1" is true after it. A monotonically-increasing
+  vehicle/constellation counter field is a metric-mismatch case (the
+  registry fact measures the count as of its own as_of date, same
+  principle as the computed-facts "cataloged on orbit, as_of date"
+  carve-out in CLAUDE.md), not a same-metric contradiction --
+  same_metric should have been false for those two fields (the
+  first_flight_date/last_flight_date null-fills on the same item were
+  fine, since null never disputes). Caught it from the merged item's
+  own snr_trace (dispute modifier, final 3 instead of the expected 4)
+  and corrected it same sweep via `updates[].rescore` with the
+  identical, unchanged source list (rescore always runs with
+  disputeDowngrade:false, so it cleanly recomputes without the
+  penalty). Residual, uncorrectable within this pipeline: the item's
+  top-level `disputed` field has no un-set path anywhere in
+  finalize-sweep (grep confirms `.disputed =` is only ever set to
+  `true`), so it stays stuck true even after the rescore fixed the
+  number; a second residual is that registry-candidates.json still
+  carries the two erroneous `downgrade_incoming` entries as "pending"
+  (crossfeed only runs on newItems, not on updates, so there is no way
+  to resubmit a corrected crossfeed judgment for an already-published
+  item). Both are flagged here as standing code gaps: reconcile() /
+  the crossfeed contract should probably let a vehicle's own flight-count
+  fields treat a prior lower value as superseded-by-date rather than
+  contradicted, and there should be an un-set path for `disputed` when
+  a dispute turns out to have been a drafting error rather than a real
+  editorial conflict.
+- 2026-07-18-G: Genuine same-story contradiction, held rather than
+  guessed: same-day Iraq/Starlink coverage split between Shafaq News
+  (Washington dateline, describes a completed CMC license signed at a
+  US Chamber of Commerce ceremony) and Iraq Business News (same window,
+  describes SpaceX as still "in talks" with Iraq's Ministry of Trade,
+  no license executed). Could not determine whether these describe the
+  same event with one outlet overstating it, or two genuinely distinct,
+  differently-staged engagements (telecom regulator licensing vs. trade
+  ministry cooperation talks); held rather than publish an unearned
+  regulatory-grant claim or discard a possibly-real market-access story.

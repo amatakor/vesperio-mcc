@@ -1,5 +1,5 @@
 {
-  "lastSweep": "2026-07-18T05:27:00.641Z",
+  "lastSweep": "2026-07-18T08:45:45.012Z",
   "sweeps": [
     {
       "at": "2026-07-05T06:04:08.173Z",
@@ -1482,6 +1482,52 @@
       "discovery": {
         "queries": 8,
         "note": "Matrix covered (launch/vehicle, financial, incident/regulatory, non-US rotation China/India/Europe). Surfaced one new candidate not yet in the feed (Venus Aerospace's July 8 Series B, chased and dated to its actual announcement date per the predates-window rule for notable items); everything else found was already covered (Swissto12, NASA CSDA/Kuva, SpaceSail/Qianfan launches, Starship Flight 13 abort) or not yet occurred (MRV-1 launch NET July 21, Vikram-1 T-0 still pending at sweep time)."
+      }
+    },
+    {
+      "at": "2026-07-18T08:42:15.900Z",
+      "added": 1,
+      "updated": 0,
+      "held": 1,
+      "summary": "Skyroot Aerospace's Vikram-1 reached orbit on its first flight, making it the first privately built rocket to do so from India. A same-day Iraq/Starlink licensing story was held on a genuine sourcing contradiction over whether a license was actually granted.",
+      "coverage": [
+        "launch"
+      ],
+      "signals": {
+        "checked": 9,
+        "x_attempted": 0,
+        "note": "9 of 17 fetchable channels checked (site/substack legs plus 3 bluesky spot-checks); all quiet or already-published beyond confirming the Vikram-1 story (Jeff Foust's own SpaceNews piece). spacepolicyonline.com's site returned a bot-check shell (no parseable content) rather than a genuine quiet result. No X searches run this narrow-gap pass; remaining channels left for rotation on the next sweep."
+      },
+      "discovery": {
+        "queries": 6,
+        "note": "Matrix covered (launch, financial, incident/regulatory, non-US, Europe, M&A). Only new find was the Vikram-1 launch itself, already surfaced via the harvester queue; everything else returned already-published stories or off-window resurfacing."
+      }
+    },
+    {
+      "at": "2026-07-18T08:45:45.012Z",
+      "added": 0,
+      "updated": 1,
+      "held": 0,
+      "summary": "Self-correction: rescored 2026-07-18-skyroot-vikram1-orbital-launch to remove an erroneous crossfeed dispute downgrade caused by my own same_metric misjudgment on this sweep's first draft.",
+      "coverage": [
+        "launch"
+      ],
+      "snr_movements": [
+        {
+          "id": "2026-07-18-skyroot-vikram1-orbital-launch",
+          "from": 3,
+          "to": 4,
+          "reason": "Self-correction, same sweep: the crossfeed block on this item's own creation wrongly attested same_metric:true for vikram-1.flights_total/flights_successful against the registry's pre-launch \"0\" snapshot (Wikipedia, as_of 2026-07-08). That is a metric mismatch (the registry fact measured the count as of a date before the vehicle had flown, not a competing claim about today's count), not a genuine same-metric contradiction, so the automatic dispute downgrade it triggered was a scoring error, not an editorial one. Rescoring with the identical, unchanged source set and crawl outcome removes that erroneous downgrade. The item's `disputed` flag has no supported un-set path in finalize-sweep and will remain true; flagging for a manual review/code fix (reconcile() has no way to treat a monotonically-increasing vehicle flight-count field as time-superseded rather than contradicted)."
+        }
+      ],
+      "signals": {
+        "checked": 9,
+        "x_attempted": 0,
+        "note": "Same pass already run earlier this sweep (this draft only corrects the prior draft's scoring, no new discovery): 9 of 17 fetchable channels checked, all quiet or already-published beyond confirming the Vikram-1 story. No X searches run this pass."
+      },
+      "discovery": {
+        "queries": 6,
+        "note": "Same matrix already run earlier this sweep (this draft only corrects the prior draft's scoring, no new discovery needed); no new candidates beyond the already-drafted Vikram-1 item."
       }
     }
   ]
