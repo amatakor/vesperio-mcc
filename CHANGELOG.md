@@ -109,6 +109,29 @@ page instead of degrading silently, and the fallback's logo test is
 size-independent, so a near-square image of any size yields to a real
 photograph.
 
+The artwork judge lost its pen for good (2026-07-18), and works for
+the first time because of it. The 2026-07-15 permission respelling
+never actually fixed the write denial: every sweep since the judge
+shipped still fell back to og-image-first order, which is how a
+corporate logo from a press-release page beat a trade article's real
+photograph of the Valiant Shield exercise on 2026-07-17. The judge is
+now strictly read-only and returns its ranking as its final message;
+a deterministic extractor script writes the ranking file from the
+run's captured output, so there is no permission spelling left to
+get wrong. The same investigation found the thumbnail fetcher was
+swallowing HTTP failures silently (a rate-limited page looked
+identical to a page with no images), so non-2xx responses now log
+their status and rate-limit or server errors get one polite retry.
+
+Thumbnails also lost their white letterbox bars (2026-07-18): some
+publishers paste a dark graphic onto a white canvas for their
+share image, and the white side bars read as broken card edges. The
+re-encode step now shaves uniform near-white borders, but only when
+it is provably a border shave, never a content crop: all four corners
+must be near-white, at least half the image must survive, and the
+result must still pass the minimum-size gate. The manual override
+tool gets a --no-trim flag to keep an image exactly as served.
+
 The sweep trigger moved off GitHub's scheduler (2026-07-13): after
 two mornings of 2h-late or dropped crons, a Cloudflare Worker
 (infra/sweep-trigger/) now calls the dispatch API at exactly
