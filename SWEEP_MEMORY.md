@@ -2290,3 +2290,48 @@ a newer entry if a lesson changes.
   same bucket as the NATO HALO and Ma Xingrui precedents. Worth a
   standing ruling since Accords signings recur (10 in 2026 alone per
   NASA's own count) and each one will re-raise this question otherwise.
+
+## Normal-mode sweep, ~9h13m gap, unfiltered full source list (2026-07-18)
+
+- 2026-07-18-A: `bsky.app/profile/<handle>` pages are unusable via this
+  session's WebFetch for the signals pass: every fetch returns only the
+  bare handle string, no post content or timestamps, for both `.bsky.social`
+  and custom-domain handles alike. The public API endpoint
+  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`)
+  loads but for at least one handle (chenryspace.bsky.social) returned a
+  feed of stale (June, not July) posts attributed to OTHER accounts
+  (EUMETSAT, AST SpaceMobile, SpaceNews, Michael Seeley), not that
+  person's own posts -- looks like a mixed/algorithmic feed rather than
+  `getAuthorFeed`'s documented author-only output, and is not trustworthy
+  enough to draft from. Whitelisted Bluesky people are effectively
+  unreachable this session; only the `site`/`substack` legs of the
+  fetchable signals list were usable. Confirms and extends the
+  2026-07-17-A/H tool-restriction pattern to a new surface.
+- 2026-07-18-B: The Draper/ispace-U.S. CLPS CP-12 lunar-lander task-order
+  termination (NASA + Draper mutually ending it, ispace-U.S. losing the
+  subcontract) is a genuine first-party statement on ispace-inc.com, but
+  ispace has no registry organization entry, so `first_party` fails the
+  anti-spoof gate exactly per the 2026-07-14-K Frontier/newsroom pattern:
+  led with SpaceNews (trade) plus Aviation Week (trade) as scoring
+  sources, kept ispace-inc.com and Aviation Week in `secondary_urls`,
+  landed at SNR 4. Classed as `category: "science"` (a CLPS lunar-science
+  delivery mission ending, not a "first" so scored `impact: "notable"`
+  rather than `major`/`seismic`) -- first sweep to actually draft a
+  program *termination* under the 2026-07-13 science-category rule; worth
+  confirming this categorization if Florian reviews it.
+- 2026-07-18-C: Venus Aerospace's $91M Series B (Mercury Fund-led, RDRE
+  propulsion) published July 8 predates this sweep's window by 10 days
+  and was never drafted by any earlier sweep -- a genuine coverage gap,
+  not a dedup case (grepped `items.json`/`held.json` for "venus" with
+  zero hits). Chased and dated to the actual July 8 announcement date
+  per the 2026-07-17-I predates-window-chase-for-notable/seismic rule
+  (impact is notable: $91M is eight figures, under the nine-figure/
+  largest-to-date bar for major). Worth a recurring-check note: this gap
+  suggests propulsion/manufacturer-only funding rounds (no launch or
+  satellite news hook) may be underweighted by the current source list.
+- 2026-07-18-D: Skyroot's Vikram-1 (India's first private orbital launch
+  attempt) had a T-0 of 11:30 IST / 06:00 UTC on 2026-07-18, still
+  ~43 minutes future at this sweep's run time (05:17 UTC) -- correctly
+  left undrafted as pending rather than speculatively published; will be
+  a seismic-tier (first flight of a new orbital vehicle) candidate for
+  the next sweep once an outcome is fetchable.
