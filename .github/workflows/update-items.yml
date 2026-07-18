@@ -261,12 +261,18 @@ jobs:
       - name: Stage item-artwork candidates (og:image + article figures, own sources only)
         run: bun scripts/fetch-thumbs.ts --collect
 
-      # Sealed, bounded artwork judge (Florian, 2026-07-13): ranks each
-      # item's staged candidates against a fixed editorial rubric. Read-only
-      # plus ONE writable file; it cannot touch data, and on any failure
-      # --apply falls back to the og-image-first manifest order (the
-      # pre-judge behavior). Haiku: bounded classification, cheapest tier.
+      # Sealed, bounded artwork judge (Florian, 2026-07-13; hardened
+      # 2026-07-18): ranks each item's staged candidates against a fixed
+      # editorial rubric. STRICTLY read-only: its Write allowlist silently
+      # never matched (permission denials in every run since the feature
+      # shipped; the 86d2ba7 respelling did not fix it), so instead of a
+      # third guess at permission-pattern spelling, the judge returns the
+      # ranking as its final message and the deterministic extractor step
+      # below writes .image-judge/ranking.json. On any failure --apply
+      # falls back to the og-image-first manifest order (the pre-judge
+      # behavior). Haiku: bounded classification, cheapest tier.
       - name: Judge artwork candidates
+        id: judge
         continue-on-error: true
         uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
         with:
@@ -280,18 +286,23 @@ jobs:
             rubric and nothing else: a real photograph of the story's
             subject beats any other real photograph, which beats concept
             art or renders, which beat abstract or stock-style graphics,
-            which beat charts, diagrams, and logos. Then write
-            .image-judge/ranking.json as one JSON object:
+            which beat charts, diagrams, and logos. Then END by outputting
+            the ranking as your final message: nothing but one JSON object
+            of the form
             {"<item-id>": {"order": ["<file>", ...], "reason": "<one short line>"}, ...}
             covering every item in the manifest, using only file names
-            that appear in the manifest. Call the Write tool with exactly
-            the relative path .image-judge/ranking.json (no leading slash,
-            no absolute path). Do nothing else.
+            that appear in the manifest. You have no Write access and do
+            not need it; the workflow captures your final message. Do
+            nothing else.
           claude_args: |
             --model claude-haiku-4-5
             --max-turns 40
-            --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup"
-            --allowedTools "Read,Write(.image-judge/ranking.json),Write(./.image-judge/ranking.json),Write(/${{ github.workspace }}/.image-judge/ranking.json)"
+            --disallowedTools "Task,Agent,TaskCreate,ScheduleWakeup,Write,Edit,Bash"
+            --allowedTools "Read"
+
+      - name: Extract judge ranking from the agent's final message
+        continue-on-error: true
+        run: bun scripts/extract-judge-ranking.ts "${{ steps.judge.outputs.execution_file }}"
 
       - name: Apply judged artwork (falls back to og:image order, then licensed stock)
         run: bun scripts/fetch-thumbs.ts --apply
