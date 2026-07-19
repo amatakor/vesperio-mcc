@@ -2439,3 +2439,56 @@ a newer entry if a lesson changes.
   March 31, 2026 first announcement, also left undrafted as stale (not
   chased under the predates-window rule since it's routine/notable-tier,
   not seismic, and already 3.5 months old).
+
+## Narrow same-day re-check, ~8h12m gap, unfiltered full source list (2026-07-19, second)
+
+- 2026-07-19-F: `draft.coverage` must use CLAUDE.md category names
+  (`launch`, `financial`, `regulatory`, `constellation`, etc.), not tag
+  names: submitting `"eo"`/`"connectivity"` (valid tags, not categories)
+  got the whole draft rejected with "is not a known category" even
+  though every other block validated cleanly. Worth remembering on any
+  zero-item sweep where `coverage` is hand-picked rather than copied
+  from a published item's actual category.
+- 2026-07-19-G: Confirms 2026-07-19-B on two more accounts: Marco
+  Langbroek's and Tim Farrar's Bluesky `getAuthorFeed` API responses
+  were both unusable this session -- Langbroek's showed unrelated
+  political/meme content from mid-July with no space posts at all
+  (worse than merely stale), Farrar's topped out at a March 30 post.
+  Caleb Henry's and Andrew Jones's feeds were clean and current by
+  contrast. The failure is genuinely per-account, not a whole-session
+  block; budget a real check per whitelisted account rather than
+  assuming one clean response clears the leg.
+- 2026-07-19-H: The harvester's `candidates.json` queue for a narrow
+  same-day window can be almost entirely off-scope noise even after the
+  deterministic junk prefilter: of 60 collapsed candidates this run,
+  the large majority were SpaceX/Anthropic stock-market speculation,
+  Space.com entertainment/culture pieces, Futurism's general-tech
+  content, and off-topic Bluesky search spam (memes, retweets, junk
+  amplified by the "spacex launch" and "satellite constellation"
+  keyword searches). None of the deterministic prefilter categories
+  currently catch stock-opinion clickbait or off-topic culture
+  articles from otherwise on-topic source feeds (Space.com, Futurism);
+  worth a prefilter tuning pass if this recurs on multiple narrow
+  windows.
+- 2026-07-19-I: Google News RSS redirect URLs (`news.google.com/rss/
+  articles/...`) failed to resolve via WebFetch this session (returned
+  only a bare "Google News" header, no redirect-target content, unlike
+  the documented ability to follow them to the publisher page). Fell
+  back to targeted WebSearch on the story's own headline text to reach
+  the underlying publisher article instead of retrying the redirect;
+  worked cleanly for every case tried this run (Rocket Lab/Iridium
+  commentary, Starship Flight 13, SDA T1TL-E). Confirms the
+  2026-07-17-A/H pattern that specific fetch mechanisms can fail per
+  session even when the general procedure (documented in
+  prompts/update-items.md) assumes they work.
+- 2026-07-19-J: A resurfaced WebSearch hit can be many months stale
+  with zero date signal in the snippet: "ESA Expands Global Presence
+  with First Office in Japan" (actually October 28, 2025) and "Japan
+  MoD prepares 5-year $1.8B satellite reconnaissance network" (actually
+  December 29, 2025) both read as plausible fresh July 2026 hits for a
+  "Japan Europe space agency satellite launch contract" discovery query
+  and both had to be opened and date-checked before ruling out. Adds a
+  third source-shape to the 2026-07-19-D/E stale-resurfacing pattern:
+  not a wrong-year confusion, not an evergreen-feature rewrite, but a
+  months-old news item with no temporal marker at all in the search
+  index entry.
