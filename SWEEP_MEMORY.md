@@ -2390,3 +2390,52 @@ a newer entry if a lesson changes.
   differently-staged engagements (telecom regulator licensing vs. trade
   ministry cooperation talks); held rather than publish an unearned
   regulatory-grant claim or discard a possibly-real market-access story.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-19)
+
+- 2026-07-19-A: A same-day, same-category dedup match can fire between two
+  completely unrelated stories sharing only a buyer's name: a new item on
+  Space Force tripling the NSSL Phase 3 Lane 1 launch contract ceiling to
+  $17 billion (category procurement, dated 2026-07-17) matched the existing
+  2026-07-17-spacex-pentagon-computing-power-talks (SpaceX's unrelated,
+  unconfirmed Pentagon AI-computing talks) purely on shared company "SpaceX"
+  + category + same date. Cleared with one dedup_distinct entry; confirms
+  the heuristic fires even when the two stories' programs, buyers-in-fact,
+  and subject matter have nothing in common beyond one shared named company
+  and a same-day publish.
+- 2026-07-19-B: Bluesky's public getAuthorFeed API worked fine this session
+  for some accounts (Jeff Foust, Andrew Jones, SpacePolicyOnline) but
+  returned obviously stale/mixed content for others (Caleb Henry's feed
+  showed EUMETSAT/Parsonson/AST-SpaceMobile posts from May-June instead of
+  his own recent ones; Eric Berger's feed topped out at a June 23 post) --
+  same failure mode 2026-07-18-A already logged for bsky.app profile pages,
+  now confirmed on the API path too for specific accounts. Don't assume one
+  account's clean API response means the leg is reliable for all of them.
+- 2026-07-19-C: A recurring Artemis Accords signing (Mauritius, 70th
+  signatory, July 17, one day after Serbia's already-held 69th) was left
+  out of the queue entirely rather than filed as a second held entry: the
+  exact same unresolved scope question (2026-07-17-L) was already sitting
+  in held.json for Serbia with no ruling yet, so a duplicate entry would
+  only have added queue noise. Worth Florian ruling on this soon; a third
+  signatory will hit the same fork again.
+- 2026-07-19-D: A WebSearch that finds a plausible-sounding government
+  contract story can be a stale false positive dressed as current: "DISA
+  awards 16 contracts for Proliferated Low Earth Orbit Satellite-Based
+  Services" reads exactly like fresh July 2026 news but every source
+  (disa.mil, GovConWire, Via Satellite) traces to July 2023. Caught only by
+  reading the search tool's own correction ("this occurred in 2023, not
+  2026") rather than the headline/snippet. Confirms 2026-07-12-G/2026-08-08-E
+  on a new failure shape: not a resurfaced old story with a new publish
+  date, but a search index returning a genuinely old event with no date
+  qualifier at all.
+- 2026-07-19-E: An "evergreen feature wearing a fresh publish date" case on
+  a new subject: TechRadar's July 18 "Ukraine's private space race begins
+  as Stetman build low Earth orbit network" restates facts (300-satellite
+  UASAT-NANO/LEO constellation, fall 2026 test launch via SpaceX, GomSpace
+  manufacturing) already reported by dev.ua, Space Intel Report, and several
+  Ukrainian outlets back in February-April 2026, with no new discrete dated
+  fact of its own. Left undrafted per the 2026-07-12-K/2026-07-13-L pattern.
+  Separately, a Delta/Amazon Leo in-flight Wi-Fi search hit traced to a
+  March 31, 2026 first announcement, also left undrafted as stale (not
+  chased under the predates-window rule since it's routine/notable-tier,
+  not seismic, and already 3.5 months old).
