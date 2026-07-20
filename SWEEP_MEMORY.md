@@ -2538,3 +2538,50 @@ a newer entry if a lesson changes.
   documented recurring false positive, and left it undrafted rather than
   publish on an unverifiable date. Worth a future sweep checking DISA's
   own site or a trade mirror directly if this headline surfaces again.
+
+## Narrow same-day re-check, ~7h20m gap, unfiltered full source list (2026-07-20, second)
+
+- 2026-07-20-E: THIRD confirmed occurrence of the "DISA awards 16
+  contracts for Proliferated Low Earth Orbit Satellite-Based Services /
+  $900M" headline (2026-07-19-D, 2026-07-20-D): search results again
+  synthesized a "July 18, 2026" award date around what a targeted
+  follow-up search (quoting "$900 million" plus the program name)
+  confirmed is the original July 2023 award (16 providers, $900M
+  ceiling), later expanded to $13B in 2024. Treat this exact headline as
+  a standing false-positive trap, not worth re-verifying via
+  ssc.spaceforce.mil (still 403s) each time it resurfaces -- a direct
+  quoted-figure search ("$900 million" OR "900 million") is enough to
+  unmask it without a live fetch.
+- 2026-07-20-F: chinaventure.com.cn (投中网/ChinaVenture, a long-running
+  Chinese VC/PE trade outlet) is a usable independent trade-tier source
+  for Chinese space-startup financing news, distinct from the wire-style
+  reprint mirrors (Sina Finance, Eastmoney, Sohu, 163.com, Tencent News)
+  that carry the same press-release text verbatim under a "来源:中国证券报"
+  byline. Confirmed on LegendSpace's (临界航天) 200M-yuan angel round: the
+  Sina/Eastmoney copies were flagged reprints on direct fetch, but
+  chinaventure.com.cn's own page (found via `site:chinaventure.com.cn`)
+  carried original founder-profile reporting with quotes not in the
+  press release. Worth trying this domain before defaulting to a
+  Sina-hosted mirror on future Chinese funding-round stories.
+- 2026-07-20-G: A whitelisted signal's Bluesky post can itself be
+  battlefield OSINT that stays out despite using a tracked EO
+  constellation's imagery: Marco Langbroek posted Sentinel (Copernicus)
+  before/after imagery of a Ukrainian drone strike on warehouses near
+  Elektrostal, Russia. No operator or government statement accompanies
+  it, and it is Langbroek's own conflict-damage analysis, not a
+  company/agency statement about imagery provision -- fails the
+  geopolitical carve-in's "documented commercial-space angle" test the
+  same way the 2026-07-15-I Rogozin case did. Discarded silently rather
+  than held; the whitelist floor governs sourcing tier, not the scope
+  gate.
+- 2026-07-20-H: A same-day narrow re-check (~7h20m gap) confirmed that
+  checking all 21 fetch-list.ts HTML sources plus all 17
+  signals-context.ts fetchable channels directly, even when the queue
+  itself is fully saturated with SpaceX Starship-scrub and stock-price
+  noise (documented since 2026-07-12-K), still surfaces genuine new
+  items outside the harvester queue: a European Spaceflight post (also
+  independently confirmed via Andrew Parsonson's own Bluesky the same
+  hour) on a UK Space Agency debris-removal contract delay, dated to the
+  underlying 14 July UKSA annual report per the standing
+  event-date-over-publish-date convention, not the 20 July write-up
+  date.
