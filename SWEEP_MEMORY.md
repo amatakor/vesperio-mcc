@@ -2641,3 +2641,39 @@ a newer entry if a lesson changes.
   catch-all; Bureau 1440/Rassvet needed one. Flag for Florian on whether
   `russia` should join the standing tag list or a broader `other` tag is
   preferred.
+
+## Normal-mode sweep, ~3h45m gap, unfiltered full source list (2026-07-21, second)
+
+- 2026-07-21-F: A second confirmed case (extends 2026-07-08-A/2026-07-15-F)
+  of the same-company-plus-category dedup heuristic firing across a foreign
+  regulatory proceeding and an unrelated US one purely on shared company
+  "SpaceX" + category "regulatory": Taiwan's Legislative Yuan passing a bill
+  exempting satellite operators (Starlink named throughout coverage) from
+  foreign-ownership caps matched the existing FAA Starship Pacific-reentry
+  draft-EA item, seven days apart, sharing no agency, jurisdiction, or
+  subject matter beyond the company name. Cleared with one dedup_distinct
+  entry.
+- 2026-07-21-G: New coined tag: `taiwan` (geography tier), following the
+  `russia` precedent from the same day's earlier sweep -- the standing
+  geography list (china, india, europe, japan, mena, us-gov, esa) has no
+  slot for Taiwan either. Flag for Florian alongside the `russia` question.
+- 2026-07-21-H: IHI (Japan, sovereign EO-constellation builder) and Kuva
+  Space (Finland, hyperspectral EO) join the growing no-registry-profile
+  actor list (Orbit Fab/ArkEdge/ispace pattern): neither has a
+  `src/data/registry` entry, so `first_party` classing would hard-fail the
+  anti-spoof gate regardless of domain. Their MOU story had only one
+  fetchable outlet (SpaceNews) and a genuine `found_none` corroboration
+  crawl (IHI's own newsroom 403'd), landing honestly at SNR 2 -- a clean
+  low-SNR-early-signal case, not a sourcing problem to route around.
+- 2026-07-21-I: A trade write-up recapping an already-published story under
+  a fresh angle (Cablefax's "Starlink Adds Another Airline Partnership",
+  reads current) traced entirely to the July 14 Frontier/Cebu Pacific deal
+  already published as `2026-07-14-frontier-starlink-wifi-fleet` -- another
+  instance of the stale-resurfacing pattern (2026-07-12-K and many later
+  entries), this time via a trade outlet's own recap rather than a search
+  index quirk. Checking `existing[]` by company name (not just guessed id
+  slugs, per 2026-07-16-A) caught it before drafting a duplicate.
+- 2026-07-21-J: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") per the same precedent.
