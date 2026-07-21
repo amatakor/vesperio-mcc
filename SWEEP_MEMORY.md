@@ -2677,3 +2677,44 @@ a newer entry if a lesson changes.
   session's permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 3 new, 0 updated, 0 held") per the same precedent.
+
+## Normal-mode sweep, ~8h04m gap, unfiltered full source list (2026-07-21, third)
+
+- 2026-07-21-K: redwirespace.com (Redwire's registry-stored `website`
+  value) now 301-redirects its entire domain to rdw.com, not just a
+  press subdomain -- same full-rebrand pattern as maxar.com/vantor.com
+  (2026-07-05-P), confirmed by fetching both `redwirespace.com/newsroom/`
+  and `ir.redwirespace.com/...` and getting redirected to `rdw.com` and
+  `ir.rdw.com` respectively. Since `rdw.com` is a different apex domain
+  entirely (not a subdomain of `redwirespace.com`), `ir.rdw.com`'s own
+  press release for a new Indiana facility failed `isOfficialHost`-style
+  matching for `first_party`; led with Benzinga (mainstream) instead and
+  linked the ir.rdw.com release unscored in `secondary_urls`, same
+  workaround as the ULA-newsroom/Q4-IR-subdomain cases. Worth updating
+  the registry's stored website value at the next structural touch.
+- 2026-07-21-L: A dollar-figure-plus-partner-name search hit can be a
+  different, older program round wearing the same numbers: a WebSearch
+  for "UK and Florida $400,000 space projects" corroboration surfaced
+  `spaceflorida.gov/news/...award-400-000-in-funding...`, which reads
+  like a match but is Space Florida's 2025 Israel Innovation Authority
+  partnership (12th funding round with Israel, unrelated companies),
+  not today's new UK Space Agency MOU. Caught by reading the actual
+  page (partner name, publish date) before citing it; the UK/Florida
+  item published on SpaceNews alone with an honest `crawl: "found_none"`.
+- 2026-07-21-M: A free same-day corroboration win on an item published
+  earlier in the day: IHI/Kuva Space's MOU (drafted at SNR 2 on a
+  `found_none` crawl from an earlier sweep this run's own state.json
+  shows) picked up two independent write-ups by afternoon -- IBTimes
+  Japan (mainstream) and SatNews (trade) -- each carrying facts not in
+  the original SpaceNews piece, confirming this wasn't a wire rewrite.
+  Both were Google News queue entries; `news.google.com/rss/articles/...`
+  redirects still would not render via WebFetch this session (confirms
+  2026-07-19-I/2026-07-17-A pattern), so both were resolved by quoting
+  the exact queue headline text in WebSearch instead. Used `updates[].attach`
+  plus `bump: "corroboration_2plus"` (not `rescore`) since the original
+  crawl was honest for its time; landed at SNR 3.
+- 2026-07-21-N: The harvester queue this run was almost entirely SpaceX
+  stock-price/Starship-scrub noise (confirms 2026-07-19-H); the four new
+  items this sweep all came from the trade-press legs (SpaceNews,
+  Payload, European Spaceflight) sitting quietly in the same queue
+  rather than from anything requiring a discovery-pass rescue.
