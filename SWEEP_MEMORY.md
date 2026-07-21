@@ -2585,3 +2585,59 @@ a newer entry if a lesson changes.
   underlying 14 July UKSA annual report per the standing
   event-date-over-publish-date convention, not the 20 July write-up
   date.
+
+## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-21)
+
+- 2026-07-21-A: finalize-sweep's anti-spoof gate (`isOfficialHost`) only
+  auto-passes `.gov` hosts and a short `FIXED_OFFICIAL_HOSTS` list
+  (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
+  itu.int, unoosa.org, europa.eu) for `first_party`/`official_record`
+  classing; `.gov.uk` does NOT end with `.gov` (it ends with `.uk`) and
+  is not in the fixed list, so a genuine UK government source
+  (gov.uk/UK Space Agency press release confirming a GBP62 million C-LEO
+  funding round) cannot be classed `official_record` without a hard
+  rejection. Led with a trade source (Via Satellite) instead, classed
+  the UK gov.uk release as an unscored `secondary_urls` link (same
+  pattern as the ArkEdge/Orbit Fab no-registry-host workaround,
+  2026-07-07-K/2026-07-08-A) rather than force the gate. Worth a
+  structural fix next time finalize-sweep.ts is touched: either add
+  `gov.uk` (and other national government TLDs likely to recur, e.g.
+  `gov.au`, `gc.ca`) to `FIXED_OFFICIAL_HOSTS`, or generalize the `.gov`
+  suffix check to match `.gov.<cctld>` patterns too.
+- 2026-07-21-B: Bluesky's public `getAuthorFeed` API returned clean,
+  correctly-ordered, current content this session for three accounts
+  previously logged as stale/broken in other sessions (Jeff Foust,
+  Marco Langbroek, Caleb Henry -- 2026-07-18-A, 2026-07-19-B/G all
+  flagged at least one of these as unusable). Confirms the failure is
+  genuinely session-dependent, not a permanent per-account condition;
+  worth a real per-session check rather than assuming a documented past
+  failure still holds. Langbroek's feed surfaced the same Elektrostal
+  Sentinel-imagery battlefield-damage post already correctly excluded by
+  2026-07-20-G; re-confirmed the exclusion call.
+- 2026-07-21-C: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate ("This command
+  requires approval", no retry clears it), continuing the standing
+  pattern since 2026-07-11-B/2026-07-17-C across many independent
+  sessions. Relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 4 new, 0 updated, 0 held") as the build-health signal, per
+  the same precedent.
+- 2026-07-21-D: A whitelisted signal's own site coverage of a foreign
+  state actor's constellation buildout (RussianSpaceWeb/Anatoly Zak on
+  Bureau 1440's second Rassvet batch, a Starlink-alternative broadband
+  constellation) is a clean whitelist-observer item when written to
+  report only the launch facts (satellite count, orbit, launch site,
+  running total) and NOT any operational/military framing -- several
+  outlets covering the same story lead with "counters Starlink cutoff
+  for Russian troops"-style battlefield framing, which was deliberately
+  left out per the standing conflict-analysis exclusion. TASS (Russian
+  state media) served as second-source corroboration for the
+  fact-of-record (launch occurred, second batch), consistent with
+  CLAUDE.md's state-media handling rule generalized beyond the Chinese
+  case it names. No prior MCC coverage of Bureau 1440/Rassvet existed
+  under any name; first item for this actor.
+- 2026-07-21-E: New tag coined and logged for human review: `russia`
+  (geography tier). The existing geography tag list (china, india,
+  europe, japan, mena, us-gov, esa) has no non-US-non-those-four
+  catch-all; Bureau 1440/Rassvet needed one. Flag for Florian on whether
+  `russia` should join the standing tag list or a broader `other` tag is
+  preferred.
