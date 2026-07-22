@@ -155,3 +155,27 @@ two mornings of 2h-late or dropped crons, a Cloudflare Worker
 05:15/17:15 UTC; the GitHub cron became a 06:45/18:45 fallback behind
 a freshness guard, so a missed primary costs at most 90 minutes and
 a double run costs nothing.
+
+Launch Library lost its tier-5 badge (2026-07-22): CLAUDE.md and the
+registry path always scored it as an aggregator at tier 4, but the
+news gate's host list classed it as computed observational data at
+tier 5, past the direct-source ceiling. Florian adjudicated it back
+to aggregator; the gate and the drafting prompt now agree with the
+policy, and a one-shot migration reclassed five item sources and
+rescored the three LL2-led launch items from 5 to 4, with the
+movements logged on /system/. The item ledger also stopped saying
+"not tested yet" under items whose corroboration earned no lift: when
+corroboration sources are attached but the ceiling absorbed them, it
+now says so.
+
+QR codes are never artwork (2026-07-22): the morning sweep stamped
+Sina Finance's WeChat QR code onto the Gravity-1 sea-launch item
+because it was the article's only in-body image, square, and over the
+minimum size, and the artwork judge only ranks contested candidates.
+Every candidate's pixels now run through a QR decoder and anything
+that reads as a QR code is rejected; the recovered QR itself became
+the regression fixture. The manual image override learned the same
+gate, plus a short map of known source media buckets (TheSpaceDevs'
+image CDN) so a source's own hosted photograph counts as coming from
+that source; the map is how the Gravity-1 item got its real rocket
+photograph from its Launch Library record.
