@@ -1,5 +1,36 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-07-22-orienspace-gravity-1-launch:gravity-1.flights_total",
+      "item_id": "2026-07-22-orienspace-gravity-1-launch",
+      "entity_slug": "gravity-1",
+      "entity_type": "vehicle",
+      "field": "flights_total",
+      "value": 3,
+      "metric": "cumulative Gravity-1 launches, as stated by Launch Library",
+      "same_metric": true,
+      "item_snr": 5,
+      "source_url": "https://ll.thespacedevs.com/2.2.0/launch/d8eb4b68-5307-4b3b-b585-5598958defc2/",
+      "action": "flag_refresh",
+      "proposed_on": "2026-07-22",
+      "status": "pending"
+    },
+    {
+      "id": "2026-07-22-orienspace-gravity-1-launch:gravity-1.flights_successful",
+      "item_id": "2026-07-22-orienspace-gravity-1-launch",
+      "entity_slug": "gravity-1",
+      "entity_type": "vehicle",
+      "field": "flights_successful",
+      "value": 3,
+      "metric": "cumulative successful Gravity-1 launches, as stated by Launch Library",
+      "same_metric": true,
+      "item_snr": 5,
+      "source_url": "https://ll.thespacedevs.com/2.2.0/launch/d8eb4b68-5307-4b3b-b585-5598958defc2/",
+      "action": "flag_refresh",
+      "proposed_on": "2026-07-22",
+      "status": "pending"
+    }
+  ]
 }

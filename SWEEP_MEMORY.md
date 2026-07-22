@@ -2718,3 +2718,49 @@ a newer entry if a lesson changes.
   items this sweep all came from the trade-press legs (SpaceNews,
   Payload, European Spaceflight) sitting quietly in the same queue
   rather than from anything requiring a discovery-pass rescue.
+
+## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-22)
+
+- 2026-07-22-A: A launch SCRUB already published as its own item (the
+  July 20 Falcon 9/Starlink 17-39 pad abort) resolves into a routine
+  successful relaunch one day later on the SAME mission -- this is an
+  `updates[].patch` on the abort item (append the resolution to
+  `what_happened`), never a new item, even though it's tempting to treat
+  "launch succeeded" as its own dedup-checked event per the standing
+  megaconstellation-cadence ruling. The cadence ruling covers genuinely
+  distinct missions; a scrub-then-fly of the identical payload is one
+  event with two beats.
+- 2026-07-22-B: Confirms the domain-collapse mechanic works as designed
+  when attaching follow-up coverage to an existing item: the Vandenberg
+  abort item already had Spaceflight Now + Space.com as its 2 sources;
+  attaching NEW July 21 pages from those same two outlets (reporting the
+  successful relaunch) left the corroboration count at 2, not 4 --
+  finalize-sweep collapses multiple pages on one registrable domain into
+  one unit regardless of how many distinct URLs are attached. Don't
+  expect a corroboration_4plus bump from re-covering the same outlets;
+  a genuine 4th unit needs a domain not already counted.
+- 2026-07-22-C: Conflicting satellite-count claims across English-language
+  previews of a Chinese launch (Gravity-1's July 22 sea launch: pre-launch
+  pieces said "6 Dongpo satellites" or "30 spacecraft," Launch Library
+  said "9 satellites") were resolved by trusting the computed source
+  (Launch Library, tier 5) and confirming its exact figure via a direct
+  fetch of Chinese-language financial press (Sina Finance), which named
+  all 9 payloads by name and matched Launch Library exactly. When
+  pre-launch previews and a post-launch computed record disagree, the
+  computed record wins and is worth a same-language direct-fetch check
+  rather than trusting an English aggregator's preview figure.
+- 2026-07-22-D: Marcia Smith's SpacePolicyOnline Bluesky feed
+  (spacepolicyonline.bsky.social, checked via the public API since the
+  bsky.app page itself still renders nothing) delivered same-day granular
+  detail a fresh launch's trade coverage hadn't yet stated (MRV-1 not
+  operational until 2027) and flagged a same-day House committee letter
+  to the FCC (undated beyond "today") that could not be independently
+  corroborated via WebSearch in time to draft confidently -- left
+  unpublished this run rather than drafted off a single paraphrased
+  social post; worth a follow-up search next sweep once a primary
+  document or dated trade write-up surfaces.
+- 2026-07-22-E: spacepolicyonline.com's own site (not the Bluesky
+  account) returned only a bot/CAPTCHA verification screen via WebFetch
+  this run, a new failure mode for this domain; still logged in
+  `signalsPass.checked` since a fetch was genuinely attempted, distinct
+  from a channel skipped for rotation.
