@@ -30,7 +30,7 @@ import sharp from "sharp";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { fetchSafe } from "./lib/fetch-safe";
 import { registrableDomain } from "./lib/urls";
-import { imageSize, reencodeForStorage, MIN_DIMENSION, MAX_ASPECT } from "./fetch-thumbs";
+import { imageSize, reencodeForStorage, decodesAsQr, MIN_DIMENSION, MAX_ASPECT } from "./fetch-thumbs";
 import type { ItemsFile, Item } from "../src/data/schema";
 
 const OUT_DIR = "public/img/items";
@@ -53,10 +53,34 @@ const data = JSON.parse(readFileSync(ITEMS_PATH, "utf8")) as ItemsFile;
 const item: Item | undefined = data.items.find((i) => i.id === itemId);
 if (!item) fail(`no item with id "${itemId}"`);
 
+/**
+ * Known source-media CDNs, exact host -> the source's registrable
+ * domain (Florian, 2026-07-22). Some sources serve their own images
+ * from a bucket host (Launch Library's TheSpaceDevs media bucket), so
+ * the registrable-domain proxy for "lives on a source page" fails on
+ * exactly those images. Exact hosts only, never a shared CDN's
+ * registrable domain: allowing digitaloceanspaces.com wholesale would
+ * admit every tenant's bucket.
+ */
+const CDN_HOST_ALIASES: Record<string, string> = {
+  "thespacedevs-prod.nyc3.digitaloceanspaces.com": "thespacedevs.com",
+};
+
+function imageDomain(url: string): string | null {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    const alias = CDN_HOST_ALIASES[host];
+    if (alias) return alias;
+  } catch {
+    return null;
+  }
+  return registrableDomain(url);
+}
+
 // The image must come from one of the item's own linked source pages.
 const linked = [item.source_url, ...item.secondary_urls, ...(item.sources ?? []).map((s) => s.url)];
 const allowed = new Set(linked.map((u) => registrableDomain(u)).filter(Boolean));
-const imgDomain = registrableDomain(imageUrl);
+const imgDomain = imageDomain(imageUrl);
 if (!imgDomain || !allowed.has(imgDomain)) {
   fail(
     `"${imageUrl}" is not on any of the item's linked source domains [${[...allowed].join(", ")}]; ` +
@@ -77,6 +101,7 @@ if (!dim) fail("could not parse image dimensions");
 if (dim.w < MIN_DIMENSION || dim.h < MIN_DIMENSION) fail(`too small: ${dim.w}x${dim.h}`);
 const aspect = dim.w / dim.h;
 if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) fail(`ad-shaped aspect: ${dim.w}x${dim.h}`);
+if (await decodesAsQr(buf)) fail("image decodes as a QR code; never artwork");
 
 const reencoded = await reencodeForStorage(buf, ext, {
   trim: !process.argv.includes("--no-trim"),

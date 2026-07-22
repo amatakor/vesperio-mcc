@@ -30,6 +30,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync
 import { createHash } from "node:crypto";
 import { join } from "node:path";
 import sharp from "sharp";
+import jsQR from "jsqr";
 import type { ItemsFile, ItemImage } from "../src/data/schema";
 import { fetchSafe, fetchSafeText } from "./lib/fetch-safe";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
@@ -361,6 +362,27 @@ export async function trimWhiteBorders(buf: Uint8Array): Promise<Buffer | null> 
   }
 }
 
+/** QR gate (2026-07-22): Sina Finance's WeChat QR code was an article's
+    only in-body image, square and over MIN_DIMENSION, so it sailed
+    through the size gates and got stamped as launch artwork; the sealed
+    judge only ranks candidates, so a lone QR never faced it. A candidate
+    that decodes as a QR code is never artwork. Decode failure (odd
+    pixels, sharp errors) proves nothing and passes: the other gates
+    decide those. */
+export async function decodesAsQr(buf: Uint8Array): Promise<boolean> {
+  try {
+    const { data, info } = await sharp(buf)
+      .resize(800, 800, { fit: "inside", withoutEnlargement: true })
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const pixels = new Uint8ClampedArray(data.buffer, data.byteOffset, data.byteLength);
+    return jsQR(pixels, info.width, info.height) !== null;
+  } catch {
+    return false;
+  }
+}
+
 export async function reencodeForStorage(
   buf: Uint8Array,
   ext: string,
@@ -420,6 +442,10 @@ async function downloadTo(
       if (Math.min(dim.w, dim.h) < MIN_DIMENSION) return null; // favicon/tracker
       const aspect = dim.w / dim.h;
       if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) return null; // ad banner shape
+    }
+    if (await decodesAsQr(buf)) {
+      console.error(`fetch-thumbs: rejected ${url}: decodes as a QR code`);
+      return null;
     }
     mkdirSync(dir, { recursive: true });
     const reencoded = await reencodeForStorage(buf, ext);

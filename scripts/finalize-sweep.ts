@@ -318,11 +318,12 @@ const FIXED_OFFICIAL_HOSTS = new Set([
 ]);
 
 /** Hosts whose data may be classed "computed" (SNR_PLAN.md §B1). */
+// Launch Library left this list 2026-07-22 (Florian): it is a curated
+// aggregator (tier 4, like Gunter's), not direct observational data;
+// CLAUDE.md and the registry path always said so.
 const COMPUTED_HOSTS = new Set([
   "celestrak.org",
   "space-track.org",
-  "ll.thespacedevs.com",
-  "thespacedevs.com",
 ]);
 
 const REGISTRY_SUBDIRS = ["constellations", "organizations", "spaceports", "vehicles"] as const;
@@ -451,7 +452,7 @@ function validateSourceEntry(
     ) {
       const hint =
         cls === "computed"
-          ? "reclassify (only celestrak.org, space-track.org, thespacedevs.com are computed)"
+          ? "reclassify (only celestrak.org, space-track.org are computed; Launch Library is aggregator)"
           : "reclassify (wire_pr / trade / informal)";
       errors.push(
         `${path}: host of "${String(s.url)}" is not an official ${cls} host; ${hint}`,

@@ -340,12 +340,23 @@ const CORROBORATION_MODIFIERS = new Set([
   "reinforcement",
 ]);
 
-function SnrAxes({ trace }: { trace: SnrTrace }) {
+/** Corroboration/reinforcement sources attached by past crawls. A trace
+    can lack corroboration modifiers either because no crawl ran yet or
+    because the earned lift was absorbed (ceiling, collapsed units); the
+    sources list tells the two apart, so "not tested yet" never renders
+    under an item that visibly carries a corroboration source. */
+function hasAttachedCorroboration(sources: Item["sources"]): boolean {
+  return (sources ?? []).some((s) => s.via === "corroboration" || s.via === "reinforcement");
+}
+
+function SnrAxes({ trace, corroborated = false }: { trace: SnrTrace; corroborated?: boolean }) {
   const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
   const sum = corr.reduce((n, m) => n + m.delta, 0);
   const corrText =
     corr.length === 0
-      ? "not tested yet"
+      ? corroborated
+        ? "sources attached, no lift earned"
+        : "not tested yet"
       : `${signed(sum)} earned from ${corr.length} rule${corr.length === 1 ? "" : "s"}`;
   return (
     <span className="snr-pop-axes">
@@ -368,10 +379,18 @@ function SnrAxes({ trace }: { trace: SnrTrace }) {
 }
 
 /** The stored calculation, one row per step; shared by popover and panel. */
-function SnrTraceRows({ trace, condensed = false }: { trace: SnrTrace; condensed?: boolean }) {
+function SnrTraceRows({
+  trace,
+  condensed = false,
+  corroborated = false,
+}: {
+  trace: SnrTrace;
+  condensed?: boolean;
+  corroborated?: boolean;
+}) {
   return (
     <>
-      <SnrAxes trace={trace} />
+      <SnrAxes trace={trace} corroborated={corroborated} />
       <span className="snr-pop-row">
         <span className="snr-pop-delta">{trace.base.tier}</span>
         <span>
@@ -453,7 +472,9 @@ function SnrLedger({ item }: { item: Item }) {
         <span className="snrl-tag">corrob</span>
         <span>
           {corr.length === 0
-            ? "not tested yet"
+            ? hasAttachedCorroboration(item.sources)
+              ? "sources attached, no lift earned"
+              : "not tested yet"
             : `${signed(corrSum)} earned from ${corr.length} rule${corr.length === 1 ? "" : "s"}`}
         </span>
         {trace.single_class_corroboration && (
@@ -588,11 +609,13 @@ function SnrLed({
   trace,
   size = "card",
   onCard = false,
+  corroborated = false,
 }: {
   snr: number;
   trace?: SnrTrace;
   size?: "compact" | "card" | "hero";
   onCard?: boolean;
+  corroborated?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const pop = useHoverPopover(304);
@@ -695,7 +718,7 @@ function SnrLed({
               </button>
             )}
           </span>
-          <SnrTraceRows trace={trace} condensed={onCard} />
+          <SnrTraceRows trace={trace} condensed={onCard} corroborated={corroborated} />
         </span>
       )}
     </span>
@@ -836,7 +859,12 @@ function Card({
         <p className="card-extra">{item.explainer.what_happened}</p>
       )}
       <div className="card-foot">
-        <SnrLed snr={item.snr} trace={item.snr_trace} onCard />
+        <SnrLed
+          snr={item.snr}
+          trace={item.snr_trace}
+          onCard
+          corroborated={hasAttachedCorroboration(item.sources)}
+        />
         {item.companies.length > 0 ? (
           <>
             <span className="card-foot-div" aria-hidden="true" />
@@ -1314,7 +1342,11 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`modal-band modal-band-${item.impact}`}>
-          <SnrLed snr={item.snr} trace={item.snr_trace} />
+          <SnrLed
+            snr={item.snr}
+            trace={item.snr_trace}
+            corroborated={hasAttachedCorroboration(item.sources)}
+          />
           <ImpactBadge impact={item.impact} variant="band" />
           <a className="chip" href={`/news/${item.category}/`}>
             {item.category}
@@ -1699,7 +1731,11 @@ export function ItemPage({ item }: { item: Item }) {
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
-          <SnrLed snr={item.snr} trace={item.snr_trace} />
+          <SnrLed
+            snr={item.snr}
+            trace={item.snr_trace}
+            corroborated={hasAttachedCorroboration(item.sources)}
+          />
           {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
           <span className="date">{item.date}</span>
         </div>

@@ -300,7 +300,11 @@ entry is a failed run, not a handoff.
      GlobeNewswire, PR Newswire) are `wire_pr`, not first party.
    - `official_record`: regulator, court, procurement register, SEC —
      official domains only.
-   - `computed`: CelesTrak, Space-Track, Launch Library records.
+   - `computed`: CelesTrak, Space-Track records: direct observational
+     data, nothing else.
+   - `aggregator`: established aggregator databases (Launch Library,
+     Gunter's Space Page, and peers). Curated compilations, not direct
+     sources; tier 4, never 5 (Florian, 2026-07-22).
    - `trade`: SpaceNews, Payload, European Spaceflight, and peers.
    - `mainstream`: general press (Reuters, FT, NYT ...). Their pickup
      of a space story is a corroboration signal.
