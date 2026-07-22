@@ -30,7 +30,7 @@ import sharp from "sharp";
 import { writeJsonAtomic } from "./lib/write-json-atomic";
 import { fetchSafe } from "./lib/fetch-safe";
 import { registrableDomain } from "./lib/urls";
-import { imageSize, reencodeForStorage, MIN_DIMENSION, MAX_ASPECT } from "./fetch-thumbs";
+import { imageSize, reencodeForStorage, decodesAsQr, MIN_DIMENSION, MAX_ASPECT } from "./fetch-thumbs";
 import type { ItemsFile, Item } from "../src/data/schema";
 
 const OUT_DIR = "public/img/items";
@@ -101,6 +101,7 @@ if (!dim) fail("could not parse image dimensions");
 if (dim.w < MIN_DIMENSION || dim.h < MIN_DIMENSION) fail(`too small: ${dim.w}x${dim.h}`);
 const aspect = dim.w / dim.h;
 if (aspect > MAX_ASPECT || aspect < 1 / MAX_ASPECT) fail(`ad-shaped aspect: ${dim.w}x${dim.h}`);
+if (await decodesAsQr(buf)) fail("image decodes as a QR code; never artwork");
 
 const reencoded = await reencodeForStorage(buf, ext, {
   trim: !process.argv.includes("--no-trim"),

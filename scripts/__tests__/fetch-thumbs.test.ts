@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { logoShaped, trimWhiteBorders } from "../fetch-thumbs";
+import { decodesAsQr, logoShaped, trimWhiteBorders } from "../fetch-thumbs";
 import sharp from "sharp";
 
 describe("logoShaped candidate ordering", () => {
@@ -70,5 +70,41 @@ describe("trimWhiteBorders letterbox shave", () => {
       .png()
       .toBuffer();
     expect(await trimWhiteBorders(new Uint8Array(blank))).toBeNull();
+  });
+});
+
+describe("decodesAsQr gate", () => {
+  // The real thing: Sina Finance's WeChat QR code, stamped as Gravity-1
+  // launch artwork on 2026-07-22 because it was the article's only
+  // in-body image and passed every size gate.
+  test("the Sina WeChat QR code that shipped as launch artwork decodes as a QR", async () => {
+    const qr = new Uint8Array(
+      await Bun.file("scripts/__tests__/fixtures/sina-wechat-qr.webp").arrayBuffer(),
+    );
+    expect(await decodesAsQr(qr)).toBe(true);
+  });
+
+  test("a photograph-like image does not", async () => {
+    const photo = await sharp({
+      create: { width: 800, height: 450, channels: 3, background: "#1a1a2e" },
+    })
+      .composite([
+        {
+          input: await sharp({
+            create: { width: 300, height: 200, channels: 3, background: "#c0713a" },
+          })
+            .png()
+            .toBuffer(),
+          left: 120,
+          top: 90,
+        },
+      ])
+      .jpeg()
+      .toBuffer();
+    expect(await decodesAsQr(new Uint8Array(photo))).toBe(false);
+  });
+
+  test("undecodable bytes pass the gate rather than deciding it", async () => {
+    expect(await decodesAsQr(new Uint8Array([1, 2, 3, 4]))).toBe(false);
   });
 });
