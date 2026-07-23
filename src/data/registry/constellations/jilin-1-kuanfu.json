@@ -148,7 +148,41 @@
     "source": "http://www.jl1.cn/",
     "as_of": "2026-07-12"
   },
-  "notes": "CGSTL's wideband (Kuanfu) series within the Jilin-1 program. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. Weekly maintenance (2026-07-13), conflict flagged for Florian: a fresh Wikipedia fetch states the Kuanfu series as 'four operational satellites across two generations' (three first-gen, one second-gen, most recent launch 2023-08-25), but that figure predates this file's own already-sourced event for a six-satellite Jilin-1 Kuanfu-02B cluster launched 2024-09-20 (Gunter's Space Page, canonical), and this profile's independently computed sats_active_verified (CelesTrak) already stands at 10, above Wikipedia's claimed total of 4. Wikipedia's Kuanfu prose paragraph is evidently stale relative to the 2024-09-20 cluster launch already on file. sats_launched_total left null rather than write an unreliable figure; also checked eoPortal's Jilin/Gaofen Constellation page, which gives no Kuanfu resolution/swath/revisit/spectral-band figures (only notes Kuanfu-02A as 'the first next-generation satellite' with no performance parameters), so no EO spec fields could be filled from that source either.",
+  "resolution_m": {
+    "value": 4,
+    "source": "https://space.skyrocket.de/doc_sdat/jilin-1-kuanfu-01.htm",
+    "as_of": "2026-07-23",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/jilin-1-kuanfu-01.htm",
+        "reason": "Gunter's Space Page (established aggregator); page states the payload provides 'multi-spectral resolution better than 4 m and a swath width greater than 136 km'; 4 m carried as the stated ceiling (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "swath_km": {
+    "value": 136,
+    "source": "https://space.skyrocket.de/doc_sdat/jilin-1-kuanfu-01.htm",
+    "as_of": "2026-07-23",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://space.skyrocket.de/doc_sdat/jilin-1-kuanfu-01.htm",
+        "reason": "Gunter's Space Page (established aggregator); page states 'multi-spectral resolution better than 4 m and a swath width greater than 136 km'; 136 km carried as the stated floor (registry v2 EO spec backfill)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "CGSTL's wideband (Kuanfu) series within the Jilin-1 program. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. Weekly maintenance (2026-07-13), conflict flagged for Florian: a fresh Wikipedia fetch states the Kuanfu series as 'four operational satellites across two generations' (three first-gen, one second-gen, most recent launch 2023-08-25), but that figure predates this file's own already-sourced event for a six-satellite Jilin-1 Kuanfu-02B cluster launched 2024-09-20 (Gunter's Space Page, canonical), and this profile's independently computed sats_active_verified (CelesTrak) already stands at 10, above Wikipedia's claimed total of 4. Wikipedia's Kuanfu prose paragraph is evidently stale relative to the 2024-09-20 cluster launch already on file. sats_launched_total left null rather than write an unreliable figure; also checked eoPortal's Jilin/Gaofen Constellation page, which gives no Kuanfu resolution/swath/revisit/spectral-band figures (only notes Kuanfu-02A as 'the first next-generation satellite' with no performance parameters), so no EO spec fields could be filled from that source either. Weekly maintenance (2026-07-23): resolution_m and swath_km null-filled from the same Gunter's Kuanfu-01 page already cited for this profile's orbit/operator/country fields, which separately states the payload spec ('multi-spectral resolution better than 4 m and a swath width greater than 136 km'); spectral_bands and revisit left null (page only says 'multi-spectral' generically, no named bands or wavelengths, and states no revisit figure). Re-checked eoPortal's jilin-con page (now last-updated Mar 3, 2025): still no Kuanfu-specific performance figures beyond the Kuanfu-02A 'next-generation' label already noted.",
   "events": [
     {
       "date": "2020-01-15",

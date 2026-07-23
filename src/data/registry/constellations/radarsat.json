@@ -114,7 +114,27 @@
     },
     "tier": "canonical"
   },
-  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05). eoPortal EO spec backfill (2026-07-09): all RADARSAT missions operate in C-band (RADARSAT-1 page states 5.3 GHz C band), carried here as the fleet-wide spectral band. Per-satellite resolution and imaging modes differ across generations and are carried on the member profiles (radarsat-2, rcm), so resolution_m/swath_km/imaging_modes are left null on the fleet parent to avoid conflating heterogeneous figures.",
+  "generations": [
+    {
+      "name": "RADARSAT-1",
+      "text": "C-band SAR (5.3 GHz) in a 798 km sun-synchronous orbit; resolution and swath widths varied across modes from 8-100 m to 45-500 km, with a 24-day repeat cycle. Operational 1995-2013.",
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-1",
+      "as_of": "2026-07-23"
+    },
+    {
+      "name": "RADARSAT-2",
+      "text": "C-band SAR (5.405 GHz) with fully polarimetric imaging modes; imaging resolution of 3-100 m across a 20-500 km ground swath, sun-synchronous orbit at 798 km. Commercially operated by MDA.",
+      "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+      "as_of": "2026-07-23"
+    },
+    {
+      "name": "RADARSAT Constellation Mission (RCM)",
+      "text": "Three-satellite C-band SAR constellation (launched 2019) with an imaging resolution of 3-100 m; provides a four-day exact revisit for coherent change detection and an average daily global re-look in medium 50 m resolution mode.",
+      "source": "https://www.eoportal.org/satellite-missions/rcm",
+      "as_of": "2026-07-23"
+    }
+  ],
+  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05). eoPortal EO spec backfill (2026-07-09): all RADARSAT missions operate in C-band (RADARSAT-1 page states 5.3 GHz C band), carried here as the fleet-wide spectral band. Per-satellite resolution and imaging modes differ across generations and are carried on the member profiles (radarsat-2, rcm), so resolution_m/swath_km/imaging_modes are left null on the fleet parent to avoid conflating heterogeneous figures. Weekly maintenance (2026-07-23): added sourced generations rows (RADARSAT-1, RADARSAT-2, RCM) from each mission's own eoPortal page instead of forcing a single fleet-wide resolution/swath figure, per the registry v2 generations mechanism; this profile's task-description slug guess ('radarsat-1') does not match this file (it is the umbrella fleet profile, not a RADARSAT-1-specific one), confirmed by its existing 'CSA / MDA RADARSAT (fleet)' name and by radarsat-2.json existing as a separate profile.",
   "events": [
     {
       "date": "1995-11-04",

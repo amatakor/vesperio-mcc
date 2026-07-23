@@ -141,7 +141,24 @@
     },
     "tier": "canonical"
   },
-  "notes": "eoPortal EO spec backfill (2026-07-09) from the Carbon Mapper (Tanager) mission page: hyperspectral imaging spectrometer for methane and CO2 point sources; 18 km swath. The page's specifications table states spatial resolution as a range ('30-15' m), so resolution_m is left null rather than reduced to a single number. Spectral range not stated as a clean nm figure on the page, so spectral_bands left null. Revisit stated only as 'rapid revisit' (vague), left null. Page last updated Sep 22, 2024.",
+  "resolution_m": {
+    "value": 30,
+    "source": "https://www.planet.com/constellations/tanager/",
+    "as_of": "2026-07-23"
+  },
+  "revisit": {
+    "value": "weekly",
+    "source": "https://www.planet.com/constellations/tanager/",
+    "as_of": "2026-07-23"
+  },
+  "spectral_bands": {
+    "value": [
+      "400-2,500 nm (VSWIR, 424 bands, ~5 nm spacing)"
+    ],
+    "source": "https://www.planet.com/constellations/tanager/",
+    "as_of": "2026-07-23"
+  },
+  "notes": "eoPortal EO spec backfill (2026-07-09) from the Carbon Mapper (Tanager) mission page: hyperspectral imaging spectrometer for methane and CO2 point sources; 18 km swath. The page's specifications table states spatial resolution as a range ('30-15' m), so resolution_m was left null rather than reduced to a single number. Spectral range not stated as a clean nm figure on the page, so spectral_bands left null. Revisit stated only as 'rapid revisit' (vague), left null. Page last updated Sep 22, 2024. Weekly maintenance (2026-07-23): resolution_m, revisit, and spectral_bands null-filled from Planet's own Tanager product page (first-party, unscored), which states a flat 'RESOLUTION: 30 m' spec-sheet figure (distinct from eoPortal's '30-15' technical range; carried as stated since it is Planet's own unambiguous single-number claim, not a reduction performed here), 'REVISIT RATE: Weekly' (consistent with eoPortal's separately stated 1-7 day sample interval for the full four-satellite constellation, Carbon Mapper mission page), and '424 bands 400-2,500 nm ~5 nm spacing' for the VSWIR spectrometer. sats_planned (4) unchanged.",
   "events": [
     {
       "date": "2021-04-15",

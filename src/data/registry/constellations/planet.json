@@ -94,7 +94,7 @@
       "as_of": "2026-07-09"
     }
   },
-  "notes": "Company page states 200+ satellites in orbit and 450 built and deployed; 200 recorded as the stated floor. Constellations named: SuperDove, SkySat, Pelican, Tanager, Owl.",
+  "notes": "Company page states 200+ satellites in orbit and 450 built and deployed; 200 recorded as the stated floor. Constellations named: SuperDove, SkySat, Pelican, Tanager, Owl. Weekly maintenance (2026-07-23), EO spec backfill attempted and declined: this profile is the umbrella fleet parent spanning heterogeneous sub-constellations (Dove/SuperDove ~3-5 m optical, SkySat ~50 cm, Pelican, Tanager hyperspectral), each already carrying or slated for its own dedicated profile (superdove.json, skysat.json, pelican.json, tanager.json). eoPortal's 'planet' (Flock/Dove) mission page states GSD as ranges only ('2.7-3.2 m' / '3.7-4.9 m' nadir, both orbit-type dependent) and its 3-5 m SuperDove figure is already the sourced basis for superdove.json's resolution_m; writing a fleet-wide resolution_m/swath_km/spectral_bands here would either duplicate or conflate distinct sub-fleet figures already owned by child profiles, so those fields are left null, matching the design already documented on the radarsat.json fleet parent. The same eoPortal page states a design target to 'maintain 100-150 satellite constellation'; left out of sats_planned because the field takes a single number and this is a stated range, and because it is ambiguous whether it covers the whole company fleet or only the Sun-synchronous Dove/SuperDove line.",
   "parent": null,
   "orbits": null,
   "events": [
