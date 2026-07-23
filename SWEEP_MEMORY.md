@@ -2814,3 +2814,69 @@ a newer entry if a lesson changes.
   4 new items were not fetched; a later run's `fetch-thumbs.ts` pass will
   need to pick them up (they render text-only in the meantime, which is
   a supported fallback, not a broken state).
+
+## Normal-mode sweep, ~11h41m gap, unfiltered full source list (2026-07-23)
+
+- 2026-07-23-A: A scheduled-vote item's outcome is an `updates[].patch`
+  on the SAME item, not a new one, even when the gap between the preview
+  article (published 2026-07-01) and the outcome article (July 22) is
+  three weeks, well past the normal 7-day dedup window: the FCC's "to
+  vote on satellite licensing overhaul July 22" item was patched in
+  place with the vote's actual result (headline, tagline, what_happened,
+  impact bumped notable to major) rather than dedup-matched as a
+  separate candidate, since the article is literally the resolution of
+  the exact scheduled event the original item was about. The 7-day
+  window governs matching an unrelated-looking new candidate against
+  prior coverage; it doesn't gate patching an item's own known future
+  event once it resolves.
+- 2026-07-23-B: The FCC's July 22 meeting produced two separately
+  reported, separately scored actions (the Part 25->Part 100 licensing
+  overhaul and a second upper-C-band spectrum auction) bundled in some
+  outlets' single write-up but covered as two distinct articles by
+  others (Via Satellite ran separate pieces for each). Treated as two
+  items: patched the existing licensing-overhaul item and drafted the
+  C-band auction as new, rather than merging both actions into one
+  card, matching how the trade press itself split the story.
+  cnn.com/2026/07/22/science/space-debris-satellite-rules-fcc-vote
+  returned HTTP 451 (unavailable for legal reasons) both times tried;
+  newscaststudio.com/.../fcc-adopts-rules-for-upper-c-band-auction 403'd.
+  TV Tech (tvtechnology.com) fetched cleanly and gave a genuinely
+  independent third trade source (different figures emphasized: GDP/jobs
+  estimates, the per-commissioner vote breakdown) rather than a rewrite.
+- 2026-07-23-C: A company newsroom page can carry a same-day press
+  release the listing page dates one day earlier than the article page
+  itself states (ICEYE's KT SAT/South Korea flood-partnership release:
+  the newsroom listing showed "July 22, 2026" but the article page's own
+  fetch reported "July 23, 2026"). Treated as in-window either way rather
+  than resolving the discrepancy; worth a direct timestamp check if a
+  future case lands right at a dedup or window boundary where the day
+  matters.
+- 2026-07-23-D: A French government research agency's own domain
+  (onera.fr) is not first-party-classable under the current anti-spoof
+  gate: it's neither `.gov` nor in `FIXED_OFFICIAL_HOSTS`, and ONERA has
+  no `src/data/registry` entity either, so the same no-registry-host
+  workaround as ArkEdge/Orbit Fab/ispace applies (2026-07-07-K and
+  later): led with a trade outlet (European Spaceflight) and linked
+  onera.fr in `secondary_urls` unscored. A French-language defense trade
+  outlet, Zone Militaire (opex360.com), gave a genuinely independent
+  second source with its own byline and additional facts (the GRAVES
+  radar being replaced by a new Thales AURORE radar) not in the English
+  lead, not just a translated rewrite.
+- 2026-07-23-E: An `updates[].bump` attestation can be accepted by the
+  gate without changing the item's final SNR: patched the FCC
+  licensing-overhaul item with `bump: "corroboration_2plus"` after
+  attaching two new distinct sources, and the merge succeeded, but the
+  item's `snr_trace.modifiers` still shows only the pre-existing
+  `persistence` modifier (final stayed 4, the persistence cap) with no
+  `corroboration_2plus` entry logged. Not investigated further this
+  run (the math is code, not mine to second-guess), but worth a look if
+  a future item needs the corroboration bump's headline visibility on
+  /log and it's silently absorbed by an existing cap this way.
+- 2026-07-23-F: Bluesky's public `getAuthorFeed` API continues to be
+  genuinely per-account, per-session flaky (extends 2026-07-19-B/G,
+  2026-07-21-B): Langbroek's feed this run was almost entirely unrelated
+  Dutch-language personal posts, Farrar's and Berger's both topped out
+  months stale (March/June), while Foust, SpacePolicyOnline, Zak,
+  Jones, and Parsonson's feeds were all clean and current. Budget a real
+  per-account check every run rather than trusting or distrusting the
+  leg wholesale.
