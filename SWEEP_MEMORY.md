@@ -2911,3 +2911,40 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 0 new, 0 updated, 0 held") per the same precedent.
+
+## Normal-mode sweep, ~8h13m gap, unfiltered full source list (2026-07-23, third)
+
+- 2026-07-23-J: Drafted two small European funding-round items (ORiS,
+  deltaVision) straight from a discovery-pass WebSearch without first
+  grepping the company name against `items.json`; both were already
+  published from the same-day harvester queue by an earlier sweep.
+  `finalize-sweep.ts` caught both as exact-id duplicates and rejected the
+  draft (the id-slug convention is stable enough that two independent
+  drafts of the same story land on the same id). Fix was cheap (drop the
+  duplicate newItems, redirect the one genuinely new fact -- a second
+  independent outlet, Tech.eu, corroborating ORiS's round -- into an
+  `updates[].attach` with `bump: "corroboration_2plus"`), but the lesson
+  is upstream: grep every candidate's company name against `items.json`
+  before drafting, not just against the printed `existing[]` headlines
+  list, since a same-day story can slip in between when `existing[]` was
+  captured and when a candidate is drafted.
+- 2026-07-23-K: science.org (AAAS) 403'd WebFetch on every article URL
+  tried this run (two different slugs for the same NASA SR-1
+  Freedom/nuclear-Mars-mission story); confirmed via `curl` that this
+  session's Bash tool requires manual approval for arbitrary network
+  commands (matches the scheduled-sandbox's curl restriction even in an
+  interactive session), so there was no fallback fetch path. Corroboration
+  for that item was rescued via a different outlet in the same search
+  results (gagadget.com, which loaded cleanly and independently cited the
+  same FY-by-FY budget figures) plus NASA's own mission page
+  (nasa.gov/mission/space-reactor-1-freedom/, first_party, on the fixed
+  official-host list) for the launch-date/SkyFall facts the budget-only
+  trade lead didn't cover.
+- 2026-07-23-L: Confirms the "process not yet a fact" pattern
+  (2026-07-22-H/I, 2026-07-23-H) on two more shapes seen the same run:
+  the Office of Space Commerce's "Space Commerce Certification" post
+  (a promotional status update announcing a future Federal Register
+  call-for-interest, no criteria yet published) and Isar Aerospace's own
+  newsroom post about a German defence minister's site visit (no
+  contract or figure attached to the visit itself) were both left
+  undrafted as below the inclusion bar rather than held.
