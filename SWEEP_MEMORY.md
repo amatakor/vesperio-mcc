@@ -2880,3 +2880,34 @@ a newer entry if a lesson changes.
   Jones, and Parsonson's feeds were all clean and current. Budget a real
   per-account check every run rather than trusting or distrusting the
   leg wholesale.
+
+## Narrow same-day re-check, ~3h43m gap, unfiltered full source list (2026-07-23, second)
+
+- 2026-07-23-G: Genuinely quiet full-matrix run: harvester queue was 100%
+  off-scope noise (SpaceX stock-price speculation, FAA airworthiness
+  directives, ISRO recruitment notices, an ESA forest-carbon research
+  post, a BBC drought piece), all 21 fetch-list.ts HTML sources and 15 of
+  17 signals fetchable channels were current with nothing newer than
+  lastSweep, and every discovery-pass/X-search hit that looked new
+  (Sierra Space's own "$798 million Golden Dome" release, a KeepTrack
+  recap of the same "36 Golden Dome satellites for $1.75B" figure) traced
+  back to the already-published 2026-07-13 SDA/L3Harris/Sierra Space
+  Tranche 3 item -- Sierra Space's press release frames its $798M SDA
+  missile-tracking award under the "Golden Dome for America" program
+  brand, which reads like a fresh contract on a narrow search but is the
+  same $1.75B combined award already on the site. Zero items shipped;
+  confirms 2026-07-05-S/2026-07-06-E that a narrow filtered/unfiltered
+  re-check quiet outcome is normal, not under-coverage.
+- 2026-07-23-H: A House NDAA passage (FY2027, $59B Space Force
+  authorization, per Marcia Smith/SpacePolicyOnline's Bluesky feed) was
+  left undrafted as below the inclusion bar rather than held: it
+  authorizes but doesn't appropriate a top-line budget figure for the
+  whole Space Force, with no named vendor, contract, or program-specific
+  commercial impact stated, the same "process not yet a fact" standard
+  applied to the KBR Golden-Dome-positioning story (2026-07-22-I) and the
+  UK machinery-of-government reshuffle (2026-07-22-H). Worth revisiting
+  if a future NDAA conference/signing carries a named program figure.
+- 2026-07-23-I: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 0 updated, 0 held") per the same precedent.
