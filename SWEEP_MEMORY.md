@@ -2948,3 +2948,60 @@ a newer entry if a lesson changes.
   newsroom post about a German defence minister's site visit (no
   contract or figure attached to the visit itself) were both left
   undrafted as below the inclusion bar rather than held.
+
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-07-24)
+
+- 2026-07-24-A: A trade outlet's fresh write-up of an old fact can smuggle
+  in a genuinely new, separately-newsworthy detail buried mid-article:
+  Space.com's July 23 SunRISE/Falcon-Heavy piece (the launch-vehicle swap
+  itself was already published 2026-07-13) opened with "On its most recent
+  launch, USSF-87, Vulcan experienced an anomaly... prompted the Space
+  Force to pause national security launches on Vulcan" — reads like fresh
+  news but a WebSearch confirmed USSF-87 and the pause both happened
+  February 12-26, 2026, already reflected in the published Northrop
+  Grumman GEM 63XL charges item (2026-07-21). Always date-check a
+  seemingly-new supporting fact inside an otherwise-stale story before
+  drafting it as new; this one traced to a five-month-old event.
+- 2026-07-24-B: WebFetch's summarizer can flatly miss a paragraph that
+  the harvester's own `raw_excerpt` for the same URL already captured
+  verbatim (the USSF-87 paragraph above): two separate WebFetch calls on
+  the same Space.com URL both claimed the anomaly wasn't mentioned on the
+  page at all, even though the queue's raw_excerpt quoted it directly.
+  Confirms 2026-07-08-N's rule (raw_excerpt is a legitimate source text on
+  its own) needs to extend to "don't trust a WebFetch summary's *absence*
+  claim either" — a summarizer saying a fact isn't on the page is not
+  proof it isn't there.
+- 2026-07-24-C: A same-story SpaceNews write-up published two days after
+  an already-scored item's original sources (Poland's IRIS2 contribution,
+  covered June 21 by European Spaceflight/eunews.it/Via Satellite) is
+  free corroboration worth attaching even when it adds no new fact, just
+  a USD-converted figure — landed as a 4th distinct source via
+  `updates[].attach` + `bump: "corroboration_4plus"`, though as in
+  2026-07-23-E the modifier didn't change the logged `snr_trace` (already
+  capped at final 4 from `corroboration_2plus`); the source list still
+  visibly grew to 4 distinct outlets on the card.
+- 2026-07-24-D: Two small trade-press items (Frequency Electronics'
+  proliferated-satellite contract wins, Intellian's C100M GMDSS terminal)
+  each had a swarm of financial-mirror/wire-syndication outlets covering
+  the identical company press release (stocktitan, streetinsider, Yahoo
+  Finance mirrors, MarineLink) but no genuinely independent second
+  outlet confirmable by direct fetch this run (several 403'd or returned
+  empty to WebFetch) — both correctly shipped `crawl: "found_none"` at
+  SNR 2 rather than stacking wire reprints as corroboration. Also caught
+  before drafting: WorkBoat's "Intellian rolls out new Iridium GMDSS
+  systems" piece, which read like a same-story match, turned out to be
+  about the earlier C200M/C700 launch, not this week's C100M — a same-
+  actor near-title match still needs a body-content check, not just a
+  headline match.
+- 2026-07-24-E: A Rocket Lab HASTE contract ($266M, Space Force,
+  suborbital Alaska launches) tripped the same-company-plus-category
+  dedup heuristic against an unrelated 4-days-prior Space Force
+  procurement item (the NSSL Lane 1 ceiling increase to $17B) on shared
+  company "Space Force" + category "procurement" alone, same pattern
+  documented many times since 2026-07-09-B; cleared with one
+  `dedup_distinct` entry. A WebSearch's own synthesized summary claimed
+  this was "the largest publicly disclosed single launch contract in
+  Rocket Lab's history" but no page actually fetched this run stated
+  that superlative (one candidate source, techtimes, 403'd); dropped the
+  claim from the copy rather than risk citing a search summary's
+  unverified framing.
