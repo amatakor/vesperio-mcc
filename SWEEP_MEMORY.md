@@ -3071,3 +3071,47 @@ a newer entry if a lesson changes.
   seeking a lead investor (up from an EUR100M April round), not a
   closed round -- both left undrafted rather than chased, since neither
   is a closed/dated fact and the T-Mobile one isn't even new.
+
+## Deep sweep, escalated after zero-add run, ~8h10m gap (2026-07-24, third)
+
+- 2026-07-24-K: When a shell command with several `grep -E` alternation
+  terms gets blocked by the sandbox's "Contains simple_expansion"
+  approval wall, re-run EACH term as its own separate grep call rather
+  than silently treating the blocked batch as "checked": a UK debris-
+  removal delay item and a Contrivian/Big Network merger item were both
+  drafted as new because the batched dedup grep that would have caught
+  them never actually ran (only some of its terms got individually
+  re-checked afterward). `finalize-sweep.ts`'s same-event dedup gate
+  caught both before merge (shared company + category within 7 days,
+  exact prior ids), so no bad data landed, but the tokens spent
+  re-researching and re-drafting both items were wasted. Grep every
+  dedup term individually when a combined command is denied; don't
+  assume a partial re-check covers the gap.
+- 2026-07-24-L: Launch Library is `aggregator` class, not `computed`
+  (only celestrak.org and space-track.org qualify as computed, per
+  finalize-sweep's own rejection message); using
+  `ll.thespacedevs.com` launch records as a second source on the
+  Kinetica-1 item needed `class: "aggregator"`, not `"computed"`.
+  Direct observational tracking data is computed; a curated launch
+  database, however structured, is aggregator tier 4.
+- 2026-07-24-M: Confirms 2026-07-07-E's Q4-IR-style subdomain fix still
+  holds for a newly-drafted item: `ir.spire.com` (Spire's own IR press
+  release on the Spire/SATE STRAIDE partnership) passed the anti-spoof
+  gate cleanly as `first_party` against the registry's bare-apex
+  `spire.com` website value, landing the item at base tier 5 with no
+  `found_none` penalty (direct-source leads take none). Worth checking
+  a company's registry `website` value before assuming an IR subdomain
+  needs the wire-mirror workaround.
+- 2026-07-24-N: An EU Council decision restricting Copernicus Sentinel
+  imagery release over part of the Gulf of Oman (published July 14,
+  citing a May 26 US request tied to the US-Iran conflict) is a clean
+  fit for the geopolitical category's "government statements directly
+  concerning commercial space services in a conflict or crisis" carve-
+  out: reported the space-industry fact (the EU restricting a
+  previously-unrestricted open-data policy) and a named commercial
+  firm's (Kayrros) prior public statement about Copernicus's open-data
+  posture, without analysing the underlying conflict. Chased on its
+  July 14 disclosure date under the standing "chase notable events that
+  predate the window" ruling, six-plus weeks after SpaceNews's July 24
+  writeup first surfaced it via a whitelisted signal (Andrew
+  Parsonson's Bluesky), never covered before under any name.
