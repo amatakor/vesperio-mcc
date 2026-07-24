@@ -3005,3 +3005,69 @@ a newer entry if a lesson changes.
   that superlative (one candidate source, techtimes, 403'd); dropped the
   claim from the copy rather than risk citing a search summary's
   unverified framing.
+
+## Narrow same-day re-check, ~3h40m gap, unfiltered full source list (2026-07-24, second)
+
+- 2026-07-24-F: EXTENDS 2026-07-18-F: crossfeeding a vehicle's `last_flight_date`
+  against a pre-event registry snapshot trips the same wrongful dispute
+  downgrade as the flight-count fields, because `last_flight_date` is
+  NOT on the code's recognized monotonic-counter list (`flights_total`,
+  `flights_successful`, `sats_launched_total`, `launches_total`) even
+  though it is just as monotonic in spirit. Crossfeeding Long March-3B's
+  `last_flight_date` (new value 2026-07-23) against the registry's
+  as_of-2026-07-08 snapshot (stale value 2026-06-16) with
+  `same_metric: true` cost the item a full dispute downgrade (SNR 4 -> 3)
+  on first finalize. Recovery needed BOTH `rescore` AND
+  `dispute_resolved: true` on the same update -- a plain `rescore` alone
+  re-applies the dispute per the draft-format contract's "disputes
+  survive ordinary rescores" rule, it does not clear it. Lesson: treat
+  any date-valued "most recent X" registry field the same as the named
+  monotonic counters for crossfeed purposes -- either attest
+  `same_metric: false` for it, or omit it from the crossfeed block
+  entirely, until the code's monotonic-field list is extended to cover
+  it.
+- 2026-07-24-G: A trade write-up describing a state broadband office
+  (Louisiana's ConnectLA) signing a BEAD grant with Starlink is a
+  legitimate never-covered, dateable event worth chasing across a
+  ~6-week gap (June 11 signing, no prior sweep had it under any name):
+  `procurement` category (government buyer), `notable` impact (stated
+  value $8.2M, well under the nine-figure/largest-to-date bar for
+  `major`). Two independently-styled sources (Broadband Breakfast, a
+  trade outlet, June 11; Louisiana Radio Network, a local mainstream
+  outlet, July 23) both quote the same ConnectLA official near-
+  verbatim, which reads like they draw on the same underlying press
+  comments rather than fully separate reporting -- attached both
+  honestly anyway since neither is a wire/PR reprint of the other, and
+  let the code's title-similarity collapse logic decide if they count
+  as one unit or two.
+- 2026-07-24-H: A WebSearch synthesis can invent a wrong dollar figure
+  even when its own listed source pages state a different one: search
+  results repeatedly summarized the Louisiana/Starlink BEAD grant as
+  "$82 million," but two separate direct WebFetch calls on the actual
+  broadbandbreakfast.com article, one of them asking for the exact
+  sentence verbatim, both returned "$8.2 million." Trusted the
+  repeated direct fetch over the repeated search synthesis, consistent
+  with 2026-07-06-HH's standing precedent extended to a 10x-magnitude
+  discrepancy rather than a same-order-of-magnitude one.
+- 2026-07-24-I: A same-day CASC newsroom hit for a plausible-sounding
+  headline can be the wrong article: a `site:english.spacechina.com`
+  search for "Tianlian data relay satellite" surfaced
+  `n17212/c4291791/content.html` looking like a match for today's
+  Tianlian II-06 launch, but direct fetch showed it was actually the
+  March 2025 Tianlian II-04 launch -- same satellite family, wrong
+  generation and wrong year. Led with Xinhua/CGTN instead rather than
+  force a stale CASC page into the first-party slot. Also: CGTN's own
+  copy internally misdated the same launch ("Thursday, July 24" -- July
+  24, 2026 is actually a Friday, so the correct day was Thursday July
+  23, matching Xinhua's dateline and URL slug); cross-checked the
+  weekday against a calendar lookup before trusting either outlet's
+  stated date.
+- 2026-07-24-J: Two "still process, not yet fact" exclusions confirmed
+  on new shapes: a T-Mobile CEO comment about looking "beyond Starlink"
+  for satellite service, resurfaced today by PCMag under a fresh-
+  looking headline, traced to an April 28 earnings call already three
+  months stale with no new information added; and Sateliot's "wants
+  EUR150m in fresh funding" coverage describes an ongoing target still
+  seeking a lead investor (up from an EUR100M April round), not a
+  closed round -- both left undrafted rather than chased, since neither
+  is a closed/dated fact and the T-Mobile one isn't even new.
