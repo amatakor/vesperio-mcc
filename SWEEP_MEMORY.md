@@ -3140,3 +3140,49 @@ a newer entry if a lesson changes.
   Tianlian II-06 launch already on the site (2026-07-23, sourced via
   Xinhua/CGTN/SpaceNews per the 2026-07-24-I workaround) before treating it
   as new.
+
+## Narrow same-day re-check, ~6h27m gap, unfiltered full source list (2026-07-25, second)
+
+- 2026-07-25-D: `finalize-sweep.ts` rejects `draft.coverage` entries that are
+  tags rather than category names: submitted `"connectivity"` and `"eo"`
+  (domain tags) and both were rejected with "not a known category" on first
+  attempt. `coverage` wants values from the item `category` enum
+  (`launch`, `constellation`, `contract`, `procurement`, `regulatory`,
+  `financial`, `product`, `partnership`, `incident`, `geopolitical`,
+  `human-spaceflight`, `science`), not the tag tiers from CLAUDE.md. Fixed by
+  swapping to `"constellation"` and the draft merged clean on retry.
+- 2026-07-25-E: Genuinely quiet full-matrix run, a few hours after the prior
+  sweep's own entries above: the harvester queue (79 candidates after
+  collapsing 9 alt-duplicates) was almost entirely SpaceX Starship
+  Flight-13/stock-price noise and repeat Stetman/Ukraine write-ups (both
+  already excluded per 2026-07-25-A); all 21 fetch-list.ts HTML sources came
+  back with nothing newer than already-published stories; 15 of 17 signals
+  channels checked clean (rotated out the europeanspaceflight substack and
+  mainenginecutoff.com legs for budget); an 8-query discovery matrix (launch,
+  financial, incident/debris, China, India, FCC regulatory, EO contract,
+  failure/anomaly) surfaced only already-published stories (Bezos' $2B Blue
+  Origin stake is a July 25 rehash of the already-published July 8-12
+  $10B/$130B round; CAS Space's Kinetica-1 rideshare is a July 24 Chinese-
+  language write-up of the already-published July 23 launch). Zero new
+  items, zero updates, zero held -- confirms the standing pattern
+  (2026-07-05-S and many later entries) that a narrow re-check quiet outcome
+  is normal, not under-coverage.
+- 2026-07-25-F: The public Bluesky API
+  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`)
+  fetched cleanly via WebFetch for every one of 9 distinct signals accounts
+  tried this run (Foust, Aschbacher, Langbroek, Henry, Farrar, Berger,
+  SpacePolicyOnline, Zak, A. Jones, Parsonson), continuing 2026-07-21-B's
+  observation that the flakiness is session-dependent, not per-account; a
+  fully clean session like this one is worth banking rather than assuming
+  the next session will match it. spacepolicyonline.com's own site remains
+  bot-gated (consistent with 2026-07-22-E) so the Bluesky leg is still the
+  only reliable path to Marcia Smith's content in-session.
+- 2026-07-25-G: A ground-station-safety relief post (Josef Aschbacher on
+  ESA's Cebreros deep-space station surviving nearby Spanish wildfires; a
+  parallel NASA statement on its Madrid-area DSN station evacuation, via
+  Marcia Smith's Bluesky) is below the inclusion bar, not a held scope
+  question: no facility damage, service interruption, or commercial
+  consequence was stated in either case, just infrastructure safety updates
+  during an ongoing wildfire event. Distinguish this from genuine scope
+  questions (NATO HALO, Dutch Space Command precedent): there is no
+  editorial call to make when the source itself states no consequence.
