@@ -3115,3 +3115,28 @@ a newer entry if a lesson changes.
   predate the window" ruling, six-plus weeks after SpaceNews's July 24
   writeup first surfaced it via a whitelisted signal (Andrew
   Parsonson's Bluesky), never covered before under any name.
+
+## Narrow same-day re-check, ~5h13m gap, unfiltered full source list (2026-07-25)
+
+- 2026-07-25-A: A large-dollar-figure story can still be a "process not yet
+  fact" exclusion even with real new corroborating coverage: Ukrainian
+  operator Stetman's $1.1B/€1bn 360-satellite sovereign constellation (first
+  120 sats via SpaceX in 2027, GomSpace/UASAT joint venture) got a fresh wave
+  of write-ups July 22-24 (UNITED24, TechRadar, DataCenterDynamics, dev.ua),
+  but every fact in them traces to a story circulating since at least March
+  2026 (thedefender.media) and a July 18 TechRadar piece; the only "new"
+  beat was two execs "reaffirming commitment" at a conference, no closed
+  funding, no new contract, no new figure. Left undrafted per the standing
+  2026-07-22-H/I, 2026-07-23-H/L pattern rather than chased as a fresh event.
+- 2026-07-25-B: blueorigin.com 429'd on two separate fetch attempts this
+  session (same failure mode as 2026-07-05-S); led the NASA/Blue Origin
+  Stennis B-2 test-stand item with nasa.gov (official_record, gov domain,
+  tier 5) instead and left Blue Origin's own release out entirely rather
+  than cite a page that never actually loaded this run.
+- 2026-07-25-C: A CASC (english.spacechina.com) headline that reads like
+  fresh news ("China launches new data relay satellite," dated July 24) can
+  be same-day catch-up coverage of an event already fully published the day
+  before under a different lead source -- confirmed it was the same
+  Tianlian II-06 launch already on the site (2026-07-23, sourced via
+  Xinhua/CGTN/SpaceNews per the 2026-07-24-I workaround) before treating it
+  as new.
