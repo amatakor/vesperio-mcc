@@ -3283,3 +3283,40 @@ a newer entry if a lesson changes.
   chunks too large for one Bash call. Avoid `sed -n 'N,$p'` (the bare `$`
   triggers a "Contains simple_expansion" approval wall per 2026-07-24-K);
   use an explicit large line number instead of `$`.
+
+## Narrow same-day re-check, ~7.5hr gap, unfiltered full source list (2026-07-26, second)
+
+- 2026-07-26-J: An "ISRO" keyword match in Google News: non-US space this run
+  was almost entirely a false positive: a domestic Indian exam-reform
+  committee ("Ex-ISRO chief... Nandan Nilekani-led panel") repeated across
+  six near-identical headlines, none of it space-industry news. Confirms the
+  standing keyword-noise pattern (SpaceX stock/IPO, Starship Flight 13
+  recap) extends to actor-name collisions outside SpaceX; check what the
+  story is actually about before treating a tracked-actor name match as a
+  candidate.
+- 2026-07-26-K: Two genuinely new, never-covered items surfaced only via the
+  discovery pass, not the harvester queue: ATmoto/Liangxi's Gande-01 (China's
+  first commercial space-debris-monitoring satellite, via Xinhua, corroborated
+  by China Daily's independent five-satellite rideshare writeup) and JAXA's
+  Epsilon S second-stage M-35a engine test recovery (via Xinhua, corroborated
+  by Nikkei Asia). Both Xinhua pieces were themselves single "China Focus"
+  wire dispatches that bignewsnetwork.com, chinadailyasia.com, and archyde.com
+  all reprinted near-verbatim (archyde confirmed via its own byline as an
+  Xinhua-credited rewrite with added generic commentary) -- none of those
+  counted as independent corroboration; the genuine second sources were a
+  same-story but differently-reported domestic Chinese-language article
+  (chinadaily.com.cn tech, found via a Chinese-language search for the
+  rocket/satellite names) and a distinct-outlet English piece (Nikkei Asia),
+  not the wire's own syndication network.
+- 2026-07-26-L: A same-day Bluesky post teasing a "new" analyst report can be
+  reselling month-old figures: Tim Farrar's July 26 post pointed to a paid
+  Starlink 2030 forecast ($48B revenue/46M subscribers) that traced straight
+  to his own June 2 blog post of the same figures, already picked up by
+  SatNews and Advanced Television in early June. Left undrafted as a stale
+  resurfacing (extends 2026-07-19-D/E, 2026-07-26-B) rather than treated as
+  fresh commentary; worth a quick search for the exact figures before
+  drafting any analyst-forecast teaser post as new.
+- 2026-07-26-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") as the build-health signal.
