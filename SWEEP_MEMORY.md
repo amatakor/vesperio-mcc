@@ -3186,3 +3186,41 @@ a newer entry if a lesson changes.
   during an ongoing wildfire event. Distinguish this from genuine scope
   questions (NATO HALO, Dutch Space Command precedent): there is no
   editorial call to make when the source itself states no consequence.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-26)
+
+- 2026-07-26-A: Bluesky's public `getAuthorFeed` API can return genuinely
+  DIFFERENT content across two back-to-back fetches of the SAME account in
+  the SAME session, not just stale/flaky across sessions (extends the long
+  2026-07-18-A/2026-07-19-B/G/2026-07-21-B/2026-07-23-F line): a first fetch
+  of `chenryspace.bsky.social` surfaced Caleb Henry's own newest post (a
+  Starlink financial-forecast release) as the top entry, a second fetch
+  moments later for "the single newest post" returned an entirely different,
+  older repost from a different account with no matching content at all.
+  Left the Starlink-forecast post undrafted since its exact text couldn't be
+  pinned down reliably this run rather than publish an unverified quote;
+  worth treating any single `getAuthorFeed` response as provisional and,
+  when a specific post's exact text matters, re-fetching to confirm before
+  drafting rather than trusting one call.
+- 2026-07-26-B: A WebSearch's own synthesized answer (not just a resurfaced
+  article) can present old news as if newly dated: searching for "Peter
+  Beck Rocket Lab July 25 2026" returned a search-engine summary flatly
+  stating "On July 25, 2026, Rocket Lab founder Sir Peter Beck announced an
+  $8 billion acquisition of ... Iridium" -- built entirely from a July 25
+  BusinessToday recap of the already-published June 29 Rocket Lab/Iridium
+  deal, with the summary dropping the "recap" framing and presenting the
+  underlying (month-old) event as today's news. Confirms the search-summary
+  version of the stale-resurfacing trap (2026-07-19-D/E and later) applies
+  even when the search tool's own prose, not a search-result title, makes
+  the false-freshness claim; always trace to the actual underlying event
+  date before drafting from a search summary.
+- 2026-07-26-C: A fully quiet full-matrix sweep (~12hr gap): the harvester
+  queue was 95%+ Starship Flight 13 post-flight coverage (tower-catch plans,
+  landing/splashdown recaps) and SpaceX stock-price noise, all already fully
+  reflected in the existing 2026-07-16 Flight 13 item's updated copy; all 21
+  fetch-list.ts HTML sources and 14 of 17 signals channels were current with
+  nothing newer than lastSweep; a 10-query discovery/X-search matrix (launch,
+  financial, incident/debris, FCC regulatory, China, India, 3 X-handle
+  searches) surfaced only already-published stories or stale resurfacings.
+  Zero new items, zero updates, zero held -- another confirmation of the
+  standing pattern that a narrow re-check quiet outcome is normal.
