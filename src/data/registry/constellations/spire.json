@@ -99,7 +99,28 @@
     "source": "https://spire.com/",
     "as_of": "2026-07-05"
   },
-  "notes": "Spire's Lemur RF-sensing constellation (GNSS-RO weather, AIS, ADS-B); RF sensing classifies as EO per house rule. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run.",
+  "spectral_bands": {
+    "value": [
+      "VHF AIS, 162 MHz (SENSE receiver)",
+      "ADS-B, 1090 MHz extended squitter (ADS-B receiver)",
+      "GNSS L1/L2 (STRATOS radio occultation receiver, no frequency figure stated)"
+    ],
+    "source": "https://www.eoportal.org/satellite-missions/spire-global",
+    "as_of": "2026-07-27",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/spire-global",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states SENSE 'is a receiver for Automatic Identification System (AIS) signal reception... VHF radio channels (162 MHz)', ADS-B operates at '1090 MHz extended squitter', and STRATOS uses 'zenith L1, L2' and 'high-gain, side-mounted L1, L2 antennas' with no numeric frequency value stated for the latter (registry v2 EO spec backfill, weekly maintenance 2026-07-27)"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "notes": "Spire's Lemur RF-sensing constellation (GNSS-RO weather, AIS, ADS-B); RF sensing classifies as EO per house rule. Seeded for the Orbits surface on Florian's instruction (2026-07-05). EO spec extraction (weekly maintenance 2026-07-27): eoPortal's current 'Spire Global Nanosatellite Constellation' mission page (spire-global, last updated Jul 29, 2025; the prior 'lemur' slug now redirects/differs) states per-payload frequencies for SENSE (AIS, 162 MHz) and ADS-B (1090 MHz); carried into spectral_bands. resolution_m/swath_km left absent: RF-sensing constellation, imaging-resolution fields do not apply (same as hawkeye-360/unseenlabs). revisit left absent: the page states fleet size (up to 175 flight units) and orbit altitude but no temporal coverage cadence figure.",
   "events": [
     {
       "date": "2014-06-19",

@@ -72,14 +72,26 @@
     "as_of": "2026-07-08"
   },
   "last_flight_date": {
-    "value": "2026-06-16",
-    "source": "https://en.wikipedia.org/wiki/Long_March_3B",
-    "as_of": "2026-07-08"
+    "value": "2026-07-23",
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/5421e43a-1623-40ac-9dac-201075064e24/",
+    "as_of": "2026-07-27",
+    "snr": 5,
+    "snr_trace": {
+      "base": {
+        "tier": 5,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/5421e43a-1623-40ac-9dac-201075064e24/",
+        "reason": "Launch Library launch record (computed/observational, weekly maintenance 2026-07-27): Long March 3B/E carrying Tianlian 2-06, launch successful"
+      },
+      "modifiers": [],
+      "final": 5,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-07-23",
-    "source": "https://en.wikipedia.org/wiki/Long_March_3B",
-    "as_of": "2026-07-12"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "operational",
@@ -103,7 +115,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-3bg2.htm) covers only the enhanced 3B/G2 variant (49 flights) and does not sum to the family-wide 116 total already on file (which spans base 3B plus 3B/E per the overview), so it is a different, narrower metric and not a same-metric conflict; not used to change any field. flights_total/flights_successful/last_flight_date/next_flight_date left unchanged.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-3bg2.htm) covers only the enhanced 3B/G2 variant (49 flights) and does not sum to the family-wide 116 total already on file (which spans base 3B plus 3B/E per the overview), so it is a different, narrower metric and not a same-metric conflict; not used to change any field. flights_total/flights_successful/last_flight_date/next_flight_date left unchanged. Weekly maintenance 2026-07-27: crossfeed queue proposed last_flight_date=2026-07-23 from Xinhua/CGTN (item snr 4) against the on-file 2026-06-16 (Wikipedia, unscored/canonical snr 5); finalize-sweep had already resolved this as downgrade_incoming (reconcile() favors the higher-SNR side), so the queue entry was consumed with no write from that source. Verified independently via the Launch Library launch record instead (canonical snr 5, same tier, fresher as_of): Long March 3B/E flew Tianlian 2-06 on 2026-07-23, so last_flight_date is updated with LL2 as source. next_flight_date (previously 2026-07-23, now flown) nulled: LL2's upcoming-launch search returns no scheduled Long March 3B/E flight. LL2 config id=19's own launch-count fields (24 total/21 success) are narrower still than both the on-file 116 and Gunter's 49 (likely the base-3B config only, excluding 3B/E and 3B/G2), so flights_total/flights_successful remain untouched, not a same-metric match.",
   "payload_gto_kg": {
     "value": 5100,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",
