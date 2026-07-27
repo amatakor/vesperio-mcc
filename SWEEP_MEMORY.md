@@ -3320,3 +3320,32 @@ a newer entry if a lesson changes.
   denied outright by this session's permission gate, continuing the standing
   pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 0 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-27)
+
+- 2026-07-27-A: The 2026-07-17-K "unconfirmed 'in talks' scoop published at
+  its honest floor rather than held" precedent extends cleanly from M&A/deal
+  rumors to funding-round rumors: The Exploration Company's FT-reported
+  ($300M at a $2B valuation) round was "in talks," "not finalized," sourced
+  to "people familiar," and every pickup (Bloomberg, Seeking Alpha,
+  Investing.com, MarketScreener) explicitly attributed the story to FT
+  rather than doing independent reporting -- one source under the wire-
+  rewrite rule, `crawl: found_none`. Led with Investing.com (`informal`,
+  most detailed relay, not a wire mirror) rather than Bloomberg (paywalled,
+  thinner relay); landed at the honest SNR-1 floor with an explicit
+  "could still fall through" caveat in the copy, same shape as the SpaceX/
+  Pentagon compute item.
+- 2026-07-27-B: Jeff Foust's July 24 post on the Office of Space Commerce
+  "moving ahead" on mission authorization ("taking the next step forward"
+  on the still-voluntary "Space Commerce Certification" proposal open for
+  comment since March) is the same ongoing regulatory process already
+  excluded as "process not yet fact" in 2026-07-23-L, not a new closed
+  action; left undrafted again rather than re-litigated.
+- 2026-07-27-C: A University of Warwick-led academic survey re-analyzing
+  archival telescope data to find 25 previously-undetected small debris
+  objects in GEO (widely covered by Gizmodo/Vice/phys.org/The Debrief) was
+  left out as an academic research paper with no named operator, no
+  attributable commercial actor, and no dated operational consequence --
+  distinct from the `incident` category's reentry/collision/anomaly
+  examples, which all attribute to a reporting authority about a specific
+  object or event.
