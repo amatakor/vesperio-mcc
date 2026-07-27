@@ -3349,3 +3349,41 @@ a newer entry if a lesson changes.
   distinct from the `incident` category's reentry/collision/anomaly
   examples, which all attribute to a reporting authority about a specific
   object or event.
+
+## Narrow same-day re-check, ~6h41m gap, unfiltered full source list (2026-07-27, second)
+
+- 2026-07-27-D: `fetch-list.ts` only prints the CONFIGURED status from
+  sources.json; it does not itself fetch anything. Its `htmlSources`
+  entries showing `"status": "verified"` reflect the status already on
+  record, not a live check this run. Treating that printed status as if
+  it were a completed fetch (and writing a placeholder
+  `evidence.excerpt` like "fetched via fetch-list.ts this run") is
+  exactly the kind of unattested success `PROOF OF FETCH` exists to
+  catch -- caught it before running finalize-sweep by re-reading
+  fetch-list.ts's source, then actually WebFetched all ~20 listed html
+  sources and replaced every placeholder with a real verbatim excerpt.
+  fetch-list.ts is a deterministic URL-list generator for the agent to
+  walk, not a fetcher in itself; candidates-context.ts's `health` block
+  is the one that reflects an actual completed fetch (the harvester's),
+  for feed-type sources only.
+- 2026-07-27-E: A same-day corroboration-search query surfaced a story
+  the harvester queue's Google News/Bluesky legs had already flagged
+  heavily (Amazon Leo's FCC filing for a 5,105-satellite direct-to-device
+  constellation on Globalstar spectrum, filed July 24): Amazon's own
+  aboutamazon.com page confirmed the same facts as SpaceNews and Aviation
+  Week, so it led as `first_party` (tier 5, no found_none penalty
+  applies) rather than a trade source. `www.aboutamazon.com` matches the
+  registry's stored `kuiper` website (aboutamazon.com apex), confirming
+  the constellation's registry entity covers Amazon Leo's newer D2D
+  filings too, not just the original Kuiper website page.
+- 2026-07-27-F: Requesting a `bump: "corroboration_4plus"` on an update
+  whose lead is `trade` (base tier 3) is a harmless no-op, not an error:
+  the direct-source ceiling caps indirect (non-tier-5-led) items at 4
+  regardless of source count once `corroboration_2plus` already reached
+  it, so `applyModifier` computes a zero delta and finalize-sweep
+  silently skips emitting the modifier (score stays at its already-
+  correct value). Attaching the SES Upper C-band incentive-payment
+  sources (SatNews, Advanced Television) as the item's 4th and 5th
+  sources was still worth doing for the record even though the bump
+  request did nothing; only a first_party/official_record/computed lead
+  can still be climbing when a 4th source arrives.
