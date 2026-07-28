@@ -3424,3 +3424,35 @@ a newer entry if a lesson changes.
   not an EO-specific query) -- worth reading past the first couple of
   results on every matrix query rather than stopping at the query's
   literal topic match.
+
+## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-28, second)
+
+- 2026-07-28-E: A new subtype of the stale-resurfacing trap: ESA's own
+  multimedia image gallery (esa.int/ESA_Multimedia/Images/2026/07/...)
+  served a photo captioned "Vertical liftoff as Ariane 6 takes flight for
+  the first time" with a July 28, 2026 harvester timestamp, even though
+  Ariane 6 has flown repeatedly since its actual maiden flight and the
+  already-published registry/item record shows its August 27 MTG-I2
+  mission as only "the vehicle's first flight to geostationary transfer
+  orbit" (a different, still-future milestone). A fresh-looking
+  `fetched_at`/`published_at` stamp on an image-gallery URL is not proof
+  the underlying event is new; cross-check against the existing item/
+  registry record for the vehicle's actual flight history before
+  treating an archival caption as today's news.
+- 2026-07-28-F: Two small, low-cost update patches shipped this run from
+  cross-checking existing items against sources fetched for other
+  reasons: Telesat's own July 27 GlobeNewswire release (found via
+  fetch-list.ts's Telesat News listing) upgraded the FCC upper-C-band
+  item's rounded "just under $200 million" Telesat figure to the exact
+  $189 million and added a Nov. 5, 2026 transition-plan filing deadline;
+  and Andrew Parsonson's already-cited MAGPIE article (europeanspaceflight.com,
+  a mandatory signals-pass fetch) turned out to have been updated in
+  place on July 27 with an on-record ESA spokesperson quote explaining
+  the contract's cost overrun. Neither needed a new source attach beyond
+  Telesat's own wire copy; the MAGPIE case was a same-URL content update,
+  confirming updates can come from re-reading a source already in an
+  item's `sources` array, not just from new URLs.
+- 2026-07-28-G: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 2 updated, 0 held") as the build-health signal.
