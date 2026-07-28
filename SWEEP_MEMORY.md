@@ -3456,3 +3456,48 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 0 new, 2 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~7h40m gap, unfiltered full source list (2026-07-28, third)
+
+- 2026-07-28-H: A PDF-only FCC public notice (docs.fcc.gov, linked only from
+  a Google News-fed trade/financial headline about "Starlink router ban
+  exemption") is fully readable despite WebFetch itself failing on the raw
+  PDF ("appears to be raw PDF binary data, not readable text"): WebFetch
+  still saves the fetched PDF to a local tool-results path and reports it in
+  the response, and the Read tool parses that saved PDF cleanly, including
+  a multi-page appendix table. Worth trying `Read` on the saved-PDF path
+  any time WebFetch's own PDF summarizer bails, rather than treating a
+  failed WebFetch PDF parse as an unreadable source.
+- 2026-07-28-I: A same-company (SpaceX), same-category ("regulatory")
+  dedup false-positive within the 7-day window, the same recurring
+  heuristic trap documented many times since 2026-07-09-B: the FCC's
+  Starlink-router Covered-List exemption (US equipment authorization)
+  tripped a match against Taiwan's Legislative Yuan easing satellite
+  foreign-ownership caps (2026-07-21, six days prior) purely on shared
+  company + category, despite being unrelated regulators, countries, and
+  subject matter. Cleared with one `dedup_distinct` entry.
+- 2026-07-28-J: NASA's own program-announcement page (nasa.gov, dated
+  July 24) predated the trade write-up that surfaced it in this run's
+  discovery pass (SpaceNews, July 28) by four days; led with NASA's page
+  as `official_record` and dated the item to the NASA announcement date,
+  not the SpaceNews publish date, consistent with the standing
+  2026-07-06-GG/2026-07-26-D dating convention. Also confirms
+  2026-07-05-N's verification lesson: a first WebFetch summary named the
+  spacecraft builder "Lockhaven Martin/Terran Orbital" (a hallucinated
+  mash-up); a targeted second WebFetch asking for the exact sentence
+  verbatim corrected it to "Lockheed Martin subsidiary Terran Orbital."
+- 2026-07-28-K: Confirms the "process not yet fact" pattern on three more
+  shapes this run, all left undrafted rather than held: Germany's defence
+  minister "considering" a Bundeswehr-owned launch site (his own quotes:
+  "we are at the beginning of those considerations," no site or country
+  named); a Manila Times recap of the Philippines' spaceport ambitions
+  pegged to a SONA speech, with every concrete milestone in it already
+  weeks to years old; and ISRO's chairman floating a 2027 G20 satellite
+  launch with no contract or vendor named. Also caught before drafting: a
+  europeanspaceflight.com "Avio and Isar Aerospace win ESA Flight Ticket
+  Initiative" article that reads current but is dated August 27, 2025 in
+  the fetched content, a full year stale.
+- 2026-07-28-L: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") as the build-health signal.
