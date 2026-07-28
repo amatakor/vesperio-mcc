@@ -3387,3 +3387,40 @@ a newer entry if a lesson changes.
   sources was still worth doing for the record even though the bump
   request did nothing; only a first_party/official_record/computed lead
   can still be climbing when a 4th source arrives.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-28)
+
+- 2026-07-28-A: A registry `website` field can exist on a constellation
+  profile (not just an organization profile) and still floors
+  `first_party` classification for the parent operator's press releases:
+  O3b mPOWER's registry entry (a constellation, not an SES org profile)
+  carries a `website` field pointing at ses.com, so `loadRegistryHosts`
+  picked up the ses.com host and the SES Space & Defense/Starlab LEO
+  Relay Services press release classed clean as `first_party` even
+  though SES has no dedicated organization profile. Worth checking
+  constellation/vehicle entities for a usable `website` host, not just
+  searching for an org profile, before defaulting an unregistered-looking
+  operator to a lower tier.
+- 2026-07-28-B: Extends the 2026-07-26-E "new/small actor, no registry
+  host" pattern with a working fallback: MDA Space UK's own PR Newswire
+  release (Argonaut LEIA LiDAR sensor selection by OHB) has no registry
+  host to verify (`mda.space` isn't a registered website field anywhere),
+  but PR Newswire itself is a fixed-domain `wire_pr` source (tier 4, no
+  domain-match requirement) rather than needing `first_party`/`trade`
+  fallback -- led with the wire copy at tier 4 instead of settling for a
+  trade write-up at tier 3. Worth defaulting to `wire_pr` for straight
+  press-release text run through BusinessWire/GlobeNewswire/PR Newswire
+  before falling back further down the source-class ladder.
+- 2026-07-28-C: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B/2026-07-26-M/2026-07-27-D; relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") as the build-health signal.
+- 2026-07-28-D: A discovery-pass query aimed at a different topic (an
+  EO-contracts search) surfaced a genuinely new, week-old, never-covered
+  story one hop away in the same search results list (MDA Space UK/OHB
+  Argonaut LiDAR sensors, found via a "Europe space agency contract
+  announcement July 2026" query run for the non-US/Europe matrix slot,
+  not an EO-specific query) -- worth reading past the first couple of
+  results on every matrix query rather than stopping at the query's
+  literal topic match.
