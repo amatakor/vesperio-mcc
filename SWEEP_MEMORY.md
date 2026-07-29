@@ -3536,3 +3536,34 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 5 new, 3 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-29, second)
+
+- 2026-07-29-E: The draft's top-level `coverage` field validates against the
+  CATEGORY enum only, not tag names: listing `"connectivity"` (a domain tag,
+  not a category) alongside real categories got the whole draft rejected
+  ("connectivity is not a known category"). Populate `coverage` with
+  categories actually touched (e.g. `procurement`, `launch`, `financial`,
+  `regulatory`) even when the sweep's one item is tagged with a domain that
+  isn't itself a category.
+- 2026-07-29-F: A whitelisted signal's own Bluesky post pointing at their own
+  trade-press article (Andrew Parsonson flagging his SpaceNews piece on ESA's
+  July 27 Lunar Link repurposing tender) was this run's only genuinely new
+  find in an otherwise fully quiet harvester queue (95%+ SpaceX stock/
+  earnings speculation and ISRO recruitment-notice noise). A corroboration
+  crawl (2 targeted searches, plus checking europeanspaceflight.com's own
+  front page directly) found no second outlet covering the specific July 27
+  tender -- Parsonson/SpaceNews appears to be the sole source -- so it
+  published `crawl: found_none` at the honest SNR-2 floor rather than being
+  held for thin sourcing.
+- 2026-07-29-G: Two more stale-resurfacing traps caught via a date-
+  plausibility check rather than an explicit article date: a "Space Force
+  awards Viasat, SES $437M" hit and a "Satellogic secures $18M defense
+  contract" hit both search-summarized as if current, but both trace to
+  May 2026 announcements (over a month outside this run's window) once
+  opened. Separately, a WebSearch summary described ESA's Aeolus "reentry
+  maneuver" with day-of-week detail (Monday, Thursday, Friday) that only
+  lines up with the 2023 calendar, not 2026's -- confirming the item was the
+  real 2023 assisted-reentry campaign, not new; cross-checking a maneuver-day
+  narrative against the current year's actual weekday calendar is a fast
+  stale-check when no explicit article date is visible.
