@@ -3567,3 +3567,40 @@ a newer entry if a lesson changes.
   real 2023 assisted-reentry campaign, not new; cross-checking a maneuver-day
   narrative against the current year's actual weekday calendar is a fast
   stale-check when no explicit article date is visible.
+
+## Normal-mode sweep, ~7.5hr gap, unfiltered full source list (2026-07-29, third)
+
+- 2026-07-29-H: A Chinese satellite's own name can carry generation framing a
+  primary state-media source doesn't spell out: Xinhua's Tianlian III-01
+  launch story only said "data relay and TT&C services" (near-identical
+  wording to the Tianlian II-06 story six days earlier), but the "III" in the
+  satellite's own name plus Launch Library's payload description ("3rd
+  generation... succeeding the Tianlian II series") independently supported
+  drafting it as a generational milestone (impact `notable`) rather than
+  matching the prior item's routine-cadence `noise`. Also confirms the
+  standing same-company-plus-category dedup trap once more: CASC + `launch`
+  within 7 days of the II-06 item needed one `dedup_distinct` entry despite
+  being a genuinely different satellite, generation, rocket, and launch site.
+- 2026-07-29-I: A same-company follow-up story inside the 7-day window can be
+  a legitimate judgment call between "new item" and "fold into existing" even
+  when the event class differs: LatConnect 60's July 29 SpaceNews piece on
+  Malaysia/UAE manufacturing expansion and an 18-satellite SWIRSAT target is a
+  different topic than its July 24 AI-product item, but carried no new dollar
+  figure or contract, so it was folded into the existing item's
+  `what_happened` via `updates[].attach` rather than drafted standalone.
+  Mechanical note: `updates[].attach[].via` only accepts `corroboration` or
+  `upgrade` (no neutral "new fact, not corroboration" value exists yet);
+  used `corroboration` and let the `note` field carry the actual nuance.
+- 2026-07-29-J: Cross-outlet dollar figures can diverge by rounding or
+  currency without being a genuine contradiction: Outlier Space's Payload
+  lead and NBR (NZ) both stated "$7.35M" exactly, while NZ Herald said
+  "$7.5M" and two AU outlets (Capital Brief, Forbes Australia) said "$10.5M"
+  (plausibly an AUD-denominated figure for the same USD round). Led with the
+  two sources that matched exactly rather than reconciling or averaging
+  across all of them, per the standing "numbers copied, not synthesized"
+  rule.
+- 2026-07-29-K: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 5 new, 1 updated, 0 held") as the build-health
+  signal.
