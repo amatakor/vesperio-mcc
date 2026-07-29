@@ -3501,3 +3501,38 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 2 new, 0 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-29)
+
+- 2026-07-29-A: Brand-name collision across separate legal entities: an
+  ispace Inc. (Japan) announcement (switching its Mission 3 lunar lander
+  to Japan's H3 rocket) tripped the same-company-plus-category dedup
+  heuristic against the unrelated `2026-07-24-esa-ispace-europe-magpie-
+  contract` item purely because both companies use "ispace" in their
+  name (ispace-Europe is ESA's MAGPIE rover subcontractor, a distinct
+  corporate entity from the Japanese parent behind Mission 3), both
+  category `science`, nine days apart. Cleared with one dedup_distinct
+  entry; adds a new trigger shape to the standing list (shared brand
+  name, not shared company) alongside the SpaceX/ESA/NASA cases logged
+  since 2026-07-09-B.
+- 2026-07-29-B: transportation.gov (`/briefing-room/...`) and faa.gov
+  (`/newsroom/...`) both 403'd on direct WebFetch this session for a
+  genuine DOT/FAA press release (the launch-licensing environmental-
+  waiver NPRM), extending the standing .gov-domain fetch-failure pattern
+  (fcc.gov, sam.gov, spaceforce.mil, war.gov) to two more hosts. Led
+  with SpacePolicyOnline (whitelist, observer) instead, corroborated by
+  an AFP wire copy (freemalaysiatoday.com) found via WebSearch; landed
+  at SNR 4. Do not cite the 403'd .gov URLs even unscored, per the
+  standing "only link pages actually fetched" rule (2026-07-16-F).
+- 2026-07-29-C: pedaily.cn (投资界/PEdaily), a long-running Chinese VC/PE
+  trade outlet, gave genuinely independent corroboration (extra detail:
+  founding date, specific in-house technologies) for a Chinese SSA-
+  constellation funding round SpaceNews also covered, confirmed via
+  direct fetch to not be a rewrite of either. Same tier as
+  chinaventure.com.cn (2026-07-20-F); worth trying alongside it on
+  future Chinese funding-round stories before settling for a Sina/
+  Eastmoney wire-reprint mirror.
+- 2026-07-29-D: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 5 new, 3 updated, 0 held") as the build-health signal.
