@@ -1,5 +1,5 @@
 {
-  "lastSweep": "2026-07-30T05:32:41.877Z",
+  "lastSweep": "2026-07-30T09:36:59.969Z",
   "sweeps": [
     {
       "at": "2026-07-05T06:04:08.173Z",
@@ -2665,6 +2665,55 @@
       "discovery": {
         "queries": 8,
         "note": "Matrix covered (launch, financial, incident/regulatory, China, India, FCC, EO, Japan/Europe). Surfaced one genuinely new item (Italy's PRISMA Second Generation contract) and corroboration sources for the SpaceX/All Points contracts already in the queue. Golden Dome's $1.75B Sierra Space/L3Harris award, Astroscale Japan's gripping-mechanism contract, and Rocket Lab's JAXA launches all checked out as already-published or stale (dated January/October 2025 or July 13-14 2026, already in the feed)."
+      }
+    },
+    {
+      "at": "2026-07-30T09:36:59.969Z",
+      "added": 2,
+      "updated": 3,
+      "held": 0,
+      "summary": "Two new routine launches (a classified NROL-95 Falcon 9 mission and a Chinese Long March-6 comms-test-satellite launch) plus three source upgrades: ispace's H3 lander deal to Mitsubishi Heavy Industries' first-party release, the FAA environmental-waiver rule to its Federal Register publication, and the Tianlian III-01 launch to CASC's own report.",
+      "coverage": [
+        "launch",
+        "regulatory",
+        "science"
+      ],
+      "snr_movements": [
+        {
+          "id": "2026-07-29-ispace-h3-domestic-launch-2028",
+          "from": 2,
+          "to": 5,
+          "reason": "Upgrades the lead from Nikkei (mainstream) to Mitsubishi Heavy Industries' own press release confirming the launch-services contract signing, and attaches SpaceNews trade coverage; corrects the found_none corroboration penalty from initial publish now that a direct first-party source and multiple trade outlets exist."
+        },
+        {
+          "id": "2026-07-28-dot-faa-launch-environmental-waiver",
+          "from": 4,
+          "to": 5,
+          "reason": "Upgrades the lead to the Federal Register's official publication of the proposed rule (Docket FAA-2026-8614, Notice No. 26-11), fetched via the Federal Register API two days after SpacePolicyOnline and AFP first reported the announcement; adds the exact docket number and the August 31, 2026 comment deadline."
+        },
+        {
+          "id": "2026-07-29-casc-tianlian3-01-launch",
+          "from": 4,
+          "to": 5,
+          "reason": "Upgrades the lead to CASC's own report of the Tianlian III-01 launch (first_party; matches the item's exact 7:50 p.m. Beijing time detail), corroborated by the existing Xinhua, CRI and Launch Library sources."
+        }
+      ],
+      "corroboration_collapses": [
+        {
+          "id": "2026-07-30-casc-long-march-6-comms-test-satellites",
+          "kept": "http://english.spacechina.com/n17212/c4660901/content.html",
+          "dropped": "https://english.news.cn/20260730/37f87d54cbf349afa3412eb65ce44856/c.html",
+          "rule": "wire_rewrite"
+        }
+      ],
+      "signals": {
+        "checked": 12,
+        "x_attempted": 2,
+        "note": "12 fetchable channels checked (via bsky's public author-feed API and direct site fetches); europeanspaceflight.com and spacepolicyonline.com's own sites were skipped as already covered by the harvester's RSS feeds this run (both showed 304 not modified in health), per 2026-07-30-C. Everything found predates window_start (2026-07-28T05:32); nothing new. Searched 2 X handles (Peter Beck, Jared Isaacman); no verbatim-retrievable new post found for either."
+      },
+      "discovery": {
+        "queries": 8,
+        "note": "Matrix covered (launch, financial, incident/regulatory, non-US x2, EO, FCC, Japan). Six candidates surfaced were already known or out of window: Aeolus-2 (previously scope-excluded as legacy institutional weather-science procurement, and dated July 2, outside window), FCC Upper C-band/licensing actions (already published), Exploration Company funding talks (already published), Roman Space Telescope launch-date news (traced to a June 2 SpacePolicyOnline article, a stale resurfacing), Japan-Singapore JAXA/NSAS agreement (dated July 9, outside window). The Japan query's ispace/Mitsubishi Heavy Industries lead became this sweep's rescore update on the existing ispace item."
       }
     }
   ]

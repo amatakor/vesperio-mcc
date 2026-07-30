@@ -3641,3 +3641,72 @@ a newer entry if a lesson changes.
   like fresh July 2026 hits in the search snippet -- confirms 2026-07-08-E/
   2026-07-12-G's pattern on two more cases; always open the actual page and
   check its stated publish date before drafting a search-surfaced lead.
+
+## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-07-30, second)
+
+- 2026-07-30-E: CASC's own site (english.spacechina.com) is a genuine
+  first_party lead for its own launches, not just a Xinhua mirror: its
+  article on the Tianlian III-01 launch (already published same-day from
+  Xinhua, mainstream tier 3) restated the identical 7:50 p.m. Beijing time
+  detail, confirming it was CASC's own report rather than a wire rewrite;
+  rescoring the lead to CASC (first_party, registry website matches exactly)
+  raised the item from SNR 4 to 5. Worth checking CASC's own site against an
+  already-published Xinhua/CRI-led Chinese launch item before assuming
+  Xinhua is the best available source -- CASC often publishes the same
+  event as a first-party primary alongside the state-media wire copy.
+- 2026-07-30-F: A contracting party's own newsroom can out-rank the outlet
+  that broke the story: Nikkei first reported ispace's H3/Ultra lander
+  switch (mainstream, corroboration crawl found nothing, published at SNR
+  2), but Mitsubishi Heavy Industries -- the OTHER contracting party, not
+  ispace itself -- had its own press release on mhi.com (registry-matched
+  first_party) confirming the exact same contract signing, found via a
+  plain WebSearch the next day. Rescoring the lead to MHI's release raised
+  the item from SNR 2 to 5 (first_party ceiling) and surfaced a fresh detail
+  (the METI SBIR grant funding the Ultra lander) neither the original
+  candidate nor the Nikkei article had stated. When a story involves a
+  named counterparty company, search for that counterparty's own newsroom
+  before settling for the outlet-report SNR, even after the item has
+  already published.
+- 2026-07-30-G: Two Chinese state-media "top news" items on CASC's site
+  dated the SAME calendar day as an already-published item can be the exact
+  same event restated a day later (Beijing-time publish lag), not a new
+  one: cross-check the launch time/rocket/site stated in the new CASC
+  article against the existing item's explainer text before drafting a
+  same-company, same-category "new" candidate -- here it was a genuine
+  same-event match (Tianlian III-01) and became a source-upgrade update,
+  while a second same-day CASC "top news" item (a Long March-6 comms-test
+  launch from Taiyuan, different rocket/site/payload) was the real new
+  item and needed a `dedup_distinct` note to clear the same-company/
+  category heuristic against both the Tianlian III-01 and Tianlian II-06
+  items sitting within the 7-day window.
+- 2026-07-30-H: The Federal Register's own JSON API
+  (federalregister.gov/api/v1/documents/<doc-id>.json) is directly
+  WebFetch-able and returns clean structured fields (title, type,
+  publication_date, docket_id, agencies, abstract, comments_close_on,
+  html_url) even though the HTML document page itself
+  (federalregister.gov/documents/...) redirects WebFetch to an
+  "unblock.federalregister.gov" bot-check page. Confirmed a proposed rule
+  already reported via SpacePolicyOnline (whitelist, tier 3/4) two days
+  earlier and supplied the exact docket number (FAA-2026-8614) and comment
+  deadline (August 31, 2026) that neither original source had stated;
+  rescoring the lead to the Federal Register (.gov, official_record)
+  raised the item from SNR 4 to 5. Try the `/api/v1/documents/<id>.json`
+  form on any federalregister.gov URL the harvester's Federal Register API
+  health source already surfaced, rather than the HTML page, when a
+  regulatory candidate needs the primary document as an upgrade.
+- 2026-07-30-I: Bluesky's public, unauthenticated API
+  (public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N)
+  is directly WebFetch-able and returns each post's verbatim text and
+  createdAt timestamp; the bsky.app profile page itself is a JS shell
+  WebFetch cannot render (no posts, no timestamps). Use the API form for
+  every signals-pass Bluesky account fetch going forward rather than the
+  bsky.app profile URL, which returns nothing usable.
+- 2026-07-30-J: Two search-surfaced leads dated within window turned out to
+  be older news resurfacing: NASA's Roman Space Telescope "launching nine
+  months ahead of schedule" (search snippet implied fresh) traced on direct
+  fetch of SpacePolicyOnline's own article to June 2, 2026, nearly two
+  months stale; and Japan/Singapore's JAXA-NSAS space cooperation agreement
+  traced to a July 9 SPACETIDE 2026 signing, also outside this run's
+  2026-07-28 window start. Both confirm the standing "open the actual page
+  and check its date" rule (2026-07-08-E and peers) rather than trusting a
+  search snippet's apparent recency.
