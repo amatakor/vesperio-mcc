@@ -3604,3 +3604,40 @@ a newer entry if a lesson changes.
   pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 5 new, 1 updated, 0 held") as the build-health
   signal.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-30)
+
+- 2026-07-30-A: reuters.com joins arstechnica.com (2026-07-08-N) as a domain
+  WebFetch flatly refuses ("Claude Code is unable to fetch from
+  www.reuters.com") rather than a normal 403/timeout. investing.com carries
+  Reuters' own wire text verbatim with an explicit "By Reuters" byline and
+  fetches cleanly; used it as the mainstream-class source (outlet "Reuters
+  (via Investing.com)") rather than dropping the corroboration or trying
+  reuters.com again.
+- 2026-07-30-B: a same-story local-TV corroboration can quietly describe a
+  DIFFERENT prior contract: WFTV's write-up of All Points Logistics' new
+  $250M Vandenberg award (SpaceNews, KEYT) instead described a 64-acre
+  Cape Canaveral/KSC-area facility targeted for 2027, matching the "third
+  NSSL Space Vehicle Processing contract" framing but not the Vandenberg
+  Mission Development Zone/2029 details every other source gave. Read as
+  the outlet conflating this award with an earlier, similarly-shaped All
+  Points project rather than independent confirmation; left WFTV unused
+  and corroborated with KEYT instead, whose facts matched SpaceNews
+  exactly. Don't accept a second source's specifics merely because its
+  headline number matches; check its location/timeline details agree too.
+- 2026-07-30-C: europeanspaceflight.com and spacepolicyonline.com are each
+  BOTH a standing sources.json discovery feed (covered automatically by the
+  harvester/candidates-context health block) AND a signals-context.ts
+  fetchable channel (Andrew Parsonson, Marcia Smith) -- no need to
+  separately WebFetch the bare site during the signals pass when the
+  harvester's own RSS fetch of the same domain already shows nothing newer
+  in `health`; note it as "covered via harvester feed" in `signalsPass` and
+  spend the budget on channels the harvester doesn't already walk (Bluesky
+  accounts, podcast/blog sites not in sources.json).
+- 2026-07-30-D: search-engine results for two off-list leads (Astroscale
+  Japan's "gripping mechanism" Ministry of Defense contract, Rocket Lab's
+  "multiple launches with JAXA") both resolved on direct fetch to genuinely
+  old articles (January 2026 and October 2025 respectively) despite reading
+  like fresh July 2026 hits in the search snippet -- confirms 2026-07-08-E/
+  2026-07-12-G's pattern on two more cases; always open the actual page and
+  check its stated publish date before drafting a search-surfaced lead.
