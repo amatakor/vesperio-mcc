@@ -3710,3 +3710,48 @@ a newer entry if a lesson changes.
   2026-07-28 window start. Both confirm the standing "open the actual page
   and check its date" rule (2026-07-08-E and peers) rather than trusting a
   search snippet's apparent recency.
+
+## Narrow same-day re-check, ~7h40m gap, unfiltered full source list (2026-07-30, third)
+
+- 2026-07-30-K: A single unattributable Bluesky bot post claiming an
+  "NROL-95 @SpaceX partial failure" directly contradicted the already-
+  published item (multiple sources: Spaceflight Now, Florida Today, the
+  NRO) confirming a clean launch and booster landing. A targeted search
+  found zero corroboration and multiple sources affirming success; treated
+  the claim as false rather than holding or hedging the existing item.
+  Worth a reminder that a bare informal claim contradicting an already-
+  multi-sourced fact needs its own verification pass before it touches an
+  item, not just before it becomes one.
+- 2026-07-30-L: Four separate harvester-queue/signals hits this run each
+  turned out to be same-day catch-up coverage of stories already fully
+  published under different leads, not fresh news: Rocket Lab's "$266M
+  Space Force contract" (Bluesky, actually the already-published July 21
+  HASTE Alaska deal, whose own GlobeNewswire release date was July 27);
+  SpaceX/Blue Origin "orbital data center" FCC filings (qz.com/newsnation,
+  actually Blue Origin's March 19 and SpaceX's February 1 filings, already
+  covered via the 2026-07-08 Earthjustice item); the Katalyst/NASA Swift
+  LINK reboost "setback" (SpacePolicyOnline Bluesky, already fully folded
+  into the 2026-07-03 item's what_happened, word for word); and a same-day
+  Via Satellite write-up of the Fortastra/Hadrian manufacturing MoU
+  (already published 2026-07-29 from SpaceNews with identical facts). All
+  four needed a dedup check against existing[] before drafting; none added
+  a new fact.
+- 2026-07-30-M: investors.rocketlabcorp.com timed out on a direct WebFetch
+  (60s), unlike the 2026-07-05-S/2026-07-07-L pattern where it or its
+  Cloudflare-gated updates page usually resolves; fell back cleanly to
+  SpaceNews (trade, lead) plus a GlobeNewswire wire-copy mirror (Manila
+  Times) for corroboration rather than retrying or blocking on the
+  first-party fetch.
+- 2026-07-30-N: `investors.planet.com` and `www.ariane.group` both classed
+  clean as `first_party` this run (Planet's IR subdomain against the
+  `planet` constellation's registered `www.planet.com`, per the
+  2026-07-07-E www-stripping fix; ArianeGroup's own domain against its org
+  profile's `https://www.ariane.group/`), landing both items at the tier-5
+  ceiling with a trade corroboration attached for free. Worth checking a
+  registry entity's `website` field before defaulting a well-known
+  operator's own newsroom to a lower tier.
+- 2026-07-30-O: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 5 new, 0 updated, 0 held") as the
+  build-health signal.
