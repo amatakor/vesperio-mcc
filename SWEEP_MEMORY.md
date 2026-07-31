@@ -3790,3 +3790,45 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 0 new, 1 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-31, second)
+
+- 2026-07-31-D: JAXA sometimes splits one flyby event across two same-day
+  press releases, each headlining a different specific achievement (here,
+  Hayabusa2's Torifune flyby: one release on the closest-approach distance
+  record, a second on the world-first LIDAR ranging during the same pass).
+  Both are the same event under the 7-day dedup rule; drafted as one item
+  combining both facts rather than two. finalize-sweep's same-domain
+  corroboration collapse folds the second JAXA URL into one scoring unit
+  automatically, which is correct here since both are first-party JAXA
+  anyway; check for this twin-release pattern before drafting a JAXA
+  same-day queue hit as two separate items.
+- 2026-07-31-E: A KeepTrack-style predicted conjunction alert (STARLINK-5262
+  vs. MONOLITH, 6m minimum range, "collision probability 1.0", surfaced via
+  WebSearch) is a forecast, not a confirmed incident: no outlet reported
+  whether a maneuver was performed or a collision occurred, and Starlink
+  alone generates on the order of tens of thousands of such conjunction
+  alerts every few months per Space.com's own reporting. Left unpublished;
+  a predicted-collision-probability figure needs a follow-up source
+  confirming an actual outcome (maneuver, miss, or collision) before it is
+  a publishable incident, not just a tracking-tool forecast.
+- 2026-07-31-F: Advanced Television's July 31 rewrite of the July 30
+  Rocket Lab/iQPS third-launch-deal story headlined it "Rocket Lab wins
+  Chinese launch contracts" even though the body (and every other outlet)
+  correctly identifies iQPS as Japanese; a rewrite outlet's headline can
+  mislabel geography/actor even when the body facts match an already-
+  published item exactly. Confirmed via the body details (three dedicated
+  Electron launches, total contracted missions now 18) before treating it
+  as dedup rather than a genuinely new China-related item.
+- 2026-07-31-G: The SES/LATAM Airlines multi-orbit IFC item shared company
+  "SES" and category "partnership" with the already-published 2026-07-27
+  SES Space & Defense/Starlab relay item within the 7-day window, tripping
+  the dedup gate on a same-company/category heuristic despite being
+  completely unrelated products (airline inflight WiFi vs. a space-station
+  relay contract); cleared with `dedup_distinct`. A shared parent company
+  name across two divisions (SES commercial mobility vs. SES Space &
+  Defense) is not itself evidence of the same event.
+- 2026-07-31-H: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 1 updated, 0 held") as the build-health signal.
