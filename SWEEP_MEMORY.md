@@ -3755,3 +3755,38 @@ a newer entry if a lesson changes.
   standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
   merge confirmation ("merged 5 new, 0 updated, 0 held") as the
   build-health signal.
+
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-31)
+
+- 2026-07-31-A: A near-total-duplicate sweep: the harvester queue was
+  95%+ SpaceX/Tesla-merger stock speculation and ISRO exam/recruitment
+  noise, and every substantive-looking lead across the queue, 11 HTML
+  sources, 15 signals channels, and an 8-query discovery matrix (K2
+  Space $500M, Rocket Lab/iQPS third deal, ArianeGroup Themis wet dress
+  rehearsal, MaiaSpace suborbital-skip, True Anomaly VICTUS HAZE
+  pursuit, SpaceX $1.6B Space Force order, DOT/FAA environmental
+  waiver, Amazon D2D FCC filing, ispace-Europe MAGPIE, NASA CLD draft
+  RFP) traced straight to items already published earlier the same day
+  or before the window. Only action this run: attached a free
+  corroboration source (Ars Technica) to an existing item. Confirms the
+  standing pattern (2026-07-05-S and many peers) that a short same-day
+  re-check against a fully unfiltered source list can legitimately
+  yield near-zero net change when a prior sweep the same day already
+  covered the ground.
+- 2026-07-31-B: `sourceHealth` has no clean status for "attempted this
+  run, failed, but not yet the third consecutive failure" on a source
+  that is currently `verified` with `fail_count: 0`: reporting
+  `status: "verified"` triggers the evidence-of-successful-fetch gate
+  (no excerpt exists for a failed fetch) but `"dead"` overstates a
+  single blip and `"unverified"` wrongly resets an established source.
+  Two one-off failures this run (space.skyrocket.de/Gunter's:
+  ECONNREFUSED; sierraspace.com/newsroom: HTTP 403, both previously
+  reliable) were left OUT of the draft's `sourceHealth` entirely rather
+  than misreported; noting the blips here instead. Worth a schema
+  addition (an explicit `attempted_failed` status, or an
+  `evidence`-optional failure note under the existing status) if this
+  recurs enough to matter for fail_count accuracy.
+- 2026-07-31-C: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 1 updated, 0 held") as the build-health signal.
