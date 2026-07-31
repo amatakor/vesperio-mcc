@@ -3832,3 +3832,51 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 3 new, 1 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~7.5hr gap, unfiltered full source list (2026-07-31, third)
+
+- 2026-07-31-I: `updates[].patch.secondary_urls` is silently ignored:
+  `finalize-sweep.ts`'s merge always recomputes `secondary_urls` as
+  `base.secondary_urls` plus each `attach[].url` (source: the object
+  literal sets `secondary_urls: newSecondary` last, overriding anything
+  in `...patch`), and there is no separate unscored-link field for
+  updates the way `newItems[].secondary_urls` lets a fresh item carry an
+  unscored link. To add a company's own page as an honest link on an
+  UPDATE when it has no registry host to verify (the standing
+  2026-07-07-K/2026-07-08-A new-actor pattern), the only mechanical path
+  is `attach` it at the conservative `informal` class rather than
+  `first_party` -- confirmed working this run on Katalyst Space's own
+  mission-tracker page (no registry entry exists for Katalyst at all).
+- 2026-07-31-J: WebFetch could not render Google News RSS redirect
+  articles today (returned only "Google News" header text, no publisher
+  content, unlike the documented redirect-then-refetch flow) or a
+  handful of ordinary publisher pages (theregister.com 404'd twice on
+  slightly different URL punctuation, livescience.com truncated to a
+  headline-only stub) -- WebSearch on the exact headline text reliably
+  found and summarized the same underlying story in every case this run
+  (OHB's AD HOC NEWS stock piece resolved to the OHB Italia PRISMA
+  Second Generation ASI contract; the Register piece's facts came
+  through via a Katalyst-space.com direct fetch instead). Worth trying
+  WebSearch-by-headline as the fallback before writing a Google
+  News/publisher URL off as unreachable.
+- 2026-07-31-K: A same-day stock-commentary rewrite of an already-
+  published contract (AD HOC NEWS's "OHB's Italian Earth-Observation Win
+  Masks a Stock Still Digging Out of a Deep Correction," about the
+  already-published 2026-07-29-prisma-second-generation-contract item)
+  needed no draft action: it isn't a named analyst's attributed call
+  (not clean commentary) and states no new registry-relevant fact (pure
+  stock-price framing), so it was left alone rather than forced into
+  either an item or an update.
+- 2026-07-31-L: Confirms 2026-07-06-L/2026-07-06-JJ: cross-checking an
+  already-published item's own sourcing against a page fetched for an
+  unrelated reason (OHB's own PRISMA press release, found while
+  resolving the AD HOC NEWS redirect) found a genuine free upgrade
+  opportunity (OHB Italia's own ohb.de page, registry-matched
+  first_party, alongside the item's sole existing source, Thales Alenia
+  Space) -- not used this run for effort/value reasons since the item is
+  already at the SNR 5 ceiling, but worth a routine attach next time
+  this item is touched for any other reason.
+- 2026-07-31-M: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 2 updated, 0 held") as the build-health signal.
