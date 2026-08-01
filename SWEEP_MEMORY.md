@@ -3880,3 +3880,44 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 1 new, 2 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-01)
+
+- 2026-08-01-A: A queue near-saturated with SpaceX stock/IPO speculation and
+  Bluesky launch-bot spam (92 collapsed candidates, maybe 4 genuinely on-topic)
+  again produced only one real item from the queue itself (a routine Starlink
+  Vandenberg batch); the discovery pass's Airbus/Thales press-release leg
+  surfaced a genuine gap instead: Hisdesat's SpainSat NG II secure-comms
+  satellite was destroyed by a debris strike in January 2026 and never
+  covered under any name (grepped items.json/held.json for "spainsat"/
+  "hisdesat", zero hits), which directly explains why Hisdesat signed a
+  SpainSat NG III replacement contract with Airbus/Thales the same day this
+  sweep ran. Chased the January loss per the standing predates-window
+  ruling (major-tier, never covered) and published both dated to their
+  actual event dates, seven months apart.
+- 2026-08-01-B: Name-collision scope trap, new shape: "Space-Eyes, Inc.", an
+  Eric-Trump-backed company going public via a $638M SPAC merger with
+  McKinley Acquisition (ticker CUAS), reads exactly like a tracked space
+  company from its name and search snippets alone, but it is a counter-drone/
+  AI geospatial-intelligence defense company (products: Morpheus counter-UAS,
+  SeaWatch maritime intel) with no orbital space product. Confirmed via a
+  targeted "what does the company do" search before treating the SPAC deal
+  as a scope-fitting M&A candidate; discarded.
+- 2026-08-01-C: The same-company-plus-category dedup heuristic can fire on a
+  company mentioned only as a CO-CONTRACTOR, not the item's lead actor: a new
+  Hisdesat/Airbus/Thales Alenia Space satcom contract (category procurement)
+  matched two unrelated existing items purely because Thales Alenia Space
+  also appears in their company lists (ESA's Lunar Link Gateway tender,
+  ASI's PRISMA Second Generation contract), neither of which shares an actor,
+  program, or buyer with the Hisdesat deal. Cleared with two dedup_distinct
+  entries in one pass; worth remembering the heuristic scans the full
+  `companies` array, not just the primary/lead actor.
+- 2026-08-01-D: Thales Alenia Space's registry `website`
+  (`https://www.thalesaleniaspace.com/en`) matched a press release at
+  `thalesaleniaspace.com/en/press-releases/...` cleanly for `first_party`,
+  while Airbus's own identical-content press release on `www.airbus.com`
+  would have failed the gate (Airbus's registry website is
+  `space-solutions.airbus.com`, per 2026-07-06-W/2026-07-12-H precedent) --
+  on a joint two-manufacturer release, check EACH named party's registry
+  website before picking a lead, since one may pass the anti-spoof gate
+  cleanly while the other needs the trade-source workaround.

@@ -14962,7 +14962,7 @@
         "https://www.miragenews.com/war-department-pours-7-1m-into-space-solar-1712298/"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -14974,10 +14974,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-01",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -20675,6 +20688,225 @@
         "origin_url": "https://spacenews.com/space-force-picks-15-companies-for-981-million-training-range-contract/",
         "width": 1200,
         "height": 800
+      }
+    },
+    {
+      "id": "2026-01-02-hisdesat-spainsat-ng2-debris-strike",
+      "date": "2026-01-02",
+      "headline": "Hisdesat loses SpainSat NG II secure comms satellite to debris strike",
+      "explainer": {
+        "tagline": "A space particle strike during orbit-raising destroyed Spain's new secure military comms satellite before it entered service.",
+        "what_happened": "Indra Group disclosed Jan. 2, 2026 that SpainSat NG II, built by Airbus Defence and Space for operator Hisdesat, was struck by a space particle while transiting to geostationary orbit at roughly 50,000 km altitude, about ten weeks after its Oct. 23, 2025 launch on a Falcon 9. Hisdesat concluded Jan. 16 that the satellite suffered non-recoverable damage and can no longer carry out its mission.",
+        "why_it_matters": "SpainSat NG II was built to serve Spain's Ministry of Defence, NATO and EU GOVSATCOM partners; its loss removes redundancy from a national secure-comms architecture that took years to build. Hisdesat says the satellite was fully insured, limiting its direct financial exposure, but the program needs a multi-year rebuild, which set up the SpainSat NG III replacement contract Hisdesat signed with Airbus and Thales Alenia Space in July.",
+        "for_who": "Government satcom operators and insurers"
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "incident",
+      "impact": "major",
+      "companies": [
+        "Hisdesat",
+        "Indra Group",
+        "Airbus Defence and Space"
+      ],
+      "source_url": "https://spacenews.com/new-spanish-communications-satellite-suffers-space-particle-impact/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/new-spanish-communications-satellite-suffers-space-particle-impact/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/new-spanish-communications-satellite-suffers-space-particle-impact/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-01",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.satellitetoday.com/government-military/2026/01/04/indra-group-discloses-debris-impact-to-spainsat-ng-ii-satellite/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-08-01",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://europeanspaceflight.com/spains-new-communications-satellite-suffers-space-particle-strike/",
+          "outlet": "European Spaceflight",
+          "class": "trade",
+          "added": "2026-08-01",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-01T05:27:18.560Z",
+      "entities": [
+        {
+          "name": "Airbus Defence and Space",
+          "ref": "organizations/airbus-defence-and-space"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-01-02-hisdesat-spainsat-ng2-debris-strike.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/new-spanish-communications-satellite-suffers-space-particle-impact/",
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "2026-07-31-hisdesat-spainsat-ng3-replacement-contract",
+      "date": "2026-07-31",
+      "headline": "Hisdesat contracts Airbus and Thales Alenia Space to build SpainSat NG III",
+      "explainer": {
+        "tagline": "Spain's satellite operator signed the industrial contract for a replacement secure-comms satellite after SpainSat NG II's total loss.",
+        "what_happened": "Hisdesat signed a formal industrial contract July 31, 2026 with Airbus Defence and Space (prime contractor, X-band payload) and Thales Alenia Space (UHF and military Ka-band payloads) to build SpainSat NG III. The satellite is due to launch in the third quarter of 2030 and reach full operational capability in early 2031, after a 48-month development period. More than ten Spanish companies will contribute subsystems.",
+        "why_it_matters": "The contract completes the SPAINSAT NG programme after SpainSat NG II was declared a total loss in January following a debris strike. It keeps Airbus and Thales Alenia Space as the anchor suppliers for Spain's secure military satcom, which also serves NATO and EU GOVSATCOM partners, and signals Hisdesat is rebuilding rather than downsizing the architecture.",
+        "for_who": "European secure-satcom manufacturers and government satcom operators"
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "procurement",
+      "impact": "notable",
+      "companies": [
+        "Hisdesat",
+        "Airbus Defence and Space",
+        "Thales Alenia Space"
+      ],
+      "source_url": "https://www.thalesaleniaspace.com/en/press-releases/hisdesat-strengthens-strategic-capabilities-spains-ministry-defence-spainsat-ng-iii",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.thalesaleniaspace.com/en/press-releases/hisdesat-strengthens-strategic-capabilities-spains-ministry-defence-spainsat-ng-iii",
+          "reason": "base tier 5 from lead source class \"first_party\" (Thales Alenia Space)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.thalesaleniaspace.com/en/press-releases/hisdesat-strengthens-strategic-capabilities-spains-ministry-defence-spainsat-ng-iii",
+          "outlet": "Thales Alenia Space",
+          "class": "first_party",
+          "added": "2026-08-01",
+          "via": "initial"
+        },
+        {
+          "url": "https://satnews.com/2026/07/31/hisdesat-contracts-airbus-and-thales-alenia-space-to-build-spainsat-ng-iii-communications-satellite/",
+          "outlet": "SatNews",
+          "class": "trade",
+          "added": "2026-08-01",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-01T05:27:18.560Z",
+      "entities": [
+        {
+          "name": "Airbus Defence and Space",
+          "ref": "organizations/airbus-defence-and-space"
+        },
+        {
+          "name": "Thales Alenia Space",
+          "ref": "organizations/thales-alenia-space"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-07-31-hisdesat-spainsat-ng3-replacement-contract.webp",
+        "credit": "Image: satnews.com",
+        "origin_url": "https://satnews.com/2026/07/31/hisdesat-contracts-airbus-and-thales-alenia-space-to-build-spainsat-ng-iii-communications-satellite/",
+        "width": 960,
+        "height": 644
+      }
+    },
+    {
+      "id": "2026-07-31-spacex-starlink-17-52-vandenberg",
+      "date": "2026-07-31",
+      "headline": "SpaceX launches 24 Starlink satellites, lands booster's 26th flight",
+      "explainer": {
+        "tagline": "A routine Starlink batch from Vandenberg reused a Falcon 9 booster for the 26th time.",
+        "what_happened": "SpaceX launched 24 Starlink V2 Mini satellites aboard a Falcon 9 from Vandenberg Space Force Base at 03:08 UTC on Aug. 1, 2026 (8:08 p.m. PDT July 31). The first-stage booster landed on the droneship Of Course I Still Love You, completing its 26th flight. It was the 90th Falcon launch of 2026.",
+        "why_it_matters": "This batch sets no new reuse record or first; it is routine constellation-buildout cadence, published per the site's standing rule that megaconstellation batch launches are logged even when unremarkable."
+      },
+      "tags": [
+        "launch",
+        "connectivity"
+      ],
+      "category": "launch",
+      "impact": "noise",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://spaceflightnow.com/2026/07/31/live-coverage-spacex-to-launch-24-starlink-satellites-on-falcon-9-rocket-from-vandenberg-sfb-12/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spaceflightnow.com/2026/07/31/live-coverage-spacex-to-launch-24-starlink-satellites-on-falcon-9-rocket-from-vandenberg-sfb-12/",
+          "reason": "base tier 3 from lead source class \"trade\" (Spaceflight Now)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spaceflightnow.com/2026/07/31/live-coverage-spacex-to-launch-24-starlink-satellites-on-falcon-9-rocket-from-vandenberg-sfb-12/",
+          "outlet": "Spaceflight Now",
+          "class": "trade",
+          "added": "2026-08-01",
+          "via": "initial"
+        },
+        {
+          "url": "https://keyt.com/vandenberg-space-base/2026/07/31/falcon-9-launch-from-vandenberg-sfb-of-starlink-satellites-scheduled-for-friday-night/",
+          "outlet": "KEYT",
+          "class": "mainstream",
+          "added": "2026-08-01",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-01T05:27:18.560Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-07-31-spacex-starlink-17-52-vandenberg.webp",
+        "credit": "Image: spaceflightnow.com",
+        "origin_url": "https://spaceflightnow.com/2026/07/31/live-coverage-spacex-to-launch-24-starlink-satellites-on-falcon-9-rocket-from-vandenberg-sfb-12/",
+        "width": 678,
+        "height": 381
       }
     }
   ]
