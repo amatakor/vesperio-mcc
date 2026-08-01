@@ -3921,3 +3921,37 @@ a newer entry if a lesson changes.
   on a joint two-manufacturer release, check EACH named party's registry
   website before picking a lead, since one may pass the anti-spoof gate
   cleanly while the other needs the trade-source workaround.
+
+## Narrow same-day re-check, ~8h13m gap, unfiltered full source list (2026-08-01, second)
+
+- 2026-08-01-E: `existing[]` cross-check gap, self-caught only after
+  finalize-sweep rejected it: drafted a "new" item for CASC's TJS-27A/27B
+  classified-satellite launch (Long March 6A, Taiyuan, July 30) using
+  CASC's own page as lead, not noticing an earlier sweep THAT SAME DAY had
+  already published the identical launch (identical CASC URL, identical
+  facts) under `2026-07-30-casc-long-march-6-comms-test-satellites`.
+  SpaceNews's write-up did add one genuine new fact over the existing item
+  (the TJS-27A/27B designation plus Jonathan McDowell's attributed
+  ELINT-role assessment), so it became an `updates[].attach` with a full
+  `explainer.what_happened` replacement rather than a duplicate. Lesson:
+  grep the FULL `existing[]` id list for the candidate's own lead source
+  URL (not just company+category matching) before drafting a same-day
+  CASC/Xinhua launch as new -- the finalize-sweep dedup gate caught it
+  this time, but a differently-classed lead source might not trip the
+  same-company heuristic.
+- 2026-08-01-F: Two "process not yet fact" scope calls, left undrafted
+  rather than held: Zelensky asking Trump to persuade Musk to broaden
+  Starlink access for strikes inside Russia (Trump said he'd "consider"
+  it, no commitment, no operator statement) is squarely the
+  conflict-operational-use exclusion even though it's on-the-record from
+  a government official -- nothing about Starlink's actual service has
+  changed. NASA's PROMISE lunar-rover cost dispute (repurposing a Mars
+  rover engineering model, Isaacman disputing The Planetary Society's
+  $723M-$1.33B estimate) is pure institutional NASA budget debate with no
+  commercial contractor named anywhere in the SpaceNews piece -- doesn't
+  clear the human-spaceflight/commercial-angle bar despite being a real,
+  dated, on-the-record figure.
+- 2026-08-01-G: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 1 updated, 0 held") as the build-health signal.
