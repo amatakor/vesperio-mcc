@@ -4015,3 +4015,28 @@ a newer entry if a lesson changes.
   the standing pattern since 2026-07-11-B; relied on
   `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
   updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~3.5hr gap, unfiltered full source list (2026-08-02, second)
+
+- 2026-08-02-F: A Bluesky launch-tracking bot (astronomybot.bsky.social)
+  posted "Starlink Group 17-53 On 2026-08-01 ... Status: Current" as if
+  the launch had already occurred; a direct WebSearch found Spaceflight
+  Now reporting the mission still upcoming, delayed from Aug 1/2/3 to
+  Aug 4. These auto-generated launch-tracker bot posts assert a past
+  tense on a schedule slip; treat their "already launched" framing as
+  unverified until a real source (Launch Library, a live-coverage outlet)
+  confirms the launch actually happened, not just that a window passed.
+- 2026-08-02-G: Zero-add sweep, ~3.5 hours after the prior deep sweep the
+  same morning: all 14 unfiltered HTML sources were current with nothing
+  posted since the 05:33 UTC lastSweep, 13 of 17 signals channels checked
+  clean (newest post predated the window), and an 8-query discovery
+  matrix traced every lead to an already-published story, a not-yet-
+  launched rocket, or off-topic SpaceX/Tesla stock speculation
+  (particularly heavy this run: merger-rumor and price-target churn
+  around the post-IPO stock slide). Confirms the standing pattern
+  (2026-07-05-S and many peers) that a short same-day re-check can
+  legitimately net zero.
+- 2026-08-02-H: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 0 updated, 0 held") as the build-health signal.
