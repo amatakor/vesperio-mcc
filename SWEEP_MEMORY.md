@@ -4040,3 +4040,38 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 0 new, 0 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~8h24m gap, unfiltered full source list (2026-08-02, third)
+
+- 2026-08-02-I: A Yahoo News/tech.yahoo.com mirror for a search-surfaced
+  headline ("SpaceX's Starlink Satellites Put on a Celestial Show Over the
+  Netherlands") can resolve to a completely different, much older story
+  under a near-identical title: the fetched page was about the original
+  May 2019 Starlink launch-train sighting, not a genuinely new July 2026
+  Starlink-1541 reentry fireball over the Netherlands found via Marco
+  Langbroek's Bluesky. Caught by checking the fetched page's own stated
+  date (2019) against the expected event; nltimes.nl (the outlet the
+  search results actually pointed to) 403'd, so the item was corroborated
+  instead via two directly-fetched Dutch mainstream outlets not
+  previously used by this project: bright.nl and hartvannederland.nl,
+  both usable via plain WebFetch and independent of each other (distinct
+  phrasing, a different quoted meteorologist in one).
+- 2026-08-02-J: A routine, attributed Starlink deorbit that produced a
+  widely observed public fireball (multiple Dutch outlets, a whitelisted
+  signal's own blog post) was drafted as a noise-tier `incident`, by the
+  same logic that routine megaconstellation launches publish at noise
+  (2026-07-12-A): the site's incident category names "uncontrolled
+  reentries" as in-scope regardless of how routine the underlying
+  end-of-life deorbit is, as long as it is a genuine, dateable, sourced
+  fact. Dated it to the true July 24 event date (nine days before this
+  sweep) rather than the discovery date, following the dominant
+  event-date-over-publish-date convention (2026-07-06-GG and many later
+  entries) rather than the narrower 2026-07-17-I precedent (which used
+  discovery date for a noise-tier item); both readings exist in this
+  file and the choice didn't affect scoring, but flag for Florian if a
+  standing rule is wanted for noise-tier chases specifically.
+- 2026-08-02-K: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate on the first attempt, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 1 updated, 0 held") as the build-health
+  signal.
