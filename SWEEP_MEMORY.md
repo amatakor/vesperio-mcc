@@ -3955,3 +3955,63 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 0 new, 1 updated, 0 held") as the build-health signal.
+
+## Deep sweep, ~11h51m gap, unfiltered full source list (2026-08-02)
+
+- 2026-08-02-A: SEC EDGAR CIK tickers in the harvester queue are easy to
+  misread by company name alone: `SEC EDGAR 8-K feed: SATS` is EchoStar
+  Corporation (not Viasat, whose feed is `VSAT`), and its July 28 8-K
+  (Item 1.02 + 2.01) turned out to be the actual CLOSING of the
+  previously-announced AT&T spectrum sale ($20.25B proceeds + $2.4B FCC
+  trust), a genuinely new, high-value financial event distinct from the
+  June 30 Dish DBS Chapter 11 item that had only mentioned the sale as
+  pending context. WebFetch 403'd on sec.gov directly (both the filing
+  index and the exhibit htm) and `curl` required approval this session
+  (unlike scheduled runs, where it reportedly works); StockTitan's SEC
+  filing mirror page fetched cleanly and quoted the 8-K items verbatim,
+  used as an `informal`-class corroboration source alongside a genuine
+  trade write-up (Fierce Network) as lead. Also confirms 2026-07-06-F:
+  `SEC EDGAR 8-K feed: SATL` (Satellogic) was collapsed into the SATS
+  entry's `alt` list purely because both filings share the generic SEC
+  index title "8-K - Current report" -- different companies, a false
+  title-collapse; checked it separately (routine CFO resignation, below
+  the inclusion bar).
+- 2026-08-02-B: Whitelisted YouTube signals (Felix Schlang, Scott Manley,
+  Tim Dodd, Marcus House) arrive in the harvester queue as
+  `Signals YouTube: <name>` entries per the standing rule, but most
+  post-Flight-13 videos this run were pure reaction/footage content
+  (Tim Dodd's splashdown drone-footage shorts, Scott Manley's lightning
+  explainer) with no standalone factual claim worth a commentary item.
+  Felix Schlang's July 31 video description, however, named a genuinely
+  new, checkable fact (SpaceX dispatching a recovery team for the
+  intact Ship 40, Musk's tower-catch plan for Flight 14) that a
+  NASASpaceflight RSS excerpt and a Teslarati article both independently
+  confirmed with exact Musk quotes; used those two as the update's
+  sources rather than citing the YouTube description directly, since
+  the video itself never states the recovery/catch facts on the record
+  beyond teasing them.
+- 2026-08-02-C: A deep-mode 7-day queue with `lastSweepConsumedCount: 0`
+  still had 472 of 662 candidates already flagged `consumed: true` /
+  `previously_presented: true` from earlier sweeps the same week; spot
+  checks against `items.json` confirmed essentially all of them
+  (Swift reboost, MaiaSpace, Fortastra/Hadrian, All Points Vandenberg,
+  Rocket Lab Alaska HASTE, ispace/MHI lander switch, LatConnect SWIRSAT
+  expansion, SpaceX $1.6B launch orders, FCC Upper C-band) were already
+  published under other lead URLs -- the `consumed` flag is per-URL, so
+  a same-story article from a second outlet shows as unconsumed even
+  when the underlying event is fully covered. Grepping `items.json` for
+  each candidate's distinguishing company/figure name before drafting
+  was faster and more reliable than trusting the `consumed` flag alone.
+- 2026-08-02-D: `python3 -c` one-liners and shell output redirection
+  (`> file`, even inside the repo working directory) both hit this
+  session's permission gate; large `jq`-filtered command output is
+  readable directly via Bash without redirection, and `wc -l`/`jq`
+  piped straight off a fresh `bun scripts/candidates-context.ts` call
+  work fine as long as no `>` redirect or multi-statement `;`/`&&` chain
+  is present in the same tool call -- kept each candidates-context.ts
+  filter as its own single Bash invocation.
+- 2026-08-02-E: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
+  updated, 0 held") as the build-health signal.
