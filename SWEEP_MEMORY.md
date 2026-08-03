@@ -4075,3 +4075,52 @@ a newer entry if a lesson changes.
   pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 1 updated, 0 held") as the build-health
   signal.
+
+## Narrow same-day re-check, ~5h gap, unfiltered full source list (2026-08-03)
+
+- 2026-08-03-A: EchoStar's `SEC EDGAR 8-K feed: SATS` queue entry (CIK
+  1415404) surfaced an Item 1.03 Bankruptcy filing the same day Hughes
+  Network Systems' Chapter 11 broke in the press (Advanced Television,
+  Bloomberg) -- a genuinely new, distinct, seismic event from the June 30
+  Dish DBS filing (that item explicitly stated Hughes was NOT part of it)
+  and from the July 28 AT&T spectrum-sale-closing item. sec.gov 403'd
+  WebFetch on every route tried this run (index page, cgi-bin browse-edgar,
+  efts.sec.gov full-text search), confirming 2026-08-02-A is not a one-off;
+  the harvester's `raw_excerpt` from the candidates queue (Item 1.03/2.04/
+  5.02/7.01/8.01 listed verbatim) was the only usable read of the filing's
+  contents and was cited as an `official_record` corroboration source
+  alongside a directly-fetched Advanced Television article as lead
+  (`trade`). Bloomberg 403'd WebFetch every attempt too (likely paywall,
+  not just a bot-block) despite WebSearch surfacing its exact headline and
+  facts repeatedly; treated it as unfetched and did not cite it as a
+  source, relying on Advanced Television's own two articles (July 29
+  preview + Aug 3 confirmation) for the verbatim facts instead.
+- 2026-08-03-B: The same-company-plus-category dedup heuristic (first
+  flagged 2026-08-01-C) fired again: a new item for Hughes Network
+  Systems' Chapter 11 (category `financial`, company `EchoStar`) matched
+  the existing `2026-07-28-echostar-att-spectrum-sale-closes` item purely
+  on shared company + category + <7-day window, despite being a wholly
+  unrelated transaction (AT&T spectrum deal closing vs. a separate
+  subsidiary's bankruptcy filing). One `dedup_distinct` entry cleared it.
+  Worth treating any EchoStar-family item as near-guaranteed to trip this
+  heuristic given how much financial news that holding company generates
+  (three distinct EchoStar-linked financial/bankruptcy items in five
+  weeks now: Dish DBS Chapter 11 June 30, AT&T spectrum close July 28,
+  Hughes Chapter 11 Aug 2).
+- 2026-08-03-C: The seismic item published at SNR 2 (trade lead, no
+  first-party/official-record LEAD despite an official_record
+  corroboration source attached) because the gate's `extraordinary`
+  force-rule keys off the LEAD source's class only, not the full source
+  list; it was correctly auto-queued to `held.json` for Florian per the
+  seismic-at-SNR<=2 rule while still publishing. Confirms the lead-only
+  reading of that rule (no prior entry stated this explicitly).
+- 2026-08-03-D: ICEYE's UAE country-CEO appointment (first-party press
+  release, SNR 5, impact noise) followed the exact template of the
+  2026-07-08 Germany and 2026-07-09 Portugal country-CEO items --
+  standing precedent for treating these as publishable "partnership"-
+  category items even though no partnership is announced, confirmed
+  worth continuing.
+- 2026-08-03-E: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 1 held") as the build-health signal.
