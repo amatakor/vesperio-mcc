@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-08-01-china-beidou-in-orbit-upgrade:beidou.sats_active_claimed",
+      "item_id": "2026-08-01-china-beidou-in-orbit-upgrade",
+      "entity_slug": "beidou",
+      "entity_type": "constellation",
+      "field": "sats_active_claimed",
+      "value": 50,
+      "metric": "BeiDou satellites currently active/operational, as stated by the China Satellite Navigation Office via Xinhua",
+      "same_metric": true,
+      "item_snr": 4,
+      "source_url": "https://english.news.cn/20260731/d3fa5fd1f424477d85a5584e1a438d30/c.html",
+      "action": "downgrade_incoming",
+      "proposed_on": "2026-08-03",
+      "status": "pending"
+    }
+  ]
 }
