@@ -4194,3 +4194,29 @@ a newer entry if a lesson changes.
   permission gate again, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 5 new, 2 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~4h6m gap, unfiltered full source list (2026-08-04)
+
+- 2026-08-04-A: A generic WebSearch for "Zhuque-2E third launch failure August
+  2026" returned china-in-space.com hits with no year in the snippet that read
+  as fresh; direct fetch of the actual article confirmed a Aug 15, **2025**
+  dateline (LandSpace's Zhuque-2E Y3 in-flight failure), not 2026. Adds a new
+  domain to the standing stale-resurfacing pattern; treat this exact headline
+  shape as a trap if it resurfaces again.
+- 2026-08-04-B: Apex Space (satellite-bus manufacturer) has no
+  `src/data/registry` organization profile despite recurring as a named party
+  in three items now (Loft Orbital bus order, Sophia Space TILE demo, and this
+  run's own $200M funding round) -- same no-registry-host pattern as
+  ispace/Orbit Fab/ArkEdge; its own newsroom can't be classed `first_party`
+  until a profile exists. Worth a registry add at the next structural touch
+  given how often it's coming up.
+- 2026-08-04-C: L3Harris's own newsroom listing page doesn't expose full
+  article URLs to a plain WebFetch of the listing; asking WebFetch directly
+  for "recent press releases with their exact URLs" against the listing page
+  surfaced the right slug (`/newsroom/press-release/2026/08/l3harris-completes-sale-majority-stake-commercial-space-propulsion`)
+  when a guessed URL 404'd. Worth trying before assuming a fresh press
+  release isn't linked yet.
+- 2026-08-04-D: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") as the build-health signal.
