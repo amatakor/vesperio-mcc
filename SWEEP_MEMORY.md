@@ -4237,3 +4237,61 @@ a newer entry if a lesson changes.
   standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
   merge confirmation ("merged 5 new, 2 updated, 0 held") as the
   build-health signal.
+
+## Normal-mode sweep, ~3h46m gap, unfiltered full source list (2026-08-05, second)
+
+- 2026-08-05-H: businesswire.com timed out (60s) on every attempt this run
+  (both a June and a July AST SpaceMobile launch-date release), continuing
+  the per-session domain-friction pattern (2026-08-05-F and peers); a local
+  Florida outlet (talkoftitusville.com) fetched cleanly and gave genuinely
+  distinct pre-launch figures (satellite mass, FM6/FM7/FM8 designations,
+  peak Mbps) from the after-the-fact Spaceflight Now lead, enough for a
+  clean two-source trade+informal corroboration without the blocked wire.
+- 2026-08-05-I: A same-day ICEYE/EQT "Scaleup Europe Fund makes first
+  investment" release (Aug 5) turned out to be a closing-tranche
+  confirmation of the ALREADY-published June 9 EUR 1B/EUR 450M Series F
+  round (identical valuation and round-size figures), not new money;
+  treated as an `updates[].attach` with a full `explainer.what_happened`
+  replacement rather than a new item, even though it is ~2 months outside
+  the mechanical 7-day/30-day windows, because "Known to MCC" matching is
+  by actor+event identity first, not purely by day-count, and drafting it
+  as a second item would have double-counted the same raise. Worth
+  remembering this pattern (a fund's own "first investment" press release
+  confirming a round others already led) for future EU-fund-related ICEYE/
+  Isar/other sovereign-capital stories.
+- 2026-08-05-J: A widely-covered "SpaceX rocket set to crash into the
+  Moon" story (a defunct, already-attributed Jan 2025 Falcon 9 upper stage
+  on a known, non-threatening lunar-impact trajectory, covered by CNN,
+  Newsweek, Time, RTE, etc.) was judged out of scope and left undrafted,
+  not held: no operator liability, deorbit-compliance, or commercial angle
+  exists here (the operator and cause are already known and undisputed,
+  and lunar impact isn't Earth-reentry safety), closer to astronomy-
+  interest coverage than the incident category's liability/insurance
+  rationale (2026-07-08 ruling). Flag for Florian if this read is wrong,
+  since it's a genuinely borderline "orbital-safety" shape.
+- 2026-08-05-K: ESPI (European Space Policy Institute) republished its
+  China-vs-Europe orbital-data-center thesis as a fresh, dated Aug 5
+  report/brief distinct from its Nov 2025 "Data centres in space" report
+  (same espi.eu domain, different piece, confirmed via the SpaceNews
+  byline stating "a report published by the independent think tank Aug.
+  5"); drafted as `kind: "commentary"` (ESPI as a named outlet, not a
+  signals.json person) rather than a factual event, since the piece is a
+  warning/policy-recommendation argument, not a discrete transaction.
+  Worth double-checking any think-tank "report warns X" headline against
+  its actual publish date before treating a resurfaced older report as
+  today's news (the Nov 2025 report page was found first and would have
+  been a dating trap).
+- 2026-08-05-L: A GuoWang batch (23rd deployment, Long March-8A Y10, Aug 4)
+  had never been itemized individually before (only mentioned in passing
+  inside other items' why_it_matters), unlike Qianfan/SpaceSail which has
+  several dedicated items; china-in-space.com gave the richest figures
+  (9 satellites, ~186 cumulative, per-satellite mass, 2026-2028 ramp
+  targets) with Xinhua as trade-classed (not official_record, per
+  2026-08-03-F) corroboration. GuoWang's registry `sats_launched_total`
+  (177, as_of 2026-07-09) is a monotonic field per SNR_SPEC 6.6; attested
+  `same_metric: true` and let the gate's supersession handling apply
+  rather than fudging it.
+- 2026-08-05-M: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 4 new, 1 updated, 0 held") as the build-health signal.
