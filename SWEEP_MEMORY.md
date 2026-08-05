@@ -93,85 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Task 13 registry fill crawl (2026-07-05)
-
-- 2026-07-05-K: Launch Library API versioning. 2.2.0 `/launches/` list
-  endpoints return 404; use 2.3.0 for launch lists. 2.2.0
-  `/config/launcher/` pages still resolve. Unauthenticated rate limit is
-  ~15 req/hr, so fetch bulk snapshots once and work from the saved file
-  instead of per-entity calls.
-- 2026-07-05-L: Launch Library location records carry an `active: true`
-  database boolean. It is NOT a stated operational status; never publish
-  it as a status value.
-- 2026-07-05-M: Collector agents repeatedly inferred `country` from city
-  names or office addresses. A country field needs the country name
-  literally stated on the cited page.
-- 2026-07-05-N: Collector agents sometimes fabricate plausible quotes
-  (caught on astroscale, unseenlabs, starlink, and JAXA pages, plus an
-  invented full date for Uchinoura's 1970 launch against a year-only
-  source). Adversarial re-fetch verification against every cited source
-  is mandatory before publishing crawled facts.
-- 2026-07-05-O: Unreachable-from-fetcher sites this run: fcc.gov
-  (timeouts, even via curl), Space Force *.spaceforce.mil (403),
-  rocketlabusa.com (403), orbex.space (502), he360.com, ghgsat.com,
-  starlink.com (JS app). unoosa.org needs a browser user agent via curl.
-- 2026-07-05-P: Redirects and rebrands: maxar.com redirects to
-  vantor.com (Vantor rebrand); oneweb.net redirects to eutelsat.com;
-  Amazon now calls Kuiper "Amazon Leo" on official pages.
-
-## Filtered-source sweep, 08:58-18:07 UTC window (2026-07-05)
-
-- 2026-07-05-Q: Scope judgment call: excluded a SpaceNews report on ESA
-  authorizing Airbus to begin Aeolus-2 wind-lidar satellite development
-  (EUR51M initial phase, 2034 target launch). It satisfies the letter of
-  "government procurement of commercial space services" and Airbus is a
-  tracked source, but it reads as legacy institutional weather-science
-  procurement via a heritage prime, not a new-space-economy event in the
-  spirit of the site (contrast with the Portugal/Norway ICEYE deals,
-  which are agile-constellation operators winning sovereign contracts).
-  Flag for Florian if that read is wrong; if it recurs, worth an explicit
-  scope note for ESA/Eumetsat Earth-science procurement via legacy primes.
-- 2026-07-05-R: SEC EDGAR atom feeds need a real contact-style
-  User-Agent ("VesperioMCC-Sweep contact@vesperio.ai"); a bare product
-  token without contact info (e.g. just "VesperioMCC-Sweep/1.0") still
-  gets a 403 "Undeclared Automated Tool" page even though it looks like
-  a User-Agent is set.
-- 2026-07-05-S: A short, narrow re-check window (same-day, ~9 hours
-  since the last sweep) against a small filtered source list is a
-  legitimate sweep shape distinct from the 30-day backfill runs earlier
-  today; all 12 named sources came back unchanged from the prior run
-  except one fresh SpaceNews story, and zero items shipped. A quiet
-  sweep with a documented scope call is a valid outcome, not a gap in
-  coverage.
-
-## Deep registry crawl (2026-07-05, second session)
-
-- 2026-07-05-Q: WebFetch returns summarized page text; "verbatim" quotes
-  drawn from it can be paraphrase. Verification must re-check against the
-  live page, and collectors must not trust the summarizer's wording for
-  quote fields (this systematically broke Sentinel operator quotes).
-- 2026-07-05-R: More collector traps that recur: byline-relative dates
-  ("yesterday", "today") are not calendar dates; press-release publication
-  dates are not always the event date; state-media pages often state only
-  a weekday, day precision needs the dateline to corroborate; "optical"
-  must not be asserted when a page only says panchromatic/multispectral;
-  " (per [outlet])" belongs only on true trade-press citations, not a
-  company's own release.
-- 2026-07-05-S: Fetchable-outlet map for this network: Payload, Via
-  Satellite, The Register, TechCrunch (mostly), Reuters (sometimes),
-  IonQ/Amazon newsrooms, telesat.com, capellaspace.com, astroscale.com,
-  isaraerospace.com, rfa.space, stokespace.com, fireflyspace.com load;
-  blueorigin.com 429s; rocketlabusa/corp.com, spaceforce.mil, SEC EDGAR,
-  fcc.gov, pib.gov.in 403/timeout; spacenews.com 429s under load;
-  businesswire times out; ghgsat.com/he360.com/oqtec unreachable.
-- 2026-07-05-T: Launch Library /2.3.0/agencies/ records (founding_year,
-  description, country, info_url) are an eligible structured-data source
-  that fills org fields when corporate sites block fetchers; featured=true
-  returns the majors in one request.
-- 2026-07-05-U: Concurrency: ~25 simultaneous agents triggered server-side
-  API rate limiting that killed nearly a whole fan-out. Keep waves at 3-5
-  agents; forbid sub-agent spawning in collector prompts explicitly.
-
 ## Timeline batch, fleet/IoT constellations (2026-07-06)
 
 - 2026-07-06-A: Verifier gap: adversarial verifiers checked facts, dates,
@@ -4256,3 +4177,63 @@ a newer entry if a lesson changes.
   the standing pattern since 2026-07-11-B; relied on
   `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 3 updated,
   1 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-05)
+
+- 2026-08-05-A: A company's own quarterly earnings release (SpaceX's Q2 2026
+  results, its first as a public company) is a rich source of never-covered
+  gaps: business-highlight bullet points named an already-approved but
+  never-drafted FCC spectrum deal (SpaceX/EchoStar, approved May 12) and
+  restated Starshield contract totals; chased the FCC approval as its own
+  item dated to the actual May 12 approval date, per the standing
+  predates-window ruling. Flag for a future sweep: the ~$2.29B SDA "SDN
+  Backbone" and ~$4.16B SB-AMTI task orders to SpaceX (both May 2026,
+  summing to the "over $6 billion" Starshield figure in the earnings
+  release) are ALSO never covered under any id and are each independently
+  major/seismic-scale; not chased this run for time, still open.
+- 2026-08-05-B: SpaceX's own earnings PDF is hosted at
+  `s21.q4cdn.com/184289198/files/...`, a Q4-IR CDN domain that does NOT
+  match the registry's `spacex.com` website value (not a subdomain, unlike
+  the `ir.spacex.com`/`investors.planet.com`-style apex-matching cases) --
+  classing it `first_party` would fail the anti-spoof gate. `ir.spacex.com`
+  itself is a pure JS shell to WebFetch (no press-release listing content
+  loads), so there was no first-party-eligible URL to lead with for any
+  earnings-derived story this run; led each with the strongest independent
+  trade coverage instead (Fierce Network, SpaceNews, Telecompetitor) and
+  did not force the PDF into scoring.sources.
+- 2026-08-05-C: The same-company-plus-category dedup heuristic fired
+  against a MULTI-VENDOR IDIQ vehicle, a new shape: Rocket Lab's new
+  $397M SB-AMTI satellite task order (category procurement) matched the
+  existing 2026-07-31 NITE-STAR item purely because Rocket Lab is one of
+  15 listed vendors on that $981M training-infrastructure IDIQ vehicle,
+  four days earlier, same category -- despite NITE-STAR naming no
+  Rocket-Lab-specific task order at all. Cleared with one
+  `dedup_distinct` entry; worth expecting this shape (a company merely
+  named among many IDIQ/vendor-pool awardees) to keep tripping the
+  heuristic against that company's own later, unrelated contract news.
+- 2026-08-05-D: Confirms the 2026-07-24-F/2026-08-04-E lesson on a new
+  field: `sats_planned` is not a monotonic-counter field, so crossfeeding
+  Telesat Lightspeed's fleet expansion (156 -> 225, per Telesat's own Aug 4
+  release) against the registry's stale 198 snapshot is attested
+  `same_metric: true` honestly and left for the gate to resolve (likely a
+  refresh candidate or a queued tie), not fudged to `false` to avoid the
+  dispute path.
+- 2026-08-05-E: `updates[].rescore` requires the item's `source_url` to be
+  patched to the new lead URL in the SAME update object
+  (`patch.source_url`) before `rescore.sources[0].url` can match it;
+  submitting a rescore with a new lead source but no matching
+  `patch.source_url` is a flat rejection on both the Telesat and the
+  SpaceX Starlink Mobile updates this run, fixed by adding
+  `patch.source_url` explicitly matching the rescore's first source.
+- 2026-08-05-F: bloomberg.com, pcmag.com, and businessinsider.com all
+  refused WebFetch this session (403 or flat "unable to fetch"),
+  continuing the standing per-session domain-blocklist pattern
+  (2026-07-17-H and peers); fierce-network.com and broadbandbreakfast.com
+  both fetched cleanly and gave genuinely distinct quotes from the same
+  SpaceX earnings call, enough for a clean two-source trade-tier rescore
+  without needing the blocked mainstream outlets.
+- 2026-08-05-G: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 5 new, 2 updated, 0 held") as the
+  build-health signal.
