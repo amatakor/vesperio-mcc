@@ -4295,3 +4295,32 @@ a newer entry if a lesson changes.
   session's permission gate, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 4 new, 1 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-05, third)
+
+- 2026-08-05-N: A single satellite pair can carry TWO completely different
+  public names at once: Xinhua's same-day "Smart Dragon-3 launches 2
+  satellites" story named the payloads STAR.VISION's own constellation
+  designations, "Oriental Smart Eye 01/02," while the already-published
+  item (drafted from Gazeta.uz/Kompas) named the identical pair by their
+  sovereign-customer names, "Lampung-1" (Indonesia) and "Samarkand-2028"
+  (Uzbekistan) -- same rocket, same date, same sea-platform site off
+  Shandong, same count (2), same sensor class (hyperspectral). A
+  same-day CASC/Xinhua queue hit naming a Chinese commercial launch needs
+  a body-content match (rocket + site + date + payload count/class)
+  against existing[], not just a payload-name grep, before drafting it
+  as new; this one was caught and folded into the existing item via
+  `updates[].attach`, adding Xinhua's technical specs (mass, band count,
+  resolution, swath, onboard AI compute, the 258-satellite build-out
+  plan) that neither original source had stated.
+- 2026-08-05-O: Extends 2026-07-07-K/2026-07-31-I: a genuinely fetched
+  company press release from a domain with no `src/data/registry` entry
+  (LiveEO, a German EO-analytics startup) and no fetchable independent
+  trade pickup this run (its only other coverage, SpaceWatch.Global,
+  403'd) has no gate-safe lead to substitute -- classed the company's
+  own page `informal` rather than force `first_party` or hold it; the
+  item merged clean at the honest SNR-1 floor. Unlike the 2026-07-15-F
+  ispace case (held for lack of any workaround), this run treated
+  informal-classing a no-registry company's own page as an accepted
+  mechanical path for a NEW item too, not just the update-only path
+  2026-07-31-I documented for Katalyst Space.
