@@ -33,7 +33,17 @@
   "sats_active_claimed": {
     "value": 44,
     "source": "https://en.wikipedia.org/wiki/List_of_BeiDou_satellites",
-    "as_of": "2026-07-13"
+    "as_of": "2026-07-13",
+    "disputed": {
+      "competing": [
+        {
+          "value": 50,
+          "source": "https://english.news.cn/20260731/d3fa5fd1f424477d85a5584e1a438d30/c.html",
+          "as_of": "2026-08-06",
+          "snr": 3
+        }
+      ]
+    }
   },
   "sats_active_verified": {
     "value": null,
@@ -90,7 +100,7 @@
     "source": "https://en.wikipedia.org/wiki/BeiDou",
     "as_of": "2026-07-13"
   },
-  "notes": "Added 2026-07-13 on Florian's instruction, for competitive context against commercial connectivity/IoT constellations. Government-owned system: orbits deliberately set to null (mixed MEO/IGSO/GEO would break the MCC 3D LEO view) and no celestrak fields filled. The official constellation status source named in the task (csno-tarc.cn) returned a TLS hostname mismatch and en.beidou.gov.cn refused the connection outright; both were unfetchable as anticipated, so all facts are sourced to Wikipedia (unscored) instead. Wikipedia's List of BeiDou satellites infobox itself is dated 'as of December 2023' for its launch totals; that is the most recent figure the fetched page states, so more recent 2024-2026 launches may not be reflected in sats_launched_total/sats_active_claimed/latest_launch_date. Weekly maintenance 2026-07-13: the page's launch table lists a more recent row, BeiDou-3 M27 on 2024-09-19, so latest_launch_date was upgraded to that date. sats_launched_total/sats_active_claimed were left at 62/44: two separate fetch passes of the same page returned inconsistent total-row counts (62 vs 60), so no reliable refreshed total could be confirmed this run; the discrepancy is noted here rather than guessed at.",
+  "notes": "Added 2026-07-13 on Florian's instruction, for competitive context against commercial connectivity/IoT constellations. Government-owned system: orbits deliberately set to null (mixed MEO/IGSO/GEO would break the MCC 3D LEO view) and no celestrak fields filled. The official constellation status source named in the task (csno-tarc.cn) returned a TLS hostname mismatch and en.beidou.gov.cn refused the connection outright; both were unfetchable as anticipated, so all facts are sourced to Wikipedia (unscored) instead. Wikipedia's List of BeiDou satellites infobox itself is dated 'as of December 2023' for its launch totals; that is the most recent figure the fetched page states, so more recent 2024-2026 launches may not be reflected in sats_launched_total/sats_active_claimed/latest_launch_date. Weekly maintenance 2026-07-13: the page's launch table lists a more recent row, BeiDou-3 M27 on 2024-09-19, so latest_launch_date was upgraded to that date. sats_launched_total/sats_active_claimed were left at 62/44: two separate fetch passes of the same page returned inconsistent total-row counts (62 vs 60), so no reliable refreshed total could be confirmed this run; the discrepancy is noted here rather than guessed at. Weekly maintenance 2026-08-06: crossfeed queue candidate from the 2026-08-01 CSNO/Xinhua in-orbit-upgrade item claimed 50 currently-active satellites (state media fact of record, item snr 3 trade-tier at fetch time). reconcile() scored this downgrade_incoming (the Wikipedia figure counts as unscored/canonical-equivalent and outranks the trade-tier news claim), so the stored value stays 44 and the Xinhua claim is recorded as a competing claim under sats_active_claimed.disputed rather than overwriting. Queued for Florian: the two figures may reflect a genuine growth in active satellites since the Wikipedia snapshot rather than a real contradiction, but that read is his call, not an automatic overwrite.",
   "generations": [
     {
       "name": "BeiDou-1",

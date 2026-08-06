@@ -42,7 +42,17 @@
   "sats_planned": {
     "value": 198,
     "source": "https://www.telesat.com/press/press-releases/telesat-and-mda-space-complete-key-milestone-for-telesat-lightspeed-constellation/",
-    "as_of": "2026-07-05"
+    "as_of": "2026-07-05",
+    "disputed": {
+      "competing": [
+        {
+          "value": 225,
+          "source": "https://www.telesat.com/press/press-releases/telesat-secures-2-3-billion-arctic-military-satcom-contract-expanding-telesat-lightspeed-network-and-capacity-by-44/",
+          "as_of": "2026-08-06",
+          "snr": 5
+        }
+      ]
+    }
   },
   "orbit": {
     "value": "Low Earth Orbit (LEO)",
@@ -69,7 +79,7 @@
     "source": "https://www.telesat.com/leo-satellites/",
     "as_of": "2026-07-05"
   },
-  "notes": "Telesat's Lightspeed page describes services only; constellation figures not stated on the fetched page.",
+  "notes": "Telesat's Lightspeed page describes services only; constellation figures not stated on the fetched page. Weekly maintenance 2026-08-06: crossfeed queue candidate from the 2026-08-04 Telesat/MDA Arctic contract item states the funded constellation grew from 156 to 225 satellites (first-party Telesat press release, both this claim and the stored 198 are first-party Telesat statements, so reconcile() scored it both_disputed_queue rather than an automatic upgrade). Stored value stays 198; the 225 figure is recorded as a competing claim under sats_planned.disputed. Queued for Florian: this reads like a straightforward newer-supersedes-older press release (225 is stated as the total after adding 69 satellites to a base of 156, not 198), so the two press releases may not actually agree on the starting count either; worth his read rather than a silent overwrite.",
   "events": [
     {
       "date": "2023-08-11",
