@@ -3916,3 +3916,40 @@ a newer entry if a lesson changes.
   standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
   merge confirmation ("merged 10 new, 0 updated, 0 held") as the
   build-health signal.
+
+## Narrow same-day re-check, ~4.5hr gap, unfiltered full source list (2026-08-07, second)
+
+- 2026-08-07-E: Chased two important predating-window stories the queue
+  had never surfaced (2026-07-08-I2 pattern); only one turned out to be
+  genuinely new. SpaceX's Falcon 9/Transporter rideshare-booking freeze
+  past late 2028 (first solidly reported by SpaceNews June 25, later
+  confirmed by SatNews, Bloomberg, and a fresh Aug 6 SpaceQ Media
+  Canada-market follow-up that was the actual signals-pass entry point)
+  had never been drafted under any id and shipped clean at SNR 4 with 5
+  sources. But Rocket Lab's "$266M Kodiak Alaska Space Force contract"
+  turned out to be an exact duplicate of the already-published
+  2026-07-21-rocket-lab-haste-alaska-contract (same figure, two of the
+  same corroboration sources already attached) -- caught by finalize-
+  sweep's same-company+category dedup gate, not by my own pre-draft
+  check. Always grep existing[] IDs for the actor + a distinguishing
+  noun (here "kodiak"/"haste"/"alaska") before treating a chased
+  predating-window story as definitely new, not just for exact-title
+  matches; the two headlines ("wins record $266 million Space Force
+  launch contract" vs. "wins $266 million Space Force contract for HASTE
+  launches") don't share a single word besides the dollar figure and
+  company. Recovered the wasted research by attaching a genuinely new
+  local-outlet source (Alaska Public Media, independent facts: dedicated
+  pad construction, ~140-acre site expansion) to the existing item via
+  updates[].attach instead.
+- 2026-08-07-F: The dedup false-positive pattern (2026-08-01-C and many
+  peers) fired again on the rideshare-freeze item against two wholly
+  unrelated SpaceX `launch`-category items (an NRO mission, a Starfall
+  reentry demo) purely on shared company + category + <7-day window from
+  its June 25 dated-to-actual-event publish date. Two `dedup_distinct`
+  entries cleared it in one pass, confirming the heuristic fires just as
+  readily on a backfilled/predating-window item's assigned date as on a
+  same-day one.
+- 2026-08-07-G: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 1 updated, 0 held") as the build-health signal.
