@@ -3789,3 +3789,33 @@ a newer entry if a lesson changes.
   the standing pattern since 2026-07-11-B; relied on
   `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
   updated, 1 held") as the build-health signal.
+
+## Narrow same-day re-check, ~11h48m gap, unfiltered full source list (2026-08-08, second)
+
+- 2026-08-08-H: A regulator's own bureau-chief transition (FCC Space
+  Bureau's Jay Schwarz retiring, deputy Jennifer Gilsenan named acting
+  chief, Aug 7) is a genuinely different shape from the standing
+  "routine executive hires stay below the inclusion bar" rule, which is
+  about company hires: this is leadership continuity at the specific
+  office that licenses every commercial satellite operator and had just
+  pushed through the licensing overhaul. Drafted as `notable`/
+  `regulatory` rather than discarded. Only fetchable lead was SpaceNews;
+  a same-headline "Communications Today" mirror 403'd and reads like a
+  syndicated rewrite (identical title), so it was left uncited rather
+  than force-counted as independent corroboration -- crawl scored
+  `found_none` honestly, landing the item at a low but honest SNR.
+- 2026-08-08-I: An ongoing, multi-day operational thread (SpaceX towing
+  the intact Starship Ship 40 back from its July 24 Indian Ocean
+  splashdown, now possibly lost in worsening seas per Musk's August 7
+  "not looking good right now" post) patched into the existing Flight 13
+  item via `updates[]` rather than a new item, even though the original
+  splashdown is 2+ weeks stale: same underlying event thread (the 2026-
+  08-03-L VICTUS HAZE precedent). space.com's article body was paywalled/
+  truncated on fetch and nasaspaceflight.com 403'd; TeslaNorth (trade)
+  carried the same Musk quote cleanly and was used as the attach source
+  instead.
+- 2026-08-08-J: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") as the build-health signal.
