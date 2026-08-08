@@ -93,152 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, 14-source filtered list, ~3.4hr window (2026-07-08)
-
-- 2026-07-08-A: A second new-actor-not-in-registry case (confirms
-  2026-07-07-K, this time on the D-Orbit side of a two-party deal):
-  ArkEdge Space's own July 8 press release
-  (arkedgespace.com/en/news/2026-07-08_d-orbit) confirms and adds detail
-  to SpaceNews's D-Orbit/ArkEdge ION-carrier launch contract story, but
-  ArkEdge has no registry profile, so `loadRegistryHosts` has nothing to
-  match `arkedgespace.com` against and classing it `first_party` would
-  hard-reject the draft even though it's genuinely the concerned party's
-  own domain. Followed the 2026-07-07-K pattern exactly: led with
-  SpaceNews (trade, gate-safe), linked ArkEdge's release in
-  `secondary_urls` (unscored but honest), and set `crawl: "found_some"`
-  since real independent confirmation was found and linked, distinct
-  from `found_none`. D-Orbit itself IS in the registry
-  (`dorbit.website` = dorbit.space) but that's irrelevant here since the
-  candidate first-party URL is ArkEdge's domain, not D-Orbit's -- the
-  gate matches per-URL host, not per-item "is either party registered."
-- 2026-07-08-B: Confirms 2026-07-06-GG's dating convention on a second
-  case: SpaceNews's July 8 writeup of Skyroot's Vikram-1 launch window
-  was itself new discovery today (first time any run's source list
-  carried it), but the underlying announcement was made July 2 and
-  independently wire-reported by PTI the same day (picked up verbatim
-  by theprint.in, business-standard.com, and several other Indian
-  outlets -- all one source under the wire-rewrite rule). Dated the
-  item to the July 2 announcement date, not the July 8 SpaceNews publish
-  date, and attached the PTI/ThePrint copy as a second, genuinely
-  independent `mainstream`-class source for corroboration (SpaceNews's
-  piece carried fresh, un-wired CEO/SVP quotes not in the PTI text, so
-  it wasn't a pure rewrite of the same story).
-
-## Unrestricted full-source-list re-check, ~1h47m window (2026-07-08)
-
-- 2026-07-08-C: The harvester's `candidates.json` `window_start` can be
-  wider than the actual `lastSweep` gap (this run: window_start two
-  days back, but state.json's lastSweep was only ~1h47m prior) -- treat
-  `window_start` as an upper bound on the queue, not the true window;
-  filter candidates against the real `lastSweep` timestamp from
-  `sweep-context.ts`, not the harvester file's own stamp.
-  A 200 HTTP status is still not proof of usable content on a plain
-  fetch, confirmed on several previously-unverified HTML sources this
-  run: DLR (dlr.de/de/aktuelles/nachrichten) and Eutelsat
-  (eutelsat.com/media-press/media-centre) both returned 200 with only
-  empty client-rendered shell markup (no article text, same failure
-  mode as 2026-07-06-AA/H); ISRO (isro.gov.in/Press.html) returned 200
-  with real listing content but every date on the page was still 2025,
-  nothing from 2026, so it doesn't actually serve current data despite
-  being reachable; Xinhua's configured tech.htm path returned 200 with
-  only nav-category links, no headlines. None of these were flipped to
-  verified on the strength of a 200 alone. Conversely, Gunter's Space
-  Page, NextSpaceflight, and Vast News (vastspace.com/updates) all
-  returned 200 with genuine dated/titled content on first fetch this
-  run and were flipped unverified -> verified.
-- 2026-07-08-D: Bluesky posts are checkable without the bsky.app JS
-  shell: `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=5`
-  returns each account's recent posts with exact `createdAt` timestamps
-  via plain curl, no auth needed. Used this to clear all 9 Bluesky
-  signals channels (Langbroek, Henry, Farrar, Berger, Foust,
-  SpacePolicyOnline, Zak, A. Jones, Parsonson) in one pass each --
-  faster and more reliable than trying to render bsky.app itself.
-- 2026-07-08-E: A generic open-web discovery search can resurface old,
-  already-widely-covered news dressed as a fresh hit: WebSearch for
-  "satellite constellation contract announcement July 8 2026" surfaced
-  Rocket Lab's $816M SDA missile-tracking contract (actually announced
-  2025-12-19) and Amazon's $11.57B Globalstar acquisition (actually
-  announced 2026-04-14) with no date qualifier distinguishing them from
-  today. Always open the actual article and check its dateline before
-  treating a search hit as this window's news, especially for
-  headline-shaped "big number" stories that read as evergreen.
-
-## Deep sweep, ~3h43m gap, escalated mode "deep" (2026-07-08)
-
-- 2026-07-08-F: A general-purpose research agent (no web access, reading
-  only candidates.json) is an effective way to triage a ~5,000-line
-  harvester queue dominated by SpaceX stock/IPO clickbait: it produced a
-  clean story-level shortlist in one pass. But it only had a partial
-  "already known to MCC" list (the first ~200 lines of sweep-context
-  output), so several of its "new" candidates (Simera Sense, Orbit Fab,
-  Isar/Nova-Scotia, RFA ONE window, Apolink, the Rocket Lab rideshare-panic
-  piece, NASA CSDA, Wolfgang Schmidt) turned out to already be published
-  under different slugs. Always cross-check a shortlisting agent's output
-  against the FULL existing[] id list (`grep -o '"id": "[^"]*"'` on
-  sweep-context.ts output) before drafting, not just the subset quoted in
-  its prompt.
-- 2026-07-08-G: SpaceX's July FCC filing for a 100,000-satellite Gen3
-  Starlink shell (docket SAT-LOA-20260630-00264) had, as of this sweep,
-  no coverage at all from SpaceNews, Payload, or Via Satellite (checked
-  Via Satellite's own July connectivity archive directly: not there) --
-  only secondary tech/finance blogs (Converge Digest, TradingKey,
-  NextBigFuture, wccftech, basenor) had it, all independently citing the
-  same filing number and specs. Published anyway at informal-tier per
-  CLAUDE.md's "early signal at low SNR is the model working," rather than
-  holding for weak sourcing (hard rule: weak sourcing is never a hold
-  reason). The FCC's own ICFS portal (fccprod.servicenowservices.com/icfs)
-  is a JS shell to plain fetch, same failure mode as SAM.gov/esa-star;
-  not usable as a direct check even with the exact filing number in hand.
-- 2026-07-08-H: A scope judgment call, first time this exact shape came
-  up: NATO's "HALO" hybrid-satellite-constellation announcement (8 allies,
-  NATO Summit Defence Industry Forum) is institutions networking their
-  OWN sovereign military satellites, with explicitly zero commercial
-  vendor named in either source checked (Via Satellite said so directly).
-  Held rather than published, following the 2026-07-06 Italy IRIDE
-  precedent: a government/institutional space program without a stated
-  commercial-operator angle is a scope question even when it's clearly
-  newsworthy and multi-sourced.
-- 2026-07-08-I: One registry crossfeed nuance worth remembering: a new
-  satellite GENERATION launching (Unseenlabs' first Gen 2 satellite,
-  BRO-31) is not a same-metric update to an existing `sats_active_claimed`
-  count when the company hasn't itself restated a new total including it
-  -- crossfeed facts stayed empty with a note rather than inventing an
-  incremented count. Similarly, a brand-new FCC filing proposing a
-  separate future satellite shell (SpaceX Gen3, 100,000 sats) against an
-  existing `sats_planned` registry value (Starlink's current 29,988) is
-  `same_metric: false`, not a contradiction -- it's a distinct, unadjudicated
-  proposal, not a restatement of the authorized total.
-- 2026-07-08-J: YouTube RSS feeds (`youtube.com/feeds/videos.xml?channel_id=...`)
-  have a channel-level `<published>` tag (the channel's creation date, often
-  10+ years old) BEFORE the first `<entry>`; a naive `grep -o '<published>...'`
-  grabs that stale date instead of the latest video's. Grep for `<entry>`
-  blocks or just read enough of the file to reach the first per-video
-  `<published>` tag (appears after each video's own `<title>`).
-- 2026-07-08-K: The Bluesky public API's `getAuthorFeed` response embeds
-  MULTIPLE `createdAt` timestamps per feed item (the post's own, plus any
-  quoted/embedded post's, in unpredictable order), so a flat
-  `grep -o '"createdAt":"[^"]*"'` over raw JSON does not reliably surface
-  the top post's actual timestamp -- it can return an embedded quote's much
-  older date first. Treat grep-scraped Bluesky timestamps as indicative,
-  not authoritative, for accounts with reposts/quote-posts; a proper JSON
-  parse (or reading the feed via a script) would be needed to get this
-  right mechanically.
-- 2026-07-08-L: Confirms 2026-07-06-V's lesson on a new pair of sources:
-  Pixxel's configured source URL (pixxel.space/newsroom) and ULA's
-  (newsroom.ulalaunch.com) were BOTH already correct in sources.json --
-  my own guessed alternate paths (/updates, /about/news) 404'd or hit the
-  frozen archive. Always fetch the exact URL stored in sources.json first
-  before concluding a source needs a path fix; don't guess a plausible
-  path and treat a wrong guess as evidence of a source problem.
-
-## Deep-sweep corrections (2026-07-08)
-
-- 2026-07-08-A: Corroboration crawls MUST include the exact headline as
-  a quoted search phrase. The NSSL Lane 1 item shipped with found_none
-  (SNR 2) while Inside Defense and Aviation Week both covered the story
-  and a quoted-title Google search surfaced them instantly; Florian
-  caught it from a screenshot. found_none is a claim a reader can
-  falsify in 20 seconds; earn it. Also: check candidates.json for the
 ## Narrow same-day re-check, ~13hr gap (2026-07-10)
 
 - 2026-07-10-A: Scope judgment call: excluded Venus Aerospace's $91M
@@ -301,128 +155,6 @@ a newer entry if a lesson changes.
   sources list, and SNR trace. 38 published headlines were migrated
   clean (scripts/migrations/2026-07-08-headline-attribution.ts) and the
   prompt + CLAUDE.md now say so explicitly.
-
-## 30-day backfill run (2026-07-08, interactive, BACKFILL_PLAN.md)
-
-- 2026-07-08-C2: Google News RSS redirect URLs (news.google.com/rss/articles/...)
-  no longer resolve server-side at all (JS batchexecute interstitial; curl -sIL
-  returns the same URL). Re-locate the publisher URL via WebSearch or direct
-  fetch; never cite the redirect. scripts/backfill-harvest.ts scopes the query
-  feeds with after:/before: operators for windowed harvests.
-- 2026-07-08-D2: Cloudflare-blocked this run: investors.planet.com,
-  ir.blacksky.com (blacksky.com worked), spacewatch.global, yourstory.com,
-  ir.spacex.com, raksha-anirveda article pages, news9live (nav shell).
-  Worked cleanly: iceye.com/newsroom/press-releases (not /press), space42.ai
-  /en/press-release/..., dhruvaspace.com, spacebel.com (needs -k, self-signed
-  TLS), remondo.com, neworbit.space (text inside Next.js hydration JSON),
-  fireflyspace.com, synspective.com, axelspace.com, zdnet.co.kr, thelec.net.
-- 2026-07-08-E2: A backfilled old event does NOT earn the persistence bump at
-  merge: the clock starts at publishDate by design (SNR_PLAN A1), whatever the
-  event date. Expect no immediate movements from backfills.
-- 2026-07-08-F2: Non-US government domains (canada.ca, asc-csa.gc.ca,
-  inspace.gov.in) cannot pass the anti-spoof gate as official_record (not .gov,
-  not in the fixed list, no registry profile). Lead with gate-safe trade and
-  link the government page unscored, per the 2026-07-07-K pattern.
-- 2026-07-08-G2: Scope ruling (Florian): government-owned and sovereign
-  constellation programs (IRIDE) are IN scope; publish the program fact with
-  the commercial read. Supersedes the 2026-07-05-Q institutional-program
-  exclusion for constellation programs (science-only missions stay out).
-  The IRIDE held entry carries decision.verdict=publish; the next sweep
-  drafts it per prompts/update-items.md step 7.
-- 2026-07-08-H2: Ruling (Florian): substantive on-scope posts/videos from
-  whitelisted signals channels (Bluesky, YouTube, sites) publish as commentary
-  items by default; do not hold them to a news-event bar. Video items draft
-  from title+description only, never asserted video content.
-- 2026-07-08-I2: Ruling (Florian): an important (notable/seismic) event that
-  discovery surfaces but whose date predates the sweep window is chased and
-  published on its actual event date, not dropped as stale. FIRST APPLICATION,
-  standing task for the next sweep: the Airbus/Thales/Leonardo "Project Bromo"
-  space merger and OHB's antitrust opposition have never been covered; chase
-  the announcement and the opposition as dateable events.
-- 2026-07-08-J2: found_none batch audit (deferred in BACKFILL_PLAN.md) ran;
-  full evidence in reports/found-none-audit-2026-07-08.md. Stamps STAND for
-  axelspace-nsg-up42 and inspace-lvm3. STANDING TASK for the next sweep,
-  verify-then-rescore per 2026-07-08-A: (1) fetch the FODNews Zhuque-2E page
-  named in the report; if it independently cites the Space-Track fragmentation
-  advisory and named analysts (McKnight/LeoLabs, Jim Shell), rescore
-  2026-06-15-zhuque-2e-upper-stage-breakup found_none to found_some via
-  updates[].rescore with the source attached. (2) fetch the Investing.com
-  Redwire ATM piece named in the report; if independent, correct
-  2026-06-09-redwire-500m-atm corroboration to found_some (no score change
-  expected). Remove this task by completing it; log both movements.
-
-## Narrow same-day re-check, unfiltered full source list, ~4h38m window (2026-07-08)
-
-- 2026-07-08-M: TASK 2026-07-08-J2 COMPLETE. Fetched FODNews's Zhuque-2E page:
-  independently cites the Space-Track.org advisory and secures its own named
-  McKnight/Jim Shell quotes (not a rewrite of Ars Technica); rescored
-  2026-06-15-zhuque-2e-upper-stage-breakup found_none -> found_some, SNR 2 -> 4.
-  Fetched the Investing.com Redwire ATM piece: confirmed NOT independent (the
-  page's own footer says "generated with the support of AI" from the filing
-  text, no original reporting) -- left 2026-06-09-redwire-500m-atm unchanged,
-  matching the "no score change expected" prediction. Both halves of the
-  standing task are now closed; remove if it resurfaces in a stale copy of
-  this file.
-- 2026-07-08-N: WebFetch flatly refuses arstechnica.com this run ("Claude Code
-  is unable to fetch from arstechnica.com" -- a tool-level block, not a site
-  fetch failure/403/timeout). The harvester's candidates.json raw_excerpt for
-  the same URL was substantial and verbatim (City Labs BOHR orbit-altitude and
-  payload-count detail came from it), and per prompts/update-items.md the
-  queue's raw_excerpt is a legitimate source text on its own; used it directly
-  as the corroboration source without a second fetch attempt. Worth knowing
-  before burning a WebFetch retry on this domain again.
-- 2026-07-08-O: Bluesky public API field path, precise this time (supersedes
-  the grep-based approach in 2026-07-08-K for single-post checks): each feed
-  item is `.feed[].post.record.{createdAt,text}`, NOT `.feed[].post.{...}`
-  (the top-level `post` object has no `text`/`createdAt` of its own; those
-  live one level down in `record`). `jq -c '.feed[].post.record | {createdAt,
-  text}'` on `getAuthorFeed?actor=<handle>&limit=5` gives clean, reliable
-  per-post timestamps -- no quote-embed ambiguity for a plain author-feed
-  read (that ambiguity was specific to grepping raw JSON, not to the API
-  itself). Cleared 9 signals Bluesky accounts this way in one pass each.
-- 2026-07-08-P: A whitelisted signals person's Bluesky post about a THIRD
-  PARTY's news (Andrew Parsonson posting that Loft Orbital awarded MaiaSpace a
-  launch contract, with no accompanying article fetchable this run --
-  europeanspaceflight.com 403'd on every path tried, and the story was too
-  fresh for search indexing) is still draftable as a full event item on the
-  post's text alone: class whitelist, scoring.whitelist "observer", crawl
-  found_none is honest and costs nothing net because whitelist_floor applies
-  last and lifts to 4 regardless of the corroboration_none -1 (confirmed live:
-  base would-be 1 (informal, no direct source) - 1 (found_none) + 2
-  (whitelist_floor lift to 4) = 4). Don't skip a whitelisted signal just
-  because the linked article isn't independently fetchable this run.
-- 2026-07-08-Q: Non-US government press-office domains keep failing the
-  anti-spoof gate as official_record, confirmed on a new one: pm.gc.ca (Office
-  of the Prime Minister of Canada) independently confirmed Telesat's Arctic
-  ESCP-P announcement in a same-day release, but is neither a .gov host nor in
-  FIXED_OFFICIAL_HOSTS nor a registry-recorded website. Same handling as the
-  2026-07-08-F2 canada.ca/asc-csa.gc.ca/inspace.gov.in cases: led with
-  Telesat's own first_party release, linked pm.gc.ca unscored in
-  secondary_urls, and still credited crawl: "found_some" since genuine
-  independent confirmation was found and linked (2026-07-07-K pattern).
-- 2026-07-08-R: Two new trade-class sources worth remembering for
-  connectivity/launch-regulatory stories: Fierce Network (fierce-network.com,
-  established telecom trade press, ran original analyst commentary on
-  SpaceX's Gen3 FCC filing, not a rewrite) and SatNews (satnews.com,
-  long-running satellite-industry trade outlet, cross-links its own prior
-  coverage). Using Fierce Network as the new lead upgraded
-  2026-06-30-spacex-gen3-fcc-filing from informal-tier (SNR 2) to trade-tier
-  (SNR 4) via the rescore/upgrade path -- worth checking these two before
-  accepting an informal-blog-only sourcing situation as final on a filing
-  story. FODNews (fodnews.com) is the equivalent for orbital-debris/reentry
-  stories (see 2026-07-08-M).
-- 2026-07-08-S: A held entry with decision.verdict "publish" is not
-  automatically dated to its held-candidate date: IRIDE's candidate.date was
-  2026-07-06 (the article's publish date) but the article itself stated the
-  marketplace actually went live 2026-07-01; drafted and published dated
-  2026-07-01 per the 2026-07-06-GG event-date-over-publish-date convention,
-  reusing the id slug format YYYY-MM-DD-actor-slug with the corrected date.
-- 2026-07-08-K: Ruling (Florian): categorize by the transaction, not the
-  press-release framing. A contract/award win with a government buyer is
-  `procurement` even when the release reads as a product or capability
-  announcement (fixed: 2026-07-07-blacksky-gen3-ai-tactical-isr, was
-  `product`); a commercial buyer makes it `contract`. `product` is reserved
-  for product news with no transaction in the event.
 
 ## Full-source-list sweep, ~24h11m gap (2026-07-09)
 
@@ -3996,3 +3728,64 @@ a newer entry if a lesson changes.
   literally the company's release text, not a third party's writeup) but
   keep it below `first_party` (the domain is mynewsdesk.com, not the
   company's own, so it fails the anti-spoof domain check).
+
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-08)
+
+- 2026-08-08-A: fcc.gov, lightreading.com, mobileworldlive.com, and
+  convergedigest.com all 403'd on every attempt for the FCC's Aug 6 D2D
+  unlicensed-spectrum NPRM (a genuinely new, never-covered regulatory
+  item); fierce-network.com and broadbandbreakfast.com both fetched
+  cleanly and agreed on the vote outcome, dropped 900 MHz band, and
+  quotes, giving a clean two-source trade-tier item (SNR 4) without any
+  fetchable official_record or first_party lead. Confirms the standing
+  fcc.gov/faa.gov government-domain-blocked pattern (2026-07-13-J and
+  peers) extends to this NPRM specifically.
+- 2026-08-08-B: A WebSearch-summary figure can describe the DRAFT version
+  of a not-yet-final rule rather than what was actually adopted: an early
+  search hit (insideglobaltech.com, dated July 22, pre-vote) stated three
+  spectrum bands (902-928 MHz included); the two Aug 6/7 sources covering
+  the actual vote agreed the adopted NPRM dropped the 900 MHz band,
+  leaving only ~200 MHz across two bands. Used the post-vote figure and
+  left the pre-vote source uncited rather than let an older draft's
+  numbers contradict the final item, even though both came from
+  otherwise-legitimate outlets.
+- 2026-08-08-C: A same-day WebFetch of Bluesky's own bsky.app profile
+  pages returned no post content (just the handle) for every account
+  tried; switching to the public API endpoint
+  (`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`)
+  worked cleanly for all of them and returned real posts with
+  `createdAt` timestamps and text. Use the API endpoint directly for the
+  signals pass's fetchable bluesky channels rather than the bsky.app
+  profile URL from signals-context's output.
+- 2026-08-08-D: A queue candidate's WebFetch (Aviation24.be, an
+  Aerospacelab-specific angle on the already-published Aug 6 IRIS2
+  expansion item) 403'd, and the WebSearch summary's programme-cost
+  figure (EUR13 billion) contradicted the already-published item's
+  sourced figure (EUR15.6 billion) -- left it uncited entirely rather
+  than attach a blocked source's paraphrased, conflicting number; the
+  already-published item's why_it_matters already names Aerospacelab
+  among the manufacturers, so nothing was lost.
+- 2026-08-08-E: Held a genuine scope-judgment case rather than silently
+  discarding or force-publishing it: ASI's board dissolving itself
+  (Aug 5) to trigger an extraordinary-commissioner appointment after
+  president Teodoro Valente's death (July 16) is a real, dateable,
+  well-sourced institutional story (European Spaceflight, confirmed by
+  Andrew Parsonson's Bluesky) about an agency that runs an in-scope
+  sovereign constellation (IRIDE), but the source states no direct
+  commercial-space consequence -- same shape as the NASA-STRIDE
+  (2026-07-09-C) and Aeolus-2/NATO-HALO institutional-disclosure
+  precedents. Queued for Florian rather than guessed either way.
+- 2026-08-08-F: A quiet gap where nearly everything the queue, HTML
+  source list, and signals pass surfaced was already published by the
+  prior two same-day sweeps (BlackSky Q2 results, Redwire SpaceMD/
+  Starfall, Rocket Lab's 8th iQPS launch via a Gunter's QPS-SAR 13 entry,
+  the IRIS2 expansion via SES's own Aug 7 release, CASC's Aug 5 Smart
+  Dragon-3 and Long March-8A items) -- confirms narrow-gap sweeps
+  following an active prior sweep will look "thin" by design, not by
+  under-coverage, once direct-fetch and signals legs are both checked
+  exhaustively.
+- 2026-08-08-G: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 1 held") as the build-health signal.
