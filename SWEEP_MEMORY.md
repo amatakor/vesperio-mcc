@@ -3801,3 +3801,52 @@ a newer entry if a lesson changes.
   session's permission gate, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 2 new, 0 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~11h48m gap, unfiltered full source list (2026-08-09, second)
+
+- 2026-08-09-E: `economictimes.indiatimes.com` and `business-standard.com`
+  both failed on every direct-URL WebFetch attempt this run (economictimes:
+  outright "unable to fetch" tool error, not just a 403; business-standard:
+  HTTP 403), and no independently fetchable outlet carrying the same story
+  (IN-SPACe's expression of interest to hand the Rs 986 crore
+  Kulasekarapattinam SLC over to a private operator) turned up via several
+  WebSearch variants -- every hit traced back to those same two blocked
+  domains or to secondary aggregator sites (vajiramandravi.com, iaspoint.com)
+  that only paraphrase them. Left undrafted rather than sourced from a
+  WebSearch summary; this is a source-access gap (no fetchable outlet exists
+  for this specific story), not a scope or schema question, so it does not
+  belong in `held`. Worth trying `inspace.gov.in` directly (a `.gov.in`
+  domain, first_party/official-record eligible) if this story resurfaces.
+- 2026-08-09-F: A Bluesky post (`mediauscosmos.bsky.social`) claiming an
+  "AusCosmos Dingo Sat Constellation Phase 1" (42 Ku-band satellites,
+  Australian sovereign broadband, "in five days") returned zero corroborating
+  results on a dedicated WebSearch -- no company, program, or prior coverage
+  findable anywhere. Treated as unverifiable rather than drafted; this queue
+  also carried several similarly unverifiable/fabricated-reading Bluesky
+  posts this run (SpaceX "robotic Moon factories" building AI satellites via
+  "electromagnetic railguns", Kreios Space "indefinite orbital lifespans")
+  that don't survive a basic fetch-the-primary-source check. Bot/informal
+  Bluesky search results this run skewed noticeably more toward invented-
+  sounding claims than in past sweeps; verify the underlying announcement
+  independently before drafting anything sourced only to one of these
+  accounts.
+- 2026-08-09-G: A near-total wash of the harvester queue (79 candidates,
+  filtered.junk empty): the large majority were SpaceX stock/earnings/IPO-
+  lockup speculation (Motley Fool, Yahoo Finance, Seeking Alpha, Benzinga
+  framing), Starlink launch-schedule chatter, and off-topic Futurism/BBC
+  items, confirming 2026-08-06-A/2026-08-07-third's pattern continues now
+  three-plus weeks post-IPO. Direct-fetch (14 HTML sources) and the signals
+  pass (13 of 17 fetchable channels, rotated to skip Marcia Smith's and
+  Anatoly Zak's duplicate bluesky legs and Andrew Parsonson's site instead of
+  his 403'ing substack) were both fully quiet. Only genuine value recovered:
+  Space.com's Aug 9 VLEO-thruster piece added a mainstream corroboration
+  source (with new CEO quotes) to the existing Aug 4 Kreios/NanoAvionics
+  item, landing a `mainstream_pickup` bump. Zero new items is the honest,
+  fully-checked result, not under-coverage.
+- 2026-08-09-H: `draft.coverage` must be populated with category values
+  (the same enum as `category`: `launch`, `constellation`, `contract`,
+  `procurement`, `regulatory`, `financial`, `product`, `partnership`,
+  `incident`, `geopolitical`, `human-spaceflight`, `science`), not domain
+  tags (`eo`, `connectivity`) -- finalize-sweep rejected `["eo",
+  "connectivity", ...]` outright on a zero-new-items, one-update draft;
+  fixed by setting it to the touched item's own category (`["partnership"]`).
