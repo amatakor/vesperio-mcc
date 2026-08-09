@@ -156,62 +156,6 @@ a newer entry if a lesson changes.
   clean (scripts/migrations/2026-07-08-headline-attribution.ts) and the
   prompt + CLAUDE.md now say so explicitly.
 
-## Full-source-list sweep, ~24h11m gap (2026-07-09)
-
-- 2026-07-09-A: `draft.coverage` must be drawn from CATEGORIES (launch,
-  constellation, contract, procurement, regulatory, financial, product,
-  partnership, incident, geopolitical, human-spaceflight), not from the tag
-  vocabulary; a coverage array containing a domain tag like "eo" is a flat
-  rejection ("not a known category"). Populate coverage from the categories
-  the drafted items actually used.
-- 2026-07-09-B: Two same-pattern-different-country corporate announcements
-  inside 7 days (ICEYE Germany entity+CEO on 07-08, ICEYE Portugal
-  entity+CEO on 07-09) trip the same-event dedup heuristic on shared
-  company + category alone; finalize-sweep does not silently pass this
-  through as a genuinely distinct event even when the country, subsidiary
-  and named person are all different. Fix is mechanical: add a top-level
-  `dedup_distinct: [{ id, reason }]` on the newItems entry attesting why
-  it's not the same event, rather than routing it through `updates[]`.
-- 2026-07-09-C: A whitelisted signal's own claim can itself flag a genuine
-  scope question worth holding rather than drafting either way: Marcia
-  Smith's Bluesky post about NASA's STRIDE Mars robotic-mobility study
-  contracts (7 companies, ~$17M total) has a real commercial-provider
-  angle but reads as planetary-science procurement via small design-study
-  awards, closer to the 2026-07-05-Q Aeolus-2 precedent than to new-space
-  commercial-market activity; held with a clear reason rather than
-  published or silently discarded.
-- 2026-07-09-D: When two trade sources disagree on a technical sub-detail
-  of an otherwise-agreed contract (SpaceNews attributed Pulse Space's $40M
-  Space Force laser-power award to the Missile Defense Agency's SHIELD
-  IDIQ vehicle; SatNews described AFRL/STRATFI/OTA and the "Space Combat
-  Power" portfolio instead), the safer draft omits the disputed
-  programmatic detail from the copy and states only the facts both
-  sources agree on (company, amount, technology, date) rather than
-  picking one source's framing to assert as fact. Re-fetching the lead
-  source with a stricter "quote verbatim" prompt is worth doing before
-  concluding two sources actually conflict rather than one WebFetch
-  summary being loose.
-- 2026-07-09-E: A `sourceHealth` entry is legitimate for a source that
-  returns 200 with real content but the content is stale relative to the
-  run: ISRO's isro.gov.in/Press.html loaded cleanly this run but every
-  listed item was dated 2025 or earlier (confirms the 2026-07-08-C
-  pattern on a new source), logged as `unverified` rather than flipped
-  to `verified` on the strength of the 200 alone.
-- 2026-07-09-F: `europeanspaceflight.com` (site, article pages, and the
-  substack mirror) was 403 on every fetch path tried this run, including
-  a fresh curl with a descriptive browser User-Agent against the specific
-  article URL surfaced by a whitelisted signal's Bluesky post (Andrew
-  Parsonson linking an ArianeGroup Ariane-6 upper-stage engine story).
-  Rather than draft numeric claims (thrust figures, test durations) off a
-  WebSearch snippet summary of the blocked page, the candidate was
-  dropped this run; WebSearch prose is not a fetched source per the hard
-  rule against quoting numbers from a summary.
-- 2026-07-09-G: A forward-scheduled launch inside the discovery window
-  (Long March 10B's first-flight window opening 2026-07-10, the day
-  after this sweep) is not draftable as an event yet even though it
-  would likely be seismic (first flight of a new vehicle); it hasn't
-  happened. Left for the next sweep to pick up once it actually flies.
-
 ## Narrow same-day re-check, full source list, ~9h43m window (2026-07-10)
 
 - 2026-07-10-F: The same-company+category dedup heuristic (2026-07-09-B,
@@ -3819,3 +3763,41 @@ a newer entry if a lesson changes.
   the standing pattern since 2026-07-11-B; relied on
   `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
   updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~15h51m gap, unfiltered full source list (2026-08-09)
+
+- 2026-08-09-A: A SpaceNews piece bundling two actors' Gateway-repurposing
+  news (Northrop Grumman's LID missions, already published 2026-08-04, and
+  the Canadian Space Agency's Canadarm3 continuation, never covered) needed
+  a body-content read past the shared headline/topic before concluding it
+  was pure dedup: the CSA/MDA Space fact is a distinct actor and a distinct
+  action from the already-published Northrop item, confirming the standing
+  "two facts belonging to two unrelated actors in one bundled article draft
+  as two items" pattern (2026-07-13-third) extends to same-program, not
+  just same-country-different-subsidiary bundles.
+  MDA Space has no `src/data/registry` organization entry despite being a
+  named party in a $1B CAD contract; its own domain (mda.space, not
+  mdaspace.com) was fetchable and used as an `informal`-class corroboration
+  source per the standing 2026-08-05-O/2026-07-31-I no-registry-host
+  pattern rather than forced to `first_party`.
+- 2026-08-09-B: A Launch Library candidates-queue entry can describe a
+  FUTURE scheduled launch, not a completed one, even when its
+  `published_at` timestamp is inside the sweep window: the queue's
+  "Starlink Group 17-50" entry was a schedule update for an Aug 19 launch
+  still "Go for Launch," not an event. The genuinely-occurred same-day
+  launch (Starlink Group 17-38, Vandenberg, Aug 8) came from a separate
+  Space.com queue entry; always check a Launch Library entry's own
+  `status`/`net` fields before treating its presence in the queue as proof
+  a launch happened.
+- 2026-08-09-C: A follow-up NASASpaceflight piece on an already-published
+  story (Blue Origin's New Glenn dual-pad/hybrid-integration plans, updating
+  the 2026-08-05 valve-cause item) 403'd on direct fetch, and the harvester's
+  `raw_excerpt` cut off right before the genuinely new facts ("In an August 5
+  update, Limp conf..."); a GeekWire piece that reads like independent
+  confirmation of the dual-pad plan turned out to be from June 30, already
+  covered by the existing 2026-07-01 pad-CONOPS item. Left undrafted rather
+  than sourcing the new specifics from a WebSearch summary alone.
+- 2026-08-09-D: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") as the build-health signal.
