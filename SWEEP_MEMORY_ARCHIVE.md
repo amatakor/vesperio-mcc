@@ -936,3 +936,127 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   would likely be seismic (first flight of a new vehicle); it hasn't
   happened. Left for the next sweep to pick up once it actually flies.
 
+## Narrow same-day re-check, ~13hr gap (2026-07-10)
+
+- 2026-07-10-A: Scope judgment call: excluded Venus Aerospace's $91M
+  Series B (Payload, SpaceNews-adjacent coverage) even though its RDRE
+  engine's stated applications include "space launch" alongside
+  munitions and orbital transfer. The company's actual product,
+  Stargazer, is a runway-takeoff hypersonic AIRCRAFT (Mach 4-9 cruise),
+  not an orbital launch vehicle; CLAUDE.md's launch-vehicle scope is
+  explicitly "orbital only." A mentioned-in-passing future application
+  doesn't convert an atmospheric hypersonics company into an in-scope
+  launch provider. Also stale for this narrow window regardless (event
+  date July 8, prior sweep's lastSweep was July 9 19:07, so it was
+  actually inside the PRIOR window and simply missed then, not this
+  one -- worth a spot-check next time a story's date lands right at a
+  sweep boundary).
+- 2026-07-10-B: Wire-of-a-wire trap, new shape: The Star's (Malaysia)
+  "Indonesia to launch first locally developed EO satellite" piece
+  carries a "JAKARTA: (Bernama)" byline and cites Antara by name inside
+  its own text -- it is Bernama's rewrite of Antara's reporting, not
+  independent confirmation. Treating Antara + a Bernama pickup as two
+  sources would have been exactly the "one story, one source" wire
+  mistake; scored the BRIN NEO-1 item on Antara alone (mainstream,
+  found_none) rather than stacking an unverified-independence second
+  outlet. When a regional outlet's dateline names another wire service,
+  don't count it as separate corroboration without checking the byline.
+- 2026-07-10-C: dedup_distinct is needed even for a passing company
+  mention, not just multi-country entity announcements (extends
+  2026-07-09-B): an Earthjustice petition asking the FCC to pause
+  orbital-data-center licensing named CesiumAstro's Synchronicity
+  filing as one of several affected applications, which shared company
+  + category "regulatory" + within-7-days with CesiumAstro's own
+  2026-07-06 FCC filing story and tripped the same-event dedup gate.
+  The actor and action are completely different (a third-party
+  environmental coalition's petition vs. the company's own filing);
+  attested with dedup_distinct rather than routing through updates[].
+- 2026-07-10-D: Anatoly Zak's Bluesky (whitelisted signal) posted a
+  plain-language confirmation of the Long March 10B recovery
+  ("CASC confirms orbit was successfully achieved... plans to reuse
+  the first stage by the end of the year") within about 90 minutes of
+  the event, ahead of most English-language trade write-ups being
+  fully readable. Useful as a fast triage/confirmation signal even when
+  not attached as a formal scoring source (trade + mainstream sourcing
+  was already solid enough here).
+- 2026-07-10-E: A seismic item led by a trade source gets
+  extraordinary=true force-set by the gate and reset to base 1
+  regardless of how solid the sourcing feels; it then climbs only via
+  the named corroboration modifiers. Three good sources (2 trade + 1
+  mainstream: SpaceNews, Space.com, BBC) on the Long March 10B item
+  only reached SNR 3 (corroboration_2plus +1, mainstream_pickup +1),
+  not 4, because a 4th distinct source (corroboration_4plus) was never
+  attached. Don't assume "three solid outlets covered it" implies a
+  4-tier score on an extraordinary/seismic item -- check whether a
+  4-source bump is actually earned before treating the score as
+  disappointing or wrong.
+  same story from other outlets before crawling the open web at all;
+  the Google News query feeds routinely carry one event from several
+  publishers.
+- 2026-07-08-B: Outlet names never lead a headline ("SpaceNews: ...").
+  Cards display events, not articles; attribution lives in the copy,
+  sources list, and SNR trace. 38 published headlines were migrated
+  clean (scripts/migrations/2026-07-08-headline-attribution.ts) and the
+  prompt + CLAUDE.md now say so explicitly.
+
+## Narrow same-day re-check, full source list, ~9h43m window (2026-07-10)
+
+- 2026-07-10-F: The same-company+category dedup heuristic (2026-07-09-B,
+  2026-07-10-C) trips even when the two NASA programs are completely
+  unrelated: a CSDA Earth-science data-quality report on Umbra's SAR
+  imagery got flagged as a same-event match against the existing NASA
+  Commercial LEO Destinations draft-RFP item, sharing only "NASA" +
+  category "procurement" within 7 days. `dedup_distinct` cleared it in
+  one pass. Worth assuming this heuristic will fire on ANY two NASA (or
+  any prolific actor's) items in the same category within a week, not
+  just the multi-country-subsidiary shape seen before.
+- 2026-07-10-G: A registry organization's recorded `website` field is a
+  reusable key for finding new first-party corroboration on an existing
+  item: CASC's registry entry (src/data/registry/organizations/casc.json)
+  records `website: https://english.spacechina.com`, which exactly
+  matched a CASC English-language article found via the CASC newsroom
+  fetch, letting it attach as `first_party` (anti-spoof gate passed
+  cleanly) and earn `corroboration_4plus` on the already-published Long
+  March 10B item (SNR 3 -> 4). Check an actor's registry `website` value
+  before fetching their newsroom when trying to upgrade an existing
+  item's lead or add a scoring-eligible source.
+- 2026-07-10-H: Wire-mirror trap confirmed on a new pair: Axelspace's own
+  GRUS-3 launch-success release was reprinted verbatim on BusinessWire,
+  MarketScreener, and Business Upturn -- none of these count as
+  independent corroboration of the first-party Axelspace page (same
+  text, same source). `crawl: "found_none"` was correct and cost nothing
+  since the lead was first_party.
+- 2026-07-10-I: A Chinese-language WebSearch (native characters, not an
+  English translation of the query) surfaced genuine independent
+  corroboration a pure-English search missed: searching "中国商业航天产业联盟
+  成员名单 国防科工局" found a district government portal (wnd.gov.cn)
+  republishing SASTIND's July 1 consortium-roster announcement,
+  independent of SpaceNews's July 10 English writeup. Worth trying a
+  native-language query as a specific corroboration step on China/Japan/
+  India stories, not just as a discovery-pass rotation slot.
+- 2026-07-10-J: A WebSearch tool's own prose summary can misdate a page
+  even when a direct WebFetch of the live URL gets it right: search
+  results described the NASA CSDA Umbra SAR quality-assessment reports
+  as "released in May 2026," but WebFetch-ing the actual
+  science.nasa.gov page directly returned "Publish Date: July 9, 2026."
+  Trusted the direct fetch. Confirms 2026-07-06-HH/2026-07-07-F's
+  pattern on a new tool (WebSearch's synthesized answer, not just
+  WebFetch's page summarizer) -- always re-check a load-bearing date
+  against a direct fetch of the source page before using it to decide
+  in-window vs. stale.
+- 2026-07-10-K: Umbra's configured source URL (umbra.space/blog) now
+  serves a static "Media Center -- Old Posts Page" archive with no
+  dated posts; the live index moved to umbra.space/press-releases/,
+  which lists titles but no per-item dates on the listing page itself
+  (each post needs to be opened individually to get a real date). Flag
+  for a sources.json URL update at the next structural touch; until
+  then, treat a top-of-list title on /press-releases/ as unverified
+  until its own page is opened.
+- 2026-07-10-L: Vantor's news-bureau page (vantor.com/company/news-bureau/)
+  returns 200 with real content via curl, but both WebFetch's summarizer
+  and a plain grep for dated article markup come back empty or
+  mis-parsed (WebFetch read an evergreen "award-winning investigations"
+  feature as if it were the live feed). Treat this source as needing a
+  different URL or a JS-capable render before it's reliably checkable;
+  a clean 200 here is not proof of a checkable press-release listing.
+
