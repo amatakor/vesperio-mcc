@@ -3788,3 +3788,39 @@ a newer entry if a lesson changes.
   standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
   own merge confirmation ("merged 2 new, 1 updated, 0 held") as the
   build-health signal.
+
+## Narrow same-day re-check, ~11h44m gap, unfiltered full source list (2026-08-10, third)
+
+- 2026-08-10-G: A WebFetch summary of a wire-mirror page (ctvnews.ca's
+  Reuters copy of the Long March 7A failure) stated the wrong launch site
+  (Jiuquan) by conflating an unrelated file-photo caption (a Shenzhou 20
+  image) elsewhere on the page with the actual story; four independently
+  fetched sources (SpaceNews, Space.com, SCMP, Gunter's Space Page) all
+  agreed on Wenchang. Dropped the CTV/Reuters mirror entirely from
+  scoring rather than risk a wrong fact, even though it would have added
+  a mainstream corroboration source; a WebFetch summary that contradicts
+  every other fetched source on a plain fact is a signal the tool
+  mis-extracted, not that the minority source is right.
+- 2026-08-10-H: A bankruptcy-focused discovery query ("space company
+  bankruptcy OR acquisition announced this week") surfaced a genuinely
+  never-covered, six-month-stale event: Orbex, a flagship UK sovereign
+  small-launch developer and ESA European Launcher Challenge winner,
+  entered UK administration February 11, 2026, after a Series D round and
+  an acquisition by The Exploration Company both collapsed. Chased and
+  dated to the actual event date per the standing predates-window
+  convention; landed SNR 2 (trade lead, seismic-forced extraordinary
+  reset) and was correctly auto-queued to held.json for Florian per
+  SNR_PLAN 7.4 while still publishing. Worth periodically re-running a
+  bare bankruptcy/acquisition discovery query even on narrow-gap sweeps;
+  this kind of old, high-importance gap doesn't surface from the
+  harvester queue or routine source checks on its own.
+- 2026-08-10-I: The `bsky.app/profile/<handle>` public API pattern
+  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`,
+  2026-08-08-C) continues to work cleanly for every fetchable signals
+  bluesky account tried this run (11 of 17 channels); `signalsPass.checked`
+  must still list the bare `bsky.app/profile/<handle>` URL from
+  signals-context's output, not the API endpoint actually fetched.
+- 2026-08-10-J: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 4 new, 3 updated, 1 held") as the build-health signal.
