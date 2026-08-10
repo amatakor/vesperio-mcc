@@ -98,9 +98,21 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 12,
-    "source": "https://en.wikipedia.org/wiki/List_of_Starship_launches",
-    "as_of": "2026-07-12"
+    "value": 13,
+    "source": "https://spacenews.com/spacex-aborts-starship-flight-13-launch-attempt/",
+    "as_of": "2026-08-10",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://spacenews.com/spacex-aborts-starship-flight-13-launch-attempt/",
+        "reason": "trade press, monotonic counter refresh (SNR_SPEC 6.6): item states 'SpaceX flew Starship Flight 13 on July 24'; item itself scored snr 4 in items.json (weekly registry maintenance 2026-08-10)"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
   },
   "flights_successful": {
     "value": 7,
@@ -108,26 +120,26 @@
     "as_of": "2026-07-12"
   },
   "last_flight_date": {
-    "value": "2026-05-22",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": "2026-07-24",
+    "source": "https://spacenews.com/spacex-aborts-starship-flight-13-launch-attempt/",
+    "as_of": "2026-08-10",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 3,
+        "source": "https://spacenews.com/spacex-aborts-starship-flight-13-launch-attempt/",
+        "reason": "trade press, single reference; Flight 13 launched 2026-07-24 after the 2026-07-16 T-0 abort (weekly registry maintenance 2026-08-10)"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "next_flight_date": {
-    "value": "2026-07-16",
-    "source": "https://en.wikipedia.org/wiki/List_of_Starship_launches",
-    "as_of": "2026-07-13"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "active",
@@ -151,7 +163,7 @@
     "source": "https://en.wikipedia.org/wiki/SpaceX_Starship",
     "as_of": "2026-07-12"
   },
-  "notes": "First flight date is the first integrated flight (V1); prototype hops excluded. Flight totals are split across V1/V2/V3 configurations in Launch Library, so no aggregate is recorded. Reusable per V1-V3 configs.",
+  "notes": "First flight date is the first integrated flight (V1); prototype hops excluded. Flight totals are split across V1/V2/V3 configurations in Launch Library, so no aggregate is recorded. Reusable per V1-V3 configs. Weekly maintenance 2026-08-10: flights_total bumped 12->13 and last_flight_date to 2026-07-24 per a SpaceNews item stating Flight 13 flew (monotonic counter refresh, SNR_SPEC 6.6); flights_successful left at 7 (Wikipedia, 2026-07-12) since no source states whether Flight 13 counts as a success (booster suffered a hard splashdown, ship reentry/splashdown intact) -- Florian should reconcile the successful count against an authoritative source. next_flight_date nulled: the prior value (2026-07-16) was actually the Flight 13 T-0 abort date, not a future NET, and no confirmed Flight 14 date was found this run.",
   "height_m": {
     "value": 124.4,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",

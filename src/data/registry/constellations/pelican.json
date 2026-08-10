@@ -173,7 +173,23 @@
     },
     "tier": "canonical"
   },
-  "notes": "eoPortal (page last updated May 17, 2026) states the 0.3 m resolution and 5-band imager as design aims ('aims to achieve', 'expected to image'); the constellation was still building out at that date. Pelican-11 launched 2026-07-07 on Transporter-17 is a Gen 2 engineering pathfinder Planet says is 'not anticipated to produce commercially available data'; latest_launch_date updated to this flight, but sats_active_claimed (9, as of 2026-07-05) left unchanged since no fetched source states an updated operational total and Pelican-11 is explicitly not part of the operational fleet.",
+  "notes": "eoPortal (page last updated May 17, 2026) states the 0.3 m resolution and 5-band imager as design aims ('aims to achieve', 'expected to image'); the constellation was still building out at that date. Pelican-11 launched 2026-07-07 on Transporter-17 is a Gen 2 engineering pathfinder Planet says is 'not anticipated to produce commercially available data'; latest_launch_date updated to this flight, but sats_active_claimed (9, as of 2026-07-05) left unchanged since no fetched source states an updated operational total and Pelican-11 is explicitly not part of the operational fleet. Weekly maintenance 2026-08-10: eoPortal page has since updated (last-updated 2026-07-19) with a Gen-1/Gen-2 spec table (50 cm/8 km vs 30 cm/6 km); added as imaging_modes rows, top-level resolution_m (0.3 m) already matched Gen-2's finer figure so left unchanged. The same table states \"6 multispectral + panchromatic\" bands, which conflicts with the page's own narrative text (5 bands: 4 multispectral + 1 panchromatic) already on file; left spectral_bands unchanged pending Florian's read on the page's internal inconsistency, swath_km left null (value differs by generation, carried in imaging_modes instead).",
+  "imaging_modes": [
+    {
+      "mode": "Gen-1",
+      "resolution_m": 0.5,
+      "swath_km": 8,
+      "source": "https://www.eoportal.org/satellite-missions/planet-pelican",
+      "as_of": "2026-08-10"
+    },
+    {
+      "mode": "Gen-2",
+      "resolution_m": 0.3,
+      "swath_km": 6,
+      "source": "https://www.eoportal.org/satellite-missions/planet-pelican",
+      "as_of": "2026-08-10"
+    }
+  ],
   "events": [
     {
       "date": "2022-04-21",
