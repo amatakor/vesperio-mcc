@@ -3767,3 +3767,37 @@ a newer entry if a lesson changes.
   attempt, continuing the standing pattern since 2026-07-11-B; relied
   on `finalize-sweep.ts`'s own merge confirmation ("merged 6 new, 1
   updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-11, second)
+
+- 2026-08-11-H: Voyager Technologies' own `/press-releases/` listing page
+  is directly fetchable and named the exact release for a brand-new
+  contract (space-to-space comms award) on the first try; Voyager's
+  registry `website` (voyagertechnologies.com) matches the press-release
+  domain exactly, so the anti-spoof gate passed clean as `first_party`
+  without needing to fall back to a trade lead the way SpaceX/Redwire's
+  IR-CDN domains have required (2026-08-05-B/2026-08-06-B). Worth trying
+  a company's own `/press-releases/` or `/news/` index directly before
+  assuming a same-day contract announcement needs a trade-outlet lead.
+- 2026-08-11-I: The same-company-plus-category dedup false positive
+  (2026-08-03-H and many peers) now extends to a company appearing only
+  as the CUSTOMER-side counterparty, not the subject: VinSpace booking a
+  SpaceX Transporter rideshare slot (category `contract`) false-matched
+  Redwire's unrelated Starfall reentry-capsule contract (also category
+  `contract`, 5 days earlier) purely because both items list "SpaceX" in
+  `companies`. One `dedup_distinct` entry cleared it; expect this shape
+  whenever a new item's launch-services counterparty is SpaceX, not just
+  when SpaceX itself is the newsmaker.
+- 2026-08-11-J: A whitelisted signal's Bluesky post (Andrew Parsonson)
+  independently confirmed a candidate held-queue follow-up (Mario
+  Cospito named ASI extraordinary commissioner, resolving the identity
+  gap in the still-open 2026-08-05 ASI board-dissolution scope question)
+  the same day europeanspaceflight.com itself published it -- used as
+  confirmation in a new held-queue entry rather than a scoring source,
+  since the underlying scope question (no stated commercial-space
+  consequence) is unchanged and still awaits Florian's ruling.
+- 2026-08-11-K: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 8 new, 0 updated, 1 held") as the build-health
+  signal.
