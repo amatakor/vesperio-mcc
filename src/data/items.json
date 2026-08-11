@@ -18889,7 +18889,7 @@
       "source_url": "https://spacenews.com/sphinx-defense-wins-287-million-contract-for-strategic-satellite-communications-software/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -18901,10 +18901,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-11",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -25206,8 +25219,8 @@
       "headline": "CASC's Long March 7A rocket explodes after liftoff, destroys ChinaSat-4B",
       "explainer": {
         "tagline": "A Long March 7A carrying the ChinaSat-4B communications satellite exploded about 85 seconds into flight from Wenchang.",
-        "what_happened": "A CASC Long March 7A rocket exploded roughly 85 seconds after liftoff from the Wenchang Space Launch Site on August 10, destroying the vehicle and its ChinaSat-4B (Zhongxing-4B) communications satellite before the four side boosters and core stage completed their joint first-stage burn, per SpaceNews, Ars Technica, and Space.com. It was the Long March 7A's 18th mission since its 2020 debut, which also ended in an explosion; the vehicle had flown successfully in every mission since. Xinhua confirmed the mission had failed and said the cause is under investigation, per the South China Morning Post; CASC and its subsidiary China Academy of Launch Vehicle Technology reposted Xinhua's statement.",
-        "why_it_matters": "A months-long grounding while investigators determine the cause, as followed the vehicle's 2020 failure, would affect CASC's near-term GTO launch manifest for both military and commercial communications payloads relying on the Long March 7A; the loss is a reliability data point for satellite operators and insurers weighing China's launch-service options.",
+        "what_happened": "A CASC Long March 7A rocket exploded roughly 85 seconds after liftoff from the Wenchang Space Launch Site on August 10, destroying the vehicle and its ChinaSat-4B (Zhongxing-4B) communications satellite before the four side boosters and core stage completed their joint first-stage burn, per SpaceNews, Ars Technica, and Space.com. It was the Long March 7A's 18th mission since its 2020 debut, which also ended in an explosion; the vehicle had flown successfully in every mission since. Xinhua confirmed the mission had failed and said the cause is under investigation, per the South China Morning Post; CASC and its subsidiary China Academy of Launch Vehicle Technology reposted Xinhua's statement. China in Space reported the YF-100 engine, used in the joint burn at the time of the failure, is under suspicion; the Long March 7A is grounded until the investigation concludes, in-production vehicles will not leave the factory for inspection, and most modern Long March vehicles (including the 6, 8, and 5 series) share the same engine.",
+        "why_it_matters": "A months-long grounding while investigators determine the cause, as followed the vehicle's 2020 failure, would affect CASC's near-term GTO launch manifest for both military and commercial communications payloads relying on the Long March 7A; the loss is a reliability data point for satellite operators and insurers weighing China's launch-service options. Because the suspect YF-100 engine also powers the Long March 5 booster set to fly the Chang'e-7 lunar lander in the coming weeks, the investigation is a near-term watch item for that mission too, though China in Space reported backup launch opportunities run into October.",
         "for_who": "Satellite operators and insurers evaluating Chinese launch services"
       },
       "kind": "event",
@@ -25227,7 +25240,8 @@
         "https://www.nasaspaceflight.com/2026/08/launch-preview-081026/",
         "https://www.scmp.com/news/china/military/article/3363574/chinas-long-march-7a-rocket-explodes-after-launch-satellite-lost",
         "https://space.skyrocket.de/",
-        "https://bsky.app/profile/andrewjonesspace.bsky.social"
+        "https://bsky.app/profile/andrewjonesspace.bsky.social",
+        "https://www.china-in-space.com/p/chinasat-spacecraft-lost-in-failed"
       ],
       "snr": 4,
       "snr_trace": {
@@ -25294,6 +25308,13 @@
           "outlet": "Andrew Jones",
           "class": "whitelist",
           "added": "2026-08-10",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.china-in-space.com/p/chinasat-spacecraft-lost-in-failed",
+          "outlet": "China in Space",
+          "class": "trade",
+          "added": "2026-08-11",
           "via": "corroboration"
         }
       ],
@@ -25515,6 +25536,416 @@
       ],
       "publishDate": "2026-08-10T17:33:15.329Z",
       "image": null
+    },
+    {
+      "id": "2026-08-11-jaxa-h3-qzs7-michibiki-launch",
+      "date": "2026-08-11",
+      "headline": "JAXA launches Michibiki 7 navigation satellite on H3 rocket's 9th flight",
+      "explainer": {
+        "tagline": "JAXA's H3 rocket carried the QZS-7 positioning satellite to orbit from Tanegashima, adding to Japan's regional GPS-augmentation network.",
+        "what_happened": "JAXA launched the H3 Launch Vehicle's ninth flight from Tanegashima Space Center on August 11 (JST), carrying the Michibiki No. 7 (QZS-7) satellite for Japan's Quasi-Zenith Satellite System. JAXA's own release states QZS-7 separated roughly 29 minutes after liftoff and was injected into its planned orbit. Nikkei Asia reported that five Michibiki satellites were providing positioning service before this launch, with the government aiming for seven satellites to provide full service without relying on other countries' systems.",
+        "why_it_matters": "QZSS augments GPS accuracy for commercial users across Japan and the Asia-Pacific region, including precision agriculture, autonomous vehicles, and drone operators that rely on its correction signals; each satellite added moves Japan closer to positioning coverage independent of other countries' systems. A ninth successful H3 flight is also another data point as JAXA and Mitsubishi Heavy Industries push to sell H3 launches commercially.",
+        "for_who": "GNSS-dependent commercial services in Japan and Asia-Pacific"
+      },
+      "tags": [
+        "launch",
+        "japan"
+      ],
+      "category": "launch",
+      "impact": "notable",
+      "companies": [
+        "JAXA"
+      ],
+      "source_url": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+      "secondary_urls": [
+        "https://asia.nikkei.com/business/aerospace-defense-industries/japan-successfully-launches-h3-rocket-carrying-positioning-satellite"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+          "reason": "base tier 5 from lead source class \"first_party\" (JAXA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+          "outlet": "JAXA",
+          "class": "first_party",
+          "added": "2026-08-11",
+          "via": "initial"
+        },
+        {
+          "url": "https://asia.nikkei.com/business/aerospace-defense-industries/japan-successfully-launches-h3-rocket-carrying-positioning-satellite",
+          "outlet": "Nikkei Asia",
+          "class": "mainstream",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "entities": [
+        {
+          "name": "JAXA",
+          "ref": "organizations/jaxa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-11-jaxa-h3-qzs7-michibiki-launch.webp",
+        "credit": "Image: asia.nikkei.com",
+        "origin_url": "https://asia.nikkei.com/business/aerospace-defense-industries/japan-successfully-launches-h3-rocket-carrying-positioning-satellite",
+        "width": 1200,
+        "height": 600
+      }
+    },
+    {
+      "id": "2026-08-10-rocket-lab-ghost-containerized-launch-system",
+      "date": "2026-08-10",
+      "headline": "Rocket Lab unveils GHOST containerized launch system for Electron and HASTE",
+      "explainer": {
+        "tagline": "Rocket Lab's new shipping-container launch infrastructure will let it stand up Electron and HASTE pads anywhere, debuting in Alaska in 2027.",
+        "what_happened": "Rocket Lab unveiled GHOST (Global Hypersonic & Orbital Spaceport Technology), which packages launch infrastructure, ground support, and range-control hardware for its Electron and HASTE vehicles into standard shipping containers, per SpaceNews and Investing.com. The first GHOST site is Rocket Lab Launch Complex 4 at the Pacific Spaceport Complex in Kodiak, Alaska, with two pads planned; the system is set to debut with a suborbital HASTE launch from Alaska in 2027. The Alaska site brings Rocket Lab to six operational pads across two hemispheres, alongside its existing New Zealand and Virginia sites.",
+        "why_it_matters": "Container-packaged launch infrastructure lets Rocket Lab stand up new pads faster than fixed complexes, which matters for government customers wanting flexibility over orbital inclination and flight trajectory, and for allied nations seeking sovereign launch access without building a permanent site. CEO Peter Beck said GHOST was developed in response to customer demand for more mobile launch capability.",
+        "for_who": "Government and allied-nation customers seeking flexible launch access"
+      },
+      "tags": [
+        "launch",
+        "smallsat-launch"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "Rocket Lab"
+      ],
+      "source_url": "https://spacenews.com/rocket-lab-builds-deployable-infrastructure-for-electron-launches/",
+      "secondary_urls": [
+        "https://www.space.com/space-exploration/launches-spacecraft/launching-anywhere-anytime-and-without-compromise-rocket-lab-unveils-new-ghost-portable-spaceport-system"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/rocket-lab-builds-deployable-infrastructure-for-electron-launches/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/rocket-lab-builds-deployable-infrastructure-for-electron-launches/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-11",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.investing.com/news/company-news/rocket-lab-unveils-containerized-mobile-launch-system-93CH-4850225",
+          "outlet": "Investing.com",
+          "class": "informal",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "entities": [
+        {
+          "name": "Rocket Lab",
+          "ref": "organizations/rocket-lab"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-10-rocket-lab-ghost-containerized-launch-system.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/rocket-lab-builds-deployable-infrastructure-for-electron-launches/",
+        "width": 1200,
+        "height": 900
+      }
+    },
+    {
+      "id": "2026-08-10-kepler-rocket-lab-neutron-2028",
+      "date": "2026-08-10",
+      "headline": "Kepler books first dedicated Rocket Lab Neutron launch for 2028",
+      "explainer": {
+        "tagline": "Kepler signed its first dedicated launch vehicle mission, booking a Rocket Lab Neutron flight from Virginia no earlier than 2028.",
+        "what_happened": "Kepler Communications booked a dedicated Neutron launch from Rocket Lab Launch Complex 3 on Wallops Island, Virginia, no earlier than 2028, per SpaceNews and Investing.com. The mission will deploy multiple satellites for Kepler's optical relay constellation; it is Kepler's first dedicated commercial launch vehicle booking, after previously flying as a rideshare passenger. Rocket Lab said it has multiple Neutron missions planned for 2028.",
+        "why_it_matters": "The booking gives Kepler direct control over launch schedule and orbital parameters as it scales its optical data-relay network for commercial, civil, and defense customers, and is an early vote of confidence in Neutron, which has not yet flown; Rocket Lab has said the rocket's debut is at risk of slipping past 2026."
+      },
+      "tags": [
+        "connectivity"
+      ],
+      "category": "contract",
+      "impact": "notable",
+      "companies": [
+        "Kepler Communications",
+        "Rocket Lab"
+      ],
+      "source_url": "https://spacenews.com/kepler-books-neutron-for-2028-optical-relay-launch/",
+      "secondary_urls": [
+        "https://ca.investing.com/news/stock-market-news/rocket-lab-secures-neutron-launch-contract-with-kepler-93CH-4790468"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/kepler-books-neutron-for-2028-optical-relay-launch/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/kepler-books-neutron-for-2028-optical-relay-launch/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-11",
+          "via": "initial"
+        },
+        {
+          "url": "https://ca.investing.com/news/stock-market-news/rocket-lab-secures-neutron-launch-contract-with-kepler-93CH-4790468",
+          "outlet": "Investing.com",
+          "class": "informal",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "entities": [
+        {
+          "name": "Rocket Lab",
+          "ref": "organizations/rocket-lab"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-10-kepler-rocket-lab-neutron-2028.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/kepler-books-neutron-for-2028-optical-relay-launch/",
+        "width": 1200,
+        "height": 1060
+      }
+    },
+    {
+      "id": "2026-08-10-ast-spacemobile-q2-2026-results",
+      "date": "2026-08-10",
+      "headline": "AST SpaceMobile posts wider Q2 loss after BlueBird 7 write-off",
+      "explainer": {
+        "tagline": "AST SpaceMobile's Q2 net loss widened to $230.9 million, driven partly by a $125.9 million write-off tied to the lost BlueBird 7 satellite.",
+        "what_happened": "AST SpaceMobile reported second-quarter 2026 revenue of $31.5 million and a net loss attributable to common stockholders of $230.9 million, up from a $99.4 million loss a year earlier, per 247wallst.com and MarketBeat. Total operating expenses reached $329.1 million, including a $125.9 million loss on involuntary conversion tied to the BlueBird 7 launch incident. The company's revenue backlog grew to approximately $1.3 billion in aggregate contracted revenue, and it reaffirmed full-year 2026 revenue guidance of $150 million to $200 million.",
+        "why_it_matters": "The write-off is the financial tail of April's BlueBird 7 loss during a Blue Origin New Glenn launch, showing how insurance and write-off costs from a single satellite failure can swing a constellation operator's quarterly results even as underlying revenue and contracted backlog keep growing; MNO partners and investors watching AST's cash runway get a clearer read on how much launch risk is priced into the business."
+      },
+      "tags": [
+        "connectivity",
+        "direct-to-device"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "AST SpaceMobile"
+      ],
+      "source_url": "https://247wallst.com/investing/2026/08/10/live-will-ast-spacemobile-crush-q2-earnings-tonight/",
+      "secondary_urls": [
+        "https://www.marketbeat.com/instant-alerts/ast-spacemobile-q2-earnings-call-highlights-2026-08-10/"
+      ],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 1,
+          "source": "https://247wallst.com/investing/2026/08/10/live-will-ast-spacemobile-crush-q2-earnings-tonight/",
+          "reason": "base tier 1 from lead source class \"informal\" (247wallst.com)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "single_class_corroboration": "informal"
+      },
+      "sources": [
+        {
+          "url": "https://247wallst.com/investing/2026/08/10/live-will-ast-spacemobile-crush-q2-earnings-tonight/",
+          "outlet": "247wallst.com",
+          "class": "informal",
+          "added": "2026-08-11",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.marketbeat.com/instant-alerts/ast-spacemobile-q2-earnings-call-highlights-2026-08-10/",
+          "outlet": "MarketBeat",
+          "class": "informal",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "entities": [
+        {
+          "name": "AST SpaceMobile",
+          "ref": "constellations/ast-spacemobile"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-10-ast-spacemobile-q2-2026-results.webp",
+        "credit": "Image: 247wallst.com",
+        "origin_url": "https://247wallst.com/investing/2026/08/10/live-will-ast-spacemobile-crush-q2-earnings-tonight/",
+        "width": 1200,
+        "height": 670
+      }
+    },
+    {
+      "id": "2026-08-09-india-kulasekarapattinam-spaceport-privatization",
+      "date": "2026-08-09",
+      "headline": "India moves to hand Kulasekarapattinam spaceport to private operators",
+      "explainer": {
+        "tagline": "India has begun transferring operation and maintenance of the Rs 986 crore Kulasekarapattinam launch facility to private companies.",
+        "what_happened": "The Indian government has begun the process of transferring operational control of the Kulasekarapattinam launch facility in Tamil Nadu to private companies, inviting firms to take over complete management of the Rs 986 crore site and its rocket-launch operations, per DT Next. ISRO acquired 2,233 acres for the site in Thoothukudi district; Prime Minister Modi laid the foundation stone in February 2024, and construction of ISRO offices, launch operations buildings, and support infrastructure (including a helipad and river-crossing works) is underway. The spaceport is designed for small launch vehicles such as the SSLV.",
+        "why_it_matters": "Kulasekarapattinam is meant to be India's first launch site built specifically for non-government operators, so handing its day-to-day operation to a private company would give commercial Indian launch providers direct access to dedicated infrastructure rather than competing for slots at ISRO's Sriharikota range.",
+        "for_who": "Indian small-launch providers"
+      },
+      "tags": [
+        "launch",
+        "india",
+        "spaceport"
+      ],
+      "category": "procurement",
+      "impact": "notable",
+      "companies": [
+        "ISRO"
+      ],
+      "source_url": "https://www.dtnext.in/news/tamilnadu/centre-moves-to-privatise-kulasekarapattinam-rocket-launch-facility",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.dtnext.in/news/tamilnadu/centre-moves-to-privatise-kulasekarapattinam-rocket-launch-facility",
+          "reason": "base tier 3 from lead source class \"mainstream\" (DT Next)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.dtnext.in/news/tamilnadu/centre-moves-to-privatise-kulasekarapattinam-rocket-launch-facility",
+          "outlet": "DT Next",
+          "class": "mainstream",
+          "added": "2026-08-11",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "entities": [
+        {
+          "name": "ISRO",
+          "ref": "organizations/isro"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-09-india-kulasekarapattinam-spaceport-privatization.webp",
+        "credit": "Image: dtnext.in",
+        "origin_url": "https://www.dtnext.in/news/tamilnadu/centre-moves-to-privatise-kulasekarapattinam-rocket-launch-facility",
+        "width": 1200,
+        "height": 675
+      }
+    },
+    {
+      "id": "2026-08-06-senate-space-commerce-advisory-committee-act",
+      "date": "2026-08-06",
+      "headline": "Senate passes bill to create Commerce Dept space industry advisory panel",
+      "explainer": {
+        "tagline": "The Senate passed Sen. Gary Peters' bill requiring Commerce to set up a panel advising on commercial space policy.",
+        "what_happened": "The Senate passed S.434, the Space Commerce Advisory Committee Act, by unanimous consent on August 6, per GovInfo's official bill-status record. The bill requires the Secretary of Commerce to establish a committee to provide recommendations to the Department and Congress on facilitating commercial space activities under the Department's jurisdiction, per SpacePolicyOnline and a post from Marcia Smith. The bill still needs House passage and the President's signature to become law.",
+        "why_it_matters": "A standing Commerce Department advisory committee focused on commercial space activity would give operators a formal channel to flag regulatory friction points, such as remote-sensing licensing or spectrum coordination, to policymakers before rules are written rather than after."
+      },
+      "tags": [
+        "us-gov"
+      ],
+      "category": "regulatory",
+      "impact": "notable",
+      "companies": [],
+      "source_url": "https://www.govinfo.gov/bulkdata/BILLSTATUS/119/s/BILLSTATUS-119s434.xml",
+      "secondary_urls": [
+        "https://spacepolicyonline.com/news/whats-happening-in-space-policy-august-9-22-2026/",
+        "https://bsky.app/profile/spacepolicyonline.bsky.social/post/3msqodvwpod2z"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.govinfo.gov/bulkdata/BILLSTATUS/119/s/BILLSTATUS-119s434.xml",
+          "reason": "base tier 5 from lead source class \"official_record\" (GovInfo (Library of Congress))"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.govinfo.gov/bulkdata/BILLSTATUS/119/s/BILLSTATUS-119s434.xml",
+          "outlet": "GovInfo (Library of Congress)",
+          "class": "official_record",
+          "added": "2026-08-11",
+          "via": "initial"
+        },
+        {
+          "url": "https://spacepolicyonline.com/news/whats-happening-in-space-policy-august-9-22-2026/",
+          "outlet": "SpacePolicyOnline",
+          "class": "trade",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://bsky.app/profile/spacepolicyonline.bsky.social/post/3msqodvwpod2z",
+          "outlet": "Marcia Smith",
+          "class": "whitelist",
+          "added": "2026-08-11",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-11T05:36:12.151Z",
+      "image": {
+        "src": "/img/items/2026-08-06-senate-space-commerce-advisory-committee-act.webp",
+        "credit": "Image: spacepolicyonline.com",
+        "origin_url": "https://spacepolicyonline.com/news/whats-happening-in-space-policy-august-9-22-2026/",
+        "fit": "contain",
+        "width": 300,
+        "height": 300
+      }
     }
   ]
 }

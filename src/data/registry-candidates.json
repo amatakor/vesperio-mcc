@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-08-11-jaxa-h3-qzs7-michibiki-launch:h3.flights_total",
+      "item_id": "2026-08-11-jaxa-h3-qzs7-michibiki-launch",
+      "entity_slug": "h3",
+      "entity_type": "vehicle",
+      "field": "flights_total",
+      "value": 9,
+      "metric": "cumulative H3 launch vehicle flights, per JAXA's own flight numbering (this was flight No. 9)",
+      "same_metric": true,
+      "item_snr": 5,
+      "source_url": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+      "action": "flag_refresh",
+      "proposed_on": "2026-08-11",
+      "status": "pending"
+    }
+  ]
 }

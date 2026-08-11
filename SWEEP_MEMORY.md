@@ -93,125 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Workflow sandboxing (2026-07-11, PR2)
-
-- 2026-07-11-A: scheduled runs no longer have curl (or any shell
-  fetcher); WebFetch and WebSearch are the only fetch paths, and Bash
-  is limited to the exact bun scripts the prompt mandates. Do NOT try
-  curl fallbacks that older lessons in this file mention (SEC exhibit
-  pages, unoosa.org browser user agents, rocketlabcorp.com redirects,
-  Vantor): the permission is denied and retrying wastes turns. Where
-  WebFetch cannot reach a source, record the honest fetch_note /
-  sourceHealth outcome and move on; persistent unreachability is a
-  source-health problem to surface, not to work around.
-- 2026-07-11-B: In an interactive/@claude session (not the scheduled
-  workflow), `bun run build` and even the lighter `bun scripts/check-feed.ts`
-  were consistently denied by the session's permission gate (repeated
-  retries, all "This command requires approval", no user response
-  available to grant it), while `bun scripts/sweep-context.ts`,
-  `bun scripts/signals-context.ts`, and `bun scripts/finalize-sweep.ts`
-  ran freely throughout the same session. Don't burn turns retrying
-  `bun run build` past 2-3 attempts once this pattern shows up --
-  `finalize-sweep.ts` already runs `validateItemsFile`/`validateHeldFile`/
-  `validateStateFile`/`validateSourcesFile`/`validateSourceLedgerFile` on
-  the merged output before writing (a real schema check, not nothing),
-  so a successful "merged N new, M updated, K held" message is
-  meaningful signal even without the full typecheck+vitest+vite build
-  behind it. Surface the blocked build step explicitly to the human
-  rather than silently skipping it or falsely claiming it passed.
-- 2026-07-11-C: A source-name filter restricting DISCOVERY to a single
-  outlet ("SpaceNews") still leaves the harvester's candidates.json
-  queue populated from every feed-capable source (it runs
-  deterministically ahead of the filtered agent); the correct reading
-  is to filter the queue to that source's own entries only (22 of
-  ~830 entries this run) rather than either processing the full queue
-  or ignoring it. Most of a narrow single-outlet queue on a short gap
-  duplicates stories already published by prior unfiltered sweeps
-  (dedup against `existing[]` catches this); checking whether an
-  already-published item is simply missing that outlet as a source
-  (2026-07-06-L/JJ's free-corroboration pattern) is where a
-  single-source-filtered run still adds value beyond the 1-2 genuinely
-  new items it finds.
-
-## Full-source-list re-check, ~15min gap (2026-07-11)
-
-- 2026-07-11-D: A ~15-minute-gap unfiltered re-check (immediately after
-  the prior 06:53 UTC sweep) is a legitimate sweep shape and correctly
-  produced zero items: the harvester queue had exactly one candidate
-  published after lastSweep in the whole ~530-entry file (an off-topic
-  Bluesky opinion post on the Long March 10B recovery, discarded
-  silently), all ~29 checked HTML-only sources (feed_type html,
-  verified/unverified, no fetch_note) showed no content newer than the
-  prior sweep, the signals rotation completed the 6 channels left
-  unchecked last run (Anatoly Zak YouTube, Andrew Parsonson substack,
-  Scott Manley, Tim Dodd, Marcus House, Felix Schlang -- all quiet,
-  europeanspaceflight.substack.com still 403s), and an 8-query
-  discovery pass surfaced only already-published stories, one
-  routine/out-of-scope Starlink launch, and one old (Dec 2025) ISRO
-  LVM3/AST SpaceMobile launch resurfacing in search with a misleading
-  "Wednesday" framing (2026-07-08-E pattern again). rocketlabcorp.com/
-  updates/ 403'd this run (intermittent Cloudflare gate, consistent
-  with the standing note); not flipped, just one more documented
-  failure in the ongoing pattern.
-- 2026-07-11-E: Confirms 2026-07-07-A: signalsPass.checked must use a
-  YouTube channel's bare `url` field from signals-context.ts (e.g.
-  `https://www.youtube.com/c/AnatolyZak`), never the `videos.xml` feed
-  URL actually fetched for the RSS content -- finalize-sweep rejected
-  the draft on first submission for exactly this on all 5 YouTube
-  entries at once, not just the one substack case seen previously.
-- 2026-07-11-F: Writing arbitrary scratch files (e.g. a throwaway .ts
-  filter script at the repo root) is blocked in this scheduled-run
-  sandbox with a permissions error, confirming 2026-07-11-A's Bash
-  restriction extends to Write/heredoc too, not just curl. Only the
-  procedure's own mandated outputs (sweep-draft.json) are writable.
-  Filtering candidates.json by hand via grep -B/-A on the raw JSON
-  worked fine as the substitute for a scratch script.
-
-## Full-source-list re-check, ~1h20m gap (2026-07-11, interactive)
-
-- 2026-07-11-G: In this interactive session (not the scheduled workflow),
-  shell output redirection (`>` and `tee`) into repo-root paths was
-  blocked by the permission gate even though the target directory was
-  the session's own allowed working directory; plain (non-redirected)
-  Bash commands and the Write tool both worked without friction. Where
-  a script's output needs paging, use `sed -n 'X,Yp'` / `grep -B/-A` on
-  the direct command output rather than trying to redirect it to a
-  scratch file first.
-- 2026-07-11-H: Dispatching parallel general-purpose subagents (5-6 at
-  a time, each handling a small named batch of HTML sources or signals
-  channels with explicit anti-fabrication instructions) worked well for
-  the mechanical fetch-and-report legs of a sweep (fetch-list's 30 HTML
-  sources, signals-context's 16 fetchable channels) and kept the main
-  session's context small; each batch returned clean structured JSON
-  with verbatim excerpts, no fabricated dates caught on spot-check.
-- 2026-07-11-I: Umbra flipped unverified->dead this run after a third
-  consecutive documented failure (2026-07-06, 2026-07-08, 2026-07-11),
-  all the same failure mode (a static nav/footer shell at /blog with no
-  dated posts); Capella flipped verified->stale after its listing
-  showed the identical May 4, 2026 top post across three-plus sweeps
-  spanning over two months (reachable, real content, just not moving).
-  Both changes recorded with dated notes and (for Umbra) fail_count:3.
-- 2026-07-11-J: Confirms 2026-07-08-C on a much narrower gap: this run's
-  candidates-context window_start was 2 full days back even though the
-  real gap since state.json's lastSweep was only ~1h12m; grepping the
-  raw candidate list for `published_at` timestamps actually after
-  lastSweep (not window_start) found only 6 in-window entries, all
-  junk/off-topic. A discovery pass this narrow can still legitimately
-  surface known stories (MDA/CLS acquisition, Agnikul/ICEYE MoU) that
-  read as "new" to a search engine but are already published under
-  existing ids -- always cross-check a WebSearch hit's date and the
-  existing[] list before treating it as a miss.
-- 2026-07-11-K: A Space Force/Boeing $2B MUOS Service Life Extension
-  contract (narrowband military satcom, first satellite delivery not
-  until 2031) surfaced in discovery and was treated as out of scope:
-  Boeing is a heritage prime and MUOS is a decades-old legacy program
-  getting sustainment funding, not a new-space commercial capability --
-  same exclusion logic as the 2026-07-05-Q Aeolus-2 precedent, applied
-  here to a legacy DoD satcom program rather than an ESA science one.
-
-- 2026-07-11: `companies` must name the concerned actor even when untracked (Space Force, UNOOSA, BRIN, national agencies render as plain text in the card footer; the entity linker adds profile links only where a registry ref exists). Leave it empty ONLY when the story genuinely names no actor (e.g. debris with no operator identified). Florian corrected four items that shipped with empty actor arrays.
-- 2026-07-11: sweep-entry summaries must be written in sentence case (every sentence starts with a capital). Florian's site-wide rule: no sentence starts lowercase anywhere. The renderer uppercases the first letter as a guard, but interior sentences are the writer's job.
-
 ## Registry fill crawl (2026-07-12, interactive session, one-off)
 
 - 2026-07-12-A: Generation-specific entity slugs (blacksky-gen2) must not
@@ -3824,3 +3705,65 @@ a newer entry if a lesson changes.
   session's permission gate, continuing the standing pattern since
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 4 new, 3 updated, 1 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-11)
+
+- 2026-08-11-A: Resolved the 2026-08-09-E source-access gap: DT Next
+  (dtnext.in, a Tamil Nadu English-language regional daily) fetched
+  cleanly for the IN-SPACe/Centre Kulasekarapattinam spaceport
+  privatization story where economictimes.indiatimes.com and
+  business-standard.com both stayed blocked. Single-sourced (crawl
+  `found_none`; only aggregator mirrors and the same two blocked
+  domains turned up on a fresh search), shipped honestly at SNR 2
+  rather than held, per the standing "weak sourcing is never a reason
+  to hold" rule.
+- 2026-08-11-B: `congress.gov` bill pages 403 like every other .gov
+  fetch in this project, but `govinfo.gov`'s bulk-data bill-status API
+  (`www.govinfo.gov/bulkdata/BILLSTATUS/<congress>/<chamber>/BILLSTATUS-<congress><chamber><number>.xml`)
+  fetched cleanly and gave an exact, dated "latest action" line (Senate
+  passage of S.434 by unanimous consent, August 6) with none of
+  congress.gov's blocking. Worth trying this pattern first for any
+  future bill-status sourcing; it also satisfies the anti-spoof gate
+  as `official_record` via the unconditional `.gov` host check.
+- 2026-08-11-C: A whitelisted signal's own post can be the ONLY route
+  to a genuine story the harvester queue and discovery pass both
+  missed entirely: Marcia Smith's Bluesky post about the Senate passing
+  the Space Commerce Advisory Committee Act (Aug 6 passage, surfaced in
+  her Aug 10 post) had zero hits anywhere else this run, including the
+  8-query discovery pass run afterward. The mandatory fetchable-channel
+  signals leg is still finding real, otherwise-invisible stories five
+  weeks post-launch.
+- 2026-08-11-D: AST SpaceMobile's investor-relations subdomain is
+  `investors.ast-science.com` (plural); `investor.ast-science.com`
+  (singular, a plausible guess) doesn't resolve at all (DNS failure,
+  not a 403). The plural subdomain still failed to yield the exact Q2
+  2026 earnings release URL on a direct fetch of its landing pages
+  (`/press-releases`, `/quarterly-results`; the latter pointed to an
+  `feeds.issuerdirect.com` wire-distribution link, not an ast-science.com
+  page, so not gate-safe as first_party anyway) -- led with two
+  financial-media outlets instead (247wallst.com, MarketBeat), both
+  directly fetchable and both classed `informal` (neither is trade nor
+  legacy mainstream press), landing an honest SNR 2 for a real, sourced
+  earnings event.
+- 2026-08-11-E: `china-in-space.com` (a Chinese-space-focused
+  newsletter/blog, distinct from Andrew Jones's whitelisted channels)
+  fetched cleanly with substantive follow-on detail a same-day SCMP
+  article didn't yield (WebFetch kept truncating SCMP's article body
+  before the relevant paragraphs): the YF-100 engine coming under
+  investigation, the Long March 7A fleet grounding, and Chang'e-7's
+  October backup launch windows, all attached to the existing Aug 10
+  Long March 7A failure item as `trade`-class corroboration. Worth
+  adding to sources.json at a future structural touch as a China-launch
+  fallback when SCMP's full text won't render.
+- 2026-08-11-F: Space.com continues to fail to return article body text
+  via WebFetch (nav/membership-prompt boilerplate only, "[Content
+  truncated due to length...]"), on two different articles this run
+  (the Rocket Lab GHOST unveiling and the Michibiki 7/QZS-7 launch);
+  SpaceNews and Nikkei Asia covering the same stories both fetched
+  fine. Don't burn a second attempt on Space.com once this shape shows
+  up; go straight to another outlet covering the same story.
+- 2026-08-11-G: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 6 new, 1
+  updated, 0 held") as the build-health signal.

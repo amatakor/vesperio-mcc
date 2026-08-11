@@ -1060,3 +1060,122 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   different URL or a JS-capable render before it's reliably checkable;
   a clean 200 here is not proof of a checkable press-release listing.
 
+## Workflow sandboxing (2026-07-11, PR2)
+
+- 2026-07-11-A: scheduled runs no longer have curl (or any shell
+  fetcher); WebFetch and WebSearch are the only fetch paths, and Bash
+  is limited to the exact bun scripts the prompt mandates. Do NOT try
+  curl fallbacks that older lessons in this file mention (SEC exhibit
+  pages, unoosa.org browser user agents, rocketlabcorp.com redirects,
+  Vantor): the permission is denied and retrying wastes turns. Where
+  WebFetch cannot reach a source, record the honest fetch_note /
+  sourceHealth outcome and move on; persistent unreachability is a
+  source-health problem to surface, not to work around.
+- 2026-07-11-B: In an interactive/@claude session (not the scheduled
+  workflow), `bun run build` and even the lighter `bun scripts/check-feed.ts`
+  were consistently denied by the session's permission gate (repeated
+  retries, all "This command requires approval", no user response
+  available to grant it), while `bun scripts/sweep-context.ts`,
+  `bun scripts/signals-context.ts`, and `bun scripts/finalize-sweep.ts`
+  ran freely throughout the same session. Don't burn turns retrying
+  `bun run build` past 2-3 attempts once this pattern shows up --
+  `finalize-sweep.ts` already runs `validateItemsFile`/`validateHeldFile`/
+  `validateStateFile`/`validateSourcesFile`/`validateSourceLedgerFile` on
+  the merged output before writing (a real schema check, not nothing),
+  so a successful "merged N new, M updated, K held" message is
+  meaningful signal even without the full typecheck+vitest+vite build
+  behind it. Surface the blocked build step explicitly to the human
+  rather than silently skipping it or falsely claiming it passed.
+- 2026-07-11-C: A source-name filter restricting DISCOVERY to a single
+  outlet ("SpaceNews") still leaves the harvester's candidates.json
+  queue populated from every feed-capable source (it runs
+  deterministically ahead of the filtered agent); the correct reading
+  is to filter the queue to that source's own entries only (22 of
+  ~830 entries this run) rather than either processing the full queue
+  or ignoring it. Most of a narrow single-outlet queue on a short gap
+  duplicates stories already published by prior unfiltered sweeps
+  (dedup against `existing[]` catches this); checking whether an
+  already-published item is simply missing that outlet as a source
+  (2026-07-06-L/JJ's free-corroboration pattern) is where a
+  single-source-filtered run still adds value beyond the 1-2 genuinely
+  new items it finds.
+
+## Full-source-list re-check, ~15min gap (2026-07-11)
+
+- 2026-07-11-D: A ~15-minute-gap unfiltered re-check (immediately after
+  the prior 06:53 UTC sweep) is a legitimate sweep shape and correctly
+  produced zero items: the harvester queue had exactly one candidate
+  published after lastSweep in the whole ~530-entry file (an off-topic
+  Bluesky opinion post on the Long March 10B recovery, discarded
+  silently), all ~29 checked HTML-only sources (feed_type html,
+  verified/unverified, no fetch_note) showed no content newer than the
+  prior sweep, the signals rotation completed the 6 channels left
+  unchecked last run (Anatoly Zak YouTube, Andrew Parsonson substack,
+  Scott Manley, Tim Dodd, Marcus House, Felix Schlang -- all quiet,
+  europeanspaceflight.substack.com still 403s), and an 8-query
+  discovery pass surfaced only already-published stories, one
+  routine/out-of-scope Starlink launch, and one old (Dec 2025) ISRO
+  LVM3/AST SpaceMobile launch resurfacing in search with a misleading
+  "Wednesday" framing (2026-07-08-E pattern again). rocketlabcorp.com/
+  updates/ 403'd this run (intermittent Cloudflare gate, consistent
+  with the standing note); not flipped, just one more documented
+  failure in the ongoing pattern.
+- 2026-07-11-E: Confirms 2026-07-07-A: signalsPass.checked must use a
+  YouTube channel's bare `url` field from signals-context.ts (e.g.
+  `https://www.youtube.com/c/AnatolyZak`), never the `videos.xml` feed
+  URL actually fetched for the RSS content -- finalize-sweep rejected
+  the draft on first submission for exactly this on all 5 YouTube
+  entries at once, not just the one substack case seen previously.
+- 2026-07-11-F: Writing arbitrary scratch files (e.g. a throwaway .ts
+  filter script at the repo root) is blocked in this scheduled-run
+  sandbox with a permissions error, confirming 2026-07-11-A's Bash
+  restriction extends to Write/heredoc too, not just curl. Only the
+  procedure's own mandated outputs (sweep-draft.json) are writable.
+  Filtering candidates.json by hand via grep -B/-A on the raw JSON
+  worked fine as the substitute for a scratch script.
+
+## Full-source-list re-check, ~1h20m gap (2026-07-11, interactive)
+
+- 2026-07-11-G: In this interactive session (not the scheduled workflow),
+  shell output redirection (`>` and `tee`) into repo-root paths was
+  blocked by the permission gate even though the target directory was
+  the session's own allowed working directory; plain (non-redirected)
+  Bash commands and the Write tool both worked without friction. Where
+  a script's output needs paging, use `sed -n 'X,Yp'` / `grep -B/-A` on
+  the direct command output rather than trying to redirect it to a
+  scratch file first.
+- 2026-07-11-H: Dispatching parallel general-purpose subagents (5-6 at
+  a time, each handling a small named batch of HTML sources or signals
+  channels with explicit anti-fabrication instructions) worked well for
+  the mechanical fetch-and-report legs of a sweep (fetch-list's 30 HTML
+  sources, signals-context's 16 fetchable channels) and kept the main
+  session's context small; each batch returned clean structured JSON
+  with verbatim excerpts, no fabricated dates caught on spot-check.
+- 2026-07-11-I: Umbra flipped unverified->dead this run after a third
+  consecutive documented failure (2026-07-06, 2026-07-08, 2026-07-11),
+  all the same failure mode (a static nav/footer shell at /blog with no
+  dated posts); Capella flipped verified->stale after its listing
+  showed the identical May 4, 2026 top post across three-plus sweeps
+  spanning over two months (reachable, real content, just not moving).
+  Both changes recorded with dated notes and (for Umbra) fail_count:3.
+- 2026-07-11-J: Confirms 2026-07-08-C on a much narrower gap: this run's
+  candidates-context window_start was 2 full days back even though the
+  real gap since state.json's lastSweep was only ~1h12m; grepping the
+  raw candidate list for `published_at` timestamps actually after
+  lastSweep (not window_start) found only 6 in-window entries, all
+  junk/off-topic. A discovery pass this narrow can still legitimately
+  surface known stories (MDA/CLS acquisition, Agnikul/ICEYE MoU) that
+  read as "new" to a search engine but are already published under
+  existing ids -- always cross-check a WebSearch hit's date and the
+  existing[] list before treating it as a miss.
+- 2026-07-11-K: A Space Force/Boeing $2B MUOS Service Life Extension
+  contract (narrowband military satcom, first satellite delivery not
+  until 2031) surfaced in discovery and was treated as out of scope:
+  Boeing is a heritage prime and MUOS is a decades-old legacy program
+  getting sustainment funding, not a new-space commercial capability --
+  same exclusion logic as the 2026-07-05-Q Aeolus-2 precedent, applied
+  here to a legacy DoD satcom program rather than an ESA science one.
+
+- 2026-07-11: `companies` must name the concerned actor even when untracked (Space Force, UNOOSA, BRIN, national agencies render as plain text in the card footer; the entity linker adds profile links only where a registry ref exists). Leave it empty ONLY when the story genuinely names no actor (e.g. debris with no operator identified). Florian corrected four items that shipped with empty actor arrays.
+- 2026-07-11: sweep-entry summaries must be written in sentence case (every sentence starts with a capital). Florian's site-wide rule: no sentence starts lowercase anywhere. The renderer uppercases the first letter as a guard, but interior sentences are the writer's job.
+
