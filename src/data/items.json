@@ -19464,7 +19464,7 @@
       "secondary_urls": [
         "https://www.satellitetoday.com/connectivity/2026/07/28/skywave-to-add-iridium-sbs-data-service-into-industrial-iot-offering/"
       ],
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
@@ -19476,10 +19476,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-12",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -19529,7 +19542,7 @@
       ],
       "source_url": "https://spacenews.com/esa-opens-call-to-repurpose-gateway-communications-module/",
       "secondary_urls": [],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -19541,10 +19554,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-12",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -26479,6 +26505,205 @@
         "origin_url": "https://spacenews.com/first-neutron-launch-may-slip-to-2027/",
         "width": 1200,
         "height": 772
+      }
+    },
+    {
+      "id": "2026-08-11-firefly-lockheed-martin-extension-2031",
+      "date": "2026-08-11",
+      "headline": "Firefly Aerospace extends Lockheed Martin launch agreement through 2031",
+      "explainer": {
+        "tagline": "Firefly and Lockheed Martin extended their multi-launch deal to up to 25 Alpha flights through 2031, on the upgraded Alpha Block II rocket.",
+        "what_happened": "Firefly Aerospace said Aug. 11 it extended its multi-launch agreement with Lockheed Martin for up to 25 dedicated Alpha launches through 2031, a two-year extension of the companies' existing deal. The missions will fly on Firefly's upgraded Alpha Block II configuration, targeting the 1,000 kg payload class for government and commercial customers. Firefly, Lockheed Martin and Seagate Space are also jointly developing sea-based launch concepts using Seagate's Gateway offshore launch platform.",
+        "why_it_matters": "The extension locks in years of dedicated launch backlog for Firefly's Alpha vehicle from an anchor prime contractor as it ramps production of the Block II upgrade, and gives Lockheed Martin committed, dedicated access to the 1,000 kg payload class for national-security and technology-demonstration missions instead of competing for rideshare slots. The Seagate Space sea-launch collaboration is an early signal both companies are exploring alternative, more flexible launch-site access."
+      },
+      "tags": [
+        "launch",
+        "smallsat-launch"
+      ],
+      "category": "contract",
+      "impact": "notable",
+      "companies": [
+        "Firefly Aerospace",
+        "Lockheed Martin",
+        "Seagate Space"
+      ],
+      "source_url": "https://fireflyspace.com/news/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/",
+      "secondary_urls": [
+        "https://www.stocktitan.net/news/FLY/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-gb6d0ee0ed5d.html"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://fireflyspace.com/news/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/",
+          "reason": "base tier 5 from lead source class \"first_party\" (Firefly Aerospace)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://fireflyspace.com/news/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/",
+          "outlet": "Firefly Aerospace",
+          "class": "first_party",
+          "added": "2026-08-12",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.stocktitan.net/news/FLY/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-gb6d0ee0ed5d.html",
+          "outlet": "StockTitan (GlobeNewswire wire copy)",
+          "class": "wire_pr",
+          "added": "2026-08-12",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-12T05:30:34.231Z",
+      "entities": [
+        {
+          "name": "Firefly Aerospace",
+          "ref": "organizations/firefly-aerospace"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-11-firefly-lockheed-martin-extension-2031.webp",
+        "credit": "Image: fireflyspace.com",
+        "origin_url": "https://fireflyspace.com/news/firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/",
+        "width": 1200,
+        "height": 670
+      }
+    },
+    {
+      "id": "2026-08-11-starlink-poland-roaming-exclusion",
+      "date": "2026-08-11",
+      "headline": "SpaceX drops Poland from Starlink's Europe roaming zone",
+      "explainer": {
+        "tagline": "Starlink terminals registered in Poland will be treated as international, not European, devices once new rules take effect August 17.",
+        "what_happened": "Starlink's support page now excludes Poland from its \"Europe\" roaming region, per Goniec and Pravda Poland. Effective August 17, 2026, Polish-registered terminals used abroad will be treated as international roaming rather than intra-European travel, limited to 30 days before requiring identity re-verification, and existing Global Roam customers must pick a new plan or lose service. Countries including the Czech Republic, Slovakia, Lithuania and Romania remain in the European zone. SpaceX has not publicly stated a reason for excluding Poland specifically.",
+        "why_it_matters": "Per Pravda Poland, the change is already complicating continuous operation of Polish-exported Starlink terminals used in Ukraine, which previously did not face a re-verification clock while inside the old European zone. Any Polish reseller or aid organization relying on Roam plans for cross-border terminals now faces the same 30-day international-roaming limits and re-verification steps as users outside Europe entirely."
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://www.goniec.net/2026/08/11/starlink-oficjalnie-wykluczyl-polske-z-europejskiego-roamingu/",
+      "secondary_urls": [
+        "https://poland.news-pravda.com/en/world/2026/08/11/66012.html"
+      ],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 1,
+          "source": "https://www.goniec.net/2026/08/11/starlink-oficjalnie-wykluczyl-polske-z-europejskiego-roamingu/",
+          "reason": "base tier 1 from lead source class \"informal\" (Goniec)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "single_class_corroboration": "informal"
+      },
+      "sources": [
+        {
+          "url": "https://www.goniec.net/2026/08/11/starlink-oficjalnie-wykluczyl-polske-z-europejskiego-roamingu/",
+          "outlet": "Goniec",
+          "class": "informal",
+          "added": "2026-08-12",
+          "via": "initial"
+        },
+        {
+          "url": "https://poland.news-pravda.com/en/world/2026/08/11/66012.html",
+          "outlet": "Pravda Poland",
+          "class": "informal",
+          "added": "2026-08-12",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-12T05:30:34.231Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-11-starlink-poland-roaming-exclusion.webp",
+        "credit": "Image: poland.news-pravda.com",
+        "origin_url": "https://poland.news-pravda.com/en/world/2026/08/11/66012.html",
+        "width": 960,
+        "height": 522
+      }
+    },
+    {
+      "id": "2026-08-07-ses-iris2-meo-capital-commitment",
+      "date": "2026-08-07",
+      "headline": "SES commits up to €1.35 billion to build IRIS2 MEO satellites",
+      "explainer": {
+        "tagline": "SES cleared a key IRIS² milestone and confirmed up to €1.35 billion to build 18 medium-orbit satellites for the EU program.",
+        "what_happened": "SES said Aug. 7 it completed Rendez-vous 1 (RDV1), a milestone in the EU's IRIS² secure-connectivity program, confirming its expected capital commitment for the MEO segment at up to €1.35 billion. The commitment funds design, payload construction, assembly, integration and testing of 18 MEO satellites at SES's facilities in Luxembourg, with service entry targeted for 2030. SES said the commercial structure is designed to deliver an internal rate of return meeting or exceeding its 10% hurdle rate, and that it retains commercial monetization rights to about 90% of the MEO constellation's operational capacity.",
+        "why_it_matters": "The milestone unlocks active hardware fabrication and ground-segment work under IRIS², Europe's flagship sovereign satcom program, and represents SES's largest stated capital commitment to the MEO segment to date. With roughly 90% of capacity commercially exploitable, the deal gives SES a new long-term revenue base across government, mobility, enterprise and cloud-connectivity markets once the satellites enter service in 2030."
+      },
+      "tags": [
+        "connectivity",
+        "europe",
+        "esa"
+      ],
+      "category": "constellation",
+      "impact": "major",
+      "companies": [
+        "SES"
+      ],
+      "source_url": "https://www.ses.com/news/press-release/ses-advances-nextgeneration-meo-strategy-following-successful-completion-of",
+      "secondary_urls": [
+        "https://satnews.com/2026/08/08/ses-completes-iris%C2%B2-milestone-and-finalizes-meo-satellite-capital-commitments/"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.ses.com/news/press-release/ses-advances-nextgeneration-meo-strategy-following-successful-completion-of",
+          "reason": "base tier 5 from lead source class \"first_party\" (SES)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.ses.com/news/press-release/ses-advances-nextgeneration-meo-strategy-following-successful-completion-of",
+          "outlet": "SES",
+          "class": "first_party",
+          "added": "2026-08-12",
+          "via": "initial"
+        },
+        {
+          "url": "https://satnews.com/2026/08/08/ses-completes-iris%C2%B2-milestone-and-finalizes-meo-satellite-capital-commitments/",
+          "outlet": "SatNews",
+          "class": "trade",
+          "added": "2026-08-12",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-12T05:30:34.231Z",
+      "image": {
+        "src": "/img/items/2026-08-07-ses-iris2-meo-capital-commitment.webp",
+        "credit": "Image: satnews.com",
+        "origin_url": "https://satnews.com/2026/08/08/ses-completes-iris%C2%B2-milestone-and-finalizes-meo-satellite-capital-commitments/",
+        "width": 960,
+        "height": 640
       }
     }
   ]

@@ -93,299 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Registry fill crawl (2026-07-12, interactive session, one-off)
-
-- 2026-07-12-A: Generation-specific entity slugs (blacksky-gen2) must not
-  take values from generation-agnostic pages: eoPortal's "BlackSky
-  Constellation" figures mix Gen-2 and Gen-3, and attributing the mixed
-  count to one generation failed verification. When a slug names a
-  sub-fleet, the cited sentence must name that sub-fleet.
-- 2026-07-12-B: Wikipedia infobox "website" values need the substantive
-  is-this-the-entity's-own-official-site check on the LOADED page, not
-  just a fetch: infoboxes handed us a Baikonur tour-operator site and two
-  dead Chinese-spaceport domains (expired cert, refused connection) that
-  read fine as quotes. Website fields verify by loading the VALUE URL.
-- 2026-07-12-C: When one page states two plausible numbers for the same
-  metric (Albedo: 6 initial deployment vs 24 ultimate constellation),
-  sats_planned takes the stated ultimate/target figure; the interim
-  milestone belongs in notes. Set as the verifier's fix on albedo-clarity.
-- 2026-07-12-D: A page-supported but dated claim can still be wrong to
-  ship: Wikipedia's Jilin-1 active count (130) carries its own "as of 15
-  June 2023" qualifier, three years stale, and CGSTL's own about page
-  self-contradicts (79 launched / 72 in orbit, undated). Orchestrator
-  reverted the field to null; a claimed-active count whose page-stated
-  date is years old misleads under a fresh as_of. Needs a fresher source.
-- 2026-07-12-E: pgc.umn.edu (Polar Geospatial Center commercial-imagery
-  guides) states clean constellation facts but is outside the relaxed
-  whitelist (operator/official, aggregators, press, Wikipedia); two
-  vantor fields citing it were reverted to null. Candidate source for
-  Florian to consider whitelisting: it is NSF-funded reference material.
-- 2026-07-12-F: Collector abstention discipline held: 129 of 231 targeted
-  nulls were correctly left unfilled rather than summed, derived, or
-  coerced from vague phrasing; zero-field candidate files are a valid,
-  cheap outcome. Verifier fail rate on submitted fields was 9 of 103.
-
-## Deep sweep, ~21h25m gap, unfiltered full source list (2026-07-12)
-
-- 2026-07-12-G: A search-engine WebSearch summary can silently splice
-  together two different years' events under one headline: "ISRO
-  LVM3-M6 BlueBird Block-2" search results blended a genuinely old
-  December 19, 2025 launch (confirmed by direct-fetching ISRO's own
-  mission page, which states the date plainly) with phrasing that read
-  as current ("Indian rocket launches AST SpaceMobile's next-gen
-  BlueBird 6 satellite"). Treated as stale and dropped only after a
-  direct fetch of the primary page; a WebSearch summary's tense/framing
-  is not proof of recency, confirms 2026-07-08-E on a new source shape.
-- 2026-07-12-H: Two different national wire services independently
-  covering the same event (JAXA/MHI's RV-X reusable-rocket hop test:
-  AP via ABC News, and Kyodo News via Nikkei Asia) count as TWO distinct
-  corroboration sources, not one -- the "one story, one source" collapse
-  rule is for reprints/rewrites of the SAME wire text, not for two wire
-  services each producing their own independent copy of a story. Worth
-  a direct fetch to confirm the byline actually says a different wire
-  (Nikkei's page plainly credited "(Kyodo)", not AP) before assuming a
-  second outlet is just an AP mirror.
-- 2026-07-12-I: A secondary/tertiary aggregator that explicitly credits
-  another outlet as its source (Venture Intelligence's Pixxel-Temasek
-  writeup stated it was citing Mint) is not independent corroboration
-  even though it lives on a different domain with different wording --
-  same handling as a wire-service reprint. Left the Pixxel funding-round
-  item single-sourced (NewsBytes, informal, crawl found_none) rather
-  than double-counting Venture Intelligence; it shipped honestly at
-  SNR 1, which is the model working for a still-unclosed, single-outlet
-  funding report.
-- 2026-07-12-J: Before treating a triage pass's "free corroboration"
-  finding as a fresh attach, check the target item's CURRENT sources/
-  secondary_urls array in items.json, not just the candidate queue --
-  confirms 2026-07-06-JJ on a much larger scale this run: of 11
-  candidate free-corroboration URLs two parallel triage agents surfaced
-  across a 791-entry deep-mode queue, 9 were already attached (most
-  from sweeps earlier the same day) and only 2 (Via Satellite on NSSL
-  Lane 1, SpacePolicyOnline on ispace/Starship) were genuinely new. A
-  triage agent working from a point-in-time snapshot of `existing[]`
-  cannot know what a same-day sweep already attached.
-- 2026-07-12-K: A company's own year-old press release resurfacing in a
-  fresh trade-press feature (Orbitworks' Altair constellation: primary
-  announcement dated May 2025, re-covered by a CNN feature July 9 2026)
-  is not a new event unless the new coverage states a new discrete fact
-  with its own date; CNN's piece was paywalled/geo-blocked (HTTP 451)
-  so the "is anything actually new here" question couldn't be answered
-  and the candidate was dropped rather than drafted on the strength of
-  a fresh publish date alone. Same caution applied to a Bundeswehr
-  SATCOMBw Stage 4 lead (OSINT Bluesky reposts) whose only substantive
-  reporting traced to March 2026 primary coverage, and a "Tiangong
-  critical problem" headline that turned out to describe a Nov
-  2025-May 2026 crisis already resolved (Shenzhou 22 rescue, crew
-  returned May 29) -- all three dropped silently as stale rather than
-  held, since holding is for genuine scope questions, not for stories
-  that turn out to predate the window.
-- 2026-07-12-L: Splitting a large deep-mode candidate queue (791 entries,
-  8460 lines of context output) across two parallel background triage
-  agents by line-range, each given the FULL existing[] dedup list and
-  the scope rules verbatim, worked well and stayed under any single
-  agent's context budget; both returned independently useful shortlists
-  plus a `free_corroboration` list (see 2026-07-12-J on verifying those)
-  in under 6 minutes each. Pitfall hit once and caught before launch:
-  a copy-paste placeholder (`[PASTE_EXISTING_LIST]`) left in the first
-  attempt's prompt instead of the actual dedup list would have made
-  both agents triage with zero dedup context; always re-read a
-  multi-agent prompt for unresolved placeholders before dispatching,
-  especially when reusing a prompt template across parallel agents.
-
-
-## Narrow same-day re-check, unfiltered full source list, ~42min gap (2026-07-12, second)
-
-- 2026-07-12-M: ITU Space Network filings (SNL) loaded real portal content on
-  direct fetch this run (first success since it was added as `unverified`);
-  flipped to `verified` per the mechanical rule even though it's still not a
-  dated filing list (confirms 2026-07-06-P's "clunky, phase-2 hardening
-  target" characterization, just no longer failing outright).
-- 2026-07-12-N: A day-old Forbes piece on SpaceX's post-IPO stock decline
-  ("down 25% since June IPO", verified via direct fetch, published Jul 10)
-  is not a fresh event: every figure in it (the $1.8T valuation, the $25B
-  bond sale, the $60B stock acquisition) restates facts already covered by
-  existing items (2026-06-12-spacex-nasdaq-ipo, 2026-06-23-spacex-25b-bond-offering,
-  2026-06-16-spacex-cursor-acquisition, 2026-07-07-spacex-wall-street-price-targets).
-  A stock-price move on an already-fully-covered mega-story is routine market
-  commentary, not a new discrete fact with its own date; left undrafted per
-  the 2026-07-12-K precedent rather than treated as a Florian-ruling "chase
-  it" case (that ruling is for events NEVER covered before, not sequels to
-  heavily-published ones).
-- 2026-07-12-O: Confirms the EchoStar/DISH DBS Chapter 11 scope exclusion
-  (2026-07-05-J) still holds on a later variant of the same story (the
-  actual Jun 30 filing, prompted by the delayed AT&T spectrum sale): legacy
-  pay-TV and terrestrial wireless subsidiaries stay out of scope regardless
-  of a SpaceX spectrum-purchase angle woven into later coverage.
-- 2026-07-12-P: Rocket Factory Augsburg's `/media` listing rendered almost
-  entirely undated legacy items again this run (same shape noted in
-  2026-07-06-S/2026-07-06-Z); worth a structural-touch fix to find a better
-  dated feed for RFA, since a WebFetch summary of this page is not reliably
-  usable for freshness checks.
-
-## Narrow same-day re-check, unfiltered full source list, ~14min gap (2026-07-12, third)
-
-- 2026-07-12-Q: NGA / NRO's contract-announcements page flipped verified ->
-  stale this run: the newest visible award has now read "2026-01-20" across
-  five consecutive checks (07-06, 07-08, 07-11, and twice on 07-12) with
-  zero movement despite being a genuinely dated content page (unlike RFA's
-  perpetually-undated listing, which is a different failure mode). Same
-  precedent as Capella's stale flip (2026-07-11-I): reachable, real content,
-  just not moving. Re-check occasionally rather than treating every 200 as
-  fresh.
-- 2026-07-12-R: europeanspaceflight.com itself (not just its substack
-  mirror) 403'd on a direct WebFetch this run, a new failure mode for the
-  bare site (prior notes, e.g. 2026-07-09-F, had it 403ing intermittently
-  but this is the first time both the site and the substack feed failed in
-  the same run back to back). Not yet flipped to dead/stale; the site has
-  recovered before. Andrew Parsonson's Bluesky account remains a working
-  fallback leg for his content when both the site and substack are down.
-- 2026-07-12-S: A ~14-minute re-check gap (harvester `window_start` showed
-  a misleading 2-day span again, confirming 2026-07-08-C/2026-07-11-J —
-  always filter candidates against the real `lastSweep` stamp, not
-  `window_start`) produced a genuinely empty queue: only 2 leftover
-  candidates, both out-of-scope investment-clickbait about SpaceX/AT&T
-  stock price moves, not space-industry events at all. Checking all 26
-  HTML sources plus all 16 signals channels directly (dispatched as 5
-  parallel background subagents, each with the lastSweep cutoff and
-  anti-fabrication instructions, per the 2026-07-11-H pattern) confirmed
-  nothing anywhere was newer than the cutoff. Zero items is the correct,
-  fully-checked outcome, not an under-covered run.
-- 2026-07-12-T: Reading a failed run's permission_denials_count: healthy
-  sweeps show ~3-6 denials (allowlist friction: the agent probes an
-  ad-hoc Bash line, gets denied, routes around it via allowed tools).
-  denials ~= num_turns means a fail-closed denial STORM in the
-  permission layer (45/45 on the 05:41 dispatch, transient, identical
-  config succeeded 20 min later): re-dispatch before debugging config.
-  Separately, GitHub cron lag of 40-70 min is real and platform-side;
-  a "missed" slot may still fire. show_full_output on update-items
-  exposes the transcript for exactly this triage.
-
-
-## Timeline fill crawl (2026-07-12, interactive session, one-off)
-
-- 2026-07-12-U: A press release's publication dateline is not the event
-  date when the body says "yesterday"/"Sunday": two launch dates shipped
-  one day late this way (Sentinel-3 contract, Falcon 9 CRS-1). Check the
-  body's relative-date framing before trusting the header date.
-- 2026-07-12-V: Verifier "fix" verdicts must write the corrected value
-  INTO the event's own field (date/headline/quote); one verifier put a
-  date correction only in its reason text and the deterministic merge
-  carried the wrong date. Verify prompts now say so explicitly; the
-  orchestrator audit (compare original_value to the stored value when
-  the reason mentions a correction) caught the one case in 72 fixes.
-- 2026-07-12-W: Wire-syndication hosts (globenewswire, prnewswire,
-  businesswire copies on other domains) are NOT eligible event sources
-  even when they carry the company's own release text verbatim; ~10
-  events failed on this. The company's own newsroom or a dated
-  joint-announcement page on an involved party's domain is the fix.
-  Operator IR domains (iridium.com, investors.globalstar.com) 403 this
-  fetcher, so Gunter's/SpaceNews fallbacks are often the practical path.
-- 2026-07-12-X: Headline scope-creep is the dominant collector defect on
-  timelines: true-but-unsourced enrichment ("completing the
-  constellation", launch site/vehicle names, "first fully successful")
-  imported from adjacent events or general knowledge onto a page that
-  states only the bare fact. Verifiers trimmed dozens; collector prompts
-  should say "treat each event's cited page in isolation".
-
-## Launch cadence ruling, interactive investigation (2026-07-12)
-
-- 2026-07-12-A: RULING (Florian, 2026-07-12, supersedes 2026-07-06-I):
-  routine megaconstellation batch launches (Starlink, SpaceSail/G60,
-  Guowang, Kuiper and peers) PUBLISH at noise. CLAUDE.md's impact scale
-  is the rule as written: a scheduled launch succeeding on schedule is
-  the canonical noise example, and noise is a publishable tier, not an
-  exclusion. Never discard an orbital launch candidate as "routine
-  cadence"; the 2026-07-06-I not-itemized standard is revoked. Equal
-  weight still applies: US and Chinese cadence launches get the same
-  treatment, now by both publishing.
-- 2026-07-12-B: The discard that exposed this classified launch
-  candidates by HEADLINE SHAPE and never read the body: the consumed
-  space.com "35th mission" piece contained the fact that B1067 had
-  extended the fleet reuse record to 36 flights on July 9, an event
-  this feed itemized when the record was set at 35. Before setting any
-  launch item's impact, scan the article body for records, firsts,
-  failures, and anomalies; they raise impact above noise.
-- 2026-07-12-C: Two launches by the same provider inside 7 days are
-  DISTINCT events (different mission/booster), not dedup matches;
-  attest them with dedup_distinct [{id, reason}], which the gate
-  supports (finalize-sweep, SNR_PLAN A2). Both July 9-11 Falcon 9
-  items merged clean first pass this way.
-- 2026-07-12-D: Retroactivity of 2026-07-12-A for launches discarded
-  under the old precedent (e.g. the July 4 SpaceSail batch, Xinhua) is
-  queued in held.json for Florian; do not backfill old cadence
-  launches until he rules.
-- 2026-07-12-E: updates[].patch cannot add links: finalize rebuilds
-  secondary_urls from the existing item plus attach entries, so a patch
-  touching secondary_urls is a silent no-op that still counts as "1
-  updated". Post-hoc links join via attach with an honest class; a lead
-  upgrade needs patch.source_url plus a full rescore block (the gate's
-  own error message says so).
-- 2026-07-12-F: the anti-spoof host set only reads registry website
-  values that parse as URLs. Ten profiles carried schemeless values
-  ("www.nato.int" style) and their first-party/official paths silently
-  never worked; the CSA and IN-SPACe classing failures in the backfill
-  notes trace to this. All ten normalized to https:// form 2026-07-12.
-  Always write registry website values as full URLs.
-- 2026-07-12-G: batch interactive edits into ONE finalize. Every
-  finalize demands its own attested 6-query discovery matrix, so three
-  sequential finalizes in one session cost three matrix passes.
-
-## Normal-mode sweep, ~8h35m gap, unfiltered full source list (2026-07-12, fourth)
-
-- 2026-07-12-H: TASK 2026-07-08-I2 COMPLETE. Chased the Airbus/Leonardo/
-  Thales "Project Bromo" space-merger MOU and OHB's antitrust opposition,
-  both never covered. Published both dated on their actual event dates
-  (2025-10-23 MOU, 2025-11-07 OHB opposition) per the standing "chase old
-  important events" ruling, months outside this run's discovery window.
-  Corroboration lesson: Airbus's own MOU release (airbus.com) and
-  Leonardo's (leonardo.com) both FAIL the anti-spoof gate as first_party
-  -- Airbus's registry `website` is `space-solutions.airbus.com`, not
-  `www.airbus.com` (sibling subdomain, same trap as 2026-07-06-W/FF), and
-  Leonardo has no registry profile at all (2026-07-07-K pattern). Led
-  with Via Satellite instead (trade, gate-safe) and linked airbus.com
-  unscored in secondary_urls; the item still landed SNR 3 on 4 distinct
-  trade sources (avitrader.com and airdatanews.com, both aviation-trade
-  outlets not previously in sources.json, turned out to be independently
-  fetchable same-day writeups, not wire rewrites of one release).
-- 2026-07-12-I: spacenews.com returned HTTP 429 on every WebFetch attempt
-  this entire session (4+ tries, ~90 minutes apart, never recovered) --
-  a session-long outage, not the usual transient one-off. Left a
-  candidate (NASA/SpaceX commercial-crew contract extension, ~$1.7B per
-  search snippets only) undrafted rather than sourcing figures from a
-  WebSearch summary alone; flag for a future sweep to pick up once
-  spacenews.com is reachable again.
-- 2026-07-12-J: A EU-institution financing story (Intesa Sanpaolo/EIB/ESA
-  space-lending facility for Italian aerospace SMEs, announced 2026-07-08,
-  never covered) hit the SAME gate trap as non-US government domains
-  (2026-07-08-F2/Q): eib.org is not in FIXED_OFFICIAL_HOSTS (only
-  `europa.eu` is, and eib.org doesn't match it) and neither EIB nor Intesa
-  Sanpaolo have registry profiles, so their own pages can't be classed
-  official_record/first_party despite being genuinely the concerned
-  parties. Led with Italpress (Italian national wire agency, mainstream)
-  instead, corroborated by Devdiscourse (informal), linked eib.org and
-  group.intesasanpaolo.com unscored -- landed SNR 4. Worth remembering
-  Italpress and Devdiscourse as fetchable outlets for Italy-adjacent
-  space-finance stories.
-- 2026-07-12-K: This run's harvester queue (63 candidates after prefilter)
-  was almost entirely SpaceX stock/IPO clickbait (Motley Fool, Yahoo
-  Finance, Benzinga, Seeking Alpha framing SpaceX's Nasdaq-100 listing,
-  price targets, "Ex-Elon" ETFs) plus FAA/Bluesky launch-schedule chatter
-  for a forward-scheduled Starship Flight 13 (not yet flown, correctly
-  left for a future sweep per 2026-07-09-G) -- zero genuine new-space
-  events survived triage from the queue itself; everything drafted this
-  run came from the discovery pass. A fully quiet direct-fetch (25 HTML
-  sources) and signals pass (17/17 channels) confirms this wasn't an
-  under-covered run, just a queue saturated with financial-media noise.
-- 2026-07-12-L: A one-off scope call: ISRO's Gaganyaan crew-module
-  qualification-test milestone (widely covered, isro.gov.in +
-  many Indian outlets) was discarded silently as out of scope -- no
-  commercial contractor or contract is named in any version of the
-  story, and CLAUDE.md's human-spaceflight scope requires "contracts and
-  outcomes affect commercial providers." A pure national crewed-program
-  test milestone with zero commercial angle stated reads the same as the
-  Aeolus-2/NATO-HALO/NASA-STRIDE institutional-exclusion precedents, just
-  clear enough this time to discard rather than hold.
-
 ## Normal-mode sweep, ~13h gap, unfiltered full source list (2026-07-13)
 
 - 2026-07-13-A: A genuinely never-covered, month-old M&A story surfaced
@@ -3800,4 +3507,57 @@ a newer entry if a lesson changes.
   permission gate on the first attempt, continuing the standing pattern
   since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 8 new, 0 updated, 1 held") as the build-health
+  signal.
+
+## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-12)
+
+- 2026-08-12-A: The harvester queue was ~90% a single Google-News wave
+  (dozens of near-identical outlets covering NASA inviting ISRO to join
+  its lunar South Pole Moon Base, from the Aug 5-6 India-US Civil Space
+  Joint Working Group meeting) plus SpaceX stock/IPO chatter; zero
+  drafts came from the queue itself. Treated the NASA-ISRO invite as a
+  near-duplicate of the still-open Serbia Artemis Accords scope question
+  already sitting in held.json (institutional bilateral space diplomacy,
+  no stated commercial-contract or market-access consequence in any
+  source checked) and skipped filing a second hold entry for the same
+  recurring shape, per the standing 2026-07-19-C/2026-07-20-B practice.
+- 2026-08-12-B: A guessed press-release URL on a company's own newsroom
+  can land on a stale cached page with the same slug pattern as a much
+  older release: the first fetch of
+  `fireflyspace.com/news/firefly-aerospace-announces-multi-launch-agreement-with-lockheed-martin-for-25-alpha-launches/`
+  returned Firefly's original June 2024 Lockheed Martin deal, not the
+  Aug 11, 2026 extension; a second, more specific URL guess
+  (`.../firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/`)
+  landed on the correct, dated release. Always check a fetched company
+  press release's own stated date against the expected event before
+  citing it, even when the URL and headline look right at a glance.
+- 2026-08-12-C: SES's Aug 7 IRIS² Rendez-vous 1 / MEO capital-commitment
+  release (up to EUR1.35B, 18 MEO satellites, 2030 service entry) had
+  never been drafted under any id despite direct first-party sourcing
+  and trade pickup (SatNews) being trivially findable -- a genuine,
+  never-covered gap chased under the standing predates-window
+  convention, five days before this sweep. Worth periodically checking
+  a constellation operator's own newsroom for milestone/financial
+  releases the queue's headline-matching legs (Google News, Bluesky
+  search) don't reliably surface, especially ones framed as technical
+  milestones ("Rendez-vous 1") rather than contract-award language.
+- 2026-08-12-D: Two Polish-focused informal outlets (Goniec, a
+  Polish-diaspora news site, and Pravda Poland) independently reported
+  Starlink quietly excluding Poland from its "Europe" roaming zone
+  (effective Aug 17), each citing different specifics (Goniec: exact
+  PLN pricing tiers and a direct quote from Starlink's own help page;
+  Pravda Poland: the list of countries still in the zone and the
+  Ukraine cross-border impact) -- read as independent reporting, not a
+  rewrite of one another, and both counted. TVP World's own English
+  writeup of the same story (the outlet that broke it) returned only
+  its bare headline on two separate WebFetch attempts with no body
+  text extractable; left uncited per the standing "only cite pages
+  with genuinely fetched content" rule rather than force it in as a
+  third source. Could not fetch Starlink's own help-center page
+  (starlink.com, which matches the registry's first_party host) to
+  attempt a tier-5 lead; it returned empty content both times tried.
+- 2026-08-12-E: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") as the build-health
   signal.
