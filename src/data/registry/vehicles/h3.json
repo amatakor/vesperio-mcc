@@ -98,30 +98,30 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 8,
-    "source": "https://en.wikipedia.org/wiki/H3_(rocket)",
-    "as_of": "2026-07-05"
+    "value": 9,
+    "source": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+    "as_of": "2026-08-13"
   },
   "flights_successful": {
-    "value": 6,
-    "source": "https://en.wikipedia.org/wiki/H3_(rocket)",
-    "as_of": "2026-07-05"
+    "value": 7,
+    "source": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+    "as_of": "2026-08-13"
   },
   "last_flight_date": {
-    "value": "2026-06-12",
-    "source": "https://global.jaxa.jp/press/2026/06/20260612-1_e.html",
-    "as_of": "2026-07-13"
+    "value": "2026-08-11",
+    "source": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+    "as_of": "2026-08-13"
   },
   "next_flight_date": {
-    "value": "2026-08-06",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=100&mode=normal",
-    "as_of": "2026-07-05",
+    "value": "2026-10-31",
+    "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=H3&limit=10",
+    "as_of": "2026-08-13",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=H3&limit=10",
+        "reason": "Launch Library upcoming-launches endpoint, weekly maintenance refresh 2026-08-13"
       },
       "modifiers": [],
       "final": 4,
@@ -163,7 +163,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). last_flight_date corrected from 2025-12-22 to 2026-06-12 (JAXA flight No.6, the boosterless H3-30S debut) using JAXA's own first-party press release, already the source for the matching events-list entry; the field had gone stale relative to the events already on file. flights_total (8) and flights_successful (6), sourced from Wikipedia as_of 2026-07-05 (after the June flight), already appear to include it per the SpaceNews item in items.json (id 2026-06-12-jaxa-h3-30s-first-flight, which counts the June 12 flight as H3's eighth overall); left unchanged, not independently re-verified this run. next_flight_date (2026-08-06, LL as_of 2026-07-05) not re-checked (LL unreachable); left as-is.",
+  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded; the aggregate carried here follows Wikipedia's and JAXA's own sequential family-wide numbering instead. Weekly maintenance 2026-08-13: landed crossfeed candidate 2026-08-11-jaxa-h3-qzs7-michibiki-launch:h3.flights_total (flag_refresh) from JAXA's own first-party press release, which states this launch was \"H3 Launch Vehicle flight No.9\" and confirms QZS-7 separation and orbit injection succeeded; flights_total 8->9, flights_successful 6->7, last_flight_date 2026-06-12->2026-08-11, all re-sourced to the JAXA release. next_flight_date (2026-08-06) was already past due and superseded by this flight; refreshed to 2026-10-31 (MMX, H3-24 configuration) from Launch Library's upcoming-launches endpoint, the nearest dated H3 flight it lists (several others carry only year precision).",
   "payload_gto_kg": {
     "value": 6500,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",
@@ -268,6 +268,12 @@
       "headline": "JAXA flies H3 Launch Vehicle flight No.6, its 30 configuration test vehicle",
       "source": "https://global.jaxa.jp/press/2026/06/20260612-1_e.html",
       "as_of": "2026-07-12"
+    },
+    {
+      "date": "2026-08-11",
+      "headline": "JAXA launches QZS-7 (Michibiki 7) on H3's ninth flight",
+      "source": "https://global.jaxa.jp/press/2026/08/20260811-1_e.html",
+      "as_of": "2026-08-13"
     }
   ]
 }
