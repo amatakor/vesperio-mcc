@@ -1472,3 +1472,125 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   Aeolus-2/NATO-HALO/NASA-STRIDE institutional-exclusion precedents, just
   clear enough this time to discard rather than hold.
 
+## Normal-mode sweep, ~13h gap, unfiltered full source list (2026-07-13)
+
+- 2026-07-13-A: A genuinely never-covered, month-old M&A story surfaced
+  through the discovery pass, not the queue: Voyager Technologies' June 2
+  agreement to acquire Astrobotic (~$300M, cash+stock) predates even the
+  2026-07-05-J 30-day backfill's source list and window, so no prior sweep
+  had a path to it. Chased and published dated on the June 2 announcement
+  per the standing 2026-07-08-I2 ruling (a further application, after
+  Project Bromo/OHB and IRIDE). Worth periodically re-running broad "space
+  company acquisition/funding" discovery queries even on narrow-gap
+  sweeps; this kind of gap doesn't self-heal from the harvester queue
+  alone.
+- 2026-07-13-B: Voyager Technologies' registry `website`
+  (`voyagertechnologies.com`) matches its press-release domain directly, no
+  subdomain trap (contrast ULA/Q4-IR/Airbus cases) -- first_party classing
+  passed the anti-spoof gate cleanly on the first attempt. Astrobotic
+  itself has no registry profile, so its own press release was linked
+  unscored in secondary_urls per the 2026-07-07-K pattern rather than
+  double-counted as a second first_party source.
+- 2026-07-13-C: technical.ly (Pittsburgh-focused regional tech-business
+  outlet) produced genuine independent reporting on the Astrobotic deal --
+  a direct quote from an Astrobotic spokesperson not in the press release,
+  plus original Pittsburgh/CMU-spinout context -- confirmed via direct
+  fetch, not a wire rewrite. Usable as a trade-tier corroboration source
+  for Pittsburgh-based space companies (Astrobotic) going forward.
+- 2026-07-13-D: A queue candidate resurfacing an old FCC filing under
+  sensational framing ("SpaceX asks to launch one million satellites...
+  Kardashev II", a Ukrainian-site rewrite dated today) traced back to a
+  January 30 / February 4, 2026 FCC filing already stale by five-plus
+  months -- same resurfacing-old-news trap as 2026-07-08-E/2026-07-12-G,
+  confirmed via direct search before drafting anything.
+- 2026-07-13-E: Two queue candidates that read as fresh (a Queensland beach
+  space-debris story, an FCC Reflect Orbital space-mirror approval) both
+  checked out as real events but were already published under existing ids
+  (2026-07-06 and 2026-07-09 respectively) once cross-checked against
+  existing[] -- confirms the standing discipline of checking existing[]
+  before treating any discovery/queue hit as new, even when its wording
+  reads like breaking news.
+
+## Narrow same-day re-check, ~47min gap, unfiltered full source list (2026-07-13, second)
+
+- 2026-07-13-F: A sensationalized Futurism queue-candidate headline
+  ("Chinese Spacecraft Approaches Mysterious Object Near Earth") traced to
+  a genuinely never-covered, real science-category event: Tianwen-2's July
+  6 arrival at 20km of near-Earth asteroid Kamo'oalewa (2016 HO3) and its
+  first images, widely reported (SpaceNews, Xinhua, Space.com, Scientific
+  American) but never drafted by any prior sweep. CASC's own newsroom
+  (english.spacechina.com, registry-matched first_party per 2026-07-10-G)
+  had independently covered it too, giving a clean first_party lead.
+  Published dated to the July 6 CNSA/CASC announcement per the standing
+  event-date convention, at SNR 5. Don't dismiss a clickbait-framed queue
+  title on sight; check what the underlying event actually is before
+  discarding it as noise.
+- 2026-07-13-G: Similarly, a Bluesky daily-roundup post's one-line mention
+  ("ESA contracts a company to build an asteroid-landing cubesat") led to
+  a second never-covered event: ESA's July 2 contract with Spain's EMXYS
+  to build the Don Quijote CubeSat lander for the Ramses/Apophis mission
+  (a "provider selection" event, explicitly a science-category example
+  per CLAUDE.md). ESA's own registry-matched domain was first_party and
+  direct; europeanspaceflight.com (which apparently broke the story first,
+  per Andrew Parsonson's July 11 Bluesky post) was 403'd again, consistent
+  with the standing intermittent-block pattern -- led with ESA's own page
+  instead and treated the contract-value figure some secondary blogs
+  quoted (~EUR 10M) as unverifiable since only the blocked source stated
+  it; omitted rather than guessed, per the hard "numbers copied, not
+  paraphrased, or omit them" rule.
+- 2026-07-13-H: A genuinely quiet ~47-minute gap (all 24 HTML-only sources
+  and all 17 signals channels dispatched to parallel background agents,
+  8-query discovery matrix run directly) produced zero in-window
+  candidates from any of those legs -- both published items this run came
+  from chasing older, indirectly-surfaced events per the standing
+  "chase important events predating the window" ruling, not from the
+  window itself. Confirms narrow re-checks are legitimate even when their
+  headline yield is entirely off-window in origin.
+
+## Normal-mode sweep, ~10h36m gap, unfiltered full source list (2026-07-13, third)
+
+- 2026-07-13-I: The harvester queue (130 candidates after prefilter) was
+  almost entirely SpaceX stock/IPO clickbait again (confirms 2026-07-12-K);
+  every genuine new item this run came from the discovery pass or from
+  reading a queue candidate's body past a misleading headline (Reditus
+  Space's ENOS reentry vehicle, Voyager's completed Astrobotic acquisition,
+  and a bundled SpaceNews China piece covering both the Long March 10C
+  commercial-workhorse designation and a separate company's, China
+  Commercial Rocket Co.'s, recapitalization -- drafted as two distinct
+  items citing the same source article since the two facts belong to two
+  unrelated actors).
+- 2026-07-13-J: faa.gov 403'd this run on a direct WebFetch of a specific
+  newsroom URL found via WebSearch (faa.gov/newsroom/faa-closes-spacex-
+  starship-mishap-investigation), same failure mode as other .gov domains
+  in this project (fcc.gov, sam.gov). Led with TechCrunch instead (fetched
+  cleanly, classed mainstream per existing precedent for this outlet) and
+  corroborated with a Reuters wire copy (byline Joey Roulette, read via an
+  AOL mirror since cnbc.com also 403'd) plus Space.com.
+- 2026-07-13-K: The same-company-plus-category dedup heuristic (2026-07-09-B,
+  2026-07-10-C/F) tripped twice in one run on genuinely unrelated events:
+  SpaceX + "regulatory" matched the FAA's Starship Flight 12 closure against
+  the unrelated Earthjustice orbital-data-center FCC petition (2026-07-08),
+  and European Space Agency + "financial" matched ESA's own 2026 Space
+  Economy Report against the unrelated EIB/Intesa Sanpaolo Italian-SME
+  lending facility (2026-07-08). Both cleared with dedup_distinct in one
+  pass; confirms this heuristic fires on ANY shared company (even a
+  frequently-covered mega-actor like SpaceX or an institution like ESA)
+  regardless of how unrelated the two stories are, not just the
+  multi-subsidiary or same-program shapes seen before.
+- 2026-07-13-L: A funding-round candidate that reads fresh in a queue entry
+  can be old news wearing a new publish date: SpaceNews's QOSMIC seed-round
+  piece (queued at 15:10 UTC July 13, article dateline itself misprinted
+  "July 15, 2026") turned out to be the same $3.33M round Entrackr and
+  five other Indian outlets had already covered on June 24, 2026, a full
+  three weeks earlier -- caught by checking one mirror's actual byline
+  date rather than trusting the queue's `published_at` stamp. Dropped as
+  stale; a small routine seed round doesn't qualify for the "chase
+  important events predating the window" exception (that's for
+  notable/seismic events only).
+- 2026-07-13-M: Marcia Smith's Bluesky (whitelisted signal, checked as part
+  of the mandatory fetchable-channel leg) posted the FAA Starship closure
+  fact with a faa.gov link before the item was fully drafted from the
+  harvester queue's Google News/Reuters coverage -- a useful independent
+  confirmation signal, though the formal scoring sources ended up being
+  TechCrunch/Reuters/Space.com since faa.gov itself couldn't be fetched.
+
