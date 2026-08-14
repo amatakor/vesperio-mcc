@@ -93,156 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~10h11m gap, unfiltered full source list (2026-07-14)
-
-- 2026-07-14-A: First application of the 2026-07-12-A megaconstellation-cadence
-  ruling since it was written: drafted a single routine Starlink batch launch
-  (Starlink Group 15-14, Vandenberg, no reuse record or first) at impact
-  `noise`, sourced to Launch Library (computed) plus NASASpaceflight's preview
-  (trade). No sweep in the ~10 days since the ruling had actually itemized a
-  non-record Starlink batch despite dozens flying; this run did, per the
-  written rule's plain text ("never discard... routine batches... publish at
-  noise"). Needed `dedup_distinct` against three other SpaceX/launch-category
-  items inside 7 days (a Rocket Lab CFO commentary item and two other boosters'
-  reuse-record launches) -- the same-company-plus-category dedup heuristic
-  fires on any two SpaceX launch items regardless of which booster/mission.
-  Flag for Florian: if the intent was narrower than the literal text (e.g.
-  only cadence launches that are otherwise slow news days, or one per
-  provider per sweep), the rule as written will itemize every non-record
-  Starlink/Guowang/G60 batch every sweep going forward.
-- 2026-07-14-B: finalize-sweep's anti-spoof gate (`FIXED_OFFICIAL_HOSTS` in
-  scripts/finalize-sweep.ts) has no `.mil` rule, only `.gov` and a fixed list
-  (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
-  itu.int, unoosa.org, europa.eu). A genuine SDA press release on sda.mil
-  (Space Development Agency, an official DoD source) cannot be classed
-  `official_record` even though it's exactly the kind of source that class
-  exists for. Worked around it by leading with a trade source (SpaceNews)
-  that covers the full two-company story and attaching the contractor's own
-  newsroom page (first_party, registry-matched) as corroboration instead.
-  Worth a structural-touch fix to add `.mil` (or specific SDA/Space Force
-  hosts) to the fixed official-host list.
-- 2026-07-14-C: Two independent trade/regional outlets covering the same
-  government press release in their own words (SDA's L3Harris/Sierra Space
-  Tranche 3 award: SpaceNews + Via Satellite; Sonatel's Gandoul teleport
-  upgrade: Via Satellite + Space in Africa + TechAfrica News) counted as
-  distinct corroboration sources, not a wire rewrite -- each had its own
-  framing/quotes rather than reprinting one press release's exact text,
-  consistent with the 2026-07-12-H JAXA/RV-X precedent (two wire services)
-  extended here to two/three trade outlets on one government or corporate
-  release.
-- 2026-07-14-D: A Google News RSS redirect URL for a NASA Science blog post
-  ("NASA's SunRISE Mission Changes Launch Vehicle to SpaceX Falcon Heavy")
-  failed to resolve via WebFetch (confirms 2026-07-08-C2's dead-redirect
-  pattern), but a plain WebSearch for the exact headline surfaced the direct
-  science.nasa.gov URL, which fetched cleanly as a first-party/official
-  .gov source. Try a headline WebSearch before giving up on a Google News
-  redirect that won't resolve.
-
-## Narrow same-day re-check, ~3h17m gap, unfiltered full source list (2026-07-14, second)
-
-- 2026-07-14-E: federalregister.gov qualifies as `official_record` even
-  though it's absent from `FIXED_OFFICIAL_HOSTS`: finalize-sweep's
-  anti-spoof gate has a separate, unconditional `host.endsWith(".gov")`
-  check (scripts/finalize-sweep.ts) that fires before the fixed-list/
-  registry-host checks, and federalregister.gov ends in `.gov`. Useful
-  for FAA/agency Federal Register notices generally. The document page
-  itself is bot-walled (redirects to unblock.federalregister.gov, a
-  CAPTCHA page) on a plain WebFetch, but the Federal Register's own API
-  (`federalregister.gov/api/v1/documents/<doc-number>.json`) returns the
-  title, abstract, docket number, and comment-period dates cleanly and
-  counts as fetching that same official source.
-- 2026-07-14-F: The same-company-plus-category dedup heuristic can trip
-  TWICE on one new item against two different unrelated existing items:
-  a new FAA draft-EA item on SpaceX Starship Pacific reentry zones
-  matched both 2026-07-13-faa-closes-starship-flight12-investigation
-  (same agency, different proceeding) and
-  2026-07-08-earthjustice-fcc-orbital-data-center-peis (different
-  agency entirely, FCC vs FAA, third-party petitioner) purely on
-  shared company "SpaceX" + category "regulatory" within 7 days.
-  finalize-sweep rejects until every matching existing id gets its own
-  dedup_distinct entry, not just the first one found -- read the
-  rejection message for the specific id it names and expect it may
-  need a second pass if another match exists it didn't report yet.
-- 2026-07-14-G: A Google News EO-tagged headline ("Greece Launches First
-  National Earth Observation Microsatellite") reads like new discovery
-  but was the same Hyperion GR-1 launch already published July 7 as
-  2026-07-07-open-cosmos-balearic-greece-satellites, just reframed by a
-  different outlet a week later -- confirms the standing discipline of
-  checking existing[] before drafting any queue/search hit, even ones
-  with a fresh Google News timestamp.
-- 2026-07-14-H: A europeanspaceflight.com WebSearch hit ("ESA Backs
-  EuroSpaceport's North Sea Launch Site") that reads current turned out
-  to be dated July 16, 2025 on direct fetch -- a full year stale -- and
-  doubly out of scope anyway (SpaceForest's Perun is a suborbital
-  vehicle, not the orbital-only launch-vehicle scope). A second reminder
-  that a WebSearch result's apparent freshness proves nothing; open the
-  article and read its actual dateline.
-- 2026-07-14-I: `bun scripts/check-feed.ts` was denied by the interactive
-  session's permission gate on the first attempt (confirms
-  2026-07-11-B on a new script, not just `bun run build`); did not
-  retry past one attempt since finalize-sweep's own internal validators
-  already confirmed a clean merge ("merged 1 new, 0 updated, 0 held").
-
-## Normal-mode sweep, ~8h12m gap, unfiltered full source list (2026-07-14, third)
-
-- 2026-07-14-J: `bun run build` was denied twice by this interactive
-  session's permission gate; per 2026-07-11-B/2026-07-14-I, stopped after
-  two attempts and relied on finalize-sweep's own schema/anti-spoof
-  validation ("merged 6 new, 0 updated, 1 held") plus a read-only `jq`
-  spot-check of the merged items instead. This gate denial for
-  build/check scripts (as opposed to read-only `bun scripts/*-context.ts`
-  reads) looks like a standing property of this session type, not a
-  one-off.
-- 2026-07-14-K: A company's own newsroom (`news.flyfrontier.com`) is a
-  genuine first-party press release, but finalize-sweep's anti-spoof gate
-  rejects `first_party` for ANY domain not in `FIXED_OFFICIAL_HOSTS` or
-  the registry's recorded hosts -- and airlines like Frontier are not
-  registry entities (they're not a tracked constellation/vehicle/
-  spaceport/ecosystem org), so the gate has no host to match against.
-  Worked around exactly like the 2026-07-14-B SDA/.mil case: led with a
-  trade source (The Points Guy) that independently reported the same
-  facts, kept the company newsroom link in `secondary_urls` for readers,
-  and dropped it from `scoring.sources` entirely rather than mis-class it
-  as wire_pr/trade/informal.
-- 2026-07-14-L: The same-company-plus-category dedup heuristic fired
-  four separate times against four different unrelated existing items
-  from exactly one week earlier (2026-07-07, all four sharing company
-  "SpaceX"): a Wall-Street-price-target commentary, a Nasdaq-100
-  inclusion event, a Rocket Lab CFO rideshare-access quote (category
-  launch), and the original Starlink Aviation price-doubling announcement
-  (category product, matched twice: once against a new MRV launch-date
-  item and once against a commentary item that was itself a reaction to
-  that same price hike). All four cleared with one `dedup_distinct` entry
-  apiece; confirms 2026-07-14-F's finding that a single new item, or even
-  a batch of same-day items, can rack up several distinct matches against
-  one busy prior date for the same mega-actor.
-- 2026-07-14-M: A commentary item that is itself a reaction to an
-  existing factual item (a private-jet CEO's on-the-record complaint
-  about the Starlink Aviation price hike, published a week after the
-  original announcement) still needs `dedup_distinct` against that
-  original item, not an `updates[].attach` -- commentary must stand as
-  its own item and never reinforce a factual item's SNR (CLAUDE.md), so
-  treating the reaction as a distinct dedup-attested event rather than a
-  same-event update is the correct shape even though it is a direct
-  response to the earlier story.
-- 2026-07-14-N: Vivienne Machi's Aviation Week author page surfaced two
-  July 14-dated pieces; one (Northrop Grumman's MRV launch-date setting)
-  was genuinely new, the other (Space Force/Impulse Space NSSL Lane 1
-  vendor-pool piece) turned out to be her write-up of the already-
-  published July 8 event -- always check existing[] by event, not by the
-  freshness of the byline date, even for a whitelisted signal's own
-  reporting.
-- 2026-07-14-O: A month-old, conflict-adjacent government statement
-  (Iran/Fars News declaring Starlink ground stations military targets,
-  ~June 11) resurfacing today only through low-quality stock-market
-  clickbait ("Iran Just Put SpaceX in Its Crosshairs") was held rather
-  than drafted or discarded: it plausibly fits the geopolitical carve-in
-  but also reads as conflict/operational-use commentary the scope
-  otherwise excludes, and chasing it now would mean backfilling a
-  five-week-old event on the strength of financial punditry rather than
-  fresh reporting. Same pattern as 2026-07-06-J: a genuine scope question
-  belongs in `held`, not silently published or silently dropped.
-
 ## Narrow same-day re-check, ~11h40m gap, unfiltered full source list (2026-07-15)
 
 - 2026-07-15-A: A trade write-up (Via Satellite, July 14) of a government
@@ -3581,3 +3431,51 @@ a newer entry if a lesson changes.
   confirmation ("merged 8 new, 0 updated, 0 held") plus a direct `jq`
   spot-check of all eight merged items' `snr`/`category`/`impact`
   fields as the build-health signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-14)
+
+- 2026-08-14-A: The harvester queue (517 consumed, 9 collapsed) was
+  almost entirely SpaceX stock/IPO-stake speculation (dozens of Motley
+  Fool/Yahoo Finance/Benzinga headlines off Musk's 48.4% stake
+  disclosure) plus off-topic Futurism/BBC content; zero drafts came
+  from the queue itself. Every genuine candidate this run (CesiumAstro/
+  Jariet acquisition, the Space Force $60M multi-vendor SDN test award,
+  Firefly's DIU Elytra deorbit design contract) came directly from the
+  trade-press legs (SpaceNews) already in sources.json, confirming the
+  2026-08-09-G/2026-08-12-A pattern that the queue is now mostly noise
+  three-plus months post-SpaceX-IPO.
+- 2026-08-14-B: A signals-pass Bluesky find (Andrew Parsonson: UK
+  rocket builder Gravitilab entered liquidation) was judged out of
+  scope: Gravitilab builds suborbital-only hybrid test rockets, and
+  CLAUDE.md's launch-vehicle scope is explicitly "orbital only." First
+  time this exact carve-out (suborbital rocket *manufacturer*, not
+  tourism) has come up; flag for Florian if a suborbital launch-vehicle
+  company's insolvency should actually be in scope as an ecosystem
+  event even though its vehicles never qualify individually.
+- 2026-08-14-C: A same-day WebSearch surfaced a live reversal of an
+  already-published item: SpaceX restored Poland to Starlink's Europe
+  roaming zone (2026-08-11-starlink-poland-roaming-exclusion) after the
+  Polish Digital Affairs Minister said SpaceX backed down, less than 3
+  days after the original exclusion was reported. Patched the existing
+  item's headline and copy to reflect the resolution rather than
+  publishing a second item, and attached Kyiv Independent (mainstream,
+  general-interest coverage of the Ukraine angle) plus an AFP wire copy
+  via Free Malaysia Today as the first non-informal sources on that
+  item, landing a `mainstream_pickup` bump (SNR 2 to 3). Worth noting:
+  the item's original lead (Goniec, informal) never got corrected or
+  upgraded even though the underlying claim briefly went stale-then-
+  reversed within 72 hours; a same-week reversal update is a normal,
+  healthy edit-queue outcome here, not a strike against the original
+  source.
+- 2026-08-14-D: `europeanspaceflight.substack.com/feed` 403'd on direct
+  WebFetch this run (the bare `europeanspaceflight.com` site was
+  skipped this run per rotation, not tried); Andrew Parsonson's only
+  retrievable content was via his Bluesky leg. First time the substack
+  RSS leg specifically (not the bare site, which has its own
+  intermittent-block history per 2026-07-16-H) has failed.
+- 2026-08-14-E: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 1 updated, 0 held") plus a direct read
+  of all four touched items' `snr`/`category`/`impact` fields as the
+  build-health signal.
