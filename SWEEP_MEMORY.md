@@ -3479,3 +3479,48 @@ a newer entry if a lesson changes.
   confirmation ("merged 3 new, 1 updated, 0 held") plus a direct read
   of all four touched items' `snr`/`category`/`impact` fields as the
   build-health signal.
+
+## Normal-mode sweep, ~11h52m gap, unfiltered full source list (2026-08-14, second)
+
+- 2026-08-14-F: A same-company-plus-category dedup false positive fired
+  between a brand-new Blue Origin item (the LC-36B second-pad
+  construction plan, category launch) and the existing Aug 5
+  BE-4-valve root-cause item (also category launch, 7 days back) purely
+  on shared company + category, despite covering unrelated facts (an
+  infrastructure buildout decision vs. a completed investigation
+  finding). One `dedup_distinct` entry cleared it; extends the standing
+  finding that this heuristic fires regardless of how unrelated the two
+  Blue Origin stories are.
+- 2026-08-14-G: blueorigin.com 429'd on WebFetch on two separate
+  attempts a few minutes apart (a new failure code for this domain,
+  distinct from the usual 403/JS-shell pattern); led with SpaceNews
+  plus Aviation Week (both trade) instead for the LC-36B second-pad
+  item rather than forcing the first-party fetch. nasaspaceflight.com
+  403'd on the same story's third angle.
+- 2026-08-14-H: Confirms Spire's own domain (spire.com/press-media/,
+  matching the registry's recorded website) passes the anti-spoof gate
+  as `first_party`, distinct from the ir.spire.com IR subdomain that
+  has failed it in every prior sweep this file documents (2026-08-11-D,
+  2026-08-12-H) -- Spire mirrors its press releases on both
+  spire.com/press-release/... and ir.spire.com; always check the bare
+  marketing domain's own press page before defaulting to the IR
+  subdomain link a source's own citation happens to use.
+- 2026-08-14-I: A trade write-up (SpaceNews, Aug 14) of a Bulgaria/
+  EnduroSat space-and-defense-hub MOU traced to an Aug 6 signing
+  ceremony (confirmed via Bulgaria's BTA news agency and EnduroSat's
+  own release, both dated Aug 6) that predates the sweep window by over
+  a week with no earlier draft found (grepped items.json/held.json for
+  "endurosat"/"bulgaria", zero hits) -- first time the predates-window
+  chase convention (2026-07-08, previously applied mainly to seismic
+  items like Orbex) was applied to a plain `notable`-tier partnership
+  story with no stated dollar figure. Dated to the actual Aug 6 signing
+  rather than the Aug 14 publish date. Worth confirming with Florian
+  that the chase convention is meant to extend this far down the
+  impact scale, or whether it should stay reserved for seismic/major
+  gaps.
+- 2026-08-14-J: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 4 new, 2 updated, 0 held") plus a direct grep
+  spot-check of all four new items' `snr`/`category`/`impact` fields as
+  the build-health signal.
