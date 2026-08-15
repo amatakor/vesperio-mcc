@@ -3407,3 +3407,36 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct grep spot-check of all five
   touched items' `snr`/`category`/`impact` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-15, second)
+
+- 2026-08-15-F: A federal appellate court ruling is a legitimate `financial`
+  category item even with no company press release involved: the Ninth
+  Circuit's ruling reviving Devas Multimedia's $562.5M (now $2bn+)
+  arbitration award against ISRO's Antrix was sourced entirely from Indian
+  legal/business press (Bar and Bench trade, Free Press Journal mainstream)
+  since both `law.justia.com` and `courtlistener.com` 403'd on direct
+  WebFetch; two independently-worded write-ups of the same ruling were
+  sufficient for `corroboration_2plus` without ever reaching a primary
+  court-document source. Antrix has no separate registry entity (only ISRO
+  does), so crossfeed was an honest empty block.
+- 2026-08-15-G: THIRD confirmed occurrence of the India EO-PPP stale trap
+  (2026-08-13-A/E): a fresh-looking "India Approves First Commercial Earth
+  Observation Constellation Under PPP Model" queue hit and a Parliament
+  Question restating it (globalsecurity.org, Aug 12) both traced to the
+  same year-old August 2025 Pixxel/Dhruva Space/PierSight/SatSure Allied
+  Orbits announcement, not a new approval. This headline shape (India
+  EO-PPP "approval") is now a standing false-positive to check against the
+  2025 date before drafting, same as the DISA $900M and Amur-SPG traps.
+- 2026-08-15-H: Chased a genuine predates-window gap: Skyroot/HEX20's
+  Aug 7 three-launch Vikram agreement (Nila-3, MAYA-V, DINK-N satellites)
+  had no prior draft under any id despite being Skyroot's first publicly
+  announced multi-launch contract post-Vikram-1; two independently-worded
+  Indian outlets (Analytics India Magazine trade, ETV Bharat mainstream)
+  covered it days apart, landing SNR 4.
+- 2026-08-15-I: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate on the first attempt, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") plus a direct read of
+  both new items' `snr`/`category`/`impact` fields as the build-health
+  signal.
