@@ -93,166 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~11h40m gap, unfiltered full source list (2026-07-15)
-
-- 2026-07-15-A: A trade write-up (Via Satellite, July 14) of a government
-  contract award can lag the actual DoD announcement by weeks: the
-  Parsons/NRL Blossom Point $245M contract was independently reported by
-  Washington Technology on June 30 and by GovConWire on June 29 (whose own
-  text says "the Department of War announced Friday", i.e. June 26); a
-  WebSearch snippet also surfaced the DoD's own "Contracts for June 26,
-  2026" listing title. Both war.gov and its globalsecurity.org mirror
-  403'd on direct WebFetch (consistent with other .gov/.mil fetch
-  failures logged in this file), so the June 26 date rests on two
-  directly-fetched trade sources' internal dating rather than a fetched
-  primary document; dated the item to June 26 per the standing
-  event-date-over-publish-date convention (2026-07-06-GG) rather than
-  the July 14 Via Satellite publish date. This is the first time that
-  convention has been applied to a routine (non-seismic) major-impact
-  procurement story rather than a chased old/notable event -- worth
-  confirming Florian is fine with the pattern generalizing.
-- 2026-07-15-B: Sierra Space's newsroom page carries an entry labelled
-  "July 14" that is actually dated July 14, **2025** (a full year stale),
-  sitting above genuinely-2026 content in the visible listing -- same
-  undated/mis-dated-listing trap as Umbra and RFA (2026-07-06-S,
-  2026-07-06-Z), but this is the first time the confusion was a same-
-  month-different-year date rather than an undated listing. Always check
-  the full date including year on a source whose listing shows only
-  "Month Day" at a glance.
-- 2026-07-15-C: Confirms the wire/PR-reprint collapse rule on a new
-  product-announcement shape: Iridium's PNT ASIC commercial-availability
-  release was reprinted near-verbatim by Inside GNSS and Satellite
-  Evolution (both confirmed via direct fetch to be press-release
-  reprints, not original reporting), so the corroboration crawl correctly
-  scored `crawl: "found_none"` despite multiple search hits -- a trade
-  lead (Via Satellite) took the honest -1 penalty rather than treating
-  duplicate PR pickup as independent corroboration. investor.iridium.com
-  403'd on WebFetch, consistent with other IR-domain fetch failures in
-  this file; linked unscored in secondary_urls per the standing pattern
-  rather than dropped.
-- 2026-07-15-D: `bun scripts/check-feed.ts` was denied by this session's
-  permission gate on the first attempt, confirming 2026-07-11-B/
-  2026-07-14-I/2026-07-14-J on yet another session; did not retry past
-  one attempt and relied on finalize-sweep's own internal validators
-  ("merged 3 new, 0 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~3h33m gap, unfiltered full source list (2026-07-15, second)
-
-- 2026-07-15-E: A whitelisted signal's post can point at a genuinely new
-  event that predates the run's own `lastSweep` cutoff without having
-  been caught by the prior sweep: Marcia Smith's Bluesky post about
-  ispace-US/Draper's NASA CLPS CP-12 task-order termination was itself
-  timestamped ~2 hours before this run's `lastSweep`, meaning the prior
-  sweep's window technically covered it but missed it (queue/signals
-  rotation gaps happen). Chased it directly via ispace's own newsroom
-  instead of treating the gap as disqualifying.
-- 2026-07-15-F: New structural gap, first time hit cleanly with no
-  workaround available: ispace (the Japanese lunar-lander company,
-  ispace-inc.com/ispace-us.com) and Draper have NO registry profile at
-  all, so `loadRegistryHosts` has nothing to match and ispace's own
-  first-party newsroom page cannot be classed `first_party`. Unlike the
-  2026-07-07-K Orbit Fab / 2026-07-08-A ArkEdge pattern (lead with a
-  gate-safe trade source instead), this event was hours old with zero
-  trade pickup yet, so there was no alternative gate-safe lead to
-  substitute. Held it in the edit queue rather than mis-classing the
-  source as `informal` (which 2026-07-14-K's Frontier/SDA precedent
-  treats as a misclassification, not a safe fallback) or dropping the
-  only source entirely (which would leave no scoring.sources at all).
-  Worth an ispace registry profile at the next structural touch; it is
-  a real, recurring actor (CLPS, Astrobotic-adjacent, HAKUTO-R) that
-  keeps tripping this gap.
-- 2026-07-15-G: A WebSearch for old-story-shaped queries can resurface a
-  same-headline-pattern story from years earlier: searching for the
-  2026 ispace/Draper CP-12 termination surfaced a 2023 SpaceNews piece
-  titled "Industry puzzled by NASA withdrawal of CLPS task order" that
-  reads as a perfect match but covers a completely different, earlier
-  CP-12 withdrawal-and-re-release episode over a foreign-ownership
-  compliance question. Confirmed via the article's own body text
-  (dated Feb 2023 events) before ruling it out as corroboration; would
-  have been a serious mis-attribution if used on headline match alone.
-- 2026-07-15-H: A discovery-pass M&A query ("space company acquisition
-  merger announced July 2026") surfaced a real, never-covered, two-week-
-  old deal (Mitsubishi Electric's July 2 acquisition of ground-station-
-  as-a-service provider Infostellar) alongside several already-published
-  deals (MDA/CLS, Rocket Lab/Iridium, Amazon/Globalstar) in the same
-  result set -- confirms 2026-07-13-A's pattern that routine discovery
-  queries, not just the harvester queue, are where predates-the-window
-  chases originate. Neither Mitsubishi Electric nor Infostellar have a
-  registry profile, so the trade lead (Via Satellite) stayed the
-  scoring source and Mitsubishi's own PR PDF landed in secondary_urls
-  unscored; every other pickup found (BusinessWire, Engineering.com,
-  MSN, Yahoo mirror) was a same-text press-release relay confirmed via
-  direct fetch (engineering.com explicitly reads as PR relay, no
-  byline/original reporting), so `crawl: "found_none"` was honest.
-- 2026-07-15-I: A Russian senator's (Dmitry Rogozin, ex-Roscosmos head)
-  on-the-record Telegram call to "systematically zero out" the Starlink
-  constellation to help Russia win the war was discarded silently as
-  conflict rhetoric, not held: unlike the 2026-07-14-O Iran
-  "military target" precedent (an administrative/policy classification,
-  held as borderline), this is pure operational-threat rhetoric with no
-  resulting commercial-space fact (no sanctions, no service change, no
-  operator confirmation) -- it fails the geopolitical carve-in's
-  "documented commercial-space angle" test more clearly than the Iran
-  case did.
-- 2026-07-15-J: Iran's "Martyr Soleimani" 24-satellite IoT constellation
-  resurfaced via a WANA News Agency piece but traces back to a
-  first-unveiled-2023 program with no fresh discrete fact in this
-  article beyond a general "launches expected 2026-2027" status;
-  discarded as stale resurfacing (2026-07-12-K pattern) rather than
-  held, distinct from the IRIDE/sovereign-constellation precedent which
-  had a genuine new dated milestone.
-- 2026-07-15-K: A rocket "arriving at the launch site for assembly and
-  testing" ahead of a launch with no firm date (Chang'e-7's Long March 5
-  arriving at Wenchang, "launch could occur around late August" per
-  Andrew Jones) does not itself meet any of the science-category
-  event types (launch, arrival-at-destination, orbit insertion, landing,
-  sample return, provider selection, anomaly) -- "arrival" in the
-  CLAUDE.md list means arrival at a science target (e.g. an asteroid),
-  not a rocket showing up at its own launch pad. Left undrafted as a
-  pre-launch logistics milestone below the inclusion bar, same
-  treatment as the ISRO Gaganyaan crew-module-test precedent
-  (2026-07-12-L): wait for the actual launch.
-
-## Normal-mode sweep, ~8h14m gap, unfiltered full source list (2026-07-15, third)
-
-- 2026-07-15-L: A "vehicle manufacturers" funding story naming launch
-  vehicles among several unrelated customer verticals (Senra, an
-  ex-SpaceX wire-harness startup's $65M Series B) is out of scope on the
-  same logic as the 2026-07-10-A Venus Aerospace precedent: pressed via
-  direct fetch, the founder named "submarines and maritime vehicles...
-  defense vehicle systems on land, to launch vehicles, to satellites" as
-  its customer base, i.e. a diversified industrial supplier, not a
-  space-focused company with space as its primary market. Don't draft on
-  a headline's SpaceX-alumni framing alone; check what the company
-  actually sells before publishing.
-- 2026-07-15-M: A same-company-plus-category dedup hit can span exactly
-  7 days and still fire: a Loft Orbital satellite-bus purchase from
-  Airbus/Apex (category "contract") matched the July 8 Loft
-  Orbital/MaiaSpace launch-booking item, also "contract", at exactly the
-  7-day boundary. Cleared with one dedup_distinct entry; the heuristic's
-  window appears inclusive of the boundary day, not just 1-6 days back.
-- 2026-07-15-N: SES's own newsroom (ses.com) carries the exact story a
-  trade outlet (European Spaceflight) broke the same day, but SES has no
-  registry profile, so its page can't be classed first_party -- led with
-  the trade source and linked ses.com unscored in secondary_urls,
-  `crawl: "found_some"` per the 2026-07-07-K pattern (genuine confirmation
-  found, just unscoreable). Airbus's own newsroom listing (checked
-  separately this run) did not carry the story at all, confirming it's
-  worth checking a partner company's own site even when the registered
-  one (Airbus) uses a different subdomain than would pass the gate
-  anyway (space-solutions.airbus.com, not ses.com).
-- 2026-07-15-O: A Google News queue entry ("A SpaceX vet raised $65M...")
-  resolved cleanly via a direct WebSearch for the exact headline quoted,
-  confirming 2026-07-14-D's workaround on a new case: the
-  news.google.com/rss/articles/... redirect itself still returns nothing
-  useful to WebFetch (no batchexecute JS render), but quoting the
-  headline as a search phrase reliably finds the TechCrunch original.
-- 2026-07-15-P: `bun scripts/check-feed.ts` was denied by this session's
-  permission gate on the first attempt, confirming 2026-07-11-B and
-  every later entry on yet another session; did not retry past one
-  attempt and relied on finalize-sweep's own internal validators
-  ("merged 5 new, 0 updated, 0 held") as the build-health signal.
-
 ## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-07-16)
 
 - 2026-07-16-A: Dedup near-miss: grepping items.json for id substrings
@@ -3524,3 +3364,46 @@ a newer entry if a lesson changes.
   confirmation ("merged 4 new, 2 updated, 0 held") plus a direct grep
   spot-check of all four new items' `snr`/`category`/`impact` fields as
   the build-health signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-15)
+
+- 2026-08-15-A: A signals-pass candidate (Aviation Week's Vivienne Machi
+  covering a Space Force "Space Data Network" 5-vendor $60M award) and a
+  Telesat Q2 2026 earnings story surfaced via the HTML source-list pass
+  (telesat.com/press listed the release with a date) both turned out to
+  already be published same-day (`2026-08-13-space-force-sdn-multivendor-tests`,
+  `2026-08-13-telesat-h1-2026-results`) -- caught both by grepping
+  `existing[]`/items.json for the company name before drafting, not by
+  finalize-sweep's own dedup gate. Confirms the standing practice
+  (2026-08-07-E and many peers) of a company-name grep before drafting a
+  chased or signals-surfaced candidate, even one that reads as
+  same-day-fresh from its own listing page.
+- 2026-08-15-B: A new dedup false-positive pairing on the standing
+  shared-company-plus-category pattern: ESA's Aschbacher launcher-capacity
+  remarks (category `launch`, company ArianeGroup as one of several named
+  manufacturers) matched the existing 2026-08-05 CNES ASTRE hot-fire-test
+  item purely on ArianeGroup + `launch` + within 7 days, despite the two
+  sharing no agency, program, or subject. One `dedup_distinct` entry
+  cleared it.
+- 2026-08-15-C: `isro.gov.in` passes the anti-spoof gate cleanly as
+  `first_party` (the registry's ISRO org entry records `isro.gov.in` as
+  its website, so it matches directly rather than needing the generic
+  `.gov` suffix check) -- confirms it's a reliable first-party lead for
+  ISRO program-event stories, distinct from the still-untried
+  `inspace.gov.in` flagged in 2026-08-09-E.
+- 2026-08-15-D: Two WebSearch-summary "slips beyond 2030" headlines about
+  Russia's Amur-SPG reusable rocket (Aviation Week, via a Google News
+  redirect that wouldn't resolve) turned out to be a confusing tangle of
+  restated 2024/April-2026/July-2026 statements with no single fresh
+  dated fact and no consistent target year across sources (some claiming
+  a slip to 2030, others an acceleration to 2028) -- left undrafted
+  rather than guess at which restatement was current, extending the
+  stale-resurfacing pattern (2026-08-13-A and many peers) to a case where
+  the confusion is about the CLAIM itself, not just the publish date.
+- 2026-08-15-E: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1
+  updated, 0 held") plus a direct grep spot-check of all five
+  touched items' `snr`/`category`/`impact` fields as the build-health
+  signal.
