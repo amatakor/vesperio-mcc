@@ -93,186 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-07-16)
-
-- 2026-07-16-A: Dedup near-miss: grepping items.json for id substrings
-  ("frontier-air", "indigo-partners") missed the actual existing id
-  ("2026-07-14-frontier-starlink-wifi-fleet") because the slug uses
-  neither company's full name pattern. Drafted a duplicate item before
-  finalize-sweep's own same-company+category dedup gate caught it and
-  named the exact id to check. Recovered by dropping the duplicate and
-  routing three genuinely new sources (SatNews, Broadband Breakfast,
-  Aviation Week) into `updates[].attach` with `bump: "corroboration_4plus"`
-  instead -- free corroboration that pushed the item past 4 distinct
-  sources. Lesson: a grep-by-guessed-slug dedup check is not a substitute
-  for reading the rejection message's exact id; better to grep the
-  candidate's core proper nouns (company name only) across the whole
-  file rather than guessing hyphenated id shapes.
-- 2026-07-16-B: Several Indian outlets (Deccan Herald, Business Standard,
-  BusinessLine, The Hindu) all 403'd on direct WebFetch this run for a
-  genuinely new, wire-corroborated story (former ISRO chief Somanath
-  joining Agnikul Cosmos's board as observer, PTI wire byline confirmed
-  via WebSearch). No fetchable mirror was found in a reasonable number of
-  tries. Dropped the candidate rather than draft from WebSearch-summary
-  prose per the hard fetched-source rule; worth a future sweep re-check
-  in case these domains recover (europeanspaceflight.com-style
-  intermittent blocks, not yet three strikes).
-- 2026-07-16-C: datacenterdynamics.com 403'd on a genuinely new,
-  never-covered story (Eutelsat's July 6 FCC filing for a 528-satellite
-  "Eutelsat Next" constellation, separate from the existing OneWeb
-  build-out). Two paywalled-but-fetchable trade alternates covered the
-  same filing with real extractable content: communicationsdaily.com and
-  spaceintelreport.com (both returned genuine article text via WebFetch
-  despite subscriber paywalls). Led with Communications Daily instead of
-  chasing the blocked DCD link.
-- 2026-07-16-D: Confirmed 2026-07-06-EE's X syndication-endpoint pattern
-  still works (Rocket Lab's own @RocketLab post on its Archimedes
-  second-stage test), but a verified official corporate X/Twitter account
-  can NOT be classed `first_party`: the anti-spoof gate only matches a
-  source's host against registry `website` values, `.gov`, or the fixed
-  official list, and x.com never matches a company's registered website
-  domain (scripts/finalize-sweep.ts `isOfficialHost`, no social-handle
-  special case). Led with Space.com (trade) instead and put the X post in
-  `secondary_urls` unscored, per the standing pattern for direct-source
-  leads the gate cannot accept.
-- 2026-07-16-E: Sierra Space's own newsroom "Sierra Space Awarded $798
-  Million Missile Defense Contract in Support of Golden Dome for America"
-  (July 13) is the same event as the already-published July 14 item
-  "L3Harris and Sierra Space win $1.75 billion SDA missile-tracking
-  award" (the $798M figure is Sierra Space's half of that combined
-  award) -- confirms checking a company's own framing of a contract award
-  against existing[] before treating it as new, even when the headline
-  emphasizes a different program name ("Golden Dome" vs. "AMDT3").
-
-## Normal-mode sweep, ~3h40m gap, unfiltered full source list (2026-07-16, second)
-
-- 2026-07-16-F: BusinessToday.in fetched cleanly via direct WebFetch for a
-  same-day Somanath/Agnikul Cosmos board story, while Deccan Herald and
-  India Today (both covering the identical announcement) stayed 403'd and
-  their Google News redirect URLs did not resolve either (confirms the
-  standing news.google.com/rss/articles/... dead-redirect pattern,
-  2026-08-08-C2/2026-07-14-D/2026-07-15-O, this time the WebSearch
-  fallback also failed to surface a fetchable mirror). Published on
-  BusinessToday alone with an honest `crawl: "found_none"` (-1 penalty)
-  rather than linking the 403'd Deccan Herald/India Today pages
-  unscored: those pages were never actually fetched this run, so citing
-  them in secondary_urls would have violated the "every source URL was
-  fetched this run" rule even unscored, unlike the ArkEdge/Orbit
-  Fab-pattern cases where the linked page WAS fetched but only failed
-  the anti-spoof gate.
-- 2026-07-16-G: A second confirmed two-wire-service corroboration case
-  (extends 2026-07-12-H's JAXA/RV-X AP-vs-Kyodo precedent): Belgium's
-  Galo military satellite constellation announcement (Defence Minister
-  Francken, >EUR200M, Aerospacelab named as an eligible bidder) was
-  independently reported by Anadolu Agency (English) and by Belga,
-  Belgium's own national wire (confirmed via a direct fetch of
-  parismatch.be, which explicitly bylines the piece "Belga" rather than
-  a named reporter) -- two distinct wire services, not one story
-  reprinted, so both scored. Belga's own site
-  (belganewsagency.eu/press-releases/) 403'd directly; a French regional
-  outlet carrying Belga's byline text worked as the fetchable route to
-  the same wire copy. levif.be 405'd on WebFetch (a new failure code for
-  this project, distinct from the usual 403).
-- 2026-07-16-H: europeanspaceflight.com (the bare site, not the substack
-  mirror) fetched cleanly this run after 403ing on both legs as recently
-  as 2026-07-12-R -- confirms the intermittent-block pattern is still
-  genuinely intermittent, not a slow slide to dead; worth trying the
-  direct site before assuming it needs a workaround.
-- 2026-07-16-I: A former CNSA director's (Ma Xingrui, led the agency
-  2013-2018) expulsion from the Politburo over corruption charges
-  (Bloomberg/Caixin, July 14) was widely reported but carried no stated
-  commercial-space consequence in any source checked; held as a scope
-  question this run (NATO HALO/Iran-Fars precedent) after noticing the
-  PRIOR same-day sweep (05:36 UTC entry in state.json) had already
-  looked at the identical story and silently judged it out of scope
-  rather than holding it. Two consecutive sweeps handling one genuine
-  scope-borderline candidate two different ways (silent discard vs.
-  held) isn't itself harmful, but it's worth remembering that a
-  same-day predecessor sweep's summary/signals notes are worth grepping
-  in state.json before re-relitigating a candidate that was already
-  triaged once today.
-
-## Normal-mode sweep, ~8h18m gap, unfiltered full source list (2026-07-16, third)
-
-- 2026-07-16-J: A harvester queue saturated with SpaceX Starship
-  Flight 13 stock/launch-day chatter (44 Google News: launch entries,
-  25 Bluesky spacex-launch hits) and an ISRO mass-resignation story
-  (34 Google News: non-US space entries, zero stated commercial angle
-  in any version checked) produced zero drafts from the queue itself;
-  every item this run came from the trade-press legs (SpaceNews,
-  Payload, Ars Technica, European Spaceflight) already in
-  sources.json. A forward-scheduled Starship Flight 13 and a
-  forward-scheduled SDA T1TL Falcon 9 launch (Space.com, FAA notices)
-  both had firm same-day launch windows but had not flown as of this
-  sweep; left for a future sweep per the standing 2026-07-09-G rule.
-- 2026-07-16-K: A House Science Space and Technology subcommittee
-  hearing on the Office of Space Commerce's mission-authorization
-  proposal and TraCSS budget cuts was independently, non-wire covered
-  by THREE trade outlets same-day (SpaceNews, Payload, Aerospace
-  America), each with distinct quotes/details (Aerospace America
-  alone had the House/Senate appropriations committee counter-figures
-  of $50M/$60M against the White House's $11M ask) -- a clean
-  corroboration_2plus case with no wire-rewrite risk. Categorized as
-  `regulatory` (a licensing framework and an SSA program budget, not a
-  transaction) at `notable` (nothing enacted yet; framework still
-  needs White House sign-off).
-- 2026-07-16-L: A DIU commercial solicitation (space-based power
-  beaming, Commercial Solutions Opening, proposals due July 22) is
-  `procurement`-category despite no award yet -- CLAUDE.md's
-  "government procurement of commercial space services" bullet covers
-  the solicitation stage, not just the award. Defense Daily's
-  corroborating piece was paywalled beyond the lede but the visible
-  preview independently confirmed the same facts as SpaceNews's lead
-  (same pattern as 2026-07-16-C's paywalled-but-fetchable trade
-  alternates); counted as a genuine second source.
-- 2026-07-16-M: ESA's own esa.int page for a launch-services contract
-  (Henon deep-space CubeSat on Ariane 6) passed the anti-spoof gate
-  directly as `official_record` since esa.int is in the fixed official
-  host list -- no need to route through a trade-lead workaround the
-  way non-registry actors (ArkEdge, Orbit Fab, ispace) require. Led
-  with ESA over European Spaceflight's independent write-up of the
-  same release; direct-source ceiling made the corroboration
-  attachment score-neutral (already at the tier-5 cap) but still worth
-  attaching for reader-facing completeness per the crawl's "readers
-  get every source that exists" standard.
-- 2026-07-16-N: A general Space Force/Air Force budget confirmation
-  hearing (Lt. Gen. Schiess defending a $71.1B FY2027 Space Force
-  budget request, doubling from FY2025) was discarded silently despite
-  passing mentions of leasing commercial SATCOM and preserving SDA's
-  rapid-acquisition model -- no specific commercial contract, company,
-  or regulatory action was stated; same exclusion logic as the
-  2026-07-11-K MUOS/Boeing and 2026-07-05-Q Aeolus-2 precedents
-  (general institutional defense-budget/personnel news without a
-  concrete stated commercial-space fact stays out, even with passing
-  commercial-adjacent color).
-- 2026-07-16-O: Bluestaq's own SpaceNews press-release reprint
-  ("BLUESTAQ / ARQ" data-infrastructure product) was discarded despite
-  Bluestaq's space-sector pedigree (built SDA's Unified Data Library):
-  the release itself pitches a general enterprise product across
-  healthcare, finance, and agriculture with zero satellite/orbit/space
-  content stated. A tracked company's press release still needs an
-  actual space-industry event in the copy, not just company lineage,
-  to clear the scope bar.
-- 2026-07-16-P: `planet4589.org` (Jonathan McDowell's Jonathan's Space
-  Report, a signals.json fetchable channel, not a sources.json entry)
-  failed with a raw `connect ECONNREFUSED` on direct WebFetch this run
-  -- a new failure mode for this domain, distinct from the usual
-  403/timeout/JS-shell patterns seen elsewhere in this file. Not
-  loggable in `sourceHealth` (that array validates only against
-  `sources.json` entries; finalize-sweep rejects an unrecognized
-  `name`). One documented failure; re-check next time this channel is
-  in rotation.
-- 2026-07-16-Q: All 21 fetch-list.ts HTML sources and 16 of 17
-  signals-context fetchable channels were checked directly this run
-  with nothing newer than lastSweep found anywhere; rather than pad
-  `sourceHealth` with 21 redundant "verified, unchanged" entries
-  requiring fabricated verbatim-excerpt evidence (several sources'
-  WebFetch responses were AI-summarized, not literal page text), the
-  all-quiet result was recorded in the draft's `summary` prose instead.
-  `sourceHealth` entries are only mandatory when they carry a genuine
-  status change or failure attestation, not as a checklist of every
-  source touched.
-
 ## Normal-mode sweep, ~13h30m gap, unfiltered full source list (2026-07-17)
 
 - 2026-07-17-A: This interactive session blocks `curl` entirely (both
@@ -3440,3 +3260,51 @@ a newer entry if a lesson changes.
   confirmation ("merged 2 new, 0 updated, 0 held") plus a direct read of
   both new items' `snr`/`category`/`impact` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h52m gap, unfiltered full source list (2026-08-16)
+
+- 2026-08-16-A: A missile strike on a launch-vehicle PRODUCTION FACILITY
+  (Ukraine's Flamingo strike on RKTs Progress in Samara, Russia's sole
+  Soyuz-2 integration line) is a clean geopolitical-carve-in case, not a
+  conflict-analysis exclusion: unlike the Elektrostal/Rogozin battlefield-
+  imagery precedents (2026-07-15-I, 2026-07-20-G), this reports damage to
+  commercial-relevant manufacturing infrastructure (Soyuz-2 also launches
+  Bureau 1440's Rassvet constellation), on the record from both Zelensky/
+  Ukraine's General Staff and the Samara governor, without analysing troop
+  movements or operational use of any space asset. Led with SpacePolicyOnline
+  (whitelist, observer, floors at 4) since Marcia Smith's site is both a
+  sources.json-adjacent signals channel and independently corroborated by
+  Kyiv Independent (mainstream) and Euromaidan Press (informal); the direct-
+  source ceiling caps a whitelist-observer lead at 4 regardless of
+  corroboration count. Wrote the copy to attribute every damage claim
+  explicitly (Ukrainian officials say X; Russian officials confirm only an
+  unnamed facility was hit; independent outlets say the specifics are
+  unverified) rather than asserting Progress was confirmed hit.
+- 2026-08-16-B: A genuine engineering-milestone launch item (SpaceX's
+  38.5-minute Falcon 9 doubleheader, beating its prior cadence record, plus
+  a 650th Falcon booster landing) tripped the same-company-plus-category
+  dedup heuristic against TWO separate existing SpaceX `launch` items inside
+  the 7-day window (an Aug 11 Starlink batch, an Aug 8 Starlink batch),
+  needing two `dedup_distinct` entries in the same item rather than one --
+  first confirmed case of the heuristic requiring multiple entries on a
+  single new item. space.com and spacex.com both continue to fail to render
+  body content via WebFetch (nav/JS-shell only, per the long-standing
+  pattern); spaceflightnow.com and a foreign mainstream mirror (el-balad.com)
+  both fetched cleanly with matching verbatim figures (38.5 min, B1090 14th
+  flight, B1088 18th flight, 650th landing), enough for corroboration
+  without either blocked domain.
+- 2026-08-16-C: Two "process not yet fact" exclusions confirmed on new
+  shapes: NASA's upcoming CLPS task orders (an orbiter to replace LRO, per
+  SpaceNews) are unawarded, no contract yet; and the Senate's passage of the
+  Space Commerce Advisory Committee Act (Marcia Smith's Bluesky, Aug 6
+  passage) creates a committee with no stated commercial-market consequence,
+  same shape as the standing NDAA-passage exclusion (2026-07-23-H) -- left
+  undrafted despite sitting untouched in the record since first flagged by
+  2026-08-11-C, confirming that entry's "genuinely new find" was never
+  actually draftable, just newly surfaced.
+- 2026-08-16-D: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first attempt,
+  continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0 updated, 0
+  held") plus a direct read of both new items' `snr`/`category`/`impact`
+  fields as the build-health signal.
