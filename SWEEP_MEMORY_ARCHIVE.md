@@ -2084,3 +2084,121 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   status change or failure attestation, not as a checklist of every
   source touched.
 
+## Normal-mode sweep, ~13h30m gap, unfiltered full source list (2026-07-17)
+
+- 2026-07-17-A: This interactive session blocks `curl` entirely (both
+  plain and with a descriptive User-Agent) with a bare "This command
+  requires approval" that a retry does not clear, and also blocks the
+  `Write` tool for a brand-new scratch `.ts` file outright ("you
+  haven't granted it yet", also not cleared by retrying). Neither is
+  the scheduled-run sandbox described in CLAUDE.md; this looks like a
+  property of this specific interactive session. Consequence: SEC
+  EDGAR exhibits (ex99-1.htm) that 403 on WebFetch and can't be
+  curled either are unreachable this run; fell back to a StockTitan
+  mirror of the same 8-K as `wire_pr`, per the standing 2026-07-06-FF
+  pattern, rather than forcing the primary fetch.
+- 2026-07-17-B: A Bash command whose stdout exceeds ~2KB is not
+  truncated when redirection (`>`) is unavailable: the tool auto-saves
+  the full output to a `tool-results/*.txt` file under the session
+  transcript dir and shows a 2KB preview, and that file is directly
+  Read-able (with normal pagination) for the rest. Used this to work
+  through a 151KB `candidates-context.ts` dump (133 candidates) without
+  ever needing shell redirection, which is blocked outright in this
+  session (`>` to any path, even inside the repo working directory,
+  errors "blocked... may only write to files in the allowed working
+  directories" despite the target already being one).
+- 2026-07-17-C: `bun run build` was denied by this session's
+  permission gate on two separate attempts, confirming the running
+  string of denials since 2026-07-11-B across many independent
+  sessions; relied on finalize-sweep's own validation ("merged 6 new,
+  0 updated, 0 held") plus a direct grep/spot-check of the merged
+  items' `snr` fields as the build-health signal.
+- 2026-07-17-D: The same-company-plus-category dedup heuristic's 7-day
+  window is confirmed inclusive of the exact boundary on a second,
+  cleaner case (extends 2026-07-15-M): two new SpaceX `launch` items
+  dated 2026-07-16 both matched an existing 2026-07-09 item (a Falcon 9
+  reuse-record milestone), exactly 7 days back. Both new items are
+  routine/newsworthy launches from providers/payloads unrelated to
+  that booster-record item, cleared with one `dedup_distinct` entry
+  apiece.
+- 2026-07-17-E: AST SpaceMobile's registry `sats_launched_total` field
+  was null; the company's own July 15 SEC filing (via a Via
+  Satellite/StockTitan read) states "10 satellites launched" as a
+  distinct metric from the registry's CelesTrak-computed
+  `sats_active_verified` (14, cataloged-on-orbit). Crossfed as a
+  same_metric null-fill candidate rather than treating the two figures
+  as contradicting each other.
+- 2026-07-17-F: A widely-titled Indian trade story (Reliance
+  Jio's LEO plan getting a "technical nod" from IN-SPACe, carried by
+  Developing Telecoms, TelecomTalk, and tele.net.in per the harvester
+  queue) traces to one unconfirmed ETTelecom report citing anonymous
+  government sources; only Developing Telecoms was actually fetchable
+  this run (TelecomTalk/tele.net.in's specific July 17 URLs 404'd and
+  no WebSearch fallback found a live mirror). Scored `crawl:
+  "found_none"` and a single trade source despite the apparent multi-
+  outlet spread, since a story can't be cited unless it was actually
+  fetched this run (2026-07-16-F precedent) and every route to a
+  second byline dead-ended.
+- 2026-07-17-G: A cluster of ~15 near-identical "100+ ISRO scientists
+  resign" queue entries (Google News: non-US space, spanning many
+  Indian outlets and a full day) was reviewed and left undrafted: it
+  is a government-agency personnel/brain-drain story with no company
+  named as a hiring beneficiary and no stated commercial-space fact in
+  any headline/excerpt checked, matching the standing institutional-
+  personnel exclusion (2026-07-16-N and earlier). A EurekAlert! debris
+  "tow truck" release was similarly left out as academic research
+  press coverage, not a company/industry event.
+
+## Narrow same-day re-check, ~12.5hr gap, unfiltered full source list (2026-07-17, second)
+
+- 2026-07-17-H: This session additionally blocks WebFetch outright on
+  several major domains that have worked in prior sessions: reuters.com,
+  arstechnica.com, upi.com, and hartpunkt.de all returned either a flat
+  "unable to fetch" tool error or an HTTP 403 on the first attempt, no
+  retry helped. Worked around by using WebFetch on secondary mirrors
+  (Seeking Alpha for a Reuters/WSJ story, Teslarati/Space search-summary
+  for Starship coverage instead of Ars Technica's Rocket Report) rather
+  than treating the story as unreachable. Confirms this is a per-session
+  domain-blocklist property (2026-07-17-A already logged curl/Write
+  blocks this same session), not a universal dead-source finding --
+  don't flip sourceHealth to "dead" off one session's failures alone.
+- 2026-07-17-I: A WebSearch result can point to a URL that 404s on direct
+  fetch even seconds later (thequantuminsider.com/2026/07/09/bqp-awarded-...):
+  the search tool's index had it, WebFetch did not. Don't cite a URL you
+  couldn't actually load; substituted a second outlet (Quantum Zeitgeist)
+  that did fetch cleanly, and dated the item to the discovery date since
+  impact was noise-tier (the predates-window chase exception is for
+  notable/seismic only, per 2026-07-13-L).
+- 2026-07-17-J: A same-day company press release (HawkEye 360 via PR
+  Newswire, published 08:30 ET) and a trade outlet's write-up of the same
+  release (Via Satellite, same day, matching quotes near-verbatim) still
+  counted as two distinct scoring sources rather than one wire-rewrite
+  unit: their headlines differ enough ("...Details Tactical Direct
+  Downlink..." vs "...Proves Commercial Enabled Track Custody...") that
+  the code's title-SimHash collapse did not fire, and finalize-sweep
+  scored both, landing the item at SNR 4. Contrast with the 2026-07-15-C
+  Iridium PNT ASIC case (trade lead + literal reprints of the same text
+  scored found_none) -- the distinguishing test is whether the second
+  piece is independently *titled/framed* coverage of a release, not
+  whether it draws on the same underlying announcement.
+- 2026-07-17-K: An unconfirmed "in talks" WSJ scoop (SpaceX/Pentagon AI
+  compute capacity, "could still fall apart") was published rather than
+  held: CLAUDE.md's hard rule 5 ("weak sourcing is never a reason to
+  hold") reads as overriding the older 2026-07-05-B tier-2-tracing
+  discipline for this shape of story now that the site has an explicit
+  low-SNR-early-signal doctrine. Led with a Seeking Alpha mirror (the
+  only fetchable page with real WSJ-attributed text; wsj.com itself is
+  paywalled and reuters.com is blocked this session per 2026-07-17-H),
+  classed `informal` since Seeking Alpha is a relay/aggregator rather
+  than original reporting, crawl found_none (every other hit was the
+  same WSJ scoop mirrored). Landed at SNR 1, the honest floor. Flag for
+  Florian if tier-2-tracing should still win over rule 5 for this
+  specific "anonymous-sourced M&A/deal rumor" shape.
+- 2026-07-17-L: First time an Artemis Accords signing (Serbia, 69th
+  signatory, July 16) came up in any sweep. No stated commercial-space
+  consequence in any source checked (pure diplomatic/policy signing);
+  held as a genuine scope question rather than published or discarded,
+  same bucket as the NATO HALO and Ma Xingrui precedents. Worth a
+  standing ruling since Accords signings recur (10 in 2026 alone per
+  NASA's own count) and each one will re-raise this question otherwise.
+
