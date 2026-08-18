@@ -3278,3 +3278,41 @@ a newer entry if a lesson changes.
   confirmation ("merged 3 new, 1 updated, 0 held") plus a direct jq
   spot-check of all three new items' and the one updated item's
   `snr`/`category`/`impact` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-18, second)
+
+- 2026-08-18-F: All Points Logistics generates its own rehash trap: a same-day
+  SatNews/Space Coast Daily "All Points Awarded NASA Spacecraft Processing and
+  Operations Contract Which Builds on Recent 2026 Wins" release reads like new
+  news but is the company's own recap of the Aug 17 Firefly/NASA SPOC on-ramp
+  item (which already names All Points as one of four onboarded companies)
+  layered with a mention of the separate, already-published July 29 $250M
+  Vandenberg contract. Two distinct All Points stories already exist under
+  other ids; a third-sounding "All Points" headline needs a company-name grep
+  against items.json before drafting, not just a glance at the headline.
+- 2026-08-18-G: A resurfaced Progress-Samara-strike article (Yahoo, republishing
+  a Aug 15-dated piece) added a specific "onboard electronics assembly
+  workshop... probably hit" / "Building 106A" claim attributed only to
+  "satellite imagery of the strikes" with no named analyst, outlet, or
+  organization performing the analysis. Left the already-published item
+  (2026-08-15-ukraine-strikes-progress-rocket-samara) unpatched rather than
+  add the specific building claim: an unattributed "satellite imagery shows X"
+  line fails the same attribution bar as an anonymous rumour, even when the
+  broader event is already confirmed and on-record.
+- 2026-08-18-H: Two more small-dollar Intuitive Machines press releases this
+  week are easy to mistake for the same story: an Aug 17 GlobeNewswire release
+  ("Selected for Multi-Satellite Communications Infrastructure Program",
+  $600M+, IM 1300 bus) is the formal wire announcement of the SAME
+  undisclosed-customer GEO-comms contract already published Aug 13 from the
+  Q2 earnings disclosure (same platform, same value, "confidential at the
+  customer's request"), not a new item; a separate Aug 18 GlobeNewswire
+  release (NASA JPL's EAGLE-VSWIR, IM 300 bus, no dollar figure) is genuinely
+  new and unrelated. Same-company GlobeNewswire releases days apart need a
+  side-by-side fact comparison (platform, value, customer-disclosure status),
+  not just a distinct-sounding headline, before ruling one a rehash.
+- 2026-08-18-I: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first attempt,
+  continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0 updated, 0
+  held") plus a direct grep spot-check of both new items' `snr`/`category`/
+  `impact`/`snr_trace` fields as the build-health signal.
