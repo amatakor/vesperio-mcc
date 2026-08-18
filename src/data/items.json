@@ -22318,7 +22318,7 @@
       "secondary_urls": [
         "https://www.etlsystems.com/news/etl-systems-acquires-amphinicy-technologies-to-expand-end-to-end-satellite-ground-segment-offering/"
       ],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -22330,10 +22330,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-18",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -29341,9 +29354,9 @@
       "date": "2026-08-16",
       "headline": "China SatNet launches 24th GuoWang satellite group from Hainan",
       "explainer": {
-        "tagline": "A Long March-12 rocket carried the 24th batch of GuoWang broadband satellites into orbit from Hainan.",
-        "what_happened": "A Long March-12 rocket lifted off from the Hainan commercial spacecraft launch site at 12:10 p.m. Beijing time on August 16, carrying the 24th group of GuoWang low-orbit internet satellites, per CGTN and Xinhua. The satellites entered their planned orbits successfully; neither report gave a per-launch satellite count.",
-        "why_it_matters": "GuoWang is China SatNet's state-backed broadband megaconstellation, competing with Starlink and Qianfan/G60 for LEO connectivity market share and spectrum priority. Routine as this cadence has become, each batch narrows the gap toward GuoWang's planned scale and keeps China on pace with its ITU filing deadlines."
+        "tagline": "A Long March-12 launched GuoWang's 24th satellite batch from Hainan, China's first flight since the Aug 10 Long March-7A failure.",
+        "what_happened": "A Long March-12 rocket lifted off from the Hainan commercial spacecraft launch site at 12:10 p.m. Beijing time on August 16, carrying the 24th group of GuoWang low-orbit internet satellites, per CGTN and Xinhua. The satellites entered their planned orbits successfully; CGTN and Xinhua gave no per-launch satellite count, but Space.com reported the flight carried 24 satellites and was China's first launch since a Long March-7A exploded shortly after liftoff on August 10, destroying the Zhongxing-4B communications satellite.",
+        "why_it_matters": "GuoWang is China SatNet's state-backed broadband megaconstellation, competing with Starlink and Qianfan/G60 for LEO connectivity market share and spectrum priority. Routine as this cadence has become, each batch narrows the gap toward GuoWang's planned scale and keeps China on pace with its ITU filing deadlines. Returning to flight within a week of the Long March-7A failure, on a different rocket family, signals the failure investigation has not slowed China's broader launch cadence."
       },
       "tags": [
         "launch",
@@ -29357,19 +29370,35 @@
       ],
       "source_url": "https://news.cgtn.com/news/2026-08-16/China-s-Long-March-12-rocket-launches-new-internet-satellite-group-1PEH5tcGzcY/p.html",
       "secondary_urls": [
-        "https://english.news.cn/20260816/d42e90fb55264c2b881c3947e98e3544/c.html"
+        "https://english.news.cn/20260816/d42e90fb55264c2b881c3947e98e3544/c.html",
+        "https://www.space.com/space-exploration/launches-spacecraft/china-bounces-back-from-long-march-rocket-explosion-with-back-to-back-launches-video"
       ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
           "source": "https://news.cgtn.com/news/2026-08-16/China-s-Long-March-12-rocket-launches-new-internet-satellite-group-1PEH5tcGzcY/p.html",
           "reason": "base tier 3 from lead source class \"trade\" (CGTN)"
         },
-        "modifiers": [],
-        "final": 3,
-        "scorer_version": 2
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "Added Space.com's confirmed 24-satellite count and the return-to-flight context (first launch since the Aug 10 Long March-7A failure), which the original CGTN/Xinhua sources did not state.",
+            "source": "https://www.space.com/space-exploration/launches-spacecraft/china-bounces-back-from-long-march-rocket-explosion-with-back-to-back-launches-video"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-18",
+            "from": 3,
+            "to": 4,
+            "reason": "Added Space.com's confirmed 24-satellite count and the return-to-flight context (first launch since the Aug 10 Long March-7A failure), which the original CGTN/Xinhua sources did not state."
+          }
+        ]
       },
       "sources": [
         {
@@ -29384,6 +29413,13 @@
           "outlet": "Xinhua",
           "class": "trade",
           "added": "2026-08-16",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.space.com/space-exploration/launches-spacecraft/china-bounces-back-from-long-march-rocket-explosion-with-back-to-back-launches-video",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-08-18",
           "via": "corroboration"
         }
       ],
@@ -29745,6 +29781,202 @@
         "origin_url": "https://payloadspace.com/seops-doubles-down-on-waymaker-dedicated-rideshare-program/",
         "width": 1200,
         "height": 800
+      }
+    },
+    {
+      "id": "2026-08-17-firefly-nasa-spoc-onramp",
+      "date": "2026-08-17",
+      "headline": "Firefly wins NASA payload-processing contract for Vandenberg missions",
+      "explainer": {
+        "tagline": "NASA added Firefly to its Spacecraft Processing Operations Contract, letting it compete for payload-processing task orders at Vandenberg.",
+        "what_happened": "NASA onboarded Firefly Aerospace to its Spacecraft Processing Operations Contract (SPOC) through an on-ramp provision, alongside All Points Logistics, Blue Origin and L3Harris Technologies, per Firefly's August 17 release and NASA's own August 17 announcement. The multiple-award, firm-fixed-price IDIQ contract has a combined $100 million ceiling and an ordering period through February 2033. The award lets Firefly compete for task orders providing payload processing, fueling, integration and encapsulation services for NASA missions launching from Vandenberg Space Force Base, using its Payload Processing Facility near Space Launch Complex 2.",
+        "why_it_matters": "The award gives Firefly a second revenue line beyond launch vehicles and lunar landers: selling ground-processing infrastructure to NASA missions that don't fly on Firefly rockets. It also reflects NASA's push to add commercial payload-processing capacity on the West Coast, where options have trailed Florida's Kennedy Space Center and Cape Canaveral."
+      },
+      "kind": "event",
+      "tags": [
+        "launch",
+        "us-gov"
+      ],
+      "category": "procurement",
+      "impact": "notable",
+      "companies": [
+        "Firefly Aerospace"
+      ],
+      "source_url": "https://fireflyspace.com/news/firefly-aerospace-onboarded-to-nasa-spacecraft-processing-operations-contract/",
+      "secondary_urls": [
+        "https://www.nasa.gov/news-release/nasa-selects-companies-to-provide-payload-processing-services/"
+      ],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://fireflyspace.com/news/firefly-aerospace-onboarded-to-nasa-spacecraft-processing-operations-contract/",
+          "reason": "base tier 5 from lead source class \"first_party\" (Firefly Aerospace)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://fireflyspace.com/news/firefly-aerospace-onboarded-to-nasa-spacecraft-processing-operations-contract/",
+          "outlet": "Firefly Aerospace",
+          "class": "first_party",
+          "added": "2026-08-18",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.nasa.gov/news-release/nasa-selects-companies-to-provide-payload-processing-services/",
+          "outlet": "NASA",
+          "class": "official_record",
+          "added": "2026-08-18",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-18T05:29:00.104Z",
+      "entities": [
+        {
+          "name": "Firefly Aerospace",
+          "ref": "organizations/firefly-aerospace"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-17-firefly-nasa-spoc-onramp.webp",
+        "credit": "Image: fireflyspace.com",
+        "origin_url": "https://fireflyspace.com/news/firefly-aerospace-onboarded-to-nasa-spacecraft-processing-operations-contract/",
+        "width": 1200,
+        "height": 741
+      }
+    },
+    {
+      "id": "2026-08-17-heo-planet-labs-nei-skysat",
+      "date": "2026-08-17",
+      "headline": "HEO taps Planet's SkySats to expand its space-object imaging network",
+      "explainer": {
+        "tagline": "HEO and Planet Labs signed a deal letting HEO task idle SkySat satellites to photograph other objects in orbit.",
+        "what_happened": "HEO, an Australian company that images other spacecraft for space-domain-awareness customers, signed an agreement with Planet Labs on August 17 to add up to 15 of Planet's SkySat satellites to its non-Earth-imaging (NEI) sensor network, expanding the network past 50 in-space sensors, per Payload and SpaceNews. HEO will task SkySats for NEI work when they are not shooting Earth imagery; per SpaceNews, the resulting imagery is initially available only to HEO's U.S. government customers, with commercial access expected later pending licensing.",
+        "why_it_matters": "More sensor diversity and orbital coverage lets HEO's government and commercial customers get faster, better-angled images of objects on orbit, from checking the health of a newly deployed satellite to characterizing another operator's spacecraft. For Planet, it opens a new revenue stream from existing SkySat capacity during idle tasking windows, and the deal could later expand to Planet's larger Pelican and Dove fleets."
+      },
+      "kind": "event",
+      "tags": [
+        "eo"
+      ],
+      "category": "partnership",
+      "impact": "notable",
+      "companies": [
+        "HEO",
+        "Planet Labs"
+      ],
+      "source_url": "https://payloadspace.com/heo-taps-planet-labs-to-expand-its-nei-network/",
+      "secondary_urls": [
+        "https://spacenews.com/heo-to-use-planet-satellites-for-non-earth-imaging/"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://payloadspace.com/heo-taps-planet-labs-to-expand-its-nei-network/",
+          "reason": "base tier 3 from lead source class \"trade\" (Payload)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://payloadspace.com/heo-taps-planet-labs-to-expand-its-nei-network/",
+          "outlet": "Payload",
+          "class": "trade",
+          "added": "2026-08-18",
+          "via": "initial"
+        },
+        {
+          "url": "https://spacenews.com/heo-to-use-planet-satellites-for-non-earth-imaging/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-18",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-18T05:29:00.104Z",
+      "image": {
+        "src": "/img/items/2026-08-17-heo-planet-labs-nei-skysat.webp",
+        "credit": "Image: payloadspace.com",
+        "origin_url": "https://payloadspace.com/heo-taps-planet-labs-to-expand-its-nei-network/",
+        "width": 1200,
+        "height": 675
+      }
+    },
+    {
+      "id": "2026-08-07-eu-sanctions-roscosmos-nii-tp",
+      "date": "2026-08-07",
+      "headline": "EU sanctions Roscosmos radar-satellite unit's director over Ukraine war",
+      "explainer": {
+        "tagline": "The EU sanctioned NII TP's director general and other Russian defense-industry executives for supporting the war in Ukraine.",
+        "what_happened": "The European Union sanctioned Viktor Ivanov, director general of NII TP, the Roscosmos subsidiary that develops the Kasatka-R synthetic aperture radar system for the Russian military, along with several other Russian defense-industry executives, including Krasnoyarsk Machine-Building Plant's Aleksandr Dyukarev and Serpukhov Plant Metallist's Ramil Badgutdinov, on August 7, per SpaceNews and European Pravda. NII TP itself was already under EU sanctions since June 15, 2026, and under US Treasury sanctions since July 2023; the new measures freeze the named individuals' EU assets, bar EU entities from providing them funds, and bar their entry into the EU.",
+        "why_it_matters": "The sanctions target individual leadership of Russia's military space-reconnaissance supply chain, not just the corporate entities already listed, extending the EU's push to make personal accountability part of its Russia sanctions regime. For commercial space companies, it is a reminder that any residual ties to sanctioned Russian space entities, including former joint ventures or supply relationships, carry compliance risk that keeps tightening."
+      },
+      "kind": "event",
+      "tags": [
+        "russia",
+        "sanctions"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "Roscosmos"
+      ],
+      "source_url": "https://spacenews.com/new-eu-sanctions-target-leaders-of-russias-space-industry/",
+      "secondary_urls": [
+        "https://www.eurointegration.com.ua/eng/news/2026/08/7/7243132/"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/new-eu-sanctions-target-leaders-of-russias-space-industry/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/new-eu-sanctions-target-leaders-of-russias-space-industry/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-18",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.eurointegration.com.ua/eng/news/2026/08/7/7243132/",
+          "outlet": "European Pravda",
+          "class": "mainstream",
+          "added": "2026-08-18",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-18T05:29:00.104Z",
+      "image": {
+        "src": "/img/items/2026-08-07-eu-sanctions-roscosmos-nii-tp.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/new-eu-sanctions-target-leaders-of-russias-space-industry/",
+        "width": 1200,
+        "height": 750
       }
     }
   ]

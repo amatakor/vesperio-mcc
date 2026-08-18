@@ -93,106 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~9h13m gap, unfiltered full source list (2026-07-18)
-
-- 2026-07-18-A: `bsky.app/profile/<handle>` pages are unusable via this
-  session's WebFetch for the signals pass: every fetch returns only the
-  bare handle string, no post content or timestamps, for both `.bsky.social`
-  and custom-domain handles alike. The public API endpoint
-  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`)
-  loads but for at least one handle (chenryspace.bsky.social) returned a
-  feed of stale (June, not July) posts attributed to OTHER accounts
-  (EUMETSAT, AST SpaceMobile, SpaceNews, Michael Seeley), not that
-  person's own posts -- looks like a mixed/algorithmic feed rather than
-  `getAuthorFeed`'s documented author-only output, and is not trustworthy
-  enough to draft from. Whitelisted Bluesky people are effectively
-  unreachable this session; only the `site`/`substack` legs of the
-  fetchable signals list were usable. Confirms and extends the
-  2026-07-17-A/H tool-restriction pattern to a new surface.
-- 2026-07-18-B: The Draper/ispace-U.S. CLPS CP-12 lunar-lander task-order
-  termination (NASA + Draper mutually ending it, ispace-U.S. losing the
-  subcontract) is a genuine first-party statement on ispace-inc.com, but
-  ispace has no registry organization entry, so `first_party` fails the
-  anti-spoof gate exactly per the 2026-07-14-K Frontier/newsroom pattern:
-  led with SpaceNews (trade) plus Aviation Week (trade) as scoring
-  sources, kept ispace-inc.com and Aviation Week in `secondary_urls`,
-  landed at SNR 4. Classed as `category: "science"` (a CLPS lunar-science
-  delivery mission ending, not a "first" so scored `impact: "notable"`
-  rather than `major`/`seismic`) -- first sweep to actually draft a
-  program *termination* under the 2026-07-13 science-category rule; worth
-  confirming this categorization if Florian reviews it.
-- 2026-07-18-C: Venus Aerospace's $91M Series B (Mercury Fund-led, RDRE
-  propulsion) published July 8 predates this sweep's window by 10 days
-  and was never drafted by any earlier sweep -- a genuine coverage gap,
-  not a dedup case (grepped `items.json`/`held.json` for "venus" with
-  zero hits). Chased and dated to the actual July 8 announcement date
-  per the 2026-07-17-I predates-window-chase-for-notable/seismic rule
-  (impact is notable: $91M is eight figures, under the nine-figure/
-  largest-to-date bar for major). Worth a recurring-check note: this gap
-  suggests propulsion/manufacturer-only funding rounds (no launch or
-  satellite news hook) may be underweighted by the current source list.
-- 2026-07-18-D: Skyroot's Vikram-1 (India's first private orbital launch
-  attempt) had a T-0 of 11:30 IST / 06:00 UTC on 2026-07-18, still
-  ~43 minutes future at this sweep's run time (05:17 UTC) -- correctly
-  left undrafted as pending rather than speculatively published; will be
-  a seismic-tier (first flight of a new orbital vehicle) candidate for
-  the next sweep once an outcome is fetchable.
-
-## Narrow same-day re-check, ~3h gap, unfiltered full source list (2026-07-18, second)
-
-- 2026-07-18-E: Vikram-1 flew and reached orbit ~06:35 GMT, confirming
-  2026-07-18-D's flag; drafted seismic (first flight of a new orbital
-  vehicle), 4 distinct mainstream/trade sources (SpaceNews, Space.com,
-  a Reuters wire copy via a Yahoo Finance mirror -- reuters.com itself
-  not tried this run -- and india.com's live-blog, which had its own PM
-  Modi quote distinct from the wire text). A same-titled "inputs from
-  agencies" relay (devdiscourse.com, credited to ANI) was correctly
-  left out of scoring as a wire rewrite, not a fifth independent source.
-- 2026-07-18-F: CROSSFEED TRAP, self-caught same sweep: attesting
-  same_metric:true for a vehicle's flights_total/flights_successful
-  fields against a PRE-LAUNCH registry snapshot (Wikipedia's "0", as_of
-  a date before the vehicle had ever flown) triggers reconcile()'s
-  downgrade_incoming path -- the unscored/Wikipedia fact is treated as
-  canonical SNR 5, always outranks a fresh trade-led item's SNR, and the
-  item takes an automatic dispute downgrade (-1, disputed:true) even
-  though nothing is actually contested; the "0" was simply true before
-  the event and "1" is true after it. A monotonically-increasing
-  vehicle/constellation counter field is a metric-mismatch case (the
-  registry fact measures the count as of its own as_of date, same
-  principle as the computed-facts "cataloged on orbit, as_of date"
-  carve-out in CLAUDE.md), not a same-metric contradiction --
-  same_metric should have been false for those two fields (the
-  first_flight_date/last_flight_date null-fills on the same item were
-  fine, since null never disputes). Caught it from the merged item's
-  own snr_trace (dispute modifier, final 3 instead of the expected 4)
-  and corrected it same sweep via `updates[].rescore` with the
-  identical, unchanged source list (rescore always runs with
-  disputeDowngrade:false, so it cleanly recomputes without the
-  penalty). Residual, uncorrectable within this pipeline: the item's
-  top-level `disputed` field has no un-set path anywhere in
-  finalize-sweep (grep confirms `.disputed =` is only ever set to
-  `true`), so it stays stuck true even after the rescore fixed the
-  number; a second residual is that registry-candidates.json still
-  carries the two erroneous `downgrade_incoming` entries as "pending"
-  (crossfeed only runs on newItems, not on updates, so there is no way
-  to resubmit a corrected crossfeed judgment for an already-published
-  item). Both are flagged here as standing code gaps: reconcile() /
-  the crossfeed contract should probably let a vehicle's own flight-count
-  fields treat a prior lower value as superseded-by-date rather than
-  contradicted, and there should be an un-set path for `disputed` when
-  a dispute turns out to have been a drafting error rather than a real
-  editorial conflict.
-- 2026-07-18-G: Genuine same-story contradiction, held rather than
-  guessed: same-day Iraq/Starlink coverage split between Shafaq News
-  (Washington dateline, describes a completed CMC license signed at a
-  US Chamber of Commerce ceremony) and Iraq Business News (same window,
-  describes SpaceX as still "in talks" with Iraq's Ministry of Trade,
-  no license executed). Could not determine whether these describe the
-  same event with one outlet overstating it, or two genuinely distinct,
-  differently-staged engagements (telecom regulator licensing vs. trade
-  ministry cooperation talks); held rather than publish an unearned
-  regulatory-grant claim or discard a possibly-real market-access story.
-
 ## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-19)
 
 - 2026-07-19-A: A same-day, same-category dedup match can fire between two
@@ -3328,3 +3228,53 @@ a newer entry if a lesson changes.
   0 held") plus a direct grep spot-check of all four new items' and the
   one updated item's `snr`/`category`/`impact` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-18)
+
+- 2026-08-18-A: A NASA press release reached via a guessed/search-listed
+  URL (`nasa.gov/news-release/nasa-awards-spacecraft-processing-operations-contract`)
+  turned out to be the ORIGINAL 2023 contract-vehicle award, not today's
+  news, even though it read as a plausible primary source for Firefly's
+  Aug 17 "onboarded to NASA Spacecraft Processing Operations Contract"
+  release: the fetched page's own stated date was February 3, 2023. The
+  actual fresh source was a different NASA URL entirely
+  (`nasa.gov/news-release/nasa-selects-companies-to-provide-payload-processing-services/`,
+  dated Aug 17, 2026), found only via a second, more specific search for
+  the on-ramp provision naming all four newly onboarded companies.
+  Extends the standing "check a fetched page's own stated date before
+  citing it" lesson (2026-08-12-B, 2026-08-13-F) to official .gov pages,
+  not just company newsrooms: a plausible-looking government URL can be
+  a stale contract-vehicle's original announcement, not the current
+  on-ramp action.
+- 2026-08-18-B: A satellite-connectivity company's contract can still be
+  out of scope when the specific deal is pure terrestrial infrastructure:
+  Gilat Peru's $14 million fiber-optic broadband build for Ayacucho
+  (Peru's Works for Taxes program) involves no satellite hardware or
+  service at all, despite Gilat's registry-adjacent identity as a
+  satellite-connectivity integrator with other, genuinely in-scope
+  satellite contracts (e.g. the Aug 6 AI interference-cancellation demo).
+  Left undrafted as out of scope rather than published on the company's
+  satellite-sector identity alone; a company's usual business does not
+  pull a specific non-satellite deal into scope.
+- 2026-08-18-C: The signals-pass Bluesky API was clean and current for
+  most accounts checked this run (Aschbacher, Langbroek, Foust,
+  SpacePolicyOnline, Zak, Andrew Jones, Andrew Parsonson all returned
+  in-window posts), a contrast to several recent sessions logging
+  wholesale staleness (2026-08-16-G); Caleb Henry, Tim Farrar, and Eric
+  Berger were the only stale ones. Confirms the flakiness is genuinely
+  per-account/per-session, not correlated across a whole run.
+- 2026-08-18-D: An EU sanctions story (SpaceNews's Aug 17 "New EU
+  sanctions target leaders of Russia's space industry") traced to an
+  Aug 7 EU Council action once fetched directly; chased under the
+  standing predates-window convention and dated to Aug 7, corroborated
+  by a Ukrainian mainstream outlet (eurointegration.com.ua/European
+  Pravda) independently naming an overlapping but not identical subset
+  of the five sanctioned individuals. First sanctions-category item on
+  the site under the `sanctions` theme tag; reused the `russia`
+  geography tag coined 2026-07-21-E.
+- 2026-08-18-E: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 1 updated, 0 held") plus a direct jq
+  spot-check of all three new items' and the one updated item's
+  `snr`/`category`/`impact` fields as the build-health signal.
