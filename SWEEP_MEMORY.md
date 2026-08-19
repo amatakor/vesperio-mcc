@@ -3271,3 +3271,61 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 4 updated,
   0 held") plus a direct read of all seven touched items'
   `snr`/`category`/`impact` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-19, third)
+
+- 2026-08-19-G: A discovery-pass hit that reads as brand-new, week-old
+  news (SatNews's Aug 13 "Private Consortium Allied Orbits Secures
+  Approval to Build India's Rs1,200 Crore Commercial Satellite
+  Constellation") can actually be over a YEAR stale, not just weeks:
+  direct fetches of Dhruva Space's own press release and the Tribune's
+  writeup both stated the IN-SPACe award actually happened August 13,
+  **2025**, not 2026 -- SatNews (and possibly other outlets) republished
+  or re-dated the story a year later with no "anniversary"/recap framing
+  at all, reading exactly like fresh news. Left undrafted entirely.
+  Extends the standing stale-resurfacing pattern (2026-07-20-C and many
+  later entries) to a full-year gap; always check a fetched primary
+  source's own stated date even when a trade aggregator's date looks
+  current, especially for any story that reads as a "historic first."
+- 2026-08-19-H: A "mysterious space activity" headline (Space.com's US
+  Air Force Antarctica-flight-turnback story, also widely covered by
+  CNN/Yahoo/local NZ outlets) traced via WebSearch to a Russian-issued
+  NOTAM about a **missile launch**, not a satellite/debris hazard: New
+  Zealand's CAA statement specifically named "a planned missile launch"
+  as the hazard. Despite the "space activity" framing in headlines, this
+  is a geopolitical/military story with no satellite operator, no
+  debris-from-orbit claim, and no commercial-space angle stated anywhere
+  -- left out of scope rather than drafted as an `incident`, distinct
+  from genuine orbital-debris NOTAMs which would qualify.
+- 2026-08-19-I: `applyModifier` in finalize-sweep.ts rejects a repeated
+  `bump: "corroboration_2plus"` on an item that already carries that
+  modifier ("already applied; modifiers saturate") -- attaching 2 MORE
+  distinct sources (Ukrainska Pravda, UNN) to the already-3-source
+  2026-08-15 Progress/Samara strike item needed `bump:
+  "corroboration_4plus"` instead, which the gate accepted cleanly.
+  Check an update target's current `snr_trace.modifiers` before picking
+  a bump tier rather than assuming the lowest corroboration bump always
+  applies.
+- 2026-08-19-J: Ukraine's General Staff issuing its OWN follow-up
+  statement naming a specific facility (RKTs Progress's Soyuz
+  engine-assembly workshop, a 5,000 sq m fire) four days after an
+  already-published strike item is a legitimate `updates[].patch`, unlike
+  the 2026-08-18-G case it superficially resembles: the difference is
+  attribution -- an unattributed "satellite imagery shows X" claim stays
+  out, but a named government body's own on-the-record statement (here
+  relayed by Ukrainska Pravda and UNN, both citing the General Staff
+  directly) clears the same attribution bar as the original strike
+  report.
+- 2026-08-19-K: Two lunar-lander CLPS payload demo announcements (Firefly/
+  Zeno Power's radioisotope heater unit) drafted cleanly at first_party
+  base tier 5 (fireflyspace.com matches the registry's stored website
+  exactly) with SpaceNews and Payload as independent trade corroboration
+  -- Payload's own reporting added the CLPS "CS-8" task-order detail and
+  a Firefly-exec quote not in the SpaceNews or Firefly copy, confirming
+  independent (non-rewrite) coverage.
+- 2026-08-19-L: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1 updated,
+  0 held") plus a direct jq spot-check of all three new items'
+  `snr`/`category`/`impact` fields as the build-health signal.
