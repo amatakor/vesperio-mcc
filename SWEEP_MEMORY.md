@@ -93,108 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-19)
-
-- 2026-07-19-A: A same-day, same-category dedup match can fire between two
-  completely unrelated stories sharing only a buyer's name: a new item on
-  Space Force tripling the NSSL Phase 3 Lane 1 launch contract ceiling to
-  $17 billion (category procurement, dated 2026-07-17) matched the existing
-  2026-07-17-spacex-pentagon-computing-power-talks (SpaceX's unrelated,
-  unconfirmed Pentagon AI-computing talks) purely on shared company "SpaceX"
-  + category + same date. Cleared with one dedup_distinct entry; confirms
-  the heuristic fires even when the two stories' programs, buyers-in-fact,
-  and subject matter have nothing in common beyond one shared named company
-  and a same-day publish.
-- 2026-07-19-B: Bluesky's public getAuthorFeed API worked fine this session
-  for some accounts (Jeff Foust, Andrew Jones, SpacePolicyOnline) but
-  returned obviously stale/mixed content for others (Caleb Henry's feed
-  showed EUMETSAT/Parsonson/AST-SpaceMobile posts from May-June instead of
-  his own recent ones; Eric Berger's feed topped out at a June 23 post) --
-  same failure mode 2026-07-18-A already logged for bsky.app profile pages,
-  now confirmed on the API path too for specific accounts. Don't assume one
-  account's clean API response means the leg is reliable for all of them.
-- 2026-07-19-C: A recurring Artemis Accords signing (Mauritius, 70th
-  signatory, July 17, one day after Serbia's already-held 69th) was left
-  out of the queue entirely rather than filed as a second held entry: the
-  exact same unresolved scope question (2026-07-17-L) was already sitting
-  in held.json for Serbia with no ruling yet, so a duplicate entry would
-  only have added queue noise. Worth Florian ruling on this soon; a third
-  signatory will hit the same fork again.
-- 2026-07-19-D: A WebSearch that finds a plausible-sounding government
-  contract story can be a stale false positive dressed as current: "DISA
-  awards 16 contracts for Proliferated Low Earth Orbit Satellite-Based
-  Services" reads exactly like fresh July 2026 news but every source
-  (disa.mil, GovConWire, Via Satellite) traces to July 2023. Caught only by
-  reading the search tool's own correction ("this occurred in 2023, not
-  2026") rather than the headline/snippet. Confirms 2026-07-12-G/2026-08-08-E
-  on a new failure shape: not a resurfaced old story with a new publish
-  date, but a search index returning a genuinely old event with no date
-  qualifier at all.
-- 2026-07-19-E: An "evergreen feature wearing a fresh publish date" case on
-  a new subject: TechRadar's July 18 "Ukraine's private space race begins
-  as Stetman build low Earth orbit network" restates facts (300-satellite
-  UASAT-NANO/LEO constellation, fall 2026 test launch via SpaceX, GomSpace
-  manufacturing) already reported by dev.ua, Space Intel Report, and several
-  Ukrainian outlets back in February-April 2026, with no new discrete dated
-  fact of its own. Left undrafted per the 2026-07-12-K/2026-07-13-L pattern.
-  Separately, a Delta/Amazon Leo in-flight Wi-Fi search hit traced to a
-  March 31, 2026 first announcement, also left undrafted as stale (not
-  chased under the predates-window rule since it's routine/notable-tier,
-  not seismic, and already 3.5 months old).
-
-## Narrow same-day re-check, ~8h12m gap, unfiltered full source list (2026-07-19, second)
-
-- 2026-07-19-F: `draft.coverage` must use CLAUDE.md category names
-  (`launch`, `financial`, `regulatory`, `constellation`, etc.), not tag
-  names: submitting `"eo"`/`"connectivity"` (valid tags, not categories)
-  got the whole draft rejected with "is not a known category" even
-  though every other block validated cleanly. Worth remembering on any
-  zero-item sweep where `coverage` is hand-picked rather than copied
-  from a published item's actual category.
-- 2026-07-19-G: Confirms 2026-07-19-B on two more accounts: Marco
-  Langbroek's and Tim Farrar's Bluesky `getAuthorFeed` API responses
-  were both unusable this session -- Langbroek's showed unrelated
-  political/meme content from mid-July with no space posts at all
-  (worse than merely stale), Farrar's topped out at a March 30 post.
-  Caleb Henry's and Andrew Jones's feeds were clean and current by
-  contrast. The failure is genuinely per-account, not a whole-session
-  block; budget a real check per whitelisted account rather than
-  assuming one clean response clears the leg.
-- 2026-07-19-H: The harvester's `candidates.json` queue for a narrow
-  same-day window can be almost entirely off-scope noise even after the
-  deterministic junk prefilter: of 60 collapsed candidates this run,
-  the large majority were SpaceX/Anthropic stock-market speculation,
-  Space.com entertainment/culture pieces, Futurism's general-tech
-  content, and off-topic Bluesky search spam (memes, retweets, junk
-  amplified by the "spacex launch" and "satellite constellation"
-  keyword searches). None of the deterministic prefilter categories
-  currently catch stock-opinion clickbait or off-topic culture
-  articles from otherwise on-topic source feeds (Space.com, Futurism);
-  worth a prefilter tuning pass if this recurs on multiple narrow
-  windows.
-- 2026-07-19-I: Google News RSS redirect URLs (`news.google.com/rss/
-  articles/...`) failed to resolve via WebFetch this session (returned
-  only a bare "Google News" header, no redirect-target content, unlike
-  the documented ability to follow them to the publisher page). Fell
-  back to targeted WebSearch on the story's own headline text to reach
-  the underlying publisher article instead of retrying the redirect;
-  worked cleanly for every case tried this run (Rocket Lab/Iridium
-  commentary, Starship Flight 13, SDA T1TL-E). Confirms the
-  2026-07-17-A/H pattern that specific fetch mechanisms can fail per
-  session even when the general procedure (documented in
-  prompts/update-items.md) assumes they work.
-- 2026-07-19-J: A resurfaced WebSearch hit can be many months stale
-  with zero date signal in the snippet: "ESA Expands Global Presence
-  with First Office in Japan" (actually October 28, 2025) and "Japan
-  MoD prepares 5-year $1.8B satellite reconnaissance network" (actually
-  December 29, 2025) both read as plausible fresh July 2026 hits for a
-  "Japan Europe space agency satellite launch contract" discovery query
-  and both had to be opened and date-checked before ruling out. Adds a
-  third source-shape to the 2026-07-19-D/E stale-resurfacing pattern:
-  not a wrong-year confusion, not an evergreen-feature rewrite, but a
-  months-old news item with no temporal marker at all in the search
-  index entry.
-
 ## Narrow same-day re-check, ~4h18m gap, unfiltered full source list (2026-07-20)
 
 - 2026-07-20-A: A non-whitelisted Bluesky search hit can be fabricated
@@ -3316,3 +3214,60 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0 updated, 0
   held") plus a direct grep spot-check of both new items' `snr`/`category`/
   `impact`/`snr_trace` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-19)
+
+- 2026-08-19-A: LandSpace's Zhuque-3 second flight (Aug 18) landed its
+  booster on legs, China's first private-company orbital-booster recovery
+  and the first in China on legs rather than net capture (CASC's Long
+  March 10B used net capture in July). Scored it `seismic` on the direct
+  precedent of the 2026-07-10 Long March 10B item (also a "second country/
+  first for the entity" booster-recovery milestone, also led on a trade
+  source, also landed at final SNR 4 via the same extraordinary-reset ->
+  corroboration_2plus -> mainstream_pickup -> corroboration_4plus chain).
+  No registry vehicle entry exists for Zhuque-3 (only Zhuque-2 and the
+  LandSpace org profile do), so crossfeed was an honest empty block.
+- 2026-08-19-B: SCMP (mainstream, fetched directly) and Space.com/
+  NASASpaceflight/SpaceNews (trade, via harvester raw_excerpt) framed the
+  Zhuque-3 landing two different ways that are both true and worth
+  reconciling before drafting: "third entity after SpaceX and Blue Origin"
+  counts only LEG landings, while "fourth entity after SpaceX, Blue
+  Origin, and CASC" counts ANY controlled recovery method including CASC's
+  net capture. Used the leg-landing framing as primary (matches the site's
+  own July 10 CZ-10B item's framing) and folded the net-capture distinction
+  into why_it_matters rather than picking one number and dropping the
+  other.
+- 2026-08-19-C: A trade outlet's follow-up write-up of an ALREADY-PUBLISHED
+  contract award can still carry genuinely new, citable detail worth a
+  patch even when the underlying award itself is stale: Rocket Lab's own
+  Aug 18 release about its specific SDN implementation plan (Photon
+  spacecraft, optical inter-satellite links, 2027 demo date) is new
+  information layered onto the Aug 13 $60M multi-vendor SDN award already
+  on the site; folded into the existing item's what_happened via
+  `updates[].patch` rather than treated as a new item or ignored as a
+  rehash. Same pattern applied to Via Satellite's L3Harris CEO-ouster
+  follow-up (added Kubasik's 2012 Lockheed Martin dismissal for a similar
+  conduct violation, a citable and genuinely new-to-the-item fact) even
+  though that item was already at its SNR ceiling (first_party, 5) and the
+  patch couldn't move the score.
+- 2026-08-19-D: Confirms `hostMatches()` in finalize-sweep.ts does subdomain
+  matching via `endsWith("."+base)`: a registry `website` value of
+  `rocketlabcorp.com` should pass `investors.rocketlabcorp.com` as
+  `first_party` per the code, but the URL 60-second-timed-out on WebFetch
+  twice this run before a first-party fetch could be attempted; led with
+  Via Satellite + SatNews (both trade) instead. Worth a retry next time a
+  Rocket Lab IR-subdomain press release is needed and time allows.
+- 2026-08-19-E: A same-company-plus-category dedup false positive fired
+  between a brand-new Viasat/Rocket Lab PTS-G satellite-bus item (category
+  contract) and the existing 2026-08-10 Kepler/Rocket Lab Neutron 2028
+  launch-booking item (also category contract, also within 7 days),
+  despite sharing no program, agency, or subject beyond the company name
+  Rocket Lab. One `dedup_distinct` entry cleared it, extending the long
+  running finding that this heuristic fires on any shared company
+  regardless of relatedness.
+- 2026-08-19-F: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first attempt,
+  continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 4 updated,
+  0 held") plus a direct read of all seven touched items'
+  `snr`/`category`/`impact` fields as the build-health signal.
