@@ -2404,3 +2404,96 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   months-old news item with no temporal marker at all in the search
   index entry.
 
+## Narrow same-day re-check, ~4h18m gap, unfiltered full source list (2026-07-20)
+
+- 2026-07-20-A: A non-whitelisted Bluesky search hit can be fabricated
+  outright, not just stale: a post describing a "Dingo Sat Constellation
+  Phase 1" (42 Ku-band satellites, Australia's sovereign broadband
+  constellation) named a real-looking org (auscosmos.org) and domain, but
+  a direct fetch of that site showed it belongs to AusCosmos, an Adelaide
+  launch-vehicle company with no constellation product at all, and no
+  other search result anywhere corroborates a "Dingo Sat" program (the
+  real Australian sovereign LEO effort is the Optus/Inovor/HEO consortium's
+  single satellite, nothing like the post's claim). Checking the named
+  operator's own site before drafting from an informal social post caught
+  this; treat a specific-sounding constellation name with a plausible
+  domain as unverifiable, not just low-SNR, until the org's own page
+  confirms it exists.
+- 2026-07-20-B: Extends 2026-07-19-C's duplicate-scope-question logic
+  beyond an identical recurring story (Artemis Accords signings) to a
+  same-shape-different-country one: the Dutch Ministry of Defence's
+  July 2 Space Command establishment (fifth operational domain, cites
+  ICEYE only as an existing satellite supplier, no new contract stated)
+  is the same "institutional military space reorg, no concrete new
+  commercial fact" shape already sitting unruled in held.json via the
+  NATO HALO (2026-07-08-H2) and Singapore space agency entries. Skipped
+  adding a third near-duplicate hold entry; Florian ruling on either
+  existing one resolves this shape going forward. Discarded rather than
+  held or published.
+- 2026-07-20-C: Three more discovery-pass hits confirmed the ongoing
+  stale-resurfacing pattern on stories that read as same-week news:
+  Kepler's ESA HydRON prime contract ("$30.1 million... July 2026" per
+  search snippets) was actually signed April 14, 2026; Redwire's ESA
+  QKDSat quantum-satellite contract was actually awarded April 2, 2026;
+  ispace/Digantara's cislunar situational-awareness partnership was
+  actually announced September 2025. None had any date qualifier in the
+  search snippet; all three needed a direct fetch of the original
+  announcement to catch.
+- 2026-07-20-D: The exact "DISA awards 16 contracts for Proliferated Low
+  Earth Orbit Satellite-Based Services" headline flagged as a 2023 false
+  positive in 2026-07-19-D resurfaced again in a differently-phrased
+  search this run, this time with a search-engine summary claiming a
+  July 18, 2026 award date. ssc.spaceforce.mil 403'd on direct fetch, so
+  the date couldn't be independently confirmed; treated the search
+  summary's date claim as unreliable given the exact same headline is a
+  documented recurring false positive, and left it undrafted rather than
+  publish on an unverifiable date. Worth a future sweep checking DISA's
+  own site or a trade mirror directly if this headline surfaces again.
+
+## Narrow same-day re-check, ~7h20m gap, unfiltered full source list (2026-07-20, second)
+
+- 2026-07-20-E: THIRD confirmed occurrence of the "DISA awards 16
+  contracts for Proliferated Low Earth Orbit Satellite-Based Services /
+  $900M" headline (2026-07-19-D, 2026-07-20-D): search results again
+  synthesized a "July 18, 2026" award date around what a targeted
+  follow-up search (quoting "$900 million" plus the program name)
+  confirmed is the original July 2023 award (16 providers, $900M
+  ceiling), later expanded to $13B in 2024. Treat this exact headline as
+  a standing false-positive trap, not worth re-verifying via
+  ssc.spaceforce.mil (still 403s) each time it resurfaces -- a direct
+  quoted-figure search ("$900 million" OR "900 million") is enough to
+  unmask it without a live fetch.
+- 2026-07-20-F: chinaventure.com.cn (投中网/ChinaVenture, a long-running
+  Chinese VC/PE trade outlet) is a usable independent trade-tier source
+  for Chinese space-startup financing news, distinct from the wire-style
+  reprint mirrors (Sina Finance, Eastmoney, Sohu, 163.com, Tencent News)
+  that carry the same press-release text verbatim under a "来源:中国证券报"
+  byline. Confirmed on LegendSpace's (临界航天) 200M-yuan angel round: the
+  Sina/Eastmoney copies were flagged reprints on direct fetch, but
+  chinaventure.com.cn's own page (found via `site:chinaventure.com.cn`)
+  carried original founder-profile reporting with quotes not in the
+  press release. Worth trying this domain before defaulting to a
+  Sina-hosted mirror on future Chinese funding-round stories.
+- 2026-07-20-G: A whitelisted signal's Bluesky post can itself be
+  battlefield OSINT that stays out despite using a tracked EO
+  constellation's imagery: Marco Langbroek posted Sentinel (Copernicus)
+  before/after imagery of a Ukrainian drone strike on warehouses near
+  Elektrostal, Russia. No operator or government statement accompanies
+  it, and it is Langbroek's own conflict-damage analysis, not a
+  company/agency statement about imagery provision -- fails the
+  geopolitical carve-in's "documented commercial-space angle" test the
+  same way the 2026-07-15-I Rogozin case did. Discarded silently rather
+  than held; the whitelist floor governs sourcing tier, not the scope
+  gate.
+- 2026-07-20-H: A same-day narrow re-check (~7h20m gap) confirmed that
+  checking all 21 fetch-list.ts HTML sources plus all 17
+  signals-context.ts fetchable channels directly, even when the queue
+  itself is fully saturated with SpaceX Starship-scrub and stock-price
+  noise (documented since 2026-07-12-K), still surfaces genuine new
+  items outside the harvester queue: a European Spaceflight post (also
+  independently confirmed via Andrew Parsonson's own Bluesky the same
+  hour) on a UK Space Agency debris-removal contract delay, dated to the
+  underlying 14 July UKSA annual report per the standing
+  event-date-over-publish-date convention, not the 20 July write-up
+  date.
+

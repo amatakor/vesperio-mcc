@@ -93,99 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~4h18m gap, unfiltered full source list (2026-07-20)
-
-- 2026-07-20-A: A non-whitelisted Bluesky search hit can be fabricated
-  outright, not just stale: a post describing a "Dingo Sat Constellation
-  Phase 1" (42 Ku-band satellites, Australia's sovereign broadband
-  constellation) named a real-looking org (auscosmos.org) and domain, but
-  a direct fetch of that site showed it belongs to AusCosmos, an Adelaide
-  launch-vehicle company with no constellation product at all, and no
-  other search result anywhere corroborates a "Dingo Sat" program (the
-  real Australian sovereign LEO effort is the Optus/Inovor/HEO consortium's
-  single satellite, nothing like the post's claim). Checking the named
-  operator's own site before drafting from an informal social post caught
-  this; treat a specific-sounding constellation name with a plausible
-  domain as unverifiable, not just low-SNR, until the org's own page
-  confirms it exists.
-- 2026-07-20-B: Extends 2026-07-19-C's duplicate-scope-question logic
-  beyond an identical recurring story (Artemis Accords signings) to a
-  same-shape-different-country one: the Dutch Ministry of Defence's
-  July 2 Space Command establishment (fifth operational domain, cites
-  ICEYE only as an existing satellite supplier, no new contract stated)
-  is the same "institutional military space reorg, no concrete new
-  commercial fact" shape already sitting unruled in held.json via the
-  NATO HALO (2026-07-08-H2) and Singapore space agency entries. Skipped
-  adding a third near-duplicate hold entry; Florian ruling on either
-  existing one resolves this shape going forward. Discarded rather than
-  held or published.
-- 2026-07-20-C: Three more discovery-pass hits confirmed the ongoing
-  stale-resurfacing pattern on stories that read as same-week news:
-  Kepler's ESA HydRON prime contract ("$30.1 million... July 2026" per
-  search snippets) was actually signed April 14, 2026; Redwire's ESA
-  QKDSat quantum-satellite contract was actually awarded April 2, 2026;
-  ispace/Digantara's cislunar situational-awareness partnership was
-  actually announced September 2025. None had any date qualifier in the
-  search snippet; all three needed a direct fetch of the original
-  announcement to catch.
-- 2026-07-20-D: The exact "DISA awards 16 contracts for Proliferated Low
-  Earth Orbit Satellite-Based Services" headline flagged as a 2023 false
-  positive in 2026-07-19-D resurfaced again in a differently-phrased
-  search this run, this time with a search-engine summary claiming a
-  July 18, 2026 award date. ssc.spaceforce.mil 403'd on direct fetch, so
-  the date couldn't be independently confirmed; treated the search
-  summary's date claim as unreliable given the exact same headline is a
-  documented recurring false positive, and left it undrafted rather than
-  publish on an unverifiable date. Worth a future sweep checking DISA's
-  own site or a trade mirror directly if this headline surfaces again.
-
-## Narrow same-day re-check, ~7h20m gap, unfiltered full source list (2026-07-20, second)
-
-- 2026-07-20-E: THIRD confirmed occurrence of the "DISA awards 16
-  contracts for Proliferated Low Earth Orbit Satellite-Based Services /
-  $900M" headline (2026-07-19-D, 2026-07-20-D): search results again
-  synthesized a "July 18, 2026" award date around what a targeted
-  follow-up search (quoting "$900 million" plus the program name)
-  confirmed is the original July 2023 award (16 providers, $900M
-  ceiling), later expanded to $13B in 2024. Treat this exact headline as
-  a standing false-positive trap, not worth re-verifying via
-  ssc.spaceforce.mil (still 403s) each time it resurfaces -- a direct
-  quoted-figure search ("$900 million" OR "900 million") is enough to
-  unmask it without a live fetch.
-- 2026-07-20-F: chinaventure.com.cn (投中网/ChinaVenture, a long-running
-  Chinese VC/PE trade outlet) is a usable independent trade-tier source
-  for Chinese space-startup financing news, distinct from the wire-style
-  reprint mirrors (Sina Finance, Eastmoney, Sohu, 163.com, Tencent News)
-  that carry the same press-release text verbatim under a "来源:中国证券报"
-  byline. Confirmed on LegendSpace's (临界航天) 200M-yuan angel round: the
-  Sina/Eastmoney copies were flagged reprints on direct fetch, but
-  chinaventure.com.cn's own page (found via `site:chinaventure.com.cn`)
-  carried original founder-profile reporting with quotes not in the
-  press release. Worth trying this domain before defaulting to a
-  Sina-hosted mirror on future Chinese funding-round stories.
-- 2026-07-20-G: A whitelisted signal's Bluesky post can itself be
-  battlefield OSINT that stays out despite using a tracked EO
-  constellation's imagery: Marco Langbroek posted Sentinel (Copernicus)
-  before/after imagery of a Ukrainian drone strike on warehouses near
-  Elektrostal, Russia. No operator or government statement accompanies
-  it, and it is Langbroek's own conflict-damage analysis, not a
-  company/agency statement about imagery provision -- fails the
-  geopolitical carve-in's "documented commercial-space angle" test the
-  same way the 2026-07-15-I Rogozin case did. Discarded silently rather
-  than held; the whitelist floor governs sourcing tier, not the scope
-  gate.
-- 2026-07-20-H: A same-day narrow re-check (~7h20m gap) confirmed that
-  checking all 21 fetch-list.ts HTML sources plus all 17
-  signals-context.ts fetchable channels directly, even when the queue
-  itself is fully saturated with SpaceX Starship-scrub and stock-price
-  noise (documented since 2026-07-12-K), still surfaces genuine new
-  items outside the harvester queue: a European Spaceflight post (also
-  independently confirmed via Andrew Parsonson's own Bluesky the same
-  hour) on a UK Space Agency debris-removal contract delay, dated to the
-  underlying 14 July UKSA annual report per the standing
-  event-date-over-publish-date convention, not the 20 July write-up
-  date.
-
 ## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-21)
 
 - 2026-07-21-A: finalize-sweep's anti-spoof gate (`isOfficialHost`) only
@@ -3328,4 +3235,66 @@ a newer entry if a lesson changes.
   attempt, continuing the standing pattern since 2026-07-11-B; relied on
   `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1 updated,
   0 held") plus a direct jq spot-check of all three new items'
+  `snr`/`category`/`impact` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-20)
+
+- 2026-08-20-A: A same-day scheduled-but-not-yet-flown launch (Rocket
+  Lab's ninth Electron mission for iQPS, window opening ~8 hours after
+  this sweep ran) was correctly left undrafted rather than written as a
+  completed past-tense event; the "every on-scope launch publishes" rule
+  (2026-07-12) covers launches that occurred, not previews of ones still
+  scheduled. Caught a related trap while researching it: a WebFetch
+  summary of the Launch Library record and a WebSearch synthesis both
+  asserted today's payload was "QPS-SAR-13," which is actually the
+  designation of the ALREADY-PUBLISHED Aug 6 satellite (`2026-08-06-
+  rocket-lab-iqps-8th-launch`) -- Space.com's own verbatim raw_excerpt
+  only confirmed the nickname "SUSANOO-II," never a QPS-SAR number for
+  today's satellite. A WebFetch/WebSearch summary can silently carry
+  over a numeric designation from adjacent context into a superficially
+  similar new story; verbatim source text is the only thing to trust for
+  a payload's exact designation.
+- 2026-08-20-B: A same-day SES press release ("SES Expands into Global
+  Direct-to-Device Services through Strategic Collaboration with Elveo
+  Mobile," surfaced fresh via SES's own newsroom listing with no visible
+  date on the top slot, same shape as 2026-08-16-F) was actually SES's
+  Aug 17 release already fully folded into the existing Aug 14 Lynk/
+  Omnispace/Elveo merger item -- that item's own `source_url` is the
+  literal same SES release URL. Caught only by grepping "elveo" against
+  items.json before drafting, per the standing company-name-grep
+  practice (2026-07-23-J, 2026-08-15-A); a company newsroom's top listing
+  slot with no date is not itself proof of a new, undrafted story.
+- 2026-08-20-C: A SpaceNews "Landspace secures launch contracts for
+  China's megaconstellation projects" headline surfaced by discovery-pass
+  WebSearch reads fresh but a second search explicitly returned
+  "according to reports from January 2026" for the same underlying fact
+  (Zhuque-2E/Zhuque-3 selected for Guowang/Qianfan demonstration
+  contracts); left undrafted as a stale resurfacing (extends
+  2026-08-13-A/E/G, 2026-08-19-G) rather than chased, especially since
+  the SpaceNews article itself 403'd on direct fetch and couldn't be
+  dated independently.
+- 2026-08-20-D: The standing same-company-plus-category dedup false
+  positive (SpaceX + category `regulatory`) fired between a new India
+  IN-SPACe Starlink Gen 2 reapplication and the existing Aug 13 Starlink
+  Vietnam market-entry item, 7 days apart, sharing no country, agency, or
+  subject beyond the company name -- cleared with one `dedup_distinct`
+  entry, extending the long-running pattern to yet another country pair.
+- 2026-08-20-E: A widely mirrored regulatory story (Starlink's India Gen
+  2 reapplication) traced to a single underlying Economic Times report
+  once multiple outlets were checked: BusinessToday, Investing.com (both
+  explicitly "ET reports"), Moneycontrol, and a Reuters wire copy all
+  carried identical facts and figures with no independent reporting
+  found; Business Standard's own differently framed headline 403'd on
+  direct fetch and couldn't be verified as genuinely independent, so it
+  was left uncited per the standing "only cite pages with genuinely
+  fetched content" rule. Landed a clean single-source `crawl:
+  "found_none"` at SNR 2 (mainstream base tier 3, per CLAUDE.md's base-
+  tier table -- mainstream and trade are both tier 3, not 4; press-wire
+  copy and established aggregators are the tier-4 classes) rather than
+  stack the ET-derived mirrors as fake corroboration.
+- 2026-08-20-F: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 5 new, 1 updated, 0 held") plus a direct grep
+  spot-check of all five new items' and the one updated item's
   `snr`/`category`/`impact` fields as the build-health signal.
