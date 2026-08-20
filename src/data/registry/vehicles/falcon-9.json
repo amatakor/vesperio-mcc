@@ -144,38 +144,38 @@
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2026-08-08",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%209&limit=3&mode=normal",
-    "as_of": "2026-08-10",
-    "snr": 4,
+    "value": "2026-08-18",
+    "source": "https://spaceflightnow.com/2026/08/18/live-coverage-spacex-to-send-starlink-satellites-to-orbit-with-tuesday-night-launch-from-california/",
+    "as_of": "2026-08-20",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%209&limit=3&mode=normal",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-08-10; Starlink Group 17-38, net 2026-08-08)"
+        "tier": 3,
+        "source": "https://spaceflightnow.com/2026/08/18/live-coverage-spacex-to-send-starlink-satellites-to-orbit-with-tuesday-night-launch-from-california/",
+        "reason": "trade press, single reference (weekly registry maintenance 2026-08-20; LL2 rate-limited this run, web fallback per the last/next-flight-date allowance; Starlink Group 17-50, booster B1097's 12th flight)"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "next_flight_date": {
-    "value": "2026-07-14",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=Falcon%209&limit=3&mode=normal",
-    "as_of": "2026-07-13",
-    "snr": 4,
+    "value": "2026-08-22",
+    "source": "https://spaceflightnow.com/launch-schedule/",
+    "as_of": "2026-08-20",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=Falcon%209&limit=3&mode=normal",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-07-13)"
+        "tier": 3,
+        "source": "https://spaceflightnow.com/launch-schedule/",
+        "reason": "trade press launch schedule, single reference (weekly registry maintenance 2026-08-20; LL2 rate-limited this run, web fallback per the last/next-flight-date allowance; Starlink 15-20, the nearest listed Falcon 9 flight strictly after today)"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "status": {
     "value": "active",
@@ -222,7 +222,7 @@
       "as_of": "2026-07-09"
     }
   },
-  "notes": "Figures are for the Falcon 9 Block 5 configuration, the active variant; earlier variants are tracked separately by Launch Library.",
+  "notes": "Figures are for the Falcon 9 Block 5 configuration, the active variant; earlier variants are tracked separately by Launch Library. Weekly maintenance 2026-08-20: LL2 rate-limited this run (429, stopped per budget rule). next_flight_date had gone stale at 2026-07-14 (already past); last_flight_date (2026-08-08) also predated several confirmed later flights. Refreshed both from Spaceflight Now (trade press, provisional) per the task's last/next-flight-date web-search allowance; flights_total/flights_successful left unchanged pending a fresh Block-5-specific Launch Library count, since no alternate source states that same (Block-5-only) metric.",
   "payload_gto_kg": {
     "value": 8300,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",

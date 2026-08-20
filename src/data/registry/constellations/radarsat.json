@@ -134,7 +134,7 @@
       "as_of": "2026-07-23"
     }
   ],
-  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05). eoPortal EO spec backfill (2026-07-09): all RADARSAT missions operate in C-band (RADARSAT-1 page states 5.3 GHz C band), carried here as the fleet-wide spectral band. Per-satellite resolution and imaging modes differ across generations and are carried on the member profiles (radarsat-2, rcm), so resolution_m/swath_km/imaging_modes are left null on the fleet parent to avoid conflating heterogeneous figures. Weekly maintenance (2026-07-23): added sourced generations rows (RADARSAT-1, RADARSAT-2, RCM) from each mission's own eoPortal page instead of forcing a single fleet-wide resolution/swath figure, per the registry v2 generations mechanism; this profile's task-description slug guess ('radarsat-1') does not match this file (it is the umbrella fleet profile, not a RADARSAT-1-specific one), confirmed by its existing 'CSA / MDA RADARSAT (fleet)' name and by radarsat-2.json existing as a separate profile.",
+  "notes": "Fleet parent for the Canadian RADARSAT program (RADARSAT-2, RCM). Seeded for the Orbits surface on Florian's instruction (2026-07-05). eoPortal EO spec backfill (2026-07-09): all RADARSAT missions operate in C-band (RADARSAT-1 page states 5.3 GHz C band), carried here as the fleet-wide spectral band. Per-satellite resolution and imaging modes differ across generations and are carried on the member profiles (radarsat-2, rcm), so resolution_m/swath_km/imaging_modes are left null on the fleet parent to avoid conflating heterogeneous figures. Weekly maintenance (2026-07-23): added sourced generations rows (RADARSAT-1, RADARSAT-2, RCM) from each mission's own eoPortal page instead of forcing a single fleet-wide resolution/swath figure, per the registry v2 generations mechanism; this profile's task-description slug guess ('radarsat-1') does not match this file (it is the umbrella fleet profile, not a RADARSAT-1-specific one), confirmed by its existing 'CSA / MDA RADARSAT (fleet)' name and by radarsat-2.json existing as a separate profile. Weekly maintenance (2026-08-20): added a sourced events row for the 2026-06-24 C$688 million CSA award to MDA Space for an RCM replenishment satellite (target launch early 2030s, per Canada.ca); no change to sats_launched_total/sats_active_claimed, which remain provisional (SNR 3, Payload Space) pending a canonical program-wide source.",
   "events": [
     {
       "date": "1995-11-04",
@@ -171,6 +171,12 @@
       "headline": "Northern Private Capital completes CAD 1 billion purchase of MDA from Maxar",
       "source": "https://mda.space/article/iconic-space-technology-firm-returns-to-canadian-control",
       "as_of": "2026-07-06"
+    },
+    {
+      "date": "2026-06-24",
+      "headline": "Canada awards MDA Space C$688 million contract for a RADARSAT Constellation Mission replenishment satellite",
+      "source": "https://www.canada.ca/en/space-agency/news/2026/06/minister-joly-announces-688m-to-strengthen-canadas-sovereign-satellite-capacity-with-radarsat-constellation-mission-replenishment-satellite.html",
+      "as_of": "2026-08-20"
     }
   ]
 }

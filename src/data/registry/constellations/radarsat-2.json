@@ -130,9 +130,21 @@
     "tier": "canonical"
   },
   "swath_km": {
-    "value": null,
-    "source": null,
-    "as_of": null
+    "value": 20,
+    "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+    "as_of": "2026-08-20",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/radarsat-2",
+        "reason": "eoPortal mission page (ESA-run aggregator); Table 5 (SAR imaging modes) states the Ultra-fine beam mode's 'Nominal swath width' as '20 km', the same Ultra-fine row already used for this profile's top-level resolution_m (3 x 3 m, the finest square resolution stated); registry v2 EO spec backfill (weekly maintenance 2026-08-20), pairing the two figures from the same mode per house rule"
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
   },
   "revisit": {
     "value": "24-day exact repeat cycle (343 orbits); near-global coverage within one week in ScanSAR Wide mode",
@@ -235,7 +247,7 @@
       "as_of": "2026-07-09"
     }
   ],
-  "notes": "MDA's commercial SAR satellite. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (no 'Last updated' date shown on the page).",
+  "notes": "MDA's commercial SAR satellite. Seeded for the Orbits surface on Florian's instruction (2026-07-05); v2 EO capability fields filled 2026-07-09 from eoPortal (no 'Last updated' date shown on the page). EO capability backfill (weekly maintenance 2026-08-20): top-level swath_km was left null in the initial pass because the page's overall figure ('3m-100m' resolution across a '20km-500km' swath) is a range spanning all modes; re-read Table 5 and paired the Ultra-fine mode's own nominal swath width (20 km) with the already-stored Ultra-fine resolution (3 m), the same non-range pairing basis used for resolution_m, rather than writing the fleet-wide range.",
   "events": [
     {
       "date": "2007-12-14",

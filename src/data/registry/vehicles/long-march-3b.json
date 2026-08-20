@@ -62,14 +62,14 @@
     "as_of": "2026-07-08"
   },
   "flights_total": {
-    "value": 116,
+    "value": 117,
     "source": "https://en.wikipedia.org/wiki/Long_March_3B",
-    "as_of": "2026-07-08"
+    "as_of": "2026-08-20"
   },
   "flights_successful": {
-    "value": 111,
+    "value": 112,
     "source": "https://en.wikipedia.org/wiki/Long_March_3B",
-    "as_of": "2026-07-08"
+    "as_of": "2026-08-20"
   },
   "last_flight_date": {
     "value": "2026-07-23",
@@ -115,7 +115,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-3bg2.htm) covers only the enhanced 3B/G2 variant (49 flights) and does not sum to the family-wide 116 total already on file (which spans base 3B plus 3B/E per the overview), so it is a different, narrower metric and not a same-metric conflict; not used to change any field. flights_total/flights_successful/last_flight_date/next_flight_date left unchanged. Weekly maintenance 2026-07-27: crossfeed queue proposed last_flight_date=2026-07-23 from Xinhua/CGTN (item snr 4) against the on-file 2026-06-16 (Wikipedia, unscored/canonical snr 5); finalize-sweep had already resolved this as downgrade_incoming (reconcile() favors the higher-SNR side), so the queue entry was consumed with no write from that source. Verified independently via the Launch Library launch record instead (canonical snr 5, same tier, fresher as_of): Long March 3B/E flew Tianlian 2-06 on 2026-07-23, so last_flight_date is updated with LL2 as source. next_flight_date (previously 2026-07-23, now flown) nulled: LL2's upcoming-launch search returns no scheduled Long March 3B/E flight. LL2 config id=19's own launch-count fields (24 total/21 success) are narrower still than both the on-file 116 and Gunter's 49 (likely the base-3B config only, excluding 3B/E and 3B/G2), so flights_total/flights_successful remain untouched, not a same-metric match.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-3bg2.htm) covers only the enhanced 3B/G2 variant (49 flights) and does not sum to the family-wide 116 total already on file (which spans base 3B plus 3B/E per the overview), so it is a different, narrower metric and not a same-metric conflict; not used to change any field. flights_total/flights_successful/last_flight_date/next_flight_date left unchanged. Weekly maintenance 2026-07-27: crossfeed queue proposed last_flight_date=2026-07-23 from Xinhua/CGTN (item snr 4) against the on-file 2026-06-16 (Wikipedia, unscored/canonical snr 5); finalize-sweep had already resolved this as downgrade_incoming (reconcile() favors the higher-SNR side), so the queue entry was consumed with no write from that source. Verified independently via the Launch Library launch record instead (canonical snr 5, same tier, fresher as_of): Long March 3B/E flew Tianlian 2-06 on 2026-07-23, so last_flight_date is updated with LL2 as source. next_flight_date (previously 2026-07-23, now flown) nulled: LL2's upcoming-launch search returns no scheduled Long March 3B/E flight. LL2 config id=19's own launch-count fields (24 total/21 success) are narrower still than both the on-file 116 and Gunter's 49 (likely the base-3B config only, excluding 3B/E and 3B/G2), so flights_total/flights_successful remain untouched, not a same-metric match. Weekly maintenance 2026-08-20: LL2 rate-limited this run (429, stopped per budget rule). Wikipedia's family-wide count (the same metric basis as the on-file figures) had moved to 117 total / 112 successful, most recent 23 July 2026 (Tianlian II-06, matching the on-file last_flight_date exactly), confirming the 2026-01-16 Shijian-32 total failure (Long March 3B/E) was already folded into the prior 116/111 reading and the only change since is the already-recorded July 23 success; flights_total/flights_successful updated 116/111 -> 117/112.",
   "payload_gto_kg": {
     "value": 5100,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",

@@ -197,7 +197,47 @@
       "as_of": "2026-07-16"
     }
   ],
-  "notes": "ImageSat International's EROS satellites. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. EO spec extraction (2026-07-16): no eoPortal mission page exists for EROS-C/C3 (site search returns only EROS-A and EROS-B pages, both earlier generations); Gunter's EROS-C3 page used instead, already cited elsewhere in this profile for the same generation's resolution figure. resolution_m and swath_km reflect EROS-C3, the fleet's current and highest-resolution generation; revisit and per-generation spectral bands were not stated on the cited page.",
+  "revisit": {
+    "value": "Daily (40N-40S)",
+    "source": "https://docs.up42.com/data/eros-c",
+    "as_of": "2026-08-20",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://docs.up42.com/data/eros-c",
+        "reason": "UP42 data marketplace technical documentation (not first-party ISI, not a named registry aggregator) states the EROS-C collection's system specifications give a 'Daily' revisit rate; single source, EO capability backfill weekly maintenance 2026-08-20"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
+  },
+  "spectral_bands": {
+    "value": [
+      "Panchromatic 450-900 nm",
+      "Blue 450-510 nm",
+      "Green 510-580 nm",
+      "Red 630-690 nm",
+      "Near-Infrared 770-900 nm"
+    ],
+    "source": "https://docs.up42.com/data/eros-c",
+    "as_of": "2026-08-20",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://docs.up42.com/data/eros-c",
+        "reason": "UP42 data marketplace technical documentation states the EROS-C panchromatic band as 450-900 nm and the multispectral bands as blue 450-510 nm, green 510-580 nm, red 630-690 nm, near-infrared 770-900 nm; single source, EO capability backfill weekly maintenance 2026-08-20"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
+  },
+  "notes": "ImageSat International's EROS satellites. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. EO spec extraction (2026-07-16): no eoPortal mission page exists for EROS-C/C3 (site search returns only EROS-A and EROS-B pages, both earlier generations); Gunter's EROS-C3 page used instead, already cited elsewhere in this profile for the same generation's resolution figure. resolution_m and swath_km reflect EROS-C3, the fleet's current and highest-resolution generation; revisit and per-generation spectral bands were not stated on the cited page. EO capability backfill (weekly maintenance 2026-08-20): confirmed again that no eoPortal EROS-C/C3 mission page exists (search returns only EROS-A/EROS-B). Tried ImageSat's own site (imagesatintl.com/home/eros-ng/eros-c/ and the linked EROS-C3 brochure PDF) for the still-missing revisit and spectral_bands fields; both first-party URLs returned HTTP 404 and could not be fetched, so no first-party citation was possible this run. Fell back to UP42's EROS-C data-product documentation (docs.up42.com/data/eros-c), a fetchable third-party marketplace technical page (not first-party, not a named registry aggregator, scored as a single reputable-source trade tier): it states a daily revisit rate for latitudes 40N-40S and panchromatic/multispectral band wavelengths, but describes the 'EROS-C collection' covering both EROS-C2 and EROS-C3 generically rather than C3 specifically, so both fields are flagged provisional (SNR 3) rather than treated as confirmed EROS-C3-exact figures.",
   "events": [
     {
       "date": "2000-12-05",

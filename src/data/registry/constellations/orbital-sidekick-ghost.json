@@ -243,7 +243,23 @@
     },
     "tier": "canonical"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. eoPortal EO spec backfill (2026-07-09): six-satellite hyperspectral constellation; best stated resolution 3 m (panchromatic), 8.3 m multispectral / ~8 m hyperspectral GSD; 468 spectral bands 400-2,500 nm (sensor developed to capture up to 512 bands); revisit up to daily for certain locations. Swath width not stated on the page, left null. Page last updated Jun 20, 2024.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. eoPortal EO spec backfill (2026-07-09): six-satellite hyperspectral constellation; best stated resolution 3 m (panchromatic), 8.3 m multispectral / ~8 m hyperspectral GSD; 468 spectral bands 400-2,500 nm (sensor developed to capture up to 512 bands); revisit up to daily for certain locations. Swath width not stated on the page, left null. Page last updated Jun 20, 2024. EO capability backfill (weekly maintenance 2026-08-20): re-fetched the same eoPortal page and the operator's own orbitalsidekick.com GHOSt page; neither states a swath width in km (orbitalsidekick.com returned no readable page content), so swath_km stays unentered rather than estimated. Added imaging_modes rows for the two resolutions the eoPortal page does state (3 m panchromatic, 8.3 m multispectral), each with swath_km null per mode since not stated.",
+  "imaging_modes": [
+    {
+      "mode": "Panchromatic",
+      "resolution_m": 3,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/ghost",
+      "as_of": "2026-08-20"
+    },
+    {
+      "mode": "Multispectral",
+      "resolution_m": 8.3,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/ghost",
+      "as_of": "2026-08-20"
+    }
+  ],
   "events": [
     {
       "date": "2024-03-04",

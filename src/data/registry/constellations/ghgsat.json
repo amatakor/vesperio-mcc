@@ -220,7 +220,40 @@
     },
     "tier": "canonical"
   },
-  "notes": "eoPortal EO spec backfill (2026-07-09): greenhouse-gas (methane/CO2) monitoring microsatellite constellation; primary sensor spatial resolution approximately 30 m with a swath width of less than 15 km (bound, so swath_km left null); imaging spectrometer observes 1600-1700 nm. Revisit not stated on the page, left null. Page last updated Jan 24, 2026. Weekly maintenance (2026-07-13): the fr.wikipedia 14/12 figures were stale. Gunter's Space Page (two catalog pages, ghgsat-d.htm and ghgsat-c9.htm) individually documents 18 named satellites through GHGSat-C17 (Eleonore/C16 and Nuray/C17 launched 2026-07-07 on Transporter-17), but per the no-summing-across-pages rule that count was not written as a field value. Instead sats_launched_total/sats_active_claimed were set to 16, the last figure explicitly stated by a single source (Waste Dive, Dec 2, 2025, pre-dating the C16/C17 launch). This likely undercounts the true current total by 2; flagged for Florian rather than estimated. latest_launch_date was updated to the Gunter's-documented 2026-07-07 launch since that is a single-page dated fact, not a summed total.",
+  "revisit": {
+    "value": "14-day repeat cycle per satellite (95-minute orbital period, 15 orbits per day)",
+    "source": "https://www.eoportal.org/satellite-missions/ghgsat-con",
+    "as_of": "2026-08-20",
+    "snr": 4,
+    "snr_trace": {
+      "base": {
+        "tier": 4,
+        "source": "https://www.eoportal.org/satellite-missions/ghgsat-con",
+        "reason": "eoPortal mission page (ESA-run aggregator); page states 'the orbital period of these satellites is 95 minutes with 15 orbits per day and a 14-day repeat cycle for each satellite' (EO capability backfill, weekly maintenance 2026-08-20). This is the orbit's ground-track repeat cycle, the only quantified revisit-adjacent figure the page states for a single satellite; it is not a stated multi-satellite tasked-revisit figure."
+      },
+      "modifiers": [],
+      "final": 4,
+      "scorer_version": 1
+    },
+    "tier": "canonical"
+  },
+  "imaging_modes": [
+    {
+      "mode": "WAF-P (Wide Area Flux Panchromatic, primary sensor)",
+      "resolution_m": 30,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/ghgsat-con",
+      "as_of": "2026-08-20"
+    },
+    {
+      "mode": "VIS-1 (secondary optical sensor, <20 m resolution, <35 m swath, bounds only)",
+      "resolution_m": null,
+      "swath_km": null,
+      "source": "https://www.eoportal.org/satellite-missions/ghgsat-con",
+      "as_of": "2026-08-20"
+    }
+  ],
+  "notes": "eoPortal EO spec backfill (2026-07-09): greenhouse-gas (methane/CO2) monitoring microsatellite constellation; primary sensor spatial resolution approximately 30 m with a swath width of less than 15 km (bound, so swath_km left null); imaging spectrometer observes 1600-1700 nm. Revisit not stated on the page, left null. Page last updated Jan 24, 2026. Weekly maintenance (2026-07-13): the fr.wikipedia 14/12 figures were stale. Gunter's Space Page (two catalog pages, ghgsat-d.htm and ghgsat-c9.htm) individually documents 18 named satellites through GHGSat-C17 (Eleonore/C16 and Nuray/C17 launched 2026-07-07 on Transporter-17), but per the no-summing-across-pages rule that count was not written as a field value. Instead sats_launched_total/sats_active_claimed were set to 16, the last figure explicitly stated by a single source (Waste Dive, Dec 2, 2025, pre-dating the C16/C17 launch). This likely undercounts the true current total by 2; flagged for Florian rather than estimated. latest_launch_date was updated to the Gunter's-documented 2026-07-07 launch since that is a single-page dated fact, not a summed total. EO capability backfill (weekly maintenance 2026-08-20): re-fetched the eoPortal GHGSat Constellation page (still dated last-updated Jan 24, 2026) for the still-missing revisit/swath/imaging_modes fields. revisit filled with the page's stated 95-minute orbital period / 15 orbits per day / 14-day per-satellite repeat cycle, the only quantified figure on the page (no separately stated tasked-revisit rate). imaging_modes added for the page's two named instruments: WAF-P (the primary sensor, resolution already carried in resolution_m) and VIS-1, a secondary optical sensor the page states only as bounds ('swath width less than 35 m', resolution '<20 m'); per house rule bounds are not coerced into numeric fields, so VIS-1's figures are kept in the mode name with resolution_m/swath_km left null. swath_km (top-level) stays absent: WAF-P's only stated figure is the same 'less than 15 km' bound already noted, not an exact value.",
   "events": [
     {
       "date": "2016-06-22",
