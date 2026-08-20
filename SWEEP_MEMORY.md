@@ -3298,3 +3298,59 @@ a newer entry if a lesson changes.
   confirmation ("merged 5 new, 1 updated, 0 held") plus a direct grep
   spot-check of all five new items' and the one updated item's
   `snr`/`category`/`impact` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h46m gap, unfiltered full source list (2026-08-20, second)
+
+- 2026-08-20-G: A satellite-designation trap flagged the previous sweep
+  (2026-08-20-A) recurred and was caught the same way: the harvester
+  queue and every English trade write-up for Rocket Lab's 9th iQPS
+  launch gave only the nickname "SUSANOO-II" or vague "latest QPS-SAR
+  sat," and one WebSearch synthesis even said "QPS-SAR-9" (conflating
+  9th-deployment-count with the satellite's own serial number). The
+  correct designation, QPS-SAR-18, only turned up by fetching iQPS's own
+  pre-launch release (i-qps.net) directly; classed as an unscored
+  secondary link rather than first_party since iQPS has no registry
+  entity (same workaround as Orbit Fab/ArkEdge/IHI/Kuva, 2026-07-21-H
+  and earlier). rocketlabcorp.com's own mission-success update page
+  403'd on direct fetch again (extends 2026-08-19-D); a StockTitan
+  mirror of Rocket Lab's GlobeNewswire release supplied the confirmed
+  success status and totals (93rd Electron, 14th of 2026, 9th for iQPS)
+  instead.
+- 2026-08-20-H: A press release's own dateline can be flatly wrong in a
+  way worth catching before drafting: SpaceNews's "Draper Selects
+  Proteus Space for Advanced On-Orbit Mission" (RSS-fed, published_at
+  2026-08-20T10:00 UTC, matching the harvester's fetch window) opened
+  with the literal dateline "LOS ANGELES, CA, September 8th, 2026" --
+  seventeen days in the future from today. Treated as a template/copy-
+  paste artifact in the source press release rather than evidence of a
+  backdated or embargoed story; dated the item to the actual RSS publish
+  date (Aug 20) and did not quote the erroneous September date in copy.
+- 2026-08-20-I: SpaceSail's August 19 $1B/7-billion-yuan Series B close
+  (South China Morning Post, record for China's satellite-internet
+  sector) is a genuinely distinct financial event from the June 22
+  "SpaceSail opens new fundraising round" item already on the site --
+  59 days apart, well past both the 7-day update window and the 30-day
+  reinforcement window -- but shares company (SpaceSail) and category
+  (financial) with it, so it still tripped the standing same-company-
+  plus-category dedup heuristic (2026-07-21-F and many later entries)
+  and needed one `dedup_distinct` entry despite being unambiguously a
+  different transaction (round opening vs. round closing, two months
+  apart, different stated figures).
+- 2026-08-20-J: A Federal Register regulatory notice and the issuing
+  agency's own plain-English blog post announcing the same action on
+  the same day (OSC's "Notice of Mission Authorization Pilot Program" /
+  "OSC Releases SCC 'Call For Interest'") are both genuinely official
+  record (space.commerce.gov is a `.gov` host, passes the fixed-list
+  check cleanly) and worth citing together: the Federal Register text is
+  the legally operative notice, but OSC's own post states the plainer
+  facts (application deadline, which agencies participate, the "pathway
+  to yes" framing) more usably for the copy. A same-day SpaceNews
+  write-up ("Office of Space Commerce to move ahead on mission
+  authorization") supplied the corroboration crawl's `found_some` even
+  though both leads were already at the direct-source ceiling.
+- 2026-08-20-K: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 8 new, 0 updated, 0 held") plus a direct grep
+  spot-check of all eight new items' `snr`/`category`/`impact` fields as
+  the build-health signal.
