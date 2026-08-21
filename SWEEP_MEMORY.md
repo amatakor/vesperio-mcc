@@ -3280,3 +3280,57 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct jq spot-check of all five new items'
   `snr`/`category`/`impact`/`snr_trace` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h46m gap, unfiltered full source list (2026-08-21, second)
+
+- 2026-08-21-F: A state defense institute's first-ever test flight of a
+  "satellite launch vehicle" prototype that self-destructs after a
+  trajectory deviation (Taiwan's NCSIST, Jiupeng Base, Aug 19) is out of
+  scope even though press coverage calls it a satellite launch vehicle:
+  the pre-test notice's own danger-zone parameters (100,000 ft max
+  altitude, 20nm radius) confirm it was a suborbital test, and CLAUDE.md's
+  launch-vehicle scope is explicitly orbital-only (same standing exclusion
+  as Gravitilab's suborbital hybrid rockets, 2026-08-14-B). Also a state
+  weapons-development institute, not a commercial launch provider. Worth
+  flagging for Florian if a defense institute's *eventual-orbital* SLV
+  program should be tracked differently from a routine suborbital test.
+- 2026-08-21-G: An India Today headline read via Google News RSS
+  ("Isro will not make any launch vehicle, all tech to be handed to
+  private sector") could not be fetched at all this run (Claude Code's
+  WebFetch tool refused indiatoday.in outright, and the Google News
+  redirect resolved to a bare "Google News" header with no content,
+  extending the standing redirect-failure pattern). A WebSearch for the
+  claim only surfaced ISRO's already-known, already-published LVM3
+  tech-transfer and PSLV-privatization threads (2025-vintage and
+  mid-2026 announcements), no distinct new fact; left undrafted rather
+  than guess whether the headline states something genuinely new.
+- 2026-08-21-H: An FT-sourced story on Trump declining to press Musk to
+  extend Starlink for Ukrainian long-range strikes into Russia (widely
+  mirrored, Kyiv Post among others) was judged out of scope as
+  conflict/operational-use analysis rather than a commercial-service
+  fact, even though a government figure is on the record: the actual
+  news content is about battlefield strike-targeting capability
+  (dwindling Patriot interceptors, precision targeting), not a stated
+  service change, sanction, or export-control notice. Distinct from the
+  2026-08-16-A Progress/Samara manufacturing-strike precedent, which
+  reported facility damage without touching operational use of any space
+  asset; this story's entire premise IS operational use. Flag for
+  Florian if the "government statement directly concerning commercial
+  space services in a conflict" carve-out was meant to reach this far.
+- 2026-08-21-I: Vivienne Machi's Aviation Week author-page listing
+  surfaced a same-day headline ("NRO Takes Commercial SAR Partnerships
+  To New Operational Level," Aug 21) that could not be verified: a
+  guessed article URL 404'd, and a WebSearch found only a 2019 article
+  with the identical title plus the already-published Aug 5 NRO/Capella/
+  ICEYE/Umbra RCA contract-award coverage. Left undrafted per the
+  standing "only cite pages with genuinely fetched content" rule;
+  extends 2026-08-17-G's identical trap (an author-listing headline is
+  not proof of a fresh, distinct story) to a case where the exact title
+  also collides with a 7-year-old unrelated article.
+- 2026-08-21-J: Both `bun run build` and `bun scripts/check-feed.ts`
+  were denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 1
+  updated, 0 held") plus a direct read of both new items' and the one
+  updated item's `snr`/`category`/`impact`/`snr_trace` fields as the
+  build-health signal.
