@@ -2497,3 +2497,136 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   event-date-over-publish-date convention, not the 20 July write-up
   date.
 
+## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-21)
+
+- 2026-07-21-A: finalize-sweep's anti-spoof gate (`isOfficialHost`) only
+  auto-passes `.gov` hosts and a short `FIXED_OFFICIAL_HOSTS` list
+  (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
+  itu.int, unoosa.org, europa.eu) for `first_party`/`official_record`
+  classing; `.gov.uk` does NOT end with `.gov` (it ends with `.uk`) and
+  is not in the fixed list, so a genuine UK government source
+  (gov.uk/UK Space Agency press release confirming a GBP62 million C-LEO
+  funding round) cannot be classed `official_record` without a hard
+  rejection. Led with a trade source (Via Satellite) instead, classed
+  the UK gov.uk release as an unscored `secondary_urls` link (same
+  pattern as the ArkEdge/Orbit Fab no-registry-host workaround,
+  2026-07-07-K/2026-07-08-A) rather than force the gate. Worth a
+  structural fix next time finalize-sweep.ts is touched: either add
+  `gov.uk` (and other national government TLDs likely to recur, e.g.
+  `gov.au`, `gc.ca`) to `FIXED_OFFICIAL_HOSTS`, or generalize the `.gov`
+  suffix check to match `.gov.<cctld>` patterns too.
+- 2026-07-21-B: Bluesky's public `getAuthorFeed` API returned clean,
+  correctly-ordered, current content this session for three accounts
+  previously logged as stale/broken in other sessions (Jeff Foust,
+  Marco Langbroek, Caleb Henry -- 2026-07-18-A, 2026-07-19-B/G all
+  flagged at least one of these as unusable). Confirms the failure is
+  genuinely session-dependent, not a permanent per-account condition;
+  worth a real per-session check rather than assuming a documented past
+  failure still holds. Langbroek's feed surfaced the same Elektrostal
+  Sentinel-imagery battlefield-damage post already correctly excluded by
+  2026-07-20-G; re-confirmed the exclusion call.
+- 2026-07-21-C: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate ("This command
+  requires approval", no retry clears it), continuing the standing
+  pattern since 2026-07-11-B/2026-07-17-C across many independent
+  sessions. Relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 4 new, 0 updated, 0 held") as the build-health signal, per
+  the same precedent.
+- 2026-07-21-D: A whitelisted signal's own site coverage of a foreign
+  state actor's constellation buildout (RussianSpaceWeb/Anatoly Zak on
+  Bureau 1440's second Rassvet batch, a Starlink-alternative broadband
+  constellation) is a clean whitelist-observer item when written to
+  report only the launch facts (satellite count, orbit, launch site,
+  running total) and NOT any operational/military framing -- several
+  outlets covering the same story lead with "counters Starlink cutoff
+  for Russian troops"-style battlefield framing, which was deliberately
+  left out per the standing conflict-analysis exclusion. TASS (Russian
+  state media) served as second-source corroboration for the
+  fact-of-record (launch occurred, second batch), consistent with
+  CLAUDE.md's state-media handling rule generalized beyond the Chinese
+  case it names. No prior MCC coverage of Bureau 1440/Rassvet existed
+  under any name; first item for this actor.
+- 2026-07-21-E: New tag coined and logged for human review: `russia`
+  (geography tier). The existing geography tag list (china, india,
+  europe, japan, mena, us-gov, esa) has no non-US-non-those-four
+  catch-all; Bureau 1440/Rassvet needed one. Flag for Florian on whether
+  `russia` should join the standing tag list or a broader `other` tag is
+  preferred.
+
+## Normal-mode sweep, ~3h45m gap, unfiltered full source list (2026-07-21, second)
+
+- 2026-07-21-F: A second confirmed case (extends 2026-07-08-A/2026-07-15-F)
+  of the same-company-plus-category dedup heuristic firing across a foreign
+  regulatory proceeding and an unrelated US one purely on shared company
+  "SpaceX" + category "regulatory": Taiwan's Legislative Yuan passing a bill
+  exempting satellite operators (Starlink named throughout coverage) from
+  foreign-ownership caps matched the existing FAA Starship Pacific-reentry
+  draft-EA item, seven days apart, sharing no agency, jurisdiction, or
+  subject matter beyond the company name. Cleared with one dedup_distinct
+  entry.
+- 2026-07-21-G: New coined tag: `taiwan` (geography tier), following the
+  `russia` precedent from the same day's earlier sweep -- the standing
+  geography list (china, india, europe, japan, mena, us-gov, esa) has no
+  slot for Taiwan either. Flag for Florian alongside the `russia` question.
+- 2026-07-21-H: IHI (Japan, sovereign EO-constellation builder) and Kuva
+  Space (Finland, hyperspectral EO) join the growing no-registry-profile
+  actor list (Orbit Fab/ArkEdge/ispace pattern): neither has a
+  `src/data/registry` entry, so `first_party` classing would hard-fail the
+  anti-spoof gate regardless of domain. Their MOU story had only one
+  fetchable outlet (SpaceNews) and a genuine `found_none` corroboration
+  crawl (IHI's own newsroom 403'd), landing honestly at SNR 2 -- a clean
+  low-SNR-early-signal case, not a sourcing problem to route around.
+- 2026-07-21-I: A trade write-up recapping an already-published story under
+  a fresh angle (Cablefax's "Starlink Adds Another Airline Partnership",
+  reads current) traced entirely to the July 14 Frontier/Cebu Pacific deal
+  already published as `2026-07-14-frontier-starlink-wifi-fleet` -- another
+  instance of the stale-resurfacing pattern (2026-07-12-K and many later
+  entries), this time via a trade outlet's own recap rather than a search
+  index quirk. Checking `existing[]` by company name (not just guessed id
+  slugs, per 2026-07-16-A) caught it before drafting a duplicate.
+- 2026-07-21-J: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") per the same precedent.
+
+## Normal-mode sweep, ~8h04m gap, unfiltered full source list (2026-07-21, third)
+
+- 2026-07-21-K: redwirespace.com (Redwire's registry-stored `website`
+  value) now 301-redirects its entire domain to rdw.com, not just a
+  press subdomain -- same full-rebrand pattern as maxar.com/vantor.com
+  (2026-07-05-P), confirmed by fetching both `redwirespace.com/newsroom/`
+  and `ir.redwirespace.com/...` and getting redirected to `rdw.com` and
+  `ir.rdw.com` respectively. Since `rdw.com` is a different apex domain
+  entirely (not a subdomain of `redwirespace.com`), `ir.rdw.com`'s own
+  press release for a new Indiana facility failed `isOfficialHost`-style
+  matching for `first_party`; led with Benzinga (mainstream) instead and
+  linked the ir.rdw.com release unscored in `secondary_urls`, same
+  workaround as the ULA-newsroom/Q4-IR-subdomain cases. Worth updating
+  the registry's stored website value at the next structural touch.
+- 2026-07-21-L: A dollar-figure-plus-partner-name search hit can be a
+  different, older program round wearing the same numbers: a WebSearch
+  for "UK and Florida $400,000 space projects" corroboration surfaced
+  `spaceflorida.gov/news/...award-400-000-in-funding...`, which reads
+  like a match but is Space Florida's 2025 Israel Innovation Authority
+  partnership (12th funding round with Israel, unrelated companies),
+  not today's new UK Space Agency MOU. Caught by reading the actual
+  page (partner name, publish date) before citing it; the UK/Florida
+  item published on SpaceNews alone with an honest `crawl: "found_none"`.
+- 2026-07-21-M: A free same-day corroboration win on an item published
+  earlier in the day: IHI/Kuva Space's MOU (drafted at SNR 2 on a
+  `found_none` crawl from an earlier sweep this run's own state.json
+  shows) picked up two independent write-ups by afternoon -- IBTimes
+  Japan (mainstream) and SatNews (trade) -- each carrying facts not in
+  the original SpaceNews piece, confirming this wasn't a wire rewrite.
+  Both were Google News queue entries; `news.google.com/rss/articles/...`
+  redirects still would not render via WebFetch this session (confirms
+  2026-07-19-I/2026-07-17-A pattern), so both were resolved by quoting
+  the exact queue headline text in WebSearch instead. Used `updates[].attach`
+  plus `bump: "corroboration_2plus"` (not `rescore`) since the original
+  crawl was honest for its time; landed at SNR 3.
+- 2026-07-21-N: The harvester queue this run was almost entirely SpaceX
+  stock-price/Starship-scrub noise (confirms 2026-07-19-H); the four new
+  items this sweep all came from the trade-press legs (SpaceNews,
+  Payload, European Spaceflight) sitting quietly in the same queue
+  rather than from anything requiring a discovery-pass rescue.
+
