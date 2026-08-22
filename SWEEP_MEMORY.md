@@ -3281,3 +3281,35 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of both new items'
   `snr`/`category`/`impact`/`snr_trace` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-22, second)
+
+- 2026-08-22-E: Piping an items.json dedup grep through `head -5` (or any
+  small limit) is dangerous when the matched term is common: grepping
+  "muon" for a dedup check returned 30 matches, but `head -5` showed only
+  the earliest-in-file hits (the July 7 FireSat item), silently hiding
+  the later `2026-08-20-muon-space-series-c` entry an earlier sweep
+  published that same day. Drafted a discovery-pass find (Muon Space's
+  $250M Series C) as a brand-new item on the strength of that truncated
+  grep; `finalize-sweep.ts`'s own dedup gate caught it before merge (as
+  did a second duplicate, the SpaceWERX STRATFI $562.5M/11-company
+  award, surfaced independently via the signals-pass Aviation Week
+  leg). Recovered both by redirecting the newly-found corroborating
+  sources (a GlobeNewswire wire copy, Via Satellite, Tech Startups for
+  Muon; Aviation Week's own author-page listing for STRATFI) into
+  `updates[].attach` with the appropriate bump instead of discarding the
+  research. Lesson: never cap a dedup grep against items.json with a
+  small `head`/`tail`; use `grep -c` first to see the true match count,
+  or grep for the specific slug/id shape, not just a company name.
+- 2026-08-22-F: The gap between sweeps within one calendar day can be
+  short enough (a same-day sweep already ran and published before this
+  one started) that `sweep-context.ts`'s printed `existing[]` sample is
+  not exhaustive proof an event is undrafted; a full `grep` against
+  `items.json` is still the only reliable dedup check, and even that
+  needs its full output read, not a truncated preview (see 2026-08-22-E).
+- 2026-08-22-G: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 2 updated, 0 held") plus a direct read of
+  the new item's and both updated items' `snr`/`category`/`impact`/
+  `snr_trace` fields as the build-health signal.
