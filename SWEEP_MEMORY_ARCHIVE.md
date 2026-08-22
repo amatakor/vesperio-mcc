@@ -2630,3 +2630,99 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   Payload, European Spaceflight) sitting quietly in the same queue
   rather than from anything requiring a discovery-pass rescue.
 
+## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-22)
+
+- 2026-07-22-A: A launch SCRUB already published as its own item (the
+  July 20 Falcon 9/Starlink 17-39 pad abort) resolves into a routine
+  successful relaunch one day later on the SAME mission -- this is an
+  `updates[].patch` on the abort item (append the resolution to
+  `what_happened`), never a new item, even though it's tempting to treat
+  "launch succeeded" as its own dedup-checked event per the standing
+  megaconstellation-cadence ruling. The cadence ruling covers genuinely
+  distinct missions; a scrub-then-fly of the identical payload is one
+  event with two beats.
+- 2026-07-22-B: Confirms the domain-collapse mechanic works as designed
+  when attaching follow-up coverage to an existing item: the Vandenberg
+  abort item already had Spaceflight Now + Space.com as its 2 sources;
+  attaching NEW July 21 pages from those same two outlets (reporting the
+  successful relaunch) left the corroboration count at 2, not 4 --
+  finalize-sweep collapses multiple pages on one registrable domain into
+  one unit regardless of how many distinct URLs are attached. Don't
+  expect a corroboration_4plus bump from re-covering the same outlets;
+  a genuine 4th unit needs a domain not already counted.
+- 2026-07-22-C: Conflicting satellite-count claims across English-language
+  previews of a Chinese launch (Gravity-1's July 22 sea launch: pre-launch
+  pieces said "6 Dongpo satellites" or "30 spacecraft," Launch Library
+  said "9 satellites") were resolved by trusting the computed source
+  (Launch Library, tier 5) and confirming its exact figure via a direct
+  fetch of Chinese-language financial press (Sina Finance), which named
+  all 9 payloads by name and matched Launch Library exactly. When
+  pre-launch previews and a post-launch computed record disagree, the
+  computed record wins and is worth a same-language direct-fetch check
+  rather than trusting an English aggregator's preview figure.
+- 2026-07-22-D: Marcia Smith's SpacePolicyOnline Bluesky feed
+  (spacepolicyonline.bsky.social, checked via the public API since the
+  bsky.app page itself still renders nothing) delivered same-day granular
+  detail a fresh launch's trade coverage hadn't yet stated (MRV-1 not
+  operational until 2027) and flagged a same-day House committee letter
+  to the FCC (undated beyond "today") that could not be independently
+  corroborated via WebSearch in time to draft confidently -- left
+  unpublished this run rather than drafted off a single paraphrased
+  social post; worth a follow-up search next sweep once a primary
+  document or dated trade write-up surfaces.
+- 2026-07-22-E: spacepolicyonline.com's own site (not the Bluesky
+  account) returned only a bot/CAPTCHA verification screen via WebFetch
+  this run, a new failure mode for this domain; still logged in
+  `signalsPass.checked` since a fetch was genuinely attempted, distinct
+  from a channel skipped for rotation.
+
+## Deep sweep, escalated after zero-add runs, unfiltered full source list (2026-07-22, second)
+
+- 2026-07-22-F: A Chinese reusable-rocket "debut" story can be genuinely
+  ambiguous across sources even after several checks: NASASpaceflight's
+  July 15 "China's first recovered booster returns to port as LandSpace
+  aims for first land recovery" reads like a fresh LandSpace Zhuque-3
+  event, but china-in-space.com's own "Y1 debut" article turned out to
+  be about the December 3, 2025 maiden flight, Wikipedia's Zhuque-3 page
+  said the only confirmed orbital launch was December 2025 with a second
+  flight NET August 2026, and a Chinese-language search ("长征十号乙即将
+  首飞...朱雀三号也即将二飞") confirmed the July flight was Zhuque-3's
+  SECOND ("遥二") attempt, not its debut. Left the story undrafted rather
+  than risk a wrongly-dated "first flight" seismic claim; a WebFetch
+  summary calling something a "debut" is not proof when other dated
+  sources disagree on the flight count.
+- 2026-07-22-G: The deterministic harvester queue in deep mode (7-day
+  window, `previously_presented` re-emission) can run to several
+  thousand lines and be 95%+ SpaceX stock-price/IPO clickbait and
+  Bluesky bot noise on a narrow-interest ticker query; a fast triage
+  pass is to grep `"title"` lines and exclude a stopword list (spacex,
+  starlink, stock, ipo, earnings, bsky.social, federal register
+  fisheries boilerplate, etc.) before reading anything closely. All 4
+  new items and the 1 update this run came from the signals pass
+  (Jeff Foust's and Marcia Smith's Bluesky feeds) and a direct fetch of
+  Vast's own newsroom, not the harvester queue.
+- 2026-07-22-H: A machinery-of-government reshuffle that touches a
+  space agency's parent department (the UK's DSIT dissolved into three
+  successor departments, absorbing UKSA) was discarded rather than held:
+  unlike the NATO HALO / Dutch Space Command precedents (institutional
+  programs establishing new space capabilities), this story has UKSA
+  itself declining to comment on any impact and states no space-industry
+  consequence at all, only domestic ministerial politics. Distinguish
+  "institutional space program with unclear commercial angle" (hold)
+  from "government reorg that happens to touch the agency's org chart"
+  (discard, no scope question to rule on).
+- 2026-07-22-I: A defense contractor "positioning" story (KBR organizing
+  a business unit and promoting two internal execs to chase future
+  Golden Dome task orders, no contract awarded, no dollar figure) was
+  left out as below the inclusion bar, same standard as a routine
+  executive hire: business-development framing without a contract,
+  award, or stated figure is not yet a fact worth a card.
+- 2026-07-22-J: `bun scripts/fetch-thumbs.ts` and `bun scripts/check-feed.ts`
+  were both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 4 new, 1 updated, 0 held") as the
+  build-health signal, per the same precedent. Thumbnails for this run's
+  4 new items were not fetched; a later run's `fetch-thumbs.ts` pass will
+  need to pick them up (they render text-only in the meantime, which is
+  a supported fallback, not a broken state).
+

@@ -25170,7 +25170,7 @@
       "source_url": "https://spacenews.com/fcc-space-bureau-deputy-takes-the-reins-amid-licensing-overhaul/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -25182,10 +25182,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-22",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -32114,6 +32127,129 @@
         "origin_url": "https://payloadspace.com/spacewerx-announces-2026-stratfi-awardees/",
         "width": 1200,
         "height": 675
+      }
+    },
+    {
+      "id": "2026-08-21-starcloud-series-a-extension-250m",
+      "date": "2026-08-21",
+      "headline": "Starcloud raises $250 million Series A extension at $2.3 billion valuation",
+      "explainer": {
+        "tagline": "Starcloud added $250 million to its Series A, more than doubling its valuation to $2.3 billion five months after its March round.",
+        "what_happened": "Starcloud added $250 million to its Series A round, more than doubling its valuation to $2.3 billion, per Via Satellite. Manhattan West led the extension, announced August 21, with existing investors Benchmark, EQT, Soma, NFX and 776 participating alongside new investors Nvidia, Cisco Investments, Cedar Capital, Goanna Capital and Standard Capital. Starcloud previously raised $170 million at a $1.1 billion valuation in late March. Per TechCrunch, CEO Philip Johnston said the company expects to need to book a large amount of launch capacity, citing SpaceX's Falcon 9 program being scheduled to end in 2028 and competing vehicles (Blue Origin's New Glenn, ULA's Vulcan, Rocket Lab's Neutron) not yet flying regularly.",
+        "why_it_matters": "The round funds Starcloud's plan to build a large orbital-compute satellite constellation carrying Nvidia GPUs, following its November launch of Starcloud-1, which put the first Nvidia H100 in orbit. Nvidia's direct participation signals chipmaker interest in space-based compute as a market, and Johnston's own framing of launch capacity as a bottleneck tied to Falcon 9's planned 2028 retirement is a demand signal that launch providers building next-generation heavy-lift capacity will want to track.",
+        "for_who": "Launch providers and orbital-compute investors"
+      },
+      "tags": [
+        "funding"
+      ],
+      "category": "financial",
+      "impact": "major",
+      "companies": [
+        "Starcloud"
+      ],
+      "source_url": "https://www.satellitetoday.com/finance/2026/08/21/starcloud-adds-250m-to-series-a-at-a-2-3b-valuation/",
+      "secondary_urls": [
+        "https://techcrunch.com/2026/08/21/starcloud-raises-200-million-for-orbital-data-centers-as-launch-options-dry-up/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/finance/2026/08/21/starcloud-adds-250m-to-series-a-at-a-2-3b-valuation/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/finance/2026/08/21/starcloud-adds-250m-to-series-a-at-a-2-3b-valuation/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-08-22",
+          "via": "initial"
+        },
+        {
+          "url": "https://techcrunch.com/2026/08/21/starcloud-raises-200-million-for-orbital-data-centers-as-launch-options-dry-up/",
+          "outlet": "TechCrunch",
+          "class": "mainstream",
+          "added": "2026-08-22",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-22T05:29:50.453Z",
+      "image": {
+        "src": "/img/items/2026-08-21-starcloud-series-a-extension-250m.webp",
+        "credit": "Image: satellitetoday.com",
+        "origin_url": "https://www.satellitetoday.com/finance/2026/08/21/starcloud-adds-250m-to-series-a-at-a-2-3b-valuation/",
+        "width": 1200,
+        "height": 795
+      }
+    },
+    {
+      "id": "2026-08-20-novaspace-eo-satellites-2035-forecast",
+      "date": "2026-08-20",
+      "headline": "Novaspace forecasts 6,500 EO satellites launching by 2035",
+      "explainer": {
+        "tagline": "Novaspace projects more than 6,500 Earth observation satellites will launch by 2035, generating $155.9 billion in manufacturing revenue.",
+        "what_happened": "Novaspace's Earth Observation Satellite Systems report, published August 20, forecasts more than 6,500 Earth observation satellites will launch by 2035, generating $155.9 billion in manufacturing revenues, per SpaceNews. Novaspace attributes the growth to governments expanding sovereign intelligence, surveillance and reconnaissance capabilities, with commercial operators positioned as essential partners.",
+        "why_it_matters": "The forecast gives EO operators, resellers and investors a market-sizing benchmark: Novaspace ties the growth explicitly to government sovereign-ISR demand, with commercial EO operators cast as the manufacturing and data partners governments will need to hit that trajectory.",
+        "for_who": "EO operators and investors benchmarking segment growth"
+      },
+      "tags": [
+        "eo"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "Novaspace"
+      ],
+      "source_url": "https://spacenews.com/new-novaspace-forecast-6500-eo-satellites-to-launch-by-2035/",
+      "secondary_urls": [
+        "https://nova.space/press-release/6500-eo-satellites-to-launch-by-2035/"
+      ],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/new-novaspace-forecast-6500-eo-satellites-to-launch-by-2035/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/new-novaspace-forecast-6500-eo-satellites-to-launch-by-2035/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-08-22",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-08-22T05:29:50.453Z",
+      "image": {
+        "src": "/img/items/2026-08-20-novaspace-eo-satellites-2035-forecast.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/new-novaspace-forecast-6500-eo-satellites-to-launch-by-2035/",
+        "width": 1200,
+        "height": 1200
       }
     }
   ]
