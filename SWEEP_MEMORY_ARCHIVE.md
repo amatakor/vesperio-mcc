@@ -2726,3 +2726,137 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   need to pick them up (they render text-only in the meantime, which is
   a supported fallback, not a broken state).
 
+## Normal-mode sweep, ~11h41m gap, unfiltered full source list (2026-07-23)
+
+- 2026-07-23-A: A scheduled-vote item's outcome is an `updates[].patch`
+  on the SAME item, not a new one, even when the gap between the preview
+  article (published 2026-07-01) and the outcome article (July 22) is
+  three weeks, well past the normal 7-day dedup window: the FCC's "to
+  vote on satellite licensing overhaul July 22" item was patched in
+  place with the vote's actual result (headline, tagline, what_happened,
+  impact bumped notable to major) rather than dedup-matched as a
+  separate candidate, since the article is literally the resolution of
+  the exact scheduled event the original item was about. The 7-day
+  window governs matching an unrelated-looking new candidate against
+  prior coverage; it doesn't gate patching an item's own known future
+  event once it resolves.
+- 2026-07-23-B: The FCC's July 22 meeting produced two separately
+  reported, separately scored actions (the Part 25->Part 100 licensing
+  overhaul and a second upper-C-band spectrum auction) bundled in some
+  outlets' single write-up but covered as two distinct articles by
+  others (Via Satellite ran separate pieces for each). Treated as two
+  items: patched the existing licensing-overhaul item and drafted the
+  C-band auction as new, rather than merging both actions into one
+  card, matching how the trade press itself split the story.
+  cnn.com/2026/07/22/science/space-debris-satellite-rules-fcc-vote
+  returned HTTP 451 (unavailable for legal reasons) both times tried;
+  newscaststudio.com/.../fcc-adopts-rules-for-upper-c-band-auction 403'd.
+  TV Tech (tvtechnology.com) fetched cleanly and gave a genuinely
+  independent third trade source (different figures emphasized: GDP/jobs
+  estimates, the per-commissioner vote breakdown) rather than a rewrite.
+- 2026-07-23-C: A company newsroom page can carry a same-day press
+  release the listing page dates one day earlier than the article page
+  itself states (ICEYE's KT SAT/South Korea flood-partnership release:
+  the newsroom listing showed "July 22, 2026" but the article page's own
+  fetch reported "July 23, 2026"). Treated as in-window either way rather
+  than resolving the discrepancy; worth a direct timestamp check if a
+  future case lands right at a dedup or window boundary where the day
+  matters.
+- 2026-07-23-D: A French government research agency's own domain
+  (onera.fr) is not first-party-classable under the current anti-spoof
+  gate: it's neither `.gov` nor in `FIXED_OFFICIAL_HOSTS`, and ONERA has
+  no `src/data/registry` entity either, so the same no-registry-host
+  workaround as ArkEdge/Orbit Fab/ispace applies (2026-07-07-K and
+  later): led with a trade outlet (European Spaceflight) and linked
+  onera.fr in `secondary_urls` unscored. A French-language defense trade
+  outlet, Zone Militaire (opex360.com), gave a genuinely independent
+  second source with its own byline and additional facts (the GRAVES
+  radar being replaced by a new Thales AURORE radar) not in the English
+  lead, not just a translated rewrite.
+- 2026-07-23-E: An `updates[].bump` attestation can be accepted by the
+  gate without changing the item's final SNR: patched the FCC
+  licensing-overhaul item with `bump: "corroboration_2plus"` after
+  attaching two new distinct sources, and the merge succeeded, but the
+  item's `snr_trace.modifiers` still shows only the pre-existing
+  `persistence` modifier (final stayed 4, the persistence cap) with no
+  `corroboration_2plus` entry logged. Not investigated further this
+  run (the math is code, not mine to second-guess), but worth a look if
+  a future item needs the corroboration bump's headline visibility on
+  /log and it's silently absorbed by an existing cap this way.
+- 2026-07-23-F: Bluesky's public `getAuthorFeed` API continues to be
+  genuinely per-account, per-session flaky (extends 2026-07-19-B/G,
+  2026-07-21-B): Langbroek's feed this run was almost entirely unrelated
+  Dutch-language personal posts, Farrar's and Berger's both topped out
+  months stale (March/June), while Foust, SpacePolicyOnline, Zak,
+  Jones, and Parsonson's feeds were all clean and current. Budget a real
+  per-account check every run rather than trusting or distrusting the
+  leg wholesale.
+
+## Narrow same-day re-check, ~3h43m gap, unfiltered full source list (2026-07-23, second)
+
+- 2026-07-23-G: Genuinely quiet full-matrix run: harvester queue was 100%
+  off-scope noise (SpaceX stock-price speculation, FAA airworthiness
+  directives, ISRO recruitment notices, an ESA forest-carbon research
+  post, a BBC drought piece), all 21 fetch-list.ts HTML sources and 15 of
+  17 signals fetchable channels were current with nothing newer than
+  lastSweep, and every discovery-pass/X-search hit that looked new
+  (Sierra Space's own "$798 million Golden Dome" release, a KeepTrack
+  recap of the same "36 Golden Dome satellites for $1.75B" figure) traced
+  back to the already-published 2026-07-13 SDA/L3Harris/Sierra Space
+  Tranche 3 item -- Sierra Space's press release frames its $798M SDA
+  missile-tracking award under the "Golden Dome for America" program
+  brand, which reads like a fresh contract on a narrow search but is the
+  same $1.75B combined award already on the site. Zero items shipped;
+  confirms 2026-07-05-S/2026-07-06-E that a narrow filtered/unfiltered
+  re-check quiet outcome is normal, not under-coverage.
+- 2026-07-23-H: A House NDAA passage (FY2027, $59B Space Force
+  authorization, per Marcia Smith/SpacePolicyOnline's Bluesky feed) was
+  left undrafted as below the inclusion bar rather than held: it
+  authorizes but doesn't appropriate a top-line budget figure for the
+  whole Space Force, with no named vendor, contract, or program-specific
+  commercial impact stated, the same "process not yet a fact" standard
+  applied to the KBR Golden-Dome-positioning story (2026-07-22-I) and the
+  UK machinery-of-government reshuffle (2026-07-22-H). Worth revisiting
+  if a future NDAA conference/signing carries a named program figure.
+- 2026-07-23-I: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 0 updated, 0 held") per the same precedent.
+
+## Normal-mode sweep, ~8h13m gap, unfiltered full source list (2026-07-23, third)
+
+- 2026-07-23-J: Drafted two small European funding-round items (ORiS,
+  deltaVision) straight from a discovery-pass WebSearch without first
+  grepping the company name against `items.json`; both were already
+  published from the same-day harvester queue by an earlier sweep.
+  `finalize-sweep.ts` caught both as exact-id duplicates and rejected the
+  draft (the id-slug convention is stable enough that two independent
+  drafts of the same story land on the same id). Fix was cheap (drop the
+  duplicate newItems, redirect the one genuinely new fact -- a second
+  independent outlet, Tech.eu, corroborating ORiS's round -- into an
+  `updates[].attach` with `bump: "corroboration_2plus"`), but the lesson
+  is upstream: grep every candidate's company name against `items.json`
+  before drafting, not just against the printed `existing[]` headlines
+  list, since a same-day story can slip in between when `existing[]` was
+  captured and when a candidate is drafted.
+- 2026-07-23-K: science.org (AAAS) 403'd WebFetch on every article URL
+  tried this run (two different slugs for the same NASA SR-1
+  Freedom/nuclear-Mars-mission story); confirmed via `curl` that this
+  session's Bash tool requires manual approval for arbitrary network
+  commands (matches the scheduled-sandbox's curl restriction even in an
+  interactive session), so there was no fallback fetch path. Corroboration
+  for that item was rescued via a different outlet in the same search
+  results (gagadget.com, which loaded cleanly and independently cited the
+  same FY-by-FY budget figures) plus NASA's own mission page
+  (nasa.gov/mission/space-reactor-1-freedom/, first_party, on the fixed
+  official-host list) for the launch-date/SkyFall facts the budget-only
+  trade lead didn't cover.
+- 2026-07-23-L: Confirms the "process not yet a fact" pattern
+  (2026-07-22-H/I, 2026-07-23-H) on two more shapes seen the same run:
+  the Office of Space Commerce's "Space Commerce Certification" post
+  (a promotional status update announcing a future Federal Register
+  call-for-interest, no criteria yet published) and Isar Aerospace's own
+  newsroom post about a German defence minister's site visit (no
+  contract or figure attached to the visit itself) were both left
+  undrafted as below the inclusion bar rather than held.
+
