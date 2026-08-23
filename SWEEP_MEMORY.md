@@ -3228,3 +3228,36 @@ a newer entry if a lesson changes.
   `items.json` parses (452 items, matching `sweep-context.ts`'s pre-run
   `feedSize`) and a direct read of both updated items' `snr`/`sources`
   fields as the build-health signal.
+
+## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-23, second)
+
+- 2026-08-23-E: China's Manned Space Engineering Office (cmse.gov.cn), the
+  actual first-party publisher of the Chang'e-7 launch-postponement
+  statement Xinhua and Ars Technica both quoted, had not yet had the
+  Aug. 23 announcement indexed by WebSearch within a few hours of the
+  event (a targeted `site:cmse.gov.cn` search and a direct fetch of its
+  `/xwzx/` news-listing page both surfaced only its Aug. 19
+  vertical-transfer update, one step behind). Led with Xinhua/Ars
+  Technica/SCMP instead rather than block on the primary; worth a
+  same-metric re-check of cmse.gov.cn next sweep in case a first-party
+  rescore to the direct-source ceiling becomes available once it
+  indexes, same pattern as the 2026-07-30-E CASC case (though note
+  english.news.cn/Xinhua itself is NOT on the gate's official_record
+  allowlist per 2026-08-03-F, so cmse.gov.cn would need its own
+  anti-spoof check before it could class higher than `trade`).
+- 2026-08-23-F: europeanspaceflight.substack.com's `/feed` endpoint
+  403'd on WebFetch this session even though the bare `europeanspaceflight.com`
+  site and a Bluesky-linked article on it both fetched fine; the
+  substack leg's flakiness looks session-dependent like the Bluesky API
+  (2026-07-25-F and peers), not a permanent block. A whitelisted
+  signal's Bluesky post pointing at a europeanspaceflight.com article
+  (CNES's Aug. 18 mass-producible-telescope RFI) was still fully
+  chaseable via WebSearch + direct fetch of the linked page without the
+  substack feed.
+- 2026-08-23-G: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
+  updated, 0 held") plus a direct `jq` read of all three new items' and
+  the one updated item's `snr`/`category`/`impact`/`snr_trace` fields
+  (455 items total, up from 452) as the build-health signal.
