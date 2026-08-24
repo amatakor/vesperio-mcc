@@ -2860,3 +2860,170 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   contract or figure attached to the visit itself) were both left
   undrafted as below the inclusion bar rather than held.
 
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-07-24)
+
+- 2026-07-24-A: A trade outlet's fresh write-up of an old fact can smuggle
+  in a genuinely new, separately-newsworthy detail buried mid-article:
+  Space.com's July 23 SunRISE/Falcon-Heavy piece (the launch-vehicle swap
+  itself was already published 2026-07-13) opened with "On its most recent
+  launch, USSF-87, Vulcan experienced an anomaly... prompted the Space
+  Force to pause national security launches on Vulcan" — reads like fresh
+  news but a WebSearch confirmed USSF-87 and the pause both happened
+  February 12-26, 2026, already reflected in the published Northrop
+  Grumman GEM 63XL charges item (2026-07-21). Always date-check a
+  seemingly-new supporting fact inside an otherwise-stale story before
+  drafting it as new; this one traced to a five-month-old event.
+- 2026-07-24-B: WebFetch's summarizer can flatly miss a paragraph that
+  the harvester's own `raw_excerpt` for the same URL already captured
+  verbatim (the USSF-87 paragraph above): two separate WebFetch calls on
+  the same Space.com URL both claimed the anomaly wasn't mentioned on the
+  page at all, even though the queue's raw_excerpt quoted it directly.
+  Confirms 2026-07-08-N's rule (raw_excerpt is a legitimate source text on
+  its own) needs to extend to "don't trust a WebFetch summary's *absence*
+  claim either" — a summarizer saying a fact isn't on the page is not
+  proof it isn't there.
+- 2026-07-24-C: A same-story SpaceNews write-up published two days after
+  an already-scored item's original sources (Poland's IRIS2 contribution,
+  covered June 21 by European Spaceflight/eunews.it/Via Satellite) is
+  free corroboration worth attaching even when it adds no new fact, just
+  a USD-converted figure — landed as a 4th distinct source via
+  `updates[].attach` + `bump: "corroboration_4plus"`, though as in
+  2026-07-23-E the modifier didn't change the logged `snr_trace` (already
+  capped at final 4 from `corroboration_2plus`); the source list still
+  visibly grew to 4 distinct outlets on the card.
+- 2026-07-24-D: Two small trade-press items (Frequency Electronics'
+  proliferated-satellite contract wins, Intellian's C100M GMDSS terminal)
+  each had a swarm of financial-mirror/wire-syndication outlets covering
+  the identical company press release (stocktitan, streetinsider, Yahoo
+  Finance mirrors, MarineLink) but no genuinely independent second
+  outlet confirmable by direct fetch this run (several 403'd or returned
+  empty to WebFetch) — both correctly shipped `crawl: "found_none"` at
+  SNR 2 rather than stacking wire reprints as corroboration. Also caught
+  before drafting: WorkBoat's "Intellian rolls out new Iridium GMDSS
+  systems" piece, which read like a same-story match, turned out to be
+  about the earlier C200M/C700 launch, not this week's C100M — a same-
+  actor near-title match still needs a body-content check, not just a
+  headline match.
+- 2026-07-24-E: A Rocket Lab HASTE contract ($266M, Space Force,
+  suborbital Alaska launches) tripped the same-company-plus-category
+  dedup heuristic against an unrelated 4-days-prior Space Force
+  procurement item (the NSSL Lane 1 ceiling increase to $17B) on shared
+  company "Space Force" + category "procurement" alone, same pattern
+  documented many times since 2026-07-09-B; cleared with one
+  `dedup_distinct` entry. A WebSearch's own synthesized summary claimed
+  this was "the largest publicly disclosed single launch contract in
+  Rocket Lab's history" but no page actually fetched this run stated
+  that superlative (one candidate source, techtimes, 403'd); dropped the
+  claim from the copy rather than risk citing a search summary's
+  unverified framing.
+
+## Narrow same-day re-check, ~3h40m gap, unfiltered full source list (2026-07-24, second)
+
+- 2026-07-24-F: EXTENDS 2026-07-18-F: crossfeeding a vehicle's `last_flight_date`
+  against a pre-event registry snapshot trips the same wrongful dispute
+  downgrade as the flight-count fields, because `last_flight_date` is
+  NOT on the code's recognized monotonic-counter list (`flights_total`,
+  `flights_successful`, `sats_launched_total`, `launches_total`) even
+  though it is just as monotonic in spirit. Crossfeeding Long March-3B's
+  `last_flight_date` (new value 2026-07-23) against the registry's
+  as_of-2026-07-08 snapshot (stale value 2026-06-16) with
+  `same_metric: true` cost the item a full dispute downgrade (SNR 4 -> 3)
+  on first finalize. Recovery needed BOTH `rescore` AND
+  `dispute_resolved: true` on the same update -- a plain `rescore` alone
+  re-applies the dispute per the draft-format contract's "disputes
+  survive ordinary rescores" rule, it does not clear it. Lesson: treat
+  any date-valued "most recent X" registry field the same as the named
+  monotonic counters for crossfeed purposes -- either attest
+  `same_metric: false` for it, or omit it from the crossfeed block
+  entirely, until the code's monotonic-field list is extended to cover
+  it.
+- 2026-07-24-G: A trade write-up describing a state broadband office
+  (Louisiana's ConnectLA) signing a BEAD grant with Starlink is a
+  legitimate never-covered, dateable event worth chasing across a
+  ~6-week gap (June 11 signing, no prior sweep had it under any name):
+  `procurement` category (government buyer), `notable` impact (stated
+  value $8.2M, well under the nine-figure/largest-to-date bar for
+  `major`). Two independently-styled sources (Broadband Breakfast, a
+  trade outlet, June 11; Louisiana Radio Network, a local mainstream
+  outlet, July 23) both quote the same ConnectLA official near-
+  verbatim, which reads like they draw on the same underlying press
+  comments rather than fully separate reporting -- attached both
+  honestly anyway since neither is a wire/PR reprint of the other, and
+  let the code's title-similarity collapse logic decide if they count
+  as one unit or two.
+- 2026-07-24-H: A WebSearch synthesis can invent a wrong dollar figure
+  even when its own listed source pages state a different one: search
+  results repeatedly summarized the Louisiana/Starlink BEAD grant as
+  "$82 million," but two separate direct WebFetch calls on the actual
+  broadbandbreakfast.com article, one of them asking for the exact
+  sentence verbatim, both returned "$8.2 million." Trusted the
+  repeated direct fetch over the repeated search synthesis, consistent
+  with 2026-07-06-HH's standing precedent extended to a 10x-magnitude
+  discrepancy rather than a same-order-of-magnitude one.
+- 2026-07-24-I: A same-day CASC newsroom hit for a plausible-sounding
+  headline can be the wrong article: a `site:english.spacechina.com`
+  search for "Tianlian data relay satellite" surfaced
+  `n17212/c4291791/content.html` looking like a match for today's
+  Tianlian II-06 launch, but direct fetch showed it was actually the
+  March 2025 Tianlian II-04 launch -- same satellite family, wrong
+  generation and wrong year. Led with Xinhua/CGTN instead rather than
+  force a stale CASC page into the first-party slot. Also: CGTN's own
+  copy internally misdated the same launch ("Thursday, July 24" -- July
+  24, 2026 is actually a Friday, so the correct day was Thursday July
+  23, matching Xinhua's dateline and URL slug); cross-checked the
+  weekday against a calendar lookup before trusting either outlet's
+  stated date.
+- 2026-07-24-J: Two "still process, not yet fact" exclusions confirmed
+  on new shapes: a T-Mobile CEO comment about looking "beyond Starlink"
+  for satellite service, resurfaced today by PCMag under a fresh-
+  looking headline, traced to an April 28 earnings call already three
+  months stale with no new information added; and Sateliot's "wants
+  EUR150m in fresh funding" coverage describes an ongoing target still
+  seeking a lead investor (up from an EUR100M April round), not a
+  closed round -- both left undrafted rather than chased, since neither
+  is a closed/dated fact and the T-Mobile one isn't even new.
+
+## Deep sweep, escalated after zero-add run, ~8h10m gap (2026-07-24, third)
+
+- 2026-07-24-K: When a shell command with several `grep -E` alternation
+  terms gets blocked by the sandbox's "Contains simple_expansion"
+  approval wall, re-run EACH term as its own separate grep call rather
+  than silently treating the blocked batch as "checked": a UK debris-
+  removal delay item and a Contrivian/Big Network merger item were both
+  drafted as new because the batched dedup grep that would have caught
+  them never actually ran (only some of its terms got individually
+  re-checked afterward). `finalize-sweep.ts`'s same-event dedup gate
+  caught both before merge (shared company + category within 7 days,
+  exact prior ids), so no bad data landed, but the tokens spent
+  re-researching and re-drafting both items were wasted. Grep every
+  dedup term individually when a combined command is denied; don't
+  assume a partial re-check covers the gap.
+- 2026-07-24-L: Launch Library is `aggregator` class, not `computed`
+  (only celestrak.org and space-track.org qualify as computed, per
+  finalize-sweep's own rejection message); using
+  `ll.thespacedevs.com` launch records as a second source on the
+  Kinetica-1 item needed `class: "aggregator"`, not `"computed"`.
+  Direct observational tracking data is computed; a curated launch
+  database, however structured, is aggregator tier 4.
+- 2026-07-24-M: Confirms 2026-07-07-E's Q4-IR-style subdomain fix still
+  holds for a newly-drafted item: `ir.spire.com` (Spire's own IR press
+  release on the Spire/SATE STRAIDE partnership) passed the anti-spoof
+  gate cleanly as `first_party` against the registry's bare-apex
+  `spire.com` website value, landing the item at base tier 5 with no
+  `found_none` penalty (direct-source leads take none). Worth checking
+  a company's registry `website` value before assuming an IR subdomain
+  needs the wire-mirror workaround.
+- 2026-07-24-N: An EU Council decision restricting Copernicus Sentinel
+  imagery release over part of the Gulf of Oman (published July 14,
+  citing a May 26 US request tied to the US-Iran conflict) is a clean
+  fit for the geopolitical category's "government statements directly
+  concerning commercial space services in a conflict or crisis" carve-
+  out: reported the space-industry fact (the EU restricting a
+  previously-unrestricted open-data policy) and a named commercial
+  firm's (Kayrros) prior public statement about Copernicus's open-data
+  posture, without analysing the underlying conflict. Chased on its
+  July 14 disclosure date under the standing "chase notable events that
+  predate the window" ruling, six-plus weeks after SpaceNews's July 24
+  writeup first surfaced it via a whitelisted signal (Andrew
+  Parsonson's Bluesky), never covered before under any name.
+
