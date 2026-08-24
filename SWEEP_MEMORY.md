@@ -3141,3 +3141,50 @@ a newer entry if a lesson changes.
   check (455 items, matching the pre-run `feedSize`) and a direct read
   of both updated items' `snr`/`category`/`impact`/`sources` fields as
   the build-health signal.
+
+## Normal-mode sweep, ~11h51m gap, unfiltered full source list (2026-08-24, second)
+
+- 2026-08-24-E: A trade outlet's specific, technical follow-up story
+  (European Spaceflight's Aug 24 piece on ESA confirming Ariane 64 Block 2
+  as Argonaut's baseline, with new RPS-adaptation detail from an ESA
+  spokesperson) tripped the same-company-plus-category dedup gate against
+  the already-published Aug 20 "ESA shelves Ariane 6 Block 3" item on the
+  same outlet, same companies (ESA/ArianeGroup), same category `launch`,
+  4 days apart -- correctly folded into the existing item via
+  `updates[].patch` rather than drafted standalone or forced through with
+  `dedup_distinct`, since both stories are genuinely the same underlying
+  Argonaut/Ariane-6-capability thread the earlier item's own why_it_matters
+  already flagged ("narrows the payload margin available to ESA's Argonaut
+  lunar lander"). Worth checking whether a dedup-gate hit is actually the
+  SAME story continuing before reaching for `dedup_distinct`; not every
+  gate hit is a false positive.
+- 2026-08-24-F: `turkiyetoday.com` fetched cleanly (mainstream class,
+  citing Iran's state news agency IRNA) for a 163-arrests/997-device
+  Starlink-seizure report; the outlet that broke it first (iranwire.com)
+  403'd on direct fetch, and a second candidate mirror
+  (breakingthenews.net) returned an empty JS-shell page despite both
+  appearing in WebSearch results with real-looking snippets -- landed a
+  clean single-source `crawl: "found_none"` per the standing 2026-08-20-E
+  precedent (WebSearch snippets/summaries of an unfetched page never
+  substitute for a direct fetch, even when multiple independent-looking
+  hits exist).
+- 2026-08-24-G: An unregistered startup's own site (beyondreachlabs.io,
+  no registry organization entity to match) confirmed and slightly
+  refined a Payload article's product specs (splitting Payload's single
+  "8 kW" Flarewing-S figure into 5 kW Si-cell / 8 kW triple-junction-cell
+  variants) -- attached as `informal` class per the standing
+  2026-07-26-E/2026-07-31-I no-registry-host workaround, since anti-spoof
+  `first_party` matching requires a registry-recorded website regardless
+  of whether the item is a new draft or an update.
+- 2026-08-24-H: Vivienne Machi's Aviation Week author-page "NRO Takes
+  Commercial SAR Partnerships To New Operational Level" (Aug 21) is still
+  unverifiable three sweeps after first flagged (2026-08-21-I): still no
+  fetchable article behind the headline. Worth treating this specific
+  headline as a standing dead lead rather than re-attempting it each
+  sweep.
+- 2026-08-24-I: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
+  2 updated, 0 held") plus a `jq` parse check (458 items, up from 455)
+  and a direct read of all three new items' `snr`/`category`/`impact`
+  fields as the build-health signal.
