@@ -93,77 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~5h13m gap, unfiltered full source list (2026-07-25)
-
-- 2026-07-25-A: A large-dollar-figure story can still be a "process not yet
-  fact" exclusion even with real new corroborating coverage: Ukrainian
-  operator Stetman's $1.1B/€1bn 360-satellite sovereign constellation (first
-  120 sats via SpaceX in 2027, GomSpace/UASAT joint venture) got a fresh wave
-  of write-ups July 22-24 (UNITED24, TechRadar, DataCenterDynamics, dev.ua),
-  but every fact in them traces to a story circulating since at least March
-  2026 (thedefender.media) and a July 18 TechRadar piece; the only "new"
-  beat was two execs "reaffirming commitment" at a conference, no closed
-  funding, no new contract, no new figure. Left undrafted per the standing
-  2026-07-22-H/I, 2026-07-23-H/L pattern rather than chased as a fresh event.
-- 2026-07-25-B: blueorigin.com 429'd on two separate fetch attempts this
-  session (same failure mode as 2026-07-05-S); led the NASA/Blue Origin
-  Stennis B-2 test-stand item with nasa.gov (official_record, gov domain,
-  tier 5) instead and left Blue Origin's own release out entirely rather
-  than cite a page that never actually loaded this run.
-- 2026-07-25-C: A CASC (english.spacechina.com) headline that reads like
-  fresh news ("China launches new data relay satellite," dated July 24) can
-  be same-day catch-up coverage of an event already fully published the day
-  before under a different lead source -- confirmed it was the same
-  Tianlian II-06 launch already on the site (2026-07-23, sourced via
-  Xinhua/CGTN/SpaceNews per the 2026-07-24-I workaround) before treating it
-  as new.
-
-## Narrow same-day re-check, ~6h27m gap, unfiltered full source list (2026-07-25, second)
-
-- 2026-07-25-D: `finalize-sweep.ts` rejects `draft.coverage` entries that are
-  tags rather than category names: submitted `"connectivity"` and `"eo"`
-  (domain tags) and both were rejected with "not a known category" on first
-  attempt. `coverage` wants values from the item `category` enum
-  (`launch`, `constellation`, `contract`, `procurement`, `regulatory`,
-  `financial`, `product`, `partnership`, `incident`, `geopolitical`,
-  `human-spaceflight`, `science`), not the tag tiers from CLAUDE.md. Fixed by
-  swapping to `"constellation"` and the draft merged clean on retry.
-- 2026-07-25-E: Genuinely quiet full-matrix run, a few hours after the prior
-  sweep's own entries above: the harvester queue (79 candidates after
-  collapsing 9 alt-duplicates) was almost entirely SpaceX Starship
-  Flight-13/stock-price noise and repeat Stetman/Ukraine write-ups (both
-  already excluded per 2026-07-25-A); all 21 fetch-list.ts HTML sources came
-  back with nothing newer than already-published stories; 15 of 17 signals
-  channels checked clean (rotated out the europeanspaceflight substack and
-  mainenginecutoff.com legs for budget); an 8-query discovery matrix (launch,
-  financial, incident/debris, China, India, FCC regulatory, EO contract,
-  failure/anomaly) surfaced only already-published stories (Bezos' $2B Blue
-  Origin stake is a July 25 rehash of the already-published July 8-12
-  $10B/$130B round; CAS Space's Kinetica-1 rideshare is a July 24 Chinese-
-  language write-up of the already-published July 23 launch). Zero new
-  items, zero updates, zero held -- confirms the standing pattern
-  (2026-07-05-S and many later entries) that a narrow re-check quiet outcome
-  is normal, not under-coverage.
-- 2026-07-25-F: The public Bluesky API
-  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`)
-  fetched cleanly via WebFetch for every one of 9 distinct signals accounts
-  tried this run (Foust, Aschbacher, Langbroek, Henry, Farrar, Berger,
-  SpacePolicyOnline, Zak, A. Jones, Parsonson), continuing 2026-07-21-B's
-  observation that the flakiness is session-dependent, not per-account; a
-  fully clean session like this one is worth banking rather than assuming
-  the next session will match it. spacepolicyonline.com's own site remains
-  bot-gated (consistent with 2026-07-22-E) so the Bluesky leg is still the
-  only reliable path to Marcia Smith's content in-session.
-- 2026-07-25-G: A ground-station-safety relief post (Josef Aschbacher on
-  ESA's Cebreros deep-space station surviving nearby Spanish wildfires; a
-  parallel NASA statement on its Madrid-area DSN station evacuation, via
-  Marcia Smith's Bluesky) is below the inclusion bar, not a held scope
-  question: no facility damage, service interruption, or commercial
-  consequence was stated in either case, just infrastructure safety updates
-  during an ongoing wildfire event. Distinguish this from genuine scope
-  questions (NATO HALO, Dutch Space Command precedent): there is no
-  editorial call to make when the source itself states no consequence.
-
 ## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-26)
 
 - 2026-07-26-A: Bluesky's public `getAuthorFeed` API can return genuinely
@@ -3187,4 +3116,61 @@ a newer entry if a lesson changes.
   relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
   2 updated, 0 held") plus a `jq` parse check (458 items, up from 455)
   and a direct read of all three new items' `snr`/`category`/`impact`
+  fields as the build-health signal.
+
+## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-25)
+
+- 2026-08-25-A: A registry organization entity's `website` field can
+  belong to a JOINT VENTURE profile and still class that entity's own
+  same-day newsroom post as `first_party`: KSAT (equally owned by Space
+  Norway and Kongsberg Defence & Aerospace) has an `organizations/ksat.json`
+  entry with `website: https://www.ksat.no`, so KSAT's own Aug 24 Hyperion
+  demo-campaign post matched cleanly and scored a tier-5 lead, beating the
+  same-day PR Newswire wire copy and Via Satellite trade write-up of the
+  identical release. Worth checking a company's registry profile even when
+  its news reads like a routine wire-distributed press release; the
+  company's own newsroom URL is often findable one hop from a listing page
+  the wire copy doesn't link.
+- 2026-08-25-B: A launch-preview candidate ("B1067 Preps Record 37th
+  Flight") whose own live-coverage article stated a NET later than the
+  sweep's own `now` timestamp (booster scheduled 09:33 UTC Aug 25; sweep
+  ran at 05:17 UTC Aug 25) was correctly left undrafted per the standing
+  2026-08-20-A "don't draft a scheduled-but-not-yet-flown launch" rule,
+  confirmed by checking the Launch Library API's own `status`/`net` fields
+  directly (`status.id: 1`, "Go for Launch") rather than trusting a
+  "Live coverage: SpaceX to launch..." headline as evidence the launch had
+  already happened.
+- 2026-08-25-C: A batch of Chinese Long March 6C payloads that read like a
+  fresh commercial rideshare from the raw_excerpt alone ("share ride of 7
+  satellites... details TBD") turned out, once searched, to carry only two
+  named payloads and both were student/amateur-radio education microsats
+  (JAMX01 from a Shanghai school project, BY70-4 from Harbin Institute of
+  Technology's LilacSat team) with no commercial operator aboard at all --
+  left undrafted as out of scope despite the launch itself succeeding
+  within window. A generic rideshare raw_excerpt is not evidence the
+  payloads are commercial; check the actual manifest before drafting any
+  "successful launch" candidate as an item.
+- 2026-08-25-D: A Gulf News headline ("Abu Dhabi's Space42 lines up $695.5m
+  to build new satellites") read as fresh discovery-pass news but every
+  detail (the exact $695.5 million figure, Crédit Agricole/Santander/
+  Societe Generale/Natixis arrangers, Al Yah 4/5, the 2027/2028 launch
+  dates) traced to a July 2025 Via Satellite/SpaceWatch.Global/Zawya
+  financing announcement, over a year stale -- caught by searching the
+  exact dollar figure before drafting rather than trusting the outlet's
+  current-looking publish context. Extends the standing stale-resurfacing
+  pattern (2026-08-19-G and many peers) to a financial/financing story,
+  not just product or personnel news.
+- 2026-08-25-E: Two same-day announcements from unrelated companies
+  (OrbitAID's Q1 2027 RPO demo via a Payload exclusive, Star Catcher/
+  Aethero's power purchase agreement via PR Newswire) both landed at
+  honest `crawl: found_none` single-source scores (SNR 2 and 3
+  respectively) after genuine multi-query corroboration searches came up
+  empty; publishing them at the floor rather than holding for thin
+  sourcing is the model working, not a defect.
+- 2026-08-25-F: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 5 new, 3 updated, 0 held") plus a `jq` parse
+  check (463 items, up from 458) and a direct read of all five new items'
+  and all three updated items' `snr`/`category`/`impact`/`snr_trace`
   fields as the build-health signal.
