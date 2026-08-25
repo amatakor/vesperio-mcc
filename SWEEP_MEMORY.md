@@ -3174,3 +3174,67 @@ a newer entry if a lesson changes.
   check (463 items, up from 458) and a direct read of all five new items'
   and all three updated items' `snr`/`category`/`impact`/`snr_trace`
   fields as the build-health signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-25, second)
+
+- 2026-08-25-G: SpaceX's Louisiana spaceport story (flagged "close to
+  finalizing a deal" and left as a `notable`-tier item on 2026-08-03) had
+  its scheduled Aug. 25 announcement (foreseen and correctly left
+  undrafted on 2026-08-21) actually happen this run, 22 days after the
+  original item and well outside the 7-day update/30-day reinforcement
+  windows -- drafted as a new item rather than an update per the
+  standard dedup rule, cross-referencing the old item only in prose (no
+  unfetched URL added). Louisiana Economic Development's own
+  `opportunitylouisiana.gov/spacex/` page classed `official_record`
+  (a state economic-development agency's own domain stating a deal it
+  brokered, same treatment as a NASA program-announcement page) and
+  landed the item at the SNR 5 ceiling with three mainstream corroborations
+  attached for free; spacex.com/updates and starlink.com/updates both
+  still render as unreadable JS shells, confirming the standing
+  2026-07-05-I dead-source call.
+- 2026-08-25-H: A SpaceNews-only headline ("SpaceX offers space safety
+  service for satellite operators," Aug 25) that read like a fresh
+  Stargaze rollout announcement turned out to be unverifiable: SpaceNews
+  itself 403'd, the Google News redirect resolved to a bare header, and
+  no other outlet's Aug 25 coverage of the specific claim could be found
+  (Stargaze was originally unveiled in January with a vague "spring"
+  general-availability target, and starlink.com/updates/stargaze is a
+  JS shell). Left undrafted per the standing "only cite pages with
+  genuinely fetched content" rule rather than guess whether this is a
+  genuine GA-launch follow-up or a rehash; worth re-checking next sweep
+  if SpaceNews becomes fetchable or another outlet picks it up.
+- 2026-08-25-I: A same-day KSAT press release ("KSAT Delivers Integrated
+  Mission Services for Kongsberg's N3X Satellite Constellation," via a
+  Manila Times PR Newswire mirror) read like a new constellation-ops
+  story but a direct fetch confirmed it explicitly recaps KONGSBERG's
+  prior N3X expansion announcement rather than stating anything new;
+  left undrafted. Separately, a same-day YourStory.com profile of
+  VyomIC's India PNT-constellation "GPS alternative" traced every
+  concrete figure (the $1.6M raise, the founder quote) to a September
+  2025 announcement, another stale-resurfacing case a full year later
+  than the September 2025 original, not just the 2026-08-19-G one-year
+  case -- worth treating any startup-profile piece with a suspiciously
+  round, oft-repeated raise figure as a resurfacing candidate by default.
+- 2026-08-25-J: A never-covered, week-old gap surfaced via the harvester
+  queue itself (not discovery): the WA government's $1.75M Space Angel
+  spaceport-establishment grant. The SpaceNews entry in today's queue was
+  itself a catch-up piece of an Aug. 18 announcement (confirmed via
+  Space Connect's own byline date); dated the item to the actual Aug. 18
+  event per the standing predates-window chase rule rather than to
+  today's SpaceNews republish date, even though the chase started from
+  the queue rather than a discovery-pass search.
+- 2026-08-25-K: Confirmed the standing `ir.rdw.com`/`rdw.com` anti-spoof
+  failure (2026-08-05/2026-08-12-H: Redwire's registry `website` is
+  `redwirespace.com`, a different domain) on a fresh Redwire press
+  release, but found a better fallback than `informal`: the release was
+  distributed via BusinessWire (confirmed by checking a Yahoo Finance
+  mirror's own dateline, "--(BUSINESS WIRE)--"), so it led `wire_pr`
+  (tier 4) instead. Worth checking a wire-distributed release's syndicated
+  mirror for its actual wire-service dateline before defaulting a
+  registry-mismatched company newsroom URL straight to `informal`.
+- 2026-08-25-L: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 8 new,
+  0 updated, 0 held") plus a `grep -c` parse check (471 items, up from
+  463) and a direct read of the Louisiana and Ares Shield items'
+  `snr`/`category`/`impact`/`snr_trace` fields as the build-health signal.
