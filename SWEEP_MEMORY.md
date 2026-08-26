@@ -3169,3 +3169,69 @@ a newer entry if a lesson changes.
   items, up from 471) and a direct read of all eight new items' and the
   updated item's `snr`/`category`/`impact` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-26, second)
+
+- 2026-08-26-G: The queue was almost entirely a single story (SpaceX's
+  Aug 25 Starbase Louisiana announcement) re-reported by 40+ outlets
+  plus a wave of unrelated SpaceX-valuation/analyst-note financial
+  blogs (Motley Fool, Barron's, 24/7 Wall St, Seeking Alpha, Stocktwits
+  price-target pieces); none of the analyst takes were drafted as
+  commentary since none came from a signals.json whitelist person or a
+  distinguishing named bank call beyond what the existing Aug 25 item
+  already carries (Morgan Stanley) — publishing every repeat "SpaceX
+  valuation" take would be padding, not signal. Instead the mandatory
+  HTML-source pass caught the genuinely new fact the queue buried: a
+  same-day ICEYE Korea entity release, extending the standing country-
+  entity pattern (Germany/Portugal/UAE/India/Netherlands) to a sixth
+  country; drafted with `dedup_distinct` against the two most recent
+  same-category ICEYE entries (Netherlands Aug 25, India Aug 24) since
+  each is a genuinely separate country/leadership/MOU event, not a
+  rewrite.
+- 2026-08-26-H: Payload's own Starbase Louisiana article, fetched via
+  its queue `raw_excerpt` (not a WebFetch summary), carried real
+  operational detail the Aug 25 item's official-record lead source
+  didn't state (five launch complexes, self-sustaining site plan,
+  a jobs estimate revised up to 10,000, and the ExxonMobil-lawsuit
+  dismissal that freed the land) — patched into the existing item's
+  `what_happened` via `updates[]` even though the item was already at
+  the SNR 5 ceiling and no rescore was possible; the value was in the
+  copy, not the score. Reminder: `explainer` patches are a full-field
+  replace, not an append (confirmed against `finalize-sweep.ts`'s
+  `{...base.explainer, ...patch.explainer}` merge), so the patch must
+  carry the complete new text, original sentences included.
+- 2026-08-26-I: A single-source Payload exclusive (City Labs' second
+  nuclear demo, testing a lunar-night radioisotope heating unit) got a
+  genuine `crawl: "found_none"` after a real search turned up nothing
+  beyond the same Payload piece — landed at trade tier 3 minus one for
+  the uncorroborated claim, SNR 2, published anyway per the standing
+  "weak sourcing is not a hold reason" rule.
+- 2026-08-26-J: `spacenews.com` 403'd on a queue candidate (RTX/Blue
+  Canyon "new spacecraft mission enabler") and the queue's own
+  `raw_excerpt` cut off before naming the actual product; a WebSearch
+  surfaced a plausibly-related "FleXbus" RTX release but dated Aug 14,
+  a mismatch with the Aug 26 SpaceNews republish date and never
+  independently confirmed as the same announcement — left undrafted
+  rather than guess which product the SpaceNews piece meant, per the
+  standing "only cite pages with genuinely fetched content" rule.
+- 2026-08-26-K: A Reuters/Washington Times/AP set of pickups on
+  "Zelensky awards Musk Ukraine's Order of Freedom, seeks wider
+  Starlink access over Russia" all 403'd or were unreachable directly;
+  Fortune and the Kyiv Independent both fetched cleanly and corroborated
+  each other (mainstream tier 3 + corroboration bump = SNR 4) despite
+  disagreeing on the award's English name (Order of Freedom vs. Order
+  of Liberty, likely a Ukrainian-to-English translation variance) —
+  went with "Order of Freedom" per the majority of headlines seen in
+  WebSearch results (AP, Reuters, Fortune, Washington Post, ABC) without
+  citing any of the unfetched pages. Classed as `geopolitical` under the
+  CLAUDE.md carve-out (a government statement about commercial space
+  services in a conflict), not conflict analysis, since the item reports
+  Zelensky's on-record ask and Musk's on-record refusal without
+  characterizing the war itself.
+- 2026-08-26-L: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1
+  updated, 0 held") plus a `jq` parse check (484 items, up from 479)
+  and a direct read of all five new items' and the updated item's
+  `snr`/`category`/`impact` fields as the build-health signal.
