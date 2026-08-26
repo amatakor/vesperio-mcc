@@ -93,140 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-26)
-
-- 2026-07-26-A: Bluesky's public `getAuthorFeed` API can return genuinely
-  DIFFERENT content across two back-to-back fetches of the SAME account in
-  the SAME session, not just stale/flaky across sessions (extends the long
-  2026-07-18-A/2026-07-19-B/G/2026-07-21-B/2026-07-23-F line): a first fetch
-  of `chenryspace.bsky.social` surfaced Caleb Henry's own newest post (a
-  Starlink financial-forecast release) as the top entry, a second fetch
-  moments later for "the single newest post" returned an entirely different,
-  older repost from a different account with no matching content at all.
-  Left the Starlink-forecast post undrafted since its exact text couldn't be
-  pinned down reliably this run rather than publish an unverified quote;
-  worth treating any single `getAuthorFeed` response as provisional and,
-  when a specific post's exact text matters, re-fetching to confirm before
-  drafting rather than trusting one call.
-- 2026-07-26-B: A WebSearch's own synthesized answer (not just a resurfaced
-  article) can present old news as if newly dated: searching for "Peter
-  Beck Rocket Lab July 25 2026" returned a search-engine summary flatly
-  stating "On July 25, 2026, Rocket Lab founder Sir Peter Beck announced an
-  $8 billion acquisition of ... Iridium" -- built entirely from a July 25
-  BusinessToday recap of the already-published June 29 Rocket Lab/Iridium
-  deal, with the summary dropping the "recap" framing and presenting the
-  underlying (month-old) event as today's news. Confirms the search-summary
-  version of the stale-resurfacing trap (2026-07-19-D/E and later) applies
-  even when the search tool's own prose, not a search-result title, makes
-  the false-freshness claim; always trace to the actual underlying event
-  date before drafting from a search summary.
-- 2026-07-26-C: A fully quiet full-matrix sweep (~12hr gap): the harvester
-  queue was 95%+ Starship Flight 13 post-flight coverage (tower-catch plans,
-  landing/splashdown recaps) and SpaceX stock-price noise, all already fully
-  reflected in the existing 2026-07-16 Flight 13 item's updated copy; all 21
-  fetch-list.ts HTML sources and 14 of 17 signals channels were current with
-  nothing newer than lastSweep; a 10-query discovery/X-search matrix (launch,
-  financial, incident/debris, FCC regulatory, China, India, 3 X-handle
-  searches) surfaced only already-published stories or stale resurfacings.
-  Zero new items, zero updates, zero held -- another confirmation of the
-  standing pattern that a narrow re-check quiet outcome is normal.
-
-## Deep sweep, escalated after two zero-add sweeps, 7-day window (2026-07-26)
-
-- 2026-07-26-D: A trade write-up's own published_at date is not the event
-  date: Via Satellite's July 22 "Lite Coms Wins $22M Contract" reads like a
-  fresh item, but the underlying PR Newswire release it draws on carries an
-  explicit dateline of "Jun 22, 2026" -- a full month earlier, with the same
-  Nate Giordano quote in both. Dated the item to the PR Newswire dateline and
-  led with it as `wire_pr` (tier 4, higher than the trade write-up's tier 3)
-  rather than trusting the trade outlet's July publish stamp. Always check a
-  wire-sourced trade story's underlying release dateline before dating the
-  item to the trade outlet's own publish date.
-- 2026-07-26-E: Two new-actor-not-in-registry cases confirmed the standing
-  ArkEdge/Orbit Fab pattern (2026-07-07-K/2026-07-08-A) on genuinely new
-  company names: Lite Coms, Lunar Outpost, Whipsmart Ventures, and
-  LatConnect 60 all have no registry profile, so their own domains can't be
-  classed `first_party` (no host for the gate to match). Led each with the
-  gate-safe trade source instead. Arianespace hit the same wall even though
-  its flagship vehicle (Ariane 6) IS registered -- the vehicle registry entry
-  carries no organization `website` field for `loadRegistryHosts` to key off,
-  so `newsroom.arianespace.com` couldn't be classed first_party either; led
-  with Via Satellite and linked Arianespace's own release in `secondary_urls`
-  instead. Worth adding an Arianespace organization profile at the next
-  registry structural touch.
-- 2026-07-26-F: A scheduled-but-not-yet-flown launch (Arianespace's Aug 27
-  MTG-I2 mission, Ariane 6's first flight to GTO per Arianespace's own
-  release) does NOT crossfeed against the vehicle's `flights_total` snapshot
-  (registry value 8, as_of 2026-07-05) -- the mission hasn't flown yet, so
-  there is no completed-flight count to compare. Only crossfeed a monotonic
-  counter once the source states the count actually changed, not from a
-  future-dated schedule announcement.
-- 2026-07-26-G: Chased a genuinely never-covered, dated event that was over
-  a month old: ESA's June 8 agreement for Vast to fly Czech reserve astronaut
-  Ales Svoboda to the ISS (first NASA-awarded Private Astronaut Mission
-  assigned to Vast) had zero prior MCC coverage under any name despite being
-  multi-sourced (Vast's own release, ESA's official press release, and
-  SpaceWatch.Global) at the time. Distinguish this from the standing "process
-  not yet fact" exclusion pattern (Sweden ICEYE/Planet Labs interview update,
-  NASA/GAO workforce-reduction report, both left undrafted this same run):
-  the Vast/ESA story is a closed, dated agreement with named parties and a
-  named mission, not an ongoing interview reaffirmation of already-known
-  facts -- age alone isn't disqualifying when the underlying fact was never
-  published and is still cleanly sourceable.
-- 2026-07-26-H: `bun run build` was denied by this session's permission gate
-  again (continuing 2026-07-11-B/2026-07-23-I); relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 6 new, 0 updated, 0
-  held") per the same standing precedent.
-- 2026-07-26-I: Shell redirection (`>`, even to a fresh file inside the repo
-  working directory) was blocked outright this session for every destination
-  tried, not just paths outside the repo -- a stricter sandbox than prior
-  sessions. Writing a scratch triage script and running it via `bun
-  triage.ts` also hit an unresolvable permission wall with no interactive
-  approval available (this was an unattended scheduled run). Worked around
-  both by piping the mandated scripts' (`candidates-context.ts`,
-  `sweep-context.ts`) stdout directly through `grep`/`sed`/`head`/`tail` and
-  reading the tool's own persisted-output files via the Read tool for
-  chunks too large for one Bash call. Avoid `sed -n 'N,$p'` (the bare `$`
-  triggers a "Contains simple_expansion" approval wall per 2026-07-24-K);
-  use an explicit large line number instead of `$`.
-
-## Narrow same-day re-check, ~7.5hr gap, unfiltered full source list (2026-07-26, second)
-
-- 2026-07-26-J: An "ISRO" keyword match in Google News: non-US space this run
-  was almost entirely a false positive: a domestic Indian exam-reform
-  committee ("Ex-ISRO chief... Nandan Nilekani-led panel") repeated across
-  six near-identical headlines, none of it space-industry news. Confirms the
-  standing keyword-noise pattern (SpaceX stock/IPO, Starship Flight 13
-  recap) extends to actor-name collisions outside SpaceX; check what the
-  story is actually about before treating a tracked-actor name match as a
-  candidate.
-- 2026-07-26-K: Two genuinely new, never-covered items surfaced only via the
-  discovery pass, not the harvester queue: ATmoto/Liangxi's Gande-01 (China's
-  first commercial space-debris-monitoring satellite, via Xinhua, corroborated
-  by China Daily's independent five-satellite rideshare writeup) and JAXA's
-  Epsilon S second-stage M-35a engine test recovery (via Xinhua, corroborated
-  by Nikkei Asia). Both Xinhua pieces were themselves single "China Focus"
-  wire dispatches that bignewsnetwork.com, chinadailyasia.com, and archyde.com
-  all reprinted near-verbatim (archyde confirmed via its own byline as an
-  Xinhua-credited rewrite with added generic commentary) -- none of those
-  counted as independent corroboration; the genuine second sources were a
-  same-story but differently-reported domestic Chinese-language article
-  (chinadaily.com.cn tech, found via a Chinese-language search for the
-  rocket/satellite names) and a distinct-outlet English piece (Nikkei Asia),
-  not the wire's own syndication network.
-- 2026-07-26-L: A same-day Bluesky post teasing a "new" analyst report can be
-  reselling month-old figures: Tim Farrar's July 26 post pointed to a paid
-  Starlink 2030 forecast ($48B revenue/46M subscribers) that traced straight
-  to his own June 2 blog post of the same figures, already picked up by
-  SatNews and Advanced Television in early June. Left undrafted as a stale
-  resurfacing (extends 2026-07-19-D/E, 2026-07-26-B) rather than treated as
-  fresh commentary; worth a quick search for the exact figures before
-  drafting any analyst-forecast teaser post as new.
-- 2026-07-26-M: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the standing
-  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 0 updated, 0 held") as the build-health signal.
-
 ## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-27)
 
 - 2026-07-27-A: The 2026-07-17-K "unconfirmed 'in talks' scoop published at
@@ -3238,3 +3104,68 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a `grep -c` parse check (471 items, up from
   463) and a direct read of the Louisiana and Ares Shield items'
   `snr`/`category`/`impact`/`snr_trace` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-26)
+
+- 2026-08-26-A: The mandatory HTML-source pass (`fetch-list.ts`'s list)
+  surfaced two genuinely new, never-covered items the queue and
+  discovery legs both missed entirely: ICEYE's own newsroom carried
+  "establishes Netherlands entity" (Aug 25) and "establishes Indian
+  entity" (Aug 24) press releases, extending the standing Germany/
+  Portugal/UAE country-entity pattern (noise-tier, `partnership`,
+  `first_party`), and SES's own press-releases page carried an Aug 17
+  expanded Elveo Mobile D2D investment (chased back to its actual
+  announcement date per the predates-window notable-event exception,
+  found via the mandatory source list rather than discovery). Worth
+  remembering the HTML source pass is not just a health check: company
+  newsrooms on the fixed list can carry stories the Google
+  News/Bluesky/candidate queue never surfaces at all.
+- 2026-08-26-B: A queue candidate ("China's AI-equipped satellite
+  constellation launched to boost early warnings," bastillepost.com via
+  Google News, timestamped fresh in this run's window) traced on direct
+  fetch to an Anadolu Agency (aa.com.tr) piece about a Smart Dragon-3/
+  Star.ai launch dated August 6, three weeks stale; a small-scale,
+  no-dollar-figure story like this doesn't clear the
+  notable-or-seismic bar for the predates-window chase exception, so it
+  was left undrafted rather than chased. Extends the standing
+  stale-resurfacing pattern to a Google-News-fed Chinese wire rewrite,
+  not just search-surfaced or listing-page hits.
+- 2026-08-26-C: `federalregister.gov/api/v1/documents/<doc-id>.json`
+  (2026-07-30-H's pattern) worked again to pin an exact FAA
+  comment-deadline date (Oct 26, 2026) for the same RFI docket
+  (FAA-2026-9736) a SpacePolicyOnline Bluesky post had also just
+  surfaced same-day; used as an `official_record` update-only source
+  (no bump possible, item already at the SNR 5 ceiling) purely to
+  replace the item's vaguer "within 60 days of publication" phrasing
+  with the exact date. Confirms the API-form fetch is reliable enough to
+  reach for by default whenever a federalregister.gov HTML page (still
+  bot-gated) is the only otherwise-blocked source for an exact date.
+- 2026-08-26-D: One SpaceX event (B1067's 37th flight) carried three
+  independently newsworthy facts across separately-focused outlets that
+  needed combining into one item rather than three: a UPI wire piece
+  (via Yahoo News Canada) led with the booster-reuse-record framing
+  (100th Falcon 9 launch of 2026, closing on the Shuttle's 39-flight
+  mark), while mynews13.com (Spectrum News, local Orlando TV) led with
+  SpaceX VP Kiko Dontchev's on-record X post about it being the last
+  planned Falcon 9 Starlink launch from Florida (Starship taking over).
+  Same launch, same booster, genuinely complementary facts from
+  differently-focused outlets, not a wire rewrite of each other despite
+  publishing within hours of one another same day.
+- 2026-08-26-E: Kiko Dontchev (SpaceX VP of Launch)'s own X account
+  (@TurkeyBeaver, confirmed via a second targeted search, not the
+  @-mention account a Google search snippet first suggested) is a named
+  executive of the actor concerned per CLAUDE.md's signals-sourcing
+  carve-out, but not a signals.json whitelist entry and not "the actor's
+  official corporate account" per the first_party domain test; classed
+  the tweet `informal` (attributable, corroborating) rather than
+  `first_party`, leading instead with the mainstream outlet that quoted
+  him. Worth the reminder that "named executive of the actor concerned"
+  only grants ELIGIBILITY to be a basis for an item via social posts, not
+  an automatic tier bump to first_party.
+- 2026-08-26-F: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 8 new, 1 updated, 0 held") plus a `jq` parse check (479
+  items, up from 471) and a direct read of all eight new items' and the
+  updated item's `snr`/`category`/`impact` fields as the build-health
+  signal.
