@@ -3235,3 +3235,48 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (484 items, up from 479)
   and a direct read of all five new items' and the updated item's
   `snr`/`category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h48m gap, unfiltered full source list (2026-08-26, third)
+
+- 2026-08-26-M: A near-total-duplicate queue (400 of ~447 candidates
+  already consumed, the remainder almost entirely SpaceX Louisiana
+  Starbase follow-up coverage from 40+ outlets and SpaceX/Tesla stock
+  speculation) still surfaced one genuinely new, well-sourced item via
+  the queue's own Spire IR/Via Satellite entries: NOAA's TMATE program
+  (Temperature and Moisture Advanced Technology Evolution) awarded
+  Spire ($27,982,177), Muon Space ($11M), and Weather Stream ($7.5M)
+  combined $46.5M to develop new microwave sounding instruments,
+  announced Aug 26. Spire's own IR release didn't name the "TMATE"
+  program (called it "HyMS" work generically) and the raw_excerpt was
+  empty; NOAA's own NESDIS press release (found via WebSearch, not the
+  queue) named the program, listed all three exact award figures, and
+  gave the 24-month/Aug 25 start timeline -- led with NESDIS as
+  `official_record` (SNR 5) rather than Spire's own release, since the
+  government award notice is the more complete and more authoritative
+  primary source when both exist for a procurement.
+- 2026-08-26-N: Extends the standing same-company-plus-category dedup
+  false positive to a new instance: the new NOAA TMATE award (company
+  Muon Space, category `procurement`) tripped the gate against the
+  Aug 20 SpaceWERX STRATFI awards (also company Muon Space, also
+  `procurement`, within 7 days) despite being unrelated agencies
+  (NOAA vs. Space Force), programs, and cohorts. One `dedup_distinct`
+  entry cleared it.
+- 2026-08-26-O: A Polish government institute's GNSS-jamming report
+  (widespread interference along the Baltic coast, also flagged
+  same-day by Andrew Parsonson on Bluesky) was left out of scope
+  despite reading like a regulatory/incident story: no commercial
+  satellite operator is named, no operator or government statement
+  ties it to a specific space asset or service change, and the
+  disruption is described purely in terms of ground-receiver/PNT
+  effects (phones, drones, city bikes) -- distinct from the
+  attributable-incident carve-out (which covers debris, collisions,
+  and satellite anomalies attributed to a reporting authority), and
+  matching the 2026-08-19-H "space-adjacent but no commercial-space
+  angle stated" exclusion pattern.
+- 2026-08-26-P: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a grep parse check (485 items, up from 484)
+  and a direct read of the new item's `snr`/`snr_trace`/`category`/
+  `impact` fields as the build-health signal.
