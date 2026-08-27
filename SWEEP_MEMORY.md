@@ -3285,3 +3285,65 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (488 items, up from 485)
   and a direct read of all three new items' `snr`/`snr_trace`/
   `category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~11h47m gap, unfiltered full source list (2026-08-27, second)
+
+- 2026-08-27-F: The mandatory HTML-source pass (`fetch-list.ts`) again
+  surfaced the sweep's only genuinely new, well-sourced find: ESA's own
+  newsroom carried "First contracts kick off European Launcher
+  Challenge" (Aug 27), confirming ESA's first three European Launcher
+  Challenge awards (Isar Aerospace €197.8M, Rocket Factory Augsburg
+  €186.9M, PLD Space €158.9M; MaiaSpace excluded this round). The queue
+  and Google News legs carried only Louisiana-Starbase follow-up chatter
+  and SpaceX stock-analyst noise. `esa.int` classes clean as
+  `first_party` per existing item precedent (registry `organizations/
+  esa.json` website field matches exactly, e.g.
+  `2026-07-02-esa-emxys-don-quijote-cubesat-contract`'s snr_trace),
+  landing the item at the SNR 5 ceiling with European Spaceflight
+  (trade, harvester raw_excerpt) and Euronews (mainstream, direct fetch)
+  as free corroboration. Same ICEYE newsroom fetch also caught two
+  already-published items (Korea entity Aug 26, Netherlands entity Aug
+  25) alongside one genuinely new one (a Water Institute FloodID
+  partnership, Aug 27, noise-tier `product`, no independent corroboration
+  found beyond a PR Newswire wire-copy of the same release).
+- 2026-08-27-G: Extends the standing "already-published, just needs a
+  grep" pattern (2026-08-22-E and peers) to Spire Global's own IR page:
+  both a "$28M NOAA hyperspectral microwave sounding" release (Aug 26)
+  and a "€4M EUMETSAT contract renewal" release (Aug 25) read like fresh
+  finds from the mandatory source pass but grepped straight to
+  already-published items from earlier the same day
+  (`2026-08-26-noaa-tmate-spire-muon-weatherstream`,
+  `2026-08-25-spire-eumetsat-contract-renewal`) — the $28M figure is
+  Spire's individual share of the $46.5M three-company TMATE award
+  already covered under NOAA's own program name. Grep company-page
+  press-release headlines against items.json before treating a "new"
+  IR-page release as undrafted, not just Google News/queue hits.
+- 2026-08-27-H: The Bluesky public API (2026-07-30-I's pattern) worked
+  cleanly for Josef Aschbacher, Andrew Jones, Marco Langbroek, Caleb
+  Henry, and Tim Farrar this run, but returned obviously stale content
+  for Eric Berger (posts dated April-June 2025/2026, over a year old,
+  despite a fresh `now` timestamp) — a session-dependent caching quirk,
+  not a dead account; worth a retry next sweep rather than treating the
+  account as unreachable. Aschbacher's own post confirmed the ELC
+  signing same-day but added no fact beyond ESA's own press release.
+- 2026-08-27-I: A discovery-pass hit ("SpaceX folded xAI into its own
+  stack... deal effective on announcement," from a general funding-round
+  search) turned out to already be folded into an existing item's prose
+  as background context (grepped "xAI" against items.json body text, not
+  just headlines) — worth grepping full item bodies, not just headlines,
+  when a discovery search surfaces something that reads like it could be
+  a standalone event.
+- 2026-08-27-J: Confirms 2026-08-27-D from the same day's earlier sweep:
+  a fresh WebSearch on India's ISRO PSLV/LVM3/SSLV privatization still
+  traced only to the same SatNews/BusinessToday synthesis (no named
+  consortium or signed contract for PSLV/LVM3 specifically), and
+  `pib.gov.in` still 403'd on direct WebFetch. Left undrafted a second
+  time this day rather than re-litigate a same-day call with no new
+  primary source.
+- 2026-08-27-K: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (490 items, up from 488) and a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact` fields as the
+  build-health signal.
