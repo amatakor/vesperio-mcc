@@ -93,73 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-27)
-
-- 2026-07-27-A: The 2026-07-17-K "unconfirmed 'in talks' scoop published at
-  its honest floor rather than held" precedent extends cleanly from M&A/deal
-  rumors to funding-round rumors: The Exploration Company's FT-reported
-  ($300M at a $2B valuation) round was "in talks," "not finalized," sourced
-  to "people familiar," and every pickup (Bloomberg, Seeking Alpha,
-  Investing.com, MarketScreener) explicitly attributed the story to FT
-  rather than doing independent reporting -- one source under the wire-
-  rewrite rule, `crawl: found_none`. Led with Investing.com (`informal`,
-  most detailed relay, not a wire mirror) rather than Bloomberg (paywalled,
-  thinner relay); landed at the honest SNR-1 floor with an explicit
-  "could still fall through" caveat in the copy, same shape as the SpaceX/
-  Pentagon compute item.
-- 2026-07-27-B: Jeff Foust's July 24 post on the Office of Space Commerce
-  "moving ahead" on mission authorization ("taking the next step forward"
-  on the still-voluntary "Space Commerce Certification" proposal open for
-  comment since March) is the same ongoing regulatory process already
-  excluded as "process not yet fact" in 2026-07-23-L, not a new closed
-  action; left undrafted again rather than re-litigated.
-- 2026-07-27-C: A University of Warwick-led academic survey re-analyzing
-  archival telescope data to find 25 previously-undetected small debris
-  objects in GEO (widely covered by Gizmodo/Vice/phys.org/The Debrief) was
-  left out as an academic research paper with no named operator, no
-  attributable commercial actor, and no dated operational consequence --
-  distinct from the `incident` category's reentry/collision/anomaly
-  examples, which all attribute to a reporting authority about a specific
-  object or event.
-
-## Narrow same-day re-check, ~6h41m gap, unfiltered full source list (2026-07-27, second)
-
-- 2026-07-27-D: `fetch-list.ts` only prints the CONFIGURED status from
-  sources.json; it does not itself fetch anything. Its `htmlSources`
-  entries showing `"status": "verified"` reflect the status already on
-  record, not a live check this run. Treating that printed status as if
-  it were a completed fetch (and writing a placeholder
-  `evidence.excerpt` like "fetched via fetch-list.ts this run") is
-  exactly the kind of unattested success `PROOF OF FETCH` exists to
-  catch -- caught it before running finalize-sweep by re-reading
-  fetch-list.ts's source, then actually WebFetched all ~20 listed html
-  sources and replaced every placeholder with a real verbatim excerpt.
-  fetch-list.ts is a deterministic URL-list generator for the agent to
-  walk, not a fetcher in itself; candidates-context.ts's `health` block
-  is the one that reflects an actual completed fetch (the harvester's),
-  for feed-type sources only.
-- 2026-07-27-E: A same-day corroboration-search query surfaced a story
-  the harvester queue's Google News/Bluesky legs had already flagged
-  heavily (Amazon Leo's FCC filing for a 5,105-satellite direct-to-device
-  constellation on Globalstar spectrum, filed July 24): Amazon's own
-  aboutamazon.com page confirmed the same facts as SpaceNews and Aviation
-  Week, so it led as `first_party` (tier 5, no found_none penalty
-  applies) rather than a trade source. `www.aboutamazon.com` matches the
-  registry's stored `kuiper` website (aboutamazon.com apex), confirming
-  the constellation's registry entity covers Amazon Leo's newer D2D
-  filings too, not just the original Kuiper website page.
-- 2026-07-27-F: Requesting a `bump: "corroboration_4plus"` on an update
-  whose lead is `trade` (base tier 3) is a harmless no-op, not an error:
-  the direct-source ceiling caps indirect (non-tier-5-led) items at 4
-  regardless of source count once `corroboration_2plus` already reached
-  it, so `applyModifier` computes a zero delta and finalize-sweep
-  silently skips emitting the modifier (score stays at its already-
-  correct value). Attaching the SES Upper C-band incentive-payment
-  sources (SatNews, Advanced Television) as the item's 4th and 5th
-  sources was still worth doing for the record even though the bump
-  request did nothing; only a first_party/official_record/computed lead
-  can still be climbing when a 4th source arrives.
-
 ## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-28)
 
 - 2026-07-28-A: A registry `website` field can exist on a constellation
@@ -3280,3 +3213,75 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a grep parse check (485 items, up from 484)
   and a direct read of the new item's `snr`/`snr_trace`/`category`/
   `impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~7h55m gap, unfiltered full source list (2026-08-27)
+
+- 2026-08-27-A: A near-total Louisiana-Starbase-follow-up queue (24 of
+  31 candidates were local-TV/Google-News reaction pieces on the Aug 25
+  SpaceX deal: NDAs/"Project Osprey" secrecy criticism, permitting
+  timelines, community/environmental concern coverage) yielded no
+  update: every Google News redirect resolved to a bare "Google News"
+  header (the standing 2026-07-31-J/2026-08-21-G pattern), and
+  WebSearch summaries of the same headlines surfaced only vague framing
+  ("NDAs," "permits within months") with no specific new fact
+  independently confirmable by a direct fetch. Left the already-SNR-5
+  item untouched rather than attach unverified reaction-piece framing.
+- 2026-08-27-B: The same-company-plus-category dedup heuristic fired
+  twice on one new item for entirely different reasons: a new TraCSS
+  pilot-status/budget item (company "Office of Space Commerce",
+  category `regulatory`) matched BOTH the July 15 TraCSS-budget-cut
+  congressional-hearing item (42 days prior, same underlying funding
+  saga, still a legitimately distinct dateable statement) AND the Aug
+  20 Space Commerce Certification pilot item (6 days prior, a
+  completely unrelated mission-authorization program). Needed two
+  separate `dedup_distinct` entries on one item; the gate checks each
+  window-eligible existing item independently, so one dedup_distinct
+  clearing one match does not pre-clear a second unrelated match on
+  the same company+category.
+  Also note: `Ethan Baumann` (TraCSS's actual acting program manager
+  per space.commerce.gov's own staff page) is a different named
+  individual from `Dmitry Poisik` (a TraCSS program manager quoted in
+  older, unrelated pilot-user-count coverage found via WebSearch) --
+  don't assume a single "TraCSS program manager" byline is
+  interchangeable across articles months apart; check the specific
+  quote's attribution before merging facts from two searches.
+- 2026-08-27-C: An important, well-corroborated event surfaced by
+  discovery search can carry conflicting dates across secondary
+  aggregators even when nothing is actually wrong: India's Pixxel-led
+  "Allied Orbits" national EO-constellation PPP deal was reported with
+  three different dates across five outlets (an Aug 2025 Via Satellite
+  "IN-SPACe selects Pixxel" selection-stage story, a domain-b.com
+  mirror stamped "January 21, 2026," and SatNews/Newsage.in both dated
+  Aug 12-13, 2026 and both explicitly tracing the fact to a written Lok
+  Sabha reply from Minister Jitendra Singh). Treated the two outlets
+  that independently cited the specific parliamentary-reply mechanism
+  (with matching satellite-sensor breakdowns) as the reliable date
+  rather than the single outlier mirror date, and dated the item to the
+  Lok Sabha reply (Aug 12) rather than either the year-old selection
+  announcement or the unverifiable January date; pib.gov.in and
+  inspace.gov.in were both unreachable (DNS failure / blank JS shell)
+  so no first-party confirmation was possible. When aggregator dates
+  disagree, prefer the date consistently tied to a specific, named
+  disclosure mechanism (a parliamentary reply, a filing) over a lone
+  outlier, rather than defaulting to the earliest or most recent.
+- 2026-08-27-D: A second India-privatization headlines trap
+  ("ISRO will not make any launch vehicles" / PSLV and LVM3
+  manufacturing moving to HAL/L&T, IN-SPACe chairman Pawan Goenka,
+  National Space Day Aug 23) looked like a genuine escalation beyond
+  the already-flagged-stale SSLV-only HAL transfer (2026-08-21-G,
+  2026-08-23-C), since it explicitly named PSLV and LVM3 too -- but no
+  source stated a signed contract or a named consortium for those two
+  vehicles specifically (only SSLV had a completed "competitive bidding
+  process"), and pib.gov.in/isro.gov.in were unreachable to confirm.
+  Left undrafted as still-ambiguous policy intent rather than a
+  completed transfer; worth a direct check of isro.gov.in or
+  inspace.gov.in next sweep if either becomes fetchable, since this
+  could be a genuine, larger story if a specific consortium and
+  contract for PSLV/LVM3 gets confirmed.
+- 2026-08-27-E: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") plus a `jq` parse check (488 items, up from 485)
+  and a direct read of all three new items' `snr`/`snr_trace`/
+  `category`/`impact` fields as the build-health signal.

@@ -3232,3 +3232,70 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 0 updated, 0 held") as the build-health signal.
 
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-27)
+
+- 2026-07-27-A: The 2026-07-17-K "unconfirmed 'in talks' scoop published at
+  its honest floor rather than held" precedent extends cleanly from M&A/deal
+  rumors to funding-round rumors: The Exploration Company's FT-reported
+  ($300M at a $2B valuation) round was "in talks," "not finalized," sourced
+  to "people familiar," and every pickup (Bloomberg, Seeking Alpha,
+  Investing.com, MarketScreener) explicitly attributed the story to FT
+  rather than doing independent reporting -- one source under the wire-
+  rewrite rule, `crawl: found_none`. Led with Investing.com (`informal`,
+  most detailed relay, not a wire mirror) rather than Bloomberg (paywalled,
+  thinner relay); landed at the honest SNR-1 floor with an explicit
+  "could still fall through" caveat in the copy, same shape as the SpaceX/
+  Pentagon compute item.
+- 2026-07-27-B: Jeff Foust's July 24 post on the Office of Space Commerce
+  "moving ahead" on mission authorization ("taking the next step forward"
+  on the still-voluntary "Space Commerce Certification" proposal open for
+  comment since March) is the same ongoing regulatory process already
+  excluded as "process not yet fact" in 2026-07-23-L, not a new closed
+  action; left undrafted again rather than re-litigated.
+- 2026-07-27-C: A University of Warwick-led academic survey re-analyzing
+  archival telescope data to find 25 previously-undetected small debris
+  objects in GEO (widely covered by Gizmodo/Vice/phys.org/The Debrief) was
+  left out as an academic research paper with no named operator, no
+  attributable commercial actor, and no dated operational consequence --
+  distinct from the `incident` category's reentry/collision/anomaly
+  examples, which all attribute to a reporting authority about a specific
+  object or event.
+
+## Narrow same-day re-check, ~6h41m gap, unfiltered full source list (2026-07-27, second)
+
+- 2026-07-27-D: `fetch-list.ts` only prints the CONFIGURED status from
+  sources.json; it does not itself fetch anything. Its `htmlSources`
+  entries showing `"status": "verified"` reflect the status already on
+  record, not a live check this run. Treating that printed status as if
+  it were a completed fetch (and writing a placeholder
+  `evidence.excerpt` like "fetched via fetch-list.ts this run") is
+  exactly the kind of unattested success `PROOF OF FETCH` exists to
+  catch -- caught it before running finalize-sweep by re-reading
+  fetch-list.ts's source, then actually WebFetched all ~20 listed html
+  sources and replaced every placeholder with a real verbatim excerpt.
+  fetch-list.ts is a deterministic URL-list generator for the agent to
+  walk, not a fetcher in itself; candidates-context.ts's `health` block
+  is the one that reflects an actual completed fetch (the harvester's),
+  for feed-type sources only.
+- 2026-07-27-E: A same-day corroboration-search query surfaced a story
+  the harvester queue's Google News/Bluesky legs had already flagged
+  heavily (Amazon Leo's FCC filing for a 5,105-satellite direct-to-device
+  constellation on Globalstar spectrum, filed July 24): Amazon's own
+  aboutamazon.com page confirmed the same facts as SpaceNews and Aviation
+  Week, so it led as `first_party` (tier 5, no found_none penalty
+  applies) rather than a trade source. `www.aboutamazon.com` matches the
+  registry's stored `kuiper` website (aboutamazon.com apex), confirming
+  the constellation's registry entity covers Amazon Leo's newer D2D
+  filings too, not just the original Kuiper website page.
+- 2026-07-27-F: Requesting a `bump: "corroboration_4plus"` on an update
+  whose lead is `trade` (base tier 3) is a harmless no-op, not an error:
+  the direct-source ceiling caps indirect (non-tier-5-led) items at 4
+  regardless of source count once `corroboration_2plus` already reached
+  it, so `applyModifier` computes a zero delta and finalize-sweep
+  silently skips emitting the modifier (score stays at its already-
+  correct value). Attaching the SES Upper C-band incentive-payment
+  sources (SatNews, Advanced Television) as the item's 4th and 5th
+  sources was still worth doing for the record even though the bump
+  request did nothing; only a first_party/official_record/computed lead
+  can still be climbing when a 4th source arrives.
+
