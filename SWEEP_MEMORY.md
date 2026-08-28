@@ -3290,3 +3290,37 @@ a newer entry if a lesson changes.
   held") plus a `jq` parse check (492 items, up from 490) and a direct read of
   both new items' and the updated item's `snr`/`snr_trace`/`category`/`impact`
   fields as the build-health signal.
+
+## Narrow same-day re-check, ~2h48m gap, unfiltered full source list (2026-08-28, second)
+
+- 2026-08-28-G: A genuine "government's own announcement is forward-looking,
+  not confirmation" trap: Turks and Caicos Islands' Telecommunications
+  Commission own site (telecommission.tc) carried a page titled "Signing and
+  Presentation of Licences Ceremony" (published Aug 20) announcing that
+  Starlink Caribbean LLC's licence ceremony was SCHEDULED for Aug 27, in
+  future tense throughout ("is facilitating... on August 27, 2026"). By the
+  time this sweep ran (Aug 28), search snippets from suntci.com and other
+  local outlets described the ceremony in the past tense ("Starlink Goes Live
+  in TCI"), but suntci.com and tcweeklynews.com both 403'd on every direct
+  fetch attempt, and telecommission.tc's own site had no follow-up post
+  confirming completion (checked its homepage listing directly). Left
+  undrafted rather than assert a completed-event fact from an announcement
+  page that only speaks in future tense plus unfetchable search snippets;
+  worth a direct re-check of telecommission.tc and suntci.com next sweep for
+  a post-ceremony confirmation post, since the underlying event (a small but
+  genuine market-access regulatory grant, matching the Vietnam market-entry
+  precedent) is real and worth publishing once confirmable.
+- 2026-08-28-H: A same-day re-check with a genuinely near-total-duplicate
+  14-candidate queue (SpaceX/Starlink stock speculation, an AP-wire Ship 40
+  recovery piece resurfacing days late via Gulf Coast News/WTAE that traced
+  to the already-covered Aug 20/24 Christmas Island recovery already in the
+  existing Flight 13 item, and Jalopnik's late pickup of the already-published
+  Aug 25 Starbase Louisiana announcement) plus a clean mandatory 10-source
+  HTML pass and a 10-query discovery matrix all traced to already-published
+  ground: confirms the standing pattern that a short re-check can legitimately
+  net zero even after full-effort discovery. `bun run build` and
+  `bun scripts/check-feed.ts` were both denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B; relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated, 0
+  held") plus a grep parse check (492 items, unchanged from the prior sweep)
+  as the build-health signal.
