@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-08-25-orbex-sutherland-spaceport-hie-acquisition:sutherland.operator",
+      "item_id": "2026-08-25-orbex-sutherland-spaceport-hie-acquisition",
+      "entity_slug": "sutherland",
+      "entity_type": "spaceport",
+      "field": "operator",
+      "value": "Highlands and Islands Enterprise (HIE)",
+      "metric": "current owner/operator of Sutherland Spaceport site assets, per HIE's own acquisition announcement",
+      "same_metric": true,
+      "item_snr": 4,
+      "source_url": "http://www.hie.co.uk/news-and-blogs/news/2026/august/25/hie-acquires-assets-of-sutherland-spaceport-ltd/",
+      "action": "downgrade_incoming",
+      "proposed_on": "2026-08-28",
+      "status": "pending"
+    }
+  ]
 }

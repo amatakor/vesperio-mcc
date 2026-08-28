@@ -3324,3 +3324,50 @@ a newer entry if a lesson changes.
   on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated, 0
   held") plus a grep parse check (492 items, unchanged from the prior sweep)
   as the build-health signal.
+
+## Normal-mode sweep, ~11h51m gap, unfiltered full source list (2026-08-28, third)
+
+- 2026-08-28-I: The registry's `official_record` anti-spoof allowlist rejects
+  a state economic-development agency's own domain unless it is already on the
+  allowlist: `hie.co.uk` (Scotland's Highlands and Islands Enterprise,
+  confirming a spaceport asset acquisition it brokered) was rejected as "not an
+  official official_record host" even though the 2026-08-25-G precedent
+  (Louisiana Economic Development's `opportunitylouisiana.gov`) classed an
+  analogous state-agency announcement page as `official_record` and it passed.
+  The distinguishing factor is likely the `.gov` TLD; a non-`.gov` development
+  agency domain needs `trade` instead until the allowlist is extended. Reclassed
+  to `trade` and the draft passed.
+- 2026-08-28-J: The finalize-sweep gate rejects exclamation marks anywhere in
+  `headline`/`explainer.tagline`/`explainer.what_happened`, including inside a
+  company's own stylized legal name: French rideshare broker RIDE! (styled
+  with a trailing exclamation mark on its own site and by every outlet
+  covering it) had to be written as "Ride" throughout the prose (kept as
+  "RIDE!" in the `companies` array, which the gate did not flag) to pass the
+  no-hype/no-exclamation-marks house style rule. Worth checking a newly
+  introduced company's stylized name for punctuation before drafting.
+- 2026-08-28-K: MaiaSpace's own newsroom (`maia-space.com`, note the hyphen;
+  `maiaspace.com` without one does not resolve via WebFetch, ENOTFOUND) is a
+  genuine first-party source for its own announcements, but MaiaSpace has no
+  standalone registry organization entity (it appears only inside
+  ArianeGroup's org profile) — per the standing 2026-07-26-E/2026-08-04-B
+  no-registry-host workaround, its own domain still capped at `informal`
+  class rather than `first_party`; landed the item at SNR 2 despite being a
+  clean, well-corroborated (3 independent outlets) own-source lead. Confirms
+  MaiaSpace joins the standing list of frequently-recurring actors (Apex
+  Space, ispace, Orbit Fab, ArkEdge) worth a registry add at the next
+  structural touch.
+- 2026-08-28-L: A months-old dormant registry spaceport entity can resurface
+  as a genuine new item once its parent company's insolvency saga produces a
+  new, distinct event: `src/data/registry/spaceports/sutherland.json` already
+  existed (operator "Orbex", status "on hold") from the original February
+  Orbex-administration coverage, and HIE's August 25 acquisition of the site's
+  assets out of liquidation is a clean crossfeed touch on the `operator`
+  field, six-plus months outside the 7-day window of the original item, so it
+  drafted as a new standalone item rather than an update.
+- 2026-08-28-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") plus a grep parse check
+  (495 items, up from 492) and a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
+  signal.
