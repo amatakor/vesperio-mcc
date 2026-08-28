@@ -93,120 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-28)
-
-- 2026-07-28-A: A registry `website` field can exist on a constellation
-  profile (not just an organization profile) and still floors
-  `first_party` classification for the parent operator's press releases:
-  O3b mPOWER's registry entry (a constellation, not an SES org profile)
-  carries a `website` field pointing at ses.com, so `loadRegistryHosts`
-  picked up the ses.com host and the SES Space & Defense/Starlab LEO
-  Relay Services press release classed clean as `first_party` even
-  though SES has no dedicated organization profile. Worth checking
-  constellation/vehicle entities for a usable `website` host, not just
-  searching for an org profile, before defaulting an unregistered-looking
-  operator to a lower tier.
-- 2026-07-28-B: Extends the 2026-07-26-E "new/small actor, no registry
-  host" pattern with a working fallback: MDA Space UK's own PR Newswire
-  release (Argonaut LEIA LiDAR sensor selection by OHB) has no registry
-  host to verify (`mda.space` isn't a registered website field anywhere),
-  but PR Newswire itself is a fixed-domain `wire_pr` source (tier 4, no
-  domain-match requirement) rather than needing `first_party`/`trade`
-  fallback -- led with the wire copy at tier 4 instead of settling for a
-  trade write-up at tier 3. Worth defaulting to `wire_pr` for straight
-  press-release text run through BusinessWire/GlobeNewswire/PR Newswire
-  before falling back further down the source-class ladder.
-- 2026-07-28-C: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B/2026-07-26-M/2026-07-27-D; relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
-  updated, 0 held") as the build-health signal.
-- 2026-07-28-D: A discovery-pass query aimed at a different topic (an
-  EO-contracts search) surfaced a genuinely new, week-old, never-covered
-  story one hop away in the same search results list (MDA Space UK/OHB
-  Argonaut LiDAR sensors, found via a "Europe space agency contract
-  announcement July 2026" query run for the non-US/Europe matrix slot,
-  not an EO-specific query) -- worth reading past the first couple of
-  results on every matrix query rather than stopping at the query's
-  literal topic match.
-
-## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-28, second)
-
-- 2026-07-28-E: A new subtype of the stale-resurfacing trap: ESA's own
-  multimedia image gallery (esa.int/ESA_Multimedia/Images/2026/07/...)
-  served a photo captioned "Vertical liftoff as Ariane 6 takes flight for
-  the first time" with a July 28, 2026 harvester timestamp, even though
-  Ariane 6 has flown repeatedly since its actual maiden flight and the
-  already-published registry/item record shows its August 27 MTG-I2
-  mission as only "the vehicle's first flight to geostationary transfer
-  orbit" (a different, still-future milestone). A fresh-looking
-  `fetched_at`/`published_at` stamp on an image-gallery URL is not proof
-  the underlying event is new; cross-check against the existing item/
-  registry record for the vehicle's actual flight history before
-  treating an archival caption as today's news.
-- 2026-07-28-F: Two small, low-cost update patches shipped this run from
-  cross-checking existing items against sources fetched for other
-  reasons: Telesat's own July 27 GlobeNewswire release (found via
-  fetch-list.ts's Telesat News listing) upgraded the FCC upper-C-band
-  item's rounded "just under $200 million" Telesat figure to the exact
-  $189 million and added a Nov. 5, 2026 transition-plan filing deadline;
-  and Andrew Parsonson's already-cited MAGPIE article (europeanspaceflight.com,
-  a mandatory signals-pass fetch) turned out to have been updated in
-  place on July 27 with an on-record ESA spokesperson quote explaining
-  the contract's cost overrun. Neither needed a new source attach beyond
-  Telesat's own wire copy; the MAGPIE case was a same-URL content update,
-  confirming updates can come from re-reading a source already in an
-  item's `sources` array, not just from new URLs.
-- 2026-07-28-G: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 0 new, 2 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~7h40m gap, unfiltered full source list (2026-07-28, third)
-
-- 2026-07-28-H: A PDF-only FCC public notice (docs.fcc.gov, linked only from
-  a Google News-fed trade/financial headline about "Starlink router ban
-  exemption") is fully readable despite WebFetch itself failing on the raw
-  PDF ("appears to be raw PDF binary data, not readable text"): WebFetch
-  still saves the fetched PDF to a local tool-results path and reports it in
-  the response, and the Read tool parses that saved PDF cleanly, including
-  a multi-page appendix table. Worth trying `Read` on the saved-PDF path
-  any time WebFetch's own PDF summarizer bails, rather than treating a
-  failed WebFetch PDF parse as an unreadable source.
-- 2026-07-28-I: A same-company (SpaceX), same-category ("regulatory")
-  dedup false-positive within the 7-day window, the same recurring
-  heuristic trap documented many times since 2026-07-09-B: the FCC's
-  Starlink-router Covered-List exemption (US equipment authorization)
-  tripped a match against Taiwan's Legislative Yuan easing satellite
-  foreign-ownership caps (2026-07-21, six days prior) purely on shared
-  company + category, despite being unrelated regulators, countries, and
-  subject matter. Cleared with one `dedup_distinct` entry.
-- 2026-07-28-J: NASA's own program-announcement page (nasa.gov, dated
-  July 24) predated the trade write-up that surfaced it in this run's
-  discovery pass (SpaceNews, July 28) by four days; led with NASA's page
-  as `official_record` and dated the item to the NASA announcement date,
-  not the SpaceNews publish date, consistent with the standing
-  2026-07-06-GG/2026-07-26-D dating convention. Also confirms
-  2026-07-05-N's verification lesson: a first WebFetch summary named the
-  spacecraft builder "Lockhaven Martin/Terran Orbital" (a hallucinated
-  mash-up); a targeted second WebFetch asking for the exact sentence
-  verbatim corrected it to "Lockheed Martin subsidiary Terran Orbital."
-- 2026-07-28-K: Confirms the "process not yet fact" pattern on three more
-  shapes this run, all left undrafted rather than held: Germany's defence
-  minister "considering" a Bundeswehr-owned launch site (his own quotes:
-  "we are at the beginning of those considerations," no site or country
-  named); a Manila Times recap of the Philippines' spaceport ambitions
-  pegged to a SONA speech, with every concrete milestone in it already
-  weeks to years old; and ISRO's chairman floating a 2027 G20 satellite
-  launch with no contract or vendor named. Also caught before drafting: a
-  europeanspaceflight.com "Avio and Isar Aerospace win ESA Flight Ticket
-  Initiative" article that reads current but is dated August 27, 2025 in
-  the fetched content, a full year stale.
-- 2026-07-28-L: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 2 new, 0 updated, 0 held") as the build-health signal.
-
 ## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-29)
 
 - 2026-07-29-A: Brand-name collision across separate legal entities: an
@@ -3347,3 +3233,60 @@ a newer entry if a lesson changes.
   parse check (490 items, up from 488) and a direct read of both new
   items' `snr`/`snr_trace`/`category`/`impact` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~9h gap, unfiltered full source list (2026-08-28)
+
+- 2026-08-28-A: "USAF: Our Starbase Louisiana is not affiliated with SpaceX" (KATC,
+  Google News queue) is a genuine name collision, not a story about SpaceX's
+  Starbase Louisiana: STARBASE is a 27-year-old DoD youth STEM education program
+  (the Louisiana Air/Army National Guard's science-outreach initiative), unrelated
+  to SpaceX's own "Starbase" branding. Confirmed via WebSearch before drafting;
+  discarded as out of scope rather than treated as a regulatory clarification on
+  the Aug 25 SpaceX deal.
+  Separately, a Satellogic `SEC EDGAR 8-K feed: SATL` Item 5.02 filing traced (via
+  WebSearch, sec.gov 403'd as usual) to a routine Interim CFO appointment
+  (Corporate Controller since 2022 stepping up), below the inclusion bar per the
+  standing routine-executive-hire exclusion.
+- 2026-08-28-B: `esa.int` classes `first_party` for an update's `rescore` even
+  when the item's `companies` array names a different party (Arianespace, not
+  ESA): the anti-spoof gate checks the URL's domain against the FULL registry
+  host set, not just the item's own companies, confirming 2026-08-27-F's finding
+  generalizes to the update/rescore path, not just newItems. Used it to upgrade
+  the MTG-I2 scheduled-launch item (Via Satellite lead, SNR 4) to the completed
+  launch via ESA's own post-launch article (SNR 5 ceiling) once the Aug 27 mission
+  actually flew; `rescore.sources[0].url` had to equal a `patch.source_url` set in
+  the same update object first, per the documented upgrade-path contract.
+- 2026-08-28-C: A quiet, near-total SpaceX-Starbase-Louisiana-follow-up queue
+  (stock speculation, local-TV reaction pieces, Motley Fool/Barron's SpaceX
+  valuation churn) still yielded two genuinely new items straight from the
+  Via Satellite/Payload queue entries once each was actually read rather than
+  assumed to be more Louisiana follow-up: Astrum Space's ~$1B SPAC merger with
+  Black Spade Acquisition III (a Singapore satellite-to-device operator with no
+  registry entity, landed at trade+mainstream SNR 4, `major` impact on the
+  stated-valuation test) and a Kepler Communications/NorthStar Earth & Space
+  hosted-payload SDA partnership (two independent trade outlets, SNR 4,
+  `notable`). Neither needed a corroboration WebSearch beyond confirming no
+  further pickup existed; the queue's own distinct-outlet entries (Via Satellite
+  + Payload, Via Satellite + BNN Bloomberg/Reuters) supplied the required second
+  source directly.
+- 2026-08-28-D: The Bluesky public API 504-timed-out on all seven attempted
+  accounts in one batch, then succeeded cleanly on an identical retry of the same
+  URLs roughly two minutes later — confirms 2026-08-27-H's "session-dependent,
+  not dead" read of Bluesky API flakiness; worth one immediate retry before
+  logging an account as unreachable this session.
+- 2026-08-28-E: Two same-day discovery-pass leads that read like fresh finds
+  traced to already-covered ground once checked against `items.json`: NOAA's
+  Spire/PlanetiQ radio-occultation contracts ($3.7M/$2.7M) were the same Aug 14
+  award already published, and the FCC's "200 MHz unlicensed D2D spectrum"
+  initiative was the same Aug 6 NPRM vote already published under its own id.
+  Relativity Networks' "$22M SAFE note" hit (from a generic funding-round query)
+  is a terrestrial hollow-core-fiber data-center company with no satellite
+  connection at all despite ranking high in a space-adjacent search; confirmed
+  via a direct read of its own business description before discarding, not
+  assumed out of scope from the headline alone.
+- 2026-08-28-F: `bun run build` was denied outright by this session's permission
+  gate, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 1 updated, 0
+  held") plus a `jq` parse check (492 items, up from 490) and a direct read of
+  both new items' and the updated item's `snr`/`snr_trace`/`category`/`impact`
+  fields as the build-health signal.
