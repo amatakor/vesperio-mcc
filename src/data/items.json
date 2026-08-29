@@ -29260,7 +29260,7 @@
       "source_url": "https://tass.com/science/2170967",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -29272,10 +29272,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-08-29",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -35443,6 +35456,206 @@
         "width": 800,
         "height": 500
       }
+    },
+    {
+      "id": "2026-08-28-spacex-fcc-iridium-conduct-rocket-lab-deal",
+      "date": "2026-08-28",
+      "headline": "SpaceX asks FCC to scrutinize Iridium's conduct in Rocket Lab merger review",
+      "explainer": {
+        "tagline": "SpaceX urged the FCC to examine Iridium's history of anticompetitive filings as regulators review Rocket Lab's proposed Iridium acquisition.",
+        "what_happened": "SpaceX satellite policy associate Matthew Turk filed a letter with the FCC on Aug. 28, 2026 urging the agency to scrutinize Iridium Communications' conduct as it reviews license transfers tied to Rocket Lab's proposed $8.1 billion acquisition of Iridium, per 24/7 Wall St. and MLex. Turk wrote that \"Iridium's well-documented history of anticompetitive attacks against its competitors and American consumers hangs as a cloud over the proposed transaction,\" citing more than 50 petitions Iridium has filed over eight months seeking to block or restrict rival satellite deployments. SpaceX said it does not oppose the merger itself. The underlying technical dispute concerns SpaceX's next-generation Starlink gateways, which Iridium says could exceed permissible interference levels in the 19.4-19.6 GHz and 29.1-29.3 GHz bands the companies share, per 24/7 Wall St.",
+        "why_it_matters": "The filing adds friction to Rocket Lab's pending Iridium acquisition just as the companies have sent the deal to a shareholder vote scheduled for Sept. 24; a contentious FCC review of Iridium's conduct could complicate the merger's timeline for closing. It also puts the spectrum-sharing terms for SpaceX's next-generation Starlink gateways on the regulatory record, a dispute that will matter for any other operator sharing adjacent Ka-band spectrum with Iridium."
+      },
+      "tags": [
+        "connectivity",
+        "m-and-a"
+      ],
+      "category": "regulatory",
+      "impact": "notable",
+      "companies": [
+        "SpaceX",
+        "Iridium",
+        "Rocket Lab"
+      ],
+      "source_url": "https://247wallst.com/investing/2026/08/28/rocket-lab-falls-6-as-spacex-flags-iridium-deal-to-the-fcc-intuitive-machines-slides-5/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://247wallst.com/investing/2026/08/28/rocket-lab-falls-6-as-spacex-flags-iridium-deal-to-the-fcc-intuitive-machines-slides-5/",
+          "reason": "base tier 3 from lead source class \"trade\" (24/7 Wall St.)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://247wallst.com/investing/2026/08/28/rocket-lab-falls-6-as-spacex-flags-iridium-deal-to-the-fcc-intuitive-machines-slides-5/",
+          "outlet": "24/7 Wall St.",
+          "class": "trade",
+          "added": "2026-08-29",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.mlex.com/mlex/mergers-acquisitions/articles/2519102/spacex-urges-fcc-to-examine-iridium-conduct-in-review-of-rocket-lab-deal",
+          "outlet": "MLex",
+          "class": "trade",
+          "added": "2026-08-29",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-29T05:26:00.398Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        },
+        {
+          "name": "Iridium",
+          "ref": "constellations/iridium"
+        },
+        {
+          "name": "Rocket Lab",
+          "ref": "organizations/rocket-lab"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-08-28-spacex-fcc-iridium-conduct-rocket-lab-deal.webp",
+        "credit": "Image: 247wallst.com",
+        "origin_url": "https://247wallst.com/investing/2026/08/28/rocket-lab-falls-6-as-spacex-flags-iridium-deal-to-the-fcc-intuitive-machines-slides-5/",
+        "width": 1000,
+        "height": 667
+      }
+    },
+    {
+      "id": "2026-08-28-inspecity-pre-series-a",
+      "date": "2026-08-28",
+      "headline": "InspeCity raises $10.5 million for satellite servicing missions",
+      "explainer": {
+        "tagline": "The Indian in-space servicing startup raised a pre-Series A round to fund four planned in-orbit demonstration missions.",
+        "what_happened": "InspeCity, a Mumbai-based in-space servicing startup founded in 2022, raised $10.5 million (about ₹100 crore) in a pre-Series A funding round led by Speciale Invest and investor Ashish Kacholia, with participation from Antler Elevate, Antler India, Manish Gandhi, and Shastra VC, per Via Satellite. The company plans four in-orbit missions over the next year and a half to validate its RIG, VEDA, and SAMA propulsion, sensing, robotic-arm, and docking technologies for satellite life extension and deorbiting, per Via Satellite and Entrackr.",
+        "why_it_matters": "The round funds another entrant into the in-space servicing and active debris removal market, this time built on India's smallsat supply chain. A successful RIG/VEDA/SAMA flight campaign would give Indian satellite operators and IN-SPACe-backed missions a domestic life-extension and deorbiting option rather than relying on foreign in-space servicing providers."
+      },
+      "tags": [
+        "funding"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "InspeCity"
+      ],
+      "source_url": "https://www.satellitetoday.com/finance/2026/08/28/indias-inspecity-raises-10-5m-in-pre-series-a-round/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/finance/2026/08/28/indias-inspecity-raises-10-5m-in-pre-series-a-round/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/finance/2026/08/28/indias-inspecity-raises-10-5m-in-pre-series-a-round/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-08-29",
+          "via": "initial"
+        },
+        {
+          "url": "https://entrackr.com/news/spacetech-startup-inspecity-raises-rs-100-cr-in-pre-series-a-round-12442264",
+          "outlet": "Entrackr",
+          "class": "informal",
+          "added": "2026-08-29",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-29T05:26:00.398Z",
+      "image": {
+        "src": "/img/items/2026-08-28-inspecity-pre-series-a.webp",
+        "credit": "Image: satellitetoday.com",
+        "origin_url": "https://www.satellitetoday.com/finance/2026/08/28/indias-inspecity-raises-10-5m-in-pre-series-a-round/",
+        "width": 739,
+        "height": 496
+      }
+    },
+    {
+      "id": "2026-08-28-ovzon-germany-market-entry",
+      "date": "2026-08-28",
+      "headline": "Ovzon enters German satcom market via IABG Teleport and MBS partnerships",
+      "explainer": {
+        "tagline": "Swedish satellite operator Ovzon signed its first German partnerships to test its satcom platform with a government customer.",
+        "what_happened": "Ovzon signed partnership agreements with German teleport operator IABG Teleport and satellite services company MBS, marking the Swedish satcom operator's first market entry into Germany, per Via Satellite. The agreements cover an initial test implementation of Ovzon's integrated satellite communications platform, combining its Ovzon 3 satellite capabilities, mobile satellite terminals, and customer support, for a German government customer, per Via Satellite and Satellite Evolution.",
+        "why_it_matters": "Germany's government and defense sector is a significant target market for mobile satcom given NATO members' push for resilient, mobile communications; a foothold via two established German integrators gives Ovzon a route into future defense and government contracts without building its own local sales and support presence from scratch."
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "partnership",
+      "impact": "notable",
+      "companies": [
+        "Ovzon"
+      ],
+      "source_url": "https://www.satellitetoday.com/government-military/2026/08/28/ovzon-to-enter-german-market-with-new-partnerships/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/government-military/2026/08/28/ovzon-to-enter-german-market-with-new-partnerships/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/government-military/2026/08/28/ovzon-to-enter-german-market-with-new-partnerships/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-08-29",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.satelliteevolution.com/post/ovzon-begins-german-market-entry-through-new-defense-partnerships",
+          "outlet": "Satellite Evolution",
+          "class": "trade",
+          "added": "2026-08-29",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-08-29T05:26:00.398Z",
+      "image": null
     }
   ]
 }

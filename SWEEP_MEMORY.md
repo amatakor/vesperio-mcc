@@ -93,109 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~12hr gap, unfiltered full source list (2026-07-29)
-
-- 2026-07-29-A: Brand-name collision across separate legal entities: an
-  ispace Inc. (Japan) announcement (switching its Mission 3 lunar lander
-  to Japan's H3 rocket) tripped the same-company-plus-category dedup
-  heuristic against the unrelated `2026-07-24-esa-ispace-europe-magpie-
-  contract` item purely because both companies use "ispace" in their
-  name (ispace-Europe is ESA's MAGPIE rover subcontractor, a distinct
-  corporate entity from the Japanese parent behind Mission 3), both
-  category `science`, nine days apart. Cleared with one dedup_distinct
-  entry; adds a new trigger shape to the standing list (shared brand
-  name, not shared company) alongside the SpaceX/ESA/NASA cases logged
-  since 2026-07-09-B.
-- 2026-07-29-B: transportation.gov (`/briefing-room/...`) and faa.gov
-  (`/newsroom/...`) both 403'd on direct WebFetch this session for a
-  genuine DOT/FAA press release (the launch-licensing environmental-
-  waiver NPRM), extending the standing .gov-domain fetch-failure pattern
-  (fcc.gov, sam.gov, spaceforce.mil, war.gov) to two more hosts. Led
-  with SpacePolicyOnline (whitelist, observer) instead, corroborated by
-  an AFP wire copy (freemalaysiatoday.com) found via WebSearch; landed
-  at SNR 4. Do not cite the 403'd .gov URLs even unscored, per the
-  standing "only link pages actually fetched" rule (2026-07-16-F).
-- 2026-07-29-C: pedaily.cn (投资界/PEdaily), a long-running Chinese VC/PE
-  trade outlet, gave genuinely independent corroboration (extra detail:
-  founding date, specific in-house technologies) for a Chinese SSA-
-  constellation funding round SpaceNews also covered, confirmed via
-  direct fetch to not be a rewrite of either. Same tier as
-  chinaventure.com.cn (2026-07-20-F); worth trying alongside it on
-  future Chinese funding-round stories before settling for a Sina/
-  Eastmoney wire-reprint mirror.
-- 2026-07-29-D: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 5 new, 3 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-29, second)
-
-- 2026-07-29-E: The draft's top-level `coverage` field validates against the
-  CATEGORY enum only, not tag names: listing `"connectivity"` (a domain tag,
-  not a category) alongside real categories got the whole draft rejected
-  ("connectivity is not a known category"). Populate `coverage` with
-  categories actually touched (e.g. `procurement`, `launch`, `financial`,
-  `regulatory`) even when the sweep's one item is tagged with a domain that
-  isn't itself a category.
-- 2026-07-29-F: A whitelisted signal's own Bluesky post pointing at their own
-  trade-press article (Andrew Parsonson flagging his SpaceNews piece on ESA's
-  July 27 Lunar Link repurposing tender) was this run's only genuinely new
-  find in an otherwise fully quiet harvester queue (95%+ SpaceX stock/
-  earnings speculation and ISRO recruitment-notice noise). A corroboration
-  crawl (2 targeted searches, plus checking europeanspaceflight.com's own
-  front page directly) found no second outlet covering the specific July 27
-  tender -- Parsonson/SpaceNews appears to be the sole source -- so it
-  published `crawl: found_none` at the honest SNR-2 floor rather than being
-  held for thin sourcing.
-- 2026-07-29-G: Two more stale-resurfacing traps caught via a date-
-  plausibility check rather than an explicit article date: a "Space Force
-  awards Viasat, SES $437M" hit and a "Satellogic secures $18M defense
-  contract" hit both search-summarized as if current, but both trace to
-  May 2026 announcements (over a month outside this run's window) once
-  opened. Separately, a WebSearch summary described ESA's Aeolus "reentry
-  maneuver" with day-of-week detail (Monday, Thursday, Friday) that only
-  lines up with the 2023 calendar, not 2026's -- confirming the item was the
-  real 2023 assisted-reentry campaign, not new; cross-checking a maneuver-day
-  narrative against the current year's actual weekday calendar is a fast
-  stale-check when no explicit article date is visible.
-
-## Normal-mode sweep, ~7.5hr gap, unfiltered full source list (2026-07-29, third)
-
-- 2026-07-29-H: A Chinese satellite's own name can carry generation framing a
-  primary state-media source doesn't spell out: Xinhua's Tianlian III-01
-  launch story only said "data relay and TT&C services" (near-identical
-  wording to the Tianlian II-06 story six days earlier), but the "III" in the
-  satellite's own name plus Launch Library's payload description ("3rd
-  generation... succeeding the Tianlian II series") independently supported
-  drafting it as a generational milestone (impact `notable`) rather than
-  matching the prior item's routine-cadence `noise`. Also confirms the
-  standing same-company-plus-category dedup trap once more: CASC + `launch`
-  within 7 days of the II-06 item needed one `dedup_distinct` entry despite
-  being a genuinely different satellite, generation, rocket, and launch site.
-- 2026-07-29-I: A same-company follow-up story inside the 7-day window can be
-  a legitimate judgment call between "new item" and "fold into existing" even
-  when the event class differs: LatConnect 60's July 29 SpaceNews piece on
-  Malaysia/UAE manufacturing expansion and an 18-satellite SWIRSAT target is a
-  different topic than its July 24 AI-product item, but carried no new dollar
-  figure or contract, so it was folded into the existing item's
-  `what_happened` via `updates[].attach` rather than drafted standalone.
-  Mechanical note: `updates[].attach[].via` only accepts `corroboration` or
-  `upgrade` (no neutral "new fact, not corroboration" value exists yet);
-  used `corroboration` and let the `note` field carry the actual nuance.
-- 2026-07-29-J: Cross-outlet dollar figures can diverge by rounding or
-  currency without being a genuine contradiction: Outlier Space's Payload
-  lead and NBR (NZ) both stated "$7.35M" exactly, while NZ Herald said
-  "$7.5M" and two AU outlets (Capital Brief, Forbes Australia) said "$10.5M"
-  (plausibly an AUD-denominated figure for the same USD round). Led with the
-  two sources that matched exactly rather than reconciling or averaging
-  across all of them, per the standing "numbers copied, not synthesized"
-  rule.
-- 2026-07-29-K: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the standing
-  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 5 new, 1 updated, 0 held") as the build-health
-  signal.
-
 ## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-30)
 
 - 2026-07-30-A: reuters.com joins arstechnica.com (2026-07-08-N) as a domain
@@ -3371,3 +3268,66 @@ a newer entry if a lesson changes.
   (495 items, up from 492) and a direct read of all three new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-29)
+
+- 2026-08-29-A: A stock-move financial-blog headline ("Rocket Lab Falls 6% as
+  SpaceX Flags Iridium Deal to the FCC," 24/7 Wall St.) buried a genuine,
+  distinct regulatory development on the already-published June 29 Rocket
+  Lab/Iridium acquisition: SpaceX filed a letter with the FCC urging scrutiny
+  of Iridium's conduct (50+ petitions against rival satellite deployments)
+  during the merger's license-transfer review, tied to a real spectrum-sharing
+  dispute (Starlink gateways vs. Iridium in the 19.4-19.6/29.1-29.3 GHz bands).
+  MLex (paywalled but confirmed the core facts before cutting off) and a
+  Stocktwits/TradingView mirror (which alone carried Iridium's on-record
+  response quote) both independently corroborated 24/7 Wall St.'s reporting.
+  Drafted as a new item (not an update; ~2 months outside the dedup window)
+  cross-referenced only in prose per the 2026-08-25-G precedent, no unfetched
+  URL added to secondary_urls.
+- 2026-08-29-B: The same-company-plus-category dedup heuristic fired again on
+  a new SpaceX-adjacent item: the SpaceX/Iridium FCC-filing draft (category
+  `regulatory`) false-matched the Aug 24 Iran Starlink-crackdown item purely
+  on shared company (SpaceX/Starlink) + category + <7-day window, despite
+  being completely unrelated (a domestic terminal-seizure story vs. a
+  merger-review spectrum dispute). One `dedup_distinct` entry cleared it;
+  extends the standing SpaceX-volume false-positive pattern
+  (2026-08-03-H/2026-08-05-C and peers) to the `regulatory` category
+  specifically, not just `launch`/`procurement`.
+- 2026-08-29-C: Google News RSS redirects failed again on every attempt this
+  run (PCMag Viasat-interference and Chinese-rocket-debris headlines, a
+  247wallst/BPUB MyRGV.com redirect) -- WebFetch returned only a bare "Google
+  News" header each time, continuing the standing 2026-07-31-J/2026-08-21-G
+  pattern. WebSearch-by-headline recovered the Iridium/FCC story fully (see
+  2026-08-29-A) but could NOT independently confirm the PCMag Viasat-petition
+  or Chinese-rocket-debris headlines beyond generic background on long-running
+  SpaceX-Viasat EPFD disputes and the already-published June 15 Zhuque-2E
+  breakup; left both undrafted per the standing "only cite pages with
+  genuinely fetched content" rule rather than guess which specific claim the
+  unfetchable PCMag pieces were making.
+- 2026-08-29-D: A NASA press release that reads exactly like breaking news
+  from a routine discovery-pass query ("NASA Awards Spaceflight Operations,
+  Systems Organization Contract," $1.8B COSMOS award to ASCEND Aerospace &
+  Technology, appearing in a "commercial contract award this week" search)
+  traced via GovConWire and Space Coast Daily's own dateline
+  (spacecoastdaily.com/2025/08/...) to an August 29, **2025** award, exactly
+  one year stale. nasa.gov's own release page carries no visible publish date
+  in its rendered content, making this a new trap shape: a primary-source
+  government press page without an obvious date stamp needs its date
+  cross-checked via a secondary outlet's URL/dateline before treating a
+  search hit as fresh, not just Google News/publisher pages with visible
+  bylines.
+- 2026-08-29-E: The mandatory HTML-source pass and signals pass (12 of 17
+  fetchable channels checked, rotating out Vivienne Machi's still-dead
+  Aviation Week lead per 2026-08-24-H, plus Marcia Smith's and Anatoly Zak's
+  site legs since their Bluesky feeds and the harvester's own
+  SpacePolicyOnline queue feed already cover the same ground) surfaced
+  nothing beyond already-published stories this run (MTG-I2 completion,
+  the Aug 28 Space Academy executive order, Sutherland spaceport). Genuinely
+  new items instead came entirely from the routine candidates-queue (Via
+  Satellite's InspeCity/Ovzon entries) and a discovery-pass search (the
+  Iridium/FCC filing) -- confirms `bun run build`/`check-feed.ts` remain
+  denied outright by this session's permission gate (standing pattern since
+  2026-07-11-B); relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") plus a grep parse check (498 items, up
+  from 495) and a direct read of all three new items' `snr`/`category`/
+  `impact` fields as the build-health signal.
