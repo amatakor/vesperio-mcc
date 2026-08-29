@@ -3415,3 +3415,31 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a `jq` parse check (499 items, up from 498)
   and a direct read of the new item's `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-08-29, fourth)
+
+- 2026-08-29-M: A headline-shaped trap on Nvidia's own Q2 FY2027 earnings
+  release (Aug 26): outlets widely reported "SpaceX is ~5% of Nvidia's
+  revenue, nearly $5 billion" as if Nvidia disclosed it, but that figure
+  traces to analyst Gene Munster (Deepwater Asset Management), not
+  Nvidia's own press release or CFO Colette Kress's on-the-record
+  quote (which only confirmed SpaceXAI as a "lead partner" receiving
+  Vera CPU shipments, no dollar figure). Nvidia does not break out
+  customer-level revenue. Left the existing 2026-08-04 Starmind/Nvidia
+  item untouched rather than attach an analyst-estimated dollar figure
+  as if it were a company disclosure; a genuine update here would need
+  Nvidia's own confirmation quote, cleanly sourced, not folded together
+  with the analyst estimate the way most coverage presented it.
+- 2026-08-29-N: aboutamazon.com's own Project-Kuiper/Amazon-Leo news-tag
+  page can surface an older article ("375+ satellites now in orbit")
+  whose count is LOWER than the registry's current figure (396, as_of
+  Jul 13) despite reading like a fresh mission-update headline on the
+  tag listing page with no visible date — a new stale-resurfacing shape
+  on a primary company page, not just search snippets or Google News.
+  Cross-check a company's own "latest update" page's stated figures
+  against the registry before treating it as a fresh milestone.
+- 2026-08-29-O: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new,
+  0 updated, 0 held") plus a `grep -c` parse check (499 items, unchanged
+  from the prior sweep) as the build-health signal.
