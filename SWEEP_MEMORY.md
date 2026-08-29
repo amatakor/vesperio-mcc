@@ -3371,3 +3371,47 @@ a newer entry if a lesson changes.
   merge confirmation ("merged 0 new, 0 updated, 0 held") plus a `jq` parse
   check (498 items, unchanged from the prior sweep) and `state.json`'s
   stamped `lastSweep` as the build-health signal.
+
+## Narrow same-day re-check, ~4h20m gap, unfiltered full source list (2026-08-29, third)
+
+- 2026-08-29-J: A near-total-zero queue (41 candidates, ~95% SpaceX stock/
+  Cursor-OpenAI-feud speculation, Futurism AI stories, and evergreen
+  Space.com content) and a fully clean HTML/signals pass still yielded a
+  genuine, never-covered find via the discovery pass's own "incident/
+  debris/regulatory" leg: SpaceX's Falcon 9 upper stage 2025-010D (the
+  Blue Ghost-1/ispace Resilience lunar-lander launch from Jan 15, 2025)
+  struck the Moon near Einstein crater on Aug 5, 2026, 24 days before this
+  sweep ran and well-forecast in advance (astronomy press covered it
+  extensively). Chased per the standing predates-window rule even at
+  noise tier, since CLAUDE.md's incident category names "uncontrolled
+  reentries... and satellite losses or anomalies" as in-scope regardless
+  of how routine, with no notable/seismic gate on the chase itself for a
+  genuinely never-covered fact (distinct from 2026-08-26-B, where a
+  small, no-dollar-figure story was left unchased because it was a
+  resurfacing of an *already-published* event, not a fresh gap). Led with
+  Forbes (mainstream, published the day of impact) over NASA's own page
+  (official_record, but published pre-impact as a "will attempt to
+  observe" forecast, not a confirmation the impact occurred) and a
+  specialist orbit-tracking site, Project Pluto (Bill Gray), classed
+  `informal` since it isn't CelesTrak/Space-Track (the only two sources
+  SNR_SPEC names for the `computed` class). cnn.com 451'd
+  ("Unavailable For Legal Reasons," a new failure mode for this project)
+  and techtimes.com 403'd on this specific article; space.com's own
+  article page rendered navigation chrome only, no body text, on
+  WebFetch.
+- 2026-08-29-K: Two Aug 2026 "space company" funding/M&A leads from a
+  generic discovery query were confirmed non-orbital defense companies
+  once checked, not space-scope name collisions: Castelion ($1B Series C,
+  $13B valuation) makes hypersonic missiles, and Space-Eyes (still
+  tracked from 2026-08-01-B) took an option to acquire KMS Solutions, a
+  Navy engineering services firm — neither has an orbital product. A
+  third lead, GovConWire's "Quantum Space to Go Public" piece, read fresh
+  in search results but was dated June 8, 2026, the same original SPAC
+  announcement already published under
+  `2026-06-08-quantum-space-spac-merger` (grepped before drafting).
+- 2026-08-29-L: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
+  0 updated, 0 held") plus a `jq` parse check (499 items, up from 498)
+  and a direct read of the new item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
