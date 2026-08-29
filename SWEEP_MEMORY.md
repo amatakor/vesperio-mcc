@@ -3331,3 +3331,43 @@ a newer entry if a lesson changes.
   ("merged 3 new, 0 updated, 0 held") plus a grep parse check (498 items, up
   from 495) and a direct read of all three new items' `snr`/`category`/
   `impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~7.5hr gap, unfiltered full source list (2026-08-29, second)
+
+- 2026-08-29-F: A genuine near-total-zero sweep with full-effort discovery
+  behind it: the queue (53 candidates, mostly SpaceX stock/Cursor-OpenAI
+  drama and ISRO exam-recruitment noise), a 10-source mandatory HTML pass,
+  a 12-channel signals pass, and an 8-query discovery matrix all traced to
+  ground already covered by the earlier same-day sweep or before: MTG-I2's
+  Aug 27 launch (2026-07-20 item, updated per 2026-08-28-B), the ESA
+  European Launcher Challenge award (2026-08-27), ICEYE/Spire's newsroom
+  releases (2026-08-24 through -27 items), Muon Space's Series C
+  (2026-08-20), Astrum/Black Spade SPAC (2026-08-28), Sutherland spaceport
+  (2026-08-28), and the whole 2025 "New Glenn rocket explosion" Wikipedia
+  page (the same May 28, 2026 pad explosion already covered under several
+  ids, not a fresh incident despite reading like one from the title alone).
+  A single OHB Sweden EPS-Sterna EUR 248M contract lead traced on direct
+  fetch to a March 18, 2026 signing date, five-plus months stale despite
+  surfacing near the top of a fresh search.
+- 2026-08-29-G: A Nancy Grace Roman Space Telescope Falcon Heavy launch is
+  scheduled for Aug 30, 2026 (per space.com's own mission-timeline
+  article), one day after this sweep's `now`; left it undrafted rather than
+  publish pre-launch buildup coverage (fairing encapsulation, rollout)
+  as an event, consistent with the standing rule that a scheduled/upcoming
+  launch is not itself a dateable event until it actually flies. Revisit
+  next sweep once the launch has occurred.
+- 2026-08-29-H: A whitelisted signal's on-topic-looking lead can still miss
+  the scope bar: Andrew Parsonson's Aug 26 Bluesky post on Poland's
+  National Institute of Telecommunications reporting widespread GNSS
+  interference along its Baltic coast (63% of August days affected) named
+  no satellite operator, no space-industry actor, and no government
+  statement about a commercial-space angle -- it is a ground-based
+  navigation-jamming/electronic-warfare report, not a commercial-space
+  event, and stayed out per the conflict-analysis exclusion even coming
+  from a whitelisted, fetchable channel.
+- 2026-08-29-I: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 0 new, 0 updated, 0 held") plus a `jq` parse
+  check (498 items, unchanged from the prior sweep) and `state.json`'s
+  stamped `lastSweep` as the build-health signal.
