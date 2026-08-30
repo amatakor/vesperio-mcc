@@ -3516,3 +3516,154 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   confirmation ("merged 5 new, 1 updated, 0 held") as the build-health
   signal.
 
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-30)
+
+- 2026-07-30-A: reuters.com joins arstechnica.com (2026-07-08-N) as a domain
+  WebFetch flatly refuses ("Claude Code is unable to fetch from
+  www.reuters.com") rather than a normal 403/timeout. investing.com carries
+  Reuters' own wire text verbatim with an explicit "By Reuters" byline and
+  fetches cleanly; used it as the mainstream-class source (outlet "Reuters
+  (via Investing.com)") rather than dropping the corroboration or trying
+  reuters.com again.
+- 2026-07-30-B: a same-story local-TV corroboration can quietly describe a
+  DIFFERENT prior contract: WFTV's write-up of All Points Logistics' new
+  $250M Vandenberg award (SpaceNews, KEYT) instead described a 64-acre
+  Cape Canaveral/KSC-area facility targeted for 2027, matching the "third
+  NSSL Space Vehicle Processing contract" framing but not the Vandenberg
+  Mission Development Zone/2029 details every other source gave. Read as
+  the outlet conflating this award with an earlier, similarly-shaped All
+  Points project rather than independent confirmation; left WFTV unused
+  and corroborated with KEYT instead, whose facts matched SpaceNews
+  exactly. Don't accept a second source's specifics merely because its
+  headline number matches; check its location/timeline details agree too.
+- 2026-07-30-C: europeanspaceflight.com and spacepolicyonline.com are each
+  BOTH a standing sources.json discovery feed (covered automatically by the
+  harvester/candidates-context health block) AND a signals-context.ts
+  fetchable channel (Andrew Parsonson, Marcia Smith) -- no need to
+  separately WebFetch the bare site during the signals pass when the
+  harvester's own RSS fetch of the same domain already shows nothing newer
+  in `health`; note it as "covered via harvester feed" in `signalsPass` and
+  spend the budget on channels the harvester doesn't already walk (Bluesky
+  accounts, podcast/blog sites not in sources.json).
+- 2026-07-30-D: search-engine results for two off-list leads (Astroscale
+  Japan's "gripping mechanism" Ministry of Defense contract, Rocket Lab's
+  "multiple launches with JAXA") both resolved on direct fetch to genuinely
+  old articles (January 2026 and October 2025 respectively) despite reading
+  like fresh July 2026 hits in the search snippet -- confirms 2026-07-08-E/
+  2026-07-12-G's pattern on two more cases; always open the actual page and
+  check its stated publish date before drafting a search-surfaced lead.
+
+## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-07-30, second)
+
+- 2026-07-30-E: CASC's own site (english.spacechina.com) is a genuine
+  first_party lead for its own launches, not just a Xinhua mirror: its
+  article on the Tianlian III-01 launch (already published same-day from
+  Xinhua, mainstream tier 3) restated the identical 7:50 p.m. Beijing time
+  detail, confirming it was CASC's own report rather than a wire rewrite;
+  rescoring the lead to CASC (first_party, registry website matches exactly)
+  raised the item from SNR 4 to 5. Worth checking CASC's own site against an
+  already-published Xinhua/CRI-led Chinese launch item before assuming
+  Xinhua is the best available source -- CASC often publishes the same
+  event as a first-party primary alongside the state-media wire copy.
+- 2026-07-30-F: A contracting party's own newsroom can out-rank the outlet
+  that broke the story: Nikkei first reported ispace's H3/Ultra lander
+  switch (mainstream, corroboration crawl found nothing, published at SNR
+  2), but Mitsubishi Heavy Industries -- the OTHER contracting party, not
+  ispace itself -- had its own press release on mhi.com (registry-matched
+  first_party) confirming the exact same contract signing, found via a
+  plain WebSearch the next day. Rescoring the lead to MHI's release raised
+  the item from SNR 2 to 5 (first_party ceiling) and surfaced a fresh detail
+  (the METI SBIR grant funding the Ultra lander) neither the original
+  candidate nor the Nikkei article had stated. When a story involves a
+  named counterparty company, search for that counterparty's own newsroom
+  before settling for the outlet-report SNR, even after the item has
+  already published.
+- 2026-07-30-G: Two Chinese state-media "top news" items on CASC's site
+  dated the SAME calendar day as an already-published item can be the exact
+  same event restated a day later (Beijing-time publish lag), not a new
+  one: cross-check the launch time/rocket/site stated in the new CASC
+  article against the existing item's explainer text before drafting a
+  same-company, same-category "new" candidate -- here it was a genuine
+  same-event match (Tianlian III-01) and became a source-upgrade update,
+  while a second same-day CASC "top news" item (a Long March-6 comms-test
+  launch from Taiyuan, different rocket/site/payload) was the real new
+  item and needed a `dedup_distinct` note to clear the same-company/
+  category heuristic against both the Tianlian III-01 and Tianlian II-06
+  items sitting within the 7-day window.
+- 2026-07-30-H: The Federal Register's own JSON API
+  (federalregister.gov/api/v1/documents/<doc-id>.json) is directly
+  WebFetch-able and returns clean structured fields (title, type,
+  publication_date, docket_id, agencies, abstract, comments_close_on,
+  html_url) even though the HTML document page itself
+  (federalregister.gov/documents/...) redirects WebFetch to an
+  "unblock.federalregister.gov" bot-check page. Confirmed a proposed rule
+  already reported via SpacePolicyOnline (whitelist, tier 3/4) two days
+  earlier and supplied the exact docket number (FAA-2026-8614) and comment
+  deadline (August 31, 2026) that neither original source had stated;
+  rescoring the lead to the Federal Register (.gov, official_record)
+  raised the item from SNR 4 to 5. Try the `/api/v1/documents/<id>.json`
+  form on any federalregister.gov URL the harvester's Federal Register API
+  health source already surfaced, rather than the HTML page, when a
+  regulatory candidate needs the primary document as an upgrade.
+- 2026-07-30-I: Bluesky's public, unauthenticated API
+  (public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N)
+  is directly WebFetch-able and returns each post's verbatim text and
+  createdAt timestamp; the bsky.app profile page itself is a JS shell
+  WebFetch cannot render (no posts, no timestamps). Use the API form for
+  every signals-pass Bluesky account fetch going forward rather than the
+  bsky.app profile URL, which returns nothing usable.
+- 2026-07-30-J: Two search-surfaced leads dated within window turned out to
+  be older news resurfacing: NASA's Roman Space Telescope "launching nine
+  months ahead of schedule" (search snippet implied fresh) traced on direct
+  fetch of SpacePolicyOnline's own article to June 2, 2026, nearly two
+  months stale; and Japan/Singapore's JAXA-NSAS space cooperation agreement
+  traced to a July 9 SPACETIDE 2026 signing, also outside this run's
+  2026-07-28 window start. Both confirm the standing "open the actual page
+  and check its date" rule (2026-07-08-E and peers) rather than trusting a
+  search snippet's apparent recency.
+
+## Narrow same-day re-check, ~7h40m gap, unfiltered full source list (2026-07-30, third)
+
+- 2026-07-30-K: A single unattributable Bluesky bot post claiming an
+  "NROL-95 @SpaceX partial failure" directly contradicted the already-
+  published item (multiple sources: Spaceflight Now, Florida Today, the
+  NRO) confirming a clean launch and booster landing. A targeted search
+  found zero corroboration and multiple sources affirming success; treated
+  the claim as false rather than holding or hedging the existing item.
+  Worth a reminder that a bare informal claim contradicting an already-
+  multi-sourced fact needs its own verification pass before it touches an
+  item, not just before it becomes one.
+- 2026-07-30-L: Four separate harvester-queue/signals hits this run each
+  turned out to be same-day catch-up coverage of stories already fully
+  published under different leads, not fresh news: Rocket Lab's "$266M
+  Space Force contract" (Bluesky, actually the already-published July 21
+  HASTE Alaska deal, whose own GlobeNewswire release date was July 27);
+  SpaceX/Blue Origin "orbital data center" FCC filings (qz.com/newsnation,
+  actually Blue Origin's March 19 and SpaceX's February 1 filings, already
+  covered via the 2026-07-08 Earthjustice item); the Katalyst/NASA Swift
+  LINK reboost "setback" (SpacePolicyOnline Bluesky, already fully folded
+  into the 2026-07-03 item's what_happened, word for word); and a same-day
+  Via Satellite write-up of the Fortastra/Hadrian manufacturing MoU
+  (already published 2026-07-29 from SpaceNews with identical facts). All
+  four needed a dedup check against existing[] before drafting; none added
+  a new fact.
+- 2026-07-30-M: investors.rocketlabcorp.com timed out on a direct WebFetch
+  (60s), unlike the 2026-07-05-S/2026-07-07-L pattern where it or its
+  Cloudflare-gated updates page usually resolves; fell back cleanly to
+  SpaceNews (trade, lead) plus a GlobeNewswire wire-copy mirror (Manila
+  Times) for corroboration rather than retrying or blocking on the
+  first-party fetch.
+- 2026-07-30-N: `investors.planet.com` and `www.ariane.group` both classed
+  clean as `first_party` this run (Planet's IR subdomain against the
+  `planet` constellation's registered `www.planet.com`, per the
+  2026-07-07-E www-stripping fix; ArianeGroup's own domain against its org
+  profile's `https://www.ariane.group/`), landing both items at the tier-5
+  ceiling with a trade corroboration attached for free. Worth checking a
+  registry entity's `website` field before defaulting a well-known
+  operator's own newsroom to a lower tier.
+- 2026-07-30-O: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 5 new, 0 updated, 0 held") as the
+  build-health signal.
+
