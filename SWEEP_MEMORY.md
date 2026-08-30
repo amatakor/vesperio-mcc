@@ -3392,3 +3392,51 @@ a newer entry if a lesson changes.
   merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
   check (503 items, up from 501) and a direct read of both new items'
   `snr`/`category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~4h49m gap, unfiltered full source list (2026-08-30, third)
+
+- 2026-08-30-J: A near-total-duplicate queue (43 candidates, ~90% Roman
+  Space Telescope launch-day pickup from 30+ outlets plus SpaceX stock/
+  IPO-lockup speculation and off-topic Futurism content) still surfaced a
+  genuine, never-covered gap via the discovery pass's financial leg:
+  Delta Air Lines picked Amazon Leo over Starlink for future in-flight
+  WiFi, announced March 31, 2026 (500 aircraft from 2028), with zero prior
+  draft under any id (grepped items.json for "amazon leo"/"delta air
+  lines", only tangential Amazon Leo hits, no Delta one) despite wide
+  contemporaneous coverage (CNBC, Amazon's own newsroom, Delta's own
+  newsroom, Airways Magazine). Chased per the standing predates-window
+  convention and dated to the actual March 31 announcement, 5 months
+  stale. Delta has no `src/data/registry` organization entity, so its own
+  news.delta.com release capped at `informal` (the standing
+  2026-08-05-O/2026-07-31-I no-registry-host workaround) even though it
+  is genuinely the customer speaking about itself; Amazon's own
+  aboutamazon.com page led clean at `first_party` (registry-matched
+  Kuiper/Amazon Leo website), landing the item at the SNR 5 ceiling.
+- 2026-08-30-K: The Launch Library candidate queue can carry a launch
+  entry ("Long March 8A | Unknown Payload") whose own `raw_excerpt`
+  ("Details TBD") gives no hint it is actually three weeks out: the
+  linked Launch Library record's own `status`/`net` fields showed "To Be
+  Confirmed" for a September 11 window, not a completed or even
+  near-term launch. Confirms the standing 2026-08-09-B/2026-08-25-B rule
+  (always check a Launch Library entry's own status/net fields, not just
+  its presence in the window-dated queue) extends to entries with no
+  payload identified yet, which read as maximally ambiguous rather than
+  obviously future-dated.
+- 2026-08-30-L: NASA's own Crew-13 delay announcement (an oxidizer leak
+  found on Dragon's propulsion system during routine prelaunch
+  processing, Aug 29) was a genuine same-day item the queue surfaced
+  directly (Google News), not a discovery-pass chase; scored `noise`
+  impact as a routine pre-launch schedule slip caught by ground
+  processing, consistent with the standing treatment of scheduled-launch
+  delays as non-market-moving unless the underlying cause itself is
+  seismic. NASA's science-agency blog domain (nasa.gov) matches the
+  registry's recorded website cleanly for `first_party`; a mainstream
+  local-TV pickup (FOX 35 Orlando) supplied `corroboration_2plus` even
+  though its text closely tracked NASA's own release, since it is an
+  independent outlet's own coverage, not a wire-service rewrite.
+- 2026-08-30-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
+  check (505 items, up from 503) and a direct read of both new items'
+  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
