@@ -3440,3 +3440,60 @@ a newer entry if a lesson changes.
   merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
   check (505 items, up from 503) and a direct read of both new items'
   `snr`/`category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~4h11m gap, unfiltered full source list (2026-08-30, fourth)
+
+- 2026-08-30-N: **NEEDS FLORIAN: accidentally published an exact
+  duplicate item.** Andrew Parsonson's bluesky (signals pass) surfaced
+  "Highlands and Islands Enterprise bought Sutherland Spaceport Ltd's
+  assets" (HIE's own release + European Spaceflight, Aug 25) and it was
+  drafted and merged as `2026-08-25-hie-sutherland-spaceport-assets`
+  (category `launch`) -- only after finalize-sweep merged it did a
+  registry-candidates.json check reveal this is the SAME event as the
+  already-published `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`
+  (category `financial`, merged 2026-08-28, same two source URLs, same
+  facts). The finalize-sweep same-event dedup gate did NOT catch it
+  because the two items landed in different categories (`launch` vs
+  `financial`) despite sharing a company, date, and both source URLs --
+  confirms the gate's same-company+category+7-day match can be defeated
+  by an honest category-judgment difference between two independent
+  drafting passes on the identical story. No sweep-side tool can retract
+  a merged item (`scripts/review-queue.ts` only manages `held.json`
+  entries pre-publish; there is no delete/retract path in
+  `finalize-sweep.ts`), and hand-editing `items.json` is a hard rule
+  violation even to fix this -- left both items live and flagged here
+  for manual removal of the duplicate (recommend keeping
+  `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`, the earlier
+  one, and deleting `2026-08-25-hie-sutherland-spaceport-assets`, plus
+  the resulting duplicate `sutherland.operator` entry it added to
+  `registry-candidates.json`). Lesson: before drafting ANY signals-pass
+  or discovery-pass find, grep `items.json` directly for the actor/place
+  name (here "sutherland" or "hie"), not just the `existing[]` sample
+  from sweep-context or trust in the dedup gate -- the gate is a
+  backstop, not a substitute for a direct grep, especially for a story
+  that could plausibly be filed under more than one category.
+- 2026-08-30-O: The Brownsville, TX city commission's Aug 29 vote to
+  disannex 444 acres near Starbase from city zoning in exchange for a
+  $220 million SpaceX water-infrastructure commitment (KRGV lead,
+  RGV Business Journal corroboration) published clean as a genuinely new
+  item at `launch`/`notable`/SNR 4, after two same-company+category
+  dedup false positives against the unrelated Aug 25 Starbase Louisiana
+  and B1067 Florida-Starlink items were cleared with `dedup_distinct`
+  (the standing SpaceX-volume pattern, 2026-08-01-C and many peers).
+  Confirmed via direct grep of `items.json` for "brownsville"/"disannex"
+  post-merge that this one is NOT a duplicate.
+- 2026-08-30-P: A stale (Aug 9) Elon Musk X reply -- "All cars will have
+  Starlink in the future... the only way to get super high bandwidth to
+  billions of vehicles" -- resurfaced today in Yahoo Autos/Jalopnik/
+  Benzinga reaction pieces piggybacking on Roman-launch-day traffic;
+  verified verbatim via the syndication endpoint but NOT drafted as
+  commentary: three weeks stale, speculative musing rather than a
+  concrete product decision, below the notable-or-above bar the
+  predates-window chase convention requires.
+- 2026-08-30-Q: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (507 items, up from 505) as the build-health signal --
+  the duplicate in 2026-08-30-N above is a content/dedup defect, not a
+  schema or build failure, so it passed this check cleanly.
