@@ -3345,3 +3345,50 @@ a newer entry if a lesson changes.
   check (501 items, up from 499) and a direct read of both new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
   signal.
+
+## Normal-mode sweep, ~7h gap, unfiltered full source list (2026-08-30, second)
+
+- 2026-08-30-E: NASA's own science.nasa.gov mission-blog subdomain (not
+  `www.nasa.gov`, the registry's exact `website` value) classed clean as
+  `first_party` for the Roman Space Telescope's own launch-day post,
+  confirming the standing subdomain-of-registered-apex rule
+  (2026-07-07-E/2026-08-27-F) extends to nasa.gov's science-blog
+  subdomain, not just esa.int. A flagship-observatory launch (NASA's next
+  "great observatory" after Hubble/Webb, $4.3B lifecycle cost, launched
+  nine months ahead of schedule) was scored `major` impact under the
+  science-category "exceptional firsts reach major" rule (2026-07-13)
+  rather than the more common `notable` every other science item in the
+  feed carries to date -- flag for Florian if that reading of "exceptional"
+  is too generous, since this is the first `major`-tier science item.
+- 2026-08-30-F: A same-day, same-company-plus-category dedup false
+  positive fired on BOTH new items this run (NASA/science against the
+  Aug 27 AeroVironment SkyFall item; SpaceX/partnership against the Aug 4
+  Nvidia/Starmind item), extending the standing SpaceX-volume pattern
+  (2026-08-01-C and many peers) to NASA for the first time -- NASA's own
+  high item-count across unrelated science-program stories makes it as
+  prone to this heuristic as SpaceX. Two `dedup_distinct` entries cleared
+  both.
+- 2026-08-30-G: An unofficial, unconfirmed-by-either-party trade report
+  (Royal Air Maroc/Starlink Aviation fleet Wi-Fi deal, sourced to Africa
+  Intelligence's Aug 18 scoop via Space in Africa and Le360, neither RAM
+  nor SpaceX having confirmed it) was chased and published anyway per the
+  standing "attributable weak sources publish at low SNR, only anonymous
+  sources don't" rule (CLAUDE.md) -- landed at trade+mainstream SNR 4,
+  dated to the reported Aug 4 signing date (19 days outside the sweep
+  window) under the standing notable-or-above predates-window chase rule,
+  with the copy explicitly flagging the lack of official confirmation
+  rather than asserting the deal as settled fact.
+- 2026-08-30-H: Two further stale-resurfacing traps this run: a SpaceNews
+  "China resumes launches for Thousand Sails constellation" piece that
+  reads current in search results actually mirrors to an October 2025
+  dateline (per a copernical.com mirror's own timestamp), and a
+  "European acquisition revives Space Perspective's space tourism
+  ambitions" (EOS-X Space) hit traces to a July 2025 acquisition, over a
+  year stale; also out of scope regardless (stratospheric balloon
+  tourism, not orbital). Neither drafted.
+- 2026-08-30-I: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
+  check (503 items, up from 501) and a direct read of both new items'
+  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
