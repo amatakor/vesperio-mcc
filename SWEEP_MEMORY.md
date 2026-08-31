@@ -3421,3 +3421,67 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (508 items, up from 507) and a
   direct read of the new item's `snr`/`snr_trace`/`category`/`impact`
   fields as the build-health signal.
+
+## Narrow same-day re-check, ~9h gap, unfiltered full source list (2026-08-31, second)
+
+- 2026-08-31-G: A signals.json whitelisted person's own SITE (not just their
+  bluesky/X channel) can be classed `whitelist` directly: Andrew Parsonson's
+  europeanspaceflight.com article on SES awarding OHB a ~€1B IRIS2 MEO
+  satellite-manufacturing contract was led with `class: "whitelist"`,
+  `scoring.whitelist: "observer"` (he's reporting on SES/OHB, not himself),
+  base tier 3 per the "whitelisted account 3 (before floors)" rule, and
+  landed at SNR 4 via the ordinary 2-source corroboration bump rather than
+  the whitelist-floor modifier -- same final score, different code path,
+  worth noting both routes reach 4 on a 2-source whitelisted-lead item.
+  This is a distinct event from the already-published Aug 6 EU/SpaceRISE
+  IRIS2 implementation-agreement item and the Aug 7 SES MEO capital-
+  commitment item (SES's own capex vs. SES awarding a build contract to
+  OHB) despite sharing OHB/SES as companies and landing in a
+  procurement-adjacent category; no dedup false positive fired since the
+  nearest same-company item was 25 days prior.
+- 2026-08-31-H: A same-day PR Newswire release for a startup with no
+  `src/data/registry` entity (Diffraqtion, quantum-imaging cameras for
+  space/EO/SDA payloads) classed cleanly as `wire_pr` (base tier 4) without
+  needing the no-registry-host `informal` workaround (2026-08-05-O and
+  peers) -- `wire_pr` never required a registry match in the first place,
+  only `first_party` does; worth remembering the workaround is specific to
+  companies whose OWN domain needs anti-spoof matching, not to wire
+  distribution platforms.
+- 2026-08-31-I: Vivienne Machi's Aug 28 Aviation Week piece on Trump's
+  executive order creating a Presidential Commission to design a "United
+  States Space Academy" (NASA-led workforce/training academy) was left
+  undrafted: it names no commercial contractor, procurement dollar figure,
+  or market-access change, just a commission to advise on standing up a
+  federal academy -- squarely the standing institutional-disclosure
+  exclusion (NASA-STRIDE/ASI-board/Lok-Sabha precedent, most recently
+  2026-08-06-G) despite being genuinely on-the-record and dated.
+- 2026-08-31-J: Chased two speculative-looking queue leads to ground and
+  discarded both: "Musk clarifies that SpaceX bought APR Energy" is a
+  months-old (May 2026), already-reported acquisition of a mobile gas/
+  diesel-turbine power company for AI datacenters, entirely terrestrial
+  power generation with no orbital space product or service -- out of
+  scope regardless of SpaceX ownership, same logic as the DISH DBS/
+  Wireless terrestrial exclusion. Harvard's 13F disclosure of a $2.2B
+  SpaceX stake was also left undrafted: it's a passive third-party
+  portfolio disclosure, not a transaction by or affecting SpaceX itself
+  (no funding round, 8-K, M&A, or bankruptcy), so it doesn't fit the
+  financial-events scope even though the dollar figure is large and
+  widely reported.
+- 2026-08-31-K: A same-day Global Times/Xinhua story ("world's first
+  space-based computing cloud enters routine on-orbit service," BUPT-led
+  Tiansuan Constellation platform) was judged out of scope and left
+  undrafted rather than held: the Global Times piece's own commercial-angle
+  framing ("shifting from delivering hardware to delivering services") read
+  as an inference from the coverage, not a stated fact from either source,
+  and the underlying event is a research platform reaching steady-state
+  operation for academic/government experiments, not a capability offered
+  on commercial terms. Flag for Florian if in-space computing infrastructure
+  should get an explicit scope ruling either way, since this is the second
+  time this topic has come up (2026-08-05-K's ESPI commentary item was the
+  first) without a clear precedent for the underlying technical milestones.
+- 2026-08-31-L: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (510 items, up from 508) and a
+  direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
+  `tags` fields as the build-health signal.
