@@ -3554,3 +3554,35 @@ a newer entry if a lesson changes.
   ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (511 items,
   up from 510) and a direct read of the new item's `snr`/`snr_trace`/
   `category`/`impact`/`tags` fields as the build-health signal.
+
+## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-08-31, fourth)
+
+- 2026-08-31-R: WebSearching a company's own domain for a specific story
+  (`site:northstar-data.com` plus the story's keywords) surfaced a
+  different, older press release on a superficially similar topic: a
+  search for NorthStar's own FALCON/reentry-forecasting consortium
+  announcement kept returning an Oct 21, 2025 release about a separate
+  ESA-funded atmospheric-drag-uncertainty consortium (different program,
+  different partners overlap only on "ESA" and "consortium"). Confirmed
+  by fetching the page directly and checking its stated publish date
+  before citing it; no current-dated NorthStar press release for the
+  Aug 31 FALCON story was found, so the item shipped on Via Satellite's
+  trade lead alone (crawl `found_none`, the only other hit being an
+  aggregator, UFO FEED, republishing Via Satellite's own headline
+  verbatim, a wire-rewrite, not independent corroboration). Extends the
+  standing stale-resurfacing trap pattern to same-domain company-site
+  searches, not just generic web search snippets.
+- 2026-08-31-S: Two more companies join the no-registry-entity list
+  (2026-08-04-B's Apex Space precedent): All.Space (owned by York Space
+  Systems, no `src/data/registry` entity for either) and NorthStar
+  Earth & Space (no entity despite recurring in a April SPAC item and an
+  Aug 27 Kepler-hosted-payload item). Both companies' own domains were
+  classed `informal` rather than forced `first_party`, per the standing
+  workaround.
+- 2026-08-31-T: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") plus a `jq` parse check (514 items,
+  up from 511) and a direct read of all three new items' `snr`/
+  `snr_trace`/`category`/`impact`/`tags` fields as the build-health
+  signal.
