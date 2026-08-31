@@ -3485,3 +3485,72 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (510 items, up from 508) and a
   direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
   `tags` fields as the build-health signal.
+
+## Narrow same-day re-check, ~2h40m gap, unfiltered full source list (2026-08-31, third)
+
+- 2026-08-31-M: `draft.signalsPass.checked` must list the exact channel URL
+  from `signals-context.ts`'s `fetchable[]` array (the `bsky.app/profile/...`
+  page URL), not the Bluesky public API endpoint actually used to fetch it
+  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=...`);
+  finalize-sweep rejected all ten API-URL entries in one pass with "not a
+  fetchable whitelisted signal channel." Also, `draft.coverage` must be
+  valid `Category` enum values (e.g. `"product"`), not a tag like
+  `"connectivity"`. Both were mechanical draft-format mistakes, not
+  editorial ones; fixed and the draft passed clean on the second attempt.
+- 2026-08-31-N: A near-total SpaceX-stock/turbine-speculation and
+  Roman-telescope-followup queue (34 candidates, one collapsed) yielded
+  zero drafts from the queue itself; the sweep's only genuinely new item
+  came from chasing the queue's own stock-reaction fallout back to its
+  source. SpaceX's own gas-turbine-blade foundry for AI data centers
+  (Bastrop, TX; announced Aug 29, driving Howmet/GE Vernova stock moves
+  and most of this queue) is out of scope on the same terrestrial-power
+  logic as the 2026-08-31-J APR Energy call: no orbital space product
+  or service, regardless of SpaceX ownership or how much financial-press
+  churn it generates. A same-queue "FT: Musk willing to let Ukraine use
+  Starlink to strike Russia" headline traced, via WebSearch beyond the
+  single-outlet mirror, to conflicting unnamed-source reporting (Kyiv
+  Independent's own sourcing says Musk actually opposes it) with no
+  confirmed Starlink service change -- squarely the 2026-08-01-F
+  conflict-operational-use exclusion, now confirmed on a second, higher-
+  profile instance with a bigger outlet byline (FT) than the original
+  Trump "consider" case.
+- 2026-08-31-O: A Tech Times headline ("ISRO Launches First Geostationary
+  Imager as NavIC Falls Below Four-Satellite Floor") conflates two
+  separate things: ISRO's GISAT-1A/EOS-05 GSLV launch is still scheduled
+  (confirmed via the Launch Library entry, "Go for Launch," Sept 3-4
+  window, not yet flown) and NavIC's constellation dropping below its
+  four-satellite minimum PNT threshold is a stale fact from March 2026
+  (last atomic clock failure on IRNSS-1F) already reported to Parliament
+  in July -- neither is a fresh, dateable event for this sweep. Left both
+  undrafted; NavIC's degradation could be a legitimate predates-window
+  chase candidate later if a source states a concrete commercial/market-
+  access consequence (India mandates NavIC smartphone support), but this
+  run's trigger article was about the future launch, not that angle.
+- 2026-08-31-P: The mandatory HTML pass, an 11-channel signals pass
+  (10 Bluesky accounts via the public API plus Jonathan McDowell's site,
+  which is stale at Aug 1 with no separate bluesky/rss entry in the
+  fetchable list), and an 8-query discovery matrix all traced to already-
+  published ground (Diffraqtion funding, SES/OHB IRIS2, CesiumAstro/
+  1Aardvark, Quantum Space/Bridenstine, Kulasekarapattinam privatization,
+  Hughes Chapter 11, LandSpace booster landing) or were too stale to chase
+  (an Array Labs $20M Series A radar-payload round, actually dated Jan 6
+  2026 despite reading fresh in a "raised $20 million... announced
+  Monday" search snippet -- eight months stale, well past any reasonable
+  predates-window bar for a routine, non-notable funding round). Only
+  find: chasing a Google-News SpaceX-stock-reaction headline
+  ("SpaceX cuts Starlink prices by 50% for residents near Starbase
+  Louisiana") back through WebSearch to Yahoo Finance's direct fetch
+  (quoting both Musk's X post and SpaceX's own "neighbors on Louisiana's
+  Gulf Coast" statement) plus KADN (local Louisiana TV) and a smaller
+  informal blog, landing a clean 3-source SNR 4 `product`/`noise` item
+  dated to the actual Aug 27 announcement, 4 days before this sweep.
+  Neither `starlink.com`'s own support-article page (JS shell, no
+  content on WebFetch) nor `businesswire`-class wire mirrors were
+  needed once a mainstream outlet's direct fetch supplied the verbatim
+  Musk quote and exact per-tier dollar figures.
+- 2026-08-31-Q: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (511 items,
+  up from 510) and a direct read of the new item's `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields as the build-health signal.
