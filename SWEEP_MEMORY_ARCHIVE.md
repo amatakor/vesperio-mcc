@@ -3667,3 +3667,128 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   merge confirmation ("merged 5 new, 0 updated, 0 held") as the
   build-health signal.
 
+## Narrow same-day re-check, ~12hr gap, unfiltered full source list (2026-07-31)
+
+- 2026-07-31-A: A near-total-duplicate sweep: the harvester queue was
+  95%+ SpaceX/Tesla-merger stock speculation and ISRO exam/recruitment
+  noise, and every substantive-looking lead across the queue, 11 HTML
+  sources, 15 signals channels, and an 8-query discovery matrix (K2
+  Space $500M, Rocket Lab/iQPS third deal, ArianeGroup Themis wet dress
+  rehearsal, MaiaSpace suborbital-skip, True Anomaly VICTUS HAZE
+  pursuit, SpaceX $1.6B Space Force order, DOT/FAA environmental
+  waiver, Amazon D2D FCC filing, ispace-Europe MAGPIE, NASA CLD draft
+  RFP) traced straight to items already published earlier the same day
+  or before the window. Only action this run: attached a free
+  corroboration source (Ars Technica) to an existing item. Confirms the
+  standing pattern (2026-07-05-S and many peers) that a short same-day
+  re-check against a fully unfiltered source list can legitimately
+  yield near-zero net change when a prior sweep the same day already
+  covered the ground.
+- 2026-07-31-B: `sourceHealth` has no clean status for "attempted this
+  run, failed, but not yet the third consecutive failure" on a source
+  that is currently `verified` with `fail_count: 0`: reporting
+  `status: "verified"` triggers the evidence-of-successful-fetch gate
+  (no excerpt exists for a failed fetch) but `"dead"` overstates a
+  single blip and `"unverified"` wrongly resets an established source.
+  Two one-off failures this run (space.skyrocket.de/Gunter's:
+  ECONNREFUSED; sierraspace.com/newsroom: HTTP 403, both previously
+  reliable) were left OUT of the draft's `sourceHealth` entirely rather
+  than misreported; noting the blips here instead. Worth a schema
+  addition (an explicit `attempted_failed` status, or an
+  `evidence`-optional failure note under the existing status) if this
+  recurs enough to matter for fail_count accuracy.
+- 2026-07-31-C: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 0 new, 1 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~4hr gap, unfiltered full source list (2026-07-31, second)
+
+- 2026-07-31-D: JAXA sometimes splits one flyby event across two same-day
+  press releases, each headlining a different specific achievement (here,
+  Hayabusa2's Torifune flyby: one release on the closest-approach distance
+  record, a second on the world-first LIDAR ranging during the same pass).
+  Both are the same event under the 7-day dedup rule; drafted as one item
+  combining both facts rather than two. finalize-sweep's same-domain
+  corroboration collapse folds the second JAXA URL into one scoring unit
+  automatically, which is correct here since both are first-party JAXA
+  anyway; check for this twin-release pattern before drafting a JAXA
+  same-day queue hit as two separate items.
+- 2026-07-31-E: A KeepTrack-style predicted conjunction alert (STARLINK-5262
+  vs. MONOLITH, 6m minimum range, "collision probability 1.0", surfaced via
+  WebSearch) is a forecast, not a confirmed incident: no outlet reported
+  whether a maneuver was performed or a collision occurred, and Starlink
+  alone generates on the order of tens of thousands of such conjunction
+  alerts every few months per Space.com's own reporting. Left unpublished;
+  a predicted-collision-probability figure needs a follow-up source
+  confirming an actual outcome (maneuver, miss, or collision) before it is
+  a publishable incident, not just a tracking-tool forecast.
+- 2026-07-31-F: Advanced Television's July 31 rewrite of the July 30
+  Rocket Lab/iQPS third-launch-deal story headlined it "Rocket Lab wins
+  Chinese launch contracts" even though the body (and every other outlet)
+  correctly identifies iQPS as Japanese; a rewrite outlet's headline can
+  mislabel geography/actor even when the body facts match an already-
+  published item exactly. Confirmed via the body details (three dedicated
+  Electron launches, total contracted missions now 18) before treating it
+  as dedup rather than a genuinely new China-related item.
+- 2026-07-31-G: The SES/LATAM Airlines multi-orbit IFC item shared company
+  "SES" and category "partnership" with the already-published 2026-07-27
+  SES Space & Defense/Starlab relay item within the 7-day window, tripping
+  the dedup gate on a same-company/category heuristic despite being
+  completely unrelated products (airline inflight WiFi vs. a space-station
+  relay contract); cleared with `dedup_distinct`. A shared parent company
+  name across two divisions (SES commercial mobility vs. SES Space &
+  Defense) is not itself evidence of the same event.
+- 2026-07-31-H: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 1 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~7.5hr gap, unfiltered full source list (2026-07-31, third)
+
+- 2026-07-31-I: `updates[].patch.secondary_urls` is silently ignored:
+  `finalize-sweep.ts`'s merge always recomputes `secondary_urls` as
+  `base.secondary_urls` plus each `attach[].url` (source: the object
+  literal sets `secondary_urls: newSecondary` last, overriding anything
+  in `...patch`), and there is no separate unscored-link field for
+  updates the way `newItems[].secondary_urls` lets a fresh item carry an
+  unscored link. To add a company's own page as an honest link on an
+  UPDATE when it has no registry host to verify (the standing
+  2026-07-07-K/2026-07-08-A new-actor pattern), the only mechanical path
+  is `attach` it at the conservative `informal` class rather than
+  `first_party` -- confirmed working this run on Katalyst Space's own
+  mission-tracker page (no registry entry exists for Katalyst at all).
+- 2026-07-31-J: WebFetch could not render Google News RSS redirect
+  articles today (returned only "Google News" header text, no publisher
+  content, unlike the documented redirect-then-refetch flow) or a
+  handful of ordinary publisher pages (theregister.com 404'd twice on
+  slightly different URL punctuation, livescience.com truncated to a
+  headline-only stub) -- WebSearch on the exact headline text reliably
+  found and summarized the same underlying story in every case this run
+  (OHB's AD HOC NEWS stock piece resolved to the OHB Italia PRISMA
+  Second Generation ASI contract; the Register piece's facts came
+  through via a Katalyst-space.com direct fetch instead). Worth trying
+  WebSearch-by-headline as the fallback before writing a Google
+  News/publisher URL off as unreachable.
+- 2026-07-31-K: A same-day stock-commentary rewrite of an already-
+  published contract (AD HOC NEWS's "OHB's Italian Earth-Observation Win
+  Masks a Stock Still Digging Out of a Deep Correction," about the
+  already-published 2026-07-29-prisma-second-generation-contract item)
+  needed no draft action: it isn't a named analyst's attributed call
+  (not clean commentary) and states no new registry-relevant fact (pure
+  stock-price framing), so it was left alone rather than forced into
+  either an item or an update.
+- 2026-07-31-L: Confirms 2026-07-06-L/2026-07-06-JJ: cross-checking an
+  already-published item's own sourcing against a page fetched for an
+  unrelated reason (OHB's own PRISMA press release, found while
+  resolving the AD HOC NEWS redirect) found a genuine free upgrade
+  opportunity (OHB Italia's own ohb.de page, registry-matched
+  first_party, alongside the item's sole existing source, Thales Alenia
+  Space) -- not used this run for effort/value reasons since the item is
+  already at the SNR 5 ceiling, but worth a routine attach next time
+  this item is touched for any other reason.
+- 2026-07-31-M: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 2 updated, 0 held") as the build-health signal.
+
