@@ -45,7 +45,23 @@
   "operator": {
     "value": "Orbex",
     "source": "https://en.wikipedia.org/wiki/Sutherland_Spaceport",
-    "as_of": "2026-07-05"
+    "as_of": "2026-07-05",
+    "disputed": {
+      "competing": [
+        {
+          "value": "Highlands and Islands Enterprise (HIE)",
+          "source": "http://www.hie.co.uk/news-and-blogs/news/2026/august/25/hie-acquires-assets-of-sutherland-spaceport-ltd/",
+          "as_of": "2026-08-31",
+          "snr": 3
+        },
+        {
+          "value": "Highlands and Islands Enterprise (HIE)",
+          "source": "https://europeanspaceflight.com/orbexs-sutherland-spaceport-assets-sold-to-scottish-development-agency",
+          "as_of": "2026-08-31",
+          "snr": 3
+        }
+      ]
+    }
   },
   "first_launch_date": {
     "value": null,
@@ -67,7 +83,7 @@
     "source": null,
     "as_of": null
   },
-  "notes": null,
+  "notes": "Weekly maintenance 2026-08-31: crossfeed queue proposed \"operator\" = Highlands and Islands Enterprise (HIE) from two items (2026-08-25-orbex-sutherland-spaceport-hie-acquisition, 2026-08-25-hie-sutherland-spaceport-assets), both reporting HIE's Aug 25 2026 acquisition of Sutherland Spaceport Ltd's assets from Orbex's liquidators. The existing \"Orbex\" value is an unscored Wikipedia fact (counted canonical SNR 5 for crossfeed purposes) dated 2026-07-05, predating the sale; reconcile() scored this a downgrade_incoming (fact SNR 5 > incoming SNR 4) rather than a true same-metric contradiction, so both claims are recorded as disputed.competing without overwriting the primary value, per SNR_SPEC.md 6.2. Both source pages were re-verified this run and clearly state the acquisition. This reads less like a factual dispute than a stale Wikipedia snapshot predating a real ownership change; flagging for Florian to confirm updating \"operator\" to HIE (or null, pending HIE naming a future site operator) is correct rather than waiting on Wikipedia to update.",
   "events": [
     {
       "date": "2018-07-16",
