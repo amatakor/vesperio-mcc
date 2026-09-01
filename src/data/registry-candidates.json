@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-06-10-esa-thales-alenia-sentinel-1-ng-contract:sentinel-1.sats_planned",
+      "item_id": "2026-06-10-esa-thales-alenia-sentinel-1-ng-contract",
+      "entity_slug": "sentinel-1",
+      "entity_type": "constellation",
+      "field": "sats_planned",
+      "value": 2,
+      "metric": "number of Sentinel-1 Next Generation satellites under this ESA/Thales Alenia Space contract",
+      "same_metric": true,
+      "item_snr": 5,
+      "source_url": "https://www.thalesaleniaspace.com/en/press-releases/thales-alenia-space-awarded-contract-prime-contractor-two-copernicus-sentinel-1-ng",
+      "action": "both_disputed_queue",
+      "proposed_on": "2026-09-01",
+      "status": "pending"
+    }
+  ]
 }

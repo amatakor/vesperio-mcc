@@ -3571,3 +3571,62 @@ a newer entry if a lesson changes.
   ("merged 2 new, 0 updated, 0 held") plus a `jq` parse check (516 items,
   up from 514) and a direct read of both new items' `snr`/`snr_trace`/
   `category`/`impact`/`tags` fields as the build-health signal.
+
+## Narrow same-day re-check, ~6h38m gap, unfiltered full source list (2026-09-01, second)
+
+- 2026-09-01-G: The corroboration_2plus modifier needs at least 2 sources
+  tagged `"via": "corroboration"` beyond the lead, not just a total of 2
+  sources: a trade-lead item with exactly one corroboration source (Airbus/
+  Aeolus-2, lead + 1) landed at a flat base-tier SNR 3 with an empty
+  `modifiers` array, while a same-run item with lead + 2 corroboration
+  sources (Pallas-1 update, now 4 total) got the bump. CLAUDE.md's "a second
+  distinct source" wording reads like 2 sources total should count; the
+  deployed scorer apparently wants 2 *additional* ones. Not fudged or
+  worked around, since the math is code, but worth flagging for Florian if
+  that reading is unintended.
+- 2026-09-01-H: A registry organization's `website` field can be a
+  product-line subdomain that fails anti-spoof against the company's own
+  main corporate domain: the registry's Airbus Defence and Space entry
+  records `space-solutions.airbus.com`, and Airbus's own newsroom press
+  release for the Aeolus-2 contract lives on `www.airbus.com` (the actual
+  official corporate site) -- finalize-sweep's gate rejected `first_party`
+  on the apex-domain press release as "not an official first_party host."
+  Reclassed to `trade` and the draft passed. Same shape as the SpaceX
+  ir.spacex.com/s21.q4cdn.com and Redwire ir.rdw.com mismatches
+  (2026-08-05-B/2026-08-06-B), but this is the first case where the
+  registry-recorded domain is the narrower one and the company's actual
+  main site is the one that fails the match.
+- 2026-09-01-I: A discovery pass's rotating "Europe space agency contract
+  satellite" query surfaced two genuinely never-covered, well-documented
+  ESA contract awards sitting in plain sight for months: ESA/Thales Alenia
+  Space's €700M Sentinel-1 Next Generation contract (June 10) and ESA/
+  Airbus's Aeolus-2 wind-lidar contract (July 2), neither drafted under any
+  id despite wide contemporaneous trade coverage (SpaceNews, Aviation Week,
+  Thales/Airbus's own newsrooms). A generic WebSearch synthesis claimed
+  Aeolus-2's initial contract was worth "51 million euros ($58.3 million)";
+  direct fetches of euro-sd.com and defensetalks.com both confirmed no
+  dollar figure appears in either article, so the figure was dropped
+  entirely rather than published on an unverified WebSearch-summary number
+  a source page itself doesn't state (Aeolus-2 shipped as `notable` with no
+  stated value rather than the unverifiable `major`-shaped figure).
+- 2026-09-01-J: A "NIWC Pacific... India... maritime domain awareness"
+  corroboration search for a same-day Vantor Maritime Sentry contract
+  returned two seemingly on-point trade hits (Seapower Magazine, Baird
+  Maritime) that, on direct fetch, turned out to be about a different,
+  older (May 2025) $125M IPMDA initiative naming HawkEye 360, not Vantor,
+  as the contractor -- a new stale/wrong-contractor trap shape (same
+  program acronym, different year, different company) caught only by
+  actually reading the fetched content rather than trusting the search
+  snippet's apparent relevance. The item shipped as a clean single-source
+  first-party SNR 5 (`crawl: "found_none"`, no penalty per the direct-source
+  rule) once the only other hits found were confirmed Business Wire
+  syndication mirrors of Vantor's own release, not independent coverage.
+- 2026-09-01-K: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 6 new, 1 updated, 1 held") plus a `jq` parse check (522 items,
+  up from 516) as the build-health signal. The Sentinel-1 NG item's
+  crossfeed (`sats_planned: 2`, exactly matching the registry's existing
+  value) still auto-queued to `held.json` as a same-metric SNR tie for
+  Florian to adjudicate per SNR_SPEC 6, even though the two values agree;
+  the item published normally per the standing auto-queue-while-publishing
+  rule.
