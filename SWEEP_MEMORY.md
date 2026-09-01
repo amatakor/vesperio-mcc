@@ -93,81 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-01)
-
-- 2026-08-01-A: A queue near-saturated with SpaceX stock/IPO speculation and
-  Bluesky launch-bot spam (92 collapsed candidates, maybe 4 genuinely on-topic)
-  again produced only one real item from the queue itself (a routine Starlink
-  Vandenberg batch); the discovery pass's Airbus/Thales press-release leg
-  surfaced a genuine gap instead: Hisdesat's SpainSat NG II secure-comms
-  satellite was destroyed by a debris strike in January 2026 and never
-  covered under any name (grepped items.json/held.json for "spainsat"/
-  "hisdesat", zero hits), which directly explains why Hisdesat signed a
-  SpainSat NG III replacement contract with Airbus/Thales the same day this
-  sweep ran. Chased the January loss per the standing predates-window
-  ruling (major-tier, never covered) and published both dated to their
-  actual event dates, seven months apart.
-- 2026-08-01-B: Name-collision scope trap, new shape: "Space-Eyes, Inc.", an
-  Eric-Trump-backed company going public via a $638M SPAC merger with
-  McKinley Acquisition (ticker CUAS), reads exactly like a tracked space
-  company from its name and search snippets alone, but it is a counter-drone/
-  AI geospatial-intelligence defense company (products: Morpheus counter-UAS,
-  SeaWatch maritime intel) with no orbital space product. Confirmed via a
-  targeted "what does the company do" search before treating the SPAC deal
-  as a scope-fitting M&A candidate; discarded.
-- 2026-08-01-C: The same-company-plus-category dedup heuristic can fire on a
-  company mentioned only as a CO-CONTRACTOR, not the item's lead actor: a new
-  Hisdesat/Airbus/Thales Alenia Space satcom contract (category procurement)
-  matched two unrelated existing items purely because Thales Alenia Space
-  also appears in their company lists (ESA's Lunar Link Gateway tender,
-  ASI's PRISMA Second Generation contract), neither of which shares an actor,
-  program, or buyer with the Hisdesat deal. Cleared with two dedup_distinct
-  entries in one pass; worth remembering the heuristic scans the full
-  `companies` array, not just the primary/lead actor.
-- 2026-08-01-D: Thales Alenia Space's registry `website`
-  (`https://www.thalesaleniaspace.com/en`) matched a press release at
-  `thalesaleniaspace.com/en/press-releases/...` cleanly for `first_party`,
-  while Airbus's own identical-content press release on `www.airbus.com`
-  would have failed the gate (Airbus's registry website is
-  `space-solutions.airbus.com`, per 2026-07-06-W/2026-07-12-H precedent) --
-  on a joint two-manufacturer release, check EACH named party's registry
-  website before picking a lead, since one may pass the anti-spoof gate
-  cleanly while the other needs the trade-source workaround.
-
-## Narrow same-day re-check, ~8h13m gap, unfiltered full source list (2026-08-01, second)
-
-- 2026-08-01-E: `existing[]` cross-check gap, self-caught only after
-  finalize-sweep rejected it: drafted a "new" item for CASC's TJS-27A/27B
-  classified-satellite launch (Long March 6A, Taiyuan, July 30) using
-  CASC's own page as lead, not noticing an earlier sweep THAT SAME DAY had
-  already published the identical launch (identical CASC URL, identical
-  facts) under `2026-07-30-casc-long-march-6-comms-test-satellites`.
-  SpaceNews's write-up did add one genuine new fact over the existing item
-  (the TJS-27A/27B designation plus Jonathan McDowell's attributed
-  ELINT-role assessment), so it became an `updates[].attach` with a full
-  `explainer.what_happened` replacement rather than a duplicate. Lesson:
-  grep the FULL `existing[]` id list for the candidate's own lead source
-  URL (not just company+category matching) before drafting a same-day
-  CASC/Xinhua launch as new -- the finalize-sweep dedup gate caught it
-  this time, but a differently-classed lead source might not trip the
-  same-company heuristic.
-- 2026-08-01-F: Two "process not yet fact" scope calls, left undrafted
-  rather than held: Zelensky asking Trump to persuade Musk to broaden
-  Starlink access for strikes inside Russia (Trump said he'd "consider"
-  it, no commitment, no operator statement) is squarely the
-  conflict-operational-use exclusion even though it's on-the-record from
-  a government official -- nothing about Starlink's actual service has
-  changed. NASA's PROMISE lunar-rover cost dispute (repurposing a Mars
-  rover engineering model, Isaacman disputing The Planetary Society's
-  $723M-$1.33B estimate) is pure institutional NASA budget debate with no
-  commercial contractor named anywhere in the SpaceNews piece -- doesn't
-  clear the human-spaceflight/commercial-angle bar despite being a real,
-  dated, on-the-record figure.
-- 2026-08-01-G: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 0 new, 1 updated, 0 held") as the build-health signal.
-
 ## Deep sweep, ~11h51m gap, unfiltered full source list (2026-08-02)
 
 - 2026-08-02-A: SEC EDGAR CIK tickers in the harvester queue are easy to
@@ -3586,3 +3511,63 @@ a newer entry if a lesson changes.
   up from 511) and a direct read of all three new items' `snr`/
   `snr_trace`/`category`/`impact`/`tags` fields as the build-health
   signal.
+
+## Narrow same-day re-check, ~6h gap, unfiltered full source list (2026-09-01)
+
+- 2026-09-01-A: A near-total-junk queue (31 candidates: Roman Space
+  Telescope launch reaction, SpaceX/Tesla stock speculation, an
+  off-topic FBI story, weather/storm-name filler) still yielded a
+  seismic item via the queue's own Launch Library entry: Galactic
+  Energy's Pallas-1 (a new, partially-reusable kerolox rocket) flew its
+  debut flight successfully. Led with china-in-space.com (trade, richest
+  technical detail) over Xinhua, since 2026-08-03-F's ruling still holds
+  (english.news.cn is not on the gate's `official_record` allowlist;
+  cite it as `trade`). The extraordinary flag was forced by the gate's
+  own seismic-with-non-first-party-lead rule and landed the item at a
+  sober SNR 3 despite 3 independent sources (china-in-space, Xinhua,
+  TASS) -- a good example of "seismic AND honestly low-scored" per
+  CLAUDE.md's importance/SNR independence rule, not a bug to fight.
+- 2026-09-01-B: A same-day AST SpaceMobile/Rakuten Japan D2C story
+  (queue candidate was a stock-reaction piece rehashing a stale June 24
+  MIC spectrum recommendation) was chased via WebSearch to an Aug 4
+  "commences operations" claim (SatNews, Yahoo Finance, ForeignPolicy
+  Journal), but a same-day (Aug 5) Foreign Policy Journal piece on the
+  identical FCC filing described operations as only "imminent"/"in the
+  near term," not yet commenced -- a genuine tense discrepancy between
+  outlets describing the same underlying FCC notification, with no
+  fetchable first-party AST SpaceMobile or Rakuten press release to
+  settle it (ast-science.com's investor press-releases page and
+  corp.mobile.rakuten.co.jp's press listing both loaded but had no
+  August 2026 entries). Left undrafted rather than risk overclaiming a
+  "commenced" fact the sourcing doesn't cleanly support; flag for a
+  future sweep if a firmer source turns up.
+- 2026-09-01-C: The signals pass's fetchable legs (15 of 17 channels,
+  two skipped as same-person site/bluesky duplicates) outperformed the
+  queue and discovery pass combined this run: Vivienne Machi's
+  Aviation Week author page (whitelisted, `observer`) surfaced a
+  same-day Northwood Space factory-opening story the queue never
+  carried at all. Her articles are AWIN-paywalled per her signals.json
+  note, so only the author-page headline was usable as the whitelist
+  corroboration source; the actual facts were drafted from Northwood's
+  own blog post (classed `informal`, no registry entity to anti-spoof
+  match, per the standing 2026-08-04-B/2026-08-31-S workaround). The
+  whitelist-floor modifier alone took the item from a tier-1 informal
+  base to a final SNR 4.
+- 2026-09-01-D: Jeff Foust's and Andrew Parsonson's bluesky posts about
+  OHB's ~€1B SES IRIS2 MEO contract were both same-day rediscoveries of
+  the already-published `2026-08-31-ses-ohb-iris2-meo-contract` item
+  (merged earlier the same day per SWEEP_MEMORY 2026-08-31-G); confirmed
+  via grep before drafting anything, no update needed.
+- 2026-09-01-E: An 8-query discovery matrix (including a Chinese-language
+  query for the China/non-US leg) surfaced only already-published ground
+  (K2 Space Series D, NASA's June 23 CSDA On-Ramp 2, ESA's European
+  Launcher Challenge, India's Kulasekarapattinam spaceport privatization)
+  -- zero net-new items from this leg, consistent with the standing
+  pattern that discovery is a completeness backstop, not the primary
+  yield source, on narrow same-day re-checks.
+- 2026-09-01-F: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") plus a `jq` parse check (516 items,
+  up from 514) and a direct read of both new items' `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields as the build-health signal.
