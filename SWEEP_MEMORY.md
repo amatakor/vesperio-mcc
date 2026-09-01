@@ -3630,3 +3630,43 @@ a newer entry if a lesson changes.
   Florian to adjudicate per SNR_SPEC 6, even though the two values agree;
   the item published normally per the standing auto-queue-while-publishing
   rule.
+
+## Narrow same-day re-check, ~6h38m gap, unfiltered full source list (2026-09-01, third)
+
+- 2026-09-01-L: A discovery-pass find can already be covered by the SAME-DAY
+  morning sweep even when the candidate queue re-surfaces it fresh: a
+  Telesat/Cailabs optical-connectivity queue result (via the mandatory
+  Telesat News HTML pass) read as a brand-new Sept 1 release, but grepping
+  `items.json` for "telesat-cailabs" found it already published as
+  `2026-09-01-telesat-cailabs-optical-connectivity` by the 12:16 UTC sweep
+  earlier the same day. Drafted the full item first, including scoring and
+  crossfeed, before the grep check; finalize-sweep's own same-event dedup
+  gate caught it anyway ("same-event match ... draft it as an updates[]
+  entry"), but the 2026-08-07-A lesson (always grep existing items before
+  drafting a signals/discovery find, not just trust the gate) held here too
+  and would have saved the redraft.
+- 2026-09-01-M: The MyRGV.com follow-up on the Brownsville/SpaceX water deal
+  (refund-if-milestones-missed provision) was left undrafted: MyRGV and
+  ValleyCentral (KVEO) both 403'd on every attempt, and the only other
+  direct fetch (KSAT) confirmed the escrow/payment structure already in the
+  published item but explicitly did NOT contain the refund-contingency
+  detail a WebSearch synthesis had surfaced. Per the standing rule (numbers
+  must come from a direct fetch or raw_excerpt, never a WebSearch summary
+  alone), there was no gate-safe way to add this genuinely new-sounding
+  detail this run; worth re-checking MyRGV directly in a future sweep in
+  case the 403 was transient.
+- 2026-09-01-N: Helogen (in-space biomanufacturing, HEL-IOS platform) joins
+  the no-`src/data/registry`-entity list (2026-08-04-B/2026-08-31-S
+  pattern); no first-party lead was needed here since Payload's own
+  "Exclusive" reporting was the only outlet with the October-specific
+  mission detail (a WebSearch corroboration crawl for the exact headline
+  and for the technical/product terms found only the older, distinct
+  May 2026 LambdaVision-partnership announcement, not this story) --
+  shipped clean as a single-source trade-tier item, crawl `found_none`,
+  landing at SNR 2.
+- 2026-09-01-O: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (523 items,
+  up from 522) and a direct read of the new item's `snr`/`snr_trace`/
+  `category`/`impact`/`tags`/`sources` fields as the build-health signal.
