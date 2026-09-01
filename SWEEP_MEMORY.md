@@ -3669,4 +3669,44 @@ a newer entry if a lesson changes.
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (523 items,
   up from 522) and a direct read of the new item's `snr`/`snr_trace`/
-  `category`/`impact`/`tags`/`sources` fields as the build-health signal.
+  `category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h56m gap, unfiltered full source list (2026-09-01, fourth)
+
+- 2026-09-01-P: The mandatory fetchable-signals leg outran the queue and
+  discovery pass again: Jeff Foust's bluesky post ("NASA selects Blue
+  Origin to build the Mars Telecommunications Network spacecraft...
+  $700 million. Blue Origin and Rocket Lab competed fiercely") surfaced
+  a genuine, same-hour NASA contract award (nasa.gov's own release,
+  published minutes earlier, confirmed the exact figures) before any
+  trade outlet's write-up existed on the open web -- two WebSearch
+  passes for independent trade pickup came back empty beyond NASA's own
+  page and Blue Origin's older pre-award product pages. Led with
+  nasa.gov as `first_party` and used Foust's post as the sole
+  `whitelist`/`observer` corroboration source, landing a clean SNR 5 on
+  a single first-party lead per the direct-source-ceiling rule (no
+  `found_none` penalty needed since a first-party lead proves its own
+  statement).
+- 2026-09-01-Q: A new same-company-plus-category dedup false-positive
+  shape: Inmarsat Maritime's new Safety Data Hub product launch (company
+  list includes "Viasat" as parent) matched the existing Aug 31 ViaSat-3
+  F3 satellite-enters-service item purely on the shared Viasat corporate
+  family + category `product` + within 7 days, despite one being a
+  software analytics tool and the other a GEO satellite completing
+  in-orbit testing. One `dedup_distinct` cleared it -- extends the
+  standing SpaceX/Blue-Origin/Redwire pattern to a parent-subsidiary
+  company-name overlap, not just literal same-company matches.
+- 2026-09-01-R: All 9 unfiltered HTML sources (Planet Labs, ICEYE,
+  BlackSky, Spire, Gunter's, EUSPA procurement, CNES, Amazon/Kuiper,
+  Telesat) were current with nothing new in this run's ~4-hour window;
+  Amazon's `aboutamazon.com/news/tag/project-kuiper` listing rendered no
+  visible publish dates on this fetch (a new gap, not previously
+  logged), so its sourceHealth evidence had to rely on headline-text
+  matching against already-known Amazon Leo stories rather than a dated
+  freshness check -- worth trying a more specific Kuiper-tagged URL or
+  the RSS-equivalent if one exists, next time this page's dates matter.
+- 2026-09-01-S: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 5 new, 0 updated, 0 held") plus a `jq` parse
+  check (528 items, up from 523) and a direct read of all five new
+  items' `snr`/`category`/`impact` fields as the build-health signal.
