@@ -3687,3 +3687,64 @@ a newer entry if a lesson changes.
   items, up from 529) and a direct read of all four new items' and the
   updated item's `snr`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-09-02, third)
+
+- 2026-09-02-K: The harvester queue (57 candidates, 1 collapsed) was almost
+  entirely SpaceX stock-speculation/analyst-price-target chatter and
+  off-topic Futurism/space.com entertainment pieces; every one of this
+  run's 10 new items came from the mandatory signals pass, the 8-source
+  HTML pass, or discovery, none from the queue itself. Confirms the
+  standing 2026-08-06-A/2026-08-09-G pattern continues a month post-IPO.
+- 2026-09-02-L: `.gov.ae` domains are not on the gate's `official_record`
+  allowlist, extending 2026-08-03-F's Xinhua finding to a different
+  country's regulator: citing `tdra.gov.ae` (UAE's telecom regulator) as
+  `official_record` for its own Starlink-license announcement was
+  rejected ("not an official official_record host"); reclassing to
+  `trade` was accepted. Worth assuming any non-US/non-EU government
+  regulator domain will need the same fallback until the allowlist is
+  extended.
+  Also confirms a new dedup false-positive shape: a UAE Starlink
+  regulatory-license item matched TWO unrelated existing Starlink/SpaceX
+  `regulatory`-category items (an Iran crackdown-on-unauthorized-terminals
+  story and an FCC filing about SpaceX's conduct in the Rocket Lab/Iridium
+  merger review) purely on shared company + category + <7-day window, in
+  spite of the item being dated Aug 28 (predates-window chase) rather than
+  same-day. Two `dedup_distinct` entries cleared it in one pass.
+- 2026-09-02-M: A rocket-engine-manufacturer fire (Proton-PM/Perm, Russia)
+  is a distinct scope shape from the 2026-08-05-tsniimash-fire-roscosmos
+  precedent (which hooked into ISS mission control): here the in-scope
+  hook is CLAUDE.md's explicit "manufacturers and bus providers" ecosystem
+  carve-out plus the plant's role building RD-191 engines for the active
+  Angara launch vehicle, not a human-spaceflight/ISS angle. Drafted as
+  `incident`/`notable` with tag `launch`, sourcing the fire fact itself to
+  Meduza and Militarnyi (both fetched directly) and deliberately leaving
+  out the Russian governor's "no drone attack" statement and any
+  strike-related speculation multiple outlets carried, per the standing
+  conflict-analysis exclusion; the commercial hook is production capacity,
+  not the war.
+  Also: two companies (Farcast, York Space Systems) had no
+  `src/data/registry` entity, extending the standing
+  2026-08-04-B/2026-08-31-S/2026-09-01-N no-registry-entity list; both
+  companies' own domains were classed `first_party`/none forced, per the
+  workaround (Farcast's site wasn't fetched directly as a lead since
+  Telesat's own first-party release covered the same facts; York's own
+  site wasn't checked, Payload's trade coverage was thorough enough to
+  lead with).
+- 2026-09-02-N: Two predates-window items (UAE's Aug 28 Starlink license,
+  the FAA's Aug 25 spaceport/launch-corridor RFI) had sat uncovered under
+  any id for 4-8 days despite wide contemporaneous trade pickup; both
+  were found via the mandatory discovery-pass matrix, not the queue or
+  signals pass. The UAE license cleanly hit the `major` impact tier's
+  explicit "regulatory grant... that changes what an operator may sell or
+  where" test, a useful confirming example beyond the FCC-license-mod
+  cases CLAUDE.md already names.
+- 2026-09-02-O: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 10 new, 0 updated, 0 held") plus a `jq` parse check (543
+  items, up from 533), confirmation both crossfeed facts (Synspective
+  `sats_launched_total`, Electron `flights_total`) landed as
+  `flag_refresh` entries in `registry-candidates.json`, and a direct read
+  of all ten new items' `snr`/`category`/`impact`/`tags` fields as the
+  build-health signal.
