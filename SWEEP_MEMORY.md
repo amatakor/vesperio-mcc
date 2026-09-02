@@ -3748,3 +3748,42 @@ a newer entry if a lesson changes.
   `flag_refresh` entries in `registry-candidates.json`, and a direct read
   of all ten new items' `snr`/`category`/`impact`/`tags` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-09-02, fourth)
+
+- 2026-09-02-P: A NASASpaceflight "state of Rocket Lab" explainer citing
+  an "Aug. 27" completion of Neutron's Hungry Hippo fairing testing was a
+  likely stale-resurfacing trap: the only dated primary sources findable
+  for that exact claim were a Rocket Lab X post from Dec 2025
+  (qualification/acceptance testing complete, fairing en route to LC-3)
+  and a separate one from March 2026 (fluids/avionics integration
+  underway), neither matching "Aug. 27, 2026." Fetching both candidate
+  tweets via the syndication endpoint to check `created_at` was what
+  caught it; a WebSearch summary alone would have taken the article's
+  own claimed date at face value. Left undrafted rather than publish an
+  unverifiable "new" milestone date.
+- 2026-09-02-Q: A new same-company-plus-category dedup false-positive
+  shape: an Axiom Space/NASA Artemis IV "Sortie Suit" spacesuit-design
+  item (category `human-spaceflight`) matched the existing Aug 29
+  Crew-13/Dragon-leak delay item purely on shared company (NASA) +
+  category + within 7 days, despite one being an ISS crew-rotation
+  hardware issue and the other a lunar-lander spacesuit architecture
+  decision. One `dedup_distinct` entry cleared it, extending the
+  standing pattern to NASA itself (not just SpaceX/Blue Origin/Redwire)
+  as the shared-company anchor.
+- 2026-09-02-R: An Ars Technica "Ars has learned" / unnamed-sources
+  report (NASA's internal decision to simplify the Artemis IV spacesuit)
+  is exactly the CLAUDE.md rule-5 case, not the older SWEEP_MEMORY
+  2026-07-05-B tier-2-tracing lesson: CLAUDE.md's held.json section is
+  explicit that weak sourcing is never a hold reason, and an identifiable
+  named outlet standing behind its own unnamed-sources reporting is an
+  "attributable weak source," not an anonymous rumour. Published at an
+  honest single-source SNR (`crawl: "found_none"`, two searches for the
+  "Sortie Suit" name and the decision found nothing beyond recycled
+  Artemis III/AxEMU/Prada coverage) rather than held.
+- 2026-09-02-S: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") plus a `jq` parse
+  check (546 items, up from 543) and a direct read of all three new
+  items' `snr`/`category`/`impact`/`tags` fields as the build-health
+  signal.
