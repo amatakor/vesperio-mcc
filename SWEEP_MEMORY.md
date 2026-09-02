@@ -93,126 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Deep sweep, ~11h51m gap, unfiltered full source list (2026-08-02)
-
-- 2026-08-02-A: SEC EDGAR CIK tickers in the harvester queue are easy to
-  misread by company name alone: `SEC EDGAR 8-K feed: SATS` is EchoStar
-  Corporation (not Viasat, whose feed is `VSAT`), and its July 28 8-K
-  (Item 1.02 + 2.01) turned out to be the actual CLOSING of the
-  previously-announced AT&T spectrum sale ($20.25B proceeds + $2.4B FCC
-  trust), a genuinely new, high-value financial event distinct from the
-  June 30 Dish DBS Chapter 11 item that had only mentioned the sale as
-  pending context. WebFetch 403'd on sec.gov directly (both the filing
-  index and the exhibit htm) and `curl` required approval this session
-  (unlike scheduled runs, where it reportedly works); StockTitan's SEC
-  filing mirror page fetched cleanly and quoted the 8-K items verbatim,
-  used as an `informal`-class corroboration source alongside a genuine
-  trade write-up (Fierce Network) as lead. Also confirms 2026-07-06-F:
-  `SEC EDGAR 8-K feed: SATL` (Satellogic) was collapsed into the SATS
-  entry's `alt` list purely because both filings share the generic SEC
-  index title "8-K - Current report" -- different companies, a false
-  title-collapse; checked it separately (routine CFO resignation, below
-  the inclusion bar).
-- 2026-08-02-B: Whitelisted YouTube signals (Felix Schlang, Scott Manley,
-  Tim Dodd, Marcus House) arrive in the harvester queue as
-  `Signals YouTube: <name>` entries per the standing rule, but most
-  post-Flight-13 videos this run were pure reaction/footage content
-  (Tim Dodd's splashdown drone-footage shorts, Scott Manley's lightning
-  explainer) with no standalone factual claim worth a commentary item.
-  Felix Schlang's July 31 video description, however, named a genuinely
-  new, checkable fact (SpaceX dispatching a recovery team for the
-  intact Ship 40, Musk's tower-catch plan for Flight 14) that a
-  NASASpaceflight RSS excerpt and a Teslarati article both independently
-  confirmed with exact Musk quotes; used those two as the update's
-  sources rather than citing the YouTube description directly, since
-  the video itself never states the recovery/catch facts on the record
-  beyond teasing them.
-- 2026-08-02-C: A deep-mode 7-day queue with `lastSweepConsumedCount: 0`
-  still had 472 of 662 candidates already flagged `consumed: true` /
-  `previously_presented: true` from earlier sweeps the same week; spot
-  checks against `items.json` confirmed essentially all of them
-  (Swift reboost, MaiaSpace, Fortastra/Hadrian, All Points Vandenberg,
-  Rocket Lab Alaska HASTE, ispace/MHI lander switch, LatConnect SWIRSAT
-  expansion, SpaceX $1.6B launch orders, FCC Upper C-band) were already
-  published under other lead URLs -- the `consumed` flag is per-URL, so
-  a same-story article from a second outlet shows as unconsumed even
-  when the underlying event is fully covered. Grepping `items.json` for
-  each candidate's distinguishing company/figure name before drafting
-  was faster and more reliable than trusting the `consumed` flag alone.
-- 2026-08-02-D: `python3 -c` one-liners and shell output redirection
-  (`> file`, even inside the repo working directory) both hit this
-  session's permission gate; large `jq`-filtered command output is
-  readable directly via Bash without redirection, and `wc -l`/`jq`
-  piped straight off a fresh `bun scripts/candidates-context.ts` call
-  work fine as long as no `>` redirect or multi-statement `;`/`&&` chain
-  is present in the same tool call -- kept each candidates-context.ts
-  filter as its own single Bash invocation.
-- 2026-08-02-E: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate, continuing
-  the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
-  updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~3.5hr gap, unfiltered full source list (2026-08-02, second)
-
-- 2026-08-02-F: A Bluesky launch-tracking bot (astronomybot.bsky.social)
-  posted "Starlink Group 17-53 On 2026-08-01 ... Status: Current" as if
-  the launch had already occurred; a direct WebSearch found Spaceflight
-  Now reporting the mission still upcoming, delayed from Aug 1/2/3 to
-  Aug 4. These auto-generated launch-tracker bot posts assert a past
-  tense on a schedule slip; treat their "already launched" framing as
-  unverified until a real source (Launch Library, a live-coverage outlet)
-  confirms the launch actually happened, not just that a window passed.
-- 2026-08-02-G: Zero-add sweep, ~3.5 hours after the prior deep sweep the
-  same morning: all 14 unfiltered HTML sources were current with nothing
-  posted since the 05:33 UTC lastSweep, 13 of 17 signals channels checked
-  clean (newest post predated the window), and an 8-query discovery
-  matrix traced every lead to an already-published story, a not-yet-
-  launched rocket, or off-topic SpaceX/Tesla stock speculation
-  (particularly heavy this run: merger-rumor and price-target churn
-  around the post-IPO stock slide). Confirms the standing pattern
-  (2026-07-05-S and many peers) that a short same-day re-check can
-  legitimately net zero.
-- 2026-08-02-H: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 0 new, 0 updated, 0 held") as the build-health signal.
-
-## Normal-mode sweep, ~8h24m gap, unfiltered full source list (2026-08-02, third)
-
-- 2026-08-02-I: A Yahoo News/tech.yahoo.com mirror for a search-surfaced
-  headline ("SpaceX's Starlink Satellites Put on a Celestial Show Over the
-  Netherlands") can resolve to a completely different, much older story
-  under a near-identical title: the fetched page was about the original
-  May 2019 Starlink launch-train sighting, not a genuinely new July 2026
-  Starlink-1541 reentry fireball over the Netherlands found via Marco
-  Langbroek's Bluesky. Caught by checking the fetched page's own stated
-  date (2019) against the expected event; nltimes.nl (the outlet the
-  search results actually pointed to) 403'd, so the item was corroborated
-  instead via two directly-fetched Dutch mainstream outlets not
-  previously used by this project: bright.nl and hartvannederland.nl,
-  both usable via plain WebFetch and independent of each other (distinct
-  phrasing, a different quoted meteorologist in one).
-- 2026-08-02-J: A routine, attributed Starlink deorbit that produced a
-  widely observed public fireball (multiple Dutch outlets, a whitelisted
-  signal's own blog post) was drafted as a noise-tier `incident`, by the
-  same logic that routine megaconstellation launches publish at noise
-  (2026-07-12-A): the site's incident category names "uncontrolled
-  reentries" as in-scope regardless of how routine the underlying
-  end-of-life deorbit is, as long as it is a genuine, dateable, sourced
-  fact. Dated it to the true July 24 event date (nine days before this
-  sweep) rather than the discovery date, following the dominant
-  event-date-over-publish-date convention (2026-07-06-GG and many later
-  entries) rather than the narrower 2026-07-17-I precedent (which used
-  discovery date for a noise-tier item); both readings exist in this
-  file and the choice didn't affect scoring, but flag for Florian if a
-  standing rule is wanted for noise-tier chases specifically.
-- 2026-08-02-K: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate on the first attempt, continuing the standing
-  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 1 updated, 0 held") as the build-health
-  signal.
-
 ## Narrow same-day re-check, ~5h gap, unfiltered full source list (2026-08-03)
 
 - 2026-08-03-A: EchoStar's `SEC EDGAR 8-K feed: SATS` queue entry (CIK
@@ -3710,3 +3590,54 @@ a newer entry if a lesson changes.
   confirmation ("merged 5 new, 0 updated, 0 held") plus a `jq` parse
   check (528 items, up from 523) and a direct read of all five new
   items' `snr`/`category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~9h43m gap, unfiltered full source list (2026-09-02)
+
+- 2026-09-02-A: `applyModifier` (scripts/snr/match.ts) silently no-ops a
+  requested bump that the direct-source ceiling would reduce to zero
+  delta, rather than erroring: requesting `bump: "corroboration_4plus"`
+  on the Bureau 1440 Rassvet item (whitelist-observer lead, base tier 3,
+  already at its ceiling of 4 via the existing `corroboration_2plus`
+  modifier) attached both new sources cleanly but left `snr_trace`
+  unchanged (still one modifier, final 4) -- confirmed correct per the
+  direct-source-ceiling rule (no amount of indirect corroboration from a
+  non-first-party lead reaches 5), not a rejection or a bug; the two new
+  sources still render on the card, the score just can't move further.
+  Worth expecting this same silent-no-op shape (not an error) whenever a
+  bump is requested against an item already sitting at its ceiling.
+- 2026-09-02-B: A Bluesky-queue "Institute for the Study of War" claim
+  (Rassvet second batch: none of 16 satellites reached the planned
+  altitude, ~37.5% fleet-wide operational rate) needed the actual
+  outlets (Euromaidan Press, Newsweek) fetched directly for exact
+  figures rather than trusted from the queue's raw_excerpt fragment
+  alone; both fetched cleanly and independently (different quote sets:
+  Euromaidan led with Beskrestnov/Progress-strike context, Newsweek had
+  the ISW quote and a named Foundation for Defense of Democracies
+  analyst), giving genuine 2-source corroboration beyond the item's
+  existing RussianSpaceWeb/TASS sources.
+- 2026-09-02-C: A "year in review"-style aggregator sentence
+  ("In September, EchoStar agreed to sell its AWS-4 and H-block spectrum
+  licenses... to SpaceX for $17 billion") surfaced by a discovery-pass
+  D2D/spectrum query read as fresh but traced to a September 8, **2025**
+  announcement (confirmed via the original EchoStar 8-K exhibit and
+  Fierce Network/DataCenterDynamics coverage), a full year stale --
+  another instance of the standing stale-resurfacing trap, this time
+  from a retrospective/analysis piece rather than a dated news article.
+- 2026-09-02-D: An MDA Space D2D product-line-expansion story (SatNews,
+  Sept 1) could not be corroborated on MDA's own newsroom listing
+  (`mda.space/news`), which showed no matching release among its most
+  recent items as of this run (last was Aug 27's LaunchPad Ventures
+  announcement) -- shipped anyway on SatNews's own fetched content alone
+  (verbatim CEO quote, specific technical detail) per the standing
+  "weak/thin corroboration is not a hold reason" rule, landing an honest
+  single-source SNR 2; worth a same-metric re-check of mda.space next
+  sweep in case the release was simply not yet indexed on the listing
+  page (the 2026-08-23-E CASC/cmse.gov.cn indexing-lag pattern).
+- 2026-09-02-E: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 2 updated, 0 held") plus a `jq` parse
+  check (`.items | length`, 529, up from 528 -- note `items.json`'s
+  top-level shape is `{ items: [...] }`, not a bare array, so a plain
+  `jq length` on the file itself returns 1) and a direct read of the
+  new item's and both updated items' `snr`/`snr_trace`/`sources` fields
+  as the build-health signal.
