@@ -3641,3 +3641,49 @@ a newer entry if a lesson changes.
   `jq length` on the file itself returns 1) and a direct read of the
   new item's and both updated items' `snr`/`snr_trace`/`sources` fields
   as the build-health signal.
+
+## Narrow same-day re-check, ~6h18m gap, unfiltered full source list (2026-09-02, second)
+
+- 2026-09-02-F: `crossfeed.facts[].field` for a constellation entity is
+  `sats_active_claimed`, not `sats_active` -- finalize-sweep rejected the
+  Axelspace/GRUS crossfeed outright with the full allowed-fields list
+  (`operator, country, sensor_types, sats_launched_total,
+  sats_active_claimed, sats_planned, orbit, first_launch_date,
+  latest_launch_date, status`). Worth checking a registry entity's own
+  JSON keys before naming a crossfeed field rather than guessing from
+  the item's own wording.
+- 2026-09-02-G: A same-headline press release syndicated verbatim across
+  multiple unrelated small outlets (01net.it, a Delaware "Middletown
+  Life" lifestyle site, finanznachrichten.de) traced via WebSearch to a
+  Business Wire release (Axelspace Holdings Corporation's own Axelspace/
+  Airbus Defence and Space imagery-distribution partnership, Sept 1) --
+  neither company's own newsroom had indexed it yet (the standing
+  2026-08-23-E/2026-09-02-D indexing-lag pattern) and no independent
+  trade pickup (SpaceNews, Payload, Via Satellite) turned up on a
+  dedicated search. Classed the mirror site itself `wire_pr` (it is
+  literally the wire text, same logic as the 2026-08-07-L mynewsdesk.com
+  precedent) rather than `first_party` or `informal`, and scored
+  `crawl: "found_none"` honestly (searched, found only more mirrors of
+  the same wire text) rather than stacking the syndicated copies as
+  independent corroboration.
+- 2026-09-02-H: The documented MAGPIE upgrade-path (`patch.source_url` +
+  a full `rescore` block replacing the scoring basis) worked exactly as
+  prompts/update-items.md describes on a live item: ESA's own Sept 2
+  "signing ceremony" page for the already-published July 24 ispace-Europe
+  MAGPIE contract item was a genuinely better lead (first_party vs the
+  original Payload trade lead) with new instrument detail (drill,
+  volatile analyser, ground-penetrating radar, neutron detector) neither
+  original source stated; the item moved from SNR 4 (trade,
+  corroboration_2plus) to SNR 5 (first_party ceiling) cleanly on the
+  first attempt.
+- 2026-09-02-I: `presse.cnes.fr` now 301-redirects to `cnes.fr/presse`
+  (confirmed reachable, current press listing); worth using the new URL
+  directly in a future `fetch-list.ts` source-health check rather than
+  re-discovering the redirect each run.
+- 2026-09-02-J: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 4 new, 1 updated, 0 held") plus a `jq` parse check (533
+  items, up from 529) and a direct read of all four new items' and the
+  updated item's `snr`/`category`/`impact`/`sources` fields as the
+  build-health signal.
