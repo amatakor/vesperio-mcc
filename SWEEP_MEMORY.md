@@ -3749,3 +3749,43 @@ a newer entry if a lesson changes.
   up from 548) and a direct read of both new items' and the updated
   item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-09-03, third)
+
+- 2026-09-03-I: A new borderline geopolitical-scope shape, held rather than
+  guessed either way: wide mainstream reporting (Politico, mirrored by
+  TheLocal, TAG24, and others) that a White House official pressured SpaceX,
+  Stoke Space, K2 Space, and Astra by private call to skip Macron's Paris
+  space summit ("could look like tacit support for EU policy positions").
+  Real, dateable, well-sourced, but no fetched source states a direct
+  commercial consequence (contract, market access, service change) the way
+  CLAUDE.md's geopolitical/regulatory carve-outs require -- diplomatic
+  pressure not to attend a conference isn't a sanction, an export-control
+  notice, or a service-change statement. Same shape as the 2026-08-08-E ASI
+  board-dissolution precedent; queued for Florian.
+- 2026-09-03-J: An unattributed "report suggests" stock-reaction story
+  (Technip Energies shares jumping on a claimed $10B bid for SpaceX's
+  Starbase Louisiana methane facility) traced through half a dozen
+  syndicated write-ups back to zero named source for the bid claim itself
+  -- every article said "reportedly" or "per a report" with no outlet,
+  filing, or company statement behind it, and a direct construction-trade
+  fetch confirmed "no official word has been released" from either company.
+  Left undrafted as unattributable rather than held or published at SNR 1:
+  CLAUDE.md's rule 5 distinguishes an attributable weak source (a named
+  outlet standing behind its own reporting) from a claim nobody will put
+  their name on, and this is the latter.
+- 2026-09-03-K: The HTML pass, a 12-of-17-channel signals pass, and an
+  8-query discovery matrix were otherwise fully covered ground: every
+  Amazon Leo/Kuiper "recent news" item on the listing page (Delta Wi-Fi
+  deal, gigabit aviation antenna, Globalstar acquisition) traced via
+  WebSearch to publish dates from April-August 2026, all already published;
+  Farcast/Telesat's Sept 2 antenna-demo release and CNES's Sept 2 Roman
+  Space Telescope piece were also both already merged by the prior sweep.
+  Confirms the standing pattern (2026-08-08-F and peers) that narrow-gap
+  re-checks following an active prior sweep look thin by design once every
+  leg is checked exhaustively, not from under-coverage.
+- 2026-09-03-L: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 1 held") plus a `jq` parse check (552 items,
+  up from 550) and a direct read of both new items' `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields as the build-health signal.
