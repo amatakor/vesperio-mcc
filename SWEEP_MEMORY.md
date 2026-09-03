@@ -93,125 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~5h gap, unfiltered full source list (2026-08-03)
-
-- 2026-08-03-A: EchoStar's `SEC EDGAR 8-K feed: SATS` queue entry (CIK
-  1415404) surfaced an Item 1.03 Bankruptcy filing the same day Hughes
-  Network Systems' Chapter 11 broke in the press (Advanced Television,
-  Bloomberg) -- a genuinely new, distinct, seismic event from the June 30
-  Dish DBS filing (that item explicitly stated Hughes was NOT part of it)
-  and from the July 28 AT&T spectrum-sale-closing item. sec.gov 403'd
-  WebFetch on every route tried this run (index page, cgi-bin browse-edgar,
-  efts.sec.gov full-text search), confirming 2026-08-02-A is not a one-off;
-  the harvester's `raw_excerpt` from the candidates queue (Item 1.03/2.04/
-  5.02/7.01/8.01 listed verbatim) was the only usable read of the filing's
-  contents and was cited as an `official_record` corroboration source
-  alongside a directly-fetched Advanced Television article as lead
-  (`trade`). Bloomberg 403'd WebFetch every attempt too (likely paywall,
-  not just a bot-block) despite WebSearch surfacing its exact headline and
-  facts repeatedly; treated it as unfetched and did not cite it as a
-  source, relying on Advanced Television's own two articles (July 29
-  preview + Aug 3 confirmation) for the verbatim facts instead.
-- 2026-08-03-B: The same-company-plus-category dedup heuristic (first
-  flagged 2026-08-01-C) fired again: a new item for Hughes Network
-  Systems' Chapter 11 (category `financial`, company `EchoStar`) matched
-  the existing `2026-07-28-echostar-att-spectrum-sale-closes` item purely
-  on shared company + category + <7-day window, despite being a wholly
-  unrelated transaction (AT&T spectrum deal closing vs. a separate
-  subsidiary's bankruptcy filing). One `dedup_distinct` entry cleared it.
-  Worth treating any EchoStar-family item as near-guaranteed to trip this
-  heuristic given how much financial news that holding company generates
-  (three distinct EchoStar-linked financial/bankruptcy items in five
-  weeks now: Dish DBS Chapter 11 June 30, AT&T spectrum close July 28,
-  Hughes Chapter 11 Aug 2).
-- 2026-08-03-C: The seismic item published at SNR 2 (trade lead, no
-  first-party/official-record LEAD despite an official_record
-  corroboration source attached) because the gate's `extraordinary`
-  force-rule keys off the LEAD source's class only, not the full source
-  list; it was correctly auto-queued to `held.json` for Florian per the
-  seismic-at-SNR<=2 rule while still publishing. Confirms the lead-only
-  reading of that rule (no prior entry stated this explicitly).
-- 2026-08-03-D: ICEYE's UAE country-CEO appointment (first-party press
-  release, SNR 5, impact noise) followed the exact template of the
-  2026-07-08 Germany and 2026-07-09 Portugal country-CEO items --
-  standing precedent for treating these as publishable "partnership"-
-  category items even though no partnership is announced, confirmed
-  worth continuing.
-- 2026-08-03-E: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 2 new, 0 updated, 1 held") as the build-health signal.
-
-## Normal-mode sweep, ~6h40m gap, unfiltered full source list (2026-08-03, second)
-
-- 2026-08-03-F: The gate's `official_record` anti-spoof allowlist does
-  NOT include Xinhua's own domain (`english.news.cn`), despite
-  CLAUDE.md's "State media (Xinhua, TASS) on state programs: facts of
-  record score as official" edge case; citing `english.news.cn` directly
-  as `official_record` was rejected ("not an official official_record
-  host"). Reclassifying the same URL as `class: "trade"` was accepted.
-  Third-party outlets rewriting a Xinhua wire story (Express Tribune,
-  Qazinform) are not official-record hosts either, obviously. Until the
-  gate's allowlist is extended, cite Xinhua/state-media facts-of-record
-  as `trade`, not `official_record`, even when linking the wire's own
-  domain.
-- 2026-08-03-G: A BeiDou in-orbit-upgrade item citing CSNO's "50 active
-  satellites" (via Xinhua) against the registry's Wikipedia-sourced
-  `sats_active_claimed: 44` (as_of 2026-07-13) triggered a genuine
-  same-metric dispute downgrade (-1) via the crossfeed gate, landing the
-  item at SNR 3 disputed rather than 4; attesting `same_metric: true`
-  honestly and letting `reconcile()` decide (per the 2026-07-18
-  Vikram-1 lesson) was correct here too, not a bug -- two sources
-  really do disagree on BeiDou's current active-satellite count.
-- 2026-08-03-H: The same-company-plus-category dedup heuristic fired a
-  third time this week (after 2026-08-01-C and 2026-08-03-B): a SpaceX
-  Louisiana-spaceport land-acquisition report (category `launch`) false-
-  matched two unrelated SpaceX `launch`-category items from the prior
-  week (an NRO mission, a Starlink Vandenberg mission) purely on shared
-  company + category + <7-day window. Two `dedup_distinct` entries
-  cleared it; SpaceX's launch-cadence volume makes this heuristic prone
-  to false positives on any non-launch SpaceX story tagged `launch`
-  category (spaceport siting, regulatory, infrastructure).
-- 2026-08-03-I: Ars Technica direct-fetched 403/blocked on every
-  attempt this run (both `arstechnica.com/space/...` article URLs and
-  the domain root), continuing to be effectively unfetchable via
-  WebFetch; its harvester-queued `raw_excerpt` (verbatim RSS
-  description) was usable in its place for quoting figures, consistent
-  with the "raw_excerpt or direct fetch, never a WebFetch summary" rule
-  since the excerpt itself is the harvester's direct capture, not a
-  paraphrase.
-- 2026-08-03-J: A Russian "anti-Starlink EW system" story
-  (Volna Kupol Garant) circulating across TechRadar/Ynetnews/Yahoo was
-  traced to its actual sourcing chain via a direct fetch of the
-  ynetnews.com piece: no named Russian official or on-the-record
-  government statement anywhere in the chain, just "Russian and
-  Ukrainian accounts" and unnamed reports Reuters said it could not
-  verify. Discarded as out-of-scope battlefield OSINT per CLAUDE.md
-  (conflict analysis is out unless "stated by the operator or a
-  government on the record") despite Starlink being the explicit
-  target -- a commercial-space angle alone doesn't waive the
-  on-the-record requirement.
-- 2026-08-03-K: The Bluesky public AppView API
-  (`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N`)
-  returns actual post text and `createdAt` timestamps via WebFetch,
-  unlike fetching `bsky.app/profile/<handle>` pages directly (JS shell
-  only, no post content renders). Use the API endpoint for the signals
-  fetchable-channel pass on any Bluesky-type entry going forward.
-- 2026-08-03-L: Payload's Aug 3 "True Anomaly Chases an Evading Target"
-  piece was a same-event update (30-min mission-plan turnaround,
-  23-min burn, ~10km closest approach, a CEO fuel-margin quote) on the
-  July 14-29 VICTUS HAZE pursuit phase the 2026-07-02 item already
-  covers in summary; patched the existing item's explainer with the
-  granular sourced figures rather than opening a new item, consistent
-  with the "same event within 7 days is an update" rule even though the
-  underlying tasking date (July 14) is well outside 7 days of Aug 3 --
-  what matters is the 5-day gap to the July 29 announcement this item
-  is keyed to, not the original tasking date.
-- 2026-08-03-M: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 5 new, 2 updated, 0 held") as the build-health signal.
-
 ## Narrow same-day re-check, ~4h6m gap, unfiltered full source list (2026-08-04)
 
 - 2026-08-04-A: A generic WebSearch for "Zhuque-2E third launch failure August
@@ -3787,3 +3668,43 @@ a newer entry if a lesson changes.
   check (546 items, up from 543) and a direct read of all three new
   items' `snr`/`category`/`impact`/`tags` fields as the build-health
   signal.
+
+## Narrow same-day re-check, ~7h48m gap, unfiltered full source list (2026-09-03)
+
+- 2026-09-03-A: A Jeff Foust bluesky post linking a fresh, same-window
+  SpaceNews lead ("New NASA office to consolidate launch procurements")
+  turned out to be a genuine source-access gap, not a thin-story call:
+  the page's own visible lead paragraph ("NASA is consolidating many of
+  its launch programs into a single office that is considering block
+  buys of launches") is real and confirmed identically via two separate
+  fetches plus an aggregator mirror (hype.aero), but everything past that
+  one sentence sits behind SpaceNews's paywall, with no named office, no
+  timeline, and no quotes findable via WebSearch or any independent
+  outlet. Left undrafted rather than stretch one paywalled sentence into
+  a full item; worth re-checking once another outlet picks up the story
+  or SpaceNews's own page opens further.
+- 2026-09-03-B: A Chinese state-wire (ecns.cn, China News Service)
+  constellation-completion claim (Chang Guang Satellite's 19-satellite
+  dedicated 3D-mapping sub-fleet) had a same-content English mirror
+  (ua.news) that turned out to be a straight translation of the ecns.cn
+  wire text once fetched directly (identical facts and figures, credited
+  "ECNS reports" as its source) -- treated as one source per the standing
+  wire-rewrite rule rather than stacking it as independent corroboration,
+  landing an honest single-source SNR 2. The company's own site
+  (jl1.cn/EWeb) was checked but did not surface this specific release.
+- 2026-09-03-C: it-boltwise.de (a general German tech/startup news
+  blog, not space-trade press) gave genuinely independent-written
+  coverage of a same-day Munich funding story (Project-S's seed round
+  for orbital-debris radar) -- different wording and framing from the
+  SatNews lead, no attribution back to SatNews or any other outlet, read
+  as original reporting off the company's own announcement rather than a
+  rewrite. Classed `informal` (general tech blog, not established space
+  trade press) but counted as genuine `corroboration_2plus`, landing
+  SNR 4 on what would otherwise have been a single-source item.
+- 2026-09-03-D: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (548 items, up from 546) and a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact`/`tags` fields as the
+  build-health signal.
