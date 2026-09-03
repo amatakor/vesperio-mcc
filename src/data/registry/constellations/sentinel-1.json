@@ -49,7 +49,17 @@
   "sats_planned": {
     "value": 2,
     "source": "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1",
-    "as_of": "2026-07-12"
+    "as_of": "2026-07-12",
+    "disputed": {
+      "competing": [
+        {
+          "value": 2,
+          "source": "https://www.thalesaleniaspace.com/en/press-releases/thales-alenia-space-awarded-contract-prime-contractor-two-copernicus-sentinel-1-ng",
+          "as_of": "2026-09-03",
+          "snr": 5
+        }
+      ]
+    }
   },
   "orbit": {
     "value": "693 km orbit altitude",
@@ -167,7 +177,7 @@
       "as_of": "2026-07-13"
     }
   ],
-  "notes": "Copernicus SAR mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. ESA confirmed Sentinel-1A's operational duties ended 29 June 2026 (disposal phase to begin over summer 2026), leaving Sentinel-1C and Sentinel-1D as the active pair; Sentinel-1B was already lost in 2021. eoPortal states non-square resolutions per mode (range x azimuth); those figures are kept verbatim in the mode names rather than reduced to one number.",
+  "notes": "Copernicus SAR mission. Seeded for the Orbits surface on Florian's instruction (2026-07-05); fields await sourced fill by the weekly maintenance run. ESA confirmed Sentinel-1A's operational duties ended 29 June 2026 (disposal phase to begin over summer 2026), leaving Sentinel-1C and Sentinel-1D as the active pair; Sentinel-1B was already lost in 2021. eoPortal states non-square resolutions per mode (range x azimuth); those figures are kept verbatim in the mode names rather than reduced to one number. Weekly maintenance 2026-09-03: crossfeed queue candidate proposed sats_planned=2 from Thales Alenia Space's own contract-award release (\"the development of the two Sentinel-1 Next Generation satellites\", item snr 5) against the on-file value (also 2, sourced to ESA's general Sentinel-1 page, unscored/canonical-equivalent). Equal-SNR same-metric tie (SNR_SPEC 6.2/6.5), reconcile() scored this both_disputed_queue; recorded as a competing claim under sats_planned.disputed without overwriting (values happen to match, but the two sources describe different generations: the on-file figure is the current operational pair, the competing one is the NG replacement pair under contract). Already flagged for Florian in held.json (2026-09-01 entry, ESA/Thales Alenia contract).",
   "events": [
     {
       "date": "2014-04-03",

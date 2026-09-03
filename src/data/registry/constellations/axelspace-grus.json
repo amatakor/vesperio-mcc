@@ -69,7 +69,17 @@
   "sats_active_claimed": {
     "value": 5,
     "source": "https://www.axelspace.com/news/20220114-8/",
-    "as_of": "2026-07-08"
+    "as_of": "2026-07-08",
+    "disputed": {
+      "competing": [
+        {
+          "value": 4,
+          "source": "https://www.01net.it/axelspace-announces-partnership-with-airbus-defence-and-space-to-deliver-satellite-imagery-to-a-broader-market/",
+          "as_of": "2026-09-03",
+          "snr": 3
+        }
+      ]
+    }
   },
   "sats_active_verified": {
     "value": null,
@@ -203,7 +213,7 @@
       "as_of": "2026-07-16"
     }
   ],
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Updated 2026-07-13 (weekly maintenance): Axelspace confirmed on its own site that all seven GRUS-3 satellites reached orbit and returned first signals on the 2026-07-07 Transporter-17 launch (source is first-party, supersedes the Gunter's GRUS-1 page for sats_launched_total and latest_launch_date). sats_launched_total is 5 (GRUS-1, per Gunter's) plus 7 (GRUS-3, per Axelspace's launch-success release) = 12; no single source states a combined total. sats_active_claimed stays at 5 (GRUS-1): the GRUS-3 release states commissioning is underway ahead of imagery service, not yet claimed as active/operational. EO spec extraction (2026-07-16): no eoPortal mission page exists for GRUS (site search finds no match); Gunter's GRUS-1 page used instead, already cited elsewhere in this profile. swath_km left absent: the page states 'over 50 km swath', an open-ended threshold rather than a figure, and the house rule forbids coercing a vague statement into a number. revisit left absent: the page only states a fully-deployed-constellation ambition ('update every information around the globe every day'), not a per-satellite revisit figure.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Updated 2026-07-13 (weekly maintenance): Axelspace confirmed on its own site that all seven GRUS-3 satellites reached orbit and returned first signals on the 2026-07-07 Transporter-17 launch (source is first-party, supersedes the Gunter's GRUS-1 page for sats_launched_total and latest_launch_date). sats_launched_total is 5 (GRUS-1, per Gunter's) plus 7 (GRUS-3, per Axelspace's launch-success release) = 12; no single source states a combined total. sats_active_claimed stays at 5 (GRUS-1): the GRUS-3 release states commissioning is underway ahead of imagery service, not yet claimed as active/operational. EO spec extraction (2026-07-16): no eoPortal mission page exists for GRUS (site search finds no match); Gunter's GRUS-1 page used instead, already cited elsewhere in this profile. swath_km left absent: the page states 'over 50 km swath', an open-ended threshold rather than a figure, and the house rule forbids coercing a vague statement into a number. revisit left absent: the page only states a fully-deployed-constellation ambition ('update every information around the globe every day'), not a per-satellite revisit figure. Weekly maintenance 2026-09-03: crossfeed queue candidate proposed sats_active_claimed=4 from a 01net.it piece on the Axelspace/Airbus imagery partnership (\"GRUS-1 is currently operated as a four-satellite constellation\", item snr 3), against the on-file value 5 (Axelspace's own 2022 first-party release, unscored/canonical-equivalent). reconcile() scored this downgrade_incoming (fact SNR 5 > incoming SNR 3); recorded as a competing claim under sats_active_claimed.disputed rather than overwriting. Plausibly a real drop (one of the five original GRUS-1 satellites since decommissioned) rather than a contradiction, but that read is Florian's call.",
   "stock_symbol": "402A.T",
   "events": [
     {

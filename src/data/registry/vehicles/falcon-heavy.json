@@ -144,15 +144,15 @@
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2026-04-29",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-    "as_of": "2026-07-05",
+    "value": "2026-08-30",
+    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%20Heavy&limit=3&mode=normal",
+    "as_of": "2026-09-03",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%20Heavy&limit=3&mode=normal",
+        "reason": "established aggregator, single reference (weekly registry maintenance 2026-09-03; Nancy Grace Roman Space Telescope, net 2026-08-30, most recent Falcon Heavy entry, launch successful)"
       },
       "modifiers": [],
       "final": 4,
@@ -161,15 +161,15 @@
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-08-30",
+    "value": "2026-11-30",
     "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=100&mode=normal",
-    "as_of": "2026-07-05",
+    "as_of": "2026-09-03",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?limit=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "reason": "established aggregator, single reference (weekly registry maintenance 2026-09-03; Griffin Mission One, NET 2026-11-30 TBD, nearest listed Falcon Heavy entry after today; prior value 2026-08-30 has since flown)"
       },
       "modifiers": [],
       "final": 4,
@@ -211,7 +211,7 @@
     },
     "tier": "canonical"
   },
-  "notes": null,
+  "notes": "Weekly maintenance 2026-09-03: last_flight_date/next_flight_date refreshed (Roman Space Telescope flew 2026-08-30; Griffin Mission One next, NET 2026-11-30 TBD). flights_total/flights_successful (12/12, as_of 2026-07-05) left unchanged: the Aug 30 flight is a real 13th flight not yet reflected, but the Launch Library config endpoint (the field's own source) rate-limited (429) this run before a fresh total could be fetched; not incrementing by arithmetic per house rule against summing/inferring counts.",
   "payload_gto_kg": {
     "value": 26700,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",
