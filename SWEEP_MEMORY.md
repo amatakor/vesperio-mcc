@@ -3789,3 +3789,67 @@ a newer entry if a lesson changes.
   ("merged 2 new, 0 updated, 1 held") plus a `jq` parse check (552 items,
   up from 550) and a direct read of both new items' `snr`/`snr_trace`/
   `category`/`impact`/`tags` fields as the build-health signal.
+
+## Narrow same-day re-check, ~4h gap, unfiltered full source list (2026-09-03, fourth)
+
+- 2026-09-03-M: A Launch Library entry can sit in an ambiguous third state,
+  neither clearly future nor confirmed: ISRO's GSLV-F17/EOS-05 mission (a
+  high-profile "return to flight after the 2021 EOS-03 failure" story) showed
+  status "Launch in Flight" at fetch time, net exactly matching the current
+  sweep timestamp to the minute. Neither Launch Library's own status field nor
+  a fresh WebSearch could confirm orbit-insertion success or failure yet.
+  Left undrafted rather than publish an outcome-unconfirmed launch as
+  "occurred"; extends the standing 2026-08-09-B/2026-08-25-B/2026-08-30-K
+  rule (always check status/net) with a third case beyond
+  scheduled-future/already-flown: genuinely in-progress at sweep time. Worth
+  a same-day re-check once the outcome is confirmed.
+- 2026-09-03-N: Another stale-resurfacing trap, a new shape: a "News On AIR"
+  (India's state broadcaster) Google News entry, "ISRO to launch two
+  satellites tonight from Sriharikota to demonstrate docking and undocking,"
+  carried a fresh in-window timestamp but resolved via WebSearch to the
+  December 30, 2024 PSLV-C60/SpaDeX mission (already completed, docked, and
+  de-docked by March 2025) -- the newsonair.gov.in archive page apparently
+  got re-surfaced with a current Google News timestamp. Same pattern as the
+  2026-08-06-G ISRO/Gaganyaan case; a same-broadcaster, same-topic-shape
+  headline is worth a WebSearch sanity check before drafting even when it
+  reads as same-day.
+- 2026-09-03-O: Two genuinely new items shipped clean at SNR 5, both with a
+  working first-party lead: SES's own `/news/press-release/...` page
+  (Peruvian Navy multi-orbit connectivity extension) and Satellogic's own
+  `/news/press-releases/...` page (SynMax named exclusive maritime channel
+  for the not-yet-launched Merlin constellation; `satellogic.com/newsroom/`
+  404s, the working path is `/news/press-releases/`). SES has NO
+  `src/data/registry` organization entity at all (only referenced as O3b
+  mPOWER's `operator` field) -- first_party still passed cleanly, apparently
+  matched via the ses.com domain already on file in that constellation
+  entity's own `source`/`website` fields, extending the no-registry-host
+  workaround's opposite case: a company can lack its OWN org entity yet still
+  anti-spoof-match through a constellation entity that names it as operator.
+- 2026-09-03-P: A new dedup false-positive shape on SES specifically: the new
+  Peruvian Navy item matched the existing Aug 31 SES/OHB IRIS2
+  satellite-manufacturing-contract item purely on shared company (SES) +
+  category (`contract`) + within 7 days, despite one being SES buying
+  satellite manufacturing from OHB and the other SES selling connectivity
+  service to a foreign navy. One `dedup_distinct` cleared it -- extends the
+  standing NASA/SpaceX/Blue-Origin/Redwire/Viasat pattern to SES.
+  Also confirms `sats_planned`/quantified-figure crossfeed isn't always
+  triggered: neither new item stated a registry-scored metric, so
+  `crossfeed.facts: []` with a note passed cleanly without any dispute-queue
+  detour.
+- 2026-09-03-Q: Via Satellite's RSS feed (`satellitetoday.com`, via the
+  harvester queue) carries full article body text in `raw_excerpt`, not just
+  a teaser -- three of this run's Via Satellite candidates (SES/Peru,
+  KSAT Hyper follow-up, Axelspace/Airbus follow-up) were draftable/
+  attachable straight from the queue's own excerpt with no live page fetch
+  needed. Used this to attach genuine new-detail corroboration to three
+  already-published items (Axelspace/Airbus moved SNR 2->3 via
+  `corroboration_2plus`; 4iG and KSAT Hyper were already at their ceilings,
+  so the new sources and detail were added for the record with no bump
+  requested, confirming 2026-09-02-A's silent-no-op-at-ceiling behavior is
+  the right call rather than something to route around).
+- 2026-09-03-R: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 3 updated, 0 held") plus a `jq` parse check (554 items,
+  up from 552) and a direct read of both new items', all three updated
+  items', and the sweep log entry's `snr`/`snr_trace`/`category`/`impact`/
+  `sources` fields as the build-health signal.
