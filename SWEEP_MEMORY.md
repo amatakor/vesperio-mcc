@@ -3708,3 +3708,44 @@ a newer entry if a lesson changes.
   parse check (548 items, up from 546) and a direct read of both new
   items' `snr`/`snr_trace`/`category`/`impact`/`tags` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~6h18m gap, unfiltered full source list (2026-09-03, second)
+
+- 2026-09-03-E: A CNES press release about an already-published NASA/SpaceX
+  launch item (the Aug 30 Roman Space Telescope launch) restated the same
+  event but added a genuinely new fact neither original source stated:
+  France's Laboratoire d'astrophysique de Marseille built the coronagraph's
+  16 parabolic mirrors under a 2023 CNES-NASA agreement. Patched into the
+  existing item via `updates[].attach` rather than treated as a new item
+  or ignored, per the standing "same event, new detail" pattern
+  (2026-08-04-F and peers). CNES has no `src/data/registry` organization
+  entity, so classed the attach `informal` rather than force `first_party`
+  through the anti-spoof domain check, extending the no-registry-host
+  workaround (2026-08-05-O/2026-08-09-A) to a national space agency, not
+  just companies.
+- 2026-09-03-F: Two genuinely new, never-covered items surfaced this run
+  despite an otherwise thin queue: Kineis' own Sept 3 release with Netmore
+  Group (hybrid satellite/LPWAN IoT, first-party lead, no independent
+  pickup found on two searches, landed a clean SNR 5 as a direct-source
+  lead per the found_none-costs-nothing-for-direct-sources rule) and
+  ArcSpace's Aug 25 seed round for a 2027 on-orbit electron-beam-welding
+  demo (chased via a discovery-pass financial query, dated to the actual
+  funding-close date per the predates-window convention; EU-Startups and
+  finsmes.com both 403'd on direct fetch, leaving European Spaceflight's
+  own reporting as the only fetchable lead, landing an honest single-source
+  SNR 2).
+- 2026-09-03-G: The signals pass's mandatory fetchable leg was almost
+  entirely quiet (13 of 17 channels checked, rotating out three duplicate
+  legs for people already covered via another channel) -- Jeff Foust's
+  bluesky was the only channel with anything in-window, and all three
+  space-relevant posts (NASA/Blue Origin Mars contract, House SAT
+  Streamlining Act markup, Rocket Lab/Synspective launch) were already
+  published by earlier same-day sweeps; europeanspaceflight.substack.com
+  403'd on direct fetch (the bare site, still checked, was quiet too).
+- 2026-09-03-H: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 1 updated, 0 held") plus a `jq` parse check (550 items,
+  up from 548) and a direct read of both new items' and the updated
+  item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
