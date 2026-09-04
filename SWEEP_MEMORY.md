@@ -3922,3 +3922,52 @@ a newer entry if a lesson changes.
   items, up from 559) and a direct read of the new item's and updated
   item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~5h24m gap, unfiltered full source list (2026-09-04, third)
+
+- 2026-09-04-M: A months-old, never-covered gap surfaced from the queue's
+  Nikkei Asia "Rakuten to debut satellite-to-cell service with Starlink
+  rival AST" entry, which itself traced (via WebFetch) to a Sept 5, 2026
+  JST-dated recap: fetching that recap alone would have been a stale-
+  resurfacing trap (the JV formation, $922-926M Japanese-government J-LEO
+  funding commitment, and 700MHz regulatory recommendation all date to
+  June-July 2026). The genuinely undrafted event underneath the recap was
+  AST SpaceMobile's Aug 4 commencement of active D2C operations in Japan
+  (SatNews), AST's first commercial market outside the US -- grepped
+  items.json for "rakuten"/"ast spacemobile" first and confirmed zero
+  coverage of the JV, the funding, or the Aug 4 launch under any id,
+  despite four AST BlueBird/earnings items already on the site. Chased
+  and dated to Aug 4 per the standing predates-window convention, landing
+  `category: product`, `impact: major` (first-of-kind capability on
+  commercial terms, per CLAUDE.md's major-tier test). ast-science.com's
+  blog/investor press-release pages were both JS shells with no visible
+  post list (same shape as the standing AST IR-subdomain thinness,
+  2026-08-11-D); Rakuten's own corp.mobile.rakuten.co.jp press listing
+  was checked directly and had no matching release either. Led with
+  SatNews (trade) and Light Reading (trade, the July 1 funding piece) for
+  `corroboration_2plus` (SNR 4) rather than force a first-party lead
+  through a dead-end domain.
+- 2026-09-04-N: Confirms a numeric-variance trap worth flagging: three
+  outlets covering the same $150 billion yen Japanese government
+  commitment stated three different rounded dollar figures on direct
+  fetch ($922M Light Reading, $912M Investing.com, $926M SatNews) despite
+  describing the same underlying 150bn yen figure -- almost certainly
+  different yen/dollar conversion snapshots at different publish dates,
+  not different facts. Used only the lead source's (SatNews) own stated
+  figure in the item copy rather than blend or average across outlets,
+  per the standing "numbers are copied, not paraphrased" rule; the
+  other outlets' slightly different figures were left uncited to avoid
+  implying disagreement where none was stated.
+- 2026-09-04-O: A signals-pass Aviation Week find (Vivienne Machi's Sept 4
+  "Orbital Cargo Firms Aim To Make Space Reentry Routine," on Outpost and
+  reentry-as-a-service startups) was left undrafted as a paywalled general
+  trend/analysis piece with no single dateable event, corroborating and
+  extending the standing 2026-09-03-A paywall-limits pattern to a
+  signals-channel find rather than a Bluesky-linked one.
+- 2026-09-04-P: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (561 items,
+  up from 560) and a direct read of the new item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
