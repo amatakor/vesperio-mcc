@@ -93,68 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~4h6m gap, unfiltered full source list (2026-08-04)
-
-- 2026-08-04-A: A generic WebSearch for "Zhuque-2E third launch failure August
-  2026" returned china-in-space.com hits with no year in the snippet that read
-  as fresh; direct fetch of the actual article confirmed a Aug 15, **2025**
-  dateline (LandSpace's Zhuque-2E Y3 in-flight failure), not 2026. Adds a new
-  domain to the standing stale-resurfacing pattern; treat this exact headline
-  shape as a trap if it resurfaces again.
-- 2026-08-04-B: Apex Space (satellite-bus manufacturer) has no
-  `src/data/registry` organization profile despite recurring as a named party
-  in three items now (Loft Orbital bus order, Sophia Space TILE demo, and this
-  run's own $200M funding round) -- same no-registry-host pattern as
-  ispace/Orbit Fab/ArkEdge; its own newsroom can't be classed `first_party`
-  until a profile exists. Worth a registry add at the next structural touch
-  given how often it's coming up.
-- 2026-08-04-C: L3Harris's own newsroom listing page doesn't expose full
-  article URLs to a plain WebFetch of the listing; asking WebFetch directly
-  for "recent press releases with their exact URLs" against the listing page
-  surfaced the right slug (`/newsroom/press-release/2026/08/l3harris-completes-sale-majority-stake-commercial-space-propulsion`)
-  when a guessed URL 404'd. Worth trying before assuming a fresh press
-  release isn't linked yet.
-- 2026-08-04-D: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 3 new, 0 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-04, second)
-
-- 2026-08-04-E: `sats_planned` is NOT in `MONOTONIC_COUNT_FIELDS`
-  (crossfeed.ts), so a genuinely superseding constellation-size update
-  (Telesat/MDA's Aug 4 contract expanding Lightspeed's funded/planned
-  satellite count from 198 to 225, explicitly framed by MDA as "adding
-  27 to the previously announced 198") does not get the time-supersession
-  treatment the Vikram-1 lesson (2026-07-18) describes for
-  `sats_launched_total` and peers. With both the registry's existing
-  first-party fact and the new item's first-party lead reading as
-  unscored/SNR 5, `reconcile()` hit `both_disputed_queue` and the item
-  auto-queued to `held.json` for Florian even though this isn't a real
-  contradiction, just a stale snapshot. Attested `same_metric: true`
-  honestly per the standing rule and let the gate decide rather than
-  fudging it to `false`; flag for Florian that `sats_planned` (and likely
-  other non-monotonic "total design/funded count" fields) could use the
-  same monotonic treatment as the four fields already on the list.
-- 2026-08-04-F: RussianSpaceWeb (Anatoly Zak, whitelisted signal) updates
-  its own article pages in place with new tracking data rather than
-  publishing a new URL: the Aug 4 finding that only 9 of 16 satellites in
-  Bureau 1440's second Rassvet batch had begun raising orbit (vs. the
-  smooth deployment implied at the item's July 19 launch) lived at the
-  EXACT SAME URL already on file as the existing item's source
-  (`buro1440-2026-0719.html`). Patched the item's explainer with the new
-  detail via `updates` rather than opening a new item (the 7-day dedup
-  window had long passed, but same URL = same underlying source
-  artifact, not a new one); no new source to `attach` since the URL was
-  already on the item. Worth checking whether a signals-pass or
-  discovery-pass find's URL already appears in an item's `sources` before
-  treating it as fresh corroboration or a new event.
-- 2026-08-04-G: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate again, continuing
-  the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 3 updated,
-  1 held") as the build-health signal.
-
 ## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-05)
 
 - 2026-08-05-A: A company's own quarterly earnings release (SpaceX's Q2 2026
@@ -3853,3 +3791,65 @@ a newer entry if a lesson changes.
   up from 552) and a direct read of both new items', all three updated
   items', and the sweep log entry's `snr`/`snr_trace`/`category`/`impact`/
   `sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~7h43m gap, unfiltered full source list (2026-09-04)
+
+- 2026-09-04-A: The 2026-09-03-M "in-progress at sweep time" ambiguity
+  (ISRO's GSLV-F17/EOS-05 mission, Launch Library status "Launch in
+  Flight" exactly at the prior sweep's `now`) resolved cleanly this run:
+  a fresh Launch Library fetch confirmed `status: Launch Successful`,
+  net 2026-09-03T21:25Z (2:55 a.m. IST Sept 4). isro.gov.in's own mission
+  page confirmed success and the "first imaging satellite from
+  geosynchronous orbit" framing but had no mass/resolution figures; those
+  came from two independently fetched mainstream Indian outlets (Free
+  Press Journal, The Federal), both agreeing on 2,367 kg and 42 m
+  resolution. Deliberately dropped a "world's first geostationary
+  hyperspectral imager" superlative that appeared only in an unofficial
+  ISRO Spaceflight fan-account X post and one WebSearch synthesis, never
+  independently confirmed by a directly fetched page or ISRO's own
+  (unparseable PDF) mission brochure.
+- 2026-09-04-B: A signals-pass find (Payload's Isaacman/McAlister
+  commentary piece, queue-fed) named a specific X post URL
+  (@NASAAdmin/status/2095345993738850760) in its own body text; fetching
+  the syndication endpoint confirmed the post is genuinely from
+  @NASAAdmin (NASA's Administrator title-account) at the right timestamp,
+  but its visible text was a different portion of the same reply thread
+  than Payload's quoted sentences (a Starliner/LEO reply, not the
+  "force an economy out of every NASA endeavor" line Payload quoted).
+  Treated Payload's own verbatim-quoted reporting as the trade lead and
+  the verified X post as `informal` corroboration (confirming the person
+  posted, not itself carrying every quoted sentence) rather than either
+  discard the item or force the syndication text to match Payload's
+  quotes.
+- 2026-09-04-C: Jared Isaacman is a signals.json xSearch entry (handle
+  `rookisaacman`), but the actual post came from a different account
+  (`@NASAAdmin`) not matching that recorded handle -- per the standing
+  2026-08-26-E Kiko Dontchev precedent, classed the post `informal`, not
+  `whitelist`, since only the exact recorded channel earns the floor.
+- 2026-09-04-D: A Space Force Chief of Space Operations change-of-command
+  (Schiess succeeding Saltzman, Sept 3, well-telegraphed since an Aug 6
+  Senate confirmation) was drafted at `noise`/`launch`, matching the
+  standing "well-telegraphed non-scandal succession" precedent (ULA's
+  Peller, 2026-08-17-F) rather than the FCC Space Bureau chief precedent
+  (2026-08-08-H, `notable`): that case turned on the office directly
+  licensing every commercial operator, which CSO doesn't do as narrowly.
+  Led with SpacePolicyOnline (whitelist, observer) since Marcia Smith's
+  own site (also a harvester-fed source) carried the fullest body text;
+  SpaceNews's matching headline was paywalled beyond one paragraph.
+- 2026-09-04-E: Extends the standing "check items.json before drafting a
+  signals/discovery find" practice to a fully clean sweep: every single
+  substantive lead from the fetchable signals channels this run (PLD
+  Space, HyImpulse, Synspective, Boeing/O3b mPower, Axiom Sortie Suit,
+  Sierra Space Dream Chaser) had already been published by an earlier
+  same-day sweep, confirming 2026-09-01-L/2026-09-03-K's pattern that a
+  narrow re-check following an active prior sweep looks thin by design.
+  A NOAA RODB-2 $6.4M Spire+PlanetiQ radio-occultation award surfaced by
+  the discovery pass's EO-procurement leg was also already published
+  (same combined figure as the Aug 14 item's $3.7M+$2.7M split).
+- 2026-09-04-F: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 5 new, 0 updated, 0 held") plus a `jq`
+  parse check (559 items, up from 554) and a direct read of all five new
+  items' `snr`/`category`/`impact`/`tags`/`companies` fields as the
+  build-health signal.

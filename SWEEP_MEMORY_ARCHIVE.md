@@ -4106,3 +4106,65 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
   ("merged 5 new, 2 updated, 0 held") as the build-health signal.
 
+## Narrow same-day re-check, ~4h6m gap, unfiltered full source list (2026-08-04)
+
+- 2026-08-04-A: A generic WebSearch for "Zhuque-2E third launch failure August
+  2026" returned china-in-space.com hits with no year in the snippet that read
+  as fresh; direct fetch of the actual article confirmed a Aug 15, **2025**
+  dateline (LandSpace's Zhuque-2E Y3 in-flight failure), not 2026. Adds a new
+  domain to the standing stale-resurfacing pattern; treat this exact headline
+  shape as a trap if it resurfaces again.
+- 2026-08-04-B: Apex Space (satellite-bus manufacturer) has no
+  `src/data/registry` organization profile despite recurring as a named party
+  in three items now (Loft Orbital bus order, Sophia Space TILE demo, and this
+  run's own $200M funding round) -- same no-registry-host pattern as
+  ispace/Orbit Fab/ArkEdge; its own newsroom can't be classed `first_party`
+  until a profile exists. Worth a registry add at the next structural touch
+  given how often it's coming up.
+- 2026-08-04-C: L3Harris's own newsroom listing page doesn't expose full
+  article URLs to a plain WebFetch of the listing; asking WebFetch directly
+  for "recent press releases with their exact URLs" against the listing page
+  surfaced the right slug (`/newsroom/press-release/2026/08/l3harris-completes-sale-majority-stake-commercial-space-propulsion`)
+  when a guessed URL 404'd. Worth trying before assuming a fresh press
+  release isn't linked yet.
+- 2026-08-04-D: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") as the build-health signal.
+
+## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-04, second)
+
+- 2026-08-04-E: `sats_planned` is NOT in `MONOTONIC_COUNT_FIELDS`
+  (crossfeed.ts), so a genuinely superseding constellation-size update
+  (Telesat/MDA's Aug 4 contract expanding Lightspeed's funded/planned
+  satellite count from 198 to 225, explicitly framed by MDA as "adding
+  27 to the previously announced 198") does not get the time-supersession
+  treatment the Vikram-1 lesson (2026-07-18) describes for
+  `sats_launched_total` and peers. With both the registry's existing
+  first-party fact and the new item's first-party lead reading as
+  unscored/SNR 5, `reconcile()` hit `both_disputed_queue` and the item
+  auto-queued to `held.json` for Florian even though this isn't a real
+  contradiction, just a stale snapshot. Attested `same_metric: true`
+  honestly per the standing rule and let the gate decide rather than
+  fudging it to `false`; flag for Florian that `sats_planned` (and likely
+  other non-monotonic "total design/funded count" fields) could use the
+  same monotonic treatment as the four fields already on the list.
+- 2026-08-04-F: RussianSpaceWeb (Anatoly Zak, whitelisted signal) updates
+  its own article pages in place with new tracking data rather than
+  publishing a new URL: the Aug 4 finding that only 9 of 16 satellites in
+  Bureau 1440's second Rassvet batch had begun raising orbit (vs. the
+  smooth deployment implied at the item's July 19 launch) lived at the
+  EXACT SAME URL already on file as the existing item's source
+  (`buro1440-2026-0719.html`). Patched the item's explainer with the new
+  detail via `updates` rather than opening a new item (the 7-day dedup
+  window had long passed, but same URL = same underlying source
+  artifact, not a new one); no new source to `attach` since the URL was
+  already on the item. Worth checking whether a signals-pass or
+  discovery-pass find's URL already appears in an item's `sources` before
+  treating it as fresh corroboration or a new event.
+- 2026-08-04-G: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 3 updated,
+  1 held") as the build-health signal.
+
