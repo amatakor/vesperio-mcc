@@ -3853,3 +3853,72 @@ a newer entry if a lesson changes.
   parse check (559 items, up from 554) and a direct read of all five new
   items' `snr`/`category`/`impact`/`tags`/`companies` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~6h15m gap, unfiltered full source list (2026-09-04, second)
+
+- 2026-09-04-G: A "final" version of a federal regulatory filing can
+  supersede an already-published "draft" item under the SAME docket
+  months later without being a dedup match: the FAA's Sept 4 Federal
+  Register notice for the Final Tiered EA and FONSI/ROD (Docket
+  FAA-2026-6968) covers the identical Pacific reentry-zone scope as the
+  already-published July 14 draft-EA item. Treated as an `updates[]`
+  entry with `patch.source_url` + a full `rescore` (the MAGPIE upgrade
+  pattern, 2026-09-02-H) rather than a new item, keeping the July 14
+  notice as a secondary `rescore.sources[]` entry so it isn't dropped
+  from the card (a bare rescore with only the new URL would have
+  silently deleted the old one, since `rescore` fully replaces
+  `merged.sources`, unlike `attach` which only appends). Deliberately
+  did NOT bump impact to `major` even though a FONSI/ROD reads like a
+  regulatory decision: the fetched notice states SpaceX "must still
+  obtain a modification to their existing vehicle operator license" to
+  actually use the cleared zones, so the market-access grant itself
+  hasn't happened yet. Left impact at `notable` per the "when torn
+  between two levels, pick the lower one" rule.
+- 2026-09-04-H: federalregister.gov's own document pages 403/redirect-loop
+  WebFetch directly (`unblock.federalregister.gov`, a scraping-block
+  page), but its public JSON API
+  (`federalregister.gov/api/v1/documents/<doc-number>.json`) and its
+  full-text XML endpoint
+  (`federalregister.gov/documents/full_text/xml/<year>/<month>/<day>/<doc-number>.xml`)
+  both fetched cleanly with real body text (docket number, dates,
+  geographic scope, comment counts) -- worth trying these two endpoint
+  shapes first for any future federalregister.gov citation instead of
+  the blocked HTML document page.
+- 2026-09-04-I: An ASD Eurospace "GALAXY" report (15 anonymized European
+  space-industry CEO interviews on procurement/institutional-demand
+  complaints) had two independent trade-press writeups (Payload, named
+  author, on-record Marco Fuchs quote; Space Intel Report, different
+  byline, two days earlier, added the Jean-Marc Nasr/interview-window
+  detail neither other source stated) -- drafted as `kind: "commentary"`
+  (industry-association policy-recommendation piece, same shape as the
+  2026-08-05-K ESPI precedent) rather than a factual event, category
+  `procurement` since the core complaint is geo-return/institutional
+  demand. Landed `corroboration_2plus` at SNR 4 despite both sources
+  being `trade` class (no first-party GALAXY report page was found to
+  lead with).
+- 2026-09-04-J: The harvester queue (92 candidates) was almost entirely
+  EOS-05 launch reaction/commentary pieces (dozens of Indian outlets,
+  same launch already resolved in the prior sweep per 2026-09-04-A) and
+  SpaceX stock-speculation chatter; zero queue candidates survived past
+  the scope filter. Both of this run's items came from the HTML/signals
+  legs (europeanspaceflight.com surfacing the queue-independent
+  federalregister.gov Google News entry indirectly via the FR feed
+  itself, not the queue) and a discovery-pass-adjacent direct check of
+  the Federal Register feed. Confirms the standing EOS-05/SpaceX-stock
+  low-yield-queue pattern extends to single-story wire pileups, not
+  just ongoing background chatter.
+- 2026-09-04-K: A pre-launch ESA/EU-Space explainer ("Sentinel-3C: Europe
+  is launching its next Earth observation satellite," queue-fed) traced
+  via WebSearch to a launch scheduled for September 14, 2026, nine days
+  out -- left undrafted as a preview, not an event; the actual launch
+  will be a candidate on its own date. Isar Aerospace's second Spectrum
+  test flight ("Onward and Upward," europeanspaceflight.com Sept 3
+  piece) was also still pre-launch at this run's `now` (net 20:00 UTC
+  Sept 4, status "To Be Confirmed" on Launch Library), same treatment.
+- 2026-09-04-L: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 1 updated, 0 held") plus a `jq` parse check (560
+  items, up from 559) and a direct read of the new item's and updated
+  item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
