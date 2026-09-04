@@ -3971,3 +3971,65 @@ a newer entry if a lesson changes.
   up from 560) and a direct read of the new item's
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~3h38m gap, unfiltered full source list (2026-09-04, fourth)
+
+- 2026-09-04-Q: `idirect.net` (ST Engineering iDirect's own newsroom) has
+  no `src/data/registry` organization entity at all, so its own press
+  release failed the anti-spoof gate as `first_party`; classed `informal`
+  instead and led with Via Satellite's independent write-up (`trade`)
+  covering the same INT3000 5G NR-NTN modem pilot, per the standing
+  2026-08-05-O/2026-08-09-A no-registry-host pattern extended to a new
+  ground-segment vendor.
+- 2026-09-04-R: A company's own newsroom copy and its PR Newswire wire
+  mirror shared the EXACT SAME headline text
+  ("ST Engineering iDirect Demonstrates Multi-Waveform 5G NR-NTN User
+  Equipment Pilot") even though the two live on completely different
+  domains (idirect.net vs prnewswire.com); finalize's title-SimHash
+  correctly collapsed them into one `wire_rewrite` corroboration unit
+  (`state.json`'s `corroboration_collapses`), confirming the collapse
+  logic works across unrelated domains, not just same-domain URL variants
+  (extends 2026-08-10-D).
+- 2026-09-04-S: Two genuinely new, on-scope product-demo items (ST
+  Engineering iDirect's 5G NR-NTN modem pilot, Sparkle/Hellas Sat's
+  quantum-safe satellite link) both had wide, independently-written trade
+  coverage (Via Satellite, Mobile Europe, The Quantum Insider,
+  SatellitePro ME) despite neither ever reaching `major`/`notable`
+  impact -- routine ground-segment/GEO-operator technology
+  demonstrations with no stated commercial deployment or customer still
+  clear the inclusion bar at `noise`/`product` per the standing "nothing
+  on-scope is withheld for sourcing reasons" rule; low impact and strong
+  sourcing are independent axes just like low SNR and high impact are.
+- 2026-09-04-T: A trend/wrap-up piece bundling several already-published
+  facts (NASASpaceflight's "Blue Origin expands test and launch sites
+  across the Cape," covering the already-covered LC-36 rebuild and
+  Stennis B-2 test-stand stories) plus one new but explicitly
+  unconfirmed detail (a "MILA Stage 2" second-stage test site inferred
+  from lightning-tower/crane permit filings, with the outlet itself
+  saying "it is still not known exactly what kind of testing this
+  facility will support") was left undrafted as too speculative to
+  publish as its own fact, rather than force a thin permit-filing
+  inference into copy.
+- 2026-09-04-U: A repeated launch-attempt scrub (Isar Aerospace's Spectrum
+  second test flight, 5th scrubbed attempt as of Sept 4, no company
+  statement and only "weather may have played a role" from the outlet
+  itself) was left undrafted: CLAUDE.md's "launches are never discarded
+  as routine" ruling covers launches that occur, not non-events with an
+  unconfirmed cause; worth chasing once the flight actually occurs or a
+  scrub gets a company-confirmed technical cause.
+- 2026-09-04-V: An Aviation Week piece titled "Three Additional
+  Space-Based AMTI Vendors Revealed" (Sept 4, signals-pass find) traced
+  via WebSearch to the SAME $615M Rocket Lab/STR/unidentified-third-vendor
+  SB-AMTI award already published under
+  `2026-08-04-rocket-lab-str-amti-contracts` -- the third vendor is still
+  described as unidentified in every source checked, so nothing was
+  actually revealed beyond the existing item; left undrafted rather than
+  treated as an update, since no new fact was found to attach.
+- 2026-09-04-W: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (563 items, up from 561) and a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/
+  `sources` fields and the sweep log entry's `corroboration_collapses`
+  as the build-health signal.
