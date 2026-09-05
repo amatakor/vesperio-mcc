@@ -3939,3 +3939,26 @@ a newer entry if a lesson changes.
   updated, 0 held") and a direct read of all three new items'
   `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
   fields as the build-health signal.
+
+## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-09-05, second)
+
+- 2026-09-05-G: A fully clean zero-item sweep: the harvester queue
+  (candidates-context) was almost entirely EOS-05 launch-reaction
+  pieces and SpaceX stock-speculation chatter (zero survivors), the
+  8-source HTML pass found nothing dated after the prior sweep, a
+  16-of-17-channel signals pass (europeanspaceflight.substack.com/feed
+  still 403's, per 2026-08-09-G) surfaced only leads already published
+  by the prior two same-day sweeps, and an 11-query discovery matrix
+  independently rediscovered the same five stories (PLD Space Series C
+  extension, Kepler Aerospace seed round, the European Launcher
+  Challenge contracts, OHB/SES IRIS2, Isar Aerospace's Spectrum
+  scrub) with none new. Confirms the standing pattern
+  (2026-08-08-F/2026-09-03-K/2026-09-04-E) that a narrow re-check
+  right after an active prior sweep looks thin by design, not from
+  under-coverage, once every leg is checked exhaustively.
+- 2026-09-05-H: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and a direct read of the appended `state.json`
+  sweep-log entry as the build-health signal.
