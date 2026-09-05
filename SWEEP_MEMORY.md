@@ -4007,3 +4007,57 @@ a newer entry if a lesson changes.
   ("merged 1 new, 0 updated, 1 held") plus a `jq` parse check (567 items,
   up from 566) and a direct read of the new item's and the new held
   entry's fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h18m gap, unfiltered full source list (2026-09-05, fourth)
+
+- 2026-09-05-M: The mandatory signals pass caught a seismic event before
+  any trade outlet, the queue, or the HTML pass did: Isar Aerospace's
+  Spectrum reached orbit on its second flight (Andoya, Norway), the first
+  orbital-class launch from Western Europe and the first orbital flight
+  by a privately developed European launch vehicle (the March 2025 debut
+  failed 30 seconds after liftoff; five subsequent 2026 attempts
+  scrubbed). Jeff Foust's and Andrew Parsonson's bluesky posts both
+  landed within minutes of the 20:00 UTC liftoff, well ahead of any
+  fetchable trade-press writeup; isaraerospace.com's own newsroom and
+  mission-updates pages were both still serving pre-launch/stale cached
+  content over an hour after the result was public (the standing
+  2026-08-16-F "top-of-listing page with no visible date is not a
+  freshness signal" trap, here extending to a first-party page not
+  updating at all yet), so first_party could not be used as the lead.
+  Two independent Norwegian mainstream outlets (NRK, Aftenposten) fetched
+  cleanly with full post-launch detail (exact times, government-minister
+  quote, orbit-achieved confirmation) and became the lead instead; ESA's
+  own esa.int page on the mission was checked but was a stale March 2026
+  pre-launch preview for the same "second flight" framing, not usable for
+  today's result (read past the "kvalifiserende andre oppskytning"
+  headline before citing an ESA page on a recurring mission name).
+- 2026-09-05-N: finalize-sweep's corroboration-collapse logic treats ALL
+  bsky.app URLs as one domain regardless of profile: Jeff Foust's and
+  Andrew Parsonson's distinct bluesky posts (different people, different
+  posts, both genuinely independent) were collapsed into one
+  corroboration unit (`rule: "same_domain"`, Foust's post kept) even
+  though the "multiple pages on one domain" collapse rule was written for
+  a company's own multi-page site, not a shared social platform across
+  unrelated authors. The item still landed a defensible final SNR 4 via
+  NRK+Aftenposten+the-kept-bluesky-post+NASASpaceflight's X post (4
+  units), but worth flagging for Florian: two distinct whitelisted
+  people's own posts probably shouldn't collapse together just because
+  bsky.app is one hostname.
+- 2026-09-05-O: A Google-News "launch" queue candidate on ISRO's Sept 5
+  semi-cryogenic engine test (Deccan Chronicle, India Today) read
+  superficially similar to a June 27, 2026 "near-full-thrust" (88%,
+  175-tonne) test several other outlets had already covered as
+  "near-full thrust" -- confirmed via isro.gov.in's own dated release
+  that today's was a distinct, later (9th in series) test reaching TRUE
+  100% (200-tonne) thrust for the first time, not a resurfacing of the
+  June milestone. Worth the reminder that a recurring test-series
+  headline shape ("X% thrust", "near-full thrust") needs the exact
+  percentage/tonnage checked against the primary source before assuming
+  two same-topic articles months apart describe the same event.
+- 2026-09-05-P: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") plus a `jq` parse check (569
+  items, up from 567) and a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
+  build-health signal.
