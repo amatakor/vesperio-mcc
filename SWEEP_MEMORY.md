@@ -3962,3 +3962,48 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
   updated, 0 held") and a direct read of the appended `state.json`
   sweep-log entry as the build-health signal.
+
+## Narrow same-day re-check, ~6h14m gap, unfiltered full source list (2026-09-05, third)
+
+- 2026-09-05-I: A signals-channel author-page find (Vivienne Machi's
+  Aviation Week "Three Additional Space-Based AMTI Vendors Revealed")
+  named three genuinely new SB-AMTI vendors (Blue Origin, Boeing, Umbra)
+  distinct from the already-published Aug 4 Rocket Lab/STR/unidentified-
+  third-vendor item (2026-09-04-V): that item's mystery vendor is still
+  unnamed anywhere; these three are a separate vendor-pool addition
+  entirely, with contracts stated as "signed June 2." Aviation Week's own
+  article page 404'd and ssc.spaceforce.mil (the likely primary source)
+  403'd per the standing .mil-block pattern; two content-scraper mirrors
+  (ufofeed.com, newsbeep.com) republishing the same paywalled teaser text
+  do not count as independent corroboration (same underlying source, not
+  separate reporting), so this landed a single-source trade lead with
+  `crawl: found_none` at SNR 2. Dated to June 2 (the stated contract-
+  signing date) rather than the Sept 4 reveal date per the standing
+  predates-window convention, even though the underlying detail (a thin,
+  cut-off paywall quote with no dollar figures) is much sparser than
+  most chased predates-window items.
+- 2026-09-05-J: A new scope-question shape for the institutional-
+  disclosure precedent (NASA-STRIDE, ASI board dissolution, Singapore-
+  JAXA): 9 ISRO employee associations (~5,000 staff) sent ISRO's Chairman
+  a letter seeking clarity on the agency's shrinking role as launch-
+  vehicle manufacturing shifts to private industry (HAL's SSLV transfer,
+  LVM3/PSLV bidding, the already-published Kulasekarapattinam spaceport
+  handover). Unlike the STRIDE/ASI cases, this letter DOES name concrete
+  commercial-space actions (HAL, LVM3, PSLV, the spaceport), but the
+  event itself is a staff-association letter about job security, not a
+  procurement action, contract, or market-access change in its own
+  right -- queued to held.json as a scope question rather than published
+  or discarded. Single-sourced to WION (Sidharth MP); Times of India and
+  Inshorts carried the same story same-day but neither was directly
+  fetchable, and a corroboration search found only secondary aggregator
+  restatements of the same underlying reporting.
+- 2026-09-05-K: `presse.cnes.fr/fr`'s 301-redirect to `cnes.fr/presse`
+  (noted 2026-09-05-E) fetches cleanly and is a good direct substitute;
+  worth updating the `sources.json` URL at a future structural touch
+  rather than continuing to rely on the redirect resolving.
+- 2026-09-05-L: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 1 held") plus a `jq` parse check (567 items,
+  up from 566) and a direct read of the new item's and the new held
+  entry's fields as the build-health signal.
