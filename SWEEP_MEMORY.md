@@ -93,153 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-05)
-
-- 2026-08-05-A: A company's own quarterly earnings release (SpaceX's Q2 2026
-  results, its first as a public company) is a rich source of never-covered
-  gaps: business-highlight bullet points named an already-approved but
-  never-drafted FCC spectrum deal (SpaceX/EchoStar, approved May 12) and
-  restated Starshield contract totals; chased the FCC approval as its own
-  item dated to the actual May 12 approval date, per the standing
-  predates-window ruling. Flag for a future sweep: the ~$2.29B SDA "SDN
-  Backbone" and ~$4.16B SB-AMTI task orders to SpaceX (both May 2026,
-  summing to the "over $6 billion" Starshield figure in the earnings
-  release) are ALSO never covered under any id and are each independently
-  major/seismic-scale; not chased this run for time, still open.
-- 2026-08-05-B: SpaceX's own earnings PDF is hosted at
-  `s21.q4cdn.com/184289198/files/...`, a Q4-IR CDN domain that does NOT
-  match the registry's `spacex.com` website value (not a subdomain, unlike
-  the `ir.spacex.com`/`investors.planet.com`-style apex-matching cases) --
-  classing it `first_party` would fail the anti-spoof gate. `ir.spacex.com`
-  itself is a pure JS shell to WebFetch (no press-release listing content
-  loads), so there was no first-party-eligible URL to lead with for any
-  earnings-derived story this run; led each with the strongest independent
-  trade coverage instead (Fierce Network, SpaceNews, Telecompetitor) and
-  did not force the PDF into scoring.sources.
-- 2026-08-05-C: The same-company-plus-category dedup heuristic fired
-  against a MULTI-VENDOR IDIQ vehicle, a new shape: Rocket Lab's new
-  $397M SB-AMTI satellite task order (category procurement) matched the
-  existing 2026-07-31 NITE-STAR item purely because Rocket Lab is one of
-  15 listed vendors on that $981M training-infrastructure IDIQ vehicle,
-  four days earlier, same category -- despite NITE-STAR naming no
-  Rocket-Lab-specific task order at all. Cleared with one
-  `dedup_distinct` entry; worth expecting this shape (a company merely
-  named among many IDIQ/vendor-pool awardees) to keep tripping the
-  heuristic against that company's own later, unrelated contract news.
-- 2026-08-05-D: Confirms the 2026-07-24-F/2026-08-04-E lesson on a new
-  field: `sats_planned` is not a monotonic-counter field, so crossfeeding
-  Telesat Lightspeed's fleet expansion (156 -> 225, per Telesat's own Aug 4
-  release) against the registry's stale 198 snapshot is attested
-  `same_metric: true` honestly and left for the gate to resolve (likely a
-  refresh candidate or a queued tie), not fudged to `false` to avoid the
-  dispute path.
-- 2026-08-05-E: `updates[].rescore` requires the item's `source_url` to be
-  patched to the new lead URL in the SAME update object
-  (`patch.source_url`) before `rescore.sources[0].url` can match it;
-  submitting a rescore with a new lead source but no matching
-  `patch.source_url` is a flat rejection on both the Telesat and the
-  SpaceX Starlink Mobile updates this run, fixed by adding
-  `patch.source_url` explicitly matching the rescore's first source.
-- 2026-08-05-F: bloomberg.com, pcmag.com, and businessinsider.com all
-  refused WebFetch this session (403 or flat "unable to fetch"),
-  continuing the standing per-session domain-blocklist pattern
-  (2026-07-17-H and peers); fierce-network.com and broadbandbreakfast.com
-  both fetched cleanly and gave genuinely distinct quotes from the same
-  SpaceX earnings call, enough for a clean two-source trade-tier rescore
-  without needing the blocked mainstream outlets.
-- 2026-08-05-G: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 5 new, 2 updated, 0 held") as the
-  build-health signal.
-
-## Normal-mode sweep, ~3h46m gap, unfiltered full source list (2026-08-05, second)
-
-- 2026-08-05-H: businesswire.com timed out (60s) on every attempt this run
-  (both a June and a July AST SpaceMobile launch-date release), continuing
-  the per-session domain-friction pattern (2026-08-05-F and peers); a local
-  Florida outlet (talkoftitusville.com) fetched cleanly and gave genuinely
-  distinct pre-launch figures (satellite mass, FM6/FM7/FM8 designations,
-  peak Mbps) from the after-the-fact Spaceflight Now lead, enough for a
-  clean two-source trade+informal corroboration without the blocked wire.
-- 2026-08-05-I: A same-day ICEYE/EQT "Scaleup Europe Fund makes first
-  investment" release (Aug 5) turned out to be a closing-tranche
-  confirmation of the ALREADY-published June 9 EUR 1B/EUR 450M Series F
-  round (identical valuation and round-size figures), not new money;
-  treated as an `updates[].attach` with a full `explainer.what_happened`
-  replacement rather than a new item, even though it is ~2 months outside
-  the mechanical 7-day/30-day windows, because "Known to MCC" matching is
-  by actor+event identity first, not purely by day-count, and drafting it
-  as a second item would have double-counted the same raise. Worth
-  remembering this pattern (a fund's own "first investment" press release
-  confirming a round others already led) for future EU-fund-related ICEYE/
-  Isar/other sovereign-capital stories.
-- 2026-08-05-J: A widely-covered "SpaceX rocket set to crash into the
-  Moon" story (a defunct, already-attributed Jan 2025 Falcon 9 upper stage
-  on a known, non-threatening lunar-impact trajectory, covered by CNN,
-  Newsweek, Time, RTE, etc.) was judged out of scope and left undrafted,
-  not held: no operator liability, deorbit-compliance, or commercial angle
-  exists here (the operator and cause are already known and undisputed,
-  and lunar impact isn't Earth-reentry safety), closer to astronomy-
-  interest coverage than the incident category's liability/insurance
-  rationale (2026-07-08 ruling). Flag for Florian if this read is wrong,
-  since it's a genuinely borderline "orbital-safety" shape.
-- 2026-08-05-K: ESPI (European Space Policy Institute) republished its
-  China-vs-Europe orbital-data-center thesis as a fresh, dated Aug 5
-  report/brief distinct from its Nov 2025 "Data centres in space" report
-  (same espi.eu domain, different piece, confirmed via the SpaceNews
-  byline stating "a report published by the independent think tank Aug.
-  5"); drafted as `kind: "commentary"` (ESPI as a named outlet, not a
-  signals.json person) rather than a factual event, since the piece is a
-  warning/policy-recommendation argument, not a discrete transaction.
-  Worth double-checking any think-tank "report warns X" headline against
-  its actual publish date before treating a resurfaced older report as
-  today's news (the Nov 2025 report page was found first and would have
-  been a dating trap).
-- 2026-08-05-L: A GuoWang batch (23rd deployment, Long March-8A Y10, Aug 4)
-  had never been itemized individually before (only mentioned in passing
-  inside other items' why_it_matters), unlike Qianfan/SpaceSail which has
-  several dedicated items; china-in-space.com gave the richest figures
-  (9 satellites, ~186 cumulative, per-satellite mass, 2026-2028 ramp
-  targets) with Xinhua as trade-classed (not official_record, per
-  2026-08-03-F) corroboration. GuoWang's registry `sats_launched_total`
-  (177, as_of 2026-07-09) is a monotonic field per SNR_SPEC 6.6; attested
-  `same_metric: true` and let the gate's supersession handling apply
-  rather than fudging it.
-- 2026-08-05-M: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 4 new, 1 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-05, third)
-
-- 2026-08-05-N: A single satellite pair can carry TWO completely different
-  public names at once: Xinhua's same-day "Smart Dragon-3 launches 2
-  satellites" story named the payloads STAR.VISION's own constellation
-  designations, "Oriental Smart Eye 01/02," while the already-published
-  item (drafted from Gazeta.uz/Kompas) named the identical pair by their
-  sovereign-customer names, "Lampung-1" (Indonesia) and "Samarkand-2028"
-  (Uzbekistan) -- same rocket, same date, same sea-platform site off
-  Shandong, same count (2), same sensor class (hyperspectral). A
-  same-day CASC/Xinhua queue hit naming a Chinese commercial launch needs
-  a body-content match (rocket + site + date + payload count/class)
-  against existing[], not just a payload-name grep, before drafting it
-  as new; this one was caught and folded into the existing item via
-  `updates[].attach`, adding Xinhua's technical specs (mass, band count,
-  resolution, swath, onboard AI compute, the 258-satellite build-out
-  plan) that neither original source had stated.
-- 2026-08-05-O: Extends 2026-07-07-K/2026-07-31-I: a genuinely fetched
-  company press release from a domain with no `src/data/registry` entry
-  (LiveEO, a German EO-analytics startup) and no fetchable independent
-  trade pickup this run (its only other coverage, SpaceWatch.Global,
-  403'd) has no gate-safe lead to substitute -- classed the company's
-  own page `informal` rather than force `first_party` or hold it; the
-  item merged clean at the honest SNR-1 floor. Unlike the 2026-07-15-F
-  ispace case (held for lack of any workaround), this run treated
-  informal-classing a no-registry company's own page as an accepted
-  mechanical path for a NEW item too, not just the update-only path
-  2026-07-31-I documented for Katalyst Space.
-
 ## Normal-mode sweep, ~11h43m gap, unfiltered full source list (2026-08-06)
 
 - 2026-08-06-A: The harvester queue (Google News: launch feed especially)
@@ -4033,3 +3886,56 @@ a newer entry if a lesson changes.
   items' `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/
   `sources` fields and the sweep log entry's `corroboration_collapses`
   as the build-health signal.
+
+## Normal-mode sweep, ~8h05m gap, unfiltered full source list (2026-09-05)
+
+- 2026-09-05-A: A signals-fetchable bluesky account's `getAuthorFeed`
+  summary can flatten a post's linked article into prose without
+  surfacing the URL; re-fetching the SAME endpoint with an explicit ask
+  for "the post about X" and its `embed.external.uri` recovered the
+  exact article link (SpaceNews's paywalled "New NASA office to
+  consolidate launch procurements", found only via Jeff Foust's Sept 2
+  bluesky post) when a direct site search and three WebSearch variants
+  all failed to surface it. Worth re-querying a signals account's feed
+  a second time, asking specifically for one post's embed URL, before
+  giving up on a thin lead traced only to a bluesky summary.
+- 2026-09-05-B: A SpaceNews article behind the paywall can still yield
+  a legitimately citable two-sentence fact: the fetched page rendered
+  headline + a one-paragraph teaser before the paywall gate, no
+  fabrication needed. Drafted the NASA launch-procurement-office story
+  from exactly that teaser text at `noise` impact (thin, no figures,
+  no named programs) and let `crawl: found_none` (three WebSearch
+  variants, all empty) land it at SNR 2 rather than holding it for
+  weak sourcing.
+- 2026-09-05-C: The same-company-plus-category dedup false positive
+  keeps finding new shapes: a NASA/Blue Origin Mars-telecom contract
+  award (Sept 1) blocked an unrelated NASA launch-procurement-office
+  reorg (Sept 2, category `procurement`) purely on shared company
+  "NASA"; separately, an SpaceX/FCC High-Cost Fund USF filing (category
+  `regulatory`) blocked against BOTH the Rocket Lab/Iridium
+  merger-conduct FCC review and a UAE Starlink license grant, purely on
+  shared company "SpaceX" plus "regulatory" category, despite being
+  three different regulators/dockets/countries with nothing else in
+  common. Three `dedup_distinct` entries cleared it in one pass.
+- 2026-09-05-D: ESA's BepiColombo Mercury Transfer Module separation
+  (Sept 3, confirmed via ESA's own mission page, esa.int, first_party)
+  was independently corroborated by Ars Technica but NOT by CNN
+  (HTTP 451, geo/legal block), Space.com (truncated to nav chrome, the
+  standing 2026-08-11-F pattern), or Gizmodo (403) despite all three
+  covering the same event per WebSearch snippets; only cited pages
+  with genuinely fetched content rather than force in blocked/truncated
+  fetches as scoring sources. CNES's own site (presse.cnes.fr/fr) also
+  covered the story via a "France's role in Roman telescope" angle
+  piece that turned out to be about the ALREADY-published Aug 30 Roman
+  launch, not BepiColombo; read past the headline before assuming a
+  same-day national-space-agency piece is a new event.
+- 2026-09-05-E: `presse.cnes.fr/fr` now 301-redirects permanently to
+  `cnes.fr/presse`; the redirect target fetches cleanly. Worth updating
+  the sources.json URL at a future structural touch.
+- 2026-09-05-F: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") and a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields as the build-health signal.

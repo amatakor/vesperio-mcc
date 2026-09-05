@@ -32742,7 +32742,7 @@
         "https://nova.space/press-release/6500-eo-satellites-to-launch-by-2035/"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -32754,10 +32754,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-05",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -32803,7 +32816,7 @@
         "https://www.securite-civile.interieur.gouv.fr/actualites/actualites/communique-de-presse-firewatch"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -32815,11 +32828,24 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "2 distinct sources (>=2)"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
-        "single_class_corroboration": "informal"
+        "single_class_corroboration": "informal",
+        "history": [
+          {
+            "date": "2026-09-05",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -40203,6 +40229,201 @@
         "origin_url": "https://www.mobileeurope.co.uk/sparkle-hellas-sat-greece-cyprus/",
         "width": 1000,
         "height": 666
+      }
+    },
+    {
+      "id": "2026-09-03-bepicolombo-mercury-transfer-module-separation",
+      "date": "2026-09-03",
+      "headline": "BepiColombo separates from transfer module, begins Mercury arrival phase",
+      "explainer": {
+        "tagline": "ESA and JAXA's BepiColombo shed its transfer module and began final approach to Mercury, orbit insertion set for November 21.",
+        "what_happened": "BepiColombo's Mercury Transfer Module separated from the spacecraft stack on September 3, confirmed via acquisition of signal through ESA's Estrack deep-space antennas in Cebreros, Spain and Malargue, Argentina, per ESA's own mission update. The two science orbiters, ESA's Mercury Planetary Orbiter and JAXA's Mio, are now flying free toward orbit insertion at Mercury, targeted for November 21, 2026; MPO and Mio will separate from each other on December 9-10, and the mission's science phase is set to begin in April 2027, per ESA.",
+        "why_it_matters": "The separation opens BepiColombo's most operationally complex phase after nearly eight years and billions of kilometres of cruise since its 2018 launch. It is only the second mission ever to attempt orbit around Mercury, after NASA's MESSENGER, and the next hard milestones, orbit insertion in November and orbiter separation in December, will test whether ESA and JAXA's joint arrival sequence holds up before science operations start in 2027."
+      },
+      "tags": [
+        "science"
+      ],
+      "category": "science",
+      "impact": "notable",
+      "companies": [
+        "European Space Agency",
+        "JAXA"
+      ],
+      "source_url": "https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/Latest_updates_BepiColombo_s_arrival_at_Mercury",
+      "secondary_urls": [
+        "https://arstechnica.com/space/2026/09/after-8-years-europes-bepicolombo-mission-is-on-final-approach-to-mercury/"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/Latest_updates_BepiColombo_s_arrival_at_Mercury",
+          "reason": "base tier 5 from lead source class \"first_party\" (ESA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.esa.int/Science_Exploration/Space_Science/BepiColombo/Latest_updates_BepiColombo_s_arrival_at_Mercury",
+          "outlet": "ESA",
+          "class": "first_party",
+          "added": "2026-09-05",
+          "via": "initial"
+        },
+        {
+          "url": "https://arstechnica.com/space/2026/09/after-8-years-europes-bepicolombo-mission-is-on-final-approach-to-mercury/",
+          "outlet": "Ars Technica",
+          "class": "mainstream",
+          "added": "2026-09-05",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-05T05:30:49.425Z",
+      "entities": [
+        {
+          "name": "European Space Agency",
+          "ref": "organizations/esa"
+        },
+        {
+          "name": "JAXA",
+          "ref": "organizations/jaxa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-03-bepicolombo-mercury-transfer-module-separation.webp",
+        "credit": "Image: arstechnica.com",
+        "origin_url": "https://arstechnica.com/space/2026/09/after-8-years-europes-bepicolombo-mission-is-on-final-approach-to-mercury/",
+        "width": 1200,
+        "height": 1200
+      }
+    },
+    {
+      "id": "2026-09-02-nasa-consolidates-launch-procurement-office",
+      "date": "2026-09-02",
+      "headline": "NASA consolidates launch programs into single procurement office",
+      "explainer": {
+        "tagline": "NASA is merging its launch programs into one office weighing block buys of launch services, per SpaceNews.",
+        "what_happened": "NASA is consolidating many of its launch programs into a single office that is considering block purchases of launch services, per SpaceNews's September 2 report.",
+        "why_it_matters": "NASA buys launches piecemeal today across several programs; a single office weighing bulk purchases would change how the agency's roster of commercial providers competes for individual NASA missions going forward. No further detail on scope, timeline, or which programs are affected has been made public."
+      },
+      "tags": [
+        "launch",
+        "us-gov"
+      ],
+      "category": "procurement",
+      "impact": "noise",
+      "companies": [
+        "NASA"
+      ],
+      "source_url": "https://spacenews.com/new-nasa-office-to-consolidate-launch-procurements/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/new-nasa-office-to-consolidate-launch-procurements/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/new-nasa-office-to-consolidate-launch-procurements/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-09-05",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-09-05T05:30:49.425Z",
+      "entities": [
+        {
+          "name": "NASA",
+          "ref": "organizations/nasa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-02-nasa-consolidates-launch-procurement-office.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/new-nasa-office-to-consolidate-launch-procurements/",
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "2026-09-03-spacex-fcc-high-cost-fund-sunset",
+      "date": "2026-09-03",
+      "headline": "SpaceX urges FCC to sunset $4.5 billion rural broadband fund",
+      "explainer": {
+        "tagline": "SpaceX urged the FCC to sunset its High-Cost rural subsidy fund as 'rent-seeking'; rural ISPs' trade group objected.",
+        "what_happened": "SpaceX filed reply comments with the FCC by the September 3 deadline urging the commission to sunset its High-Cost program, the roughly $4.5-billion-a-year rural broadband subsidy fund, calling continued calls to preserve it \"rent-seeking behavior inherent to corporate welfare programs,\" per Broadband Breakfast. SpaceX said it plans to launch about 1,000 V3 satellites by mid-2027 to roughly double Starlink's network capacity. NTCA, the rural broadband trade association, opposed eliminating the fund, its general counsel saying no LEO operator has \"demonstrated a real-world capacity to serve all locations simultaneously at substantial take rates.\"",
+        "why_it_matters": "The High-Cost Fund is the FCC's main rural-broadband subsidy mechanism, funding roughly $4.5 billion a year; SpaceX has pushed since at least May for the FCC to wind it down in favor of satellite broadband, arguing legacy subsidies are now obsolete. No FCC decision has been made, this is a filing in an open docket, not a ruling, but its outcome would shape whether Starlink or terrestrial rural ISPs keep drawing on the subsidy."
+      },
+      "tags": [
+        "connectivity",
+        "us-gov",
+        "pricing"
+      ],
+      "category": "regulatory",
+      "impact": "notable",
+      "companies": [
+        "SpaceX",
+        "Federal Communications Commission"
+      ],
+      "source_url": "https://broadbandbreakfast.com/rural-isps-to-fcc-preserve-rural-broadband-subsidy/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://broadbandbreakfast.com/rural-isps-to-fcc-preserve-rural-broadband-subsidy/",
+          "reason": "base tier 3 from lead source class \"trade\" (Broadband Breakfast)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://broadbandbreakfast.com/rural-isps-to-fcc-preserve-rural-broadband-subsidy/",
+          "outlet": "Broadband Breakfast",
+          "class": "trade",
+          "added": "2026-09-05",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-09-05T05:30:49.425Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-03-spacex-fcc-high-cost-fund-sunset.webp",
+        "credit": "Image: broadbandbreakfast.com",
+        "origin_url": "https://broadbandbreakfast.com/rural-isps-to-fcc-preserve-rural-broadband-subsidy/",
+        "width": 1024,
+        "height": 682
       }
     }
   ]
