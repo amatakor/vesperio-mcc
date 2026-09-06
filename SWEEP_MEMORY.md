@@ -4005,3 +4005,51 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (571 items, up from 569)
   and a direct read of both new items' `snr`/`category`/`impact`/
   `tags`/`companies`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~5h56m gap, unfiltered full source list (2026-09-06, second)
+
+- 2026-09-06-F: A fully clean, near-zero-item sweep resolved to exactly
+  one genuine procedural update: the FAA's July 28 environmental-waiver
+  proposal item (already SNR 5, official_record lead) got Earthjustice's
+  September 1 opposition-comments release attached as a fourth,
+  `informal`-class source once a same-day NBC News Google-News queue
+  candidate (redirect never resolved via WebFetch, per the standing
+  2026-08-06-F/2026-08-07-K pattern) led back to the underlying comment-
+  period-closure news. SNR stayed at 5 (direct-source ceiling, no bump
+  claimed) since this was a new procedural fact, not corroboration of
+  the original claim. A Morgan Lewis law-firm alert (Sept 2) surfaced
+  while chasing this turned out to be a pure recap of two already-
+  published items (the FAA rule itself and the July 9 Reflect Orbital
+  FCC approval) and added nothing.
+- 2026-09-06-G: The NASA Deep Space Network Goldstone DSS-23 antenna
+  story (Space.com "queue" candidate, direct URL 404'd, found via
+  WebSearch) turned out to be a month-stale event (antenna went
+  operational August 3) with no stated commercial-space consequence
+  (DSN serves NASA's own deep-space missions, not a commercial
+  operator or reseller) -- judged out of scope on the same institutional-
+  disclosure logic as the NASA-STRIDE/ASI-board precedents, not chased
+  as a predates-window item despite being dateable and fetchable.
+- 2026-09-06-H: Two more shapes of the recurring "trend/wrap-up piece
+  bundling old facts" trap (2026-09-04-T precedent): a KeepTrack/Yahoo
+  Finance recap of SpaceX's Florida-to-Starship Starlink-launch shift
+  restated the already-published Aug 25 B1067/37th-flight item with no
+  new fact; a paywalled Aviation Week piece by Vivienne Machi
+  ("Orbital Cargo Firms Aim To Make Space Reentry Routine," Sept 4) read
+  as a multi-company industry survey (Varda/Inversion/ATMOS-shaped) with
+  no single dateable new contract or milestone extractable from the
+  visible teaser -- left undrafted rather than drafted from a thin
+  survey-piece summary.
+- 2026-09-06-I: The recurring ISRO-privatization story (9 staff
+  associations' letter, already queued to held.json 2026-09-05 with no
+  Florian ruling) kept generating fresh Google News angles this run too
+  (an IN-SPACe chairman "50 launches a year by 2030" quote defending the
+  same privatization push) -- correctly treated as the same open scope
+  question rather than a new candidate, extending 2026-09-06-C's
+  same-day finding to a fourth sweep in the sequence.
+- 2026-09-06-J: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
+  updated, 0 held") plus a direct read of the updated item's
+  `snr`/`sources` fields and the appended `state.json` sweep-log entry
+  as the build-health signal.
