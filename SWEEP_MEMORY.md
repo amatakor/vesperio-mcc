@@ -4079,4 +4079,50 @@ a newer entry if a lesson changes.
   (572 items, up from 571) and a direct read of the new item's and both
   updated items' `snr`/`sources`/`explainer` fields and the appended
   `state.json` sweep-log entry as the build-health signal.
-  as the build-health signal.
+
+## Narrow same-day re-check, ~3h25m gap, unfiltered full source list (2026-09-06, fourth)
+
+- 2026-09-06-N: A fully clean zero-item sweep: the queue (20 candidates) was
+  almost entirely the recurring ISRO-privatization Google News wave (still
+  no Florian ruling, extending 2026-09-06-C/I to a fifth sweep in the
+  sequence), SpaceX stock-speculation/analyst-recap content-mill pieces, and
+  an already-published Starlink batch launch (Yahoo's "27 Starlink
+  satellites... lands on ship at sea" matched 2026-09-06-spacex-starlink-15-24-vandenberg
+  exactly). The 8-source HTML pass, a rotated 15-of-17-channel signals pass,
+  and an 8-query discovery matrix all independently converged on the same
+  small set of already-published stories (Isar Aerospace's orbital flight,
+  PLD Space's Series C extension, EOS-05, Galactic Energy's Pallas-1 debut).
+- 2026-09-06-O: A new recycled-content-mill shape distinct from
+  2026-09-06-A's repriced-analyst-target pattern: a Yahoo Finance UK piece
+  titled "Musk Moves Up SpaceX's Orbital Data Center Timeline, Again"
+  (Sept 6) turned out to be a bare rehash of an Aug 25 247wallst.com/Yahoo
+  Finance story (fetched directly to confirm: same Q4 2027 first-launch
+  date, same JPMorgan $240 target) published alongside the already-covered
+  Starbase Louisiana announcement -- the "Again" in the headline is the
+  content mill's own tell. The underlying Aug 25 fact (SpaceX's first
+  orbital-data-center satellite targeted for Q4 2027, pulled forward from
+  2028) was never itself drafted as its own item (only the Starbase
+  Louisiana spaceport deal was), but chasing a 12-day-old stock-clickbait
+  rehash for a minor timeline-pull-forward detail with no stated customer
+  or market-access change didn't clear the bar for a predates-window chase;
+  left undrafted rather than spend corroboration budget on it.
+- 2026-09-06-P: A 24/7 Wall St. piece ("Forget Starlink? Japan's $1 Billion
+  BlueBird Play Makes ASTS the National Satellite OS") bundling the
+  already-published Aug 4 AST SpaceMobile/Rakuten Japan D2C item with a
+  WebSearch-synthesized "136-satellite J-BLUEBIRD-NGSO ITU filing" detail
+  that could NOT be confirmed by any directly fetched page (a payloadspace.com
+  article that seemed likely to confirm it turned out to be a stale June 25
+  piece with no such figure) -- left the ITU-filing detail out entirely per
+  rule 2 rather than draft from an unconfirmed WebSearch synthesis, and left
+  the whole piece undrafted as a stock-hype recap of already-known facts.
+- 2026-09-06-Q: Google's bsky.app profile pages fail to render any post
+  content via a plain WebFetch summary (returns only the bare handle); the
+  public API endpoint `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`
+  reliably returns real posts with `createdAt` timestamps and embedded
+  external URIs instead. Worth using the API endpoint directly for every
+  bluesky signals-channel fetch rather than the bsky.app profile URL.
+- 2026-09-06-R: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 0 new, 0 updated, 0 held") plus a `jq`-based
+  parse check of all four touched data files as the build-health signal.
