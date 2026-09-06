@@ -4052,4 +4052,31 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
   updated, 0 held") plus a direct read of the updated item's
   `snr`/`sources` fields and the appended `state.json` sweep-log entry
+
+## Narrow same-day re-check, ~5h57m gap, unfiltered full source list (2026-09-06, third)
+
+- 2026-09-06-K: A same-day Isar Aerospace expansion follow-up (Investing.com's
+  Reuters-sourced piece on five more rockets in production, a ~40-launches/year
+  long-term target, and a Nova Scotia second site targeted 2028) had its own
+  "Published 06-09-2026, 05:46 pm" timestamp misread on first WebFetch as
+  "June 9, 2026" (the tool silently flipped DD-MM to MM-DD); a second, more
+  specific prompt asking to quote the on-page timestamp exactly resolved it
+  correctly as September 6. Worth re-querying a WebFetch date claim that looks
+  impossibly stale relative to the article's own content (here, expansion
+  plans following a launch that happened the day before) before discarding it
+  as a resurfacing trap.
+- 2026-09-06-L: The queue's 62 candidates were ~90% a single Google-News wave
+  (dozens of outlets covering IN-SPACe chairman Pawan Goenka's rebuttal to the
+  ISRO-privatisation letter already queued to held.json 2026-09-05, no new
+  Florian ruling) plus SpaceX stock/IPO chatter and Futurism off-topic junk;
+  the only genuinely new item (a routine Starlink batch launch) came straight
+  from the queue's own `raw_excerpt` (Space.com), which for once carried the
+  full article body rather than truncating at the membership gate.
+- 2026-09-06-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 2 updated, 0 held") plus a `jq` parse check
+  (572 items, up from 571) and a direct read of the new item's and both
+  updated items' `snr`/`sources`/`explainer` fields and the appended
+  `state.json` sweep-log entry as the build-health signal.
   as the build-health signal.
