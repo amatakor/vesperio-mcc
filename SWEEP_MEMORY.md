@@ -93,127 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h43m gap, unfiltered full source list (2026-08-06)
-
-- 2026-08-06-A: The harvester queue (Google News: launch feed especially)
-  was almost entirely SpaceX stock/IPO-unlock speculation and moon-crash
-  reaction pieces (~150 candidates, one real item: none survived from the
-  queue itself this run); every genuinely new item this sweep came from
-  either the signals pass or direct earnings/investigation fetches
-  outside the queue. Confirms the standing pattern that a SpaceX-heavy
-  queue is a low-yield discovery leg once the company goes public and
-  starts drawing daily stock churn.
-- 2026-08-06-B: Investors.satellogic.com and ir.rdw.com (Redwire's Q4-IR
-  domain) both timed out (60s) on every WebFetch attempt this run.
-  investors.satellogic.com WOULD have passed the anti-spoof gate as
-  first_party (it's a subdomain of the registry's satellogic.com apex,
-  per the 2026-07-07-E www-stripping/subdomain rule) had it loaded;
-  ir.rdw.com would NOT (Redwire's registry website is redwirespace.com,
-  a different apex entirely, the same shape as the SpaceX
-  ir.spacex.com/s21.q4cdn.com mismatch in 2026-08-05-B). Fell back to a
-  GlobeNewswire wire mirror (Manila Times, wire_pr, tier 4) for
-  Satellogic's earnings and to informal-classing Redwire's own IR page
-  directly (2026-08-05-O pattern) for Redwire's, since no independent
-  trade coverage of either Q2 earnings existed (only wire mirrors and
-  financial-data-aggregator sites like TradingKey/Benzinga/StockTitan,
-  which just restate the same release numbers, not original reporting).
-- 2026-08-06-C: A whitelisted signal's own Bluesky feed surfaced a
-  same-day incident the harvester queue never carried: Jeff Foust
-  (SpaceNews, whitelisted) posted about a fire at TsNIIMash (Roscosmos's
-  main research center, which houses Russian ISS mission control) within
-  hours of it happening; Anatoly Zak's bluesky ("More from Russia's
-  Korolov 💥💥") independently flagged the same event a few hours earlier
-  with no substantive detail of its own. Chased via WebSearch to Moscow
-  Times + Ukrinform (both mainstream, independent) rather than citing
-  either signal's post as a scoring source, since neither post itself
-  stated the facts (Foust linked out; Zak's post was a bare reaction).
-- 2026-08-06-D: xinhua/state-media handling aside, TASS itself was never
-  fetchable or citable this run for the TsNIIMash fire (no working TASS
-  URL found); Roscosmos's own characterization ("technical in nature,"
-  ISS operations "remain fully under the control of specialists") only
-  reached us secondhand via Moscow Times/Ukrinform quoting it, which is
-  the honest ceiling for an item like this without a first-party
-  Roscosmos statement to link directly. Deliberately left out the
-  Rosaviatsia flight-restriction/drone-attack coincidence several outlets
-  mentioned: unconfirmed causal speculation adjacent to the war, squarely
-  the conflict-analysis exclusion, even though the underlying fire fact
-  is clean and multiply sourced.
-- 2026-08-06-E: A whitelisted signal's site/substack pass surfaced a
-  genuinely new, well-documented financial story the queue never carried
-  at all: European Spaceflight's report that MaiaSpace's 2025 accounts
-  (filed July 22) show negative shareholders' equity, forcing an
-  ArianeGroup shareholder vote under French corporate law (Article
-  L.225-248) on June 25 not to dissolve the company. Dated the item to
-  the June 25 shareholder decision (the actual corporate action) rather
-  than the July 22 filing date or the August discovery date, per the
-  standing event-date-over-discovery-date convention for
-  notable-or-above stories the queue missed when they happened.
-  Andrew Parsonson's same-day substack teaser about a separate
-  ArianeGroup/Blue Origin €42M supplier relationship (from German
-  financial filings) was left undrafted: the substack piece is
-  subscriber-only and no public mirror or excerpt beyond the one-line
-  teaser was fetchable, so there was nothing to verify facts against.
-- 2026-08-06-F: Google News redirect URLs (news.google.com/rss/articles/...)
-  continue to fail to resolve via WebFetch (confirms 2026-08-01-C2/
-  2026-08-04-A): every redirect attempted this run returned only a bare
-  "Google News" shell with no content and no forwarding URL. WebSearch
-  with the headline text plus outlet name reliably found the actual
-  publisher URL instead; treat the redirect-follow step in
-  prompts/update-items.md as effectively dead until the tooling changes,
-  and go straight to WebSearch for Google-News-sourced queue candidates.
-- 2026-08-06-G: Two more stale-resurfacing traps this run, confirming
-  the pattern is not domain-specific: (1) a "News On AIR" Google News
-  entry titled "ISRO successfully conducts 2nd integrated air drop test
-  for Gaganyaan mission," timestamped in this run's window, resolved via
-  ISRO's own press-release page to an April 10, 2026 event, four months
-  stale. (2) A Lok Sabha written reply on LEO collision-avoidance
-  manoeuvre counts, genuinely dated today, was judged out of scope
-  rather than stale: no commercial operator named anywhere in it (per
-  the standing MUOS/Aeolus-2/NATO-HALO precedent for institutional
-  disclosures without a stated commercial angle), not a discrete
-  incident or regulatory action either.
-- 2026-08-06-H: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 8 new, 2 updated, 0 held") as the build-health signal.
-
-## Normal-mode sweep, ~15h gap, unfiltered full source list (2026-08-06, second / 2026-08-07)
-
-- 2026-08-07-A: A signals-pass find can already be handled by the SAME-DAY
-  prior sweep: Jeff Foust's Aug 6 bluesky post and the matching SpaceNews
-  "NASA and Roscosmos continue seat barter agreement" article read as a
-  fresh update candidate for the existing 2026-07-14 seat-swap item, but a
-  grep of that item's `sources` array showed the exact SpaceNews URL
-  already attached (`"added": "2026-08-06"`) by the morning's 09:37 UTC
-  sweep, and its `what_happened` already carried the Aug 5 Weigel/Starliner
-  quote. Always check an item's CURRENT sources array (not just its prose)
-  before drafting an update from a signals-pass find on a short gap;
-  confirms 2026-07-12-J's lesson applies to updates, not just fresh
-  corroboration attaches.
-- 2026-08-07-B: `news.northropgrumman.com` (a subdomain of the registry's
-  `northropgrumman.com` apex) passed the anti-spoof gate as `first_party`
-  cleanly, confirming the subdomain-matches-apex rule (2026-07-07-E/
-  2026-08-06-B) on a new domain. `blacksky.com/press-releases/<slug>/`
-  also worked as a directly fetchable, gate-clean first-party source for a
-  quarterly-earnings release (contrast with SpaceX/Redwire's IR-CDN
-  domains, which keep failing the apex match) -- worth trying a company's
-  main marketing domain's own `/press-releases/` path before assuming an
-  earnings story needs a trade-outlet lead.
-- 2026-08-07-C: WebFetch on `space.com` returned only navigation/signup
-  chrome with no article body on a direct fetch this run (a new failure
-  shape, distinct from the arstechnica.com/bloomberg.com hard-block
-  pattern); dropped it rather than draft from the WebSearch summary.
-  A Chinese financial-press outlet (stcn.com, Securities Times) gave clean,
-  independent corroboration of a SpaceNews China story (Orienspace's
-  pre-C round) beyond the wire-mirror trap, confirming 2026-07-10-I's
-  native-language-query lesson also works via direct URL fetch, not just
-  WebSearch.
-- 2026-08-07-D: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 10 new, 0 updated, 0 held") as the
-  build-health signal.
-
 ## Narrow same-day re-check, ~4.5hr gap, unfiltered full source list (2026-08-07, second)
 
 - 2026-08-07-E: Chased two important predating-window stories the queue
@@ -4061,3 +3940,68 @@ a newer entry if a lesson changes.
   items, up from 567) and a direct read of both new items'
   `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~8h24m gap, unfiltered full source list (2026-09-06)
+
+- 2026-09-06-A: A recycled-old-price-target trap in a new shape: a
+  247wallst.com/AOL piece dated Sept 4, 2026 ("One Analyst Sees 450%
+  Upside From Here") restates the exact same Raymond James/Brian
+  Gesuale $800 SpaceX price target that Motley Fool and MSN had already
+  covered on 2026-07-14 (fetched fool.com's July 14 article directly to
+  confirm: same analyst, same firm, same $800 figure, same ~452%
+  upside math off a near-identical stock price) -- personal-finance
+  content mills appear to recirculate the same standing analyst call as
+  "new" filler every few weeks. Left undrafted. By contrast, the same
+  day's Oppenheimer (Timothy Horan) target raise to $280 from $250 was
+  independently confirmed as genuinely new (Sept 2 dated, corroborated
+  across StreetInsider/GuruFocus/TipRanks/Yahoo Finance/multiple
+  financial-news sites with consistent $250->$280/Outperform detail)
+  and was drafted as commentary. Always check a recycled-sounding
+  analyst-note headline's own underlying call date/figure against a
+  directly fetched primary article before drafting or discarding it.
+- 2026-09-06-B: A WebFetch summary of a Yahoo Finance article
+  (Oppenheimer/Horan note) surfaced specific claims (a "Cursor
+  acquisition," Grok integration, exact AI-revenue/capex/net-loss
+  dollar figures) that read as suspiciously precise for what should be
+  a rocket-and-satellite company; re-fetching a second, independent
+  source (TipRanks) on the same note independently surfaced the same
+  "Cursor acquisition" and Grok details (though not the specific
+  revenue/capex/loss figures), which resolved the suspicion in favor of
+  the fact being real rather than a WebFetch hallucination -- SpaceX in
+  this feed's timeline has an AI/Grok business line, so a same-day
+  analyst note reasoning from that is plausible on its own terms. Left
+  the unconfirmed-by-a-second-source dollar figures (AI revenue/capex/
+  net loss) out of the drafted copy entirely rather than risk a
+  single-fetch fabrication, per rule 2. Separately, TipRanks reported a
+  different Deutsche Bank/Edison Yu price target ($325) than a plain
+  WebSearch synthesis across multiple outlets did ($235, with a July
+  $255 target lowered) for the same analyst on the same stock --
+  treated the WebFetch's $325 figure as unreliable and omitted the
+  Deutsche Bank angle from the draft entirely rather than use either
+  number.
+- 2026-09-06-C: The White House/Paris-space-summit story (queued to
+  held.json 2026-09-03) and the ISRO staff-associations privatisation
+  letter (queued 2026-09-05) both kept resurfacing in the harvester
+  queue as syndicated Google News variants (a Defense Express
+  Ukraine-conflict-angle piece, several India-outlet mirrors) with no
+  Florian ruling yet; correctly left both out of this draft rather than
+  re-queuing duplicate held entries or guessing a verdict, per the
+  standing "check the queue for a decision block before touching an
+  open held entry" rule.
+- 2026-09-06-D: A Jeff Foust bluesky post (Cowboy Space's 291,035-sq-ft
+  Kent, Wash. facility lease for orbital-data-center hardware, via a
+  GeekWire piece that itself 403'd on direct WebFetch) was drafted as a
+  whitelist/observer-class lead once an independent secondary outlet
+  (Engineers and Architects of America, e-a-a.com) fetched cleanly and
+  independently confirmed the same square footage, job count, and
+  $275M Series B/2028-launch context -- Cowboy Space has no
+  src/data/registry organization entry, so the crossfeed block was
+  `facts: []` with a no-registry-host note, same shape as the
+  standing MDA Space/Voyager precedents.
+- 2026-09-06-E: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (571 items, up from 569)
+  and a direct read of both new items' `snr`/`category`/`impact`/
+  `tags`/`companies`/`sources` fields as the build-health signal.
