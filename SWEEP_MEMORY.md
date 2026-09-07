@@ -4147,3 +4147,46 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a `jq` parse check (574 items, up from 572)
   and a direct read of both new items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~4h07m gap, unfiltered full source list (2026-09-07, third)
+
+- 2026-09-07-M: A funding round reported as "in progress" (2026-07-07,
+  informal NewsBytes lead, SNR 2) that a directly fetched mainstream
+  source (Free Press Journal) plus an independent trade source
+  (TechNode Global) confirmed CLOSED two months later, with the same
+  lead investor (Temasek) and the same $100M figure but new named
+  co-investors and a firm total-funding number, was treated as an
+  `updates[].rescore` (upgrading the lead source class and re-basing
+  the trace) rather than a new item, even though the gap is far outside
+  the dedup rule's literal 7-day/30-day windows -- it is still the
+  identical financing event reaching its closing milestone, not a
+  distinct one. `source_url` was switched to the new mainstream lead
+  per the upgrade-path convention (patch it first, then the rescore's
+  sources[0] must match).
+- 2026-09-07-N: A company exec's on-the-record but explicitly-unsigned
+  claim (Isar Aerospace CCO Stella Guillen telling CNBC the order
+  pipeline "tops 10 billion euros," with the company declining to say
+  how much is contracted) was folded into an existing seismic item via
+  `updates[].patch` (appending one attributed, caveated sentence to
+  `what_happened`) with an `attach` but no `bump`: it is a genuinely new
+  supplementary fact, not corroboration of the already-scored
+  orbital-insertion claim, so the item's SNR was left untouched rather
+  than bumped. Every outlet found (Yahoo Finance, IBTimes, TechStartups,
+  Coinotag) traced to the same CNBC interview (CNBC's own page 403'd on
+  direct fetch); treated as one underlying source per the standing
+  wire-rewrite rule rather than stacked for fake corroboration.
+- 2026-09-07-O: A new HTML-source find (ICEYE's own newsroom, Sompo
+  Japan flood-claims partnership) landed cleanly at first-party SNR 5
+  with a `crawl: found_some` (several outlets, e.g. Finextra, turned out
+  to be verbatim press-release reproductions marked "External"/
+  "provided by an external author" -- left uncited as non-independent
+  rather than stacked as corroboration, though the search genuinely did
+  find real matching coverage so `found_none` would have been dishonest
+  the other way).
+- 2026-09-07-P: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
+  2 updated, 0 held") plus a `jq` parse check (575 items, up from 574;
+  sweeps log 221 to 222) and a direct read of the new item's and both
+  updated items' `snr`/`snr_trace`/`sources`/`explainer` fields as the
+  build-health signal.
