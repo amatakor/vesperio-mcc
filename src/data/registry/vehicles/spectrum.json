@@ -110,84 +110,72 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 1,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/491/",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": 2,
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+    "as_of": "2026-09-07",
+    "snr": 5,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/491/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 5,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+        "reason": "Launch Library launch record: 'Spectrum | Onward and Upward' (2026-09-05), second Spectrum flight, confirms cumulative flight count of 2"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 5,
       "scorer_version": 1
     },
     "tier": "canonical"
   },
   "flights_successful": {
-    "value": 0,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/491/",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": 1,
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+    "as_of": "2026-09-07",
+    "snr": 5,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/491/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 5,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+        "reason": "Launch Library launch record status 'Launch Successful': the vehicle inserted its payloads into the target sun-synchronous orbit"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 5,
       "scorer_version": 1
     },
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2025-03-30",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Spectrum&limit=3&mode=normal",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": "2026-09-05",
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+    "as_of": "2026-09-07",
+    "snr": 5,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Spectrum&limit=3&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 5,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+        "reason": "Launch Library launch record: 'Spectrum | Onward and Upward' NET 2026-09-05 20:12 UTC"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 5,
       "scorer_version": 1
     },
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-08-31",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-08-24",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
-    "value": "In Development",
+    "value": "operational",
     "source": "https://en.wikipedia.org/wiki/Spectrum_(rocket)",
-    "as_of": "2026-07-12"
+    "as_of": "2026-09-07"
   },
   "price_per_launch_usd": {
     "value": null,
     "source": null,
     "as_of": null
   },
-  "notes": "Single flight to date recorded as a failure by Launch Library. Weekly maintenance 2026-08-20: LL2 rate-limited this run (429 on first call, stopped per budget rule). The prior on-file NET of 2026-07-31 has passed without a launch; Isar Aerospace's own mission-updates page (isaraerospace.com/mission-updates-overview, first-party) states the 'Onward and Upward' second flight was scrubbed (most recently reported June 15, 2026, fluid-system anomaly) and no new NET has been announced as the teams investigate; secondary aggregators float an August 2026 window but with no firm date and are not used. next_flight_date nulled pending a confirmed date. flights_total/flights_successful unchanged (still 1/0, second flight has not occurred).",
+  "notes": "Weekly maintenance 2026-09-07: Spectrum's second flight ('Onward and Upward') launched 2026-09-05 and reached its target sun-synchronous orbit per Launch Library, Isar Aerospace's first successful orbital flight. flights_total/flights_successful/last_flight_date updated accordingly. next_flight_date nulled: Launch Library's listed upcoming Spectrum missions (Flight 3 and others) all carry TBD/placeholder NET dates, none firm.",
   "height_m": {
     "value": 28,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",
@@ -254,6 +242,12 @@
       "outcome": "Launch Failure",
       "source": "https://ll.thespacedevs.com/2.2.0/launch/?status=4&limit=100&ordering=-net",
       "as_of": "2026-07-08"
+    },
+    {
+      "date": "2026-09-05",
+      "headline": "Spectrum's second flight, 'Onward and Upward,' reaches orbit",
+      "source": "https://ll.thespacedevs.com/2.2.0/launch/1b23eb18-e06e-4058-9b42-e95ca0980511/",
+      "as_of": "2026-09-07"
     }
   ]
 }
