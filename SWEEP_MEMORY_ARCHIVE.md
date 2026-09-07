@@ -4436,3 +4436,83 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   merge confirmation ("merged 10 new, 0 updated, 0 held") as the
   build-health signal.
 
+## Narrow same-day re-check, ~4.5hr gap, unfiltered full source list (2026-08-07, second)
+
+- 2026-08-07-E: Chased two important predating-window stories the queue
+  had never surfaced (2026-07-08-I2 pattern); only one turned out to be
+  genuinely new. SpaceX's Falcon 9/Transporter rideshare-booking freeze
+  past late 2028 (first solidly reported by SpaceNews June 25, later
+  confirmed by SatNews, Bloomberg, and a fresh Aug 6 SpaceQ Media
+  Canada-market follow-up that was the actual signals-pass entry point)
+  had never been drafted under any id and shipped clean at SNR 4 with 5
+  sources. But Rocket Lab's "$266M Kodiak Alaska Space Force contract"
+  turned out to be an exact duplicate of the already-published
+  2026-07-21-rocket-lab-haste-alaska-contract (same figure, two of the
+  same corroboration sources already attached) -- caught by finalize-
+  sweep's same-company+category dedup gate, not by my own pre-draft
+  check. Always grep existing[] IDs for the actor + a distinguishing
+  noun (here "kodiak"/"haste"/"alaska") before treating a chased
+  predating-window story as definitely new, not just for exact-title
+  matches; the two headlines ("wins record $266 million Space Force
+  launch contract" vs. "wins $266 million Space Force contract for HASTE
+  launches") don't share a single word besides the dollar figure and
+  company. Recovered the wasted research by attaching a genuinely new
+  local-outlet source (Alaska Public Media, independent facts: dedicated
+  pad construction, ~140-acre site expansion) to the existing item via
+  updates[].attach instead.
+- 2026-08-07-F: The dedup false-positive pattern (2026-08-01-C and many
+  peers) fired again on the rideshare-freeze item against two wholly
+  unrelated SpaceX `launch`-category items (an NRO mission, a Starfall
+  reentry demo) purely on shared company + category + <7-day window from
+  its June 25 dated-to-actual-event publish date. Two `dedup_distinct`
+  entries cleared it in one pass, confirming the heuristic fires just as
+  readily on a backfilled/predating-window item's assigned date as on a
+  same-day one.
+- 2026-08-07-G: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 1 updated, 0 held") as the build-health signal.
+
+## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-07, third)
+
+- 2026-08-07-H: A new shape of the same-company-plus-category dedup
+  false positive: a brand-new IRIS2 constellation-expansion item (EU
+  Commission/SpaceRISE, category `procurement`) matched the existing
+  2026-07-31 Hisdesat/SpainSat NG III contract item purely because both
+  items name Airbus Defence and Space and Thales Alenia Space as
+  industrial subcontractors, six days apart, same category -- the actual
+  actors (European Commission/SpaceRISE vs. Hisdesat) and programs share
+  nothing. One `dedup_distinct` entry cleared it. Worth expecting this
+  heuristic to fire on ANY two European-launch-vehicle-or-satellite
+  procurement stories that both cite Airbus/Thales/OHB as manufacturers,
+  not just same-company-as-buyer cases.
+- 2026-08-07-I: WebFetch cannot parse a PDF's binary content even when
+  the URL resolves and downloads cleanly (tried Eutelsat's own FY2025-26
+  results PDF at eutelsat.com/system/files/...; got a "binary/encoded,
+  cannot be parsed" response, file saved to a local tool-results path but
+  no extractable text). Fell back to a wire-distributed mirror of the
+  same release (mynewsdesk.com, classed `wire_pr` since it is a PR
+  distribution platform functionally identical to BusinessWire/
+  GlobeNewswire) plus independent trade coverage (Via Satellite) instead
+  of the company's own PDF; worth trying an HTML mirror of an investor
+  PDF release before assuming a company's own results are directly
+  fetchable as first-party text.
+- 2026-08-07-J: advanced-television.com returned HTTP 429 (rate limited)
+  on the one attempt this run; not flipped to any status change (not a
+  configured source), just noting the outlet is fetchable but throttled
+  under repeated access.
+- 2026-08-07-K: A Google-News-surfaced Reuters headline
+  ("EU Commission signs contract to expand IRIS2 satellite constellation")
+  never resolved via the redirect (confirms 2026-08-06-F); a plain
+  WebSearch for the exact quoted headline found the same underlying facts
+  restated by Communications Today, Telecompaper, EUSPA's own newsroom,
+  and ESA's own concession-partner (resilience.esa.int) archive, more
+  than enough independent confirmation without needing the Reuters piece
+  itself.
+- 2026-08-07-L: mynewsdesk.com is a legitimate `wire_pr`-class venue for
+  a company's own press release when the company's primary investor page
+  only links an unparseable PDF; distinguish this from `informal` (it is
+  literally the company's release text, not a third party's writeup) but
+  keep it below `first_party` (the domain is mynewsdesk.com, not the
+  company's own, so it fails the anti-spoof domain check).
+
