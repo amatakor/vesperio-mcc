@@ -4064,3 +4064,86 @@ a newer entry if a lesson changes.
   relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
   updated, 0 held") plus a `jq` parse check (572 items, unchanged; sweeps
   log 219 to 220) as the build-health signal.
+
+## Deep sweep (~7h41m gap since last, 7-day window, unfiltered full source list, 2026-09-07, second)
+
+- 2026-09-07-C: Two consecutive zero-add sweeps (2026-09-06 fourth,
+  2026-09-07 first) triggered `candidates-context`'s deep mode (7-day
+  window, `previously_presented` re-triage). Working the full 7-day queue
+  plus all 17 fetchable signals-channel entries plus a 12-query discovery
+  matrix surfaced only two genuinely new items in an otherwise
+  thoroughly-covered week; confirms deep mode is working as designed
+  (exhaustive re-check, not a signal that coverage was previously thin).
+- 2026-09-07-D: Kineis published two Sept 7 press releases same-day: a
+  break-even/revenue target (18M EUR revenue, connected objects up 150%
+  to ~50,000) and a "Thomas Hiriart" appointment whose page TITLE says
+  "General Manager" but whose URL SLUG says "chief-executive-officer"
+  (`/appointment-of-thomas-hiriart-as-chief-executive-officer/"). Trusted
+  the page's own stated title (General Manager) over the URL slug and
+  treated it as a routine below-the-bar hire; only drafted the break-even
+  release. Worth a second look if Kineis's own copy is inconsistent again
+  next time this domain is touched.
+- 2026-09-07-E: A first-party financial-target press release (Kineis
+  "targeting break-even as early as 2026") takes NO `found_none` penalty
+  per the direct-source-ceiling rule even on a same-day, zero-corroboration
+  search: landed SNR 5 (base tier 5, no modifiers) exactly as the spec
+  describes for direct sources, distinct from the informal/indirect
+  leads where `found_none` costs a level. Worth remembering that a
+  forward-looking company projection is scored on the strength of the
+  attribution ("Kineis says it is targeting X"), not on whether the
+  projection will prove true.
+- 2026-09-07-F: A same-company-plus-category dedup false positive fired
+  FOUR ways at once on a new SpaceX/Viasat FCC interference petition
+  (regulatory): matched against the Iran Starlink-crackdown item, the
+  SpaceX/Iridium-conduct FCC review, the UAE Starlink license grant, and
+  the SpaceX/FCC USF High-Cost Fund docket, none of which share anything
+  with this petition beyond SpaceX plus the regulatory category. Four
+  `dedup_distinct` entries cleared it in one pass; extends the standing
+  finding (now covering NASA, SpaceX, Blue Origin, Redwire, Viasat, SES)
+  that this heuristic fires per shared company regardless of docket,
+  regulator, or country, and that a company with many regulatory items in
+  one week can trigger it against ALL of them simultaneously.
+- 2026-09-07-G: datacenterdynamics.com (a data-center-industry trade
+  outlet, not a space/satcom-focused one) covered a genuinely new SpaceX
+  FCC filing (petition to block Viasat-3 F2 over Ku/Ka interference) that
+  only SatNews otherwise carried; several other "hits" on this story
+  (corsstations.com, newsdirectory3.com, memesita.com) were identical-
+  headline content-farm rewrites of the same SatNews/DCD reporting, not
+  independent coverage, and were correctly left uncited rather than
+  stacked for fake corroboration.
+- 2026-09-07-H: Confirms 2026-09-04-T/2026-09-06-H's "trend piece bundles
+  old facts" trap in force again: Ars Technica's Sept 2 "Is Russia's rival
+  to Starlink failing?" and TechSpot's Sept 3 follow-up both restate
+  figures (32 Rassvet satellites, none reaching operational altitude)
+  already fully captured in the existing 2026-07-19 item's ISW-sourced
+  Sept 1 update; left both undrafted and did not even attach them as
+  corroboration since they add no fact beyond what's already on the card.
+- 2026-09-07-I: A Google News redirect through WebFetch is now
+  consistently unusable for `news.google.com/rss/articles/...` links in
+  this environment (returns a bare "Google News" header, no redirect
+  target, no content) -- for every such candidate this run, WebSearch on
+  the exact headline text was used instead to find the underlying
+  publisher article, which worked reliably. Treat WebFetch-on-a-Google-
+  News-URL as a dead end and go straight to WebSearch rather than
+  retrying the fetch.
+- 2026-09-07-J: A CGTN headline naming "Starman" (GoPro's $285M
+  acquirer) is unrelated to SpaceX/Starman-the-Tesla-Roadster-payload;
+  it is a US optical-transceiver maker for AI data centers. Worth a
+  reminder that a space-adjacent-sounding proper noun in a headline still
+  needs a one-line fetch to confirm it is actually a space story before
+  spending more time on it.
+- 2026-09-07-K: A retrospective NISAR/Nepal-avalanche "warning signs
+  detected after the fact" story (India Today, NewsBytes, Indian Defence
+  News) was judged out of scope as a science-mission research result
+  (CLAUDE.md excludes "research results and papers" for science
+  missions), not a dated program event; a differently-sourced ABC News
+  version of the same disaster didn't even use NISAR, using Planet/
+  Landsat 9 imagery and a HiRISK academic report instead, another sign
+  this is a retrospective analysis piece rather than an operational
+  commercial-EO event.
+- 2026-09-07-L: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  0 updated, 0 held") plus a `jq` parse check (574 items, up from 572)
+  and a direct read of both new items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
