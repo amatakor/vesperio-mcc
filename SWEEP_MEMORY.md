@@ -4190,3 +4190,57 @@ a newer entry if a lesson changes.
   sweeps log 221 to 222) and a direct read of the new item's and both
   updated items' `snr`/`snr_trace`/`sources`/`explainer` fields as the
   build-health signal.
+
+## Narrow same-day re-check, ~4h22m gap, unfiltered full source list (2026-09-07, fourth)
+
+- 2026-09-07-Q: A layered, multi-month airline-Starlink-rollout story
+  needed judgment on which date to use: Lufthansa Group's 850-aircraft
+  Starlink commitment was actually first announced January 14, 2026,
+  re-announced August 10 ahead of Lufthansa mainline's own August 19
+  first flight, and today's queue hit was Austrian Airlines' own first
+  Starlink flight (Vienna-Porto, Sept 7) -- genuinely never covered
+  under any id (grepped items.json for "lufthansa"/"austrian airlines",
+  zero hits). Judged the January/August announcements too stale to
+  chase under the predates-window convention (months old, already
+  superseded by two later operational milestones) and instead drafted
+  today's Austrian-specific first-flight milestone as its own item,
+  same shape as the standing Qatar Airways/Gulf News 150-aircraft
+  rollout-milestone precedent (2026-08-20, `noise`/`partnership`),
+  folding the 850-aircraft/2029 group-wide context into why_it_matters
+  rather than as the news peg itself.
+- 2026-09-07-R: Neither Austrian Airlines nor Lufthansa Group has a
+  `src/data/registry` organization entity, so their own newsroom pages
+  (austrianairlines.ag, newsroom.lufthansagroup.com) fail the
+  anti-spoof gate as `first_party`; led with TeslaNorth (trade, English)
+  instead and used two independently-written Austrian aviation outlets
+  (aeroTELEGRAPH, Austrian Wings -- different headlines, different
+  added detail: seat count, six more A320neo on order, 17 Embraer jets
+  retiring by 2029) as `informal`-class corroboration, landing
+  `corroboration_2plus` at SNR 4. Extends the standing no-registry-host
+  workaround pattern to a non-space-industry counterparty (an airline
+  group) rather than a space company or manufacturer.
+- 2026-09-07-S: The standing same-company-plus-category dedup false
+  positive fired again (SpaceX + `partnership`), this time against
+  4iG's unrelated Starlink direct-to-device mobile deal in Europe
+  (2026-09-02), 5 days apart with nothing else in common. One
+  `dedup_distinct` entry cleared it, extending the long-running list of
+  companies this heuristic fires on regardless of relatedness.
+- 2026-09-07-T: A fully clean pass otherwise: the queue (23 candidates)
+  was dominated by the still-open ISRO-privatization Google News wave
+  (a seventh consecutive sweep with no Florian ruling) and SpaceX
+  stock-speculation content-mill pieces; the Pixxel $100M Series C
+  Bluesky hit and the Isar Aerospace CNBC "10 billion euro pipeline"
+  Bluesky hit were both already published/patched earlier in today's
+  sweep sequence. The 8-source HTML pass, a 12-of-17-channel signals
+  pass, and an 8-query discovery matrix all converged on already-known
+  stories; one signals find (Anatoly Zak: unofficial, unnamed-source
+  reports of a Progress MS-35 launch postponement) was judged out of
+  scope as Russian government ISS cargo resupply with no
+  commercial-provider angle and no official confirmation.
+- 2026-09-07-U: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1
+  new, 0 updated, 0 held") plus a `jq` parse check (576 items, up from
+  575) and a direct read of the new item's
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields as the build-health signal.
