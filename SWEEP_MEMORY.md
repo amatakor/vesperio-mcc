@@ -4218,3 +4218,48 @@ a newer entry if a lesson changes.
   data files (579 items, up from 576) and a direct read of all three
   new items' `snr`/`impact`/`category`/`headline` fields as the
   build-health signal.
+
+## Narrow re-check, ~6h15m gap, unfiltered full source list (2026-09-08, second)
+
+- 2026-09-08-H: `gov.uk` is NOT on `FIXED_OFFICIAL_HOSTS` in
+  finalize-sweep.ts (only `sec.gov`, `fcc.gov`, `sam.gov`,
+  `ted.europa.eu`, `esa.int`, `nasa.gov`, `noaa.gov`, `itu.int`,
+  `unoosa.org`, `europa.eu`, plus any bare `*.gov` TLD host) -- a UK
+  government press release (`gov.uk/government/news/...`, the SaxaVord
+  £30m spaceport-funding announcement) is rejected outright as
+  `official_record`, since `gov.uk` is a different TLD shape than the
+  US `.gov` the code's suffix check matches. Reclassified as `informal`
+  corroboration and led with BBC (`mainstream`) instead, landing a
+  clean SNR 4 via `corroboration_2plus`; worth remembering non-US
+  `.gov.<cc>`-style domains (UK, and likely others) need the fixed-list
+  treatment, not the blanket `.gov` pass, unless added to the list at a
+  future structural touch.
+- 2026-09-08-I: A guessed/stale gov.uk URL trap: the first WebFetch of
+  a plausible SaxaVord-funding gov.uk URL (`.../uk-and-european-space-
+  agency-funding-boost-for-satellite-launch-from-shetland`, found via
+  the article's own linked text) landed on a November 2023 RFA UK
+  release (£3.5M ESA Boost! Programme funding, a Q2 2024 launch
+  target), not today's £30m announcement -- caught only because the
+  fetched page's own stated date (8 November 2023) didn't match:
+  extends the standing "check a fetched page's own stated date"
+  pattern (2026-08-12-B and many peers) to gov.uk itself. The correct
+  page (`.../new-space-strategy-will-bolster-uk-defences-against-
+  threats-from-space`) was found via a second, more specific WebSearch
+  after Shetland News (`shetnews.co.uk`) supplied the clean, dated,
+  correctly-figured writeup first.
+- 2026-09-08-J: A senior-former-government-official appointment at a
+  tracked EO operator (Satellogic naming retired NGA director Frank
+  Whitworth president, promoted from strategic advisor since March
+  2026) followed the standing Wolfgang Schmidt/Planet precedent
+  (category `partnership`, `notable` impact) even though the new role
+  is an operating executive title, not a board/advisory seat -- worth
+  confirming with Florian whether an operating C-suite appointment
+  (vs. board/advisory) should read the same way under that rule.
+- 2026-09-08-K: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
+  updated, 0 held") plus a `jq` parse check (583 items, up from 579)
+  and a direct read of all four new items' `snr`/`snr_trace`/
+  `category`/`impact`/`tags`/`companies` fields as the build-health
+  signal.
