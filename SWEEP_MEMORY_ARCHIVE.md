@@ -4516,3 +4516,94 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   keep it below `first_party` (the domain is mynewsdesk.com, not the
   company's own, so it fails the anti-spoof domain check).
 
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-08)
+
+- 2026-08-08-A: fcc.gov, lightreading.com, mobileworldlive.com, and
+  convergedigest.com all 403'd on every attempt for the FCC's Aug 6 D2D
+  unlicensed-spectrum NPRM (a genuinely new, never-covered regulatory
+  item); fierce-network.com and broadbandbreakfast.com both fetched
+  cleanly and agreed on the vote outcome, dropped 900 MHz band, and
+  quotes, giving a clean two-source trade-tier item (SNR 4) without any
+  fetchable official_record or first_party lead. Confirms the standing
+  fcc.gov/faa.gov government-domain-blocked pattern (2026-07-13-J and
+  peers) extends to this NPRM specifically.
+- 2026-08-08-B: A WebSearch-summary figure can describe the DRAFT version
+  of a not-yet-final rule rather than what was actually adopted: an early
+  search hit (insideglobaltech.com, dated July 22, pre-vote) stated three
+  spectrum bands (902-928 MHz included); the two Aug 6/7 sources covering
+  the actual vote agreed the adopted NPRM dropped the 900 MHz band,
+  leaving only ~200 MHz across two bands. Used the post-vote figure and
+  left the pre-vote source uncited rather than let an older draft's
+  numbers contradict the final item, even though both came from
+  otherwise-legitimate outlets.
+- 2026-08-08-C: A same-day WebFetch of Bluesky's own bsky.app profile
+  pages returned no post content (just the handle) for every account
+  tried; switching to the public API endpoint
+  (`https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`)
+  worked cleanly for all of them and returned real posts with
+  `createdAt` timestamps and text. Use the API endpoint directly for the
+  signals pass's fetchable bluesky channels rather than the bsky.app
+  profile URL from signals-context's output.
+- 2026-08-08-D: A queue candidate's WebFetch (Aviation24.be, an
+  Aerospacelab-specific angle on the already-published Aug 6 IRIS2
+  expansion item) 403'd, and the WebSearch summary's programme-cost
+  figure (EUR13 billion) contradicted the already-published item's
+  sourced figure (EUR15.6 billion) -- left it uncited entirely rather
+  than attach a blocked source's paraphrased, conflicting number; the
+  already-published item's why_it_matters already names Aerospacelab
+  among the manufacturers, so nothing was lost.
+- 2026-08-08-E: Held a genuine scope-judgment case rather than silently
+  discarding or force-publishing it: ASI's board dissolving itself
+  (Aug 5) to trigger an extraordinary-commissioner appointment after
+  president Teodoro Valente's death (July 16) is a real, dateable,
+  well-sourced institutional story (European Spaceflight, confirmed by
+  Andrew Parsonson's Bluesky) about an agency that runs an in-scope
+  sovereign constellation (IRIDE), but the source states no direct
+  commercial-space consequence -- same shape as the NASA-STRIDE
+  (2026-07-09-C) and Aeolus-2/NATO-HALO institutional-disclosure
+  precedents. Queued for Florian rather than guessed either way.
+- 2026-08-08-F: A quiet gap where nearly everything the queue, HTML
+  source list, and signals pass surfaced was already published by the
+  prior two same-day sweeps (BlackSky Q2 results, Redwire SpaceMD/
+  Starfall, Rocket Lab's 8th iQPS launch via a Gunter's QPS-SAR 13 entry,
+  the IRIS2 expansion via SES's own Aug 7 release, CASC's Aug 5 Smart
+  Dragon-3 and Long March-8A items) -- confirms narrow-gap sweeps
+  following an active prior sweep will look "thin" by design, not by
+  under-coverage, once direct-fetch and signals legs are both checked
+  exhaustively.
+- 2026-08-08-G: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 1 held") as the build-health signal.
+
+## Narrow same-day re-check, ~11h48m gap, unfiltered full source list (2026-08-08, second)
+
+- 2026-08-08-H: A regulator's own bureau-chief transition (FCC Space
+  Bureau's Jay Schwarz retiring, deputy Jennifer Gilsenan named acting
+  chief, Aug 7) is a genuinely different shape from the standing
+  "routine executive hires stay below the inclusion bar" rule, which is
+  about company hires: this is leadership continuity at the specific
+  office that licenses every commercial satellite operator and had just
+  pushed through the licensing overhaul. Drafted as `notable`/
+  `regulatory` rather than discarded. Only fetchable lead was SpaceNews;
+  a same-headline "Communications Today" mirror 403'd and reads like a
+  syndicated rewrite (identical title), so it was left uncited rather
+  than force-counted as independent corroboration -- crawl scored
+  `found_none` honestly, landing the item at a low but honest SNR.
+- 2026-08-08-I: An ongoing, multi-day operational thread (SpaceX towing
+  the intact Starship Ship 40 back from its July 24 Indian Ocean
+  splashdown, now possibly lost in worsening seas per Musk's August 7
+  "not looking good right now" post) patched into the existing Flight 13
+  item via `updates[]` rather than a new item, even though the original
+  splashdown is 2+ weeks stale: same underlying event thread (the 2026-
+  08-03-L VICTUS HAZE precedent). space.com's article body was paywalled/
+  truncated on fetch and nasaspaceflight.com 403'd; TeslaNorth (trade)
+  carried the same Musk quote cleanly and was used as the attach source
+  instead.
+- 2026-08-08-J: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate again, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") as the build-health signal.
+
