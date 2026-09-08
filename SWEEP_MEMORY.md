@@ -4263,3 +4263,67 @@ a newer entry if a lesson changes.
   and a direct read of all four new items' `snr`/`snr_trace`/
   `category`/`impact`/`tags`/`companies` fields as the build-health
   signal.
+
+## Narrow re-check, ~5h20m gap, unfiltered full source list (2026-09-08, third)
+
+- 2026-09-08-L: A funding round reported as "in talks" for $300M (July 26,
+  informal Investing.com-per-FT lead, SNR 2) closing seven weeks later at
+  $450M -- 50% above the original target, with a named investor syndicate
+  (Bessemer, Atomico, EQT's Scaleup Europe Fund, Balderton, Plural, Cherry,
+  Red River West) and a CEO quote -- was treated as an `updates[].rescore`
+  per the standing 2026-09-07-M "financing reaches its closing milestone"
+  precedent: lead upgraded from informal to trade (European Spaceflight,
+  directly fetched), `source_url` switched to match, landing SNR 4 via
+  `corroboration_2plus` (Tech.eu informal + TheNextWeb mainstream, both
+  independently fetched with unique detail beyond the press release).
+  Bloomberg's own writeup of the same close was found via WebSearch but
+  403'd on direct WebFetch both times; left uncited per the standing
+  "only cite pages genuinely fetched this run" rule even though its
+  content (per the search snippet) matched the other three sources.
+- 2026-09-08-M: THREE separate stale-resurfacing traps caught in one
+  discovery pass, each initially reading as fresh September 2026 news: (1)
+  a SpaceNews "NASA and SpaceX finalize extension of commercial crew
+  contract" WebFetch resolved to an article whose own page explicitly
+  stated "Publication Date: September 1, 2022" once fetched directly --
+  a stale URL surfaced by a generic search, not a resurfaced wire story;
+  (2) a Yahoo Finance/gokhshtein.com/TheStreet "Amazon and AT&T partner to
+  challenge Starlink" wave read as a brand-new Sept 8 deal (Yahoo even
+  carried a same-day-framed AT&T exec quote), but press.aboutamazon.com's
+  own release for the identical AT&T/AWS/Amazon-Leo partnership is dated
+  February 4, 2026 -- a low-quality source (gokhshtein.com) that stated
+  the correct Feb 4 date was initially discounted as unreliable until the
+  first-party Amazon press release confirmed it independently; a same-day
+  exec quote does not itself prove a story is new when the underlying deal
+  predates it by 7 months. (3) The recurring ISRO-privatization Google News
+  wave (ninth-plus consecutive sweep with no Florian ruling, now joined by
+  ISRO's own "won't be privatized" clarification, SatNews Sept 7) generated
+  no new draft or duplicate held entry, consistent with the standing
+  practice.
+- 2026-09-08-N: A UAE business story (IHC's 80% acquisition of Marlan
+  Holding, parent of the Orbitworks/Loft-Orbital EO joint venture) had two
+  independently-written, directly-fetched mainstream UAE outlets (The
+  National, Khaleej Times) with different exec quotes but matching facts;
+  neither IHC nor Marlan Space has a `src/data/registry` organization
+  entry, so no first-party lead was attempted (the no-registry-host
+  workaround, informal/mainstream class regardless of domain).
+- 2026-09-08-O: `defence-blog.com` 403'd on every direct WebFetch attempt
+  for ImageSat International's EROS NOVA satellite unveiling (25cm
+  resolution, onboard AI processing); a German defense-trade outlet
+  (esut.de) independently covered the same unveiling with its own CEO
+  quote and fetched cleanly, used as the sole trade-class lead at
+  `crawl: found_none` per the standing 2026-08-24-F rule (a WebSearch
+  synthesis of an unfetched page is never citable, even when it clearly
+  exists).
+- 2026-09-08-P: A Light Reading "EU telcos close ranks against Starlink"
+  spectrum-consortium story (Deutsche Telekom/Orange/Telefonica/Vodafone,
+  2GHz MSS band) stated explicitly, once fetched directly, that the four
+  operators are only in "early talks" via unnamed sources with "no final
+  decisions" -- a process-not-yet-fact exclusion, same standard as the
+  T-Mobile/Sateliot and Grain Management precedents (2026-08-21-D).
+- 2026-09-08-Q: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  1 updated, 0 held") plus a `jq` parse check (585 items, up from 583)
+  and a direct read of both new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`tags` fields as the build-health
+  signal.
