@@ -4327,3 +4327,52 @@ a newer entry if a lesson changes.
   and a direct read of both new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`tags` fields as the build-health
   signal.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-09-08, fourth)
+
+- 2026-09-08-R: A Light Reading search-result title ("AT&T hooks up with
+  Amazon Leo to connect businesses") that read like independent
+  corroboration for today's AT&T Business/Amazon Leo "further
+  agreements" expansion turned out, on direct fetch, to be dated
+  February 5, 2026 -- the ORIGINAL agreement announcement, not today's
+  story -- despite near-identical framing; extends the standing
+  stale-resurfacing pattern to search-result titles for a story that
+  genuinely does have a new Sept. 8 installment (SDxCentral's same-day
+  piece, with a fresh Stankey quote, served as the real corroboration
+  instead).
+- 2026-09-08-S: A recurring Textron Aviation Starlink-retrofit STC
+  press release (this time Hawker 700/800/900 via AeroMech's STC,
+  BusinessWire-distributed, reproduced verbatim by stocktitan/
+  investingnews/travelprnews with no independent reporting) was left
+  undrafted: `site:txtav.com` search showed Textron has issued
+  near-identical per-aircraft-type Starlink availability releases
+  repeatedly (King Air B200/300, Citation X/X+, Citation Longitude,
+  Citation Caravan) over recent months, making this a routine,
+  recurring product-rollout cadence rather than a genuinely new
+  capability -- unlike the Qatar Airways/Austrian Airlines airline
+  first-flight precedents, which mark a distinct operational milestone
+  each time.
+- 2026-09-08-T: NordiskPost (a small Nordic-focus outlet) supplied a
+  quantified figure (EU 9.1M euros + Denmark 2M euros funding; target
+  bandwidth improvement 6 Mbps to 15 Mbps per Tusass's CEO) that neither
+  of the two trade leads (Via Satellite, Satcom.Digital) stated for the
+  Eutelsat/Tusass Greenland connectivity project; classed `informal`
+  and used as a third corroboration source rather than discounted for
+  being a smaller outlet, consistent with the standing "attributable
+  weak sources publish, informally classed" rule.
+- 2026-09-08-U: The Amazon/Project Kuiper newsroom tag page
+  (aboutamazon.com/news/tag/project-kuiper) reversed its 2026-09-08-F
+  bare-403 failure and loaded again, but confirmed its standing
+  "no visible per-article dates" defect (2026-07-06): its apparent
+  "newest" entry by list position was an old evergreen employee-profile
+  piece, with the actual April 2026 Globalstar-acquisition news still
+  listed high up out of chronological order. Cross-checked against
+  `existing[]` before concluding nothing new; still not usable for
+  dating candidates without a secondary date source.
+- 2026-09-08-V: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2
+  new, 1 updated, 0 held") plus a `jq empty` parse check across all
+  five touched data files (items 587, up from 585) and a direct read
+  of both new items' and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields as the build-health signal.
