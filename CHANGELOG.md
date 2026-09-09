@@ -212,3 +212,17 @@ reaching orbit) cut its source list off at the bottom. The plate now
 scrolls on its own when its content overflows and stays put otherwise;
 the artwork height cap and the mobile single-column scroll are
 unchanged.
+
+Date register (2026-09-09): the "updated 7 Sep" marker that resurfaced
+items wore as a chip now sits with the event date as one timestamp
+block in the same dim mono register, stacked at a card's top-right
+corner and inline on the item and modal bands. Chips are for
+classification (category, impact, kind, disputed); a timestamp in a
+badge was the odd one out, and it wrapped the badge row onto a second
+line on seismic cards. The resurfacing rule itself is unchanged.
+The date block now spans exactly the chip row's height, so a single
+date centers on the chips and the stacked pair sits flush with their
+top and bottom edges. Card headlines are never clamped any more: the
+three-line cut with an ellipsis is gone and the card grows to fit
+(Florian, 2026-09-09; the 90-character headline rule bounds the
+growth). Taglines keep their three-line clamp.
