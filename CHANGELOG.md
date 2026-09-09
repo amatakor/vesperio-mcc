@@ -254,3 +254,19 @@ Escape; the button reads the live selection ("MAJOR · SEISMIC ·
 LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
 clears every row. The button's word changed from CATEGORIES to FILTER
 now that it covers three groups.
+
+Registry self-population round, part 1 (2026-09-09): the crossfeed
+reconciler now looks at values, not only source tiers. A news claim that
+states the same value as the stored fact confirms it (a stronger source
+refreshes the citation, an equal or weaker one changes nothing) and is
+never routed to the dispute queue; the Sentinel-1 NG "dispute" between
+two sources that both said 2 is cleared from the profile and from the
+held queue. Positioning claims must cite the entity's own website
+domain, enforced by the validator, and the maintenance run now fills
+empty claims blocks a few profiles at a time from the entities' own
+pages. Organizations enter the crossfeed scope with the new fields the
+feed carries (headquarters, parent organization, latest and total
+funding, valuation, headcount), the drafting prompt requires the
+matching fact on funding, M&A, IPO, headquarters, and status items, and
+the maintenance prompt covers organization profiles. The two queue
+files named "candidates" now each say which queue they are.
