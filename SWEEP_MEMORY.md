@@ -4448,3 +4448,45 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of all five new items' and both
   updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
   the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-09-09, fourth)
+
+- 2026-09-09-P: Marcia Smith's bluesky post citing "According to NASAWatch"
+  led to a genuinely new, never-covered item the queue and discovery pass
+  both missed: NASA Administrator Jared Isaacman named Henry Helgeson (new
+  Associate Administrator for Communications) as NASA's first-ever Chief
+  Commercial Officer. The only fetchable confirmation was NASAWatch's own
+  repost of Isaacman's `@NASAAdmin` X statement (verified verbatim via the
+  syndication endpoint); nasa.gov's own staff bio page for Helgeson does not
+  yet mention the CCO title at all. Led `informal` (NASAWatch, base tier 1)
+  with Marcia Smith's bluesky as `whitelist`/`observer` corroboration,
+  landing SNR 4 via the whitelist-floor modifier (same shape as the
+  2026-09-01-C Northwood Space precedent) -- confirms `crawl: "found_some"`
+  is correct here per the 2026-09-09-L lesson (2 sources listed) even though
+  a dedicated trade-press search for the CCO title specifically came back
+  empty both times.
+- 2026-09-09-Q: The standing same-company-plus-category dedup false positive
+  fired on the new NASA CCO item (category `procurement`) against the Sept 2
+  NASA launch-procurement-office-reorg item, despite sharing nothing but
+  company + category -- extends the long-running NASA/SpaceX/Blue-Origin/
+  Redwire/Viasat/SES/ICEYE pattern. One `dedup_distinct` cleared it.
+- 2026-09-09-R: The queue's own Via Satellite entries for the Paris space
+  summit (Loft Orbital/Marlan Space AI-constellation piece, Amazon Leo/
+  Arianespace launch-order piece, UK Space Strategy defense piece) were each
+  worth checking individually even though the summit's biggest story
+  (BlackSky/Altair) was already published earlier the same day: two of the
+  three were genuine same-event follow-ons with new detail (MaiaSpace as
+  Altair's launch provider, Orbitworks' Abu Dhabi manufacturing site; the UK
+  strategy's overall £8B/defense-spending breakdown neither original
+  SaxaVord source stated) folded in as `updates[].attach`+patch, and the
+  third (Amazon Leo ordering 6 more Ariane 64 launches, 18->24 total) was a
+  clean standalone new item with no first-party lead available (Arianespace
+  has no registry organization entity, per the standing 2026-09-09-I
+  no-registry-host workaround) -- led on Reuters via a Yahoo Finance mirror
+  instead, `corroboration_2plus` at SNR 4.
+- 2026-09-09-S: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 2 updated, 0
+  held") plus a `jq` parse check (598 items, up from 596) and a direct read
+  of both new items' and both updated items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
