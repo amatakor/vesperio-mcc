@@ -24,7 +24,7 @@ import type {
 import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
-import { CATEGORIES, DOMAIN_TAGS, ORG_KINDS } from "./data/schema";
+import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS } from "./data/schema";
 import { freshnessChip } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
@@ -1473,6 +1473,9 @@ const FEED_BATCH = 30;
 export function HomePage({ data }: { data: DataFor<"home"> }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<FeedFilter>(null);
+  // Impact tier is a second, independent axis (Florian, 2026-09-09): a
+  // reader can ask for "major" alone or "major within launch".
+  const [impact, setImpact] = useState<(typeof IMPACTS)[number] | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   // The full corpus, fetched lazily on the first filter/search interaction
   // OR when the reader scrolls past the first page; null until it resolves,
@@ -1506,7 +1509,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   }, []);
 
   const q = query.trim().toLowerCase();
-  const active = q !== "" || filter !== null;
+  const active = q !== "" || filter !== null || impact !== null;
 
   // On the first filter/search OR the first scroll past page 1, load the
   // full corpus so search/filter/scroll cover every item, not just the
@@ -1532,8 +1535,9 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     let list = base;
     if (filter?.kind === "cat") list = list.filter((i) => i.category === filter.value);
     if (filter?.kind === "tag") list = list.filter((i) => i.tags.includes(filter.value));
+    if (impact !== null) list = list.filter((i) => i.impact === impact);
     return q === "" ? list : list.filter((i) => matchesQuery(i, q));
-  }, [q, filter, base]);
+  }, [q, filter, impact, base]);
 
   // The batch actually rendered, and whether more remain. Two ways to have
   // more: reveal already-loaded items (canRenderMore), or fetch the rest of
@@ -1548,7 +1552,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   // A new filter/search restarts batching from the first page.
   useEffect(() => {
     setVisible(data.items.length);
-  }, [q, filter, data.items.length]);
+  }, [q, filter, impact, data.items.length]);
 
   // Append the next batch as the sentinel nears the viewport; arm the corpus
   // fetch the first time we run out of already-loaded items. The observer is
@@ -1578,6 +1582,11 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     () => new Map(Object.entries(data.counts.domains)),
     [data.counts.domains],
   );
+  const impactCounts = useMemo(
+    () => new Map(Object.entries(data.counts.impacts)),
+    [data.counts.impacts],
+  );
+  const selection = [impact, filter?.value].filter((v): v is string => typeof v === "string");
 
   const pick = (next: FeedFilter) => {
     setFilter(next);
@@ -1607,7 +1616,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          categories <span className="cat-btn-sel">{filter ? filter.value : "all"}</span>{" "}
+          filter <span className="cat-btn-sel">{selection.length > 0 ? selection.join(" · ") : "all"}</span>{" "}
           <span className="cat-btn-arrow">{menuOpen ? "▴" : "▾"}</span>
         </button>
         <input
@@ -1628,8 +1637,11 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
             <div className="cat-panel-group">
               <button
                 type="button"
-                className={`cat-chip${filter === null ? " active" : ""}`}
-                onClick={() => pick(null)}
+                className={`cat-chip${filter === null && impact === null ? " active" : ""}`}
+                onClick={() => {
+                  setImpact(null);
+                  pick(null);
+                }}
               >
                 all <span className="count">{data.counts.total}</span>
               </button>
@@ -1640,6 +1652,22 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
             <p className="cat-panel-label">domain</p>
             <div className="cat-panel-group">
               {DOMAIN_TAGS.map((t) => chip("tag", t, domainCounts.get(t) ?? 0))}
+            </div>
+            <p className="cat-panel-label">impact</p>
+            <div className="cat-panel-group">
+              {IMPACTS.map((lvl) => (
+                <button
+                  key={lvl}
+                  type="button"
+                  className={`cat-chip${impact === lvl ? " active" : ""}`}
+                  onClick={() => {
+                    setImpact(impact === lvl ? null : lvl);
+                    setMenuOpen(false);
+                  }}
+                >
+                  {lvl} <span className="count">{impactCounts.get(lvl) ?? 0}</span>
+                </button>
+              ))}
             </div>
           </div>
         )}

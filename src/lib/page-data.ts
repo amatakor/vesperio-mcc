@@ -27,6 +27,8 @@ import type { LogKpis, PresenceRow } from "./log-kpis";
 export interface FeedCounts {
   categories: Record<string, number>;
   domains: Record<string, number>;
+  /** Per impact tier (seismic/major/notable/noise), for the impact filter row (2026-09-09). */
+  impacts: Record<string, number>;
   total: number;
 }
 

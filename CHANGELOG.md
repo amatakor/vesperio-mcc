@@ -243,3 +243,11 @@ a fallback. Three 247wallst.com images were removed by hand (the Musk
 portrait, a watermarked satellite render on the AST SpaceMobile Q2
 item, an earnings chart card on the Planet Q2 item); those cards
 render text-only.
+
+Impact filter (2026-09-09): the news feed's filter panel gains an
+IMPACT row (seismic, major, notable, noise) alongside category and
+domain. Impact is its own axis, so "major" alone or "major within
+launch" both work, the button reads the live selection ("MAJOR ·
+LAUNCH"), counts come precomputed over the whole corpus like the other
+rows, and the ALL chip clears every axis. The button's word changed
+from CATEGORIES to FILTER now that it covers three groups.

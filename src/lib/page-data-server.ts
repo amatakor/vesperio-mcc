@@ -6,7 +6,7 @@
  */
 
 import type { Item, SweepLogEntry } from "../data/schema";
-import { CATEGORIES, DOMAIN_TAGS } from "../data/schema";
+import { CATEGORIES, DOMAIN_TAGS, IMPACTS } from "../data/schema";
 import type { Route } from "../routes";
 import type {
   DigestItemRef,
@@ -56,11 +56,14 @@ function feedCounts(): FeedCounts {
   for (const c of CATEGORIES) categories[c] = 0;
   const domains: Record<string, number> = {};
   for (const d of DOMAIN_TAGS) domains[d] = 0;
+  const impacts: Record<string, number> = {};
+  for (const lvl of IMPACTS) impacts[lvl] = 0;
   for (const i of items) {
     categories[i.category] = (categories[i.category] ?? 0) + 1;
     for (const d of DOMAIN_TAGS) if (i.tags.includes(d)) domains[d] = (domains[d] ?? 0) + 1;
+    impacts[i.impact] = (impacts[i.impact] ?? 0) + 1;
   }
-  return { categories, domains, total: items.length };
+  return { categories, domains, impacts, total: items.length };
 }
 
 function feedPage(n: number): Item[] {
