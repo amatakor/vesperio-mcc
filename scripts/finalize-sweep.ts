@@ -69,6 +69,7 @@ import type {
 import { fetchableSignalChannels, whitelistFloorChannels } from "./lib/signals";
 import type { WhitelistFloorChannel } from "./lib/signals";
 import { titlesCollide } from "./lib/simhash";
+import { canonicalizeUrl } from "./lib/urls";
 import type { SignalsFile } from "../src/data/schema";
 
 /**
@@ -720,11 +721,15 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
 
     // ---- dedup-as-code gate (SNR_PLAN §A2) --------------------------------
     // matchDecision() owns the window arithmetic the agent used to re-derive
-    // in prose. A NEW item that shares a company and category with an
-    // existing item inside DEDUP_WINDOW_DAYS is presumed to be the same
-    // event and must be drafted as an update. Distinct events do legally
-    // share company+category inside the window (two Starlink launches in a
-    // week), so the draft may attest that explicitly per matched item with
+    // in prose. A NEW item that shares a company with an existing item
+    // inside DEDUP_WINDOW_DAYS is presumed to be the same event and must be
+    // drafted as an update. The gate is category-agnostic (2026-09,
+    // fixing a same-event double-publish that slipped through under two
+    // categories): same company + same category is still one trigger, but
+    // a shared source URL or a near-identical headline across categories
+    // trigger it too. Distinct events do legally share a company inside
+    // the window (two Starlink launches in a week), so the draft may
+    // attest that explicitly per matched item with
     // dedup_distinct: [{ id, reason }]; unattested matches reject.
     if (
       typeof raw.date === "string" &&
@@ -757,28 +762,57 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
             a.reason.trim() !== "",
         );
       const rawHeadline = typeof raw.headline === "string" ? raw.headline : null;
+      // Canonical URL key for the shared-source-URL check: canonicalizeUrl
+      // already strips www./m./amp., query tracking params, the fragment,
+      // and a trailing slash (scripts/lib/urls.ts, shared with the
+      // corroboration collapse); stripping the scheme on top means an
+      // http vs https republish of the same page still matches.
+      const dedupUrlKey = (url: string): string =>
+        canonicalizeUrl(url).replace(/^[a-z][a-z0-9+.-]*:\/\//i, "");
+      const rawUrls = [
+        ...(typeof raw.source_url === "string" ? [raw.source_url] : []),
+        ...(Array.isArray(raw.secondary_urls)
+          ? (raw.secondary_urls as unknown[]).filter((u): u is string => typeof u === "string")
+          : []),
+      ];
+      const rawUrlKeys = new Set(rawUrls.map(dedupUrlKey));
+      const sharesUrl = (ex: Item): boolean => {
+        if (rawUrlKeys.size === 0) return false;
+        const exUrls = [ex.source_url, ...(Array.isArray(ex.secondary_urls) ? ex.secondary_urls : [])];
+        return exUrls.some((u) => rawUrlKeys.has(dedupUrlKey(u)));
+      };
       for (const ex of items.items) {
         if (!sharesCompany(ex.companies)) continue;
         if (matchDecision({ id: ex.id, date: ex.date, snr: ex.snr }, raw.date) !== "same_event") {
           continue;
         }
         const sameCategory = ex.category === raw.category;
-        // Second net (QC 2026-07-13): a re-categorized re-report escaped
-        // the exact-category match, so near-identical headlines (SimHash,
-        // the same threshold as the wire-rewrite collapse) inside the
-        // window are presumed the same event across categories too.
+        // Second and third nets (QC 2026-07-13, extended 2026-09): a
+        // re-categorized re-report escaped the exact-category match, so a
+        // shared source URL or near-identical headline (SimHash, the same
+        // threshold as the wire-rewrite collapse) inside the window are
+        // presumed the same event across categories too.
+        const urlOverlap = !sameCategory && sharesUrl(ex);
         const headlineCollision =
           !sameCategory && rawHeadline !== null && titlesCollide(rawHeadline, ex.headline);
-        if (!sameCategory && !headlineCollision) continue;
+        if (!sameCategory && !urlOverlap && !headlineCollision) continue;
         if (!acked(ex.id)) {
-          const basis = sameCategory
-            ? `shared company, category "${ex.category}"`
-            : `shared company, near-identical headline across categories ("${ex.category}" vs "${String(raw.category)}")`;
+          let basis: string;
+          if (sameCategory) {
+            basis = `shared company, category "${ex.category}"`;
+          } else {
+            const signals: string[] = [];
+            if (urlOverlap) signals.push("shared source URL");
+            if (headlineCollision) signals.push("near-identical headline");
+            basis =
+              `shared company, ${signals.join(" and ")} across categories ` +
+              `("${ex.category}" vs "${String(raw.category)}")`;
+          }
           errors.push(
             `${path}: same-event match with existing "${ex.id}" (${basis}, within ` +
-              `${DEDUP_WINDOW_DAYS} days). Draft it as an updates[] entry ` +
-              `(attach/bump), or, if it is genuinely a distinct event, attest that with ` +
-              `dedup_distinct: [{ "id": "${ex.id}", "reason": "..." }] on the item.`,
+              `${DEDUP_WINDOW_DAYS} days). Draft it as an updates[] entry against "${ex.id}" ` +
+              `(attach/bump) instead of a new item, or, if it is genuinely a distinct event, ` +
+              `attest that with dedup_distinct: [{ "id": "${ex.id}", "reason": "..." }] on the item.`,
           );
         }
       }
