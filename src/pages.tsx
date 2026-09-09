@@ -848,8 +848,7 @@ function Card({
         <ImpactBadge impact={item.impact} variant="chip" />
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
-        {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
-        <span className="date">{item.date}</span>
+        <DateStamp item={item} />
       </div>
       <h2 className="card-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
@@ -1353,8 +1352,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
-          {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
-          <span className="date">{item.date}</span>
+          <DateStamp item={item} />
           <button type="button" className="modal-close" ref={closeBtnRef} onClick={onClose}>
             × esc
           </button>
@@ -1736,8 +1734,7 @@ export function ItemPage({ item }: { item: Item }) {
             trace={item.snr_trace}
             corroborated={hasAttachedCorroboration(item.sources)}
           />
-          {freshnessChip(item) && <span className="chip chip-activity">{freshnessChip(item)}</span>}
-          <span className="date">{item.date}</span>
+          <DateStamp item={item} />
         </div>
         <div className="item-cols">
           <div className="item-side">
@@ -5641,6 +5638,20 @@ export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
 }
 
 // -------------------------------------------------------------- not found
+
+/** The item's timestamp block: the event date, plus the post-publication
+    activity stamp when the item resurfaced (Florian, 2026-09-09: both are
+    timestamps and share the dim date register; chips stay classification
+    only). Bands read it inline with a separator; cards stack it. */
+function DateStamp({ item }: { item: Item }) {
+  const upd = freshnessChip(item);
+  return (
+    <span className="date">
+      <span className="date-event">{item.date}</span>
+      {upd && <span className="date-upd">{upd}</span>}
+    </span>
+  );
+}
 
 export function NotFoundPage() {
   return (

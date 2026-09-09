@@ -1007,11 +1007,6 @@ a.chip:hover {
    score movement). Explains why an item whose event date is old sits
    near the top of the feed. Neutral inks: recency is metadata, not a
    role color. */
-.chip-activity {
-  color: var(--text-2);
-  border-color: var(--border-1);
-}
-
 .chip-tag {
   color: var(--text-2);
   border-color: var(--border-1);
@@ -1606,6 +1601,24 @@ a.chip:hover {
   top: calc(var(--pad-card) + 7px);
   right: var(--pad-card);
   margin-left: 0;
+  /* Date register (Florian, 2026-09-09): the event date and the
+     post-publication activity stamp are one timestamp block, same dim
+     mono; chips stay classification only. Cards stack the two lines
+     right-aligned under the pinned date; bands (below) read them inline. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  line-height: 1.3;
+}
+.date-upd {
+  text-transform: uppercase; /* chrome register, like the chip it replaces */
+}
+.date-upd::before {
+  content: " · ";
+}
+.card-meta .date-upd::before {
+  content: none;
 }
 
 /* Card headlines: DISPLAY voice — 21/300/+.06em caps, lh 1.35. Never bold;
