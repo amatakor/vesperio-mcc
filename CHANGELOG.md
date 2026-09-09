@@ -244,10 +244,13 @@ portrait, a watermarked satellite render on the AST SpaceMobile Q2
 item, an earnings chart card on the Planet Q2 item); those cards
 render text-only.
 
-Impact filter (2026-09-09): the news feed's filter panel gains an
-IMPACT row (seismic, major, notable, noise) alongside category and
-domain. Impact is its own axis, so "major" alone or "major within
-launch" both work, the button reads the live selection ("MAJOR ·
-LAUNCH"), counts come precomputed over the whole corpus like the other
-rows, and the ALL chip clears every axis. The button's word changed
-from CATEGORIES to FILTER now that it covers three groups.
+Impact filter and multi-select (2026-09-09): the news feed's filter
+panel gains an IMPACT row (seismic, major, notable, noise) alongside
+category and domain, and every row now takes several picks at once.
+Values within a row combine as OR and rows combine as AND, so "major or
+seismic, within launch or constellation" is one selection. The panel
+stays open while chips are toggled and closes on a click outside or
+Escape; the button reads the live selection ("MAJOR · SEISMIC ·
+LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
+clears every row. The button's word changed from CATEGORIES to FILTER
+now that it covers three groups.

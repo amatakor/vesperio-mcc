@@ -1425,7 +1425,9 @@ function matchesQuery(item: Item, q: string): boolean {
 }
 
 /** Active feed filter: one category or one domain tag at a time. */
-type FeedFilter = { kind: "cat" | "tag"; value: string } | null;
+/** Home feed selection: one list per axis; empty means "any". */
+type FeedSel = { cats: string[]; domains: string[]; impacts: string[] };
+const EMPTY_SEL: FeedSel = { cats: [], domains: [], impacts: [] };
 
 /** Foot-of-feed pager (deep archive nav): plain mono links, current page
  * as plain text. Page 1 is the home feed at "/". */
@@ -1472,11 +1474,12 @@ const FEED_BATCH = 30;
 
 export function HomePage({ data }: { data: DataFor<"home"> }) {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<FeedFilter>(null);
-  // Impact tier is a second, independent axis (Florian, 2026-09-09): a
-  // reader can ask for "major" alone or "major within launch".
-  const [impact, setImpact] = useState<(typeof IMPACTS)[number] | null>(null);
+  // Three independent axes, each multi-select (Florian, 2026-09-09):
+  // values within an axis combine as OR, axes combine as AND, so
+  // "major or seismic, within launch or constellation" is one selection.
+  const [sel, setSel] = useState<FeedSel>(EMPTY_SEL);
   const [menuOpen, setMenuOpen] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
   // The full corpus, fetched lazily on the first filter/search interaction
   // OR when the reader scrolls past the first page; null until it resolves,
   // so we filter over the page-1 slice until then.
@@ -1508,8 +1511,20 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     return () => window.removeEventListener("keydown", onKeydown);
   }, []);
 
+  // The panel stays open while chips are toggled; a click outside the
+  // filter bar (or Escape, above) closes it.
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onDown(e: MouseEvent) {
+      if (barRef.current && !barRef.current.contains(e.target as Node)) setMenuOpen(false);
+    }
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [menuOpen]);
+
   const q = query.trim().toLowerCase();
-  const active = q !== "" || filter !== null || impact !== null;
+  const selCount = sel.cats.length + sel.domains.length + sel.impacts.length;
+  const active = q !== "" || selCount > 0;
 
   // On the first filter/search OR the first scroll past page 1, load the
   // full corpus so search/filter/scroll cover every item, not just the
@@ -1533,11 +1548,11 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   const base = corpus ?? data.items;
   const shown = useMemo(() => {
     let list = base;
-    if (filter?.kind === "cat") list = list.filter((i) => i.category === filter.value);
-    if (filter?.kind === "tag") list = list.filter((i) => i.tags.includes(filter.value));
-    if (impact !== null) list = list.filter((i) => i.impact === impact);
+    if (sel.cats.length > 0) list = list.filter((i) => sel.cats.includes(i.category));
+    if (sel.domains.length > 0) list = list.filter((i) => sel.domains.some((d) => i.tags.includes(d)));
+    if (sel.impacts.length > 0) list = list.filter((i) => sel.impacts.includes(i.impact));
     return q === "" ? list : list.filter((i) => matchesQuery(i, q));
-  }, [q, filter, impact, base]);
+  }, [q, sel, base]);
 
   // The batch actually rendered, and whether more remain. Two ways to have
   // more: reveal already-loaded items (canRenderMore), or fetch the rest of
@@ -1552,7 +1567,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   // A new filter/search restarts batching from the first page.
   useEffect(() => {
     setVisible(data.items.length);
-  }, [q, filter, impact, data.items.length]);
+  }, [q, sel, data.items.length]);
 
   // Append the next batch as the sentinel nears the viewport; arm the corpus
   // fetch the first time we run out of already-loaded items. The observer is
@@ -1586,20 +1601,22 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
     () => new Map(Object.entries(data.counts.impacts)),
     [data.counts.impacts],
   );
-  const selection = [impact, filter?.value].filter((v): v is string => typeof v === "string");
+  const selection = [...sel.impacts, ...sel.cats, ...sel.domains];
 
-  const pick = (next: FeedFilter) => {
-    setFilter(next);
-    setMenuOpen(false);
-  };
-  const chip = (kind: "cat" | "tag", value: string, count: number) => {
-    const active = filter?.kind === kind && filter.value === value;
+  const toggle = (axis: keyof FeedSel, value: string) =>
+    setSel((s) => ({
+      ...s,
+      [axis]: s[axis].includes(value) ? s[axis].filter((v) => v !== value) : [...s[axis], value],
+    }));
+  const chip = (axis: keyof FeedSel, value: string, count: number) => {
+    const on = sel[axis].includes(value);
     return (
       <button
         key={value}
         type="button"
-        className={`cat-chip${active ? " active" : ""}`}
-        onClick={() => pick(active ? null : { kind, value })}
+        className={`cat-chip${on ? " active" : ""}`}
+        aria-pressed={on}
+        onClick={() => toggle(axis, value)}
       >
         {value} <span className="count">{count}</span>
       </button>
@@ -1609,7 +1626,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   return (
     <Layout current="news">
       <h1 className="sr-only">Vesperio: new space intelligence</h1>
-      <div className="filter-bar">
+      <div className="filter-bar" ref={barRef}>
         <button
           type="button"
           className={`cat-btn${menuOpen ? " open" : ""}`}
@@ -1637,37 +1654,25 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
             <div className="cat-panel-group">
               <button
                 type="button"
-                className={`cat-chip${filter === null && impact === null ? " active" : ""}`}
+                className={`cat-chip${selCount === 0 ? " active" : ""}`}
                 onClick={() => {
-                  setImpact(null);
-                  pick(null);
+                  setSel(EMPTY_SEL);
+                  setMenuOpen(false);
                 }}
               >
                 all <span className="count">{data.counts.total}</span>
               </button>
               {CATEGORIES.filter((c) => (catCounts.get(c) ?? 0) > 0).map((c) =>
-                chip("cat", c, catCounts.get(c) ?? 0),
+                chip("cats", c, catCounts.get(c) ?? 0),
               )}
             </div>
             <p className="cat-panel-label">domain</p>
             <div className="cat-panel-group">
-              {DOMAIN_TAGS.map((t) => chip("tag", t, domainCounts.get(t) ?? 0))}
+              {DOMAIN_TAGS.map((d) => chip("domains", d, domainCounts.get(d) ?? 0))}
             </div>
             <p className="cat-panel-label">impact</p>
             <div className="cat-panel-group">
-              {IMPACTS.map((lvl) => (
-                <button
-                  key={lvl}
-                  type="button"
-                  className={`cat-chip${impact === lvl ? " active" : ""}`}
-                  onClick={() => {
-                    setImpact(impact === lvl ? null : lvl);
-                    setMenuOpen(false);
-                  }}
-                >
-                  {lvl} <span className="count">{impactCounts.get(lvl) ?? 0}</span>
-                </button>
-              ))}
+              {IMPACTS.map((lvl) => chip("impacts", lvl, impactCounts.get(lvl) ?? 0))}
             </div>
           </div>
         )}
