@@ -254,3 +254,20 @@ Escape; the button reads the live selection ("MAJOR · SEISMIC ·
 LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
 clears every row. The button's word changed from CATEGORIES to FILTER
 now that it covers three groups.
+
+Registry crossfeed outcome ledger (2026-09-09): the weekly registry
+maintenance run consumes the news-to-registry crossfeed queue
+(registry-candidates.json) by deleting each candidate once it acts on
+it, which left no record of whether a candidate actually landed, was
+re-sourced, was disputed, or was rejected. A new machine-owned file,
+registry-crossfeed-log.json, now records the outcome of every consumed
+candidate. A deterministic script (scripts/record-crossfeed-outcomes.ts,
+no network, no LLM) snapshots the queue right before the agent runs and
+diffs it against the queue afterward: any candidate that disappeared was
+consumed, and its target registry field is inspected to classify what
+happened to it, landed with the proposed source, landed but re-sourced
+to a different one, disputed against a competing claim, or left
+unchanged. The /system page gains a "registry crossfeed" panel listing
+the last 20 consumed candidates with their outcome and a link back to
+the source item, plus lifetime totals per outcome; the KPI row gains a
+"crossfeed landed" count alongside the existing "crossfeed queued" one.

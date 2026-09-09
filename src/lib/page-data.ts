@@ -17,11 +17,25 @@ import type {
   SpaceportProfile,
   OrgProfile,
   SignalsFile,
+  CrossfeedOutcome,
 } from "../data/schema";
 import type { CalibrationBucket } from "../../scripts/snr/ledger";
 import type { HeroStats, StatBlock } from "./stats";
 import type { RegEntry } from "./reg-entries";
 import type { LogKpis, PresenceRow } from "./log-kpis";
+
+/** One consumed registry crossfeed candidate, flattened with the run
+    timestamp it was recorded under, newest-run-first. */
+export interface CrossfeedLogRow {
+  /** ISO datetime of the run that recorded this outcome. */
+  runAt: string;
+  id: string;
+  item_id: string;
+  entity_slug: string;
+  field: string;
+  value: unknown;
+  outcome: CrossfeedOutcome;
+}
 
 /** Feed-wide counts the home filter bar shows (computed at prerender). */
 export interface FeedCounts {
@@ -144,6 +158,12 @@ export type PageData =
       kpis: LogKpis;
       /** Lead-source presence over the same window, full sorted list. */
       presence: PresenceRow[];
+      /** Registry crossfeed outcome log (2026-09-09): the last 20 consumed
+          candidates newest first, plus lifetime totals per outcome. */
+      crossfeedLog: {
+        recent: CrossfeedLogRow[];
+        totals: Record<CrossfeedOutcome, number>;
+      };
     }
   | { page: "log-archive"; month: string; sweeps: SweepLogEntry[] }
   | {

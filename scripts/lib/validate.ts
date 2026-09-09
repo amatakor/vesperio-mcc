@@ -33,6 +33,9 @@ import {
   GROUND_STATION_PRECISIONS,
   OMM_STRING_FIELDS,
   OMM_NUMBER_FIELDS,
+  CROSSFEED_ENTITY_TYPES,
+  CROSSFEED_QUEUE_ACTIONS,
+  CROSSFEED_OUTCOMES,
 } from "../../src/data/schema";
 
 const ID_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*$/;
@@ -1667,6 +1670,72 @@ export function validateRegistryCandidatesFile(data: unknown): string[] {
       errors.push(`${path}.proposed_on: required YYYY-MM-DD`);
     }
     if (c.status !== "pending") errors.push(`${path}.status: must be "pending" while queued`);
+  });
+  return errors;
+}
+
+// --------------------------------------------- registry crossfeed outcome log
+
+/** registry-crossfeed-log.json: the deterministic outcome ledger written by
+    scripts/record-crossfeed-outcomes.ts. */
+export function validateCrossfeedLogFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["registry-crossfeed-log.json: root must be an object"];
+  if (typeof data.version !== "string") {
+    errors.push("registry-crossfeed-log.version: required string");
+  }
+  if (!Array.isArray(data.runs)) {
+    errors.push("registry-crossfeed-log.runs: required array");
+    return errors;
+  }
+  data.runs.forEach((run, i) => {
+    const path = `registry-crossfeed-log.runs[${i}]`;
+    if (!isObj(run)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    if (!isIsoDatetime(run.at)) errors.push(`${path}.at: required ISO datetime`);
+    if (!Array.isArray(run.consumed)) {
+      errors.push(`${path}.consumed: required array`);
+      return;
+    }
+    if (run.consumed.length === 0) {
+      errors.push(
+        `${path}.consumed: must be non-empty; a run entry is written only when something was consumed`,
+      );
+    }
+    const seen = new Set<string>();
+    run.consumed.forEach((c, j) => {
+      const p = `${path}.consumed[${j}]`;
+      if (!isObj(c)) {
+        errors.push(`${p}: must be an object`);
+        return;
+      }
+      const id = reqString(c, "id", p, errors);
+      if (id !== null) {
+        if (seen.has(id)) errors.push(`${p}.id: duplicate "${id}" within this run`);
+        seen.add(id);
+      }
+      reqString(c, "item_id", p, errors);
+      reqString(c, "entity_slug", p, errors);
+      reqString(c, "field", p, errors);
+      if (!CROSSFEED_ENTITY_TYPES.includes(c.entity_type as never)) {
+        errors.push(`${p}.entity_type: must be one of [${CROSSFEED_ENTITY_TYPES.join(", ")}]`);
+      }
+      if (c.value === undefined) errors.push(`${p}.value: required (may be null)`);
+      if (!CROSSFEED_QUEUE_ACTIONS.includes(c.action as never)) {
+        errors.push(`${p}.action: must be one of [${CROSSFEED_QUEUE_ACTIONS.join(", ")}]`);
+      }
+      if (!(typeof c.proposed_on === "string" && isValidDate(c.proposed_on))) {
+        errors.push(`${p}.proposed_on: required YYYY-MM-DD`);
+      }
+      if (!isSnrValue(c.item_snr)) errors.push(`${p}.item_snr: required integer 1-5`);
+      if (!isHttpUrl(c.source_url)) errors.push(`${p}.source_url: required http(s) URL`);
+      if (!CROSSFEED_OUTCOMES.includes(c.outcome as never)) {
+        errors.push(`${p}.outcome: must be one of [${CROSSFEED_OUTCOMES.join(", ")}]`);
+      }
+      reqString(c, "detail", p, errors);
+    });
   });
   return errors;
 }

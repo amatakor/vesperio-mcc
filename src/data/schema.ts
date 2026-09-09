@@ -608,6 +608,83 @@ export interface SignalsSuggestionsFile {
   suggestions: SignalSuggestion[];
 }
 
+// ---------------------------------------------------- registry crossfeed log
+
+/** Registry entity types a crossfeed candidate (and its logged outcome) can
+    target. Mirrors the four registry subdirectories 1:1. */
+export const CROSSFEED_ENTITY_TYPES = [
+  "constellation",
+  "vehicle",
+  "spaceport",
+  "organization",
+] as const;
+export type CrossfeedEntityType = (typeof CROSSFEED_ENTITY_TYPES)[number];
+
+/**
+ * The queue action a candidate carried in registry-candidates.json before
+ * it was consumed (SNR_SPEC §6 / SNR_PLAN §7.3). Repeated here rather than
+ * imported because a logged entry outlives the queue entry it came from.
+ */
+export const CROSSFEED_QUEUE_ACTIONS = [
+  "annotate_mismatch",
+  "downgrade_incoming",
+  "flag_refresh",
+  "both_disputed_queue",
+  "no_registry_change",
+  "null_fill",
+  "below_entry_bar",
+] as const;
+export type CrossfeedQueueAction = (typeof CROSSFEED_QUEUE_ACTIONS)[number];
+
+/**
+ * What became of a consumed crossfeed candidate, decided deterministically
+ * by scripts/record-crossfeed-outcomes.ts from a pre-agent snapshot of
+ * registry-candidates.json compared against the post-agent registry
+ * profiles: no network, no LLM, code only.
+ */
+export const CROSSFEED_OUTCOMES = ["landed", "landed_resourced", "disputed", "unchanged"] as const;
+export type CrossfeedOutcome = (typeof CROSSFEED_OUTCOMES)[number];
+
+/** One consumed queue candidate, carrying its original proposal plus the
+    outcome record-crossfeed-outcomes.ts classified for it. */
+export interface CrossfeedConsumedEntry {
+  id: string;
+  item_id: string;
+  entity_slug: string;
+  entity_type: CrossfeedEntityType;
+  field: string;
+  value: unknown;
+  action: CrossfeedQueueAction;
+  /** YYYY-MM-DD the candidate was proposed (from the queue entry). */
+  proposed_on: string;
+  item_snr: SnrValue;
+  source_url: string;
+  outcome: CrossfeedOutcome;
+  /** One line explaining the classification (e.g. which host re-sourced it). */
+  detail: string;
+}
+
+export interface CrossfeedRun {
+  /** ISO datetime the --record step ran. */
+  at: string;
+  consumed: CrossfeedConsumedEntry[];
+}
+
+/**
+ * registry-crossfeed-log.json: machine-owned, deterministic outcome ledger
+ * for the registry-candidates.json crossfeed queue (2026-09-09). The weekly
+ * maintain-registry agent consumes queue entries by deleting them; this log
+ * is the only record of whether each one landed, was re-sourced, was
+ * disputed, or was otherwise left unchanged, so /system can show the
+ * crossfeed working. A run entry is appended only when something was
+ * consumed; a quiet run writes nothing.
+ */
+export interface RegistryCrossfeedLogFile {
+  $comment?: string;
+  version: string;
+  runs: CrossfeedRun[];
+}
+
 // ------------------------------------------------------------- registry
 
 export const REGISTRY_FACT_TIERS = ["canonical", "provisional"] as const;

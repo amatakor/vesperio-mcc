@@ -9,6 +9,7 @@ import {
   validateSourceLedgerFile,
   validateSignalsSuggestionsFile,
   validateRegistryCandidatesFile,
+  validateCrossfeedLogFile,
 } from "./lib/validate";
 
 const errors: string[] = [];
@@ -45,5 +46,8 @@ if (suggestions !== undefined) errors.push(...validateSignalsSuggestionsFile(sug
 
 const registryCandidates = loadJson("src/data/registry-candidates.json", errors);
 if (registryCandidates !== undefined) errors.push(...validateRegistryCandidatesFile(registryCandidates));
+
+const crossfeedLog = loadJson("src/data/registry-crossfeed-log.json", errors);
+if (crossfeedLog !== undefined) errors.push(...validateCrossfeedLogFile(crossfeedLog));
 
 report("check-feed", errors);

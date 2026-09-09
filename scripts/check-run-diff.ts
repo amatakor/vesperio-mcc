@@ -38,6 +38,7 @@ export const ALLOWED_PATHS: Record<string, readonly string[]> = {
     "src/data/source_ledger.json",
     "src/data/signals_suggestions.json",
     "src/data/registry-candidates.json",
+    "src/data/registry-crossfeed-log.json",
   ],
 };
 
