@@ -683,6 +683,8 @@ export interface RegistryCrossfeedLogFile {
   $comment?: string;
   version: string;
   runs: CrossfeedRun[];
+}
+
 export const REGISTRY_SUGGESTION_STATUSES = ["pending", "dismissed", "created"] as const;
 export type RegistrySuggestionStatus = (typeof REGISTRY_SUGGESTION_STATUSES)[number];
 
