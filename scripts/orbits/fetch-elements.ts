@@ -9,7 +9,16 @@
  *
  * Failure mode: on a failed query or an empty result the previous file
  * is kept; the client's fetched_at staleness check surfaces old data.
- * Exits non-zero only when every query fails.
+ * A run-level time budget stops the remaining queries well inside the
+ * workflow step timeout when CelesTrak is slow, so a slow source ends
+ * the run gracefully instead of as a timed-out step.
+ *
+ * Exit code (Florian, 2026-09-09): a run where every query failed is
+ * still a success while the kept element sets are fresher than
+ * STALE_ALERT_MS (a transient CelesTrak outage keeps prior data, the
+ * client shows its age). It exits non-zero, filing the ops alert, only
+ * when every query failed AND no element set is younger than that: a
+ * multi-day outage, or a broken fetcher.
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync } from "node:fs";
@@ -25,6 +34,11 @@ const OUT_DIR = "public/data/orbits";
 const USER_AGENT = "mcc-orbits/1.0 (+https://vesperio.ai)";
 const DELAY_MS = 1500;
 const RETRIES = 2;
+/** Stop issuing queries past this run age (the workflow step allows 5 min). */
+const RUN_BUDGET_MS = 150_000;
+/** Every-query-failed runs alert only once the kept data is older than this. */
+const STALE_ALERT_MS = 3 * 86_400_000;
+const runStart = Date.now();
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -92,6 +106,16 @@ let failedQueries = 0;
 for (const [i, q] of queries.entries()) {
   if (i > 0) await sleep(DELAY_MS);
   const url = `${GP_BASE}?${q.query}&FORMAT=JSON`;
+  const elapsed = Date.now() - runStart;
+  if (elapsed > RUN_BUDGET_MS) {
+    console.error(
+      `  BUDGET: ${Math.round(elapsed / 1000)}s elapsed; stopping the remaining ` +
+        `${queries.length - i} CelesTrak queries this run, previous files kept.`,
+    );
+    failedQueries += queries.length - i;
+    kept += queries.slice(i).reduce((n, rest) => n + rest.targets.length, 0);
+    break;
+  }
   let records: OmmRecord[] | null;
   try {
     records = await fetchGp(url);
@@ -151,6 +175,32 @@ console.log(
   `fetch-elements: ${queries.length} queries, ${written} files written, ${kept} kept, ${failedQueries} failed`,
 );
 if (queries.length > 0 && failedQueries === queries.length) {
-  console.error("fetch-elements: every query failed");
-  process.exit(1);
+  const newest = newestFetchedAt();
+  const ageMs = newest === null ? Number.POSITIVE_INFINITY : Date.now() - Date.parse(newest);
+  if (ageMs > STALE_ALERT_MS) {
+    console.error(
+      `fetch-elements: every query failed and the kept element sets are ` +
+        `${newest === null ? "absent" : `${(ageMs / 86_400_000).toFixed(1)} days old`}; alerting.`,
+    );
+    process.exit(1);
+  }
+  console.warn(
+    `fetch-elements: every query failed (CelesTrak unreachable or slow); previous element sets ` +
+      `kept, newest ${(ageMs / 3_600_000).toFixed(1)}h old. Not an alert until ${STALE_ALERT_MS / 86_400_000} days stale.`,
+  );
+}
+
+/** Newest fetched_at across the kept element files, null when there are none. */
+function newestFetchedAt(): string | null {
+  let newest: string | null = null;
+  for (const f of existsSync(OUT_DIR) ? readdirSync(OUT_DIR) : []) {
+    if (!f.startsWith("elements-") || !f.endsWith(".json")) continue;
+    try {
+      const at = (JSON.parse(readFileSync(join(OUT_DIR, f), "utf8")) as OrbitsElementsFile).fetched_at;
+      if (typeof at === "string" && (newest === null || at > newest)) newest = at;
+    } catch {
+      // unreadable file: ignore, it cannot vouch for freshness
+    }
+  }
+  return newest;
 }

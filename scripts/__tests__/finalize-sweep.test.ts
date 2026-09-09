@@ -662,6 +662,59 @@ describe("finalize-sweep merge", () => {
     expect(result.errors.join("\n")).toContain('no held entry with candidate.headline "No such entry"');
   });
 
+  test("a re-queued hold folds into the existing entry instead of duplicating it (2026-09-09)", () => {
+    // Sweep 1 queues a story; sweep 2 queues the same story again (same
+    // source URL, slightly different headline), sweep 3 the same headline
+    // with punctuation changes and no URL. One queue entry survives,
+    // carrying every reason; the merges are stated in the sweep summary.
+    writeDraft({
+      held: [
+        {
+          candidate: {
+            headline: "ASI board resigns to allow appointment of extraordinary commissioner",
+            source_url: "https://europeanspaceflight.com/asi-board-resigns/",
+          },
+          reason: "scope call: institutional governance",
+        },
+      ],
+    });
+    expect(finalizeSweep({ dataDir, draftPath, now: new Date("2026-08-07T05:00:00.000Z") }).ok).toBe(true);
+    expect(readHeld().held).toHaveLength(1);
+
+    writeDraft({
+      held: [
+        {
+          candidate: {
+            headline: "ASI board resigns to allow appointment of an extraordinary commissioner",
+            source_url: "https://www.europeanspaceflight.com/asi-board-resigns?utm=x",
+          },
+          reason: "scope call for Florian",
+        },
+        {
+          candidate: { headline: "asi board resigns to allow appointment of extraordinary commissioner!" },
+          reason: "third time",
+        },
+        {
+          candidate: { headline: "Italy names a commissioner", source_url: "https://example.com/other" },
+          reason: "a different story",
+        },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-08-08T05:00:00.000Z") });
+    expect(result.errors).toEqual([]);
+    expect(result.held).toBe(1);
+    const held = readHeld().held;
+    expect(held).toHaveLength(2);
+    expect(held[0]!.date).toBe("2026-08-07");
+    expect(held[0]!.reason).toContain("scope call: institutional governance");
+    expect(held[0]!.reason).toContain("[re-queued 2026-08-08: scope call for Florian]");
+    expect(held[0]!.reason).toContain("[re-queued 2026-08-08: third time]");
+    expect(held[1]!.date).toBe("2026-08-08");
+    const last = readState().sweeps.at(-1)!;
+    expect(last.held).toBe(1);
+    expect(last.summary).toContain("Held-queue dedup: 2 re-queued entries merged");
+  });
+
   test("crawl not_attempted is rejected when the budget covered the event", () => {
     const item = baseNewItem();
     (item.scoring as { crawl: string }).crawl = "not_attempted";

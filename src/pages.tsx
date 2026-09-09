@@ -3505,7 +3505,7 @@ function SourceCardsSection({
             <div className="source-card-facts">
               {list.map(({ label, f, computed }) => (
                 <span key={label} className="source-fact">
-                  <a href={f.source!} rel="noopener" className="source-fact-label">
+                  <a href={f.source!} rel="noopener" className="source-fact-label" title={label}>
                     {label}
                   </a>
                   <span className="source-fact-class">

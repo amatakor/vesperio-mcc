@@ -168,7 +168,7 @@ Sandbox (2026-07-11): scheduled agents run without curl (WebFetch/WebSearch are 
 3. Collect candidate items newer than the last run timestamp in `src/data/state.json`.
 4. Filter against scope. Discard out-of-scope items silently.
 5. For each candidate, run the master-crawler loop in prompts/update-items.md: known-to-MCC match (7-day dedup, 30-day reinforcement for SNR ≤ 2), corroboration crawl within budget (5 fetches per event, 40 per sweep, seismic first), registry crossfeed check (like-for-like metrics first), honest source classes in the draft's scoring block. `finalize-sweep` computes all scores, applies persistence bumps, records ledger claims, and logs SNR movements.
-6. Run the build (`bun run build`) to confirm the feed parses and the site builds before committing. A commit that breaks the build is worse than a skipped run.
+6. The workflow runs the build (`bun run build`) as its own step after the agent finishes and before any commit; a commit that breaks the build is worse than a skipped run. The agent does not run the build itself (its sandbox does not allow it, 2026-09-09) and does not log the denial as a lesson.
 7. Append new lessons to `SWEEP_MEMORY.md` (source behaviour changes, mistakes caught, judgment calls worth remembering). Keep entries short and dated.
 8. Commit with message `ingest: N new, M updated, K held (YYYY-MM-DD HH:MM UTC)`.
 9. If a run produces zero items, still write and commit the sweep log entry in state.json; the public /log/ page renders it, and a quiet day explained is a trust signal. Feed content is never padded: no items, no filler, on quiet days.

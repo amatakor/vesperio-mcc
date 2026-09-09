@@ -5,7 +5,7 @@
  * scene.tsx owns state and data.
  */
 
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { Fragment, createContext, useContext, useEffect, useRef, useState } from "react";
 import type { OrbitsStatsFile } from "../data/schema";
 
 // ------------------------------------------------ launch/vehicle links
@@ -521,11 +521,13 @@ export function FooterBar({
       </span>
       <span className="obar-fresh">
         {entries.map((e, i) => (
-          <span key={e.label}>
+          <Fragment key={e.label}>
             {i > 0 && " · "}
-            <span className="obar-fresh-label">{e.label} </span>
-            <span className={e.stale ? "obar-fresh-stale" : "obar-fresh-value"}>{e.value}</span>
-          </span>
+            <span className="obar-fresh-entry">
+              <span className="obar-fresh-label">{e.label} </span>
+              <span className={e.stale ? "obar-fresh-stale" : "obar-fresh-value"}>{e.value}</span>
+            </span>
+          </Fragment>
         ))}
       </span>
     </div>

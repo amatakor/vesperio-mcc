@@ -902,8 +902,9 @@ input,
    register, tabular page numbers, links as cyan constants. */
 .feed-pager {
   display: flex;
+  flex-wrap: wrap; /* narrow viewports: numbers and prev/next wrap, never overflow */
   align-items: baseline;
-  gap: 16px;
+  gap: 8px 16px;
   margin-top: 28px;
   padding-top: 12px;
   border-top: 1px solid var(--border-1);
@@ -915,7 +916,8 @@ input,
 }
 .feed-pager-nums {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
 }
 .feed-pager-link {
   color: var(--link);

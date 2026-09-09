@@ -168,8 +168,9 @@ export type PageData =
 /** Items per prerendered feed page (plan: 30-50; 50 keeps page count low). */
 export const FEED_PAGE_SIZE = 50;
 
-/** /log shows sweeps this recent; older ones move to monthly archive pages. */
-export const LOG_WINDOW_DAYS = 90;
+/** /system shows sweeps this recent; older ones move to monthly archive pages
+    (30 days, about 60 entries; Florian, 2026-09-09, down from 90). */
+export const LOG_WINDOW_DAYS = 30;
 
 export function feedPageCount(totalItems: number): number {
   return Math.max(1, Math.ceil(totalItems / FEED_PAGE_SIZE));
