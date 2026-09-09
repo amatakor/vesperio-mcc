@@ -220,3 +220,9 @@ corner and inline on the item and modal bands. Chips are for
 classification (category, impact, kind, disputed); a timestamp in a
 badge was the odd one out, and it wrapped the badge row onto a second
 line on seismic cards. The resurfacing rule itself is unchanged.
+The date block now spans exactly the chip row's height, so a single
+date centers on the chips and the stacked pair sits flush with their
+top and bottom edges. Card headlines are never clamped any more: the
+three-line cut with an ellipsis is gone and the card grows to fit
+(Florian, 2026-09-09; the 90-character headline rule bounds the
+growth). Taglines keep their three-line clamp.

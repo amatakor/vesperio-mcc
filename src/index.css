@@ -1598,9 +1598,13 @@ a.chip:hover {
 }
 .card-meta .date {
   position: absolute;
-  top: calc(var(--pad-card) + 7px);
+  top: var(--pad-card);
   right: var(--pad-card);
   margin-left: 0;
+  /* The block spans exactly the chip height, so a single date centers on
+     the chips and a stacked pair aligns to the chips' top and bottom edges. */
+  height: var(--h-badge);
+  justify-content: center;
   /* Date register (Florian, 2026-09-09): the event date and the
      post-publication activity stamp are one timestamp block, same dim
      mono; chips stay classification only. Cards stack the two lines
@@ -1609,7 +1613,10 @@ a.chip:hover {
   flex-direction: column;
   align-items: flex-end;
   text-align: right;
-  line-height: 1.3;
+  line-height: 1;
+}
+.card-meta .date:has(.date-upd) {
+  justify-content: space-between;
 }
 .date-upd {
   text-transform: uppercase; /* chrome register, like the chip it replaces */
@@ -1632,10 +1639,9 @@ a.chip:hover {
   text-transform: uppercase;
   overflow-wrap: anywhere;
   margin: 10px var(--pad-card) 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  /* Never clamped (Florian, 2026-09-09): a headline is never cut with an
+     ellipsis; the card grows to fit it. The 90-char headline rule keeps
+     the growth bounded. */
 }
 .card-headline a {
   color: var(--text-1);
