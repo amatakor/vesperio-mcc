@@ -907,6 +907,7 @@ export interface SpaceportProfile {
 }
 
 export const ORG_KINDS = [
+  "operator", // satellite or network operator (added 2026-09-09: SES, Telesat, Viasat and peers had no fitting kind)
   "manufacturer",
   "launch-services",
   "in-space-services",

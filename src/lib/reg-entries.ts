@@ -79,6 +79,7 @@ export const ORG_KIND_LABEL: Record<string, string> = {
   "launch-services": "launch services",
   "in-space-services": "in-space services",
   "ground-segment": "ground segment",
+  operator: "operator",
   institution: "institution",
   finance: "finance",
 };
