@@ -683,6 +683,41 @@ export interface RegistryCrossfeedLogFile {
   $comment?: string;
   version: string;
   runs: CrossfeedRun[];
+export const REGISTRY_SUGGESTION_STATUSES = ["pending", "dismissed", "created"] as const;
+export type RegistrySuggestionStatus = (typeof REGISTRY_SUGGESTION_STATUSES)[number];
+
+/**
+ * registry_suggestions.json: coverage-gap suggestions only
+ * (scripts/registry-suggest.ts). A company name on published items that
+ * resolves to no registry entity (matchCompanyRefs over the registry
+ * index + aliases.json, the exact resolution finalize-sweep uses)
+ * becomes a suggestion once it appears on 2+ items within the last 90
+ * days. The agent never creates registry entries from this file;
+ * Florian reviews and sets status by hand. Deterministic and
+ * idempotent: rerunning recomputes counts but preserves an existing
+ * entry's status when it is "dismissed" or "created", and drops
+ * "pending" entries that no longer qualify.
+ */
+export interface RegistrySuggestion {
+  /** Normalized display name (corporate suffix stripped). */
+  name: string;
+  /** Items counted within the 90-day window, deduplicated per item id. */
+  item_count: number;
+  /** YYYY-MM-DD, earliest qualifying item's event date. */
+  first_seen: string;
+  /** YYYY-MM-DD, latest qualifying item's event date. */
+  last_seen: string;
+  /** Up to 10 newest qualifying item ids. */
+  item_ids: string[];
+  /** Item count per category among the qualifying items. */
+  categories: Record<string, number>;
+  status: RegistrySuggestionStatus;
+}
+
+export interface RegistrySuggestionsFile {
+  $comment?: string;
+  version: string;
+  suggestions: RegistrySuggestion[];
 }
 
 // ------------------------------------------------------------- registry

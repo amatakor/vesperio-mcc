@@ -1,4 +1,4 @@
-/** Validates items.json, held.json, state.json, sources.json, source_ledger.json, and signals_suggestions.json. Exits 1 on any violation. */
+/** Validates items.json, held.json, state.json, sources.json, source_ledger.json, signals_suggestions.json, and registry_suggestions.json. Exits 1 on any violation. */
 
 import { loadJson, report } from "./lib/run-checks";
 import {
@@ -10,6 +10,7 @@ import {
   validateSignalsSuggestionsFile,
   validateRegistryCandidatesFile,
   validateCrossfeedLogFile,
+  validateRegistrySuggestionsFile,
 } from "./lib/validate";
 
 const errors: string[] = [];
@@ -49,5 +50,7 @@ if (registryCandidates !== undefined) errors.push(...validateRegistryCandidatesF
 
 const crossfeedLog = loadJson("src/data/registry-crossfeed-log.json", errors);
 if (crossfeedLog !== undefined) errors.push(...validateCrossfeedLogFile(crossfeedLog));
+const registrySuggestions = loadJson("src/data/registry_suggestions.json", errors);
+if (registrySuggestions !== undefined) errors.push(...validateRegistrySuggestionsFile(registrySuggestions));
 
 report("check-feed", errors);

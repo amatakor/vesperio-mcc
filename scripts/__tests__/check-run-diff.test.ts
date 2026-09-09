@@ -15,6 +15,7 @@ describe("isAllowedPath", () => {
     expect(isAllowedPath("src/data/items.json", SWEEP)).toBe(true);
     expect(isAllowedPath("SWEEP_MEMORY.md", SWEEP)).toBe(true);
     expect(isAllowedPath("sweep-draft.json", SWEEP)).toBe(true);
+    expect(isAllowedPath("src/data/registry_suggestions.json", SWEEP)).toBe(true);
   });
 
   test("directory prefix matches files beneath it", () => {

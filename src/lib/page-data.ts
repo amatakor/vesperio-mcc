@@ -80,6 +80,32 @@ export interface DigestQuietSweep {
   summary: string;
 }
 
+/** Compact item reference the registry-coverage panel's per-name links use. */
+export interface RegistryCoverageItemRef {
+  id: string;
+  headline: string;
+  date: string;
+}
+
+/** One pending registry-suggestions.json row, ready to render. */
+export interface RegistryCoverageRow {
+  name: string;
+  item_count: number;
+  last_seen: string;
+  categories: Record<string, number>;
+  /** The two most recent qualifying items, for the inline links. */
+  recentItems: RegistryCoverageItemRef[];
+}
+
+/** The /system "registry coverage" panel: pending coverage-gap suggestions. */
+export interface RegistryCoverage {
+  rows: RegistryCoverageRow[];
+  /** Pending suggestions total (rows.length, kept explicit for the totals line). */
+  totalNames: number;
+  /** Sum of item_count across pending rows (an item can count toward >1 name). */
+  totalItems: number;
+}
+
 export type PageData =
   | { page: "home"; items: Item[]; pageCount: number; counts: FeedCounts; lastSweepAt: string | null }
   | { page: "feed-page"; n: number; items: Item[]; pageCount: number; counts: FeedCounts }
@@ -164,6 +190,8 @@ export type PageData =
         recent: CrossfeedLogRow[];
         totals: Record<CrossfeedOutcome, number>;
       };
+      /** Registry coverage-gap suggestions (scripts/registry-suggest.ts), pending only. */
+      registryCoverage: RegistryCoverage;
     }
   | { page: "log-archive"; month: string; sweeps: SweepLogEntry[] }
   | {

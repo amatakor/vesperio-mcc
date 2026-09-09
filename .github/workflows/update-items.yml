@@ -317,6 +317,9 @@ jobs:
       - name: Apply judged artwork (falls back to og:image order, then licensed stock)
         run: bun scripts/fetch-thumbs.ts --apply
 
+      - name: Registry coverage-gap suggestions (deterministic, post-sweep)
+        run: bun scripts/registry-suggest.ts
+
       - name: Build must pass before any commit
         run: bun run build
 
