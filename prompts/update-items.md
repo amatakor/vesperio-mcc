@@ -291,6 +291,23 @@ entry is a failed run, not a handoff.
    on a real like-for-like counter, and do NOT treat a pre-event "0"
    as a conflict (the Vikram-1 first flight, 2026-07-18, was wrongly
    dispute-downgraded exactly this way).
+   Organization facts (Florian, 2026-09-09, the registry is meant to be
+   self-populating): organization profiles accept crossfeed on
+   `country`, `founded`, `focus`, `status`, `website`, `ticker`,
+   `headquarters`, `parent_org`, `funding_latest`, `funding_total`,
+   `valuation_latest`, and `employees`. Attest each exactly as the source
+   states it: `funding_latest` is the round as a phrase ("$1 billion
+   Series E led by X"), `valuation_latest` the stated valuation phrase,
+   `funding_total` only when a source states a cumulative total (never
+   sum rounds yourself), `parent_org` the acquirer once the source says
+   the deal has closed (an announced deal is not a parent change),
+   `status` the stated state (active, acquired, bankrupt, dissolved),
+   `employees` a stated headcount, `headquarters` city and country as
+   stated. A funding, M&A, IPO, headquarters, or status event on an
+   organization that has a profile MUST carry the matching crossfeed
+   fact; an empty facts list on such an item needs a note naming which
+   metric the source does not state.
+
 6. **Classify sources honestly.** Every source you attach carries a
    `class`; the deterministic gate scores from it, so misclassification
    is the cardinal sin of this pipeline:
