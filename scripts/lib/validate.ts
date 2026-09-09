@@ -1167,6 +1167,20 @@ const ORG_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> 
 ];
 
 /**
+ * Optional org fields fed by the news crossfeed (funding, ownership,
+ * headquarters, headcount). Validated only when present, same pattern as
+ * CONSTELLATION_OPTIONAL_FIELDS/VEHICLE_OPTIONAL_FIELDS.
+ */
+const ORG_OPTIONAL_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["headquarters", "string"],
+  ["parent_org", "string"],
+  ["funding_latest", "string"],
+  ["funding_total", "string"],
+  ["valuation_latest", "string"],
+  ["employees", "number"],
+];
+
+/**
  * Exhaustive per-type key sets (QC P1-3, 2026-07-13). validateRegistryProfile
  * used to check only the keys it knew about, so a scheduled run (or a
  * prompt-injected one) could smuggle arbitrary new fields past the
@@ -1209,7 +1223,12 @@ const ALLOWED_PROFILE_KEYS: Record<
     "ll2_location_id",
     ...SPACEPORT_FIELDS.map(([k]) => k),
   ]),
-  organization: new Set([...REGISTRY_COMMON_KEYS, "kind", ...ORG_FIELDS.map(([k]) => k)]),
+  organization: new Set([
+    ...REGISTRY_COMMON_KEYS,
+    "kind",
+    ...ORG_FIELDS.map(([k]) => k),
+    ...ORG_OPTIONAL_FIELDS.map(([k]) => k),
+  ]),
 };
 
 /**
@@ -1604,6 +1623,9 @@ export function validateRegistryProfile(
       errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
     }
     for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    for (const [key, kind] of ORG_OPTIONAL_FIELDS) {
+      if (data[key] !== undefined) checkSourcedField(data, key, kind, path, errors);
+    }
     checkTimeline(data, path, errors);
   }
   // Registry v2: positioning is allowed on all four profile types.
