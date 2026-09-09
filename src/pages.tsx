@@ -1856,7 +1856,7 @@ export function ItemPage({ item }: { item: Item }) {
 // the page's data.orgHrefs map. Alias/org-href maps are no longer built here.
 
 /** Facts-table rows whose string value names another registry entity. */
-const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
+const ENTITY_ROW_LABELS = new Set(["provider", "operator", "parent org"]);
 
 /**
  * Fleet-level display sum of a count field across sub-constellations.
@@ -4135,6 +4135,17 @@ export function OrgPage({ data }: { data: DataFor<"org"> }) {
     ["status", profile.status],
     ["website", profile.website],
   ];
+  // Crossfeed-fed fields (funding, ownership, headquarters, headcount):
+  // optional, shown only when a source has filled them.
+  const addOpt = (label: string, f: SourcedField<unknown> | undefined) => {
+    if (f) rows.push([label, f]);
+  };
+  addOpt("headquarters", profile.headquarters);
+  addOpt("parent org", profile.parent_org);
+  addOpt("funding (latest)", profile.funding_latest);
+  addOpt("funding (total)", profile.funding_total);
+  addOpt("valuation (latest)", profile.valuation_latest);
+  addOpt("employees", profile.employees);
   // Full roster, active and retired alike, matched on the vehicle's stated
   // provider (built server-side); sorted by name for the roster section.
   const vehicleRoster = data.vehicleRoster

@@ -936,6 +936,18 @@ export interface OrgProfile {
   focus: SourcedField<string>;
   status: SourcedField<string>;
   website: SourcedField<string>;
+  /** City and country as the source states it, e.g. "Espoo, Finland". */
+  headquarters?: SourcedField<string>;
+  /** The owning company as stated after an acquisition or merger. */
+  parent_org?: SourcedField<string>;
+  /** Most recent funding round exactly as stated, e.g. "$1 billion Series E led by X". */
+  funding_latest?: SourcedField<string>;
+  /** Total raised only when a source STATES the total; never summed from rounds. */
+  funding_total?: SourcedField<string>;
+  /** Most recent valuation as stated. */
+  valuation_latest?: SourcedField<string>;
+  /** Headcount as stated. */
+  employees?: SourcedField<number>;
   /** Per-entity positioning block; see Positioning. */
   positioning?: Positioning;
   notes?: string | null;

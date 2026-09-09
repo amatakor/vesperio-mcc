@@ -254,3 +254,21 @@ Escape; the button reads the live selection ("MAJOR · SEISMIC ·
 LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
 clears every row. The button's word changed from CATEGORIES to FILTER
 now that it covers three groups.
+
+Organization profiles can now self-populate from the news feed
+(2026-09-09): the registry crossfeed used to carry only country,
+founded, focus, and status onto a company profile, so the funding
+rounds, valuations, acquisitions, and headquarters moves the feed
+reports constantly had nowhere to land. Organization profiles gain six
+optional sourced fields: headquarters, parent org (the owning company
+after an acquisition or merger), funding (latest), funding (total,
+only when a source states the total outright, never summed from
+rounds), valuation (latest), and employees. Each renders on the
+organization profile page exactly like the existing fields, only when
+a source has filled it in, with its source link, as-of date, and
+provisional badge where it applies; parent org links to that company's
+own profile when one exists, same as operator and provider already do.
+The crossfeed's allowed-field list and value-shape check grew to
+match, and the registry validator's exhaustive key list now accepts
+the six fields as optional SourcedFields. No existing profile was
+touched; the fields stay null until the feed states a fact.
