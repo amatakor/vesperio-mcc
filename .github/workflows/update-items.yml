@@ -279,14 +279,24 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             If the file .image-judge/manifest.json does not exist, do
-            nothing and finish. Otherwise read it. For each entry in
-            items[], view every candidate image file (paths are
-            .image-judge/<file>) with the Read tool, then rank the
-            candidates BEST FIRST as news-card artwork by exactly this
-            rubric and nothing else: a real photograph of the story's
-            subject beats any other real photograph, which beats concept
-            art or renders, which beat abstract or stock-style graphics,
-            which beat charts, diagrams, and logos. Then END by outputting
+            nothing and finish. Otherwise read it. Each entry in items[]
+            carries the story (headline, companies) and its candidates.
+            View every candidate image file (paths are
+            .image-judge/<file>) with the Read tool. FIRST drop any
+            candidate that does not depict that story or its named
+            actor: a portrait of a person the headline and companies do
+            not name, another company's hardware or branding, an image
+            that belongs to a different story on a roundup page, a
+            publisher's own watermarked or composited stock graphic, an
+            earnings or price chart card. A dropped candidate is simply
+            left out of the order; an item whose candidates are all
+            dropped gets an empty order, and that is the right answer
+            more often than a wrong picture. THEN rank what remains BEST
+            FIRST as news-card artwork by exactly this rubric and nothing
+            else: a real photograph of the story's subject beats any
+            other real photograph, which beats concept art or renders,
+            which beat abstract or stock-style graphics, which beat
+            charts, diagrams, and logos. Then END by outputting
             the ranking as your final message: nothing but one JSON object
             of the form
             {"<item-id>": {"order": ["<file>", ...], "reason": "<one short line>"}, ...}

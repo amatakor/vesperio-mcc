@@ -17,6 +17,10 @@
  *      src/data/stock-images.json, keyed by source hostname suffix.
  *   4. Otherwise stamp image: null; the site renders a generated tile.
  *
+ * The judge step (see judge mode below) ranks the staged candidates and,
+ * since 2026-09-09, may reject them: a candidate that does not depict the
+ * story or its named actor is left out of the ranking and never stamped.
+ *
  * Credit always names the page the image actually came from.
  * Never image search, never generated imagery, never agency seals.
  * Runs in the sweep workflow between the agent and the build.
@@ -562,7 +566,33 @@ interface StagedCandidate {
 }
 
 interface JudgeManifest {
-  items: { id: string; candidates: StagedCandidate[] }[];
+  items: {
+    id: string;
+    /** The story the judge ranks against (relevance veto, 2026-09-09). */
+    headline: string;
+    companies: string[];
+    candidates: StagedCandidate[];
+  }[];
+}
+
+/**
+ * The candidates --apply may stamp for one item, best first. With a
+ * ranking entry, ONLY the files the judge listed are eligible: a file the
+ * judge left out is a rejection (relevance veto, Florian, 2026-09-09: a
+ * market-roundup page handed a Planet Labs item a portrait of an unrelated
+ * executive, and "any real photograph beats a logo" let it win), and an
+ * empty order means no candidate depicts the story. Without a ranking
+ * entry the staged (og-image-first) order applies unchanged.
+ */
+export function eligibleCandidates<T extends { file: string }>(
+  staged: T[],
+  entry: { order?: string[] } | undefined,
+): { order: T[]; rejected: T[] } {
+  if (entry === undefined || !Array.isArray(entry.order)) return { order: staged, rejected: [] };
+  const inManifest = new Map(staged.map((c) => [c.file, c]));
+  const order = entry.order.map((f) => inManifest.get(f)).filter((c): c is T => c !== undefined);
+  const kept = new Set(order.map((c) => c.file));
+  return { order, rejected: staged.filter((c) => !kept.has(c.file)) };
 }
 
 /** In-article image URLs (figures first), absolute, deduped, capped. */
@@ -639,7 +669,9 @@ async function collectMain(data: ItemsFile): Promise<void> {
   for (const item of data.items) {
     if (item.image !== undefined) continue;
     const candidates = await collectCandidates(item);
-    if (candidates.length > 0) manifest.items.push({ id: item.id, candidates });
+    if (candidates.length > 0) {
+      manifest.items.push({ id: item.id, headline: item.headline, companies: item.companies, candidates });
+    }
     console.log(`${item.id}: ${candidates.length} candidate(s) staged`);
   }
   if (manifest.items.length > 0) {
@@ -690,12 +722,13 @@ async function applyMain(data: ItemsFile, itemsPath: string, stock: StockMap): P
 
     const staged = byId.get(item.id) ?? [];
     if (staged.length > 0) {
-      const judged = ranking[item.id]?.order ?? [];
-      const inManifest = new Map(staged.map((c) => [c.file, c]));
-      const order: StagedCandidate[] = [
-        ...judged.map((f) => inManifest.get(f)).filter((c): c is StagedCandidate => c !== undefined),
-        ...staged.filter((c) => !judged.includes(c.file)),
-      ];
+      const { order, rejected } = eligibleCandidates(staged, ranking[item.id]);
+      if (rejected.length > 0) {
+        console.log(
+          `${item.id}: judge rejected ${rejected.length} candidate(s) as not depicting the story` +
+            `${ranking[item.id]?.reason ? ` (${ranking[item.id]!.reason})` : ""}`,
+        );
+      }
       for (const cand of order) {
         const owner = taken.get(cand.sha256);
         if (owner !== undefined && owner !== item.id) continue; // two cards never wear one image

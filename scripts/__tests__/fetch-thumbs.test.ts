@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { decodesAsQr, logoShaped, trimWhiteBorders } from "../fetch-thumbs";
+import { decodesAsQr, eligibleCandidates, logoShaped, trimWhiteBorders } from "../fetch-thumbs";
 import sharp from "sharp";
 
 describe("logoShaped candidate ordering", () => {
@@ -106,5 +106,32 @@ describe("decodesAsQr gate", () => {
 
   test("undecodable bytes pass the gate rather than deciding it", async () => {
     expect(await decodesAsQr(new Uint8Array([1, 2, 3, 4]))).toBe(false);
+  });
+});
+
+describe("eligibleCandidates (judge relevance veto, 2026-09-09)", () => {
+  const staged = [{ file: "a.cand-0.webp" }, { file: "a.cand-1.webp" }, { file: "a.cand-2.webp" }];
+
+  test("no ranking entry: the staged order applies unchanged", () => {
+    const r = eligibleCandidates(staged, undefined);
+    expect(r.order.map((c) => c.file)).toEqual(["a.cand-0.webp", "a.cand-1.webp", "a.cand-2.webp"]);
+    expect(r.rejected).toEqual([]);
+  });
+
+  test("a file the judge left out is rejected, never appended as fallback", () => {
+    const r = eligibleCandidates(staged, { order: ["a.cand-2.webp", "a.cand-0.webp"] });
+    expect(r.order.map((c) => c.file)).toEqual(["a.cand-2.webp", "a.cand-0.webp"]);
+    expect(r.rejected.map((c) => c.file)).toEqual(["a.cand-1.webp"]);
+  });
+
+  test("an empty order rejects every candidate (the Elon Musk portrait case)", () => {
+    const r = eligibleCandidates(staged, { order: [] });
+    expect(r.order).toEqual([]);
+    expect(r.rejected).toHaveLength(3);
+  });
+
+  test("file names outside the manifest are ignored", () => {
+    const r = eligibleCandidates(staged, { order: ["not-staged.webp", "a.cand-1.webp"] });
+    expect(r.order.map((c) => c.file)).toEqual(["a.cand-1.webp"]);
   });
 });

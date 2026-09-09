@@ -226,3 +226,20 @@ top and bottom edges. Card headlines are never clamped any more: the
 three-line cut with an ellipsis is gone and the card grows to fit
 (Florian, 2026-09-09; the 90-character headline rule bounds the
 growth). Taglines keep their three-line clamp.
+
+Artwork relevance veto (2026-09-09): the Planet Labs defense-contract
+item wore a portrait of Elon Musk. Root cause: its informal
+corroboration source was a 247wallst.com market roundup whose only
+image was that portrait, the artwork judge only ever ranked candidates
+and never rejected one, and it did not know the story it was judging,
+so "any real photograph beats a logo" made an unrelated face the
+winner. The judge now receives each item's headline and companies,
+drops every candidate that does not depict the story or its named
+actor (unnamed people, other companies' hardware, roundup-page images
+from other stories, a publisher's watermarked stock composites,
+earnings and price chart cards), and may return an empty order; the
+apply step treats a candidate the judge left out as rejected, never as
+a fallback. Three 247wallst.com images were removed by hand (the Musk
+portrait, a watermarked satellite render on the AST SpaceMobile Q2
+item, an earnings chart card on the Planet Q2 item); those cards
+render text-only.
