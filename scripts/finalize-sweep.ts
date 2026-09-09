@@ -1394,16 +1394,53 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const nextItems: ItemsFile = { items: nextItemsList };
 
   const resolved = new Set(resolveHeld);
-  const nextHeld: HeldFile = {
-    held: [
-      ...held.held.filter((h) => {
-        const c = h.candidate as Obj;
-        return !(typeof c.headline === "string" && resolved.has(c.headline));
-      }),
-      ...draft.held.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
-      ...autoHeld.map((h) => ({ candidate: h.candidate, reason: h.reason, date: today })),
-    ],
-  };
+  const survivingHeld = held.held.filter((h) => {
+    const c = h.candidate as Obj;
+    return !(typeof c.headline === "string" && resolved.has(c.headline));
+  });
+  // Re-queued duplicates fold into the existing hold (Florian, 2026-09-09):
+  // the same story held again on a later sweep (same source URL, or the
+  // same headline once punctuation and case are stripped) never becomes a
+  // second queue entry. The new reason is appended to the original entry,
+  // and the merge is stated in the sweep summary so /system shows it.
+  const normUrl = (u: unknown): string | null =>
+    typeof u === "string"
+      ? u
+          .trim()
+          .toLowerCase()
+          .replace(/^https?:\/\/(www\.)?/, "")
+          .replace(/[?#].*$/, "")
+          .replace(/\/+$/, "")
+      : null;
+  const normHeadline = (h: unknown): string | null =>
+    typeof h === "string" ? h.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim() : null;
+  const mergedHeld: HeldFile["held"] = survivingHeld.map((h) => ({ ...h }));
+  const heldMerges: string[] = [];
+  let heldAdded = 0;
+  for (const h of [...draft.held, ...autoHeld]) {
+    const c = h.candidate as Obj;
+    const url = normUrl(c.source_url);
+    const headline = normHeadline(c.headline);
+    const twin = mergedHeld.find((e) => {
+      const ec = e.candidate as Obj;
+      return (
+        (url !== null && normUrl(ec.source_url) === url) ||
+        (headline !== null && headline !== "" && normHeadline(ec.headline) === headline)
+      );
+    });
+    if (twin === undefined) {
+      mergedHeld.push({ candidate: h.candidate, reason: h.reason, date: today });
+      heldAdded++;
+      continue;
+    }
+    twin.reason = `${twin.reason} [re-queued ${today}: ${h.reason}]`;
+    heldMerges.push(`"${String(c.headline)}" folded into the ${twin.date} hold`);
+  }
+  const nextHeld: HeldFile = { held: mergedHeld };
+  const summary =
+    heldMerges.length === 0
+      ? draft.summary
+      : `${draft.summary} Held-queue dedup: ${heldMerges.length} re-queued ${heldMerges.length === 1 ? "entry" : "entries"} merged (${heldMerges.join("; ")}).`;
 
   // Tags coined this sweep (outside the seed set and all prior items) are
   // logged for human review; inventing tags is allowed, silently is not.
@@ -1445,8 +1482,8 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     at: nowIso,
     added: stampedNew.length,
     updated: draft.updates.length,
-    held: draft.held.length + autoHeld.length,
-    summary: draft.summary,
+    held: heldAdded,
+    summary,
     coverage: draft.coverage,
     ...(newTags.length > 0 ? { new_tags: newTags } : {}),
     ...(movements.length > 0 ? { snr_movements: movements } : {}),
@@ -1570,7 +1607,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
     errors: [],
     added: stampedNew.length,
     updated: draft.updates.length,
-    held: draft.held.length + autoHeld.length,
+    held: heldAdded,
   };
 }
 

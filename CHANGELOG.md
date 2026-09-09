@@ -179,3 +179,28 @@ gate, plus a short map of known source media buckets (TheSpaceDevs'
 image CDN) so a source's own hosted photograph counts as coming from
 that source; the map is how the Gravity-1 item got its real rocket
 photograph from its Launch Library record.
+
+Polish round (2026-09-09): the first work session after seven weeks
+of unattended machine commits opened with a full audit (browser
+walk-through of every page in both themes and at phone width, plus
+typecheck, tests, a link check over all 846 prerendered pages, the
+artwork files, and the house-style rules); the fundamentals were
+clean. Fixed: the MCC page's bottom bar overflowed a phone screen
+because its three freshness timestamps could not wrap (they now break
+between entries); the news feed's page numbers spilled past a phone's
+right edge (they wrap now); the registry Sources view clipped long
+field labels with no way to read them (a hover tooltip carries the
+full label). /system now shows the last 30 days of sweeps instead of
+90, with older months on their archive pages; at four sweeps a day the
+90-day window had grown to 228 entries on one page. The held queue
+stops collecting the same story twice: a candidate re-queued on a
+later sweep (same source URL, or the same headline) folds into the
+existing entry with its new reason appended, and the merge is stated
+in that sweep's summary. The orbits refresh no longer files an ops
+alert every time CelesTrak is slow: it stops issuing queries after 150
+seconds, keeps the previous element sets, and only fails the run when
+every query failed and the kept data is more than three days old
+(thirteen alerts between July 22 and August 31 were all this). The
+sweep procedure in CLAUDE.md now says the workflow runs the build after
+the agent, so the agent stops logging a "build denied" lesson twice a
+day.

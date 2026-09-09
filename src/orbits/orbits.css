@@ -980,6 +980,10 @@
 }
 .obar-fresh {
   flex: none;
+}
+/* Each freshness entry stays on one line; the row may break BETWEEN
+   entries (mobile: three timestamps exceed a 375px viewport). */
+.obar-fresh-entry {
   white-space: nowrap;
 }
 .obar-fresh-label {
@@ -1243,6 +1247,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+    min-width: 0; /* a flex item sizes to its nowrap children otherwise */
   }
 }
 
