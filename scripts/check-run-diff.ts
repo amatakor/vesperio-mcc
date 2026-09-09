@@ -26,6 +26,7 @@ export const ALLOWED_PATHS: Record<string, readonly string[]> = {
     "src/data/source_ledger.json",
     "src/data/signals_suggestions.json",
     "src/data/registry-candidates.json", // crossfeed queue
+    "src/data/registry_suggestions.json", // registry coverage-gap suggestions
     "SWEEP_MEMORY.md",
     "SWEEP_MEMORY_ARCHIVE.md", // written pre-agent by rotate-sweep-memory
     "public/img/items/",

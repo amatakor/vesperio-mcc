@@ -5,7 +5,7 @@
  * module and the dataset out of production client builds).
  */
 
-import type { Item, SweepLogEntry } from "../data/schema";
+import type { Item, SweepLogEntry, RegistrySuggestionsFile } from "../data/schema";
 import { CATEGORIES, DOMAIN_TAGS, IMPACTS } from "../data/schema";
 import type { Route } from "../routes";
 import type {
@@ -14,11 +14,13 @@ import type {
   OrgHrefs,
   PageData,
   ProfileEventRef,
+  RegistryCoverage,
 } from "./page-data";
 import { FEED_PAGE_SIZE, feedPageCount, splitLogWindow } from "./page-data";
 import { computeLogKpis, leadSourcePresence } from "./log-kpis";
 import type { CrossfeedCandidateRef } from "./log-kpis";
 import registryCandidatesJson from "../data/registry-candidates.json";
+import registrySuggestionsJson from "../data/registry_suggestions.json";
 import {
   constellationEntries,
   vehicleEntries,
@@ -68,6 +70,34 @@ function feedCounts(): FeedCounts {
 
 function feedPage(n: number): Item[] {
   return items.slice((n - 1) * FEED_PAGE_SIZE, n * FEED_PAGE_SIZE);
+}
+
+/**
+ * The /system "registry coverage" panel: pending registry_suggestions.json
+ * rows (Florian's dismissed/created decisions are never rendered as open
+ * gaps), each with its two most recent qualifying items resolved to real
+ * item refs for the inline links.
+ */
+function buildRegistryCoverage(): RegistryCoverage {
+  const file = registrySuggestionsJson as unknown as RegistrySuggestionsFile;
+  const rows = file.suggestions
+    .filter((s) => s.status === "pending")
+    .map((s) => ({
+      name: s.name,
+      item_count: s.item_count,
+      last_seen: s.last_seen,
+      categories: s.categories,
+      recentItems: s.item_ids
+        .map((id) => itemById(id))
+        .filter((i): i is Item => i !== undefined)
+        .slice(0, 2)
+        .map((i) => ({ id: i.id, headline: i.headline, date: i.date })),
+    }));
+  return {
+    rows,
+    totalNames: rows.length,
+    totalItems: rows.reduce((n, r) => n + r.item_count, 0),
+  };
 }
 
 function orgHrefs(): OrgHrefs {
@@ -274,6 +304,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         sourceProblems,
         kpis: computeLogKpis(items, ledgerSources, candidates, now),
         presence: leadSourcePresence(items, now),
+        registryCoverage: buildRegistryCoverage(),
       };
     }
     case "log-archive": {

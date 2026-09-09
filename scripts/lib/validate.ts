@@ -15,6 +15,7 @@ import {
   LEDGER_EVENT_KINDS,
   CLAIM_RESOLUTIONS,
   SUGGESTION_STATUSES,
+  REGISTRY_SUGGESTION_STATUSES,
   SOURCE_STATUSES,
   FEED_TYPES,
   SOURCE_TIERS,
@@ -813,6 +814,56 @@ export function validateSignalsSuggestionsFile(data: unknown): string[] {
           }
         }
       });
+    }
+  });
+  return errors;
+}
+
+export function validateRegistrySuggestionsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["registry_suggestions.json: root must be an object"];
+  if (typeof data.version !== "string") errors.push("registry_suggestions.version: required string");
+  if (!Array.isArray(data.suggestions)) {
+    errors.push("registry_suggestions.suggestions: required array");
+    return errors;
+  }
+  const seen = new Set<string>();
+  data.suggestions.forEach((s, i) => {
+    const path = `registry_suggestions[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    const name = reqString(s, "name", path, errors);
+    if (name !== null) {
+      const key = name.toLowerCase();
+      if (seen.has(key)) errors.push(`${path}.name: duplicate "${name}"`);
+      seen.add(key);
+    }
+    if (typeof s.item_count !== "number" || !Number.isInteger(s.item_count) || s.item_count < 2) {
+      errors.push(`${path}.item_count: required integer >= 2`);
+    }
+    if (!(typeof s.first_seen === "string" && isValidDate(s.first_seen))) {
+      errors.push(`${path}.first_seen: required YYYY-MM-DD`);
+    }
+    if (!(typeof s.last_seen === "string" && isValidDate(s.last_seen))) {
+      errors.push(`${path}.last_seen: required YYYY-MM-DD`);
+    }
+    const itemIds = reqStringArray(s, "item_ids", path, errors);
+    if (itemIds !== null && itemIds.length > 10) {
+      errors.push(`${path}.item_ids: at most 10 entries`);
+    }
+    if (!isObj(s.categories)) {
+      errors.push(`${path}.categories: required object`);
+    } else {
+      for (const [k, v] of Object.entries(s.categories)) {
+        if (typeof v !== "number" || !Number.isInteger(v) || v < 0) {
+          errors.push(`${path}.categories.${k}: must be a non-negative integer`);
+        }
+      }
+    }
+    if (!REGISTRY_SUGGESTION_STATUSES.includes(s.status as never)) {
+      errors.push(`${path}.status: must be one of [${REGISTRY_SUGGESTION_STATUSES.join(", ")}]`);
     }
   });
   return errors;

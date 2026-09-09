@@ -254,3 +254,21 @@ Escape; the button reads the live selection ("MAJOR · SEISMIC ·
 LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
 clears every row. The button's word changed from CATEGORIES to FILTER
 now that it covers three groups.
+
+Registry coverage suggestions (2026-09-09): half the feed names
+companies with no registry profile (Planet Labs, Telesat, SES, Viasat
+and more), so those items could never feed the registry and nobody saw
+the gap. A new deterministic script, scripts/registry-suggest.ts, scans
+src/data/items.json for company names that resolve to no registry
+entity (the same resolution finalize-sweep already uses, imported from
+scripts/lib/crossfeed.ts, never reimplemented) and writes
+src/data/registry_suggestions.json once a name appears on 2 or more
+items within a rolling 90-day window. It only suggests: registry
+entries are still created solely via reviewed changes. Florian sets a
+suggestion's status to "dismissed" or "created" by hand and that
+decision survives every rerun; a "pending" suggestion that falls back
+below the threshold is dropped instead. The scheduled sweep workflow
+now runs the script right after the artwork pipeline and before the
+build, and /system/ gained a "registry coverage" panel listing the open
+gaps (name, item count, last seen, category breakdown, and links to
+the two most recent items) plus a totals line.

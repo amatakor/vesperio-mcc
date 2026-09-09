@@ -5492,8 +5492,17 @@ function SubscribeForm() {
  * lead-source presence, and calibration. No Layout wrapper and no page
  * title: SystemPage owns the shell and the shared <h1>. */
 function LogBody({ data }: { data: DataFor<"system"> }) {
-  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems, kpis, presence } =
-    data;
+  const {
+    sweeps,
+    totals,
+    ledgerSources,
+    calibrationBuckets,
+    archiveMonths,
+    sourceProblems,
+    kpis,
+    presence,
+    registryCoverage,
+  } = data;
   return (
     <div className="system-log">
       <p className="lede">
@@ -5575,6 +5584,59 @@ function LogBody({ data }: { data: DataFor<"system"> }) {
               ))}
             </tbody>
           </table>
+        )}
+      </section>
+      <section className="panel" id="registry-coverage">
+        <h2>registry coverage</h2>
+        <p className="prose">
+          Company names on published items that resolve to no registry profile, aggregated once a
+          name appears on 2 or more items within the last 90 days. Suggestions only: registry
+          entries are created only via reviewed changes, never by a scheduled run.
+        </p>
+        {registryCoverage.rows.length === 0 ? (
+          <p className="empty">No coverage gap has crossed the threshold</p>
+        ) : (
+          <>
+            <table className="profile">
+              <thead>
+                <tr>
+                  <th>name</th>
+                  <th>items</th>
+                  <th>last seen</th>
+                  <th>categories</th>
+                  <th>recent</th>
+                </tr>
+              </thead>
+              <tbody>
+                {registryCoverage.rows.map((r) => (
+                  <tr key={r.name}>
+                    <th scope="row">{r.name}</th>
+                    <td>{r.item_count}</td>
+                    <td>{r.last_seen}</td>
+                    <td>
+                      {Object.entries(r.categories)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([c, n]) => `${c} ${n}`)
+                        .join(", ")}
+                    </td>
+                    <td>
+                      {r.recentItems.map((it, i) => (
+                        <span key={it.id}>
+                          {i > 0 && " · "}
+                          <a href={`/item/${it.id}/`}>{it.date}</a>
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="dim mono">
+              {registryCoverage.totalNames} name{registryCoverage.totalNames === 1 ? "" : "s"}{" "}
+              without a registry profile · {registryCoverage.totalItems} item mention
+              {registryCoverage.totalItems === 1 ? "" : "s"} counted
+            </p>
+          </>
         )}
       </section>
       <LogPresence presence={presence} windowDays={kpis.windowDays} />
