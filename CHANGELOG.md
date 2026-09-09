@@ -270,3 +270,21 @@ funding, valuation, headcount), the drafting prompt requires the
 matching fact on funding, M&A, IPO, headquarters, and status items, and
 the maintenance prompt covers organization profiles. The two queue
 files named "candidates" now each say which queue they are.
+
+Category-agnostic dedup gate (2026-09-09): the HIE/Orbex Sutherland
+Spaceport story published twice, once as a `financial` item and once
+as a `launch` item, because the sweep merge gate only ever compared a
+new draft against existing items sharing the same company AND the same
+category. The gate now also rejects a same-company match within the
+7-day dedup window when the new draft shares a source URL (a
+canonicalized comparison: scheme, `www.`, tracking query params, the
+fragment, and a trailing slash are all stripped before comparing, so
+an http/https or `?utm_source=` republish of the same page still
+matches) with an existing item's `source_url` or `secondary_urls`,
+regardless of category; the existing near-identical-headline
+(SimHash) cross-category check is unchanged and still applies
+alongside it. The rejection message now also names the existing
+item's id directly in its "draft it as an updates[] entry" instruction.
+The duplicate `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`
+item and its re-hosted artwork were removed by hand; the surviving
+`2026-08-25-hie-sutherland-spaceport-assets` item is unchanged.
