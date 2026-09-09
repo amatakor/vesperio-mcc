@@ -4344,3 +4344,31 @@ a newer entry if a lesson changes.
   touched data files (588 items, up from 587) and a direct read of the
   new item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
   the build-health signal.
+
+## Narrow re-check, ~6h39m gap, unfiltered full source list (2026-09-09, second)
+
+- 2026-09-09-F: A Bloomberg "UAE-Based Group Leads $1 Billion Satellite
+  Constellation Project" headline (Sept 9, discovery pass) is a stale
+  resurfacing, not new: Khaleej Times's own writeup of the identical
+  Orbitworks/Marlan Space/Loft Orbital $1B/40-satellite/French-space-agency
+  figures, fetched directly, carries a "Mon 4 May 2026" publish date --
+  extends the standing stale-resurfacing pattern to a fourth-month-old
+  Bloomberg pickup with no new figure or peg. Left undrafted.
+- 2026-09-09-G: A paywalled SpaceNews article (Andrew Parsonson's ESA
+  radioisotope-heater-plant tender piece) still yields a gate-safe,
+  attributable lead when a direct WebFetch confirms only the headline,
+  byline, and publish date plus the lede sentence: drafted from that one
+  confirmed sentence (base tier 3, `trade`) and corroborated with an
+  independently-written Italian outlet (AstroSpace.it) that had the fuller
+  figures (deadline, euro amount, per-year watt/gram targets) the
+  paywalled lede didn't state. Don't discard a paywalled trade lead just
+  because the body text is inaccessible; the confirmed lede plus an
+  independent second source with the depth is still a clean draft.
+- 2026-09-09-H: `bun run build` was NOT attempted this run, per the
+  2026-09-09 CLAUDE.md procedure update: the workflow now runs the build
+  itself after the agent finishes, and the agent is instructed not to run
+  it or log the denial. Relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") plus a `jq` parse check
+  (591 items, up from 588) and a direct read of all three new items'
+  `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields as the
+  build-health signal.
