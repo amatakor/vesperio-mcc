@@ -204,3 +204,11 @@ every query failed and the kept data is more than three days old
 sweep procedure in CLAUDE.md now says the workflow runs the build after
 the agent, so the agent stops logging a "build denied" lesson twice a
 day.
+
+Item modal left plate scrolls (2026-09-09): the July rule that only
+the right column scrolls left the title/image/sources plate fixed, so
+an item with eight attached sources (Isar Aerospace's Spectrum
+reaching orbit) cut its source list off at the bottom. The plate now
+scrolls on its own when its content overflows and stays put otherwise;
+the artwork height cap and the mobile single-column scroll are
+unchanged.
