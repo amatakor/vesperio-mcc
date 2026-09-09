@@ -274,8 +274,9 @@ export function decideFact(
     ...(snr !== undefined ? { snr } : {}),
     ...(tier !== undefined ? { tier } : {}),
     ...(snr === undefined ? { unscored: true } : {}),
+    value: currentValue,
   };
-  return reconcile({ snr: itemSnr }, registryFact, fact.same_metric).action;
+  return reconcile({ snr: itemSnr, value: fact.value }, registryFact, fact.same_metric).action;
 }
 
 /** Validation errors for one crossfeed fact; [] when the fact is well-formed. */

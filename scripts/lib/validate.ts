@@ -4,6 +4,7 @@
  * errors; empty list means valid. No dependencies, fully deterministic.
  */
 
+import { registrableDomain } from "./urls";
 import {
   CATEGORIES,
   ITEM_KINDS,
@@ -1042,8 +1043,21 @@ function checkPositioning(o: Obj, path: string, errors: string[]): void {
   if (!Array.isArray(pos.claims)) {
     errors.push(`${path}.positioning.claims: required array (empty when no sourced claims)`);
   } else {
+    // Anti-spoof (Florian, 2026-09-09): a positioning claim is the entity
+    // speaking about itself, so its source must sit on the entity's own
+    // registry-recorded website domain. Press paraphrases are not claims.
+    const site = isObj(o.website) && typeof o.website.value === "string" && isHttpUrl(o.website.value)
+      ? registrableDomain(o.website.value)
+      : null;
     pos.claims.forEach((c, i) => {
-      checkSourcedFieldValue(c, "string", `${path}.positioning.claims[${i}]`, errors);
+      const p = `${path}.positioning.claims[${i}]`;
+      checkSourcedFieldValue(c, "string", p, errors);
+      if (site !== null && isObj(c) && typeof c.source === "string" && isHttpUrl(c.source)) {
+        const from = registrableDomain(c.source);
+        if (from !== site) {
+          errors.push(`${p}.source: "${from}" is not the entity's own domain "${site}" (positioning claims are first-party only)`);
+        }
+      }
     });
   }
   if (pos.mcc_read !== undefined) {

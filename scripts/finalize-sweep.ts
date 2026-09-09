@@ -1526,7 +1526,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   const queueIds = new Set(queueFile.candidates.map((c) => c.id));
   const nextQueue: RegistryCandidatesFile = {
     $comment:
-      "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3). Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
+      "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
     version: queueFile.version,
     candidates: [...queueFile.candidates, ...queueAdds.filter((c) => !queueIds.has(c.id))],
   };
