@@ -63,6 +63,12 @@ jobs:
             bun scripts/enrich/enrich-incidents.ts
           fi
 
+      - name: Snapshot registry crossfeed queue (deterministic, pre-agent)
+        # Copies registry-candidates.json to a gitignored path so the
+        # --record step below can tell, after the agent runs, which
+        # entries it consumed and classify what became of each one.
+        run: bun scripts/record-crossfeed-outcomes.ts --snapshot
+
       - name: Run the registry maintenance agent
         uses: anthropics/claude-code-action@e90deca47693f9457b72f2b53c17d7c445a87342 # v1.0.171
         with:
@@ -80,6 +86,12 @@ jobs:
             --model claude-sonnet-5
             --max-turns 80
             --allowedTools "Bash(bun run build),Bash(ls:*),Read,Write(./src/data/registry/**),Edit(./src/data/registry/**),Write(./public/data/orbits/facilities.json),Edit(./public/data/orbits/facilities.json),Write(./src/data/registry-candidates.json),Edit(./src/data/registry-candidates.json),WebFetch,WebSearch"
+
+      - name: Record registry crossfeed outcomes (deterministic, post-agent)
+        # For every candidate the agent consumed (present in the snapshot,
+        # gone from the live queue), classifies what became of it by
+        # inspecting the target profile field: no network, no LLM.
+        run: bun scripts/record-crossfeed-outcomes.ts --record
 
       # The load-bearing control: whatever the agent did, the working tree
       # may only differ under the registry run's data paths (the same set
@@ -99,13 +111,13 @@ jobs:
           # The Claude action swaps git credentials for its own short-lived
           # app token; point the remote back at the workflow token to push.
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
-          if git diff --quiet -- src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json; then
+          if git diff --quiet -- src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json src/data/registry-crossfeed-log.json; then
             echo "No registry or ledger changes; nothing to commit."
             exit 0
           fi
           git config user.name "mcc-registry-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json
+          git add src/data/registry public/data/orbits/facilities.json src/data/source_ledger.json src/data/signals_suggestions.json src/data/registry-candidates.json src/data/registry-crossfeed-log.json
           git commit -m "registry: maintenance update ($(date -u '+%Y-%m-%d %H:%M UTC'))"
           # main may have moved during the run; registry commits touch only
           # data files, so a rebase is clean or fails loudly.

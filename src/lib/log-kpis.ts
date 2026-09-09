@@ -31,6 +31,14 @@ export interface CrossfeedCandidateRef {
   status: string;
 }
 
+/** One consumed crossfeed candidate's outcome, flattened from a
+    registry-crossfeed-log.json run for windowing here. */
+export interface CrossfeedOutcomeRef {
+  /** The run's `at` (ISO datetime) the outcome was recorded under. */
+  at: string;
+  outcome: string;
+}
+
 /** The six headline numbers the /log KPI row shows, each labelled honestly. */
 export interface LogKpis {
   windowDays: number;
@@ -44,6 +52,8 @@ export interface LogKpis {
   pctLowSnr: number;
   /** Registry crossfeed candidates still queued, proposed in the window. */
   crossfeedQueued: number;
+  /** Registry crossfeed candidates that landed (with or without re-sourcing) in the window. */
+  crossfeedLanded: number;
   /** Calibration claims that resolved (confirmed or debunked) in the window. */
   claimsResolved: number;
   /** Window items floored by a signals-list whitelist source. */
@@ -77,6 +87,7 @@ export function computeLogKpis(
   candidates: CrossfeedCandidateRef[],
   now: Date,
   windowDays = KPI_WINDOW_DAYS,
+  crossfeedOutcomes: CrossfeedOutcomeRef[] = [],
 ): LogKpis {
   const cut = cutoffDay(now, windowDays);
   const win = itemsInWindow(items, now, windowDays);
@@ -89,6 +100,9 @@ export function computeLogKpis(
 
   const crossfeedQueued = candidates.filter(
     (c) => c.status === "pending" && c.proposed_on >= cut,
+  ).length;
+  const crossfeedLanded = crossfeedOutcomes.filter(
+    (o) => o.at >= cut && (o.outcome === "landed" || o.outcome === "landed_resourced"),
   ).length;
 
   // A claim counts as resolved only when a real resolution landed in the
@@ -114,6 +128,7 @@ export function computeLogKpis(
     leadDomains,
     pctLowSnr,
     crossfeedQueued,
+    crossfeedLanded,
     claimsResolved,
     signalsSourced,
   };

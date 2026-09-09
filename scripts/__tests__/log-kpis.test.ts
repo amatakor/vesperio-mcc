@@ -109,6 +109,15 @@ describe("computeLogKpis", () => {
   test("crossfeed counts only pending candidates proposed in window", () => {
     expect(k.crossfeedQueued).toBe(1);
   });
+  test("crossfeed landed counts landed/landed_resourced outcomes recorded in window", () => {
+    const withOutcomes = computeLogKpis(ITEMS, LEDGER, CANDIDATES, NOW, 30, [
+      { at: "2026-07-01T06:00:00.000Z", outcome: "landed" },
+      { at: "2026-07-02T06:00:00.000Z", outcome: "landed_resourced" },
+      { at: "2026-07-03T06:00:00.000Z", outcome: "unchanged" },
+      { at: "2026-05-01T06:00:00.000Z", outcome: "landed" }, // outside the window
+    ]);
+    expect(withOutcomes.crossfeedLanded).toBe(2);
+  });
   test("claims resolved counts confirmed/debunked with resolved_on in window", () => {
     expect(k.claimsResolved).toBe(2); // c1 + c5
   });
