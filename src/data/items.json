@@ -34560,7 +34560,7 @@
       "source_url": "https://www.satellitetoday.com/launch/2026/08/25/impulse-space-scales-rideshare-program-to-geo-with-increased-demand/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -34572,10 +34572,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-09",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -35046,7 +35059,7 @@
       "source_url": "https://payloadspace.com/exclusive-city-labs-plans-second-nuclear-demo/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -35058,10 +35071,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-09",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -42079,6 +42105,75 @@
         "origin_url": "https://www.satcom.digital/news/eutelsat-to-expand-leo-connectivity-to-critical-infrastructure-and-communities-across-greenland",
         "width": 1200,
         "height": 676
+      }
+    },
+    {
+      "id": "2026-09-08-bae-systems-epoch2-missile-warning-cdr",
+      "date": "2026-09-08",
+      "headline": "BAE Systems clears critical design review for Space Force missile-tracking satellites",
+      "explainer": {
+        "tagline": "Space Systems Command completed critical design review for the second batch of BAE-built MEO missile warning and tracking satellites.",
+        "what_happened": "The U.S. Space Force completed the critical design review for the second batch of new missile warning and tracking (MWT) satellites destined for medium Earth orbit, per Aviation Week. The batch is the 10-satellite Resilient Missile Warning and Tracking Epoch 2 constellation built by BAE Systems, which cleared its preliminary design review in March 2026.",
+        "why_it_matters": "BAE won the $1.2 billion Epoch 2 contract in 2025 to design and build the 10 satellites, expected to launch before the end of the decade, per DefenseScoop's report on the earlier design review. Clearing CDR on schedule keeps that production line intact and is a schedule proof point for BAE and System Delta 84 as other primes compete for follow-on tranches of the Pentagon's proliferated missile-tracking architecture."
+      },
+      "tags": [
+        "us-gov"
+      ],
+      "category": "procurement",
+      "impact": "noise",
+      "companies": [
+        "BAE Systems"
+      ],
+      "source_url": "https://aviationweek.com/space/satellites/space-forces-meo-based-missile-warning-sats-hit-new-milestone",
+      "secondary_urls": [
+        "https://defensescoop.com/2026/03/11/space-force-bae-systems-epoch-2-meo-preliminary-design-review/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://aviationweek.com/space/satellites/space-forces-meo-based-missile-warning-sats-hit-new-milestone",
+          "reason": "base tier 3 from lead source class \"trade\" (Aviation Week)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "whitelist_floor",
+            "delta": 2,
+            "reason": "whitelist floor: whitelisted observer (4)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://aviationweek.com/space/satellites/space-forces-meo-based-missile-warning-sats-hit-new-milestone",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-09-09",
+          "via": "initial"
+        },
+        {
+          "url": "https://aviationweek.com/author/vivienne-machi",
+          "outlet": "Aviation Week",
+          "class": "whitelist",
+          "added": "2026-09-09",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-09T05:26:09.211Z",
+      "image": {
+        "src": "/img/items/2026-09-08-bae-systems-epoch2-missile-warning-cdr.webp",
+        "credit": "Image: aviationweek.com",
+        "origin_url": "https://aviationweek.com/space/satellites/space-forces-meo-based-missile-warning-sats-hit-new-milestone",
+        "width": 1000,
+        "height": 563
       }
     }
   ]

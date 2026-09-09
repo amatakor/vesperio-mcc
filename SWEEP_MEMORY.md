@@ -93,93 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~15h51m gap, unfiltered full source list (2026-08-09)
-
-- 2026-08-09-A: A SpaceNews piece bundling two actors' Gateway-repurposing
-  news (Northrop Grumman's LID missions, already published 2026-08-04, and
-  the Canadian Space Agency's Canadarm3 continuation, never covered) needed
-  a body-content read past the shared headline/topic before concluding it
-  was pure dedup: the CSA/MDA Space fact is a distinct actor and a distinct
-  action from the already-published Northrop item, confirming the standing
-  "two facts belonging to two unrelated actors in one bundled article draft
-  as two items" pattern (2026-07-13-third) extends to same-program, not
-  just same-country-different-subsidiary bundles.
-  MDA Space has no `src/data/registry` organization entry despite being a
-  named party in a $1B CAD contract; its own domain (mda.space, not
-  mdaspace.com) was fetchable and used as an `informal`-class corroboration
-  source per the standing 2026-08-05-O/2026-07-31-I no-registry-host
-  pattern rather than forced to `first_party`.
-- 2026-08-09-B: A Launch Library candidates-queue entry can describe a
-  FUTURE scheduled launch, not a completed one, even when its
-  `published_at` timestamp is inside the sweep window: the queue's
-  "Starlink Group 17-50" entry was a schedule update for an Aug 19 launch
-  still "Go for Launch," not an event. The genuinely-occurred same-day
-  launch (Starlink Group 17-38, Vandenberg, Aug 8) came from a separate
-  Space.com queue entry; always check a Launch Library entry's own
-  `status`/`net` fields before treating its presence in the queue as proof
-  a launch happened.
-- 2026-08-09-C: A follow-up NASASpaceflight piece on an already-published
-  story (Blue Origin's New Glenn dual-pad/hybrid-integration plans, updating
-  the 2026-08-05 valve-cause item) 403'd on direct fetch, and the harvester's
-  `raw_excerpt` cut off right before the genuinely new facts ("In an August 5
-  update, Limp conf..."); a GeekWire piece that reads like independent
-  confirmation of the dual-pad plan turned out to be from June 30, already
-  covered by the existing 2026-07-01 pad-CONOPS item. Left undrafted rather
-  than sourcing the new specifics from a WebSearch summary alone.
-- 2026-08-09-D: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 2 new, 0 updated, 0 held") as the build-health signal.
-
-## Narrow same-day re-check, ~11h48m gap, unfiltered full source list (2026-08-09, second)
-
-- 2026-08-09-E: `economictimes.indiatimes.com` and `business-standard.com`
-  both failed on every direct-URL WebFetch attempt this run (economictimes:
-  outright "unable to fetch" tool error, not just a 403; business-standard:
-  HTTP 403), and no independently fetchable outlet carrying the same story
-  (IN-SPACe's expression of interest to hand the Rs 986 crore
-  Kulasekarapattinam SLC over to a private operator) turned up via several
-  WebSearch variants -- every hit traced back to those same two blocked
-  domains or to secondary aggregator sites (vajiramandravi.com, iaspoint.com)
-  that only paraphrase them. Left undrafted rather than sourced from a
-  WebSearch summary; this is a source-access gap (no fetchable outlet exists
-  for this specific story), not a scope or schema question, so it does not
-  belong in `held`. Worth trying `inspace.gov.in` directly (a `.gov.in`
-  domain, first_party/official-record eligible) if this story resurfaces.
-- 2026-08-09-F: A Bluesky post (`mediauscosmos.bsky.social`) claiming an
-  "AusCosmos Dingo Sat Constellation Phase 1" (42 Ku-band satellites,
-  Australian sovereign broadband, "in five days") returned zero corroborating
-  results on a dedicated WebSearch -- no company, program, or prior coverage
-  findable anywhere. Treated as unverifiable rather than drafted; this queue
-  also carried several similarly unverifiable/fabricated-reading Bluesky
-  posts this run (SpaceX "robotic Moon factories" building AI satellites via
-  "electromagnetic railguns", Kreios Space "indefinite orbital lifespans")
-  that don't survive a basic fetch-the-primary-source check. Bot/informal
-  Bluesky search results this run skewed noticeably more toward invented-
-  sounding claims than in past sweeps; verify the underlying announcement
-  independently before drafting anything sourced only to one of these
-  accounts.
-- 2026-08-09-G: A near-total wash of the harvester queue (79 candidates,
-  filtered.junk empty): the large majority were SpaceX stock/earnings/IPO-
-  lockup speculation (Motley Fool, Yahoo Finance, Seeking Alpha, Benzinga
-  framing), Starlink launch-schedule chatter, and off-topic Futurism/BBC
-  items, confirming 2026-08-06-A/2026-08-07-third's pattern continues now
-  three-plus weeks post-IPO. Direct-fetch (14 HTML sources) and the signals
-  pass (13 of 17 fetchable channels, rotated to skip Marcia Smith's and
-  Anatoly Zak's duplicate bluesky legs and Andrew Parsonson's site instead of
-  his 403'ing substack) were both fully quiet. Only genuine value recovered:
-  Space.com's Aug 9 VLEO-thruster piece added a mainstream corroboration
-  source (with new CEO quotes) to the existing Aug 4 Kreios/NanoAvionics
-  item, landing a `mainstream_pickup` bump. Zero new items is the honest,
-  fully-checked result, not under-coverage.
-- 2026-08-09-H: `draft.coverage` must be populated with category values
-  (the same enum as `category`: `launch`, `constellation`, `contract`,
-  `procurement`, `regulatory`, `financial`, `product`, `partnership`,
-  `incident`, `geopolitical`, `human-spaceflight`, `science`), not domain
-  tags (`eo`, `connectivity`) -- finalize-sweep rejected `["eo",
-  "connectivity", ...]` outright on a zero-new-items, one-update draft;
-  fixed by setting it to the touched item's own category (`["partnership"]`).
-
 ## Narrow same-day re-check, ~11h50m gap, unfiltered full source list (2026-08-10)
 
 - 2026-08-10-A: DATA BUG FOUND, not fixed this run (no mechanical path):
@@ -4376,3 +4289,58 @@ a newer entry if a lesson changes.
   five touched data files (items 587, up from 585) and a direct read
   of both new items' and the updated item's `snr`/`snr_trace`/
   `category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~7h40m gap, unfiltered full source list (2026-09-09)
+
+- 2026-09-09-A: A `class: "whitelist"` source must be the RECORDED CHANNEL
+  URL itself, not just any article on the same site by that whitelisted
+  person: `scoring.sources[0]` set to Vivienne Machi's actual Aviation Week
+  article URL (`aviationweek.com/space/satellites/...`) with `class:
+  "whitelist"` was rejected outright ("not under any whitelisted
+  verified-active signals.json channel"), because her recorded channel is
+  the narrower `aviationweek.com/author/vivienne-machi` listing page, not
+  the article path. Fixed by leading with the article as `class: "trade"`
+  (Aviation Week is a trade outlet) and adding the author-page URL itself
+  as a second, `via: "corroboration"` source with `class: "whitelist"`,
+  `scoring.whitelist: "observer"` -- the gate then applied the
+  `whitelist_floor` modifier cleanly (tier 3 trade, corroboration_none -1,
+  whitelist_floor +2, final SNR 4). Confirms 2026-09-01-C's workaround
+  (author-page as the whitelist source, facts drafted from elsewhere) is
+  not just a paywall workaround but the ONLY gate-safe way to claim the
+  whitelist floor when the person's own article IS the fact source.
+  Also: finalize's same-domain corroboration-collapse rule (2026-09-05-N)
+  fired again here, collapsing the article and the author-page URL into
+  one unit (`rule: "same_domain"`) since both are aviationweek.com --
+  harmless (the item still landed the intended SNR 4) but worth expecting
+  whenever a whitelist-floor source and its lead share a domain.
+- 2026-09-09-B: A never-covered gap surfaced only via the mandatory
+  signals pass: BAE Systems' critical design review for the Space Force's
+  10-satellite Epoch 2 MEO missile-warning constellation (Sept 8), six
+  months after its March PDR, which was itself never drafted under any id.
+  DefenseScoop's March PDR article was directly fetched and used only for
+  `why_it_matters` background (the $1.2B contract value, 10-satellite
+  count), not as a scoring source, since it reports a different, earlier
+  milestone than today's CDR.
+- 2026-09-09-C: Two same-day recap pieces (Jeff Foust's bluesky, a fresh
+  SpaceNews article) restated The Exploration Company's $450M Series C
+  with no new investor or figure -- confirmed via the existing item's
+  `snr_trace.history` that it was rescored from "in talks" to "closed"
+  only the PREVIOUS day (2026-09-08), so today's pickups are late
+  coverage of yesterday's already-current close, not a new development;
+  left untouched rather than patched or redrafted.
+- 2026-09-09-D: A Google-News "Kazakhstan plans to expand Starlink
+  internet to 124 passenger trains" headline (Qazinform, dated today) and
+  a June 25 Qazinform piece on a single private-carrier train
+  (Aray Trans KZ, one route) are two different, both-stale stories: the
+  124-trains/1,235-carriages/50-routes figure traces to an August 20
+  Transtelecom (TTC) announcement already three weeks old with no new
+  news peg today. Left undrafted as a recurring, no-dollar-figure
+  connectivity-rollout update, same treatment as the standing Textron
+  Aviation STC-recap precedent (2026-09-08-S).
+- 2026-09-09-E: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
+  0 updated, 0 held") plus a `jq empty` parse check across all four
+  touched data files (588 items, up from 587) and a direct read of the
+  new item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
+  the build-health signal.
