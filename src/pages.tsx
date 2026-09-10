@@ -2649,13 +2649,15 @@ function Breadcrumbs({
   );
 }
 
+const EVENTS_SHOWN = 12;
 function EventsSection({ events }: { events: ProfileEventRef[] }) {
   if (events.length === 0) return null;
+  const shown = events.slice(0, EVENTS_SHOWN);
   return (
     <section id="events" className="panel">
       <h2>events</h2>
       <ul className="index-list event-list">
-        {events.map((i) => (
+        {shown.map((i) => (
           <li key={i.id} className="event-row">
             <span className={`chip chip-${i.impact}`}>{i.impact}</span>
             <span className="date">{i.date}</span>
@@ -2663,48 +2665,15 @@ function EventsSection({ events }: { events: ProfileEventRef[] }) {
           </li>
         ))}
       </ul>
+      {events.length > shown.length && (
+        <p className="dim event-more">
+          latest {shown.length} of {events.length} items naming this entity
+        </p>
+      )}
     </section>
   );
 }
 
-function RelatedSection({
-  profile,
-  related,
-  prev,
-  next,
-}: {
-  profile: ProfileMeta;
-  related: Array<{ slug: string; name: string; href: string }>;
-  prev: { slug: string; name: string } | null;
-  next: { slug: string; name: string } | null;
-}) {
-  if (related.length === 0 && !prev && !next) return null;
-  const sameLabel = profile.affiliation ?? "same operator";
-  return (
-    <section id="related" className="panel">
-      <h2>related</h2>
-      {related.length > 0 && (
-        <div className="related-group">
-          <span className="related-label">{sameLabel}</span>
-          <div className="tag-row">
-            {related.map((r) => (
-              <a key={r.slug} className="chip chip-tag" href={r.href}>
-                {r.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-      <div className="related-group related-browse">
-        <span className="related-label">browse</span>
-        <div className="prev-next">
-          <span>{prev ? <a href={`${profile.siblingsBase}${prev.slug}/`}>&larr; {prev.name}</a> : <span className="dim">&larr; start</span>}</span>
-          <span>{next ? <a href={`${profile.siblingsBase}${next.slug}/`}>{next.name} &rarr;</a> : <span className="dim">end &rarr;</span>}</span>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /** Named sub-constellations of a fleet-level parent (e.g. Planet's SkySat, SuperDove). */
 function ChildConstellationsSection({ children }: { children: Array<{ slug: string; name: string }> }) {
@@ -3088,36 +3057,6 @@ function OrbitYearsChart({ slug }: { slug: string }) {
 }
 
 /** The entity's defining numbers as anchored, citable stat cells (registry v2). */
-function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
-  if (cells.length < 2) return null;
-  return (
-    <section id="specs" className="panel">
-      <h2>key details</h2>
-      <div className="specs-grid">
-        {cells.map((c) => (
-          <div key={c.field} id={`spec-${c.field}`} className="spec-cell">
-            <span className="spec-label">
-              {c.label}{" "}
-              <a className="spec-anchor" href={`#spec-${c.field}`}>
-                {"//"}
-              </a>
-            </span>
-            {/* Numbers earn the display size; stated phrases ("under 6 hour
-                global revisit") read at body scale so they never tower. */}
-            <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
-              {c.value}
-            </span>
-            <span className="spec-meta">
-              {c.computed && <span className="dim spec-computed">computed</span>}
-              {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
-            </span>
-          </div>
-        ))}
-      </div>
-      {note && <p className="dim spec-note">{note}</p>}
-    </section>
-  );
-}
 
 /** Where the entity sits: sourced positioning claims, then MCC's own read. */
 function PositioningSection({ positioning }: { positioning?: Positioning | null }) {
@@ -3561,23 +3500,6 @@ function SourceCardsSection({
   );
 }
 
-/** Which tab owns each legacy in-page anchor, for #hash deep links. */
-const TAB_OF_ANCHOR: Record<string, string> = {
-  specs: "overview",
-  "on-orbit": "overview",
-  generations: "overview",
-  stock: "overview",
-  constellations: "overview",
-  vehicles: "overview",
-  faq: "overview",
-  facts: "specs",
-  incidents: "history",
-  events: "history",
-  positioning: "overview",
-  sources: "sources",
-  "fact-ledger": "sources",
-};
-
 /** Shared destination-page shell for every registry profile type (tabbed, registry v3). */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
@@ -3596,11 +3518,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         )
         .map((s) => ({ slug: s.slug, name: s.name, href: `${profile.siblingsBase}${s.slug}/` }))
     : [];
-  const ordered = profile.siblings.slice().sort((a, b) => a.name.localeCompare(b.name));
-  const idx = ordered.findIndex((s) => s.slug === profile.slug);
-  const prev = idx > 0 ? ordered[idx - 1]! : null;
-  const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1]! : null;
-
   const hasEvents = profile.events.length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
   const orbitTab = profile.orbitTab ?? null;
@@ -3620,51 +3537,79 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
     else if (c.source) unscored++;
   }
 
-  const tabs: Array<[string, string]> = [["overview", "overview"]];
-  // Display label is "details" (Florian, 2026-07-12: "specs" fits vehicles
-  // and spacecraft, not spaceports or organizations); the tab id and its
-  // #specs deep-link anchors stay unchanged.
-  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "details & sensors" : "details"]);
-  if (hasOrbit) tabs.push(["orbit", "orbit"]);
-  if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
-  if (hasSources) tabs.push(["sources", "sources"]);
+  // Canvas layout (move 1 mockup, Florian 2026-09-10): one scrolling page
+  // on the full frame. The tabs became a sticky jump bar over in-page
+  // sections; deep links (#history, #facts, #spec-*) resolve natively.
+  const jumps: Array<[string, string]> = [["overview", "overview"]];
+  jumps.push(["facts", profile.imagingModes && profile.imagingModes.length > 0 ? "details & sensors" : "details"]);
+  if (hasOrbit) jumps.push(["orbit-view", "orbit"]);
+  if (timeline.length > 0 || hasEvents) jumps.push(["history", "history"]);
+  if (hasSources) jumps.push(["sources", "sources"]);
 
-  const [tab, setTab] = useState("overview");
-  const tabIds = tabs.map(([id]) => id).join(",");
+  // Scroll-spy for the jump bar: the section whose top last crossed the
+  // bar is the active one.
+  const [activeJump, setActiveJump] = useState("overview");
+  const jumpIds = jumps.map(([id]) => id).join(",");
   useEffect(() => {
-    const ids = tabIds.split(",");
-    const apply = () => {
-      const h = window.location.hash.replace(/^#/, "");
-      if (!h) return;
-      const direct = ids.includes(h) ? h : null;
-      const owner =
-        direct ?? TAB_OF_ANCHOR[h] ?? (h.startsWith("spec-") ? "overview" : null);
-      if (owner && ids.includes(owner)) {
-        setTab(owner);
-        if (!direct) {
-          requestAnimationFrame(() => document.getElementById(h)?.scrollIntoView());
-        }
+    const ids = jumpIds.split(",");
+    const onScroll = () => {
+      const line = 64 + 48 + 8;
+      let current = ids[0]!;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
       }
+      setActiveJump(current);
     };
-    apply();
-    window.addEventListener("hashchange", apply);
-    return () => window.removeEventListener("hashchange", apply);
-  }, [tabIds]);
-  const pick = (id: string) => {
-    setTab(id);
-    window.history.replaceState(null, "", `#${id}`);
-  };
-  // The 3D view (three.js, lazy chunk) mounts only once the orbit tab has
-  // actually been opened; until then profile pages ship none of it.
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [jumpIds]);
+
+  // The 3D view (three.js, lazy chunk) mounts only once the orbit section
+  // has scrolled near the viewport; until then profile pages ship none of it.
   const [orbitSeen, setOrbitSeen] = useState(false);
+  const orbitRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (tab === "orbit") setOrbitSeen(true);
-  }, [tab]);
+    const el = orbitRef.current;
+    if (!el || orbitSeen) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) setOrbitSeen(true);
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [orbitSeen]);
+
+  // Rail ledger: the key-spec cells, topped up from short fact rows when an
+  // entity has few defining figures (organizations, connectivity fleets),
+  // so the instrument column always carries the defining numbers.
+  const RAIL_SKIP = new Set(["operator", "provider", "country", "status", "website", "sensor types", "focus"]);
+  const railCells: SpecCell[] = [...specs];
+  if (profile.stockTicker?.value) {
+    railCells.push({ field: "ticker", label: "ticker", value: profile.stockTicker.value, as_of: profile.stockTicker.as_of, snr: profile.stockTicker.snr, snr_trace: profile.stockTicker.snr_trace });
+  }
+  if (railCells.length < 5) {
+    for (const [label, f] of profile.rows) {
+      if (railCells.length >= 5) break;
+      if (RAIL_SKIP.has(label) || railCells.some((c) => c.label === label)) continue;
+      const v = f.value;
+      if (v === null || v === undefined) continue;
+      const text = typeof v === "number" ? fmtNum(v) : Array.isArray(v) ? v.join(", ") : String(v);
+      if (text.length === 0 || text.length > 40) continue;
+      railCells.push({ field: label.replace(/[^a-z0-9]+/gi, "-"), label, value: text, as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace });
+    }
+  }
+  const websiteRow = profile.rows.find(([label]) => label === "website");
+  const website = websiteRow && typeof websiteRow[1].value === "string" ? websiteRow[1].value : null;
+  const sameLabel = profile.affiliation ?? "same operator";
 
   return (
     <Layout current="registry">
       <div
-        className="registry-profile"
+        className="registry-profile canvas"
         style={profile.accent ? ({ "--reg-acc": profile.accent } as CSSProperties) : undefined}
       >
         <Breadcrumbs
@@ -3672,133 +3617,167 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           name={profile.name}
           parentLink={profile.parentLink}
         />
-        <div className="profile-head">
-          <h1 className="page-title profile-title">
-            <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
-            {profile.name}
-            {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
-            <span className="dim">/ {profile.typeLabel}</span>
-          </h1>
-          <PageSourcingMark scored={scored} unscored={unscored} />
-        </div>
-        {profile.headerChips && profile.headerChips.length > 0 && (
-          <div className="profile-chips">
-            {profile.headerChips.map((c) => (
-              <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
-                {/* Status casing drifts in the source data ("Active" /
-                    "active" / "In Development"); normalize to lowercase at
-                    render only, never touching the stored value. Non-status
-                    chips (sensor types, country) keep their sourced casing. */}
-                {c.kind === "status" ? c.label.toLowerCase() : c.label}
-              </span>
-            ))}
-          </div>
-        )}
-        <div className="profile-tabs" role="tablist">
-          {tabs.map(([id, label]) => (
-            <button
-              key={id}
-              role="tab"
-              aria-selected={tab === id}
-              className={`profile-tab${tab === id ? " active" : ""}`}
-              onClick={() => pick(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <div className="tab-panel" hidden={tab !== "overview"}>
-          {profile.overview.value && (
-            <>
-              <p className="overview-block">{profile.overview.value}</p>
-              <p className="dim source-line">
-                <a href={profile.overview.source ?? undefined} rel="noopener">
-                  (source, as of {profile.overview.as_of})
-                </a>
-              </p>
-            </>
-          )}
-          <KeySpecsPanel cells={specs} note={profile.specNote} />
-          {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
-          <GenerationsSection generations={profile.generations} />
-          <ChildConstellationsSection children={children} />
-          <VehicleRosterSection roster={roster} />
-          {profile.stockTicker?.value && (
-            <StockSection slug={profile.slug} ticker={profile.stockTicker} />
-          )}
-          {/* The house read closes the overview, just before the FAQ
-              (Florian 2026-07-09). */}
-          <PositioningSection positioning={positioning} />
-          <FaqSection items={profile.faq} />
-        </div>
-
-        <div className="tab-panel" hidden={tab !== "specs"}>
-          {profile.imagingModes && profile.imagingModes.length > 0 && (
-            <section id="imaging-modes" className="panel">
-              <h2>imaging modes</h2>
-              <ImagingModeCards modes={profile.imagingModes} />
-            </section>
-          )}
-          <section id="facts" className="panel">
-            <h2>facts</h2>
-            <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
-            {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-          </section>
-        </div>
-
-        {hasOrbit && orbitTab && (
-          <div className="tab-panel" hidden={tab !== "orbit"}>
-            <section id="orbit-view" className="panel">
-              <h2>orbit</h2>
-              <div className="orbit-grid">
-                {orbitTab.hasLayer && (
-                  <div className="orbit-view">
-                    {/* The SVG schematic defines the box and doubles as the
-                        no-WebGL / no-data fallback; the real 3D globe (same
-                        render as /orbits/, this constellation only) overlays
-                        it once loaded. No accent is passed to the 3D view:
-                        it resolves the constellation's own orbits palette
-                        token, so colors match the /orbits/ page exactly. */}
-                    <OrbitMini slug={profile.slug} accent={profile.accent} />
-                    {orbitSeen && (
-                      <div className="orbit-3d">
-                        <OrbitMini3D slug={profile.slug} />
-                      </div>
-                    )}
-                    <a className="orbit-open" href="/mcc/">
-                      open in mcc &rarr;
+        <div className="canvas-grid">
+          <aside className="canvas-rail">
+            <div className="rail-identity">
+              <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
+              <h1 className="page-title profile-title">
+                {profile.name}
+                {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}
+              </h1>
+              <p className="rail-kind">{profile.typeLabel}</p>
+              {profile.headerChips && profile.headerChips.length > 0 && (
+                <div className="profile-chips">
+                  {profile.headerChips.map((c) => (
+                    <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
+                      {c.kind === "status" ? c.label.toLowerCase() : c.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <PageSourcingMark scored={scored} unscored={unscored} />
+            </div>
+            {railCells.length > 0 && (
+              <section id="specs" className="rail-block">
+                <h2>key details</h2>
+                <div className="rail-ledger">
+                  {railCells.map((c) => (
+                    <div key={c.field} id={`spec-${c.field}`} className="rail-row">
+                      <span className="spec-label">{c.label}</span>
+                      <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
+                        {c.value}
+                      </span>
+                      <span className="spec-meta">
+                        {c.computed && <span className="dim spec-computed">computed</span>}
+                        {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {profile.specNote && <p className="dim spec-note">{profile.specNote}</p>}
+              </section>
+            )}
+            {(website || related.length > 0 || profile.parentLink) && (
+              <section className="rail-block rail-links">
+                <h2>links</h2>
+                {website && (
+                  <p className="rail-link">
+                    <span className="spec-label">website</span>
+                    <a href={website} rel="noopener">
+                      {website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
                     </a>
+                  </p>
+                )}
+                {profile.parentLink && (
+                  <p className="rail-link">
+                    <span className="spec-label">part of</span>
+                    <a href={`/registry/constellations/${profile.parentLink.slug}/`}>{profile.parentLink.name}</a>
+                  </p>
+                )}
+                {related.length > 0 && (
+                  <div className="rail-link">
+                    <span className="spec-label">{sameLabel}</span>
+                    <div className="tag-row">
+                      {related.map((r) => (
+                        <a key={r.slug} className="chip chip-tag" href={r.href}>
+                          {r.name}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
-                <div className="orbit-facts">
-                  <FactGrid rows={orbitTab.rows} orgHrefs={profile.orgHrefs} />
+              </section>
+            )}
+            <p className="rail-back">
+              <a href="/registry/">&larr; back to the registry</a>
+            </p>
+            <LogoCredit slug={profile.slug} />
+          </aside>
+
+          <div className="canvas-main">
+            <nav className="jump-bar" aria-label="On this page">
+              {jumps.map(([id, label]) => (
+                <a key={id} href={`#${id}`} className={activeJump === id ? "active" : undefined}>
+                  {label}
+                </a>
+              ))}
+            </nav>
+
+            <div id="overview" className="canvas-section">
+              {profile.overview.value && (
+                <>
+                  <p className="overview-block">{profile.overview.value}</p>
+                  <p className="dim source-line">
+                    <a href={profile.overview.source ?? undefined} rel="noopener">
+                      (source, as of {profile.overview.as_of})
+                    </a>
+                  </p>
+                </>
+              )}
+              {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
+              <GenerationsSection generations={profile.generations} />
+              <ChildConstellationsSection children={children} />
+              <VehicleRosterSection roster={roster} />
+              {profile.stockTicker?.value && (
+                <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+              )}
+              <PositioningSection positioning={positioning} />
+            </div>
+
+            <div className="canvas-section">
+              {profile.imagingModes && profile.imagingModes.length > 0 && (
+                <section id="imaging-modes" className="panel">
+                  <h2>imaging modes</h2>
+                  <ImagingModeCards modes={profile.imagingModes} />
+                </section>
+              )}
+              <section id="facts" className="panel canvas-anchor">
+                <h2>facts</h2>
+                <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
+                {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
+              </section>
+            </div>
+
+            {hasOrbit && orbitTab && (
+              <section id="orbit-view" className="panel canvas-anchor" ref={orbitRef}>
+                <h2>orbit</h2>
+                <div className="orbit-grid">
+                  {orbitTab.hasLayer && (
+                    <div className="orbit-view">
+                      <OrbitMini slug={profile.slug} accent={profile.accent} />
+                      {orbitSeen && (
+                        <div className="orbit-3d">
+                          <OrbitMini3D slug={profile.slug} />
+                        </div>
+                      )}
+                      <a className="orbit-open" href="/mcc/">
+                        open in mcc &rarr;
+                      </a>
+                    </div>
+                  )}
+                  <div className="orbit-facts">
+                    <FactGrid rows={orbitTab.rows} orgHrefs={profile.orgHrefs} />
+                  </div>
                 </div>
+              </section>
+            )}
+
+            {(timeline.length > 0 || hasEvents) && (
+              <div id="history" className="canvas-section canvas-anchor">
+                <EventsSection events={profile.events} />
+                <TimelineSection history={timeline} />
               </div>
-            </section>
-          </div>
-        )}
+            )}
 
-        {(timeline.length > 0 || hasEvents) && (
-          <div className="tab-panel" hidden={tab !== "history"}>
-            <EventsSection events={profile.events} />
-            <TimelineSection history={timeline} />
-          </div>
-        )}
+            {hasSources && (
+              <div id="sources-section" className="canvas-section">
+                <SourceCardsSection rows={profile.rows} positioning={positioning} />
+              </div>
+            )}
 
-        {hasSources && (
-          <div className="tab-panel" hidden={tab !== "sources"}>
-            <SourceCardsSection rows={profile.rows} positioning={positioning} />
+            <FaqSection items={profile.faq} />
           </div>
-        )}
-
-        <footer className="profile-foot">
-          <RelatedSection profile={profile} related={related} prev={prev} next={next} />
-          <LogoCredit slug={profile.slug} />
-          <p>
-            <a href="/registry/">BACK TO THE REGISTRY</a>
-          </p>
-        </footer>
+        </div>
       </div>
     </Layout>
   );

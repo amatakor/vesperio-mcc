@@ -4932,3 +4932,166 @@ table.stat-table th {
 
 
 
+
+/* ------------------------------------------------- registry canvas (move 1)
+   Mockup (Florian, 2026-09-10): one scrolling page on the full frame, no
+   tabs. Left, the instrument rail: identity, chips, the page sourcing mark,
+   key details as a vertical ledger, links. Right, the reading column under
+   a sticky jump bar (domain-accent active state per rule 68d). One shared
+   right edge (rule 71); sections stay unfenced. Stacks below 64rem. */
+.registry-profile.canvas {
+  max-width: none;
+}
+.canvas-grid {
+  display: grid;
+  grid-template-columns: 20rem minmax(0, 1fr);
+  column-gap: var(--sp-8, 40px);
+  align-items: start;
+}
+.canvas-rail {
+  position: sticky;
+  top: calc(var(--header-h) + 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+.canvas-rail .profile-title {
+  display: block;
+  font-size: 28px;
+  line-height: 1.15;
+  margin: 12px 0 4px;
+}
+.canvas-rail .profile-title .chip-variant {
+  vertical-align: middle;
+  margin-left: 8px;
+}
+.rail-kind {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--ls-inst);
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 0 0 12px;
+}
+.canvas-rail .profile-chips {
+  margin: 0 0 12px;
+}
+.canvas-rail .snr-agg {
+  padding-top: 0;
+}
+.rail-block {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.rail-block h2 {
+  margin-bottom: 8px;
+}
+.rail-block h2::before {
+  content: "// ";
+}
+.rail-ledger {
+  border: 1px solid var(--line);
+  background: var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.rail-row {
+  background: var(--panel);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+.rail-row .spec-value {
+  font-size: 21px;
+}
+.rail-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 12px;
+}
+.rail-link a {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+}
+.rail-link .tag-row {
+  margin: 0;
+}
+.rail-back {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  margin: 0;
+}
+.canvas-main {
+  min-width: 0;
+}
+.jump-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 20;
+  display: flex;
+  overflow-x: auto;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--line);
+  margin: 0 0 20px;
+}
+.jump-bar a {
+  display: inline-flex;
+  align-items: center;
+  height: var(--h-control);
+  padding: 0 var(--sp-3);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.jump-bar a:hover {
+  color: var(--text-1);
+}
+.jump-bar a.active {
+  color: var(--bg-page);
+  background: var(--reg-acc, var(--volt));
+}
+.canvas-section,
+.canvas-anchor,
+.canvas #sources {
+  scroll-margin-top: calc(var(--header-h) + var(--h-control) + 12px);
+}
+.canvas .overview-block {
+  max-width: none;
+}
+/* The overview lead is the first thing under the bar; the panels that
+   follow keep their own top hairlines, so no extra gap before RELATED and
+   no footer strip: links live in the rail. */
+.canvas .canvas-section > .panel:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+@media (max-width: 64rem) {
+  .canvas-grid {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+  .canvas-rail {
+    position: static;
+  }
+}
+.event-more {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  margin: 8px 0 0;
+}
