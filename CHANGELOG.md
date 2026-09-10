@@ -340,3 +340,23 @@ now runs the script right after the artwork pipeline and before the
 build, and /system/ gained a "registry coverage" panel listing the open
 gaps (name, item count, last seen, category breakdown, and links to
 the two most recent items) plus a totals line.
+
+Registry type system (2026-09-10, rule 77): the registry profile pages
+(rail, key-details ledger, facts grid, timeline, sources, positioning,
+FAQ, generations, imaging modes, on-orbit chart, stock chart) had grown
+23 distinct font sizes, thirteen of them rem values that didn't line up
+with any design token. They now render on six type levels: a title
+(28/200 caps), a section heading (11/500 caps), a label for every small
+caption (10/500 caps, dim), a body value for sourced sentences and
+numbers (12.5/400, sentence case), an instrument register for the jump
+bar and the stock range chips (11/500 caps, tighter tracking), and a
+figure register for the three places a number is the page's lead
+(the rail's key-details values, the on-orbit count, the stock price).
+Sourced prose that needs to read in its original case (fact values,
+FAQ answers, positioning claims, timeline entries, incident lines,
+event headlines, source names) is opted out of the registry's
+container-level uppercase rule one class at a time rather than
+case-by-case, and a long stated phrase in the rail's key-details ledger
+now reliably renders at body scale instead of being shadowed by the
+figure register regardless of source order in the stylesheet. No
+registry data changed; this is type sizing only.

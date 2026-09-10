@@ -2331,15 +2331,22 @@ table.profile td.src-cell a,
    sources, faq. Reuses .panel, .src-list, .sig-tab, .sig-grid, .sig-card,
    details.cite from the item/signals pages rather than new patterns. */
 .breadcrumbs {
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  /* T3 label register (rule 77 type system). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   margin-bottom: 0.4rem;
   /* Label register, not prose (Florian, 2026-07-12: "registry / vehicles /
      Long March 11" read lowercase): the trail is structural mono, caps. */
   text-transform: uppercase;
 }
 .source-line {
-  font-size: 0.78rem;
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   margin: -0.6rem 0 1.1rem;
 }
 .source-line a {
@@ -2377,8 +2384,11 @@ table.profile td.src-cell a,
   align-items: center;
   gap: 0.45rem;
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
+  /* T3 label register (rule 77); children inherit. */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   text-transform: uppercase;
   padding-top: 0.5rem;
   cursor: default;
@@ -2466,23 +2476,29 @@ table.profile td.src-cell a,
   border: 1px solid var(--line);
 }
 .gen-row {
+  /* T4 body/data value (rule 77): the generation's sourced text, sentence
+     case (opted out of the registry caps container below). */
   display: flex;
   gap: 0.9rem;
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--line);
-  font-size: 0.85rem;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   font-family: var(--sans);
 }
 .gen-row:last-child {
   border-bottom: 0;
 }
 .gen-name {
+  /* T3 label register (rule 77). */
   font-family: var(--font-ui);
   font-size: var(--fs-label);
   font-weight: 500;
   color: var(--text-1);
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
+  line-height: 1.3;
   flex: none;
   min-width: 3.4rem;
   padding-top: 0.15rem;
@@ -2561,10 +2577,12 @@ table.profile td.src-cell a,
   gap: 0.5rem;
 }
 .mode-name {
+  /* T3 label register (rule 77). */
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: var(--ls-inst);
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   text-transform: uppercase;
   color: var(--text-1);
 }
@@ -2578,8 +2596,12 @@ table.profile td.src-cell a,
   gap: 0.15rem;
 }
 .mode-fig-val {
+  /* T4 body/data value (rule 77): a number in a fact cell, not one of the
+     three named T6 figures, so it reads at the mono data-voice size. */
   font-family: var(--font-ui);
-  font-size: 17px;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
 }
 .fact-grid {
@@ -2605,6 +2627,16 @@ table.profile td.src-cell a,
   text-transform: uppercase;
   color: var(--dim);
 }
+/* .fact-label/.fact-value are shared with the /system/ log KPI row
+   (.log-kpis), which keeps its own sizing; the registry profile's facts
+   grid and mode cards get the T3/T4 register (rule 77) via a scoped
+   override rather than touching the shared base rule. */
+.registry-profile .fact-label {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+}
 .fact-value {
   font-size: 0.95rem;
   overflow-wrap: anywhere;
@@ -2612,9 +2644,19 @@ table.profile td.src-cell a,
 .fact-value.empty {
   color: var(--dim);
 }
+.registry-profile .fact-value {
+  /* T4 body/data value (rule 77): sourced fact text, sentence case. */
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
 .fact-meta {
+  /* T3 label register (rule 77): caption line under a fact cell. */
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   color: var(--dim);
   display: flex;
   gap: 0.55rem;
@@ -2792,12 +2834,15 @@ table.profile td.src-cell a,
   background: var(--line);
 }
 .tl-year {
+  /* T3 label register (rule 77). */
   display: inline-block;
   position: relative;
   font-family: var(--font-ui);
-  font-size: 13px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: var(--ls-inst);
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
   color: var(--text-1);
   background: var(--bg-page);
   padding: 0.15rem 0.5rem 0.15rem 0;
@@ -2828,25 +2873,35 @@ table.profile td.src-cell a,
   align-items: baseline;
 }
 .tl-date {
+  /* T3 label register (rule 77). */
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
   color: var(--dim);
 }
 .tl-title {
+  /* T4 body/data value (rule 77): sourced event text, sentence case
+     (opted out of the registry caps container below). */
   display: block;
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--fg);
   margin-top: 0.2rem;
   max-width: 46rem;
 }
-.tl-title .incident-line {
-  font-size: 0.8rem;
-}
 /* News events: the date tag steps back so the headline leads. */
 .registry-profile .event-row .date {
-  font-size: 0.72rem;
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
   color: var(--dim);
 }
 .source-cards {
@@ -2861,12 +2916,15 @@ table.profile td.src-cell a,
   flex-direction: column;
 }
 .source-card-head {
+  /* T4 body/data value (rule 77): the sourced host name, sentence case
+     (opted out of the registry caps container below). */
   display: block;
   padding: 0.5rem 0.7rem;
   border-bottom: 1px solid var(--line);
   font-family: var(--mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.04em;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--fg);
 }
 .source-card-head:hover {
@@ -2886,21 +2944,40 @@ table.profile td.src-cell a,
   gap: 0.5rem;
   align-items: center;
   font-family: var(--mono);
-  font-size: 0.74rem;
+  /* Neutral fallback (rule 77); the three children below each set their
+     own T3/T4 size, so this row-level value normally never shows. */
+  font-size: var(--fs-body);
 }
 .source-fact-label {
+  /* T4 body/data value (rule 77): the sourced field label, sentence case
+     (opted out of the registry caps container below). */
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--ink-link);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .source-fact-class {
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  color: var(--dim);
   justify-self: end;
   text-align: right;
 }
 .source-fact-asof {
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--dim);
   justify-self: end;
-  font-size: 0.66rem;
 }
 .profile-foot {
   border-top: 1px solid var(--line);
@@ -2908,14 +2985,23 @@ table.profile td.src-cell a,
   padding-top: 1.1rem;
 }
 .logo-credit {
+  /* T3 label register (rule 77). */
   font-family: var(--mono);
-  font-size: 0.66rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
 }
-/* Long stated phrases step down from display type to body scale. */
-.spec-value.spec-value-long {
-  font-size: 0.95rem;
-  line-height: 1.5;
+/* Long stated phrases step down from display type to body scale (rule 77:
+   T4 body/data value, sentence case). The compound selector outranks
+   .rail-row .spec-value's T6 figure style regardless of source order, so a
+   long stated phrase never renders as a display-voice figure. */
+.rail-row .spec-value.spec-value-long {
+  font-size: var(--fs-body);
+  line-height: 1.55;
   font-weight: 400;
+  font-family: var(--font-ui);
+  text-transform: none;
 }
 /* ON ORBIT module (v3.5): the count and its growth curve get their own
    panel, free of the key-specs band. Stat block left, chart right, both
@@ -2960,13 +3046,20 @@ table.profile td.src-cell a,
   height: auto;
 }
 .onorbit-tick {
+  /* T3 label register (rule 77); SVG text uses fill, not color. */
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
   fill: var(--dim);
 }
 .onorbit-note {
+  /* T3 label register (rule 77). */
   margin: 0.35rem 0 0;
-  font-size: 0.7rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   font-family: var(--mono);
 }
 
@@ -2974,17 +3067,25 @@ table.profile td.src-cell a,
    accent yellow overwhelmed the page (2026-07-07 audit); yellow stays
    reserved for one-line taglines and interaction. */
 .overview-block {
-  font-family: var(--font-ui);
+  /* T4 body/data value (rule 77): sourced overview prose, sentence case
+     (already opted out of the registry caps container below). */
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   border-left: 2px solid var(--border-2);
   padding-left: var(--sp-3);
   max-width: 46rem;
 }
 .registry-profile h2 {
+  /* T2 section heading (rule 77): also governs rail h2 by inheritance
+     (.rail-block h2 sets only its own margin). */
   font-family: var(--font-ui);
   font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--ls-inst);
+  line-height: 1.3;
   color: var(--text-1);
   margin: 0 0 0.6rem;
 }
@@ -3011,6 +3112,12 @@ table.profile td.src-cell a,
   flex-wrap: wrap;
 }
 .event-row a {
+  /* T4 body/data value (rule 77): the linked headline, sentence case
+     (opted out of the registry caps container below). Already inherits
+     the mono body default (12.5/400); made explicit for the type system. */
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--text-1);
 }
 .event-row a:hover {
@@ -3042,11 +3149,15 @@ table.profile td.src-cell a,
   color: var(--link);
 }
 .faq-item .citation {
+  /* T4 body/data value (rule 77): the FAQ answer, sentence case (opted
+     out of the registry caps container below). */
   font-family: var(--font-ui);
+  font-weight: 400;
   background: none;
   border: 0;
   padding: 0.4rem 0 0;
   font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--text-1);
 }
 .faq-item .citation a {
@@ -3083,10 +3194,13 @@ table.profile td.src-cell a,
   scroll-margin-top: 1rem;
 }
 .spec-label {
+  /* T3 label register (rule 77). */
   font-family: var(--mono);
-  font-size: 0.62rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   color: var(--dim);
 }
 .spec-anchor {
@@ -3097,29 +3211,43 @@ table.profile td.src-cell a,
   color: var(--link);
 }
 .spec-value {
+  /* T4 body/data value default (rule 77: "everything else that shows a
+     number inside a fact cell is T4"); .rail-row .spec-value overrides
+     to the T6 figure register for the rail's key-details ledger. */
   font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 17px;
-  line-height: 1.3;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
   color: var(--text-1);
 }
 .spec-meta {
+  /* T3 label register (rule 77): wraps .spec-computed/.spec-asof, which
+     set their own weight/letter-spacing/line-height; this covers the
+     row's own font-size so nothing falls back to the old rem value. */
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.4rem;
-  font-size: 0.65rem;
+  font-size: var(--fs-label);
 }
 .spec-asof,
 .spec-computed {
+  /* T3 label register (rule 77). */
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  color: var(--dim);
 }
 .spec-note {
-  font-size: 0.78rem;
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   margin-top: 0.5rem;
 }
 .imaging-modes {
@@ -3141,10 +3269,14 @@ a.src-link:hover {
   padding: 0;
 }
 .positioning-claims li {
+  /* T4 body/data value (rule 77): a quoted sourced claim, sentence case
+     (opted out of the registry caps container below). */
   padding: 0.35rem 0;
   border-bottom: 1px solid var(--line);
   font-family: var(--sans);
-  font-size: 0.9rem;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
 }
 .positioning-claims li:last-child {
   border-bottom: 0;
@@ -3170,19 +3302,31 @@ a.src-link:hover {
   margin-bottom: 0.4rem;
 }
 .mcc-read-text {
+  /* T4 body/data value (rule 77): the house-read sentence, sentence case
+     (opted out of the registry caps container below). */
   font-family: var(--sans);
-  font-size: 0.92rem;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   margin: 0 0 0.5rem;
 }
 .mcc-read-basis {
-  font-size: 0.72rem;
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   margin: 0;
 }
 
 /* Incident timeline lines and history type chip. */
 .incident-line {
+  /* T4 body/data value (rule 77): sourced outcome/cause text, sentence
+     case (opted out of the registry caps container below). */
   display: block;
-  font-size: 0.82rem;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   color: var(--dim);
 }
 .chip-tl-type {
@@ -3204,11 +3348,16 @@ a.src-link:hover {
   margin-top: 0.75rem;
 }
 .related-label {
+  /* T3 label register (rule 77). Dead selector since the canvas rail's
+     "same operator" links replaced the tabbed related-panel footer, kept
+     in the type system for when it's revived. */
   display: block;
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: var(--fs-label);
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   color: var(--dim);
   margin-bottom: 0.4rem;
 }
@@ -4122,7 +4271,11 @@ a.sig-card:hover .sig-p-x {
   color: var(--status-critical);
 }
 .reg-footnote {
-  font-size: 0.8rem;
+  /* T3 label register (rule 77). */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   margin-top: 1rem;
   /* Full content width (Florian, 2026-07-12): the note runs as wide as
      the registry panes above it, no reading-measure cap here. */
@@ -4160,11 +4313,21 @@ a.sig-card:hover .sig-p-x {
 
 /* Stock section: close-price chart with range toggle (data: Yahoo Finance) */
 .stock-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.6rem 0 0.5rem; }
-.stock-last { font-size: 21px; font-weight: 400; color: var(--text-1); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
-.stock-chg { font-size: 12.5px; font-weight: 500; color: var(--text-1); font-variant-numeric: tabular-nums; }
+/* T6 figure (rule 77): the display voice, like the on-orbit hero stat. */
+.stock-last { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: 300; color: var(--text-1); letter-spacing: 0.02em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.stock-chg { font-size: var(--fs-body); font-weight: 500; color: var(--text-1); font-variant-numeric: tabular-nums; }
 .stock-chg.down { color: var(--text-2); }
-.stock-attr { font-size: 12px; letter-spacing: 0.04em; margin-left: auto; }
+/* T3 label register (rule 77). */
+.stock-attr { font-size: var(--fs-label); font-weight: 500; letter-spacing: var(--ls-label); line-height: 1.3; margin-left: auto; }
 .stock-tabs { margin-bottom: 0.5rem; }
+/* T5 instrument register (rule 77): the range chips reuse .sig-tab, scoped
+   here rather than resizing it sitewide (the Signals page keeps its own
+   T3-ish label size). */
+.stock-tabs .sig-tab {
+  font-size: 11px;
+  letter-spacing: var(--ls-inst);
+  line-height: 1;
+}
 .stock-chart-wrap { min-height: 220px; }
 .stock-empty { display: flex; align-items: center; }
 .stock-chart {
@@ -4545,17 +4708,30 @@ a.sig-card:hover .sig-p-x {
 }
 
 /* ---------------------------------------------------------------------------
-   REGISTRY CAPS, AS A SYSTEM (Florian, 2026-07-12, round 2). Instead of
+   REGISTRY CAPS, AS A SYSTEM (Florian, 2026-07-12, round 2; extended
+   2026-09-10, rule 77, for the T4 body/data-value class). Instead of
    chasing individual strings, the registry surfaces uppercase at the
-   container and opt OUT the two places where sentence case carries
-   sourced meaning: the overview paragraph and the entry snippets (both
-   render verbatim sourced prose). Everything else on these surfaces is
-   chrome and renders caps. */
+   container and opt OUT every place sentence case carries sourced
+   meaning: sourced prose, quoted claims, and linked headline/label text.
+   Everything else on these surfaces is chrome and renders caps. */
 .registry-profile,
 .reg-index {
   text-transform: uppercase;
 }
 .registry-profile .overview-block,
+.registry-profile .fact-value,
+.registry-profile .rail-row .spec-value.spec-value-long,
+.registry-profile .mcc-read-text,
+.registry-profile .positioning-claims li,
+.registry-profile .tl-title,
+.registry-profile .incident-line,
+.registry-profile .event-row a,
+.registry-profile .faq-item .citation,
+.registry-profile .source-fact-label,
+.registry-profile .source-card-head,
+.registry-profile .gen-row,
+.registry-profile .mode-fig-val,
+.registry-profile .rail-link a,
 .reg-index .reg-snippet {
   text-transform: none;
 }
@@ -4957,8 +5133,12 @@ table.stat-table th {
   min-width: 0;
 }
 .canvas-rail .profile-title {
+  /* T1 title (rule 77): uppercase and +.12em inherit from .page-title;
+     the rail overrides only weight (200 here, vs the sitewide 28px
+     headline's 300) and the tighter rail line-height. */
   display: block;
-  font-size: 28px;
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-display);
   line-height: 1.15;
   margin: 12px 0 4px;
 }
@@ -4967,10 +5147,12 @@ table.stat-table th {
   margin-left: 8px;
 }
 .rail-kind {
+  /* T3 label register (rule 77). */
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: var(--ls-inst);
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
   text-transform: uppercase;
   color: var(--text-2);
   margin: 0 0 12px;
@@ -5007,7 +5189,13 @@ table.stat-table th {
   scroll-margin-top: calc(var(--header-h) + 16px);
 }
 .rail-row .spec-value {
-  font-size: 21px;
+  /* T6 figure (rule 77): the display voice, overriding the T4 mono
+     default .spec-value sets for the plainer facts/mode-card cases. */
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: 1.15;
+  text-transform: uppercase;
 }
 .rail-link {
   display: flex;
@@ -5016,8 +5204,12 @@ table.stat-table th {
   margin: 0 0 12px;
 }
 .rail-link a {
+  /* T4 body/data value (rule 77): the linked site/entity name, sentence
+     case (opted out of the registry caps container above). */
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: 1.55;
   overflow-wrap: anywhere;
 }
 .rail-link .tag-row {
@@ -5044,6 +5236,7 @@ table.stat-table th {
   margin: 0 0 20px;
 }
 .jump-bar a {
+  /* T5 instrument register (rule 77). */
   display: inline-flex;
   align-items: center;
   height: var(--h-control);
@@ -5051,7 +5244,8 @@ table.stat-table th {
   font-family: var(--font-ui);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: var(--ls-label);
+  letter-spacing: var(--ls-inst);
+  line-height: 1;
   text-transform: uppercase;
   color: var(--text-2);
   text-decoration: none;
@@ -5098,9 +5292,13 @@ table.stat-table th {
   }
 }
 .event-more {
+  /* T3 label register (rule 77); color comes from the markup's .dim
+     companion class. */
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
+  font-weight: 500;
   letter-spacing: var(--ls-label);
+  line-height: 1.3;
   text-transform: uppercase;
   margin: 8px 0 0;
 }
