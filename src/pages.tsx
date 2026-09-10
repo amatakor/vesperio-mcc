@@ -3597,7 +3597,9 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
       if (RAIL_SKIP.has(label) || railCells.some((c) => c.label === label)) continue;
       const v = f.value;
       if (v === null || v === undefined) continue;
-      const text = typeof v === "number" ? fmtNum(v) : Array.isArray(v) ? v.join(", ") : String(v);
+      // Years never take a thousands separator; counts and figures do.
+      const text =
+        typeof v === "number" ? (label === "founded" ? String(v) : fmtNum(v)) : Array.isArray(v) ? v.join(", ") : String(v);
       if (text.length === 0 || text.length > 40) continue;
       railCells.push({ field: label.replace(/[^a-z0-9]+/gi, "-"), label, value: text, as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace });
     }
