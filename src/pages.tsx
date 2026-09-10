@@ -2655,7 +2655,7 @@ function EventsSection({ events }: { events: ProfileEventRef[] }) {
   const shown = events.slice(0, EVENTS_SHOWN);
   return (
     <section id="events" className="panel">
-      <h2>events</h2>
+      <h2>crawled events</h2>
       <ul className="index-list event-list">
         {shown.map((i) => (
           <li key={i.id} className="event-row">
@@ -3550,21 +3550,48 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
   // bar is the active one.
   const [activeJump, setActiveJump] = useState("overview");
   const jumpIds = jumps.map(([id]) => id).join(",");
+  const jumpBarRef = useRef<HTMLElement>(null);
+  // A click owns the highlight until the scroll it started has settled;
+  // the spy must not flicker through every section on the way.
+  const jumpLockRef = useRef(0);
   useEffect(() => {
     const ids = jumpIds.split(",");
-    const onScroll = () => {
-      const line = 64 + 48 + 8;
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      if (Date.now() < jumpLockRef.current) return;
+      const barBottom = (jumpBarRef.current?.getBoundingClientRect().bottom ?? 96) + 8;
       let current = ids[0]!;
       for (const id of ids) {
         const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= line) current = id;
+        if (el && el.getBoundingClientRect().top <= barBottom) current = id;
       }
-      setActiveJump(current);
+      // At the very bottom the last section wins even when it is short.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) current = ids[ids.length - 1]!;
+      setActiveJump((prev) => (prev === current ? prev : current));
     };
-    onScroll();
+    const onScroll = () => {
+      if (raf === 0) raf = requestAnimationFrame(measure);
+    };
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf !== 0) cancelAnimationFrame(raf);
+    };
   }, [jumpIds]);
+  const jumpTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    setActiveJump(id);
+    jumpLockRef.current = Date.now() + 700;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    window.history.replaceState(null, "", `#${id}`);
+  };
 
   // The 3D view (three.js, lazy chunk) mounts only once the orbit section
   // has scrolled near the viewport; until then profile pages ship none of it.
@@ -3697,9 +3724,15 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           </aside>
 
           <div className="canvas-main">
-            <nav className="jump-bar" aria-label="On this page">
+            <nav className="jump-bar" aria-label="On this page" ref={jumpBarRef}>
               {jumps.map(([id, label]) => (
-                <a key={id} href={`#${id}`} className={activeJump === id ? "active" : undefined}>
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className={activeJump === id ? "active" : undefined}
+                  aria-current={activeJump === id ? "location" : undefined}
+                  onClick={(e) => jumpTo(e, id)}
+                >
                   {label}
                 </a>
               ))}

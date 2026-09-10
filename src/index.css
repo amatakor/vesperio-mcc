@@ -5069,6 +5069,15 @@ table.stat-table th {
 .canvas #sources {
   scroll-margin-top: calc(var(--header-h) + var(--h-control) + 12px);
 }
+/* The bar is a fixed-height instrument strip: no reflow when a label
+   toggles active, no transition on the fill. */
+.jump-bar {
+  height: calc(var(--h-control) + 1px);
+  flex: none;
+}
+.jump-bar a {
+  transition: none;
+}
 .canvas .overview-block {
   max-width: none;
 }
