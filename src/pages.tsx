@@ -3657,6 +3657,8 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
     for (const [label, f] of profile.rows) {
       if (railCells.length >= 5) break;
       if (RAIL_SKIP.has(label) || railCells.some((c) => c.label === label)) continue;
+      // The on-orbit hero already carries the verified count when a CelesTrak layer exists.
+      if (label === "sats active (verified)" && orbitTab?.hasLayer) continue;
       const v = f.value;
       if (v === null || v === undefined) continue;
       // Years never take a thousands separator; counts and figures do.
@@ -3804,7 +3806,7 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               <section id="facts" className="panel canvas-anchor">
                 <h2>facts</h2>
                 <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
-                {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
+                {profile.tableNote && <p className="dim table-note">{profile.tableNote}</p>}
               </section>
             </div>
 
