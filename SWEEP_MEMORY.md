@@ -4542,3 +4542,54 @@ a newer entry if a lesson changes.
   data files (items 611, up from 603) and a direct read of all eight new
   items' and the one updated item's `snr`/`snr_trace`/`category`/
   `impact`/`tags`/`companies`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-09-10, fourth: Paris summit day, second)
+
+- 2026-09-10-R: The same-company-plus-category dedup false positive now
+  confirmed on the `science` category specifically: a new ESA/NASA item
+  (NASA withdrawing its VenSAR radar instrument from ESA's EnVision Venus
+  orbiter) false-matched the existing Sept 3 BepiColombo Mercury
+  transfer-module-separation item purely on shared company ESA + category
+  `science` + within 7 days, despite covering unrelated missions (Mercury
+  vs. Venus). One `dedup_distinct` cleared it; extends the long list
+  (NASA/SpaceX/Blue-Origin/Redwire/Viasat/SES/ICEYE) to ESA and to a
+  category beyond contract/regulatory/procurement.
+- 2026-09-10-S: A wire-distributed press release (BusinessWire) that
+  403's at its own domain is still usable as `wire_pr` via a StockTitan
+  mirror carrying the exact same release text verbatim (dateline,
+  quotes, disclosure language) -- same pattern as the 2026-08-25-K
+  Redwire/Yahoo-Finance-dateline workaround, now confirmed for
+  StockTitan specifically. The mirror explicitly stating "previously
+  disclosed [a figure] in March" is exactly the kind of self-reported
+  staleness marker worth trusting over the fresh-looking wrapper
+  headline: York Space's $187M Tomorrow.io contract was the SAME figure
+  York disclosed without a customer name in March, not a new dollar
+  amount; scored/impacted as notable rather than major for exactly this
+  reason (money was not new today, only the customer's name was).
+- 2026-09-10-T: A signals-pass whitelist channel (Vivienne Machi's
+  Aviation Week author page) surfaced two same-day product/contract
+  finds (MDA Aurora Black, York/Tomorrow.io) the queue and discovery
+  pass both also caught independently -- but also one unverifiable
+  headline (a "France Plans First Deorbiting Demo In 2030" Exotrail/
+  Astroscale France piece) where AW's paywall left only a headline visible
+  and a background WebSearch found only a January 2026 "still in
+  selection, hopes to know by summer" item with no September resolution
+  independently confirmed -- left undrafted per the standing
+  genuinely-fetched-content rule rather than assume the AW headline means
+  selection was confirmed.
+- 2026-09-10-U: A crewed-mission update three months after the original
+  item (Vast-PAM-1's Czech Republic/Ales Svoboda booking, June 8) adding
+  a fourth crew member for a different, newsworthy-in-its-own-right
+  national angle (Greece's first-ever astronaut, Adrianos Golemis) was
+  drafted as a NEW standalone item rather than an `updates[].patch` on
+  the 94-day-old original, cross-referenced only in prose (no unfetched
+  URL added) -- the national-first framing carries its own news value
+  independent of the underlying mission's continuity, similar to how
+  country-by-country Starlink market-entry items each get their own id
+  despite sharing the same company and program.
+- 2026-09-10-V: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 3
+  updated, 0 held") and a direct read of all five new items' and all
+  three updated items' `snr`/`category`/`impact`/`tags`/`companies`/
+  `sources` fields as the build-health signal.
