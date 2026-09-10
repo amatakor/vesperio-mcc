@@ -340,3 +340,32 @@ now runs the script right after the artwork pipeline and before the
 build, and /system/ gained a "registry coverage" panel listing the open
 gaps (name, item count, last seen, category breakdown, and links to
 the two most recent items) plus a totals line.
+
+Stock chart redesign (2026-09-10): the organization profile's close-price
+chart read heavier than everything around it, a tall gridded SVG with a
+thick line and labeled axes on both sides. It is now a light instrument:
+140px tall on desktop (120px on phones), full width of its panel, one
+hairline frame, and just two faint reference lines for the period's high
+and low (values as small labels at the right edge) plus the first and
+last date at the bottom; no gridlines, no y-axis column. The line itself
+is thin (1.25px), colored green or red by whether the close is up or
+down against the period's opening price (a small "vs period open" label
+says so), with a flat 8% tint fill underneath and a dotted baseline at
+the opening price. Hovering, touching, or focusing the chart and using
+the arrow keys moves a crosshair with a square marker (no circles,
+house rule) and swaps the header numbers for a readout of that day's
+date, price, and change; releasing the pointer returns to the latest
+close. The line draws itself in left to right whenever the range tab
+changes, and the latest close pulses once when the chart first appears;
+both respect reduced-motion settings. Same data path as before (the
+daily Yahoo Finance pipeline, sliced client-side by the 1M/6M/1Y/ALL
+toggle) and the same SSR/hydration behavior (the chart still renders
+nothing until the client fetch resolves). Fixed a real bug uncovered
+while building this: the chart's wrap div used to change element type
+between its loading and loaded states, so React silently remounted it
+the moment data arrived and the size-tracking observer was left
+watching a detached node, a genuine (if intermittent) reason the old
+chart could fail to size itself correctly. The wrap div is now one
+stable element across every state, and its size is measured
+synchronously on mount rather than waiting on the browser's own resize
+notification.

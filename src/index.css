@@ -4158,25 +4158,106 @@ a.sig-card:hover .sig-p-x {
 }
 .timeline li > span + span { display: block; max-width: 62ch; }
 
-/* Stock section: close-price chart with range toggle (data: Yahoo Finance) */
+/* Stock section: close-price chart with range toggle (data: Yahoo Finance).
+   V2 (2026-09-10): a light instrument, not a data-dense chart — the wrap
+   div carries the ONE frame (a hairline, like every other panel block), the
+   SVG inside is borderless and tracks the wrap's measured box 1:1. */
 .stock-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.6rem 0 0.5rem; }
-.stock-last { font-size: 21px; font-weight: 400; color: var(--text-1); letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
-.stock-chg { font-size: 12.5px; font-weight: 500; color: var(--text-1); font-variant-numeric: tabular-nums; }
-.stock-chg.down { color: var(--text-2); }
-.stock-attr { font-size: 12px; letter-spacing: 0.04em; margin-left: auto; }
+.stock-last {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 21px;
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}
+.stock-chg { font-size: 12.5px; font-weight: 500; color: var(--acc-green); font-variant-numeric: tabular-nums; }
+.stock-chg.down { color: var(--acc-red); }
+.stock-legend { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.stock-attr { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-left: auto; }
 .stock-tabs { margin-bottom: 0.5rem; }
-.stock-chart-wrap { min-height: 220px; }
-.stock-empty { display: flex; align-items: center; }
-.stock-chart {
+/* Active range chip: the page's domain accent, like the profile jump bar
+   (.profile-tab.active) — not volt, which .sig-tab.active uses elsewhere. */
+.stock-tabs .sig-tab.active {
+  background: var(--reg-acc, var(--volt));
+  border-color: var(--reg-acc, var(--volt));
+  color: var(--bg-page);
+}
+.stock-chart-wrap {
+  position: relative;
   width: 100%;
-  max-width: 640px;
-  height: auto;
+  height: 120px;
   border: 1px solid var(--line);
   background: var(--panel);
   touch-action: pan-y;
+  cursor: crosshair;
+}
+@media (min-width: 48rem) {
+  .stock-chart-wrap { height: 140px; }
+}
+.stock-chart-wrap:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+.stock-chart { display: block; width: 100%; height: 100%; }
+.stock-line {
+  fill: none;
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: stock-draw 400ms linear forwards;
+}
+@keyframes stock-draw {
+  to { stroke-dashoffset: 0; }
+}
+.stock-area { fill-opacity: 0.08; }
+.stock-ref-line { stroke: var(--dim); stroke-opacity: 0.5; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.stock-open-line {
+  stroke: var(--dim);
+  stroke-width: 1;
+  stroke-dasharray: 0.1 4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.stock-crosshair { stroke: var(--text-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.stock-marker { animation: none; }
+.stock-flash {
+  animation: stock-flash 1.2s ease-out 1 forwards;
+}
+@keyframes stock-flash {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stock-line { animation: none; stroke-dashoffset: 0; }
+  .stock-flash { animation: none; opacity: 0; }
 }
 .stock-axis-label { fill: var(--dim); font-family: var(--mono); font-size: 10px; letter-spacing: 0.02em; }
-.stock-readout { fill: var(--text-1); font-family: var(--font-ui); font-size: 11px; font-weight: 500; letter-spacing: 0.02em; }
+.stock-readout {
+  position: absolute;
+  top: var(--sp-2);
+  left: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--panel);
+  padding: 1px var(--sp-1);
+  pointer-events: none;
+}
+.stock-readout-date { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--dim); }
+.stock-readout-price { font-size: 12.5px; font-weight: 500; color: var(--text-1); font-variant-numeric: tabular-nums; }
+.stock-readout-price.up { color: var(--acc-green); }
+.stock-readout-price.down { color: var(--acc-red); }
+.stock-empty {
+  height: auto;
+  max-height: 40px;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  padding: var(--sp-1) 0;
+}
+.stock-empty p { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; margin: 0; }
 
 /* ------------------------------------------------------------------ snr
    Signal-to-noise meter, trace popover, disputed/provisional tags
@@ -4577,7 +4658,7 @@ a.sig-card:hover .sig-p-x {
 .overview-block {
   max-width: none;
 }
-.stock-chart {
+.stock-chart-wrap {
   max-width: none;
 }
 .tl-title {
