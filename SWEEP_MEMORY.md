@@ -4480,3 +4480,65 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (603 items, up from 599) and a
   direct read of all four new items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Normal-mode sweep, ~5h15m gap, unfiltered full source list (2026-09-10, third: Paris summit day)
+
+- 2026-09-10-K: Bluesky's `bsky.app/profile/...` HTML pages still render
+  nothing via WebFetch (confirms the standing pattern); the public
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  JSON endpoint works cleanly for every signals-pass account this run and
+  is the only reliable way to check a fetchable Bluesky channel.
+- 2026-09-10-L: A same-day European Spaceflight follow-up article that
+  formally confirms an event the SAME outlet's prior-day article had only
+  inferred from a leaked government document (ESA's own €760M ALADDIN
+  Phase 2 announcement for Exploration Company, following yesterday's
+  "French Presidency document reveals..." item) is a clean
+  `updates[].patch`+`attach`+`bump: "corroboration_2plus"` case, not a new
+  item, even though the new article adds a full financial breakdown and a
+  named ESA quote the original never had.
+- 2026-09-10-M: Two independent Google News headline-shaped queue entries
+  ("Eutelsat Communications Engages Airbus Unit, Thales Alenia Space...",
+  "Starlink rival Eutelsat plans OneWeb expansion after €1 billion
+  satellite order") both traced to the SAME underlying story (Eutelsat's
+  IRIS2 LEO manufacturing awards to Aerospacelab/Airbus/Thales Alenia
+  Space) that European Spaceflight and Reuters covered directly with the
+  real €5.4B figure; neither Google News redirect resolved via WebFetch,
+  but a plain WebSearch on the company+figure terms found the
+  europeanspaceflight.com original and a Reuters-via-Yahoo-Finance mirror
+  directly. A stale-title trap nearly followed: Telecompaper's own
+  "Aerospacelab, Thales Alenia Space confirm major Iris2 awards" headline
+  (found via WebSearch) turned out, once fetched, to carry a December 12,
+  2024 publish date describing the ORIGINAL 2024 SpaceRISE manufacturing
+  split, not today's contract-value announcement -- left uncited.
+  Aerospacelab has no `src/data/registry` organization entry, so even
+  though Eutelsat (the awarding party) does, the no-registry-host
+  workaround still applied to the reported figures since the award is to
+  Aerospacelab/Thales/Airbus, not a fact about Eutelsat itself.
+  Aviation24.be, an otherwise-useful Belgian aviation trade outlet, 403'd
+  on this story.
+- 2026-09-10-N: `aerospacelab.be` 301-redirects to `aerospacelab.com`
+  (confirmed via a `/news/` fetch); worth updating any stored source URL
+  at a future structural touch, same pattern as prior rebrand-domain
+  cases.
+- 2026-09-10-O: A same-calendar-date, year-old stale trap on a Kazakhstan
+  headline: "Kazakhstan Ready to Build Satellites for Neighboring
+  Countries" (DKNews.kz, dated today via Google News) traced via
+  WebSearch to Kazakhstan's September 2025 Nigeria/DRC satellite-
+  manufacturing agreement (Space in Africa, dated 2025-09-10 exactly one
+  year earlier) -- extends the standing same-calendar-date-different-year
+  trap (2026-08-13-A and many peers) to a case where the DAY AND MONTH
+  match exactly, one year apart.
+- 2026-09-10-P: Confirms 2026-09-09-A/2026-09-10-C's whitelist-channel
+  pattern a third time on a new person: Vivienne Machi's own article
+  (Aviation Week, Sierra Space Ghost drop-test story) led at `class:
+  "trade"` with her narrower `aviationweek.com/author/vivienne-machi`
+  channel page attached separately at `class: "whitelist"` for the floor;
+  finalize's same-domain collapse rule fired again (logged to
+  `corroboration_collapses`), cosmetic only, final SNR unaffected.
+- 2026-09-10-Q: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 8 new, 1
+  updated, 0 held") plus a `jq empty` parse check across all five touched
+  data files (items 611, up from 603) and a direct read of all eight new
+  items' and the one updated item's `snr`/`snr_trace`/`category`/
+  `impact`/`tags`/`companies`/`sources` fields as the build-health signal.
