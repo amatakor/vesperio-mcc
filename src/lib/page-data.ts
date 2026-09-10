@@ -17,11 +17,25 @@ import type {
   SpaceportProfile,
   OrgProfile,
   SignalsFile,
+  CrossfeedOutcome,
 } from "../data/schema";
 import type { CalibrationBucket } from "../../scripts/snr/ledger";
 import type { HeroStats, StatBlock } from "./stats";
 import type { RegEntry } from "./reg-entries";
 import type { LogKpis, PresenceRow } from "./log-kpis";
+
+/** One consumed registry crossfeed candidate, flattened with the run
+    timestamp it was recorded under, newest-run-first. */
+export interface CrossfeedLogRow {
+  /** ISO datetime of the run that recorded this outcome. */
+  runAt: string;
+  id: string;
+  item_id: string;
+  entity_slug: string;
+  field: string;
+  value: unknown;
+  outcome: CrossfeedOutcome;
+}
 
 /** Feed-wide counts the home filter bar shows (computed at prerender). */
 export interface FeedCounts {
@@ -64,6 +78,32 @@ export interface DigestMovement {
 export interface DigestQuietSweep {
   at: string;
   summary: string;
+}
+
+/** Compact item reference the registry-coverage panel's per-name links use. */
+export interface RegistryCoverageItemRef {
+  id: string;
+  headline: string;
+  date: string;
+}
+
+/** One pending registry-suggestions.json row, ready to render. */
+export interface RegistryCoverageRow {
+  name: string;
+  item_count: number;
+  last_seen: string;
+  categories: Record<string, number>;
+  /** The two most recent qualifying items, for the inline links. */
+  recentItems: RegistryCoverageItemRef[];
+}
+
+/** The /system "registry coverage" panel: pending coverage-gap suggestions. */
+export interface RegistryCoverage {
+  rows: RegistryCoverageRow[];
+  /** Pending suggestions total (rows.length, kept explicit for the totals line). */
+  totalNames: number;
+  /** Sum of item_count across pending rows (an item can count toward >1 name). */
+  totalItems: number;
 }
 
 export type PageData =
@@ -144,6 +184,14 @@ export type PageData =
       kpis: LogKpis;
       /** Lead-source presence over the same window, full sorted list. */
       presence: PresenceRow[];
+      /** Registry crossfeed outcome log (2026-09-09): the last 20 consumed
+          candidates newest first, plus lifetime totals per outcome. */
+      crossfeedLog: {
+        recent: CrossfeedLogRow[];
+        totals: Record<CrossfeedOutcome, number>;
+      };
+      /** Registry coverage-gap suggestions (scripts/registry-suggest.ts), pending only. */
+      registryCoverage: RegistryCoverage;
     }
   | { page: "log-archive"; month: string; sweeps: SweepLogEntry[] }
   | {

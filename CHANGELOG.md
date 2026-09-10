@@ -254,3 +254,89 @@ Escape; the button reads the live selection ("MAJOR · SEISMIC ·
 LAUNCH"); counts come precomputed over the whole corpus; the ALL chip
 clears every row. The button's word changed from CATEGORIES to FILTER
 now that it covers three groups.
+
+Registry self-population round, part 1 (2026-09-09): the crossfeed
+reconciler now looks at values, not only source tiers. A news claim that
+states the same value as the stored fact confirms it (a stronger source
+refreshes the citation, an equal or weaker one changes nothing) and is
+never routed to the dispute queue; the Sentinel-1 NG "dispute" between
+two sources that both said 2 is cleared from the profile and from the
+held queue. Positioning claims must cite the entity's own website
+domain, enforced by the validator, and the maintenance run now fills
+empty claims blocks a few profiles at a time from the entities' own
+pages. Organizations enter the crossfeed scope with the new fields the
+feed carries (headquarters, parent organization, latest and total
+funding, valuation, headcount), the drafting prompt requires the
+matching fact on funding, M&A, IPO, headquarters, and status items, and
+the maintenance prompt covers organization profiles. The two queue
+files named "candidates" now each say which queue they are.
+
+Category-agnostic dedup gate (2026-09-09): the HIE/Orbex Sutherland
+Spaceport story published twice, once as a `financial` item and once
+as a `launch` item, because the sweep merge gate only ever compared a
+new draft against existing items sharing the same company AND the same
+category. The gate now also rejects a same-company match within the
+7-day dedup window when the new draft shares a source URL (a
+canonicalized comparison: scheme, `www.`, tracking query params, the
+fragment, and a trailing slash are all stripped before comparing, so
+an http/https or `?utm_source=` republish of the same page still
+matches) with an existing item's `source_url` or `secondary_urls`,
+regardless of category; the existing near-identical-headline
+(SimHash) cross-category check is unchanged and still applies
+alongside it. The rejection message now also names the existing
+item's id directly in its "draft it as an updates[] entry" instruction.
+The duplicate `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`
+item and its re-hosted artwork were removed by hand; the surviving
+`2026-08-25-hie-sutherland-spaceport-assets` item is unchanged.
+
+Organization profiles can now self-populate from the news feed
+(2026-09-09): the registry crossfeed used to carry only country,
+founded, focus, and status onto a company profile, so the funding
+rounds, valuations, acquisitions, and headquarters moves the feed
+reports constantly had nowhere to land. Organization profiles gain six
+optional sourced fields: headquarters, parent org (the owning company
+after an acquisition or merger), funding (latest), funding (total,
+only when a source states the total outright, never summed from
+rounds), valuation (latest), and employees. Each renders on the
+organization profile page exactly like the existing fields, only when
+a source has filled it in, with its source link, as-of date, and
+provisional badge where it applies; parent org links to that company's
+own profile when one exists, same as operator and provider already do.
+The crossfeed's allowed-field list and value-shape check grew to
+match, and the registry validator's exhaustive key list now accepts
+the six fields as optional SourcedFields. No existing profile was
+touched; the fields stay null until the feed states a fact.
+
+Registry crossfeed outcome ledger (2026-09-09): the weekly registry
+maintenance run consumes the news-to-registry crossfeed queue
+(registry-candidates.json) by deleting each candidate once it acts on
+it, which left no record of whether a candidate actually landed, was
+re-sourced, was disputed, or was rejected. A new machine-owned file,
+registry-crossfeed-log.json, now records the outcome of every consumed
+candidate. A deterministic script (scripts/record-crossfeed-outcomes.ts,
+no network, no LLM) snapshots the queue right before the agent runs and
+diffs it against the queue afterward: any candidate that disappeared was
+consumed, and its target registry field is inspected to classify what
+happened to it, landed with the proposed source, landed but re-sourced
+to a different one, disputed against a competing claim, or left
+unchanged. The /system page gains a "registry crossfeed" panel listing
+the last 20 consumed candidates with their outcome and a link back to
+the source item, plus lifetime totals per outcome; the KPI row gains a
+"crossfeed landed" count alongside the existing "crossfeed queued" one.
+Registry coverage suggestions (2026-09-09): half the feed names
+companies with no registry profile (Planet Labs, Telesat, SES, Viasat
+and more), so those items could never feed the registry and nobody saw
+the gap. A new deterministic script, scripts/registry-suggest.ts, scans
+src/data/items.json for company names that resolve to no registry
+entity (the same resolution finalize-sweep already uses, imported from
+scripts/lib/crossfeed.ts, never reimplemented) and writes
+src/data/registry_suggestions.json once a name appears on 2 or more
+items within a rolling 90-day window. It only suggests: registry
+entries are still created solely via reviewed changes. Florian sets a
+suggestion's status to "dismissed" or "created" by hand and that
+decision survives every rerun; a "pending" suggestion that falls back
+below the threshold is dropped instead. The scheduled sweep workflow
+now runs the script right after the artwork pipeline and before the
+build, and /system/ gained a "registry coverage" panel listing the open
+gaps (name, item count, last seen, category breakdown, and links to
+the two most recent items) plus a totals line.

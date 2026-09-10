@@ -5,7 +5,7 @@
  * module and the dataset out of production client builds).
  */
 
-import type { Item, SweepLogEntry } from "../data/schema";
+import type { Item, SweepLogEntry, RegistrySuggestionsFile } from "../data/schema";
 import { CATEGORIES, DOMAIN_TAGS, IMPACTS } from "../data/schema";
 import type { Route } from "../routes";
 import type {
@@ -14,11 +14,16 @@ import type {
   OrgHrefs,
   PageData,
   ProfileEventRef,
+  RegistryCoverage,
 } from "./page-data";
 import { FEED_PAGE_SIZE, feedPageCount, splitLogWindow } from "./page-data";
-import { computeLogKpis, leadSourcePresence } from "./log-kpis";
-import type { CrossfeedCandidateRef } from "./log-kpis";
+import { computeLogKpis, leadSourcePresence, KPI_WINDOW_DAYS } from "./log-kpis";
+import type { CrossfeedCandidateRef, CrossfeedOutcomeRef } from "./log-kpis";
 import registryCandidatesJson from "../data/registry-candidates.json";
+import registryCrossfeedLogJson from "../data/registry-crossfeed-log.json";
+import type { CrossfeedOutcome, RegistryCrossfeedLogFile } from "../data/schema";
+import type { CrossfeedLogRow } from "./page-data";
+import registrySuggestionsJson from "../data/registry_suggestions.json";
 import {
   constellationEntries,
   vehicleEntries,
@@ -70,6 +75,34 @@ function feedPage(n: number): Item[] {
   return items.slice((n - 1) * FEED_PAGE_SIZE, n * FEED_PAGE_SIZE);
 }
 
+/**
+ * The /system "registry coverage" panel: pending registry_suggestions.json
+ * rows (Florian's dismissed/created decisions are never rendered as open
+ * gaps), each with its two most recent qualifying items resolved to real
+ * item refs for the inline links.
+ */
+function buildRegistryCoverage(): RegistryCoverage {
+  const file = registrySuggestionsJson as unknown as RegistrySuggestionsFile;
+  const rows = file.suggestions
+    .filter((s) => s.status === "pending")
+    .map((s) => ({
+      name: s.name,
+      item_count: s.item_count,
+      last_seen: s.last_seen,
+      categories: s.categories,
+      recentItems: s.item_ids
+        .map((id) => itemById(id))
+        .filter((i): i is Item => i !== undefined)
+        .slice(0, 2)
+        .map((i) => ({ id: i.id, headline: i.headline, date: i.date })),
+    }));
+  return {
+    rows,
+    totalNames: rows.length,
+    totalItems: rows.reduce((n, r) => n + r.item_count, 0),
+  };
+}
+
 function orgHrefs(): OrgHrefs {
   const map: OrgHrefs = {};
   for (const o of organizations) {
@@ -115,6 +148,49 @@ function logTotals(all: SweepLogEntry[]): { added: number; updated: number; held
     }),
     { added: 0, updated: 0, held: 0, count: 0 },
   );
+}
+
+const CROSSFEED_LOG_DISPLAY_LIMIT = 20;
+
+/** Flattens every run's consumed candidates into one newest-first list
+    (runs are appended chronologically, so reversing them is enough) plus
+    lifetime totals per outcome, for the /system crossfeed panel. */
+function crossfeedLogSlice(
+  runs: RegistryCrossfeedLogFile["runs"],
+): { recent: CrossfeedLogRow[]; totals: Record<CrossfeedOutcome, number> } {
+  const totals: Record<CrossfeedOutcome, number> = {
+    landed: 0,
+    landed_resourced: 0,
+    disputed: 0,
+    unchanged: 0,
+  };
+  const rows: CrossfeedLogRow[] = [];
+  for (const run of runs) {
+    for (const c of run.consumed) {
+      totals[c.outcome]++;
+      rows.push({
+        runAt: run.at,
+        id: c.id,
+        item_id: c.item_id,
+        entity_slug: c.entity_slug,
+        field: c.field,
+        value: c.value,
+        outcome: c.outcome,
+      });
+    }
+  }
+  rows.reverse();
+  return { recent: rows.slice(0, CROSSFEED_LOG_DISPLAY_LIMIT), totals };
+}
+
+/** Every consumed candidate across all runs, flattened for the /log KPI
+    row's windowed "crossfeed landed" count. */
+function crossfeedOutcomeRefs(runs: RegistryCrossfeedLogFile["runs"]): CrossfeedOutcomeRef[] {
+  const refs: CrossfeedOutcomeRef[] = [];
+  for (const run of runs) {
+    for (const c of run.consumed) refs.push({ at: run.at, outcome: c.outcome });
+  }
+  return refs;
 }
 
 /** Weekly digest window: the last 7 full days from the build moment. */
@@ -262,6 +338,7 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         .sort((a, b) => a.status.localeCompare(b.status) || a.name.localeCompare(b.name));
       const candidates = (registryCandidatesJson as { candidates: CrossfeedCandidateRef[] })
         .candidates;
+      const crossfeedRuns = (registryCrossfeedLogJson as unknown as RegistryCrossfeedLogFile).runs;
       return {
         page: "system",
         hero: computeHero(items, constellations, vehicles, sweeps, now, spaceports, organizations),
@@ -272,8 +349,10 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
         calibrationBuckets,
         archiveMonths,
         sourceProblems,
-        kpis: computeLogKpis(items, ledgerSources, candidates, now),
+        kpis: computeLogKpis(items, ledgerSources, candidates, now, KPI_WINDOW_DAYS, crossfeedOutcomeRefs(crossfeedRuns)),
         presence: leadSourcePresence(items, now),
+        crossfeedLog: crossfeedLogSlice(crossfeedRuns),
+        registryCoverage: buildRegistryCoverage(),
       };
     }
     case "log-archive": {

@@ -1211,6 +1211,86 @@ describe("dedup-as-code gate (matchDecision in finalize)", () => {
     const result = finalizeSweep({ dataDir, draftPath });
     expect(result.ok).toBe(true);
   });
+
+  test("same event under a different category with a shared source URL is rejected", () => {
+    // Different category, dissimilar headline, but the existing item's own
+    // source_url shows up in this draft's secondary_urls: the gate must
+    // catch the re-categorized re-report on URL overlap alone.
+    writeDraft({
+      newItems: [
+        collidingItem({
+          category: "financial",
+          headline: "Finnish SAR maker lands new manufacturing capacity",
+          source_url: "https://example.com/iceye/press-existing-followup",
+          secondary_urls: [existingItem.source_url],
+          scoring: {
+            sources: [
+              { url: "https://example.com/iceye/press-existing-followup", outlet: "Example Wire", class: "trade" },
+            ],
+            extraordinary: false,
+            crawl: "found_none",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const before = snapshotDataFiles();
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(false);
+    expect(result.errors.join("\n")).toContain("same-event match");
+    expect(result.errors.join("\n")).toContain(existingItem.id);
+    expect(result.errors.join("\n")).toContain("shared source URL");
+    expect(result.errors.join("\n")).toContain("updates[] entry");
+    expect(snapshotDataFiles()).toEqual(before);
+  });
+
+  test("same company, different event (different URLs, dissimilar headline) within the window is accepted", () => {
+    writeDraft({
+      newItems: [
+        collidingItem({
+          category: "financial",
+          headline: "ICEYE closes a new funding round led by an existing investor",
+          source_url: "https://example.com/iceye/funding-round-announcement",
+          secondary_urls: [],
+          scoring: {
+            sources: [
+              { url: "https://example.com/iceye/funding-round-announcement", outlet: "Example Wire", class: "trade" },
+            ],
+            extraordinary: false,
+            crawl: "found_none",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
+
+  test("an 8-day-apart item sharing a source URL is accepted (outside the dedup window)", () => {
+    writeDraft({
+      newItems: [
+        collidingItem({
+          id: "2026-07-09-iceye-finland-sar-expansion-followup",
+          date: "2026-07-09", // 8 days after existingItem's 2026-07-01
+          category: "financial",
+          headline: "Finnish SAR maker lands new manufacturing capacity",
+          source_url: "https://example.com/iceye/press-existing-followup",
+          secondary_urls: [existingItem.source_url],
+          scoring: {
+            sources: [
+              { url: "https://example.com/iceye/press-existing-followup", outlet: "Example Wire", class: "trade" },
+            ],
+            extraordinary: false,
+            crawl: "found_none",
+            whitelist: null,
+          },
+        }),
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath });
+    expect(result.ok).toBe(true);
+  });
 });
 
 describe("commentary kind (audit Phase 4)", () => {

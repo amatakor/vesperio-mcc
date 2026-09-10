@@ -4,6 +4,7 @@
  * errors; empty list means valid. No dependencies, fully deterministic.
  */
 
+import { registrableDomain } from "./urls";
 import {
   CATEGORIES,
   ITEM_KINDS,
@@ -15,6 +16,7 @@ import {
   LEDGER_EVENT_KINDS,
   CLAIM_RESOLUTIONS,
   SUGGESTION_STATUSES,
+  REGISTRY_SUGGESTION_STATUSES,
   SOURCE_STATUSES,
   FEED_TYPES,
   SOURCE_TIERS,
@@ -33,6 +35,9 @@ import {
   GROUND_STATION_PRECISIONS,
   OMM_STRING_FIELDS,
   OMM_NUMBER_FIELDS,
+  CROSSFEED_ENTITY_TYPES,
+  CROSSFEED_QUEUE_ACTIONS,
+  CROSSFEED_OUTCOMES,
 } from "../../src/data/schema";
 
 const ID_RE = /^\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*$/;
@@ -818,6 +823,56 @@ export function validateSignalsSuggestionsFile(data: unknown): string[] {
   return errors;
 }
 
+export function validateRegistrySuggestionsFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["registry_suggestions.json: root must be an object"];
+  if (typeof data.version !== "string") errors.push("registry_suggestions.version: required string");
+  if (!Array.isArray(data.suggestions)) {
+    errors.push("registry_suggestions.suggestions: required array");
+    return errors;
+  }
+  const seen = new Set<string>();
+  data.suggestions.forEach((s, i) => {
+    const path = `registry_suggestions[${i}]`;
+    if (!isObj(s)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    const name = reqString(s, "name", path, errors);
+    if (name !== null) {
+      const key = name.toLowerCase();
+      if (seen.has(key)) errors.push(`${path}.name: duplicate "${name}"`);
+      seen.add(key);
+    }
+    if (typeof s.item_count !== "number" || !Number.isInteger(s.item_count) || s.item_count < 2) {
+      errors.push(`${path}.item_count: required integer >= 2`);
+    }
+    if (!(typeof s.first_seen === "string" && isValidDate(s.first_seen))) {
+      errors.push(`${path}.first_seen: required YYYY-MM-DD`);
+    }
+    if (!(typeof s.last_seen === "string" && isValidDate(s.last_seen))) {
+      errors.push(`${path}.last_seen: required YYYY-MM-DD`);
+    }
+    const itemIds = reqStringArray(s, "item_ids", path, errors);
+    if (itemIds !== null && itemIds.length > 10) {
+      errors.push(`${path}.item_ids: at most 10 entries`);
+    }
+    if (!isObj(s.categories)) {
+      errors.push(`${path}.categories: required object`);
+    } else {
+      for (const [k, v] of Object.entries(s.categories)) {
+        if (typeof v !== "number" || !Number.isInteger(v) || v < 0) {
+          errors.push(`${path}.categories.${k}: must be a non-negative integer`);
+        }
+      }
+    }
+    if (!REGISTRY_SUGGESTION_STATUSES.includes(s.status as never)) {
+      errors.push(`${path}.status: must be one of [${REGISTRY_SUGGESTION_STATUSES.join(", ")}]`);
+    }
+  });
+  return errors;
+}
+
 // ------------------------------------------------------------- registry
 
 function checkSourcedField(
@@ -1042,8 +1097,21 @@ function checkPositioning(o: Obj, path: string, errors: string[]): void {
   if (!Array.isArray(pos.claims)) {
     errors.push(`${path}.positioning.claims: required array (empty when no sourced claims)`);
   } else {
+    // Anti-spoof (Florian, 2026-09-09): a positioning claim is the entity
+    // speaking about itself, so its source must sit on the entity's own
+    // registry-recorded website domain. Press paraphrases are not claims.
+    const site = isObj(o.website) && typeof o.website.value === "string" && isHttpUrl(o.website.value)
+      ? registrableDomain(o.website.value)
+      : null;
     pos.claims.forEach((c, i) => {
-      checkSourcedFieldValue(c, "string", `${path}.positioning.claims[${i}]`, errors);
+      const p = `${path}.positioning.claims[${i}]`;
+      checkSourcedFieldValue(c, "string", p, errors);
+      if (site !== null && isObj(c) && typeof c.source === "string" && isHttpUrl(c.source)) {
+        const from = registrableDomain(c.source);
+        if (from !== site) {
+          errors.push(`${p}.source: "${from}" is not the entity's own domain "${site}" (positioning claims are first-party only)`);
+        }
+      }
     });
   }
   if (pos.mcc_read !== undefined) {
@@ -1153,6 +1221,20 @@ const ORG_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> 
 ];
 
 /**
+ * Optional org fields fed by the news crossfeed (funding, ownership,
+ * headquarters, headcount). Validated only when present, same pattern as
+ * CONSTELLATION_OPTIONAL_FIELDS/VEHICLE_OPTIONAL_FIELDS.
+ */
+const ORG_OPTIONAL_FIELDS: Array<[string, "string" | "number" | "boolean" | "string[]"]> = [
+  ["headquarters", "string"],
+  ["parent_org", "string"],
+  ["funding_latest", "string"],
+  ["funding_total", "string"],
+  ["valuation_latest", "string"],
+  ["employees", "number"],
+];
+
+/**
  * Exhaustive per-type key sets (QC P1-3, 2026-07-13). validateRegistryProfile
  * used to check only the keys it knew about, so a scheduled run (or a
  * prompt-injected one) could smuggle arbitrary new fields past the
@@ -1195,7 +1277,12 @@ const ALLOWED_PROFILE_KEYS: Record<
     "ll2_location_id",
     ...SPACEPORT_FIELDS.map(([k]) => k),
   ]),
-  organization: new Set([...REGISTRY_COMMON_KEYS, "kind", ...ORG_FIELDS.map(([k]) => k)]),
+  organization: new Set([
+    ...REGISTRY_COMMON_KEYS,
+    "kind",
+    ...ORG_FIELDS.map(([k]) => k),
+    ...ORG_OPTIONAL_FIELDS.map(([k]) => k),
+  ]),
 };
 
 /**
@@ -1590,6 +1677,9 @@ export function validateRegistryProfile(
       errors.push(`${path}.kind: must be one of [${ORG_KINDS.join(", ")}]`);
     }
     for (const [key, kind] of ORG_FIELDS) checkSourcedField(data, key, kind, path, errors);
+    for (const [key, kind] of ORG_OPTIONAL_FIELDS) {
+      if (data[key] !== undefined) checkSourcedField(data, key, kind, path, errors);
+    }
     checkTimeline(data, path, errors);
   }
   // Registry v2: positioning is allowed on all four profile types.
@@ -1667,6 +1757,72 @@ export function validateRegistryCandidatesFile(data: unknown): string[] {
       errors.push(`${path}.proposed_on: required YYYY-MM-DD`);
     }
     if (c.status !== "pending") errors.push(`${path}.status: must be "pending" while queued`);
+  });
+  return errors;
+}
+
+// --------------------------------------------- registry crossfeed outcome log
+
+/** registry-crossfeed-log.json: the deterministic outcome ledger written by
+    scripts/record-crossfeed-outcomes.ts. */
+export function validateCrossfeedLogFile(data: unknown): string[] {
+  const errors: string[] = [];
+  if (!isObj(data)) return ["registry-crossfeed-log.json: root must be an object"];
+  if (typeof data.version !== "string") {
+    errors.push("registry-crossfeed-log.version: required string");
+  }
+  if (!Array.isArray(data.runs)) {
+    errors.push("registry-crossfeed-log.runs: required array");
+    return errors;
+  }
+  data.runs.forEach((run, i) => {
+    const path = `registry-crossfeed-log.runs[${i}]`;
+    if (!isObj(run)) {
+      errors.push(`${path}: must be an object`);
+      return;
+    }
+    if (!isIsoDatetime(run.at)) errors.push(`${path}.at: required ISO datetime`);
+    if (!Array.isArray(run.consumed)) {
+      errors.push(`${path}.consumed: required array`);
+      return;
+    }
+    if (run.consumed.length === 0) {
+      errors.push(
+        `${path}.consumed: must be non-empty; a run entry is written only when something was consumed`,
+      );
+    }
+    const seen = new Set<string>();
+    run.consumed.forEach((c, j) => {
+      const p = `${path}.consumed[${j}]`;
+      if (!isObj(c)) {
+        errors.push(`${p}: must be an object`);
+        return;
+      }
+      const id = reqString(c, "id", p, errors);
+      if (id !== null) {
+        if (seen.has(id)) errors.push(`${p}.id: duplicate "${id}" within this run`);
+        seen.add(id);
+      }
+      reqString(c, "item_id", p, errors);
+      reqString(c, "entity_slug", p, errors);
+      reqString(c, "field", p, errors);
+      if (!CROSSFEED_ENTITY_TYPES.includes(c.entity_type as never)) {
+        errors.push(`${p}.entity_type: must be one of [${CROSSFEED_ENTITY_TYPES.join(", ")}]`);
+      }
+      if (c.value === undefined) errors.push(`${p}.value: required (may be null)`);
+      if (!CROSSFEED_QUEUE_ACTIONS.includes(c.action as never)) {
+        errors.push(`${p}.action: must be one of [${CROSSFEED_QUEUE_ACTIONS.join(", ")}]`);
+      }
+      if (!(typeof c.proposed_on === "string" && isValidDate(c.proposed_on))) {
+        errors.push(`${p}.proposed_on: required YYYY-MM-DD`);
+      }
+      if (!isSnrValue(c.item_snr)) errors.push(`${p}.item_snr: required integer 1-5`);
+      if (!isHttpUrl(c.source_url)) errors.push(`${p}.source_url: required http(s) URL`);
+      if (!CROSSFEED_OUTCOMES.includes(c.outcome as never)) {
+        errors.push(`${p}.outcome: must be one of [${CROSSFEED_OUTCOMES.join(", ")}]`);
+      }
+      reqString(c, "detail", p, errors);
+    });
   });
   return errors;
 }

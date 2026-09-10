@@ -240,6 +240,44 @@ describe("validateFact", () => {
     expect(validateFact({ entity_slug: "iceye", field: "sats_active_verified", value: 1, metric: "m", same_metric: true }, index, "p").errors.join("\n")).toContain("not a crossfeedable");
     expect(validateFact({ entity_slug: "iceye", field: "status", value: "x", metric: "m" }, index, "p").errors.join("\n")).toContain("same_metric");
   });
+
+  describe("organization fields", () => {
+    beforeEach(() => {
+      mkdirSync(join(dataDir, "registry", "organizations"), { recursive: true });
+      writeFileSync(
+        join(dataDir, "registry", "organizations", "iceye-org.json"),
+        JSON.stringify({ slug: "iceye-org", name: "ICEYE Oy", entity_type: "organization" }, null, 2),
+      );
+    });
+
+    test("a draft fact targeting funding_latest on an organization validates", () => {
+      const index = loadRegistryIndex(dataDir);
+      const result = validateFact(
+        {
+          entity_slug: "iceye-org",
+          field: "funding_latest",
+          value: "$1 billion Series E led by X",
+          metric: "most recent funding round, as stated",
+          same_metric: true,
+        },
+        index,
+        "p",
+      );
+      expect(result.errors).toEqual([]);
+      expect(result.fact?.field).toBe("funding_latest");
+    });
+
+    test("a fact targeting an unknown org field is rejected with the allowed-list message", () => {
+      const index = loadRegistryIndex(dataDir);
+      const result = validateFact(
+        { entity_slug: "iceye-org", field: "revenue", value: "$10M", metric: "annual revenue", same_metric: true },
+        index,
+        "p",
+      );
+      expect(result.errors.join("\n")).toContain("not a crossfeedable organization field");
+      expect(result.errors.join("\n")).toContain("funding_latest");
+    });
+  });
 });
 
 describe("finalize-sweep crossfeed wiring", () => {

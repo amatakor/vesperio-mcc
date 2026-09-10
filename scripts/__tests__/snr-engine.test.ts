@@ -927,6 +927,27 @@ describe("reconcile branches", () => {
     });
   });
 
+  test("agreeing values never dispute (2026-09-09): equal SNR is no change, stronger refreshes", () => {
+    // The Sentinel-1 NG case: registry 2 (SNR 5), incoming 2 (SNR 5).
+    expect(reconcile({ snr: 5, value: 2 }, { snr: 5, tier: "canonical", value: 2 }, true)).toEqual({
+      action: "no_registry_change",
+    });
+    // A weaker agreeing source is not downgraded either.
+    expect(reconcile({ snr: 3, value: "2" }, { snr: 5, tier: "canonical", value: 2 }, true)).toEqual({
+      action: "no_registry_change",
+    });
+    // A stronger agreeing source refreshes the citation.
+    expect(reconcile({ snr: 5, value: "Active" }, { snr: 4, tier: "canonical", value: "active " }, true)).toEqual({
+      action: "flag_refresh",
+    });
+    // Disagreement at equal SNR still queues for Florian.
+    expect(reconcile({ snr: 5, value: 3 }, { snr: 5, tier: "canonical", value: 2 }, true)).toEqual({
+      action: "both_disputed_queue",
+    });
+    // Without values the old behavior is untouched.
+    expect(reconcile({ snr: 5 }, { unscored: true }, true)).toEqual({ action: "both_disputed_queue" });
+  });
+
   test("unscored fact counts as canonical SNR 5", () => {
     expect(reconcile({ snr: 4 }, { unscored: true }, true)).toEqual({
       action: "downgrade_incoming",

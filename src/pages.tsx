@@ -24,7 +24,7 @@ import type {
 import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
-import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS } from "./data/schema";
+import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS, CROSSFEED_OUTCOMES } from "./data/schema";
 import { freshnessChip } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
@@ -1856,7 +1856,7 @@ export function ItemPage({ item }: { item: Item }) {
 // the page's data.orgHrefs map. Alias/org-href maps are no longer built here.
 
 /** Facts-table rows whose string value names another registry entity. */
-const ENTITY_ROW_LABELS = new Set(["provider", "operator"]);
+const ENTITY_ROW_LABELS = new Set(["provider", "operator", "parent org"]);
 
 /**
  * Fleet-level display sum of a count field across sub-constellations.
@@ -4135,6 +4135,17 @@ export function OrgPage({ data }: { data: DataFor<"org"> }) {
     ["status", profile.status],
     ["website", profile.website],
   ];
+  // Crossfeed-fed fields (funding, ownership, headquarters, headcount):
+  // optional, shown only when a source has filled them.
+  const addOpt = (label: string, f: SourcedField<unknown> | undefined) => {
+    if (f) rows.push([label, f]);
+  };
+  addOpt("headquarters", profile.headquarters);
+  addOpt("parent org", profile.parent_org);
+  addOpt("funding (latest)", profile.funding_latest);
+  addOpt("funding (total)", profile.funding_total);
+  addOpt("valuation (latest)", profile.valuation_latest);
+  addOpt("employees", profile.employees);
   // Full roster, active and retired alike, matched on the vehicle's stated
   // provider (built server-side); sorted by name for the roster section.
   const vehicleRoster = data.vehicleRoster
@@ -5372,6 +5383,11 @@ function LogKpiRow({ kpis }: { kpis: DataFor<"system">["kpis"] }) {
       "Registry crossfeed candidates queued, proposed in the window",
     ],
     [
+      "crossfeed landed",
+      String(kpis.crossfeedLanded),
+      "Registry crossfeed candidates that landed (with or without re-sourcing) in the window",
+    ],
+    [
       "claims resolved",
       String(kpis.claimsResolved),
       "Calibration claims confirmed or debunked in the window",
@@ -5487,13 +5503,92 @@ function SubscribeForm() {
   );
 }
 
+/** Plain-word label for a crossfeed outcome (no underscores in the copy). */
+const CROSSFEED_OUTCOME_LABEL: Record<(typeof CROSSFEED_OUTCOMES)[number], string> = {
+  landed: "landed",
+  landed_resourced: "landed, re-sourced",
+  disputed: "disputed",
+  unchanged: "unchanged",
+};
+
+function formatCrossfeedValue(v: unknown): string {
+  if (v === null || v === undefined) return "null";
+  if (typeof v === "string") return v;
+  if (Array.isArray(v)) return v.join(", ");
+  return JSON.stringify(v);
+}
+
+/** Registry crossfeed outcome log (Florian, 2026-09-09): the weekly
+ * registry run consumes news-to-registry candidates from
+ * registry-candidates.json by deleting them; this deterministic ledger
+ * (scripts/record-crossfeed-outcomes.ts) is the only record of what
+ * became of each one, so the crossfeed's work is visible rather than
+ * silently discarded. */
+function CrossfeedLog({ log }: { log: DataFor<"system">["crossfeedLog"] }) {
+  return (
+    <section className="panel" id="registry-crossfeed">
+      <h2>registry crossfeed</h2>
+      <p className="prose">
+        The weekly registry run consumes news-to-registry candidates by removing them from the
+        queue. This is the deterministic record of what became of each one: landed with its
+        proposed source, landed but re-sourced, disputed against a competing claim, or left
+        unchanged.
+      </p>
+      <p className="dim mono">
+        {CROSSFEED_OUTCOMES.map((o) => `${CROSSFEED_OUTCOME_LABEL[o]} ${log.totals[o]}`).join(" · ")}
+      </p>
+      {log.recent.length === 0 ? (
+        <p className="empty">No crossfeed candidates consumed yet</p>
+      ) : (
+        <table className="profile">
+          <thead>
+            <tr>
+              <th>date</th>
+              <th>field</th>
+              <th>proposed value</th>
+              <th>outcome</th>
+              <th>item</th>
+            </tr>
+          </thead>
+          <tbody>
+            {log.recent.map((r, i) => (
+              <tr key={`${r.id}-${i}`}>
+                <td className="mono dim">{r.runAt.slice(0, 10)}</td>
+                <td className="mono">
+                  {r.entity_slug}.{r.field}
+                </td>
+                <td className="mono">{formatCrossfeedValue(r.value)}</td>
+                <td className="mono">{CROSSFEED_OUTCOME_LABEL[r.outcome]}</td>
+                <td>
+                  <a href={`/item/${r.item_id}/`}>{r.item_id}</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  );
+}
+
 /** The log spine of the merged /system/ page (Florian, 2026-07-11): the
  * lede, KPI band, sweep entries, archive chips, source health, ledger,
- * lead-source presence, and calibration. No Layout wrapper and no page
- * title: SystemPage owns the shell and the shared <h1>. */
+ * lead-source presence, calibration, and the registry crossfeed log.
+ * No Layout wrapper and no page title: SystemPage owns the shell and the
+ * shared <h1>. */
 function LogBody({ data }: { data: DataFor<"system"> }) {
-  const { sweeps, totals, ledgerSources, calibrationBuckets, archiveMonths, sourceProblems, kpis, presence } =
-    data;
+  const {
+    sweeps,
+    totals,
+    ledgerSources,
+    calibrationBuckets,
+    archiveMonths,
+    sourceProblems,
+    kpis,
+    presence,
+    crossfeedLog,
+    registryCoverage,
+  } = data;
   return (
     <div className="system-log">
       <p className="lede">
@@ -5575,6 +5670,60 @@ function LogBody({ data }: { data: DataFor<"system"> }) {
               ))}
             </tbody>
           </table>
+        )}
+      </section>
+      <CrossfeedLog log={crossfeedLog} />
+      <section className="panel" id="registry-coverage">
+        <h2>registry coverage</h2>
+        <p className="prose">
+          Company names on published items that resolve to no registry profile, aggregated once a
+          name appears on 2 or more items within the last 90 days. Suggestions only: registry
+          entries are created only via reviewed changes, never by a scheduled run.
+        </p>
+        {registryCoverage.rows.length === 0 ? (
+          <p className="empty">No coverage gap has crossed the threshold</p>
+        ) : (
+          <>
+            <table className="profile">
+              <thead>
+                <tr>
+                  <th>name</th>
+                  <th>items</th>
+                  <th>last seen</th>
+                  <th>categories</th>
+                  <th>recent</th>
+                </tr>
+              </thead>
+              <tbody>
+                {registryCoverage.rows.map((r) => (
+                  <tr key={r.name}>
+                    <th scope="row">{r.name}</th>
+                    <td>{r.item_count}</td>
+                    <td>{r.last_seen}</td>
+                    <td>
+                      {Object.entries(r.categories)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([c, n]) => `${c} ${n}`)
+                        .join(", ")}
+                    </td>
+                    <td>
+                      {r.recentItems.map((it, i) => (
+                        <span key={it.id}>
+                          {i > 0 && " · "}
+                          <a href={`/item/${it.id}/`}>{it.date}</a>
+                        </span>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="dim mono">
+              {registryCoverage.totalNames} name{registryCoverage.totalNames === 1 ? "" : "s"}{" "}
+              without a registry profile · {registryCoverage.totalItems} item mention
+              {registryCoverage.totalItems === 1 ? "" : "s"} counted
+            </p>
+          </>
         )}
       </section>
       <LogPresence presence={presence} windowDays={kpis.windowDays} />

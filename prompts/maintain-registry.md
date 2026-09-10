@@ -26,6 +26,25 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
   and only facts stated on that single page; never sum counts across
   multiple Gunter's pages into one figure. The site renders the
   attribution notice automatically from the source URLs.
+- Organization profiles are in scope (Florian, 2026-09-09): refresh
+  `status`, `ticker`, `headquarters`, `parent_org`, `funding_latest`,
+  `funding_total`, `valuation_latest`, and `employees` on organizations
+  named by items published since the previous maintenance run (their
+  `entities[]` link the profile) when the item's source states the value
+  and the crossfeed queue did not already deliver it. Same null-fill and
+  SNR rules; a value the source does not state stays null; never sum
+  funding rounds into a total.
+- Positioning claims (Florian, 2026-09-09, "fill it"): each run, take up
+  to 8 profiles whose `positioning.claims` is empty (oldest `as_of`
+  first, rotating constellation, organization, vehicle, spaceport) and
+  fetch the entity's own website (the domain of the profile's `website`
+  field: product or about page). Record up to 3 claims per profile, each
+  one sentence the page states about how the entity positions itself,
+  attributed inside the value ("Planet describes PlanetScope as ..."),
+  `source` the exact page URL on that domain (the validator rejects any
+  other domain: claims are first-party only), `as_of` today. Superlatives
+  stay attributed, never repeated as fact. Nothing stated: leave the
+  array empty, list the profile in your run summary, never invent.
 - Set a field to `null` with a note if its previous source is gone and
   no current source exists. Null beats stale.
 - Curate the Orbits ground layer, `public/data/orbits/facilities.json`
@@ -42,6 +61,9 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
 - Add, remove, rename, or restructure profiles or fields. Those changes
   go through reviewed PRs opened by Florian.
 - Estimate, interpolate, or carry a number forward without re-verifying.
+- Edit `src/data/registry-crossfeed-log.json` or
+  `src/data/registry_suggestions.json`: both are machine-written by
+  deterministic steps around your run.
 - Touch anything outside `src/data/registry/`,
   `public/data/orbits/facilities.json`, and the crossfeed queue
   `src/data/registry-candidates.json` (which you consume, step 1). The
@@ -70,7 +92,7 @@ work, separate from the news sweep. CLAUDE.md's Registry rules govern.
    - `annotate_mismatch`, `below_entry_bar`, and `no_registry_change`
      entries are informational: consume them (remove from the queue),
      no registry write.
-2. List profiles: `ls src/data/registry/constellations src/data/registry/vehicles`.
+2. List profiles: `ls src/data/registry/constellations src/data/registry/vehicles src/data/registry/organizations src/data/registry/spaceports`.
 3. Pull current launch/orbit facts from the Launch Library API first;
    it covers most vehicle and launch-count fields in one pass. (The
    deterministic `scripts/enrich-registry.ts` step has already run

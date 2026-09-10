@@ -608,6 +608,120 @@ export interface SignalsSuggestionsFile {
   suggestions: SignalSuggestion[];
 }
 
+// ---------------------------------------------------- registry crossfeed log
+
+/** Registry entity types a crossfeed candidate (and its logged outcome) can
+    target. Mirrors the four registry subdirectories 1:1. */
+export const CROSSFEED_ENTITY_TYPES = [
+  "constellation",
+  "vehicle",
+  "spaceport",
+  "organization",
+] as const;
+export type CrossfeedEntityType = (typeof CROSSFEED_ENTITY_TYPES)[number];
+
+/**
+ * The queue action a candidate carried in registry-candidates.json before
+ * it was consumed (SNR_SPEC §6 / SNR_PLAN §7.3). Repeated here rather than
+ * imported because a logged entry outlives the queue entry it came from.
+ */
+export const CROSSFEED_QUEUE_ACTIONS = [
+  "annotate_mismatch",
+  "downgrade_incoming",
+  "flag_refresh",
+  "both_disputed_queue",
+  "no_registry_change",
+  "null_fill",
+  "below_entry_bar",
+] as const;
+export type CrossfeedQueueAction = (typeof CROSSFEED_QUEUE_ACTIONS)[number];
+
+/**
+ * What became of a consumed crossfeed candidate, decided deterministically
+ * by scripts/record-crossfeed-outcomes.ts from a pre-agent snapshot of
+ * registry-candidates.json compared against the post-agent registry
+ * profiles: no network, no LLM, code only.
+ */
+export const CROSSFEED_OUTCOMES = ["landed", "landed_resourced", "disputed", "unchanged"] as const;
+export type CrossfeedOutcome = (typeof CROSSFEED_OUTCOMES)[number];
+
+/** One consumed queue candidate, carrying its original proposal plus the
+    outcome record-crossfeed-outcomes.ts classified for it. */
+export interface CrossfeedConsumedEntry {
+  id: string;
+  item_id: string;
+  entity_slug: string;
+  entity_type: CrossfeedEntityType;
+  field: string;
+  value: unknown;
+  action: CrossfeedQueueAction;
+  /** YYYY-MM-DD the candidate was proposed (from the queue entry). */
+  proposed_on: string;
+  item_snr: SnrValue;
+  source_url: string;
+  outcome: CrossfeedOutcome;
+  /** One line explaining the classification (e.g. which host re-sourced it). */
+  detail: string;
+}
+
+export interface CrossfeedRun {
+  /** ISO datetime the --record step ran. */
+  at: string;
+  consumed: CrossfeedConsumedEntry[];
+}
+
+/**
+ * registry-crossfeed-log.json: machine-owned, deterministic outcome ledger
+ * for the registry-candidates.json crossfeed queue (2026-09-09). The weekly
+ * maintain-registry agent consumes queue entries by deleting them; this log
+ * is the only record of whether each one landed, was re-sourced, was
+ * disputed, or was otherwise left unchanged, so /system can show the
+ * crossfeed working. A run entry is appended only when something was
+ * consumed; a quiet run writes nothing.
+ */
+export interface RegistryCrossfeedLogFile {
+  $comment?: string;
+  version: string;
+  runs: CrossfeedRun[];
+}
+
+export const REGISTRY_SUGGESTION_STATUSES = ["pending", "dismissed", "created"] as const;
+export type RegistrySuggestionStatus = (typeof REGISTRY_SUGGESTION_STATUSES)[number];
+
+/**
+ * registry_suggestions.json: coverage-gap suggestions only
+ * (scripts/registry-suggest.ts). A company name on published items that
+ * resolves to no registry entity (matchCompanyRefs over the registry
+ * index + aliases.json, the exact resolution finalize-sweep uses)
+ * becomes a suggestion once it appears on 2+ items within the last 90
+ * days. The agent never creates registry entries from this file;
+ * Florian reviews and sets status by hand. Deterministic and
+ * idempotent: rerunning recomputes counts but preserves an existing
+ * entry's status when it is "dismissed" or "created", and drops
+ * "pending" entries that no longer qualify.
+ */
+export interface RegistrySuggestion {
+  /** Normalized display name (corporate suffix stripped). */
+  name: string;
+  /** Items counted within the 90-day window, deduplicated per item id. */
+  item_count: number;
+  /** YYYY-MM-DD, earliest qualifying item's event date. */
+  first_seen: string;
+  /** YYYY-MM-DD, latest qualifying item's event date. */
+  last_seen: string;
+  /** Up to 10 newest qualifying item ids. */
+  item_ids: string[];
+  /** Item count per category among the qualifying items. */
+  categories: Record<string, number>;
+  status: RegistrySuggestionStatus;
+}
+
+export interface RegistrySuggestionsFile {
+  $comment?: string;
+  version: string;
+  suggestions: RegistrySuggestion[];
+}
+
 // ------------------------------------------------------------- registry
 
 export const REGISTRY_FACT_TIERS = ["canonical", "provisional"] as const;
@@ -907,6 +1021,7 @@ export interface SpaceportProfile {
 }
 
 export const ORG_KINDS = [
+  "operator", // satellite or network operator (added 2026-09-09: SES, Telesat, Viasat and peers had no fitting kind)
   "manufacturer",
   "launch-services",
   "in-space-services",
@@ -936,6 +1051,18 @@ export interface OrgProfile {
   focus: SourcedField<string>;
   status: SourcedField<string>;
   website: SourcedField<string>;
+  /** City and country as the source states it, e.g. "Espoo, Finland". */
+  headquarters?: SourcedField<string>;
+  /** The owning company as stated after an acquisition or merger. */
+  parent_org?: SourcedField<string>;
+  /** Most recent funding round exactly as stated, e.g. "$1 billion Series E led by X". */
+  funding_latest?: SourcedField<string>;
+  /** Total raised only when a source STATES the total; never summed from rounds. */
+  funding_total?: SourcedField<string>;
+  /** Most recent valuation as stated. */
+  valuation_latest?: SourcedField<string>;
+  /** Headcount as stated. */
+  employees?: SourcedField<number>;
   /** Per-entity positioning block; see Positioning. */
   positioning?: Positioning;
   notes?: string | null;

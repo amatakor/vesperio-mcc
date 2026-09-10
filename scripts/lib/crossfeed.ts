@@ -57,7 +57,44 @@ export const CROSSFEED_FIELDS: Record<RegistryEntityType, ReadonlySet<string>> =
     "price_per_launch_usd",
   ]),
   spaceport: new Set(["country", "operator", "first_launch_date", "launches_total", "status"]),
-  organization: new Set(["country", "founded", "focus", "status"]),
+  organization: new Set([
+    "country",
+    "founded",
+    "focus",
+    "status",
+    "website",
+    "ticker",
+    "headquarters",
+    "parent_org",
+    "funding_latest",
+    "funding_total",
+    "valuation_latest",
+    "employees",
+  ]),
+};
+
+/**
+ * Value-shape check per crossfeedable field, keyed by entity type. Only
+ * organization carries numeric fields today (founded, employees); every
+ * other organization field is a stated string. Unlisted entity types (and
+ * unlisted fields within a listed type) get no shape check here -
+ * unchanged behavior from before this map existed.
+ */
+export const CROSSFEED_FIELD_TYPES: Partial<Record<RegistryEntityType, Record<string, "string" | "number">>> = {
+  organization: {
+    country: "string",
+    founded: "number",
+    focus: "string",
+    status: "string",
+    website: "string",
+    ticker: "string",
+    headquarters: "string",
+    parent_org: "string",
+    funding_latest: "string",
+    funding_total: "string",
+    valuation_latest: "string",
+    employees: "number",
+  },
 };
 
 /**
@@ -274,8 +311,9 @@ export function decideFact(
     ...(snr !== undefined ? { snr } : {}),
     ...(tier !== undefined ? { tier } : {}),
     ...(snr === undefined ? { unscored: true } : {}),
+    value: currentValue,
   };
-  return reconcile({ snr: itemSnr }, registryFact, fact.same_metric).action;
+  return reconcile({ snr: itemSnr, value: fact.value }, registryFact, fact.same_metric).action;
 }
 
 /** Validation errors for one crossfeed fact; [] when the fact is well-formed. */
@@ -304,6 +342,13 @@ export function validateFact(
   }
   if (f.value === undefined || f.value === null) {
     errors.push(`${path}.value: required (the fact as the source states it)`);
+  } else if (typeof f.field === "string" && entity !== undefined) {
+    const expected = CROSSFEED_FIELD_TYPES[entity.entityType]?.[f.field];
+    if (expected !== undefined && typeof f.value !== expected) {
+      errors.push(
+        `${path}.value: field "${f.field}" expects a ${expected}, got ${typeof f.value}`,
+      );
+    }
   }
   if (typeof f.metric !== "string" || f.metric.trim() === "") {
     errors.push(`${path}.metric: required non-empty string (what the value measures)`);
