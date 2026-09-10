@@ -1570,7 +1570,8 @@ registry selector carries any other font-size, weight, tracking, or
 transform:
 
   T1 TITLE      Plex Sans 28 / 200 / +.12em / caps   (rail name)
-  T2 HEADING    Plex Sans 11 / 500 / +.14em / caps   (// section heads)
+  T2 HEADING    Plex Mono 11 / 500 / +.14em / caps   (// section heads,
+                the same register as the item page)
   T3 LABEL      Plex Mono 10 / 500 / +.08em / caps / dim  (every caption:
                 spec and fact labels, as-of stamps, dates, breadcrumbs,
                 source lines, notes, basis lines)
