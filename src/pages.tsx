@@ -2694,8 +2694,10 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
 
 /** Close-price chart for listed entities; ~2y series via the Yahoo Finance pipeline
  * (scripts/fetch-stocks.ts), sliced client-side by the 1M/6M/1Y/ALL toggle.
- * Hand-rolled SVG: labeled Y gridlines in real currency, dated X ticks, a
- * pointer/touch crosshair readout, and padded normalization so amplitude reads. */
+ * A light instrument, not a data-dense chart: two reference lines (period
+ * high/low), first/last date only, a hover/keyboard crosshair readout, and a
+ * draw-in on range change. The SVG's viewBox tracks the wrap div's measured
+ * box 1:1 (ResizeObserver), so nothing here is non-uniformly stretched. */
 type StockRangeKey = "1M" | "6M" | "1Y" | "ALL";
 const STOCK_RANGES: Array<{ key: StockRangeKey; days: number }> = [
   { key: "1M", days: 31 },
@@ -2717,19 +2719,6 @@ function stockCurrencyPrefix(code: string | null): string {
   if (!code) return "";
   return CURRENCY_SYMBOLS[code] ?? `${code} `;
 }
-/** 3-4 evenly-rounded gridline values spanning [lo, hi]. */
-function stockNiceTicks(lo: number, hi: number, count: number): number[] {
-  const range = hi - lo;
-  if (!(range > 0)) return [lo];
-  const rawStep = range / count;
-  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
-  const norm = rawStep / mag;
-  const step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
-  const start = Math.ceil(lo / step) * step;
-  const ticks: number[] = [];
-  for (let v = start; v <= hi + step * 1e-6; v += step) ticks.push(Number(v.toFixed(6)));
-  return ticks;
-}
 function stockDecimals(step: number): number {
   if (step >= 10) return 0;
   if (step >= 1) return 1;
@@ -2741,7 +2730,9 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
   const [failed, setFailed] = useState(false);
   const [range, setRange] = useState<StockRangeKey>("6M");
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [box, setBox] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
   const svgRef = useRef<SVGSVGElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     fetch(`/data/stocks/${slug}.json`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
@@ -2749,19 +2740,26 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
       .catch(() => setFailed(true));
   }, [slug]);
 
-  // Geometry (viewBox units); CSS scales the SVG to container width.
-  const W = 640;
-  const H = 210;
-  const ML = 48; // room for Y labels
-  const MR = 12;
-  const MT = 12;
-  const MB = 22; // room for X labels
-  const plotL = ML;
-  const plotR = W - MR;
-  const plotT = MT;
-  const plotB = H - MB;
-  const plotW = plotR - plotL;
-  const plotH = plotB - plotT;
+  // Track the wrap's own rendered box (CSS sets its height per breakpoint);
+  // the SVG viewBox mirrors these px 1:1 so stroke widths and the 4px marker
+  // never get non-uniformly scaled. A layout effect measures synchronously
+  // on mount (no waiting on ResizeObserver's own first callback, which some
+  // browsers defer well past the frame); the observer then just tracks
+  // later changes (breakpoint switch, window resize).
+  useIsoLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const apply = (w: number, h: number) => setBox((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+    const initial = el.getBoundingClientRect();
+    apply(Math.round(initial.width), Math.round(initial.height));
+    const ro = new ResizeObserver((entries) => {
+      const rect = entries[0]?.contentRect;
+      if (!rect) return;
+      apply(Math.round(rect.width), Math.round(rect.height));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const closes = data?.closes ?? null;
 
@@ -2793,55 +2791,87 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
     return closes.filter(([d]) => new Date(d).getTime() >= cutoff);
   }, [closes, effRange]);
 
-  let chart: ReactNode = null;
-  if (sliced.length > 1) {
+  // The wrap div below is ONE stable element rendered at a fixed spot
+  // regardless of state (loading / empty / chart): its ref must never see a
+  // remount, or the ResizeObserver effect (mount-once) would end up watching
+  // a detached node and `box` would never update.
+  const hasChart = sliced.length > 1 && box.w > 0 && box.h > 0;
+  const isEmpty = !hasChart && (failed || (data != null && (!closes || closes.length < 2)));
+  let head: ReactNode = null;
+  let wrapInner: ReactNode = null;
+  let ariaLabel: string | undefined;
+  let onMove: ((clientX: number) => void) | undefined;
+  let onKeyDown: ((e: ReactKeyboardEvent<HTMLDivElement>) => void) | undefined;
+
+  if (hasChart) {
     const n = sliced.length;
     const vals = sliced.map(([, c]) => c);
     const dmin = Math.min(...vals);
     const dmax = Math.max(...vals);
-    const pad = (dmax - dmin || dmax || 1) * 0.08;
+    const pad = (dmax - dmin || dmax || 1) * 0.12;
     const lo = dmin - pad;
     const hi = dmax + pad;
     const span = hi - lo || 1;
     const cur = stockCurrencyPrefix(data?.currency ?? null);
+    const dec = stockDecimals(dmax - dmin || dmax || 1);
+
+    // Geometry mirrors the measured box 1:1 (no y-axis column; the reference
+    // labels float inside the plot's right edge instead of a reserved rail).
+    const W = box.w;
+    const H = box.h;
+    const plotL = 2;
+    const plotR = W - 2;
+    const plotT = 6;
+    const plotB = H - 16;
+    const plotW = plotR - plotL;
+    const plotH = plotB - plotT;
 
     const x = (i: number) => plotL + (i / (n - 1)) * plotW;
     const y = (c: number) => plotT + ((hi - c) / span) * plotH;
 
-    const line = sliced.map(([, c], i) => `${x(i).toFixed(1)},${y(c).toFixed(1)}`).join(" ");
-
-    const ticks = stockNiceTicks(lo, hi, 4).filter((t) => t >= lo && t <= hi);
-    const step = ticks.length > 1 ? ticks[1]! - ticks[0]! : span;
-    const dec = stockDecimals(step);
-
-    // ~4 date ticks across the window.
-    const xtCount = Math.min(4, n);
-    const longWindow = (STOCK_RANGES.find((r) => r.key === effRange)!.days ?? Infinity) > 300 || effRange === "ALL";
-    const fmtDate = (iso: string) => (longWindow ? iso.slice(0, 7) : iso.slice(5));
-    const xTicks = Array.from({ length: xtCount }, (_, k) => Math.round((k / (xtCount - 1 || 1)) * (n - 1)));
+    const linePoints = sliced.map(([, c], i) => `${x(i).toFixed(1)},${y(c).toFixed(1)}`).join(" ");
+    const areaPoints = `${plotL.toFixed(1)},${plotB.toFixed(1)} ${linePoints} ${plotR.toFixed(1)},${plotB.toFixed(1)}`;
 
     const first = vals[0]!;
     const last = vals[n - 1]!;
     const up = last >= first;
     const pct = first ? ((last - first) / first) * 100 : 0;
+    const lineColor = up ? "var(--acc-green)" : "var(--acc-red)";
+
+    const dmaxY = y(dmax);
+    const dminY = y(dmin);
+    const openY = y(first);
 
     const hIdx = hoverIdx == null ? null : Math.max(0, Math.min(n - 1, hoverIdx));
     const hPoint = hIdx == null ? null : sliced[hIdx]!;
+    const readout = hPoint ?? sliced[n - 1]!;
+    const readoutChg = first ? ((readout[1] - first) / first) * 100 : 0;
+    const readoutUp = readout[1] >= first;
 
-    const onMove = (clientX: number) => {
+    onMove = (clientX: number) => {
       const svg = svgRef.current;
       if (!svg) return;
       const rect = svg.getBoundingClientRect();
       if (rect.width === 0) return;
-      const vx = ((clientX - rect.left) / rect.width) * W;
+      const vx = clientX - rect.left;
       const frac = (vx - plotL) / plotW;
       setHoverIdx(Math.max(0, Math.min(n - 1, Math.round(frac * (n - 1)))));
     };
+    onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setHoverIdx((v) => Math.max(0, (v ?? n - 1) - 1));
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setHoverIdx((v) => Math.min(n - 1, (v ?? n - 1) + 1));
+      }
+    };
+    ariaLabel = `${effRange} close prices, last ${cur}${last.toFixed(2)}, ${up ? "up" : "down"} ${Math.abs(pct).toFixed(1)}% versus period open`;
 
-    chart = (
+    head = (
       <>
         <div className="stock-head">
-          <span className="stock-last mono">
+          <span className="stock-last">
             {cur}
             {last.toFixed(2)}
           </span>
@@ -2849,6 +2879,7 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
             {up ? "+" : ""}
             {pct.toFixed(1)}%
           </span>
+          <span className="stock-legend dim mono">vs period open</span>
           <span className="stock-attr dim mono">market data: Yahoo Finance, end of day</span>
         </div>
         <div className="sig-tabs stock-tabs">
@@ -2867,80 +2898,65 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
             </button>
           ))}
         </div>
-        <div className="stock-chart-wrap">
-          <svg
-            ref={svgRef}
-            viewBox={`0 0 ${W} ${H}`}
-            className="stock-chart"
-            role="img"
-            aria-label={`${effRange} close prices, last ${cur}${last.toFixed(2)}`}
-            onPointerMove={(e) => onMove(e.clientX)}
-            onPointerDown={(e) => onMove(e.clientX)}
-            onPointerLeave={() => setHoverIdx(null)}
-          >
-            {/* Y gridlines + labels */}
-            {ticks.map((t) => {
-              const gy = y(t);
-              return (
-                <g key={`y${t}`}>
-                  <line x1={plotL} y1={gy} x2={plotR} y2={gy} stroke="var(--line)" strokeWidth="1" />
-                  <text x={plotL - 6} y={gy + 3} textAnchor="end" className="stock-axis-label">
-                    {cur}
-                    {t.toFixed(dec)}
-                  </text>
-                </g>
-              );
-            })}
-            {/* X ticks */}
-            {xTicks.map((i, k) => (
-              <text
-                key={`x${i}`}
-                x={x(i)}
-                y={H - 6}
-                textAnchor={k === 0 ? "start" : k === xTicks.length - 1 ? "end" : "middle"}
-                className="stock-axis-label"
-              >
-                {fmtDate(sliced[i]![0])}
-              </text>
-            ))}
-            {/* price line */}
-            <polyline points={line} fill="none" stroke="var(--fg)" strokeWidth="1.5" />
-            {/* crosshair */}
-            {hIdx != null && hPoint && (
-              <g>
-                <line
-                  x1={x(hIdx)}
-                  y1={plotT}
-                  x2={x(hIdx)}
-                  y2={plotB}
-                  stroke="var(--acc-cyan)"
-                  strokeWidth="1"
-                />
-                {/* telemetry cursor: cyan is the DATA constant */}
-                <circle cx={x(hIdx)} cy={y(hPoint[1])} r="3" fill="var(--acc-cyan)" />
-                <text
-                  x={x(hIdx) < W / 2 ? x(hIdx) + 6 : x(hIdx) - 6}
-                  y={plotT + 10}
-                  textAnchor={x(hIdx) < W / 2 ? "start" : "end"}
-                  className="stock-readout"
-                >
-                  {hPoint[0]}  {cur}
-                  {hPoint[1].toFixed(2)}
-                </text>
-              </g>
-            )}
-          </svg>
-        </div>
       </>
     );
-  } else if (failed || (data && (!closes || closes.length < 2))) {
-    chart = (
-      <div className="stock-chart-wrap stock-empty">
-        <p className="dim">No price series available yet; the daily pipeline fills it.</p>
-      </div>
+
+    wrapInner = (
+      <>
+        <div className="stock-readout" aria-hidden="true">
+          <span className="stock-readout-date mono">{readout[0]}</span>
+          <span className={`stock-readout-price mono ${readoutUp ? "up" : "down"}`}>
+            {cur}
+            {readout[1].toFixed(2)} {readoutUp ? "+" : ""}
+            {readoutChg.toFixed(1)}%
+          </span>
+        </div>
+        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="stock-chart" aria-hidden="true">
+          {/* period high / low: the only reference lines */}
+          <line x1={plotL} y1={dmaxY} x2={plotR} y2={dmaxY} className="stock-ref-line" />
+          <line x1={plotL} y1={dminY} x2={plotR} y2={dminY} className="stock-ref-line" />
+          <text x={plotR - 4} y={dmaxY + 11} textAnchor="end" className="stock-axis-label">
+            {cur}
+            {dmax.toFixed(dec)}
+          </text>
+          <text x={plotR - 4} y={dminY - 4} textAnchor="end" className="stock-axis-label">
+            {cur}
+            {dmin.toFixed(dec)}
+          </text>
+          {/* period-open baseline, dotted */}
+          <line x1={plotL} y1={openY} x2={plotR} y2={openY} className="stock-open-line" />
+          {/* first / last date only */}
+          <text x={plotL} y={H - 4} textAnchor="start" className="stock-axis-label">
+            {sliced[0]![0]}
+          </text>
+          <text x={plotR} y={H - 4} textAnchor="end" className="stock-axis-label">
+            {sliced[n - 1]![0]}
+          </text>
+          {/* flat fill under the line */}
+          <polygon points={areaPoints} fill={lineColor} className="stock-area" />
+          {/* price line, drawn in on mount and on every range change */}
+          <polyline key={`line-${effRange}`} points={linePoints} pathLength={1000} stroke={lineColor} className="stock-line" />
+          {/* latest close: pulses once on mount */}
+          <rect x={x(n - 1) - 2} y={y(last) - 2} width="4" height="4" fill={lineColor} className="stock-flash" />
+          {/* crosshair: hover, touch or arrow keys */}
+          {hIdx != null && hPoint && (
+            <g>
+              <line x1={x(hIdx)} y1={plotT} x2={x(hIdx)} y2={plotB} className="stock-crosshair" />
+              <rect
+                x={x(hIdx) - 2}
+                y={y(hPoint[1]) - 2}
+                width="4"
+                height="4"
+                fill={lineColor}
+                className="stock-marker"
+              />
+            </g>
+          )}
+        </svg>
+      </>
     );
-  } else {
-    chart = <div className="stock-chart-wrap" />;
+  } else if (isEmpty) {
+    wrapInner = <p className="dim mono">no price series available yet</p>;
   }
 
   if (!ticker.value) return null;
@@ -2953,7 +2969,26 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
           (source, as of {ticker.as_of})
         </a>
       </p>
-      {chart}
+      {head}
+      <div
+        className={`stock-chart-wrap${isEmpty ? " stock-empty" : ""}`}
+        ref={wrapRef}
+        tabIndex={hasChart ? 0 : undefined}
+        aria-label={ariaLabel}
+        onPointerMove={onMove ? (e) => onMove!(e.clientX) : undefined}
+        onPointerDown={
+          onMove
+            ? (e) => {
+                onMove!(e.clientX);
+                e.currentTarget.focus();
+              }
+            : undefined
+        }
+        onPointerLeave={hasChart ? () => setHoverIdx(null) : undefined}
+        onKeyDown={onKeyDown}
+      >
+        {wrapInner}
+      </div>
     </section>
   );
 }
