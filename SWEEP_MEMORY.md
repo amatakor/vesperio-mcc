@@ -93,104 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~11h50m gap, unfiltered full source list (2026-08-10)
-
-- 2026-08-10-A: DATA BUG FOUND, not fixed this run (no mechanical path):
-  `2026-07-08-telesat-lightspeed-canada-arctic-escp-p` and
-  `2026-08-04-telesat-mda-arctic-lightspeed-expansion` are two different
-  item ids, dated three weeks apart, that both cite the exact same
-  `source_url` (telesat.com's "$2.3 billion Arctic military satcom
-  contract... capacity by 44%" release) with near-identical headlines --
-  looks like a genuine duplicate from an earlier sweep's dedup miss.
-  finalize-sweep has no supported path to merge or delete a published
-  item from the draft pipeline, so this needs Florian's direct edit;
-  flagging here rather than attempting a workaround.
-- 2026-08-10-B: Stratnews Global (stratnewsglobal.tech) and Indian
-  Defence News (indiandefensenews.in) ran the same Aule Space
-  satellite-docking-demo story almost word-for-word ("Ground tests have
-  recreated orbital lighting conditions with sun simulators and robotic
-  arms to simulate target motion, achieving high docking success
-  rates" verbatim in both), Indian Defence News crediting only
-  "Agencies" -- treated as one wire-syndicated unit per the 2026-07-15-C
-  Iridium PNT ASIC precedent (led with Stratnews Global alone, crawl
-  `found_none`, landed honestly at SNR 1) rather than counting the
-  second domain as independent corroboration just because finalize's
-  title-SimHash might not have collapsed the differently-worded
-  headlines.
-- 2026-08-10-C: A whitelisted signal's OWN uncertainty is not a
-  publishable lead: Andrew Parsonson's only post after lastSweep was
-  "I'm hearing about it too... going to see if I can get any clarity
-  from ESA" regarding an Ariane 6 Bloc 3/ICARUS upgrade cancellation
-  claim. The claim itself traced to a blog (Space Scout) citing "an
-  internal ESA document reviewed by" the outlet -- a leaked-document
-  shape CLAUDE.md rules out entirely regardless of SNR ("Publishable
-  only once the actor or an official record responds"). Left undrafted;
-  worth a follow-up once ESA responds or a non-leaked trade source
-  confirms.
-- 2026-08-10-D: Chased a genuine predates-window gap successfully: MDA
-  Space's June 25 Mitsubishi Electric subcontract for Japan's
-  next-generation milsatcom (replacing Kirameki-2) had never been
-  drafted under any id despite wide PR-wire pickup, because MDA has no
-  `src/data/registry` entry (confirms 2026-08-09-A/2026-08-06-B) and the
-  story never carried a SpaceX/Starlink-style hook that discovery
-  queries usually catch. Via Satellite and Defense Daily share the
-  EXACT SAME headline text (likely same-publisher-family reprint);
-  finalize's title-SimHash correctly collapsed them into one
-  corroboration unit (`state.json` sweep entry's
-  `corroboration_collapses`, rule `wire_rewrite`, kept Via Satellite)
-  even though both URLs still render on the card -- the item's 2-source
-  `corroboration_2plus` modifier (landing SNR 4) came from the collapsed
-  Via-Satellite-unit plus MDA's own page, not from three independent
-  units. Trust the collapse log over a first read of the `sources[]`
-  array length when sanity-checking a score.
-- 2026-08-10-E: A defense-tech company using satellite data as one input
-  among several (Space-Eyes, an AI counter-drone/geospatial-intelligence
-  SPAC-merger story, $638M valuation) was judged out of scope: it
-  doesn't operate satellites and its primary market (counter-UAS
-  defense) isn't space-industry-primary, same logic as the 2026-07-15-L
-  Senra diversified-industrial-supplier precedent.
-- 2026-08-10-F: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
-  own merge confirmation ("merged 2 new, 1 updated, 0 held") as the
-  build-health signal.
-
-## Narrow same-day re-check, ~11h44m gap, unfiltered full source list (2026-08-10, third)
-
-- 2026-08-10-G: A WebFetch summary of a wire-mirror page (ctvnews.ca's
-  Reuters copy of the Long March 7A failure) stated the wrong launch site
-  (Jiuquan) by conflating an unrelated file-photo caption (a Shenzhou 20
-  image) elsewhere on the page with the actual story; four independently
-  fetched sources (SpaceNews, Space.com, SCMP, Gunter's Space Page) all
-  agreed on Wenchang. Dropped the CTV/Reuters mirror entirely from
-  scoring rather than risk a wrong fact, even though it would have added
-  a mainstream corroboration source; a WebFetch summary that contradicts
-  every other fetched source on a plain fact is a signal the tool
-  mis-extracted, not that the minority source is right.
-- 2026-08-10-H: A bankruptcy-focused discovery query ("space company
-  bankruptcy OR acquisition announced this week") surfaced a genuinely
-  never-covered, six-month-stale event: Orbex, a flagship UK sovereign
-  small-launch developer and ESA European Launcher Challenge winner,
-  entered UK administration February 11, 2026, after a Series D round and
-  an acquisition by The Exploration Company both collapsed. Chased and
-  dated to the actual event date per the standing predates-window
-  convention; landed SNR 2 (trade lead, seismic-forced extraordinary
-  reset) and was correctly auto-queued to held.json for Florian per
-  SNR_PLAN 7.4 while still publishing. Worth periodically re-running a
-  bare bankruptcy/acquisition discovery query even on narrow-gap sweeps;
-  this kind of old, high-importance gap doesn't surface from the
-  harvester queue or routine source checks on its own.
-- 2026-08-10-I: The `bsky.app/profile/<handle>` public API pattern
-  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`,
-  2026-08-08-C) continues to work cleanly for every fetchable signals
-  bluesky account tried this run (11 of 17 channels); `signalsPass.checked`
-  must still list the bare `bsky.app/profile/<handle>` URL from
-  signals-context's output, not the API endpoint actually fetched.
-- 2026-08-10-J: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 4 new, 3 updated, 1 held") as the build-health signal.
-
 ## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-11)
 
 - 2026-08-11-A: Resolved the 2026-08-09-E source-access gap: DT Next
@@ -4490,3 +4392,51 @@ a newer entry if a lesson changes.
   held") plus a `jq` parse check (598 items, up from 596) and a direct read
   of both new items' and both updated items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~7h49m gap, unfiltered full source list (2026-09-10)
+
+- 2026-09-10-A: The Google News "launch" query feed was almost entirely
+  investment-clickbait about "SpaceX stock" (price targets, analyst
+  downgrades, an "AI stock pick" ranking) despite SpaceX being privately
+  held with no real public ticker -- only one such entry was caught by the
+  deterministic junk prefilter (`investment-clickbait: 1`); the rest had to
+  be discarded by hand as out of scope. Worth flagging if this volume
+  recurs: the prefilter pattern may need widening rather than relying on
+  per-sweep manual triage.
+- 2026-09-10-B: A White House-pressures-SpaceX/Blue-Origin-to-skip-Paris-
+  summit story was genuinely new and worth drafting even though the
+  summit's commercial deals (BlackSky Altair, ICEYE/Arianespace, Amazon
+  Leo/Ariane) were already published from the prior sweep: the political
+  friction (Politico via Fortune: White House urged US firms not to
+  attend; a second, independently-written Pakistani outlet naming
+  Stoke Space and Starcloud among the withdrawals and citing the EU Space
+  Act as the specific friction point) is a distinct geopolitical fact from
+  the deals themselves. Categorized `geopolitical`/`notable` (no stated
+  contract value or market-access change, so not `major`).
+- 2026-09-10-C: A `class: "whitelist"` source on the SAME domain as the
+  lead (Vivienne Machi's Aviation Week author page vs. her own Aviation
+  Week article) triggered the `same_domain` corroboration-collapse rule
+  exactly as predicted by 2026-09-09-A, but the whitelist-floor modifier
+  still applied cleanly (final SNR 4) -- confirms the collapse is
+  cosmetic to the sources array, not a scoring loss, when the intent is
+  the whitelist floor rather than an independent corroboration unit.
+- 2026-09-10-D: Two FCC "weird space stuff" spectrum stories resurfaced
+  the same week: an SDxCentral piece genuinely published Sept 9 turned out
+  to be analysis of a Sept 30 SCHEDULED VOTE on an NPRM the FCC actually
+  adopted back on March 26, 2026 -- a process-not-yet-fact story, left
+  undrafted per the standing T-Mobile/Sateliot precedent (2026-08-21-D).
+  Worth a follow-up check around Sept 30 once the vote itself happens.
+- 2026-09-10-E: The recurring ISRO-privatization/talent-drain Google News
+  wave resurfaced again, this time as "120 scientists exit ISRO" framed
+  as breaking news by a small outlet (Whispers in the Corridors, vague
+  "reports of roughly 100-120" sourcing, no dates); traced via search to
+  a Department of Space memo dated July 14, 2026 -- two months stale, and
+  the underlying claim's vague/anonymous sourcing style would fail the
+  personnel-gossip exclusion even if it were fresh. Left undrafted,
+  tenth-plus consecutive sweep with no Florian ruling on this wave.
+- 2026-09-10-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (600 items, up from 598) and a
+  direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
+  `sources` fields as the build-health signal.

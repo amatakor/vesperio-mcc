@@ -35260,7 +35260,7 @@
       "source_url": "https://www.satellitetoday.com/government-military/2026/08/26/tracss-traffic-coordination-system-remains-in-pilot-mode-due-to-budget-uncertainty/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -35272,10 +35272,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-10",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -42826,6 +42839,155 @@
         }
       ],
       "image": null
+    },
+    {
+      "id": "2026-09-09-spacex-blue-origin-skip-paris-space-summit",
+      "date": "2026-09-09",
+      "headline": "SpaceX and Blue Origin skip Paris summit amid White House pressure",
+      "explainer": {
+        "tagline": "SpaceX and Blue Origin skipped the Paris space summit after the White House urged US firms to stay away, per Fortune.",
+        "what_happened": "SpaceX and Blue Origin canceled plans to attend the International Space Summit in Paris, which gathered officials, astronauts and industry leaders from about 120 countries, per Fortune, which cited Politico's report that the White House urged US space companies not to attend because doing so could appear to support EU policy. A separately reported account named additional withdrawals (Stoke Space, Starcloud) and traced the friction to disputes over satellite spectrum access, sovereign-procurement rules and the EU's proposed Space Act. French President Emmanuel Macron told the summit \"Europe is taking its destiny into its own hands, including in space,\" calling to build a Europe \"independent even in space.\"",
+        "why_it_matters": "Washington actively discouraging its own launch and satellite companies from a major European industry gathering is a visible escalation of US-EU trade friction over space policy, not just rhetoric. For European primes and challengers, sovereign-leaning procurement and the EU Space Act are exactly the levers that shift launch and satellite contracts toward Arianespace, OHB and other regional suppliers, so a US pullback from the venue where those rules get discussed is a signal worth tracking, not just a diplomatic snub."
+      },
+      "tags": [
+        "europe",
+        "us-gov"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "SpaceX",
+        "Blue Origin"
+      ],
+      "source_url": "https://fortune.com/2026/09/09/starlink-europe-space-sovereignty/",
+      "secondary_urls": [
+        "https://www.thenews.com.pk/latest/1415410-macron-champions-european-space-independence-at-paris-summit-as-us-aerospace-giants-pull-out"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://fortune.com/2026/09/09/starlink-europe-space-sovereignty/",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Fortune)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "mainstream"
+      },
+      "sources": [
+        {
+          "url": "https://fortune.com/2026/09/09/starlink-europe-space-sovereignty/",
+          "outlet": "Fortune",
+          "class": "mainstream",
+          "added": "2026-09-10",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.thenews.com.pk/latest/1415410-macron-champions-european-space-independence-at-paris-summit-as-us-aerospace-giants-pull-out",
+          "outlet": "The News (Pakistan)",
+          "class": "mainstream",
+          "added": "2026-09-10",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-10T05:29:28.933Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        },
+        {
+          "name": "Blue Origin",
+          "ref": "organizations/blue-origin"
+        }
+      ],
+      "image": null
+    },
+    {
+      "id": "2026-09-09-space-force-darc-lake-kickapoo-texas",
+      "date": "2026-09-09",
+      "headline": "Space Force picks Texas site for third Northrop Grumman DARC radar",
+      "explainer": {
+        "tagline": "The Space Force picked Lake Kickapoo, Texas for the third and final Northrop Grumman DARC deep-space radar site.",
+        "what_happened": "The U.S. Space Force selected Lake Kickapoo in northern Texas as the preferred location for the third Deep Space Advanced Radar Capability (DARC) site, pending final approvals, Aviation Week reported. The Texas site completes a three-site DARC network alongside existing installations in Exmouth, Western Australia and Pembrokeshire, Wales, built by prime contractor Northrop Grumman; construction of the Texas site is set to begin in 2027 with operational acceptance targeted for 2030, per an independent report on the announcement.",
+        "why_it_matters": "DARC gives the Space Force continuous, weather-independent radar tracking of objects near geostationary orbit, reducing reliance on optical space-surveillance systems that lose visibility in daylight or bad weather. For Northrop Grumman and other ground-segment and space-domain-awareness contractors, the site pick keeps a multi-hundred-million-dollar program on schedule toward full three-site operation, a model the Space Force and its allies may reuse for future space-surveillance buys."
+      },
+      "tags": [
+        "us-gov"
+      ],
+      "category": "procurement",
+      "impact": "notable",
+      "companies": [
+        "Northrop Grumman"
+      ],
+      "source_url": "https://aviationweek.com/space/operations-safety/space-force-identifies-lake-kickapoo-texas-third-darc-site",
+      "secondary_urls": [
+        "https://aviationweek.com/author/vivienne-machi",
+        "https://israelnoticias.com/militar/la-fuerza-espacial-de-ee-uu-elige-texas-para-su-tercer-radar-darc/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://aviationweek.com/space/operations-safety/space-force-identifies-lake-kickapoo-texas-third-darc-site",
+          "reason": "base tier 3 from lead source class \"trade\" (Aviation Week)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://aviationweek.com/space/operations-safety/space-force-identifies-lake-kickapoo-texas-third-darc-site",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-09-10",
+          "via": "initial"
+        },
+        {
+          "url": "https://aviationweek.com/author/vivienne-machi",
+          "outlet": "Aviation Week (Vivienne Machi)",
+          "class": "whitelist",
+          "added": "2026-09-10",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://israelnoticias.com/militar/la-fuerza-espacial-de-ee-uu-elige-texas-para-su-tercer-radar-darc/",
+          "outlet": "Israel Noticias",
+          "class": "informal",
+          "added": "2026-09-10",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-10T05:29:28.933Z",
+      "entities": [
+        {
+          "name": "Northrop Grumman",
+          "ref": "organizations/northrop-grumman-space-systems"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-09-space-force-darc-lake-kickapoo-texas.webp",
+        "credit": "Image: aviationweek.com",
+        "origin_url": "https://aviationweek.com/space/operations-safety/space-force-identifies-lake-kickapoo-texas-third-darc-site",
+        "width": 1000,
+        "height": 630
+      }
     }
   ]
 }
