@@ -4440,3 +4440,43 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (600 items, up from 598) and a
   direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
   `sources` fields as the build-health signal.
+
+## Narrow re-check, ~6h24m gap, unfiltered full source list (2026-09-10, second)
+
+- 2026-09-10-G: A same-company-plus-category dedup false positive fired
+  TWICE on one new ISRO CE20 engine ground-test item (category `launch`)
+  against BOTH the completed Sept 4 GSLV-F17/EOS-05 launch and the Sept 5
+  semi-cryogenic engine full-thrust test, despite sharing nothing with
+  either beyond company ISRO + category + within 7 days (a different
+  engine, a ground test vs. a flown launch). Two `dedup_distinct` entries
+  cleared it in one pass; extends the standing pattern (now well beyond
+  SpaceX/NASA/Blue Origin) to ISRO's own recurring high cadence of
+  engine-test items specifically, not just launches.
+- 2026-09-10-H: A whitelisted person's OWN bare-domain site extends the
+  whitelist channel to every article on it, not just a narrower listing
+  page: Andrew Parsonson's europeanspaceflight.com article on The
+  Exploration Company's Ariane 6/Nyx/ALADDIN booking (found via the
+  candidates queue, then independently confirmed via his mandatory
+  bluesky leg) led cleanly at `class: "whitelist"` since the article URL
+  sits directly under his recorded channel (bare `europeanspaceflight.com`),
+  unlike Vivienne Machi's narrower `aviationweek.com/author/vivienne-machi`
+  channel, which only the author-listing page itself satisfies
+  (2026-09-09-A). Confirms the gate's whitelist-channel check is
+  path-prefix-based against the recorded URL, not an exact match.
+- 2026-09-10-I: A Reuters "Exclusive" story (UK Ministry of Defence FOIA
+  disclosure of ~$40M Starlink/Starshield spending) landed an honest SNR 2
+  (`mainstream` base tier 3, `crawl: "found_none"` -1) despite being
+  substantial and newsworthy (first public UK acknowledgment of Starshield
+  adoption): exclusives by definition have no independent pickup yet, and
+  every other hit found on search was a same-text mirror of the same
+  Reuters wire, not separate reporting. Left single-sourced rather than
+  stacked with wire mirrors, per the standing wire-collapse rule; a
+  genuine June 2026 "UK adopts Starshield" Reuters report (sources say, no
+  figures) was never itself drafted under any id, so this FOIA-figures
+  story published as a new item rather than an update.
+- 2026-09-10-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
+  updated, 0 held") plus a `jq` parse check (603 items, up from 599) and a
+  direct read of all four new items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
