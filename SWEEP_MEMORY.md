@@ -4595,3 +4595,48 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a direct `jq` read of all four new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields (items 622 to
   626, sweep log 237 to 238) as the build-health signal.
+
+## Narrow re-check, ~4h06m gap, unfiltered full source list (2026-09-11, third)
+
+- 2026-09-11-K: Vivienne Machi's Aviation Week author page carried "France
+  Plans First Deorbiting Demo In 2030 With Industry Trio" (Sept 10) a
+  second sweep running (first flagged 2026-09-10-T): a WebSearch synthesis
+  can now describe it in full (Astroscale France signed a stated EUR13.2M
+  Sept 9 subcontract to Exotrail's CNES/France 2030 prime contract,
+  targeting a Eutelsat OneWeb satellite, 2029-2030 window), but both
+  non-mirror write-ups found (Tokyo Brief, Space & Defense) 403'd on every
+  direct WebFetch attempt, and Astroscale's own site's most specific page
+  on the partnership is a stale April 2 framework announcement with no
+  euro figure or Sept 9 date. Left undrafted again rather than cite the
+  figures from an unfetched page's WebSearch summary; worth treating this
+  specific headline as a standing dead lead (like the 2026-08-24-H NRO/SAR
+  case) unless a directly-fetchable page turns up.
+- 2026-09-11-L: A CFO's forward-looking conference remarks about an
+  already-drafted, not-yet-flown launch are fair game as an
+  `updates[].patch`, not a "don't draft a scheduled launch" violation:
+  SpaceX CFO Bret Johnsen telling investors (Goldman Sachs Communacopia,
+  Sept 10) that Starship Flight 14 will be the company's first
+  revenue-generating mission is new, attributed, dateable information
+  layered onto the existing Sept 1 FCC-filing item, not a claim that the
+  flight itself already happened; folded in via explainer patch with two
+  `informal`-class attaches (BigGo Finance, TeslaNorth) and no rescore
+  requested (item already at its trade-lead ceiling of 4).
+- 2026-09-11-M: A whitelisted tracker's own blog post directly disputing
+  an already-published claim (Marco Langbroek's SatTrackCam post arguing
+  ISW's "Rassvet second batch failed to reach altitude" read is wrong,
+  based on a side-by-side altitude-raising comparison against the first
+  batch) is a legitimate `updates[].patch` attaching both reads, not a
+  dispute-downgrade case: this is an editorial disagreement about
+  interpreting public tracking data, not a same-metric registry-fact
+  conflict, so no `dispute_resolved`/`rescore` machinery applies; his
+  bluesky post (the recorded signals.json channel) supplied the specific
+  post permalink as the `whitelist`/`observer` source, with the blog's own
+  fuller analysis drafted as attributed background per the standing
+  Northwood Space/2026-09-01-C workaround for a non-recorded companion
+  page.
+- 2026-09-11-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 2
+  updated, 0 held") plus a direct grep read of the new item's and both
+  updated items' `snr`/`category`/`impact`/`sources` fields (item 627, up
+  from 626; sweep log 238 to 239) as the build-health signal.
