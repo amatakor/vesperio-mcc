@@ -93,102 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-11)
-
-- 2026-08-11-A: Resolved the 2026-08-09-E source-access gap: DT Next
-  (dtnext.in, a Tamil Nadu English-language regional daily) fetched
-  cleanly for the IN-SPACe/Centre Kulasekarapattinam spaceport
-  privatization story where economictimes.indiatimes.com and
-  business-standard.com both stayed blocked. Single-sourced (crawl
-  `found_none`; only aggregator mirrors and the same two blocked
-  domains turned up on a fresh search), shipped honestly at SNR 2
-  rather than held, per the standing "weak sourcing is never a reason
-  to hold" rule.
-- 2026-08-11-B: `congress.gov` bill pages 403 like every other .gov
-  fetch in this project, but `govinfo.gov`'s bulk-data bill-status API
-  (`www.govinfo.gov/bulkdata/BILLSTATUS/<congress>/<chamber>/BILLSTATUS-<congress><chamber><number>.xml`)
-  fetched cleanly and gave an exact, dated "latest action" line (Senate
-  passage of S.434 by unanimous consent, August 6) with none of
-  congress.gov's blocking. Worth trying this pattern first for any
-  future bill-status sourcing; it also satisfies the anti-spoof gate
-  as `official_record` via the unconditional `.gov` host check.
-- 2026-08-11-C: A whitelisted signal's own post can be the ONLY route
-  to a genuine story the harvester queue and discovery pass both
-  missed entirely: Marcia Smith's Bluesky post about the Senate passing
-  the Space Commerce Advisory Committee Act (Aug 6 passage, surfaced in
-  her Aug 10 post) had zero hits anywhere else this run, including the
-  8-query discovery pass run afterward. The mandatory fetchable-channel
-  signals leg is still finding real, otherwise-invisible stories five
-  weeks post-launch.
-- 2026-08-11-D: AST SpaceMobile's investor-relations subdomain is
-  `investors.ast-science.com` (plural); `investor.ast-science.com`
-  (singular, a plausible guess) doesn't resolve at all (DNS failure,
-  not a 403). The plural subdomain still failed to yield the exact Q2
-  2026 earnings release URL on a direct fetch of its landing pages
-  (`/press-releases`, `/quarterly-results`; the latter pointed to an
-  `feeds.issuerdirect.com` wire-distribution link, not an ast-science.com
-  page, so not gate-safe as first_party anyway) -- led with two
-  financial-media outlets instead (247wallst.com, MarketBeat), both
-  directly fetchable and both classed `informal` (neither is trade nor
-  legacy mainstream press), landing an honest SNR 2 for a real, sourced
-  earnings event.
-- 2026-08-11-E: `china-in-space.com` (a Chinese-space-focused
-  newsletter/blog, distinct from Andrew Jones's whitelisted channels)
-  fetched cleanly with substantive follow-on detail a same-day SCMP
-  article didn't yield (WebFetch kept truncating SCMP's article body
-  before the relevant paragraphs): the YF-100 engine coming under
-  investigation, the Long March 7A fleet grounding, and Chang'e-7's
-  October backup launch windows, all attached to the existing Aug 10
-  Long March 7A failure item as `trade`-class corroboration. Worth
-  adding to sources.json at a future structural touch as a China-launch
-  fallback when SCMP's full text won't render.
-- 2026-08-11-F: Space.com continues to fail to return article body text
-  via WebFetch (nav/membership-prompt boilerplate only, "[Content
-  truncated due to length...]"), on two different articles this run
-  (the Rocket Lab GHOST unveiling and the Michibiki 7/QZS-7 launch);
-  SpaceNews and Nikkei Asia covering the same stories both fetched
-  fine. Don't burn a second attempt on Space.com once this shape shows
-  up; go straight to another outlet covering the same story.
-- 2026-08-11-G: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 6 new, 1
-  updated, 0 held") as the build-health signal.
-
-## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-11, second)
-
-- 2026-08-11-H: Voyager Technologies' own `/press-releases/` listing page
-  is directly fetchable and named the exact release for a brand-new
-  contract (space-to-space comms award) on the first try; Voyager's
-  registry `website` (voyagertechnologies.com) matches the press-release
-  domain exactly, so the anti-spoof gate passed clean as `first_party`
-  without needing to fall back to a trade lead the way SpaceX/Redwire's
-  IR-CDN domains have required (2026-08-05-B/2026-08-06-B). Worth trying
-  a company's own `/press-releases/` or `/news/` index directly before
-  assuming a same-day contract announcement needs a trade-outlet lead.
-- 2026-08-11-I: The same-company-plus-category dedup false positive
-  (2026-08-03-H and many peers) now extends to a company appearing only
-  as the CUSTOMER-side counterparty, not the subject: VinSpace booking a
-  SpaceX Transporter rideshare slot (category `contract`) false-matched
-  Redwire's unrelated Starfall reentry-capsule contract (also category
-  `contract`, 5 days earlier) purely because both items list "SpaceX" in
-  `companies`. One `dedup_distinct` entry cleared it; expect this shape
-  whenever a new item's launch-services counterparty is SpaceX, not just
-  when SpaceX itself is the newsmaker.
-- 2026-08-11-J: A whitelisted signal's Bluesky post (Andrew Parsonson)
-  independently confirmed a candidate held-queue follow-up (Mario
-  Cospito named ASI extraordinary commissioner, resolving the identity
-  gap in the still-open 2026-08-05 ASI board-dissolution scope question)
-  the same day europeanspaceflight.com itself published it -- used as
-  confirmation in a new held-queue entry rather than a scoring source,
-  since the underlying scope question (no stated commercial-space
-  consequence) is unchanged and still awaits Florian's ruling.
-- 2026-08-11-K: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 8 new, 0 updated, 1 held") as the build-health
-  signal.
-
 ## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-12)
 
 - 2026-08-12-A: The harvester queue was ~90% a single Google-News wave
@@ -4593,3 +4497,47 @@ a newer entry if a lesson changes.
   updated, 0 held") and a direct read of all five new items' and all
   three updated items' `snr`/`category`/`impact`/`tags`/`companies`/
   `sources` fields as the build-health signal.
+
+## Narrow re-check, ~7h48m gap, unfiltered full source list (2026-09-11)
+
+- 2026-09-11-A: A large, widely-mirrored "SpaceX signs $1 billion-a-month
+  AI hosting deal" / Nvidia-alliance / "$100B ARR by year-end" cluster
+  (Seeking Alpha, Stocktwits, Moomoo, TeslaNorth, allweatherfinance.com,
+  from SpaceX CFO Bret Johnsen's remarks at the Goldman Sachs
+  Communacopia conference) traced, once one underlying CNBC headline was
+  read closely ("Google to pay SpaceX $920 million a month for compute
+  capacity **at xAI data centers**"), to SpaceX's terrestrial AI/GPU
+  hosting business (the Colossus-style data centers it operates for
+  Google/Anthropic/xAI), not its orbital Starmind compute-satellite
+  product (already separately covered under
+  `2026-06-24-spacex-starmind-name` and
+  `2026-08-04-spacex-nvidia-starmind-exclusive`). Left the whole
+  financial cluster undrafted as out of scope, extending the standing
+  Intel Terafab/APR-Energy/turbine-foundry precedent (2026-09-09-N) to a
+  new shape: a huge, SpaceX-branded, multi-billion-dollar financial
+  disclosure that is still terrestrial infrastructure business, not a
+  launch/satellite/spacecraft product, regardless of dollar value or
+  how "space company signs deal" the headlines read.
+- 2026-09-11-B: A one-year-stale trap on an Indian government-relations
+  headline shape distinct from the standing India-EO-PPP trap: an
+  Akashvani/newsonair.gov.in "NSIL-ISRO-HAL ink pact for SSLV technology
+  transfer" story, surfaced fresh via WebSearch, carries its own stated
+  publish date of September 11, **2025**, exactly one year before this
+  sweep -- same-calendar-date-different-year pattern (2026-08-13-A and
+  many peers), this time on an official .gov.in press page rather than a
+  trade aggregator or Google News wave.
+- 2026-09-11-C: BlackSky's own confidentially-launched Gen-3 satellites
+  (this run's 5th, on Rocket Lab's "Happily Ever Faster" Electron
+  mission) are hard to corroborate same-day: SpaceNews 429'd on every
+  attempt (three tries) and the Google News redirect for a Quiver
+  Quantitative pickup wouldn't resolve, leaving only Launch Library 2
+  (aggregator, tier 4) as a fetchable source; landed a clean, honest
+  SNR 3 via `crawl: "found_none"` rather than force an uncited claim of
+  corroboration that technically exists on the web per search snippets.
+- 2026-09-11-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3
+  new, 1 updated, 0 held") plus a direct `jq` read of all three new
+  items' and the one updated item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields, and the registry-candidates.json crossfeed
+  entry it produced, as the build-health signal.
