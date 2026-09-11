@@ -4541,3 +4541,57 @@ a newer entry if a lesson changes.
   items' and the one updated item's `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields, and the registry-candidates.json crossfeed
   entry it produced, as the build-health signal.
+
+## Narrow re-check, ~5h14m gap, unfiltered full source list (2026-09-11, second)
+
+- 2026-09-11-E: A company's own press release re-hosted on a PR-wire
+  syndication mirror (Business Wire content republished verbatim on
+  `lifestyle.middletownlifemagazine.com`, a local-news content-syndication
+  site) scores higher (`wire_pr`, base tier 4) than an independent trade
+  outlet's own reporting of the same fact (Payload, base tier 3, despite
+  Payload having an exclusive quote "via email" from the company) -- led
+  Antares' $161M DoD nuclear-reactor award with the wire mirror and used
+  Payload as `trade` corroboration, per the standing base-tier-by-class
+  rule rather than by which source reads as more authoritative.
+- 2026-09-11-F: Confirms the `hostMatches()` hostname-suffix check treats
+  a bare-apex company domain (`impulsespace.com/updates/...`) as
+  `first_party` cleanly when the registry `website` value is the same
+  bare apex (no subdomain), landing SNR 5 on a company's own technical
+  milestone post (Impulse Space's LEO-2/LEO-3 200m proximity flyby) with
+  zero `found_none` penalty risk since it's a direct source regardless of
+  corroboration strength.
+- 2026-09-11-G: A same-company-plus-category dedup false positive fired
+  TWICE on a new Poland/PGZ/ICEYE sovereign-satellite letter-of-intent
+  item (category `partnership`) against both the Sept 7 ICEYE/Sompo Japan
+  insurance item and the Sept 9 ICEYE/Arianespace launch-services MoU,
+  none of which share anything with a Polish state-defense LOI beyond the
+  company name ICEYE -- two `dedup_distinct` entries cleared it in one
+  pass, extending the long-running list to a case where all three ICEYE
+  items in one week are mutually unrelated.
+- 2026-09-11-H: Two same-day "big number" headlines both traced to stale
+  restatements once fetched/searched directly: (1) "Britain...Contracts
+  Already Top $6 Billion" (Yahoo Finance/247wallst) wraps the already-
+  published Sept 10 Reuters FOIA story (UK MoD's own ~$40M Starlink/
+  Starshield spend) in unrelated context about total US Space Force
+  Starshield contract value nationally, adding no new UK-specific fact;
+  (2) Le Monde's "France and EU rescue Iris²" Paris-summit coverage and
+  von der Leyen's own summit remarks both restate the already-published
+  Aug 7 SpaceRISE acceleration decision and the Sept 10 Aerospacelab/
+  Thales €5.4B contract awards, not a new figure or decision. Both left
+  undrafted/unpatched rather than treated as fresh.
+- 2026-09-11-I: A signals-pass Bluesky find (Andrew Parsonson: Avio's FD1
+  reusability-demonstrator rocket completed integration ahead of ground
+  testing and a planned SUBORBITAL flight from Sardinia) was left
+  undrafted on two independent grounds: it is a pre-flight milestone (no
+  launch yet, standing "scheduled-but-not-flown" exclusion), and the
+  planned flight itself is suborbital, which CLAUDE.md's launch-vehicle
+  scope excludes regardless of whether the vehicle is a reusability tech
+  demonstrator rather than a tourism vehicle -- first time the
+  suborbital-demonstrator shape (distinct from the 2026-08-14-B
+  suborbital-manufacturer-insolvency case) has come up.
+- 2026-09-11-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new,
+  0 updated, 0 held") plus a direct `jq` read of all four new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields (items 622 to
+  626, sweep log 237 to 238) as the build-health signal.
