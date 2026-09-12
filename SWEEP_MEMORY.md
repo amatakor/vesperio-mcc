@@ -4667,3 +4667,32 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct `jq` read of the new item's
   `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields (item 633,
   sweep log 241 to 242) as the build-health signal.
+
+## Narrow re-check, ~3h38m gap, unfiltered full source list (2026-09-12, fourth)
+
+- 2026-09-12-L: A rocket-propulsion manufacturer's own going-public event
+  (Ursa Major Technologies' $2.3B SPAC merger with Bleichroeder
+  Acquisition Corp. III, announced Aug 25, surfaced via discovery search
+  and never previously drafted) left undrafted as out of scope despite
+  Ursa Major being a real registry-adjacent "manufacturer" (its Hadley
+  and Draper engines fly on orbital and in-space vehicles, and SpaceNews/
+  Payload both cover the company): the company's own press release calls
+  itself a "Hypersonics and Critical Munitions Company," and every use-
+  of-proceeds line (HAVOC Missile System, munitions production capacity,
+  hypersonic engine manufacturing) is defense/munitions, with "space
+  mobility systems" mentioned only as one minor line item. Same
+  terrestrial/adjacent-industry-substance-over-space-branding shape as
+  the 2026-09-09-N Intel Terafab precedent, now confirmed for a company
+  that DOES have a genuine, otherwise-in-scope space product line: the
+  test is the substance of the specific event (what the money funds, how
+  the company frames its own release), not whether the company also does
+  space work elsewhere. Worth revisiting if a future Ursa Major event is
+  framed around its space-launch engine business specifically.
+- 2026-09-12-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and a `jq empty` parse check across all four touched
+  data files (candidates, source_ledger, sources, state) as the
+  build-health signal. Zero-item sweep: queue, 7 HTML sources, 15/17
+  signals channels, and 8 discovery queries all came up empty or already-
+  published.
