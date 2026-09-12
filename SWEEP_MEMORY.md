@@ -4589,3 +4589,42 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct `jq` read of all four new items'
   `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields (items
   628-631, sweep log 239 to 240) as the build-health signal.
+
+## Narrow re-check, ~5h44m gap, unfiltered full source list (2026-09-12, second)
+
+- 2026-09-12-E: A T-Mobile CFO (Peter Osvaldik) quote dismissing Starlink
+  Mobile's competitive threat ("can't even get through a Tesla
+  windshield"), widely picked up from Citi's 2026 Global TMT Conference
+  (Sept 9-10), traced via search to the SAME physics-of-D2D talking
+  points he had already made publicly in August conference/earnings
+  appearances (AndroidHeadlines, late August) -- left undrafted as a
+  recycled corporate talking point with no new stated fact, figure, or
+  contract, rather than a fresh commentary item. Worth flagging if a
+  future instance of this quote carries a genuinely new data point (e.g.
+  a stated traffic-share percentage) not present in the August coverage.
+- 2026-09-12-F: The Exotrail/Astroscale-France/Eutelsat France 2030
+  sovereign deorbiting-demonstration contract (first flagged as an
+  unfetchable Aviation Week headline in 2026-09-10-T/2026-09-11-K) was
+  finally sourced cleanly this sweep via Astroscale's OWN newsroom
+  (`astroscale.com/en/news/...`), a first-party page the prior two
+  sweeps never tried fetching directly -- landed a clean SNR 5 with zero
+  `found_none` penalty (direct-source lead) even though the €13.2M figure
+  cited by Tokyo Brief/Space & Defense (both still 403 on direct fetch)
+  never appeared in Astroscale's own release and was correctly omitted
+  rather than borrowed from an unfetched page. Lesson: when a trade
+  outlet covering a company announcement is paywalled or blocked, check
+  the NAMED companies' own newsrooms before giving up on a lead a second
+  time.
+- 2026-09-12-G: The same-company-plus-category dedup false positive fired
+  again on Eutelsat + `procurement` within 7 days, this time against the
+  Sept 8 Tusass/Greenland ground-network expansion item, despite sharing
+  nothing else with the Exotrail deorbiting-demo item -- extends the long
+  list to a case where Eutelsat is only the THIRD-named company (behind
+  Exotrail and Astroscale) on the new item. One `dedup_distinct` cleared
+  it.
+- 2026-09-12-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct `jq` read of the new item's
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields (item 632, sweep log 240 to 241) as the build-health signal.
