@@ -4888,3 +4888,96 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   confirmation ("merged 8 new, 0 updated, 1 held") as the build-health
   signal.
 
+## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-12)
+
+- 2026-08-12-A: The harvester queue was ~90% a single Google-News wave
+  (dozens of near-identical outlets covering NASA inviting ISRO to join
+  its lunar South Pole Moon Base, from the Aug 5-6 India-US Civil Space
+  Joint Working Group meeting) plus SpaceX stock/IPO chatter; zero
+  drafts came from the queue itself. Treated the NASA-ISRO invite as a
+  near-duplicate of the still-open Serbia Artemis Accords scope question
+  already sitting in held.json (institutional bilateral space diplomacy,
+  no stated commercial-contract or market-access consequence in any
+  source checked) and skipped filing a second hold entry for the same
+  recurring shape, per the standing 2026-07-19-C/2026-07-20-B practice.
+- 2026-08-12-B: A guessed press-release URL on a company's own newsroom
+  can land on a stale cached page with the same slug pattern as a much
+  older release: the first fetch of
+  `fireflyspace.com/news/firefly-aerospace-announces-multi-launch-agreement-with-lockheed-martin-for-25-alpha-launches/`
+  returned Firefly's original June 2024 Lockheed Martin deal, not the
+  Aug 11, 2026 extension; a second, more specific URL guess
+  (`.../firefly-aerospace-announces-extension-of-multi-launch-agreement-with-lockheed-martin-through-2031/`)
+  landed on the correct, dated release. Always check a fetched company
+  press release's own stated date against the expected event before
+  citing it, even when the URL and headline look right at a glance.
+- 2026-08-12-C: SES's Aug 7 IRIS² Rendez-vous 1 / MEO capital-commitment
+  release (up to EUR1.35B, 18 MEO satellites, 2030 service entry) had
+  never been drafted under any id despite direct first-party sourcing
+  and trade pickup (SatNews) being trivially findable -- a genuine,
+  never-covered gap chased under the standing predates-window
+  convention, five days before this sweep. Worth periodically checking
+  a constellation operator's own newsroom for milestone/financial
+  releases the queue's headline-matching legs (Google News, Bluesky
+  search) don't reliably surface, especially ones framed as technical
+  milestones ("Rendez-vous 1") rather than contract-award language.
+- 2026-08-12-D: Two Polish-focused informal outlets (Goniec, a
+  Polish-diaspora news site, and Pravda Poland) independently reported
+  Starlink quietly excluding Poland from its "Europe" roaming zone
+  (effective Aug 17), each citing different specifics (Goniec: exact
+  PLN pricing tiers and a direct quote from Starlink's own help page;
+  Pravda Poland: the list of countries still in the zone and the
+  Ukraine cross-border impact) -- read as independent reporting, not a
+  rewrite of one another, and both counted. TVP World's own English
+  writeup of the same story (the outlet that broke it) returned only
+  its bare headline on two separate WebFetch attempts with no body
+  text extractable; left uncited per the standing "only cite pages
+  with genuinely fetched content" rule rather than force it in as a
+  third source. Could not fetch Starlink's own help-center page
+  (starlink.com, which matches the registry's first_party host) to
+  attempt a tier-5 lead; it returned empty content both times tried.
+- 2026-08-12-E: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") as the build-health
+  signal.
+
+## Normal-mode sweep, ~11h53m gap, unfiltered full source list (2026-08-12, second)
+
+- 2026-08-12-F: `explainer.tagline`'s 140-char cap is stricter than it
+  looks once a real actor name, a second company, and a dollar figure
+  are all in one sentence: 6 of 9 drafted taglines this run needed a
+  second, tighter rewrite after finalize-sweep's first rejection
+  (Optus/Northrop Grumman, Redwire/Kanematsu, iSpace, Golden Dome,
+  Rocket Lab Germany, Nova/Planet all overshot on the first pass, one
+  by as little as 141 chars). Worth drafting taglines closer to ~120
+  chars up front rather than assuming a fluent one-sentence summary
+  will clear 140.
+- 2026-08-12-G: The same-company-plus-category dedup heuristic fired on
+  two unrelated Planet stories 2 days apart (Planet's Rwanda national
+  satellite-data program, Aug 10, vs. a new Nova Systems/Planet
+  Australian defense partnership, Aug 12, both category "partnership")
+  and on two unrelated Rocket Lab stories (the Aug 10 GHOST
+  containerized launch system unveiling vs. the same-day formal
+  establishment of Rocket Lab Germany GmbH) -- both cleared with one
+  `dedup_distinct` entry apiece. Extends the standing finding that this
+  heuristic fires on ANY shared company regardless of how unrelated the
+  underlying stories are, including two of a company's OWN stories on
+  the same day.
+- 2026-08-12-H: Redwire's own newsroom domains (`ir.rdw.com` for IR
+  releases, `rdw.com/newsroom` for general PR) both fail the anti-spoof
+  gate because the registry's recorded website is `redwirespace.com`
+  -- confirms 2026-08-05's ir.rdw.com precedent and extends it to the
+  separate rdw.com/newsroom domain found this run; both class
+  `informal`, not `first_party`, until the registry site value is
+  reconciled with which of Redwire's domains it actually publishes on.
+- 2026-08-12-I: `war.gov` press releases 403 on WebFetch same as every
+  other .gov/.mil source logged in this file (the Golden Dome
+  Ecosystem Hub launch release); led with SpaceNews and Defense Daily
+  trade coverage instead, both of which independently, non-wire
+  reported the same Aug 11 Guetlein announcement.
+- 2026-08-12-J: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 9 new, 0 updated, 0 held") as the build-health
+  signal.
+
