@@ -4628,3 +4628,42 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct `jq` read of the new item's
   `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
   fields (item 632, sweep log 240 to 241) as the build-health signal.
+
+## Narrow re-check, ~5h55m gap, unfiltered full source list (2026-09-12, third)
+
+- 2026-09-12-I: A company's own blog/newsroom post is rejected as
+  `first_party` by the anti-spoof gate whenever the actor has no
+  `src/data/registry` organization entry at all (not just a mismatched
+  domain): Astranis' own `astranis.com/blog/...` post about the stc
+  group/Saudi Arabia deal 403'd the first_party classification with "not
+  an official first_party host" since Astranis has no registry profile to
+  verify the domain against. Reclassified it `informal` and led with Via
+  Satellite (`trade`) instead, per the standing no-registry-host
+  workaround (2026-09-10-N/2026-09-12-C, previously only seen on
+  Arianespace) now confirmed for a second, entirely different company.
+  Landed a clean SNR 4 off two independent trade sources (Via Satellite,
+  Developing Telecoms) rather than force an unverifiable SNR 5.
+- 2026-09-12-J: Bluesky profile pages (`bsky.app/profile/...`) render as
+  an empty JS shell via WebFetch as expected, but
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N`
+  returns full post text and `createdAt` timestamps cleanly for every
+  handle tried this run (Josef Aschbacher, Marco Langbroek, Caleb Henry,
+  Tim Farrar, Eric Berger, Jeff Foust's SpaceNews account, Andrew Jones,
+  SpacePolicyOnline) with no auth needed; worth using this endpoint
+  directly instead of the profile URL on future sweeps to cut the
+  fetchable-channel budget roughly in half. Two caveats found: some feeds
+  return posts far out of chronological order / very stale (Caleb Henry
+  and Eric Berger's most recent returned posts were from July 2026 and
+  2025 respectively despite presumably posting more recently, and Tim
+  Farrar's feed likewise topped out at July), so a stale-looking API
+  result is not proof the account has nothing new; and the
+  `marcolangbroek.bsky.social` feed came back dominated by unrelated Dutch
+  political posts mixed with his real space content (RASSVET blog
+  repost), so the account is a personal, not space-only, feed and needs
+  filtering by content, not by assuming every post is on-topic.
+- 2026-09-12-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct `jq` read of the new item's
+  `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields (item 633,
+  sweep log 241 to 242) as the build-health signal.
