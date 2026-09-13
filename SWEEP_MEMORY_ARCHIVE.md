@@ -4981,3 +4981,105 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   confirmation ("merged 9 new, 0 updated, 0 held") as the build-health
   signal.
 
+## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-13)
+
+- 2026-08-13-A: Two independent WebSearch-summary results this run both
+  turned out to be a full YEAR stale once directly fetched, despite
+  reading as today's news from the queue/search framing: (1) a
+  china-in-space.com piece on SpaceSail awarding Landspace/Space
+  Pioneer/CAS Space $187M in Qianfan launch contracts was actually
+  published 2025-08-14, not today; (2) a Google News item quoting
+  Minister Jitendra Singh on "IN-SPACe approved country's first fully
+  commercial EO constellation" traced to the Pixxel/Dhruva Space/
+  PierSight/SatSure EO-PPP win, which a direct search confirmed was
+  announced 2025-08-13 -- today's coverage was Parliament restating a
+  year-old fact, not a new milestone. Both were caught only by directly
+  fetching/searching for the underlying announcement's own publish date
+  rather than trusting the search snippet's apparent freshness; a third
+  reminder (after 2026-07-15-B/2026-08-10-B-adjacent cases) that a
+  same-calendar-month-different-year trap is easy to miss when a
+  government official is restating an old fact as if it's live news.
+- 2026-08-13-B: click2houston.com, thebusinessjournal.com, and several
+  other outlets carrying "Broadband grants paused as critics allege
+  favoritism toward Elon Musk's Starlink" (Texas BEAD funding pause) all
+  turned out to be the same underlying Texas Tribune piece (byline Jayme
+  Lozano Carver) redistributed via AP syndication, not independent
+  reporting -- confirmed by fetching the Texas Tribune original directly
+  and finding identical quotes/structure everywhere else. Led with Texas
+  Tribune as the mainstream original and scored `crawl: "found_none"`
+  honestly (SNR 2) rather than stacking wire mirrors as fake
+  corroboration, consistent with the standing wire-collapse rule.
+- 2026-08-13-C: A same-company-plus-category dedup false positive fired
+  between a brand-new Texas state BEAD-funding-pause item (category
+  regulatory, company SpaceX) and the existing 2026-08-06 FCC D2D
+  spectrum NPRM item (also regulatory, also SpaceX) despite the two
+  having nothing in common beyond agency-adjacent regulatory action
+  touching Starlink -- state broadband office vs. federal FCC
+  rulemaking. One `dedup_distinct` entry cleared it; extends the
+  standing finding that this heuristic fires on any shared company
+  regardless of which government body or program is actually involved.
+- 2026-08-13-D: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") plus a direct grep spot-check of the three merged
+  items' `snr`/`category`/`impact` fields as the build-health signal.
+
+## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-13, second)
+
+- 2026-08-13-E: A second, independent confirmation the same day that
+  the Allied Orbits/Pixxel India EO-PPP story (satnews.com, Google News
+  "Private Consortium Allied Orbits Secures Approval...₹1,200 Crore")
+  is the SAME year-old August 2025 announcement recirculating, not new
+  news, extending 2026-08-13-A's finding from this morning's sweep to a
+  fresh discovery-pass hit later the same day. A direct WebSearch for
+  "Allied Orbits India IN-SPACe crore" surfaces domain-b.com's original
+  coverage plainly, confirming the trap without needing a full fetch.
+- 2026-08-13-F: A company's own newsroom page reached via a plausible
+  guessed/linked URL can return a stale EVERGREEN press release sharing
+  the product's name rather than today's actual news: WebFetch on
+  orbitworks.space's "Orbitworks Unveils Altair" page returned a May
+  2025 constellation-unveiling release, not the Aug 13, 2026 story
+  (Altair-1 physically shipping to the US for its October launch) the
+  queue actually surfaced. Caught it only because the fetched content's
+  own stated publish date (May 18, 2025) didn't match the event; used a
+  trade outlet's fresh write-up (TahawulTech) instead. Always check a
+  fetched company-site page's own stated date against the expected
+  event, same lesson as 2026-08-12-B's Firefly/Lockheed case, now
+  confirmed on a generic "company unveils product line" page rather
+  than a dated press-release slug.
+- 2026-08-13-G: reuters.com direct fetch failed outright this session
+  ("unable to fetch"), and a TradingView mirror of the same Reuters wire
+  story (Starlink Vietnam market entry) was paywalled with no body text.
+  Worked around by leading with an independently-reported trade piece
+  (TheNextWeb, which had its own "on Hanoi's terms" framing and detail
+  beyond the wire text) and Xinhua's English wire (citing VnExpress,
+  with its own distinct figures) as corroboration, rather than forcing
+  the Reuters citation or treating the story as unreachable.
+- 2026-08-13-H: A Korea Herald story headlined as if freshly breaking
+  ("S. Korean de-orbiting device successfully tested in space") in fact
+  describes a device deployed on a cubesat that launched in May 2023,
+  with the deployment itself dated only vaguely ("after about a year of
+  normal operations"). Treated as genuinely new because the article's
+  own fetched content carried an explicit Aug 13, 2026 publish date and
+  a fresh CEO quote, distinguishing it from the same-calendar-date/
+  wrong-year trap (2026-07-15-B, 2026-08-13-A): an old satellite/launch
+  date is not itself a staleness signal when the NEWS PEG (a new test
+  milestone, a new quote) is independently dated to the sweep window.
+  Single-sourced (crawl `found_none`; no second fetchable page found
+  despite the story clearly existing only via this one outlet).
+- 2026-08-13-I: techtimes.com 403'd on WebFetch on two separate URL
+  forms (with and without the `https://www.` prefix) for a genuinely
+  new, real story (Korea's NEONSAT pre-shipment review) that a WebSearch
+  confirmed exists and is independently written; no fetchable mirror
+  found. Landed the item single-sourced (Korea Times only, `found_none`)
+  rather than citing the unfetched techtimes.com page, per the standing
+  2026-07-16-F rule that a page only counts as corroboration once
+  actually fetched this run, not merely confirmed to exist via search.
+- 2026-08-13-J: `bun run build` was denied outright by this session's
+  permission gate on the first attempt, continuing the standing pattern
+  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 8 new, 0 updated, 0 held") plus a direct `jq`
+  spot-check of all eight merged items' `snr`/`category`/`impact`
+  fields as the build-health signal.
+
