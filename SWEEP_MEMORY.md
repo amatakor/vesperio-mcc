@@ -4681,3 +4681,31 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct `jq` read of the new item's and the
   updated item's `snr`/`category`/`impact`/`tags`/`companies`/`sources`
   fields as the build-health signal.
+
+## Narrow re-check, ~4h50m gap, unfiltered full source list (2026-09-13, fifth)
+
+- 2026-09-13-J: A WebSearch result summary for a plain "rocket launch
+  failure anomaly satellite September 12 13 2026" query confidently
+  restated a January 12, 2026 PSLV-C62 third-stage failure (spaceflightnow.com,
+  URL path literally `/2026/01/12/...`) as having happened "on September
+  13, 2026," inventing a fresh date the source page does not state.
+  Fetching the article directly confirmed both publish date and launch
+  date were January 12, 2026, eight months stale. Extends the standing
+  WebSearch-summary-fabricates-currency pattern to a case where the
+  summary didn't just resurface an old story, it actively relabeled its
+  date to match the query's requested window; always verify a
+  search-summary's claimed date against the source URL/page directly
+  before treating it as inside the sweep window.
+- 2026-09-13-K: The Loft Orbital/Marlan Space/BlackSky/Mistral AI $1B
+  50-satellite constellation (already published 2026-09-09) resurfaced a
+  third time via a SatNews restatement dated Sept 13; company-name grep
+  against items.json (not just the `existing[]` summary list) again
+  caught it before any drafting time was spent, per the 2026-09-13-G
+  lesson now paying off on a narrow (non-deep) sweep too.
+- 2026-09-13-L: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") as the build-health signal. Zero-item sweep: the
+  20-candidate queue, 7 HTML sources, 15/17 signals channels, and a
+  10-query discovery matrix all came up empty, already-published, or
+  stale.
