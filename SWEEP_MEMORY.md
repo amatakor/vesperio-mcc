@@ -4646,3 +4646,38 @@ a newer entry if a lesson changes.
   the 20-candidate queue, all 7 HTML sources, 13/17 signals channels
   (rotation), and a 10-query discovery matrix all came up empty,
   already-published, stale, or out of scope.
+
+## Deep sweep (mode "deep", triggered after two zero-add sweeps), ~7h gap, unfiltered full source list (2026-09-13, fourth)
+
+- 2026-09-13-G: A deep-mode 583-candidate queue re-triaged after three
+  same-day narrow sweeps already ran means most title-scan "looks new"
+  hits are stale re-presentations, not fresh finds: WebSearch corroboration
+  for four promising trade-press headlines (Sirius Space STAR-1 engine
+  hot-fire, NOAA's 14-vendor SBEM IDIQ, MaiaSpace/iQPS Asia SAR deal,
+  TrustPoint/EnduroSat 40-satellite PNT contract) found real, on-scope
+  events, but grepping `items.json` by company/keyword before drafting
+  would have caught that three of the four (all but Sirius Space) were
+  already published earlier the same day under different-looking item
+  IDs; finalize-sweep's dedup gate caught all three anyway, but only
+  after a wasted full drafting pass. Lesson: in deep mode specifically,
+  grep `items.json` for each candidate's exact company names BEFORE
+  spending a corroboration-search budget on it, not just against the
+  `existing[]` summary list, which does not surface every recent title.
+- 2026-09-13-H: One of the three redundant hits was a genuine enrichment
+  case rather than a pure duplicate: Via Satellite's write-up of the NOAA
+  SBEM IDIQ item named all 14 vendors across seven data categories, while
+  the already-published item (led by NOAA's own official_record release,
+  SNR 5) had compressed the roster to "including Spire Global, Tomorrow.io,
+  PlanetiQ and Muon Space," dropping 10 named companies (BAE Systems,
+  Ethereal Space, Precursor SPC, Weather Stream, Hydrosat, Tropical Weather
+  Analytics, SpaceX, Iceye US, Umbra Lab, Care Weather Technologies).
+  Patched via `updates[].patch` to the fuller breakdown with Via Satellite
+  attached as corroboration, leaving the $8B figure and official lead
+  source untouched — a same-event dedup match doesn't mean the newer
+  source has nothing left to add.
+- 2026-09-13-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a direct `jq` read of the new item's and the
+  updated item's `snr`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields as the build-health signal.
