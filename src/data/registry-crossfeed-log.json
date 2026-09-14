@@ -1,5 +1,39 @@
 {
   "$comment": "Machine-owned outcome ledger for the registry crossfeed queue (registry-candidates.json). Written only by scripts/record-crossfeed-outcomes.ts (deterministic, no network, no LLM): a --snapshot step before the weekly maintain-registry agent runs, a --record step after. The agent consumes queue entries by deleting them; this log records what became of each one (landed, re-sourced, disputed, or unchanged) so /system can show the crossfeed working. A run entry is appended only when something was consumed.",
   "version": "0.1",
-  "runs": []
+  "runs": [
+    {
+      "at": "2026-09-14T11:20:38.728Z",
+      "consumed": [
+        {
+          "id": "2026-09-11-rocket-lab-blacksky-gen3-5-launch:blacksky-gen3.sats_launched_total",
+          "item_id": "2026-09-11-rocket-lab-blacksky-gen3-5-launch",
+          "entity_slug": "blacksky-gen3",
+          "entity_type": "constellation",
+          "field": "sats_launched_total",
+          "value": 5,
+          "action": "flag_refresh",
+          "proposed_on": "2026-09-11",
+          "item_snr": 3,
+          "source_url": "https://ll.thespacedevs.com/2.2.0/launch/b81156da-c0b8-46c8-aebd-8af8d2be83cd/",
+          "outcome": "landed",
+          "detail": "value landed with the proposed source (ll.thespacedevs.com)"
+        },
+        {
+          "id": "2026-09-13-spacex-o3b-mpower-constellation-complete:o3b-mpower.sats_launched_total",
+          "item_id": "2026-09-13-spacex-o3b-mpower-constellation-complete",
+          "entity_slug": "o3b-mpower",
+          "entity_type": "constellation",
+          "field": "sats_launched_total",
+          "value": 13,
+          "action": "flag_refresh",
+          "proposed_on": "2026-09-13",
+          "item_snr": 4,
+          "source_url": "https://tech.yahoo.com/science/articles/see-photos-spacex-rocket-streaking-194809517.html",
+          "outcome": "landed",
+          "detail": "value landed with the proposed source (tech.yahoo.com)"
+        }
+      ]
+    }
+  ]
 }
