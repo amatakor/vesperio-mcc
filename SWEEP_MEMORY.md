@@ -4658,3 +4658,69 @@ a newer entry if a lesson changes.
   sweep log's `corroboration_collapses` entry, as the build-health
   signal.
   stale.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-14, second)
+
+- 2026-09-14-D: A new self-referential-PR trap shape: Satellogic's own
+  Sept 14 GlobeNewswire release ("Satellogic Expands Slingshot III Work
+  with IDT and U.S. Office of Naval Research") restates, almost fact for
+  fact, its own March 24, 2026 release ("...for 'Slingshot' Program
+  Phases II and III"): both state six new NewSat Mark VI satellites
+  integrated into Slingshot III, both cite a 2027 (Sept: "2027 and 2028")
+  on-orbit timeline, only the CEO quote framing ("expanded work...
+  operationalizing") differs. The underlying March 24 event was never
+  drafted under any id (a genuine gap, confirmed via grep), but it also
+  predates the site's ~June 2026 coverage start, so there was no
+  predates-window chase target either. Left undrafted rather than guess
+  whether Sept 14 adds a material new fact; worth a second look if a
+  future Satellogic/Slingshot release states a dollar figure or a
+  genuinely different satellite count.
+- 2026-09-14-E: A months-stale financial event can still be a genuine,
+  never-covered gap worth chasing even when the only English source is a
+  non-space-focused analysis outlet: Jamestown Foundation's Sept 14 piece
+  on ExPace ("China's SpaceX") losing majority CASIC ownership to a Wuhan
+  state investment fund traced, via a Chinese-language search, to a much
+  better primary account: Sina Finance (mainstream, directly fetchable)
+  had reported the same 29.5904%/3.3 billion yuan deal on April 21, 2026,
+  with matching figures. Led with Sina Finance and used Jamestown as
+  `informal`-class corroboration for the fresher "registration completed
+  July 31" and CASIC-branding-drop detail; landed a clean SNR 4. Worth
+  remembering: a Chinese-language search for the company's own name plus
+  the deal terms can surface a far better source than the English-language
+  analysis piece that originally flagged the story.
+- 2026-09-14-F: An ESA annual data report (Space Environment Report 2026,
+  first-party esa.int, SNR 5 ceiling) filed cleanly under the same
+  `financial` genre convention used for the Novaspace/Space Foundation
+  report precedents (2026-08-22-B, 2026-07-21) despite being about orbital
+  debris, not money: no CLAUDE.md category maps cleanly to "the agency's
+  own cross-cutting industry report," and `incident` is reserved for
+  specific dateable events, not annual statistics. SpacePolicyOnline's
+  same-day bluesky post flagging the report was usable as ordinary
+  `whitelist`/`observer` corroboration even though the item's first-party
+  lead was already at the SNR ceiling and needed no floor.
+- 2026-09-14-G: Two Andrew Jones bluesky one-liners naming brand-new
+  Chinese launch startups (Heng Space, ex-CALT chief designer; Spark
+  Space's first-stage oxidizer tank test) were left undrafted despite
+  being on-scope and genuinely never covered: each was a single sentence
+  with no company site, no funding figure, no launch date and no
+  corroborating outlet found, too thin to support the item format even at
+  a floor SNR. Worth re-checking if either surfaces again with more
+  substance.
+- 2026-09-14-H: Two discovery-pass "fresh-looking" hits both traced to
+  stale dates once fetched directly: EarthDaily's NRO Strategic Commercial
+  Enhancements contract ($1.2M) was dated May 5, 2026 on EarthDaily's own
+  blog despite surfacing in a "September 2026" search, and Aviation Week's
+  "Starfish Space Announces $100M Series B" (paywalled) resolved via
+  425business.com and Axios URL slugs (`20260409`, `2026/04/07`) to an
+  April 7, 2026 close, five months stale. A third hit, SES's completed
+  $3.1B Intelsat acquisition, is genuinely non-stale reporting of a real
+  deal but the deal itself closed in July 2025, before this site's
+  coverage began (~June 2026 backfill window) -- not a "gap" to chase,
+  simply outside all coverage history.
+- 2026-09-14-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
+  updated, 0 held") plus a `jq` parse check (639 items, up from 636) and a
+  direct read of all three new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
+  build-health signal.
