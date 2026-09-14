@@ -4760,3 +4760,37 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (641 items, up from 639) and
   a direct read of both new items' `snr`/`category`/`impact`/`tags`/
   `companies`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~4h38m gap, unfiltered full source list (2026-09-14, fourth)
+
+- 2026-09-14-N: A `found_none` corroboration penalty applied three days
+  earlier turned out to be a false negative worth re-chasing on a plain
+  narrow-window candidate match, not just in deep-mode re-triage: the
+  Sept 11 Rocket Lab GAO protest against Blue Origin's NASA Mars
+  Telecommunications Network award (SNR 2, `corroboration_none` -1) still
+  had two live trade-press pickups (The Register, SatNews) a fresh
+  search found instantly once the Ars Technica queue candidate pointed
+  back at the same story; the additive modifier model applied the delta
+  correctly without needing to touch the stale -1 (base 3 + -1 + new
+  +1 = 3). The Register's fuller quote also restored the word "punitive"
+  that Space.com's original paraphrase of Rocket Lab's statement had
+  dropped -- a same-quote, different-completeness case, not a new fact.
+- 2026-09-14-O: A same-company-plus-category dedup-adjacent case that
+  ISN'T a false positive: Kazakhstan's Sept 7 EO constellation item
+  (informal-sourced, SNR 2) hit its 7-day same-event boundary exactly
+  today and picked up two more regional outlets (Times of Central Asia,
+  Astana Times) restating the identical satellite-count/partner figures
+  with zero new facts; attached both anyway as pure corroboration
+  (`corroboration_4plus`, informal class throughout) since the rule
+  rewards distinct-source count, not novelty. Worth remembering as the
+  inverse of the usual "does this add anything" pattern: corroboration
+  attachment doesn't require new facts, only distinct sources.
+- 2026-09-14-P: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 2
+  updated, 0 held") plus a `jq` parse check across all five touched data
+  files and a direct read of both updated items' `snr`/`snr_trace`/
+  `sources` fields (both moved 2 to 3) as the build-health signal.
+  Zero-new-item sweep: the 40-candidate queue, 6 HTML sources, 12/17
+  signals channels (3 X handles), and an 8-query discovery matrix
+  surfaced nothing on-scope that wasn't already published.
