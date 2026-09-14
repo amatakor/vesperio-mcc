@@ -93,99 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-14)
-
-- 2026-08-14-A: The harvester queue (517 consumed, 9 collapsed) was
-  almost entirely SpaceX stock/IPO-stake speculation (dozens of Motley
-  Fool/Yahoo Finance/Benzinga headlines off Musk's 48.4% stake
-  disclosure) plus off-topic Futurism/BBC content; zero drafts came
-  from the queue itself. Every genuine candidate this run (CesiumAstro/
-  Jariet acquisition, the Space Force $60M multi-vendor SDN test award,
-  Firefly's DIU Elytra deorbit design contract) came directly from the
-  trade-press legs (SpaceNews) already in sources.json, confirming the
-  2026-08-09-G/2026-08-12-A pattern that the queue is now mostly noise
-  three-plus months post-SpaceX-IPO.
-- 2026-08-14-B: A signals-pass Bluesky find (Andrew Parsonson: UK
-  rocket builder Gravitilab entered liquidation) was judged out of
-  scope: Gravitilab builds suborbital-only hybrid test rockets, and
-  CLAUDE.md's launch-vehicle scope is explicitly "orbital only." First
-  time this exact carve-out (suborbital rocket *manufacturer*, not
-  tourism) has come up; flag for Florian if a suborbital launch-vehicle
-  company's insolvency should actually be in scope as an ecosystem
-  event even though its vehicles never qualify individually.
-- 2026-08-14-C: A same-day WebSearch surfaced a live reversal of an
-  already-published item: SpaceX restored Poland to Starlink's Europe
-  roaming zone (2026-08-11-starlink-poland-roaming-exclusion) after the
-  Polish Digital Affairs Minister said SpaceX backed down, less than 3
-  days after the original exclusion was reported. Patched the existing
-  item's headline and copy to reflect the resolution rather than
-  publishing a second item, and attached Kyiv Independent (mainstream,
-  general-interest coverage of the Ukraine angle) plus an AFP wire copy
-  via Free Malaysia Today as the first non-informal sources on that
-  item, landing a `mainstream_pickup` bump (SNR 2 to 3). Worth noting:
-  the item's original lead (Goniec, informal) never got corrected or
-  upgraded even though the underlying claim briefly went stale-then-
-  reversed within 72 hours; a same-week reversal update is a normal,
-  healthy edit-queue outcome here, not a strike against the original
-  source.
-- 2026-08-14-D: `europeanspaceflight.substack.com/feed` 403'd on direct
-  WebFetch this run (the bare `europeanspaceflight.com` site was
-  skipped this run per rotation, not tried); Andrew Parsonson's only
-  retrievable content was via his Bluesky leg. First time the substack
-  RSS leg specifically (not the bare site, which has its own
-  intermittent-block history per 2026-07-16-H) has failed.
-- 2026-08-14-E: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 3 new, 1 updated, 0 held") plus a direct read
-  of all four touched items' `snr`/`category`/`impact` fields as the
-  build-health signal.
-
-## Normal-mode sweep, ~11h52m gap, unfiltered full source list (2026-08-14, second)
-
-- 2026-08-14-F: A same-company-plus-category dedup false positive fired
-  between a brand-new Blue Origin item (the LC-36B second-pad
-  construction plan, category launch) and the existing Aug 5
-  BE-4-valve root-cause item (also category launch, 7 days back) purely
-  on shared company + category, despite covering unrelated facts (an
-  infrastructure buildout decision vs. a completed investigation
-  finding). One `dedup_distinct` entry cleared it; extends the standing
-  finding that this heuristic fires regardless of how unrelated the two
-  Blue Origin stories are.
-- 2026-08-14-G: blueorigin.com 429'd on WebFetch on two separate
-  attempts a few minutes apart (a new failure code for this domain,
-  distinct from the usual 403/JS-shell pattern); led with SpaceNews
-  plus Aviation Week (both trade) instead for the LC-36B second-pad
-  item rather than forcing the first-party fetch. nasaspaceflight.com
-  403'd on the same story's third angle.
-- 2026-08-14-H: Confirms Spire's own domain (spire.com/press-media/,
-  matching the registry's recorded website) passes the anti-spoof gate
-  as `first_party`, distinct from the ir.spire.com IR subdomain that
-  has failed it in every prior sweep this file documents (2026-08-11-D,
-  2026-08-12-H) -- Spire mirrors its press releases on both
-  spire.com/press-release/... and ir.spire.com; always check the bare
-  marketing domain's own press page before defaulting to the IR
-  subdomain link a source's own citation happens to use.
-- 2026-08-14-I: A trade write-up (SpaceNews, Aug 14) of a Bulgaria/
-  EnduroSat space-and-defense-hub MOU traced to an Aug 6 signing
-  ceremony (confirmed via Bulgaria's BTA news agency and EnduroSat's
-  own release, both dated Aug 6) that predates the sweep window by over
-  a week with no earlier draft found (grepped items.json/held.json for
-  "endurosat"/"bulgaria", zero hits) -- first time the predates-window
-  chase convention (2026-07-08, previously applied mainly to seismic
-  items like Orbex) was applied to a plain `notable`-tier partnership
-  story with no stated dollar figure. Dated to the actual Aug 6 signing
-  rather than the Aug 14 publish date. Worth confirming with Florian
-  that the chase convention is meant to extend this far down the
-  impact scale, or whether it should stay reserved for seismic/major
-  gaps.
-- 2026-08-14-J: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 4 new, 2 updated, 0 held") plus a direct grep
-  spot-check of all four new items' `snr`/`category`/`impact` fields as
-  the build-health signal.
-
 ## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-15)
 
 - 2026-08-15-A: A signals-pass candidate (Aviation Week's Vivienne Machi
@@ -4708,4 +4615,46 @@ a newer entry if a lesson changes.
   updated, 0 held") as the build-health signal. Zero-item sweep: the
   20-candidate queue, 7 HTML sources, 15/17 signals channels, and a
   10-query discovery matrix all came up empty, already-published, or
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-14)
+
+- 2026-09-14-A: `space.com` article pages still render nav-chrome-only on
+  direct WebFetch (standing pattern), but the harvester queue's own
+  `raw_excerpt` for a Space.com Google-News-fed candidate carried the
+  full verbatim article body (booster designation, Falcon-family flight
+  count, Falcon 1 debut date) -- used that queue text directly rather
+  than the failed live fetch to patch a genuinely new fact (SpaceX's
+  700th Falcon-family flight, not stated in the original mainstream leads)
+  into a same-day item published by the prior sweep.
+  Two same-day "SpaceX will launch Nvidia AI computers into orbit" pieces
+  (GuruFocus, investingLive) both traced to an Aug 24 Musk X post
+  ("space-optimized Vera Rubin NVL72 system for launch to orbit in Q4
+  next year") already restated Aug 25 and again Sept 6
+  (2026-09-06-O); left undrafted as a third resurfacing of the same
+  recycled talking point. A same-day Aero-News.net/Yahoo Finance "Amazon,
+  AT&T Join Forces" piece traced via direct fetch to the identical Sept 8
+  AT&T Business/Amazon Leo announcement already published
+  (`2026-09-08-att-business-amazon-leo-expansion`), confirmed by the
+  article's own Sept 8 dateline despite a Sept 13-14 republish wave.
+- 2026-09-14-B: `SLI` (the aerospace-leasing firm, backed by Libra Group)
+  has no `src/data/registry` organization entity, so its and Sophia
+  Space's own `sophia.space` release both capped below `first_party`; led
+  with the PR Newswire wire copy (`wire_pr`, tier 4) instead. Confirms
+  2026-09-02-A's silent-no-op-at-ceiling behavior once more on a fresh
+  item, not just an update: attaching a genuinely distinct `trade`
+  corroboration source (Payload) to a `wire_pr`-led item already at its
+  ceiling produced an empty `modifiers` array and an unchanged final SNR
+  4, since a non-direct-source lead cannot reach 5 regardless of
+  corroboration count. Also: `sophia.space`'s own release and the PR
+  Newswire copy collapsed into one `wire_rewrite` corroboration unit
+  (near-identical text), leaving Payload as the only actually-distinct
+  corroboration source, harmless here since the ceiling made the
+  distinction moot.
+- 2026-09-14-C: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a direct read of the new item's and the updated
+  item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields, and the
+  sweep log's `corroboration_collapses` entry, as the build-health
+  signal.
   stale.
