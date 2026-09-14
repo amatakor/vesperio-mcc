@@ -4724,3 +4724,39 @@ a newer entry if a lesson changes.
   direct read of all three new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~3h55m gap, unfiltered full source list (2026-09-14, third)
+
+- 2026-09-14-J: The same-company-plus-category dedup false positive fired
+  on two unrelated new items in one draft: Apex + `partnership` matched
+  the existing AnySignal/Apex bus-software item (Elveo's D2D
+  manufacturing-factory deal shares nothing else with it), and Thales
+  Alenia Space + `contract` matched the existing Aerospacelab/Thales
+  IRIS2 LEO-manufacturing item (NIGCOMSAT's separate GEO satellite order
+  shares nothing else with it). Two `dedup_distinct` entries cleared both
+  in one pass, extending the long-running list (Apex now joins
+  NASA/SpaceX/Blue-Origin/Redwire/Viasat/SES/ICEYE/ESA) and confirming
+  Thales Alenia Space can trip it on a second, unrelated contract inside
+  the same week as a prior Thales item.
+- 2026-09-14-K: `finalize-sweep`'s `signalsPass.checked` gate validates
+  entries against signals-context's recorded channel URL
+  (`bsky.app/profile/<handle>`), not the actual fetch mechanism used:
+  listing the `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`
+  endpoint URLs (the one that actually returns readable content per
+  2026-09-12-J) got every entry rejected as "not a fetchable whitelisted
+  signal channel." List the `bsky.app/profile/...` URL from
+  signals-context's `fetchable[]` even when the real request goes to the
+  API endpoint.
+- 2026-09-14-L: A same-day BlackSky press release ("BlackSky's Fifth
+  Gen-3 Attains First Light in Hours") read as a fresh standalone
+  candidate from the HTML-source pass, but is the same fact already
+  folded into the existing Sept 11 Rocket Lab/BlackSky launch item via a
+  same-day patch (2026-09-11-C's item, upgraded to BlackSky's own
+  release as lead) -- caught by grepping "first light" against
+  items.json before drafting, not by finalize-sweep's dedup gate.
+- 2026-09-14-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (641 items, up from 639) and
+  a direct read of both new items' `snr`/`category`/`impact`/`tags`/
+  `companies`/`sources` fields as the build-health signal.
