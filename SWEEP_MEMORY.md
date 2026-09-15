@@ -4812,3 +4812,59 @@ a newer entry if a lesson changes.
   text (confirming the `patch.explainer` prose, not just `attach`, landed)
   as the build-health signal; `node -e`/`python3 -c` JSON-validity checks
   were blocked by the sandbox's command-approval gate this run.
+
+## Narrow re-check, ~4h20m gap, unfiltered full source list (2026-09-15, third)
+
+- 2026-09-15-J: **`finalize-sweep.ts` bug, worth a dev fix**: on an
+  `updates[]` entry that patches `source_url` to a NEW lead (the upgrade
+  path) while also attaching more sources, the merge code computes
+  `secondary_urls` from `base.secondary_urls` (the item's PRE-patch list)
+  plus each `attach` entry checked only against `base.source_url` (the
+  OLD pre-patch lead), then that computed list unconditionally overwrites
+  whatever `patch.secondary_urls` the draft supplied (object-spread order
+  in `finalize-sweep.ts` puts the computed `secondary_urls` after
+  `...patch`). Net effect on the Starship Flight-14 update this run:
+  switching lead from Teslarati to Ars Technica left Ars Technica
+  duplicated (once as `source_url`, once in `secondary_urls`) and dropped
+  Teslarati out of `secondary_urls` entirely, even though the draft's
+  patch explicitly listed Teslarati in `secondary_urls` and omitted Ars
+  Technica. Teslarati is still fully credited in the `sources` array
+  (correct SNR/trace/citation), so this is a cosmetic quick-links miss,
+  not a sourcing-integrity bug, and it can't be corrected from a sweep
+  draft (patch.secondary_urls is always discarded, and the merge code only
+  ever pushes to secondary_urls, never removes). Left as-is rather than
+  compounding it with a further patch; flagging here since scheduled/
+  interactive sweep agents must not edit `scripts/finalize-sweep.ts`
+  themselves.
+- 2026-09-15-K: A `$1.11 billion/month` SpaceX AI-computing-hosting deal,
+  disclosed by CFO Bret Johnsen at the Sept. 10 Goldman Sachs
+  Communacopia conference, was a genuine five-day-old gap: never drafted
+  by any prior sweep despite being wall-to-wall covered by finance media
+  (Yahoo Finance, Benzinga, TeslaNorth, Seeking Alpha) and clearly on
+  scope as a stated-value (nine-figure-plus) financial event of a
+  tracked company, consistent with the standing precedent that SpaceX's
+  AI-compute-hosting business (Pentagon talks, Starmind, Nvidia GPU
+  commitment) is treated as in-scope even when the specific deal is
+  terrestrial, not orbital. Benzinga, Neowin, and Qz.com all 403'd on
+  direct fetch; Yahoo Finance and TeslaNorth were the only two sources
+  that actually rendered fetchable content, which was enough for a clean
+  SNR 4 (mainstream base 3 + corroboration_2plus). Chased per the
+  predates-window rule and dated on the actual Sept. 10 disclosure date.
+- 2026-09-15-L: Google News queue entries can carry a publisher's exact
+  press-release URL as their visible title even though the link itself is
+  a `news.google.com` redirect (e.g. "Starship Flight 14 - SpaceX",
+  "Telesat and SatPort Infrastructure sign global build-to-suit
+  agreement..." style titles that read like a headline, not an outlet
+  byline). Asking WebFetch to read the source page's own listing (e.g.
+  `telesat.com/press/`) and extract the matching press release's link/URL
+  worked directly, faster than trying to resolve the Google News redirect
+  itself (which frequently fails per the standing JS-shell pattern) --
+  worth trying "find the link on the source's own listing page" before
+  giving up on a Google-News-only lead.
+- 2026-09-15-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1
+  updated, 0 held") plus a direct read of all four new items' `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields and the updated
+  Starship item's patched explainer/source_url/sources fields as the
+  build-health signal.
