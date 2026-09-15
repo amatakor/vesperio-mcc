@@ -4718,3 +4718,57 @@ a newer entry if a lesson changes.
   Zero-new-item sweep: the 40-candidate queue, 6 HTML sources, 12/17
   signals channels (3 X handles), and an 8-query discovery matrix
   surfaced nothing on-scope that wasn't already published.
+
+## Narrow re-check, ~6h43m gap, unfiltered full source list (2026-09-15)
+
+- 2026-09-15-A: An `updates[].attach` with no matching `patch` silently adds
+  a source to the card without changing any visible copy: attached
+  TechNode Global to the Sept 13 O3b mPOWER item with a note claiming it
+  "adds the operational timeline," but left `patch: {}`, so the new fact
+  (mid-2027 service entry, SES's multi-orbit strategy framing) never
+  actually appeared in `what_happened`/`why_it_matters` on the first
+  finalize-sweep run. Caught by re-reading the merged item's explainer
+  text after merge; fixed with a second, same-sweep finalize-sweep pass
+  carrying the actual `patch.explainer` fields. When a draft's `note`
+  describes new copy, the `patch` block must carry that copy; `attach`
+  alone only adds a citation, it never edits prose.
+- 2026-09-15-B: A same-day Axios headline ("How SpaceX bought 125,000
+  acres of Louisiana's coast") read as a fresh detail on top of the
+  already-published Aug 25 Starbase Louisiana item, but axios.com 403'd
+  on every direct-fetch attempt and the one new-sounding fact a WebSearch
+  surfaced (a ~$100M land-purchase price SpaceX paid) could not be
+  confirmed on any other directly-fetchable page; left the existing item
+  unpatched per the standing "only cite pages with genuinely fetched
+  content" rule rather than add an unverified WebSearch-summary figure.
+- 2026-09-15-C: A Google-News "Starlink inches closer to India
+  availability" (Advanced Television) headline 403'd on direct fetch;
+  WebSearch traced the underlying fact to India's DCC approving most of
+  TRAI's satellite-spectrum recommendations on September 2-3, still
+  pending Union Cabinet sign-off before commercial launch -- a
+  process-not-yet-fact exclusion (same standard as the T-Mobile/Sateliot
+  and Grain Management precedents) compounded by being 12-13 days stale
+  with no confirmed final market-access grant; left undrafted.
+- 2026-09-15-D: A SpaceNews profile piece on ICEYE's growth strategy
+  (€1.5B+ backlog, 2-satellites-per-week production target by end of
+  2027, a "Constellation Europe" 1,000+-satellite federated-network
+  concept floated by the CEO) bundled genuinely new figures with already-
+  published facts (the Arianespace MoU) and a speculative, unfunded
+  concept rather than a concrete announcement -- left undrafted as a
+  trend/strategy piece per the standing "bundles old facts, no single
+  dateable new event" pattern (2026-09-04-T and peers), though the
+  backlog figure and Constellation Europe concept may be worth a second
+  look if ICEYE later attaches a contract or funding commitment to it.
+- 2026-09-15-E: The standing same-company-plus-category dedup false
+  positive fired on a new KDDI/SpaceX Starlink Mobile V2 carrier contract
+  (category `contract`) against the already-published SpaceX Starfall/
+  Space Cargo item, sharing only company SpaceX + category + same-day
+  window -- one `dedup_distinct` entry cleared it, extending the
+  long-running list to a case where SpaceX is only the second-named
+  company (KDDI is first) on the new item.
+- 2026-09-15-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1
+  updated, 0 held", then a same-sweep follow-up "merged 0 new, 1 updated,
+  0 held") plus a `jq` parse check (649 items, up from 644) and a direct
+  read of all five new items' `snr`/`category`/`impact` fields and the
+  corrected O3b mPOWER explainer text as the build-health signal.
