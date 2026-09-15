@@ -4772,3 +4772,43 @@ a newer entry if a lesson changes.
   0 held") plus a `jq` parse check (649 items, up from 644) and a direct
   read of all five new items' `snr`/`category`/`impact` fields and the
   corrected O3b mPOWER explainer text as the build-health signal.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-15, second)
+
+- 2026-09-15-G: `dedup_distinct` must sit at the TOP LEVEL of a `newItems[]`
+  entry, not nested inside its `scoring` block: nesting it under `scoring`
+  produced the exact same "same-event match... unattested" rejection as
+  omitting it entirely, because the gate reads `raw.dedup_distinct` off the
+  item object itself. Confirmed by reading `finalize-sweep.ts`'s gate code
+  directly after a first rejected draft; the prompt's own example (`on the
+  item`) already says this, but it is easy to slot it next to `whitelist`/
+  `crawl` inside `scoring` by analogy with the `sources` array. Two genuine
+  same-company-plus-category false positives this run (a Senegal Starlink
+  regulatory item against two unrelated US FCC items; a new SES/Elveo Sept
+  15 partnership-expansion item against both the Aug 17 SES/Elveo
+  investment item and the unrelated Sept 14 Elveo/Apex US-factory item)
+  both cleared once moved to the item's top level.
+- 2026-09-15-H: A Google News-sourced Morningstar mirror headline
+  ("Arcfield's Orion Space Solutions to provide upgraded Spectre EO/IR
+  payload and RF sensor suite for Tomorrow.io's DeepSky") could not be
+  resolved to a live source this run: the news.google.com redirect page
+  would not resolve via WebFetch (no meta-refresh/canonical text visible to
+  the fetcher, consistent with the standing Google News JS-shell pattern),
+  and targeted WebSearch queries for the exact wire-copy text and for
+  Arcfield/Orion + Spectre + Tomorrow.io together surfaced only older,
+  unrelated Orion Space Solutions press releases (a March 2026 $24M
+  proprietary-customer award, an EWS/RROCI product-launch piece) and the
+  already-published York Space/DeepSky contract, never this specific
+  payload deal. Left undrafted per the "never state a fact not in a
+  fetched source" rule rather than guess it's the same as the March award.
+  Worth a second look if a future sweep's queue carries the underlying
+  PRNewswire/BusinessWire/GlobeNewswire URL directly instead of a
+  Morningstar/Google-News mirror.
+- 2026-09-15-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 3
+  updated, 0 held") and a direct read of both new items' `snr`/`category`/
+  `impact`/`sources` fields and all three patched items' `what_happened`
+  text (confirming the `patch.explainer` prose, not just `attach`, landed)
+  as the build-health signal; `node -e`/`python3 -c` JSON-validity checks
+  were blocked by the sandbox's command-approval gate this run.
