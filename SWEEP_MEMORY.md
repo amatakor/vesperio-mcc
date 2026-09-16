@@ -4840,3 +4840,60 @@ a newer entry if a lesson changes.
   collapse log entry in `state.json` (SEC 8-K exhibit vs. Rocket Lab IR
   page correctly collapsed as a wire rewrite), and the updated BlackSky
   item's newly attached `sources` as the build-health signal.
+
+## Narrow re-check, ~6h34m gap, unfiltered full source list (2026-09-16, second)
+
+- 2026-09-16-G: An exact-quoted-headline corroboration search for a
+  Tech Times-only iQPS/Mitsubishi Heavy Industries H3 rideshare story
+  (three QPS-SAR satellites, Sept 14) initially surfaced what looked
+  like a contradicting fact -- an unrelated June 12, 2026 H3 flight that
+  already carried a single iQPS SAR satellite as a hitchhiker payload --
+  which briefly read as evidence the "first commercial SAR constellation
+  customer" framing was fabricated or conflated. A follow-up search
+  specifically for "Space Strategy Fund" + iQPS + H3 (rather than the
+  exact headline) found genuine independent corroboration on
+  economiadellospazio.it (Italian trade outlet, matching facts: three
+  QPS-SAR satellites, Sept 14, Space Strategy Fund backing), confirming
+  the Sept 14 story as a real, distinct, larger dedicated-rideshare deal
+  rather than a restatement of the June hitchhiker slot. Worth
+  remembering: a single quoted-headline search surfacing an older,
+  superficially similar story is not itself proof of fabrication or
+  duplication; a second search varied on distinguishing details (program
+  name, funding source, exact satellite count) before discarding a
+  single-source lead as unreliable.
+- 2026-09-16-H: Marco Langbroek's bluesky.social feed (one of the 17
+  fetchable signals channels) is running almost entirely off-topic Dutch
+  political content (farmer protests, AntiFa, Prinsjesdag) this window,
+  not space-debris/reentry tracking; still checked in full per the
+  mandatory-fetchable rule, but a useful expectation-setter for future
+  sweeps skimming this channel under time pressure.
+- 2026-09-16-I: OrienSpace/Gravity-1 flight-numbering is inconsistent
+  across the launch provider's own coverage: CGTN's Sept 16 piece calls
+  today's flight "Gravity-1 Y3" and "Gravity-1's fourth flight," while
+  CGTN's own July 22 piece was headlined "Gravity-1 Y4" and SpaceNews
+  called that same July 22 flight "its third Gravity-1 mission" (already
+  published as `2026-07-22-orienspace-gravity-1-launch`). Left the
+  registry crossfeed's `orienspace.flights_total` fact unattested this
+  run rather than trust either single-source count, given the standing
+  cited page contradicts itself across two of its own articles; worth a
+  same-metric re-check once a source states a flight count that doesn't
+  conflict with its own prior reporting.
+- 2026-09-16-J: A Vantor blog post (candidates queue entry, "Vantor, UK
+  Ministry of Defence and Industry Partners Establish Defence
+  Intelligence Innovation Cluster - Project FAIRFAX") carried a dateline
+  of "Sep. 17, 2026," one day ahead of the actual fetch time -- left
+  undrafted not because of the date anomaly itself but because the
+  underlying event (the RAF Wyton collaboration hub) had already opened
+  Aug 27, 2026 and been reported by GOV.UK/DPRTE weeks earlier, and
+  Vantor's own post added no financial figure or new scope beyond
+  naming itself a founding partner (per the standing thin/predates-
+  window pattern). Worth a second look only if a future release states a
+  contract value tied to the hub.
+- 2026-09-16-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") plus a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields and the
+  `corroboration_collapses` log entry (MDA CHORUS: mda.space vs. PR
+  Newswire correctly collapsed as a wire rewrite) as the build-health
+  signal.
