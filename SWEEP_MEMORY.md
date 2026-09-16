@@ -4948,3 +4948,40 @@ a newer entry if a lesson changes.
   `funding_latest`, and the `corroboration_collapses` log entry
   (Yaogan-50 breakup: space4peace.org vs. SpaceNews correctly collapsed
   as a wire rewrite) as the build-health signal.
+
+## Narrow re-check, ~4h13m gap, unfiltered full source list (2026-09-16, fourth)
+
+- 2026-09-16-P: `finalize-sweep.ts`'s whitelist anti-spoof match
+  (`matchWhitelistChannel`) is a strict path-prefix match against the
+  signals.json channel URL (e.g. `youtube.com/@scottmanley`); a specific
+  video's `youtube.com/watch?v=...` URL never prefixes under the channel
+  URL, so no YouTube video candidate can ever pass as `class: "whitelist"`
+  no matter how clearly it came from that channel's own feed. Classed the
+  Scott Manley China-rocket-designs commentary source `informal` instead
+  (per the standing 2026-09-16-B precedent for the same shape of gap): the
+  fact and attribution still publish honestly, just without the tier-4
+  observer floor. Worth a dev fix (match the channel's recorded RSS
+  `channel_id` against the video's own channel, not the watch URL path)
+  but not something a sweep draft can work around otherwise.
+- 2026-09-16-Q: A same-company-plus-category dedup false positive fired on
+  a new NASA Roman Space Telescope instrument-activation item against the
+  unrelated Sept 10 ESA EnVision Venus/NASA-radar-instrument item (shared
+  company NASA, category `science`, within 7 days). One `dedup_distinct`
+  entry at the item's top level cleared it; same recurring shape as the
+  2026-09-16-N SpaceX/launch cases, now confirmed for `science` too.
+- 2026-09-16-R: A Google News "Starlink Mobile Lands in Panama" item
+  (BASENOR, a low-quality SEO mirror) traced back via WebSearch to a
+  +Móvil/Panama D2D announcement from Move On 2026 in May 2026, not a new
+  September event; the service itself was stated to begin "at the end of
+  this year," a process-not-yet-fact exclusion on top of being stale.
+  Left undrafted. A same-queue Mashable "Starlink partners for rural phone
+  service" item and a Fierce Network "SpaceX sees mostly friendly skies
+  from rural carriers" item both read as generic Starlink-D2D roundups
+  tied to the same World Space Business Week panel discussions, not a
+  single new dateable event; also left undrafted.
+- 2026-09-16-S: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a direct read of both new items' `snr`/
+  `snr_trace`/`category`/`impact`/`kind`/`companies` fields as the
+  build-health signal.
