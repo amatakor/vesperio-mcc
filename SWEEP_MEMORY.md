@@ -93,90 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h52m gap, unfiltered full source list (2026-08-16)
-
-- 2026-08-16-A: A missile strike on a launch-vehicle PRODUCTION FACILITY
-  (Ukraine's Flamingo strike on RKTs Progress in Samara, Russia's sole
-  Soyuz-2 integration line) is a clean geopolitical-carve-in case, not a
-  conflict-analysis exclusion: unlike the Elektrostal/Rogozin battlefield-
-  imagery precedents (2026-07-15-I, 2026-07-20-G), this reports damage to
-  commercial-relevant manufacturing infrastructure (Soyuz-2 also launches
-  Bureau 1440's Rassvet constellation), on the record from both Zelensky/
-  Ukraine's General Staff and the Samara governor, without analysing troop
-  movements or operational use of any space asset. Led with SpacePolicyOnline
-  (whitelist, observer, floors at 4) since Marcia Smith's site is both a
-  sources.json-adjacent signals channel and independently corroborated by
-  Kyiv Independent (mainstream) and Euromaidan Press (informal); the direct-
-  source ceiling caps a whitelist-observer lead at 4 regardless of
-  corroboration count. Wrote the copy to attribute every damage claim
-  explicitly (Ukrainian officials say X; Russian officials confirm only an
-  unnamed facility was hit; independent outlets say the specifics are
-  unverified) rather than asserting Progress was confirmed hit.
-- 2026-08-16-B: A genuine engineering-milestone launch item (SpaceX's
-  38.5-minute Falcon 9 doubleheader, beating its prior cadence record, plus
-  a 650th Falcon booster landing) tripped the same-company-plus-category
-  dedup heuristic against TWO separate existing SpaceX `launch` items inside
-  the 7-day window (an Aug 11 Starlink batch, an Aug 8 Starlink batch),
-  needing two `dedup_distinct` entries in the same item rather than one --
-  first confirmed case of the heuristic requiring multiple entries on a
-  single new item. space.com and spacex.com both continue to fail to render
-  body content via WebFetch (nav/JS-shell only, per the long-standing
-  pattern); spaceflightnow.com and a foreign mainstream mirror (el-balad.com)
-  both fetched cleanly with matching verbatim figures (38.5 min, B1090 14th
-  flight, B1088 18th flight, 650th landing), enough for corroboration
-  without either blocked domain.
-- 2026-08-16-C: Two "process not yet fact" exclusions confirmed on new
-  shapes: NASA's upcoming CLPS task orders (an orbiter to replace LRO, per
-  SpaceNews) are unawarded, no contract yet; and the Senate's passage of the
-  Space Commerce Advisory Committee Act (Marcia Smith's Bluesky, Aug 6
-  passage) creates a committee with no stated commercial-market consequence,
-  same shape as the standing NDAA-passage exclusion (2026-07-23-H) -- left
-  undrafted despite sitting untouched in the record since first flagged by
-  2026-08-11-C, confirming that entry's "genuinely new find" was never
-  actually draftable, just newly surfaced.
-- 2026-08-16-D: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate on the first attempt,
-  continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0 updated, 0
-  held") plus a direct read of both new items' `snr`/`category`/`impact`
-  fields as the build-health signal.
-
-## Normal-mode sweep, ~11h50m gap, unfiltered full source list (2026-08-16, second)
-
-- 2026-08-16-E: A company's own press release about "its" government award
-  can be a narrower slice of a multi-company program story that surfaces
-  days later: Firefly's August 13 first-party release only described its
-  own Elytra-based DIU/SDA deorbit-design contract, but SpaceNews and
-  Defense Daily reported August 16 that the same DIU/SDA "deorbit-as-a-
-  service" program also tapped D-Orbit and Katalyst, with a combined
-  ~$8.4 million value and an end-of-2026 PDR timeline neither in Firefly's
-  own copy. Treated as a same-event `updates[].patch` (broadened headline,
-  companies, and copy) rather than a new item, per the standing dedup rule
-  -- worth checking a single-company award announcement against a
-  same-agency multi-company program angle before assuming the company's
-  own release is the complete picture.
-- 2026-08-16-F: SES's press-releases listing page shows its most recent
-  item with no rendered date at all (top slot, undated in the page
-  extract) while every item below it carries one -- this turned out to be
-  a stale repeat of the already-published August 7 IRIS2 MEO release, not
-  a new one. A listing position at the top of a company newsroom page is
-  not itself a freshness signal when the date field is missing; confirm
-  via the article's own URL/search results before treating it as new.
-- 2026-08-16-G: All 8 Bluesky feeds checked this session (Aschbacher,
-  Langbroek, Henry, Farrar, Berger, Foust, SpacePolicyOnline, Zak, Andrew
-  Jones, Parsonson -- 10 checked, 8 non-Aschbacher/Jones topped out stale)
-  topped out days-to-weeks before `lastSweep`, extending the standing
-  per-session/per-account flakiness pattern (2026-07-19-B and many peers)
-  to a run where literally every checked account was stale simultaneously;
-  none of this run's 3 new items or 1 update came from the signals pass.
-- 2026-08-16-H: The Google News redirect for a Business Insider Africa
-  story (Airtel/Starlink DRC satellite-to-mobile launch) rendered only a
-  bare "Google News" header via WebFetch, continuing the standing
-  redirect-failure pattern (2026-07-19-I); a WebSearch on the headline
-  text surfaced three independently-written trade outlets (Space in
-  Africa, Developing Telecoms, TechMoran) directly, which was faster than
-  chasing the redirect and gave three fetchable pages instead of one.
-
 ## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-17)
 
 - 2026-08-17-A: Several Aug 10-12 preview articles (techtimes, srpske.rs,
@@ -4868,3 +4784,59 @@ a newer entry if a lesson changes.
   `snr_trace`/`category`/`impact`/`sources` fields and the updated
   Starship item's patched explainer/source_url/sources fields as the
   build-health signal.
+
+## Narrow re-check, ~7h17m gap, unfiltered full source list (2026-09-16)
+
+- 2026-09-16-A: A discovery-pass find (Loft Orbital/Marlan Space's $1B
+  Altair-Next Gen AI-constellation deal, via Satellite/SatNews/Space Intel
+  Report/The Next Web) that read as a genuine predates-window gap turned
+  out to already be published under a different actor-first headline
+  ("BlackSky named exclusive imager for $1 billion Altair-Next Gen AI
+  satellite network", 2026-09-09) -- the same-event dedup check missed it
+  on a first pass because I searched existing[] for "loft orbital" and
+  "orbitworks" but not the lead company BlackSky used in its own headline.
+  finalize-sweep's same-event gate caught it on the first submit
+  ("shared company, category contract, within 7 days"). Worth grepping
+  existing[] by every named company in a multi-party deal, not just the
+  ones foregrounded in the sources you happened to read first, before
+  concluding something predates the window.
+- 2026-09-16-B: Confirmed the anti-spoof gate's registry-host check is a
+  hard blocker, not just a nudge: a real, fetched, on-topic company page
+  (orbitworks.space, the JV's own announcement of its own $1B raise) fails
+  `first_party` because Loft Orbital/Marlan Space/Orbitworks have no
+  registry organization profile to match the URL's host against, and the
+  gate's error message names the fix (reclassify wire_pr/trade/informal)
+  rather than accepting the class on the strength of the fetched content
+  alone. Classed it `informal` per the hint; the fact and its attribution
+  still publish honestly, just without the tier-5 floor a first-party
+  class would otherwise earn.
+- 2026-09-16-C: A same-day Gravity-1 (Yao-3/"遥三") sea launch from Haiyang
+  scheduled for the morning of Sept 16 Beijing time (~21:55 UTC Sept 15)
+  carrying an unconfirmed SpaceSail/Qianfan-style LEO batch had no
+  post-launch outcome reported by any outlet (English or Chinese-language
+  search) as of ~7.5 hours after the scheduled window; left undrafted per
+  "never state a fact not in a fetched source" rather than assume success
+  from the scheduled-launch coverage alone. Worth a same-day re-check next
+  sweep for the actual result once trade press (SpaceNews, NASASpaceflight)
+  or Gunter's catches up.
+- 2026-09-16-D: A signals-pass find (Aviation Week's Vivienne Machi,
+  Sept 15: "Space Force To Award New Resilient-GPS Contracts" to Astranis,
+  L3Harris, and Sierra Space, funded by a $15M congressional add-on) is a
+  clean process-not-yet-fact exclusion: the article itself says the awards
+  are expected "shortly," not yet made, matching the standing CLPS/NDAA
+  pre-award pattern (2026-08-16-C and peers). Left undrafted; worth
+  chasing once Space Systems Command actually announces the awards.
+- 2026-09-16-E: A KELOLAND "possible space debris" viewer-video story
+  (South Dakota, overnight Sept 15) was walked back in the same article by
+  a named physics professor as most likely the Chi Cygnids meteor shower,
+  not debris -- a useful reminder that "possible space debris" local-news
+  headlines need the same skepticism as any other unconfirmed-attribution
+  incident claim before drafting under the `incident` category.
+- 2026-09-16-F: `bun run build`, `bun scripts/check-feed.ts`, and even a
+  bare `python3 -c` JSON-validity check were all denied by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 1 updated, 0 held") plus a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact` fields, the corroboration-
+  collapse log entry in `state.json` (SEC 8-K exhibit vs. Rocket Lab IR
+  page correctly collapsed as a wire rewrite), and the updated BlackSky
+  item's newly attached `sources` as the build-health signal.
