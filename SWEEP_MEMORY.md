@@ -4897,3 +4897,54 @@ a newer entry if a lesson changes.
   `corroboration_collapses` log entry (MDA CHORUS: mda.space vs. PR
   Newswire correctly collapsed as a wire rewrite) as the build-health
   signal.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-16, third)
+
+- 2026-09-16-L: Google News queue entries for a Sept 16 SpaceNews piece
+  ("Space Force gives SpaceX latitude on design of $2.3 billion satellite
+  network") and an Aviation Week piece ("L3Harris Builds Xoople
+  Earth-Observation Satellites For 2028 Launch") both resolved by
+  guessing the SpaceNews slug pattern directly (worked, partial paywalled
+  content still gave headline/byline/date/facts) versus Aviation Week,
+  which stayed fully paywalled (login-wall redirect) with no other
+  fetchable page confirming the "2028" launch date claimed only in the
+  Google News title; left the Xoople lead undrafted per "never state a
+  fact not in a fetched source" rather than trust an unverified headline.
+  Worth trying the direct-slug-guess trick on other spacenews.com Google
+  News redirects before giving up on them.
+- 2026-09-16-M: An important debris incident (Yaogan-50 (02) breaking
+  into 43 tracked fragments in a rare 141-142 degree retrograde orbit)
+  predated the window by 12 days (event/report date Sept 4) and never
+  surfaced in the harvested queue at all; only a discovery-pass query on
+  "satellite debris reentry incident collision" found it. Chased per the
+  predates-window rule: found the actual SpaceNews piece (Andrew Jones)
+  via a WebSearch for the exact headline after an aggregator (space4peace)
+  credited it as the original source, plus Jonathan McDowell's original
+  X post fetched verbatim via the syndication endpoint (whitelist
+  observer floor, since he first reported the catalog numbers). The
+  aggregator copy collapsed automatically as a wire-rewrite of the
+  SpaceNews piece at finalize, confirming the collapse logic also catches
+  informal aggregator rewrites of trade-press originals, not just
+  wire-service copies.
+- 2026-09-16-N: Three same-company-plus-category dedup false positives
+  fired in one draft: an Avio-CEO commentary item (companies
+  ["Avio","SpaceX"], category "launch") matched THREE unrelated existing
+  SpaceX-adjacent launch items (a Vandenberg Starlink batch, USSF-153,
+  and even the unrelated ESA Vega-C/Sentinel-3C launch, apparently via
+  the "launch" category alone once any company overlap exists), and a
+  Space Force/SpaceX procurement-approach item matched an unrelated UK
+  MoD Starshield-spending item on shared company + category alone. Three
+  `dedup_distinct` entries (at the item's top level, per the 2026-09-15-G
+  lesson) cleared both. Commentary items and pure-approach/regulatory
+  items sharing a company with several unrelated hard-news items in the
+  same category is looking like a recurring shape for this false
+  positive, not just same-day partnership overlaps.
+- 2026-09-16-O: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 7 new, 0
+  updated, 0 held") plus a direct read of all seven new items'
+  `snr`/`category`/`impact`/`kind`/`tags`/`companies`/`sources` fields,
+  the `registry-candidates.json` queue entry for Impulse Space's
+  `funding_latest`, and the `corroboration_collapses` log entry
+  (Yaogan-50 breakup: space4peace.org vs. SpaceNews correctly collapsed
+  as a wire rewrite) as the build-health signal.
