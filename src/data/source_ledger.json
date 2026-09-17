@@ -1,7 +1,7 @@
 {
   "$comment": "Source reliability ledger (SNR_SPEC.md 7.1, contract in SNR_PLAN.md A4). Machine-owned: updated only by scheduled runs; human-auditable via the rendered report. Rolling 90-day window for demotion/recovery decisions; claims records power the calibration report and are written at scoring time, never reconstructed.",
   "version": "0.1",
-  "updated": "2026-09-17T05:30:50.163Z",
+  "updated": "2026-09-17T10:37:48.213Z",
   "sources": [
     {
       "domain": "spacenews.com",
@@ -916,7 +916,8 @@
           "claim": "2026-08-25-faa-spaceport-launch-corridor-rfi",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-03-galaxia-simera-sense-hyperscape100",
@@ -1175,7 +1176,8 @@
           "claim": "2026-09-02-york-space-systems-vleo-platform",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-04-isaacman-commercial-not-cure-all",
@@ -1396,13 +1398,15 @@
           "claim": "2026-09-01-pld-space-series-c-extension",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-02-hyimpulse-series-a-extension",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-08-25-arcspace-seed-funding-orbital-welding",
@@ -1510,13 +1514,15 @@
           "claim": "2026-09-01-telesat-cailabs-optical-connectivity",
           "date": "2026-09-01",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-02-farcast-telesat-lightspeed-antenna-demo",
           "date": "2026-09-02",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-15-telesat-satport-ground-segment-msa",
@@ -1669,7 +1675,8 @@
           "claim": "2026-09-03-planet-european-defense-intelligence-agreement",
           "date": "2026-09-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-15-planet-bkg-german-federal-contract",
@@ -1762,19 +1769,28 @@
           "claim": "2026-09-01-nasa-blue-origin-mars-telecommunications-network",
           "date": "2026-09-01",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-08-31-turkey-artemis-accords",
           "date": "2026-09-02",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
     {
       "domain": "www.satellitetoday.com",
-      "events": [],
+      "events": [
+        {
+          "date": "2026-09-17",
+          "kind": "strike",
+          "claim": "2026-09-02-boeing-ses-o3b-mpower-final-satellites",
+          "reason": "lost a same-metric contradiction (dispute modifier on the item)"
+        }
+      ],
       "claims": [
         {
           "claim": "2026-07-06-cesiumastro-synchronicity-fcc-filing",
@@ -2158,7 +2174,8 @@
           "claim": "2026-09-01-kymeta-dod-osprey-u8-order",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-01-intuitive-machines-im300-two-satellite-order",
@@ -2170,13 +2187,15 @@
           "claim": "2026-09-01-inmarsat-maritime-safety-data-hub",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-02-boeing-ses-o3b-mpower-final-satellites",
           "date": "2026-09-02",
           "snr_at_publication": 1,
-          "resolution": "unresolved"
+          "resolution": "debunked",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-04-st-engineering-idirect-5g-ntn-modem",
@@ -2252,7 +2271,8 @@
           "claim": "2026-09-02-rocket-lab-synspective-strix-11",
           "date": "2026-09-02",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-08-satellogic-whitworth-president",
@@ -4044,7 +4064,8 @@
           "claim": "2026-09-03-ses-peruvian-navy-multi-orbit",
           "date": "2026-09-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-11-ses-core-content-platform",
@@ -4082,7 +4103,14 @@
     },
     {
       "domain": "www.thalesaleniaspace.com",
-      "events": [],
+      "events": [
+        {
+          "date": "2026-09-17",
+          "kind": "strike",
+          "claim": "2026-06-10-esa-thales-alenia-sentinel-1-ng-contract",
+          "reason": "lost a same-metric contradiction (dispute modifier on the item)"
+        }
+      ],
       "claims": [
         {
           "claim": "2026-07-29-prisma-second-generation-contract",
@@ -4102,7 +4130,8 @@
           "claim": "2026-06-10-esa-thales-alenia-sentinel-1-ng-contract",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "debunked",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-14-nigcomsat-2a-thales-alenia",
@@ -4246,7 +4275,8 @@
           "claim": "2026-09-01-galactic-energy-pallas-1-debut-launch",
           "date": "2026-09-01",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-17-guowang-25th-group-hainan",
@@ -4696,7 +4726,8 @@
           "claim": "2026-09-02-project-s-munich-seed-funding",
           "date": "2026-09-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-08-04-ast-spacemobile-japan-d2c-launch",
@@ -5024,7 +5055,8 @@
           "claim": "2026-09-01-kepler-aerospace-india-seed-round",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-08-galaxeye-optosar-us-patent",
@@ -5042,7 +5074,8 @@
           "claim": "2026-09-01-vantor-niwc-maritime-sentry-indo-pacific",
           "date": "2026-09-01",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5054,7 +5087,8 @@
           "claim": "2026-07-02-airbus-esa-aeolus-2-contract",
           "date": "2026-09-01",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5066,19 +5100,28 @@
           "claim": "2026-09-01-spacex-starship-flight-14-fcc-orbital-filing",
           "date": "2026-09-01",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
     {
       "domain": "www.01net.it",
-      "events": [],
+      "events": [
+        {
+          "date": "2026-09-17",
+          "kind": "strike",
+          "claim": "2026-09-02-axelspace-airbus-imagery-partnership",
+          "reason": "lost a same-metric contradiction (dispute modifier on the item)"
+        }
+      ],
       "claims": [
         {
           "claim": "2026-09-02-axelspace-airbus-imagery-partnership",
           "date": "2026-09-02",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "debunked",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-10-u-space-tenchijin-infrared-eo-partnership",
@@ -5096,7 +5139,8 @@
           "claim": "2026-09-02-4ig-spacex-starlink-mobile-europe",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5108,7 +5152,8 @@
           "claim": "2026-09-02-sas-starlink-a320neo-fleet-complete",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5132,7 +5177,8 @@
           "claim": "2026-09-02-sierra-space-dream-chaser-payload-contracts",
           "date": "2026-09-02",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5144,7 +5190,8 @@
           "claim": "2026-09-02-proton-pm-fire-perm",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5156,7 +5203,8 @@
           "claim": "2026-09-02-astroscale-isar-adras-j2-launch",
           "date": "2026-09-02",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5168,7 +5216,8 @@
           "claim": "2026-08-28-uae-starlink-license",
           "date": "2026-09-02",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
@@ -5204,7 +5253,8 @@
           "claim": "2026-09-03-kineis-netmore-hybrid-iot-partnership",
           "date": "2026-09-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         },
         {
           "claim": "2026-09-07-kineis-break-even-2026",
@@ -5222,7 +5272,8 @@
           "claim": "2026-09-03-satellogic-synmax-merlin-maritime-exclusive",
           "date": "2026-09-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-09-17"
         }
       ]
     },
