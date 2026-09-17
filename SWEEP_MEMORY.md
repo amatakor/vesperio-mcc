@@ -4913,3 +4913,31 @@ a newer entry if a lesson changes.
   `registry-candidates.json` flag_refresh entries for `guowang`, and the
   three automatic persistence bumps logged in the sweep entry as the
   build-health signal.
+
+## Narrow re-check, ~6h38m gap, unfiltered full source list (2026-09-17, second)
+
+- 2026-09-17-D: The anti-spoof `first_party` host check (2026-09-16-B) runs
+  against ALL registry entity types, not just organizations: Vantor's own
+  blog (vantor.com) passed as `first_party` because a `vantor.json`
+  CONSTELLATION profile exists with that domain, even though no Vantor
+  ORGANIZATION profile does. EnduroSat and Kymeta have no registry entity
+  at all (no organization, constellation, vehicle, or spaceport profile),
+  so their own-domain press pages were rejected and reclassified
+  `informal` per the standing precedent. Worth checking all four registry
+  subdirectories (not just organizations/) before assuming a company's own
+  domain will fail the gate.
+- 2026-09-17-E: Two same-day EnduroSat announcements (a $205M funding round
+  and Vantor's Pulse constellation contract) are genuinely distinct events
+  but share the company and land in adjacent categories; the same-event
+  gate matched the Pulse item against the OLDER, unrelated
+  `2026-09-10-trustpoint-endurosat-gnss-constellation` contract (shared
+  company EnduroSat, category `contract`, within 7 days) rather than
+  against the same-sweep funding item. `dedup_distinct` needs to name the
+  actual existing item the gate flags, not just whichever other new draft
+  item seems like the obvious collision; when in doubt, add entries for
+  every plausible match.
+- 2026-09-17-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 0
+  updated, 0 held") plus a direct read of all five new items'
+  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
