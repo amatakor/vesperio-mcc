@@ -4941,3 +4941,49 @@ a newer entry if a lesson changes.
   on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 0
   updated, 0 held") plus a direct read of all five new items'
   `snr`/`category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~4h20m gap, unfiltered full source list (2026-09-17, third)
+
+- 2026-09-17-G: A near-total-junk queue (32 candidates, almost entirely
+  SpaceX stock/Starship-delay financial-press churn and Futurism off-topic
+  content) still yielded two genuinely new items via the discovery pass's
+  own confirmation follow-through: a same-day Breaking Defense/DefenseScoop
+  briefing naming the Space Force's Ground Moving Target Indicator program
+  "Resilient Radar System-Ground (RRS-G)" with Northrop Grumman confirmed
+  as prime (no dollar figure disclosed), and a same-day GlobeNewswire/TV
+  Technology United Airlines/DISH live-football-on-Starlink rollout. Both
+  were genuinely undrafted (grepped items.json for "RRS-G"/"GMTI"/
+  "Northrop" and "United"/"Dish" first).
+- 2026-09-17-H: A Google News "Nuri rocket launch...South Korea's first
+  microsatellite constellation" headline (TechRadar, dated in-window) traced
+  via WebSearch to a launch actually scheduled for Oct. 7, not yet flown;
+  left undrafted per the standing don't-draft-a-scheduled-launch rule. A
+  same-day CZ-12 Wenchang commercial-pad launch (confirmed via PhilSA's own
+  debris-advisory) had no named payload or confirmed outcome in any source
+  found; left undrafted as too thin per rule 2 rather than assume success.
+  Confirms the standing pattern that a scheduled/outcome-unconfirmed launch
+  stays out even when the launch itself is real and dateable.
+  Caixin Global (English edition of a mainstream Chinese financial daily)
+  had no prior classification precedent in this file; treated as
+  `mainstream` (same tier as SCMP), used as the sole fetchable lead for a
+  Space Epoch reusable-rocket funding round after SpaceNews's own writeup
+  429'd on every attempt (two tries) -- landed an honest single-source SNR 2
+  (`crawl: "found_none"`) per the standing rule that a WebSearch-confirmed-
+  to-exist-but-unfetchable page is never citable, even when other
+  independent coverage (SpaceNews, china-in-space.com) clearly exists.
+- 2026-09-17-I: Two signals-pass leads were recognized as already-published
+  same-day rehashes before drafting: Andrew Parsonson's Sept. 16 Avio-CEO
+  "customers turned away by SpaceX" bluesky post is the same earnings-call
+  quote already published as `2026-09-10-avio-ceo-spacex-capacity-
+  commentary`, and his Sept. 17 grid-fins/MR10-reignition post is just more
+  technical detail on the already-published `2026-09-10-avio-fd1-
+  integration-complete` (itself a suborbital demonstrator, per the standing
+  2026-09-11-I exclusion for the vehicle's eventual flight, not the
+  integration-milestone item). Both grepped against items.json before any
+  drafting time was spent.
+- 2026-09-17-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
+  updated, 0 held") plus a direct read of all three new items' and both
+  updated items' `snr`/`category`/`impact`/`sources` fields as the
+  build-health signal.
