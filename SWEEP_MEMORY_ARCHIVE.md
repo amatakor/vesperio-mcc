@@ -5336,3 +5336,105 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   Africa, Developing Telecoms, TechMoran) directly, which was faster than
   chasing the redirect and gave three fetchable pages instead of one.
 
+## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-17)
+
+- 2026-08-17-A: Several Aug 10-12 preview articles (techtimes, srpske.rs,
+  BigGo Finance, a stray thedefensenews.com hit whose title matched but
+  whose body was actually about the December 2025 first flight) all read
+  as if LandSpace's Zhuque-3 second flight and land-landing attempt had
+  already happened and failed again, but a direct check of Wikipedia's
+  own Zhuque-3 launches table showed the Y2 flight still marked "TBD" /
+  "Planned", and a Chinese-language search confirmed the August 11
+  Beijing-time launch window had been postponed with no new window
+  announced as of August 12. Left undrafted rather than risk a wrongly
+  timed "second landing attempt failed" claim on a launch that, per the
+  best available record, had not yet flown; extends 2026-07-22-F's
+  "a WebFetch/search summary calling something a debut/result is not
+  proof" lesson to booster-recovery outcomes specifically, and adds a
+  new check: a registry-style launch-manifest page (Wikipedia, Gunter's)
+  is a fast, reliable status check when preview coverage and result
+  coverage are tangled together under near-identical headlines.
+- 2026-08-17-B: presse.cnes.fr/fr (the sources.json-recorded CNES press
+  URL) now 301-redirects to cnes.fr/presse, a different path on the same
+  apex domain; fetched cleanly either way, newest release still July 9,
+  2026 (out of window). Worth updating the stored URL at the next
+  structural touch, same as the Redwire/rdw.com and Maxar/Vantor
+  precedents, though here it is same-apex-domain so first_party matching
+  is unaffected, unlike those full-rebrand cases.
+- 2026-08-17-C: A quiet, thorough sweep: harvester queue (304 consumed)
+  was almost entirely SpaceX stock-disclosure/IPO-stake and Starlink
+  lifestyle noise (fishing livestreams, Cybercab integration, flood
+  relief deployments) with zero genuine drafts from the queue itself
+  except one SpaceNews entry; all 10 HTML sources, all 17 signals
+  channels (full coverage, no rotation needed), and an 8-query discovery
+  matrix surfaced nothing else new in window. The single item shipped
+  (Lynk/Omnispace's completed merger into Elveo Mobile) led on
+  `wire_pr` (PR Newswire, base tier 4) rather than `first_party` since
+  neither merging company nor the combined entity has a
+  src/data/registry organization entry — the no-registry-host workaround
+  applies to press releases the actor distributes via wire, not just
+  its own domain.
+- 2026-08-17-D: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct read of the merged item's
+  `snr`/`category`/`impact`/`snr_trace` fields as the build-health
+  signal.
+
+## Normal-mode sweep, ~11h52m gap, unfiltered full source list (2026-08-17, second)
+
+- 2026-08-17-E: `ulalaunch.com/about/news` (the corporate site's news
+  archive, several pages deep) does NOT surface a same-day executive
+  press release even when asked directly; the real release lived at
+  `newsroom.ulalaunch.com/releases/<slug>`, a separate subdomain that
+  still matches the registry's `ulalaunch.com` website value for
+  `first_party` purposes. Confirmed on Mark Peller's CEO appointment
+  (Aug 17): the corporate news-archive page listed only launch/mission
+  posts with no leadership-change coverage, while `newsroom.ulalaunch.com`
+  had the exact release with quotes from both board chairs. Try the
+  `newsroom.<domain>` subdomain directly before concluding a same-day
+  corporate announcement isn't first-party-fetchable.
+- 2026-08-17-F: A for-cause CEO ouster at a major prime (L3Harris's
+  Christopher Kubasik exiting after a board conduct investigation, Sam
+  Mehta promoted from the space-sector presidency) was treated as
+  publishable above the standing "routine executive hire stays below the
+  inclusion bar" rule: that rule targets CFO/SVP-level hires, not a
+  for-cause change at the top of the whole company: L3Harris's own
+  release, SpaceNews, and a Reuters wire copy all led with the board
+  investigation, not a routine succession. Drafted `category: financial`,
+  `impact: notable` (no stated dollar figure or market-access change, so
+  short of `major`); a well-telegraphed, non-scandal CEO succession
+  (ULA's Peller, ending an 8-month interim period after Tory Bruno's
+  earlier departure) was drafted the same run at `impact: noise` instead,
+  `category: launch` — worth distinguishing "for-cause/scandal" leadership
+  changes at major primes (notable) from ordinary successions (noise or
+  below the bar) going forward.
+- 2026-08-17-G: An Aviation Week author-page listing (Vivienne Machi,
+  fetched via `aviationweek.com/author/vivienne-machi`) surfaced a
+  same-day-dated headline ("NRO Awards Operational Commercial RF
+  Contract To HawkEye 360") that could not be independently verified:
+  the guessed article URL 404'd twice, and both a direct search and an
+  `site:aviationweek.com` search returned only older (Dec 2025-vintage)
+  HawkEye/NRO contract-extension coverage, never the specific Aug 17
+  piece. Left undrafted per the standing "only cite pages with genuinely
+  fetched content" rule rather than trust an author-listing summary as
+  proof the article says what its headline implies — the listing itself
+  may be a first-party AI summary of the page, not confirmation of a
+  fresh event distinct from the Dec 2025 contract extension.
+- 2026-08-17-H: All three configured Bluesky keyword-search feeds
+  (`spacex launch`, `satellite constellation`, `earth observation
+  satellite`) 403'd in the harvester's own health check this run, unlike
+  most prior sessions where they degrade per-account rather than
+  wholesale; the signals-pass fetchable bluesky accounts (via the public
+  `getAuthorFeed` API) were unaffected and fetched cleanly. A queue-level
+  Bluesky search failure doesn't imply the signals-pass Bluesky legs are
+  also down; check both independently.
+- 2026-08-17-I: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate on the first
+  attempt, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1 updated,
+  0 held") plus a direct grep spot-check of all four new items' and the
+  one updated item's `snr`/`category`/`impact` fields as the build-health
+  signal.
+
