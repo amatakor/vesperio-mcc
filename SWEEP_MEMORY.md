@@ -4899,3 +4899,51 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of all three new items' and both
   updated items' `snr`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~6h24m gap, unfiltered full source list (2026-09-18)
+
+- 2026-09-18-A: A "reported, not yet officially announced" story (SpaceX
+  President Shotwell's on-record All-In Podcast comments declining to commit
+  to Crew Dragon flying past 2030, plus Ars Technica's multi-source
+  reporting that NASA plans to order two more Starliner missions "as early
+  as next week") could not be fetched from Ars Technica directly
+  (arstechnica.com is outright unfetchable via WebFetch in this
+  environment, "Claude Code is unable to fetch from arstechnica.com",
+  distinct from a 403/paywall). Traced the exact Ars URL via a secondary
+  aggregator (Aroged) that credited and linked it, then used two
+  independently-worded aggregator pieces (Aroged, UFO Feed) as the
+  informal-class lead and corroboration since neither is a verbatim copy of
+  the other. Landed an honest SNR 2 rather than hold for weak sourcing; the
+  NASA-order half of the story was written as reported/attributed, not
+  asserted as fact, since neither NASA nor Boeing had confirmed it.
+- 2026-09-18-B: `docs.fcc.gov/public/attachments/<DA-number>A1.txt` (not
+  just `.pdf`) fetches as real, readable text via WebFetch for FCC public
+  notices -- confirmed on a fresh case (a Sept 17 international Section 214
+  grant to SpaceX/Starlink Mobile, DA 26-998): the `.pdf` URL itself
+  returned undecodable binary, but swapping the extension to `.txt` on the
+  same attachment path returned clean prose including the exact grant
+  language, docket numbers, and release date. Cited the `.pdf` as the
+  canonical `source_url` (the real document) while using the `.txt` fetch
+  to extract the verbatim text. Worth trying this extension swap by default
+  for any future docs.fcc.gov attachment that returns binary.
+- 2026-09-18-C: Guessed FCC DA-number URLs from a generic web search
+  (DA-26-421A1, DA-26-471A1) resolved to completely unrelated orders (a
+  routine three-company Section 214 notice from April; an EchoStar/SpaceX
+  spectrum-assignment order from May) before the correct one (DA-26-998)
+  was found via a secondary source's own citation -- a plausible-looking
+  FCC docket number from search is not evidence it is the right order; only
+  a source that actually names or links the specific DA number, or the
+  fetched document's own content naming the right party/date, confirms it.
+- 2026-09-18-D: A government-official on-the-record capability disclosure
+  with no stated commercial-space consequence (Air Force Secretary Meink
+  confirming the US has orbiting space-control weapons, an Aviation Week
+  Sept 18 piece) was left undrafted per the standing institutional-
+  disclosure exclusion (NASA-STRIDE/ASI-board/Singapore-JAXA precedent): no
+  contract, operator, or market-access fact is stated, only a general
+  capability acknowledgment.
+- 2026-09-18-E: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
+  updated, 0 held") plus a direct read of all three new items' and both
+  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
+  the build-health signal.
