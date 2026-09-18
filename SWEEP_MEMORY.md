@@ -4994,3 +4994,63 @@ a newer entry if a lesson changes.
   updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields,
   and the `corroboration_collapses`/`snr_movements` entries logged in
   `state.json`, as the build-health signal.
+
+## Narrow re-check, ~3h46m gap, unfiltered full source list (2026-09-18, third)
+
+- 2026-09-18-J: Almost the entire "Google News: launch" leg this run (25+
+  of ~32 candidates) was repeat financial-press churn on the already-
+  published `2026-09-18-nasa-spacex-three-crew-flights-946m` item (stock-
+  price reaction pieces, analyst-target rehashes, "$10T Starship revenue"
+  Cathie Wood takes) plus two off-topic Futurism politics pieces the
+  "Google News: launch" feed occasionally pulls in; none needed more than
+  a title/source check against `existing[]` before discarding. A securities
+  class-action law-firm PR wave against AST SpaceMobile (Robbins/Portnoy/
+  Pomerantz "shareholder alert" GlobeNewswire/PRNewswire releases) is
+  confirmed as the standard boilerplate-lawsuit-solicitation pattern, not a
+  substantive legal/regulatory development; treated as out of scope
+  entirely, same as the routine merger-objection disclosure lawsuits in the
+  Rocket Lab/Iridium 8-K below.
+- 2026-09-18-K: An Iridium 8-K (Item 8.01, filed same day) turned out to be
+  a supplemental-disclosure response to standard "disclosure deficiency"
+  merger-objection lawsuits over the Rocket Lab acquisition (three NY state
+  suits plus demand letters, company says claims are "without merit"),
+  bundled with routine EBITDA/net-debt/share-count supplemental figures.
+  This is boilerplate M&A-litigation procedure, not new deal news; left
+  undrafted. Worth remembering this pattern shows up as an 8-K Item 8.01
+  on nearly every large public-company merger and is essentially never
+  itself newsworthy.
+- 2026-09-18-L: A same-day Aviation Week story ("L3Harris Builds Xoople
+  Earth-Observation Satellites For 2028 Launch," published Sept 16, byline
+  Robert Wall) reported L3Harris has started building the first satellites
+  of a 14-craft constellation for AI-data startup Xoople, a program
+  announced back in April 2026 that the site never covered (predates this
+  Vesperio instance or was missed at launch). Confirmed via three separate
+  WebSearch passes (exact headline, actor+distinguishing-noun variant, and
+  named-executives variant) that only Aviation Week has this specific
+  "construction has begun" fact; every other hit was the April partnership-
+  announcement coverage (SpaceNews, L3Harris's own editorial, TechCrunch on
+  Xoople's $130M Series B) reporting a different claim, so `crawl:
+  "found_none"` was correct despite the topic itself being well-covered
+  elsewhere. Landed SNR 2 (trade base 3, minus 1 for found_none).
+- 2026-09-18-M: A Marcia Smith/SpacePolicyOnline bluesky post ("Albania
+  will become the 73th Artemis Accord signatory on Monday, Sept 21, at NASA
+  HQ") posted after this run's `lastSweep` cutoff was left undrafted as a
+  scheduled-not-yet-occurred event, consistent with the standing don't-
+  draft-scheduled-launches precedent extended to diplomatic signing
+  ceremonies; draft it once NASA's own release confirms the signing
+  actually happened (the Turkey 71st-signatory item was drafted after the
+  fact, same pattern).
+- 2026-09-18-N: Confirmed the `public.api.bsky.app/xrpc/app.bsky.
+  feed.getAuthorFeed?actor=<handle>&limit=N` endpoint is a reliable way to
+  get a fetchable signals bluesky channel's recent posts with real
+  timestamps and full text; plain `bsky.app/profile/<handle>` profile pages
+  render as an empty JS shell via WebFetch (handle-only, no post content),
+  consistent with the general Bluesky JS-shell limitation noted for other
+  sites. Worth using the API endpoint by default for every bluesky signals
+  channel going forward instead of the profile URL.
+- 2026-09-18-O: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct read of the new item's `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields as the build-health
+  signal.
