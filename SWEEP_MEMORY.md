@@ -4947,3 +4947,50 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of all three new items' and both
   updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
   the build-health signal.
+
+## Narrow re-check, ~5h10m gap, unfiltered full source list (2026-09-18, second)
+
+- 2026-09-18-F: A "NASA gives SpaceX almost $1B for 3 Crew missions" wave
+  (Breakingthenews.net, TradingView, Pluang, CoinGape, 24/7 Wall St, Yahoo
+  Finance, all via Google News) turned out to have TWO plausible NASA.gov
+  targets with the same generic search phrasing: `nasa.gov/humans-in-space/
+  nasa-awards-spacex-more-crew-flights-to-space-station/` is a stale Aug
+  31, 2022 page (Crew-10 through 14, $1.436B), while the genuinely fresh
+  Sept 18, 2026 announcement (Crew-15/16/17, $946M, CCtCap total now
+  $5.92B) lives at the differently-slugged `nasa.gov/missions/station/
+  commercial-crew/nasa-awards-spacex-three-crew-flights-to-space-station/`.
+  A generic WebSearch for the headline surfaced the stale URL first; only
+  searching the specific dollar figure ($946 million) surfaced the correct
+  page. Confirmed fresh via Marcia Smith's same-day bluesky post citing the
+  identical $946M/through-2030 figures. Worth remembering: when a NASA
+  contract-modification headline could plausibly be a resurfacing (SpaceX
+  Crew Dragon awards recur every 1-2 years with similar headlines), search
+  the stated dollar figure, not just the headline shape, before concluding
+  either way.
+- 2026-09-18-G: Two standing same-company-plus-category dedup false
+  positives fired on the new NASA/SpaceX CCtCap item (against the
+  unrelated Starfall/Space Cargo and KDDI/Starlink Mobile V2 items, both
+  sharing only company SpaceX + category contract) and one on the new
+  NIGCOMSAT/Hughes ground-gateway item (against the NigComSat-2A/Thales
+  Alenia satellite-manufacturing award, sharing only company NIGCOMSAT +
+  category contract) -- three `dedup_distinct` entries at each item's top
+  level cleared all of it in one pass, extending the long-running list.
+- 2026-09-18-H: `ir.echostar.com`'s press-release detail pages timed out
+  twice (60s) even though EchoStar's registry `website` (`echostar.com`)
+  would have passed the Hughes/NIGCOMSAT gateway release as `first_party`
+  via subdomain match; fell back to the GlobeNewswire wire copy
+  (`wire_pr`, tier 4) instead, per the standing pattern of registry-eligible
+  first-party pages that simply don't load. `idirect.net`'s own press
+  page for the ST Engineering/Datacom deal loaded fine but has no registry
+  organization entity to match against, so it capped at `informal`
+  (extends the no-registry-host workaround to a third distinct company);
+  the wire-service PR Newswire copy of the same release led at `wire_pr`
+  instead and finalize-sweep's title-collapse correctly merged the two as
+  one `wire_rewrite` corroboration unit.
+- 2026-09-18-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
+  updated, 0 held") plus a direct read of all three new items' and both
+  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields,
+  and the `corroboration_collapses`/`snr_movements` entries logged in
+  `state.json`, as the build-health signal.
