@@ -1,7 +1,7 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-09-19T11:34:28.814Z",
-  "window_start": "2026-09-17T05:23:50.381Z",
+  "generated_at": "2026-09-19T17:16:11.452Z",
+  "window_start": "2026-09-17T11:44:10.534Z",
   "mode": "normal",
   "health": [
     {
@@ -65,7 +65,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-09-19T04:36:18.000Z",
+      "newest_entry": "2026-09-19T11:52:21.000Z",
       "detail": "10 entries"
     },
     {
@@ -207,18 +207,18 @@
     {
       "source_name": "CGTN Tech-Sci",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 50,
-      "newest_entry": "2026-09-19T03:34:56.000Z",
-      "detail": "50 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "SpaceNews",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-18T14:47:38.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Payload",
@@ -247,10 +247,10 @@
     {
       "source_name": "SpaceflightNow",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-09-15T21:29:03.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Via Satellite",
@@ -262,11 +262,11 @@
     },
     {
       "source_name": "SpacePolicyOnline",
-      "ok": false,
-      "http_status": 403,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "HTTP 403"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-09-16T01:09:54.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Ars Technica space",
@@ -286,11 +286,11 @@
     },
     {
       "source_name": "Kineis",
-      "ok": false,
-      "http_status": 503,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "HTTP 503"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-09-17T04:34:16.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Myriota",
@@ -361,7 +361,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-19T11:20:28.000Z",
+      "newest_entry": "2026-09-19T16:39:30.000Z",
       "detail": "100 entries"
     },
     {
@@ -369,7 +369,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-19T05:27:04.000Z",
+      "newest_entry": "2026-09-19T17:04:09.000Z",
       "detail": "100 entries"
     },
     {
@@ -393,7 +393,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-19T07:24:23.000Z",
+      "newest_entry": "2026-09-19T12:49:09.000Z",
       "detail": "100 entries"
     },
     {
@@ -401,16 +401,16 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 42,
-      "newest_entry": "2026-09-19T06:27:28.000Z",
+      "newest_entry": "2026-09-19T14:37:07.000Z",
       "detail": "42 entries"
     },
     {
       "source_name": "Futurism",
       "ok": true,
       "http_status": 200,
-      "entry_count": 87,
-      "newest_entry": "2026-09-19T11:02:00.000Z",
-      "detail": "87 entries"
+      "entry_count": 89,
+      "newest_entry": "2026-09-19T17:00:00.000Z",
+      "detail": "89 entries"
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
@@ -478,6 +478,336 @@
       "published_at": "2026-09-21T14:00:00.000Z",
       "raw_excerpt": "Image: Pikachu in the Cupola",
       "fetched_at": "2026-09-19T05:16:14.717Z",
+      "consumed": true
+    },
+    {
+      "id": "e2c4d8f5e06e9eb1",
+      "source_name": "Google News: EO + connectivity",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdFFXOGF2UjFaV1VsTGg4d25QcHZwUGlEQUQtclN1Z0tEUnA3ajhDaGZzVkhpTVBDdEwzb0lrZmY2eVRuOWJwdURnWW54d3F4SUludkhGUFM1V0UyZFVMcDlZNlhucklLNk8zWHNGMnhQNV9rS3lZM1ItNVRNdnpKY0V5bmZ2WDJqenYzR1JCdHFzUlBESUktVEtHblVOU0xvZVZSRGNQa0VVZ3NiWXY0bHJiN2luTUFnV1ZFbC1jcG9CUUt6eFNBRWxYQ0J5MzEtWTQ2eUhuZVBjTTdPdzdRRjFGYVBzUdIB6wFBVV95cUxQZHY3VXhoTVZ2eUlaWllNbzd3Y3lNbEttbWt2U2NXcFFnbk5nV1NCaGl6SlZiWkRFTEJ3em00OWVpdFpGRG1OaWVRdlF1QkMtVnRwbk5fNTlVcUJoVUVpdnVGM1lPY3BGTXpBMFhOemtNR3JZMmJ6TEpGRGZPZVNaWkxSdk0zd3RfeExtWVBGV3ZfaFFTYVpUbDNQLThXMEtFQVFIYUkxUDJ1SmxuYUNYQzhtUlpPR3NKNzBMMjgtdDdoMzEwV3U5M2hVdlhrblBybV9rNmVLWnI4Zk96N3UzU21wcGNqcWR0ZnlF?oc=5",
+      "title": "GalaxEye secures US patent for OptoSAR technology, boosting India’s private space and deep-tech ambitions - organiser.org",
+      "published_at": "2026-09-19T17:04:09.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdFFXOGF2UjFaV1VsTGg4d25QcHZwUGlEQUQtclN1Z0tEUnA3ajhDaGZzVkhpTVBDdEwzb0lrZmY2eVRuOWJwdURnWW54d3F4SUludkhGUFM1V0UyZFVMcDlZNlhucklLNk8zWHNGMnhQNV9rS3lZM1ItNVRNdnpKY0V5bmZ2WDJqenYzR1JCdHFzUlBESUktVEtHblVOU0xvZVZSRGNQa0VVZ3NiWXY0bHJiN2luTUFnV1ZFbC1jcG9CUUt6eFNBRWxYQ0J5MzEtWTQ2eUhuZVBjTTdPdzdRRjFGYVBzUdIB6wFBVV95cUxQZHY3VXhoTVZ2eUlaWllNbzd3Y3lNbEttbWt2U2NXcFFnbk5nV1NCaGl6SlZiWkRFTEJ3em00OWVpdFpGRG1OaWVRdlF1QkMtVnRwbk5fNTlVcUJoVUVpdnVGM1lPY3BGTXpBMFhOemtNR3JZMmJ6TEpGRGZPZVNaWkxSdk0zd3RfeExtWVBGV3ZfaFFTYVpUbDNQLThXMEtFQVFIYUkxUDJ1SmxuYUNYQzhtUlpPR3NKNzBMMjgtdDdoMzEwV3U5M2hVdlhrblBybV9rNmVLWnI4Zk96N3UzU21wcGNqcWR0ZnlF?oc=5\" target=\"_blank\">GalaxEye secures US patent for OptoSAR technology, boosting India’s private space and deep-tech ambitions</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">organiser.org</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "b7b181694b11ad14",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/artificial-intelligence/google-asks-video-selfies",
+      "title": "Google Now Asking For Users’ Video Selfies to Verify Their Identities",
+      "published_at": "2026-09-19T17:00:00.000Z",
+      "raw_excerpt": "Smile, peruser of the internet! Your facial features are being codified by algorithms. Starting this week, Google has begun asking users to take a video selfie to sign into their accounts, Search Engine Watch found . The feature remains optional, but it represents an eerie step towards making facial recognition a standard way to navigate the web, which the search engine giant is now heavily promoting. Google first announced the feature in July, framing it as an optional way of getting into your account if you’re locked out or don’t have access to your usual devices.&nbsp; To set it up, you record a short video of your face while moving your head to capture different angles. Then, if “you’re having trouble signing in later on,” Google said in the announcement, “you just take another selfie to get back into your account.” What’s new now is that Google has begun pushing the feature on its home page. A nudge at the bottom of the screen will ask you to “sign in with a selfie,” with “don’t set up” and “set up selfie” options. It sounds like it’ll be used for more than just verifying you’re the account owner. A disclaimer on the setup page says that the video selfie will also determine if you’re “old enough to use certain Google services.” Users can also opt-in to “improve Google services,” which will allow the company to use your video selfies to “improve our facial recognition, age estimation, and other verification methods that use your physical features or movement, across Google services.” Needless to say, it raises obvious privacy and security concerns. Google already collects troves of behavioral data on its billions of users to optimize its search engine and deliver targeted ads, so handing over a mathematical map of your face is concentrating a lot of your personhood with one company. Moreover, in an age of increasingly convincing and accessible AI deepfake technology , it’s uncertain how robust facial recognition scans will be against attempts to spoof them. More",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "53f46c7efbf39f29",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxON21SWFpFeGFpNTRMMmlMNGxqMU8zYmxJWnF0b0ZKenlfVGFzYWlZUnZtbDJ5bjZ0LThnNlFOUGFMRlFVNTd1MWtvczdUSDVpWjBwcVpmWEFIb3VBMUFmZXFfTEo0bWdhaEVFWmtreGRXZm05ME11dnZfMEZWMTIxcDF5VVZRTTA3Q21TRmJkQTVsVVBaeFVSY1NoREJmM2UwTHF3ZEhrRkE?oc=5",
+      "title": "Amazon Leo vs. Starlink: What Amazon’s Former Project Kuiper Has to Prove - TechStock²",
+      "published_at": "2026-09-19T16:39:30.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqAFBVV95cUxON21SWFpFeGFpNTRMMmlMNGxqMU8zYmxJWnF0b0ZKenlfVGFzYWlZUnZtbDJ5bjZ0LThnNlFOUGFMRlFVNTd1MWtvczdUSDVpWjBwcVpmWEFIb3VBMUFmZXFfTEo0bWdhaEVFWmtreGRXZm05ME11dnZfMEZWMTIxcDF5VVZRTTA3Q21TRmJkQTVsVVBaeFVSY1NoREJmM2UwTHF3ZEhrRkE?oc=5\" target=\"_blank\">Amazon Leo vs. Starlink: What Amazon’s Former Project Kuiper Has to Prove</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TechStock²</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "c12895b5c9e1a999",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQRlM2ZXFXZFBndWhlRHdaaG4tMlJhQU1NUUt2dzE0OEVvc3JfSUlXWWctNUhaSE5CMXVSQkl2dzVmZUZxQktHSjRkN0xhLUVqalZ0Y2lRRzVaVHQwUDdheDFvRHZoYjltaTFNZFd4N0dUb21iQ1kyREtQZnF4R1FGZ19faXZtNVUtRDZYR1NFNA?oc=5",
+      "title": "Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX - The Motley Fool",
+      "published_at": "2026-09-19T16:03:29.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxQRlM2ZXFXZFBndWhlRHdaaG4tMlJhQU1NUUt2dzE0OEVvc3JfSUlXWWctNUhaSE5CMXVSQkl2dzVmZUZxQktHSjRkN0xhLUVqalZ0Y2lRRzVaVHQwUDdheDFvRHZoYjltaTFNZFd4N0dUb21iQ1kyREtQZnF4R1FGZ19faXZtNVUtRDZYR1NFNA?oc=5\" target=\"_blank\">Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "19cb74dcd2fd9b6c",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOVENzQWpFZ2l0bmVFN2VQbzZpeHRTRVBZcTNySFVUYWxfTEw3cUFnWWppSUR2WmpneTJ0NzRMWTllWWNCRTVzTXAwS0E0UFdJcWdPeHVsbXE0bldldWxTYUxGUEJEVXdKVFE1SlFsUTBnUnNLUmZ1clVyTTF1d09Ub0diU2N0aWhRWFhELVhKVFpGdUFfNnVocEtiYWVPMWdVdGJPa2pFVXlacVpLeDg0TGVMbFVQbnk3YnNaMEpTSDhUVXVhZUczaUw0alBkSmVVak1WYWxWVXpRSFk?oc=5",
+      "title": "SpaceX confirmed to get a weighting boost after Nasdaq 100 rebalancing: Bloomberg - TradingView",
+      "published_at": "2026-09-19T16:02:06.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2wFBVV95cUxOVENzQWpFZ2l0bmVFN2VQbzZpeHRTRVBZcTNySFVUYWxfTEw3cUFnWWppSUR2WmpneTJ0NzRMWTllWWNCRTVzTXAwS0E0UFdJcWdPeHVsbXE0bldldWxTYUxGUEJEVXdKVFE1SlFsUTBnUnNLUmZ1clVyTTF1d09Ub0diU2N0aWhRWFhELVhKVFpGdUFfNnVocEtiYWVPMWdVdGJPa2pFVXlacVpLeDg0TGVMbFVQbnk3YnNaMEpTSDhUVXVhZUczaUw0alBkSmVVak1WYWxWVXpRSFk?oc=5\" target=\"_blank\">SpaceX confirmed to get a weighting boost after Nasdaq 100 rebalancing: Bloomberg</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TradingView</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "42b26eeac3fa4379",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOU0pnQjNfUWNOaUNGelByOTlWMHV1ME9IaDliSkYzcndpQzd4NUxkQ0l5WThRUE5sV2RYY3NJV1VYU2kyYUFfTXgxcHhyWHd4N05sX3FVNXVyME9xQWZERzl1Y0FLR2FYd1kwWXRsbUZMNzl0T09XNEFRVHktZWtfaHpvVTlpUW50WmtmblNqNVktQQ?oc=5",
+      "title": "SpaceX confirmed to get a weighting boost after Nasdaq 100 rebalancing: Bloomberg - Seeking Alpha",
+      "published_at": "2026-09-19T16:02:06.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxOU0pnQjNfUWNOaUNGelByOTlWMHV1ME9IaDliSkYzcndpQzd4NUxkQ0l5WThRUE5sV2RYY3NJV1VYU2kyYUFfTXgxcHhyWHd4N05sX3FVNXVyME9xQWZERzl1Y0FLR2FYd1kwWXRsbUZMNzl0T09XNEFRVHktZWtfaHpvVTlpUW50WmtmblNqNVktQQ?oc=5\" target=\"_blank\">SpaceX confirmed to get a weighting boost after Nasdaq 100 rebalancing: Bloomberg</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "e8de7f6c7d65d192",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/future-society/restaurants-viral-handwritten-signs-ai-foodslop",
+      "title": "Restaurants Are Going Viral by Holding Up Handwritten Signs Pledging Not to Use AI Foodslop Posters",
+      "published_at": "2026-09-19T16:01:00.000Z",
+      "raw_excerpt": "The allure of generative AI has turned public-facing billboards and restaurant menus into a Lovecraftian horror show. Bread that resembles “reptile skin” and “alien larva”-like croissants have been putting off potential customers for months now. While owners are trying to lower costs by turning to AI for their promotional material, the off-putting signage has had the opposite effect, with users on social media lambasting local businesses for doing so. As 404 Media first noticed last month, some restaurants are finally catching onto the backfired advertising — and are pulling a 180 to score some easy points with the public. Owners and chefs are uploading pictures of themselves on social media, holding up pieces of paper, with variations of the message “We will not be using any AI to promote ourselves” handwritten on them. Since 404 published its story, the trend has really caught fire, with well-known chefs, like “Chopped” champion and South Carolina-based Nikko Cagalanan , Brooklyn-based Sicilian pizza chain L&B Spumoni Gardens , Phoenix’s Niu Mama , and many others , vowing not to use AI for self-promotion. Some of these posts are getting hundreds of thousands of likes and hundreds of comments, indicating the posts are really striking a nerve. View this post on Instagram It’s the latest sign of a growing backlash against AI, tech that’s infiltrating almost every aspects of our lives, often against our will. The movement has grown from simple annoyance to public outrage , particularly as polluting data centers continue to crop up across the country, sparking a bipartisan crusade . It’s a particularly thorny subject in the gastronomy world. Cooking has always been a form of human expression and deeply entrenched in cultural values, something an AI model inherently isn’t capable of. By relying on unintentionally disturbing images dreamed up by an AI, restaurants are sending a clear signal. “The AI images are a sort of shorthand for saying, ‘Yes, we serve food, but it ",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "c9b275c61c4e8701",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOOGV2UXI1UnozSl9XTEVjZERMUUtxR2g4M3VCMXpHZE9zTXFYWEFVVlBnaGEwMm9lRjVhTkt0TllhdVc2RlJGb0VSZHRxUU5ZSy03UHdIOHM2TFRpT3JxSFVhdGNxWmRtTnNxYjcydjNjRjdXcXRGb0hGYV9rdDE1QUszQnBHYmFHY0dZSlJNRTk5NHpyX21yQ2pSWGVDd1diUTVYTi1pcmtFSndZd3VPMm9LRQ?oc=5",
+      "title": "SpaceX eyes rocket launch tonight. Track liftoff at Vandenberg - Ventura County Star",
+      "published_at": "2026-09-19T16:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxOOGV2UXI1UnozSl9XTEVjZERMUUtxR2g4M3VCMXpHZE9zTXFYWEFVVlBnaGEwMm9lRjVhTkt0TllhdVc2RlJGb0VSZHRxUU5ZSy03UHdIOHM2TFRpT3JxSFVhdGNxWmRtTnNxYjcydjNjRjdXcXRGb0hGYV9rdDE1QUszQnBHYmFHY0dZSlJNRTk5NHpyX21yQ2pSWGVDd1diUTVYTi1pcmtFSndZd3VPMm9LRQ?oc=5\" target=\"_blank\">SpaceX eyes rocket launch tonight. Track liftoff at Vandenberg</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Ventura County Star</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "5645fbdfd977473f",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQcm1kLVRfMGR3NWYtVmtNREk1aEp6SV9CYm5SLW91Xzh0YWRBbnNOeWd3NEtDRUVCa2tYRU9zdVd5NjVnNEhQbDFLZGxJdk53VEJUVjVDRHZBbHJPemJsTlh2NXgwYmw2SVY2anlGRGtnQ254cG1fTTFvVHFoQ2RvSWhKdTViRWUtSHdkQ3lZb1NuMkRRR3ljU1ZXbC1jcFRWTndmZzFrclZKb1dUSExDMVBac1NHcjZaU1lYck50OF9wYjEtUHphYnZyeXc1RUl1ZmRv?oc=5",
+      "title": "Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX - The Globe and Mail",
+      "published_at": "2026-09-19T15:57:41.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0wFBVV95cUxQcm1kLVRfMGR3NWYtVmtNREk1aEp6SV9CYm5SLW91Xzh0YWRBbnNOeWd3NEtDRUVCa2tYRU9zdVd5NjVnNEhQbDFLZGxJdk53VEJUVjVDRHZBbHJPemJsTlh2NXgwYmw2SVY2anlGRGtnQ254cG1fTTFvVHFoQ2RvSWhKdTViRWUtSHdkQ3lZb1NuMkRRR3ljU1ZXbC1jcFRWTndmZzFrclZKb1dUSExDMVBac1NHcjZaU1lYck50OF9wYjEtUHphYnZyeXc1RUl1ZmRv?oc=5\" target=\"_blank\">Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "9bbf217eca2a5eb9",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPRTlkYVphMzFCemFHNGd5WVBBbkhoRDR5OE05eldHaHlLeGtWNERGSDRraE9QbEZiYzlMdlYwcWpUWWViQ3IySkNGMmZSUGlsVTBDTlNvVlNHQlB2ODc3a0NpcklJbERaMUZIbkVSRUZWbXRmLUdpUXlENmxGT2h1Y2JjZ1VEWjBLbS0yc3hXTGxXTFJMd1llY09CQ0s5LXQ1blQyenlZRTNvWmIzMzJDUXB3dmdaeW45UFptcW5hOVFvczcxcnY4UThLVmdxSC1RN2U4SGJyX2hOc1lGbDBnMDRB?oc=5",
+      "title": "NASA, SpaceX target early October launch as Crew-13 head into quarantine - Havasu News",
+      "published_at": "2026-09-19T15:33:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4gFBVV95cUxPRTlkYVphMzFCemFHNGd5WVBBbkhoRDR5OE05eldHaHlLeGtWNERGSDRraE9QbEZiYzlMdlYwcWpUWWViQ3IySkNGMmZSUGlsVTBDTlNvVlNHQlB2ODc3a0NpcklJbERaMUZIbkVSRUZWbXRmLUdpUXlENmxGT2h1Y2JjZ1VEWjBLbS0yc3hXTGxXTFJMd1llY09CQ0s5LXQ1blQyenlZRTNvWmIzMzJDUXB3dmdaeW45UFptcW5hOVFvczcxcnY4UThLVmdxSC1RN2U4SGJyX2hOc1lGbDBnMDRB?oc=5\" target=\"_blank\">NASA, SpaceX target early October launch as Crew-13 head into quarantine</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Havasu News</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "5b6ebb7f823b7aee",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPWGQ5MW5EZTF2TWN5alpyQjdFaFhDcjA0eTVIbGV5QjI3RkFJcUUyRHFTWl9ydXY5TXE0cnBwYlFsNkh0Q1ptX09sXy04X29IdmZLeV9WLXpBX1lCTmNKMHZYVnpkSlN4VHFDM3pQTUFVSm1GRU5IaGZaZTRWeGFFSVFadHkwSjRqY1B1b3dZUmQ2dkhybUE?oc=5",
+      "title": "Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX - finance.yahoo.com",
+      "published_at": "2026-09-19T15:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxPWGQ5MW5EZTF2TWN5alpyQjdFaFhDcjA0eTVIbGV5QjI3RkFJcUUyRHFTWl9ydXY5TXE0cnBwYlFsNkh0Q1ptX09sXy04X29IdmZLeV9WLXpBX1lCTmNKMHZYVnpkSlN4VHFDM3pQTUFVSm1GRU5IaGZaZTRWeGFFSVFadHkwSjRqY1B1b3dZUmQ2dkhybUE?oc=5\" target=\"_blank\">Anthropic IPO: 1 Key Lesson Investors Can Learn From SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">finance.yahoo.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "1568ffe7c8b96594",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNcXFBMnFNaTk1M2VSWkFYREpnWERqa2JRX0hiN2s1N0JWYmlZR2I2c2NmMXVvZjZzejRyZ0VoaGtyR051ZUFzQlRZNmhYWmR0eEQ4Yk1MeTZaU0hhNXc4LTM3RzJlVkQtaTIzSzFPdnF3eExrR1dwX01oT3FRYjdDMk4tOWNqd0RCbXFJcWdSN1RRcWs?oc=5",
+      "title": "SpaceX Set for Weight Increase in Nasdaq 100 Index - GuruFocus",
+      "published_at": "2026-09-19T15:06:16.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxNcXFBMnFNaTk1M2VSWkFYREpnWERqa2JRX0hiN2s1N0JWYmlZR2I2c2NmMXVvZjZzejRyZ0VoaGtyR051ZUFzQlRZNmhYWmR0eEQ4Yk1MeTZaU0hhNXc4LTM3RzJlVkQtaTIzSzFPdnF3eExrR1dwX01oT3FRYjdDMk4tOWNqd0RCbXFJcWdSN1RRcWs?oc=5\" target=\"_blank\">SpaceX Set for Weight Increase in Nasdaq 100 Index</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">GuruFocus</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "4d4f2bb3c52e4b55",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/artificial-intelligence/democrat-republicans-politicians-ai-industry-regulation-voters-midterms",
+      "title": "Democrat and Republican Politicians Are Both Terrified to Go Against the AI Industry, Even Though a Huge Majority of Both Their Voting Blocs Want Them to Do Exactly That",
+      "published_at": "2026-09-19T15:02:00.000Z",
+      "raw_excerpt": "In a new survey of over 2,000 US adults conducted days ago, Politico found that the vast majority of respondents would pull the plug on the whole AI buildout if they could. The magazine presented participants with an intriguing hypothetical: if you were working on developing AI and started seeing signs that the tech could destroy humanity, would you keep going? The answers were telling: only 38 percent said they would continue, while 62 percent said they would stop and would “hope that other labs see the same signs and also decide to stop.” Of those who self-identified as Republicans, 55 percent agreed they would stop the buildout, while 66 percent of Democrats said the same. Even undecided voters agree, with 58 percent saying they would pull the plug. If the presidential election was an anti-AI candidate versus a pro-AI one, in other words, the latter would be crushed at the polls. The results cut to the heart of the AI safety narrative being driven by some of the most powerful tech CEOs in the world. The frenzied attempt by AI billionaires to “manufacture a crisis” around AI safety, as the famed investor Steve Eisman put it , seems to be having a knock-on effect of furthering the public’s anxiety around the increasingly unpopular technology. Yet for as sour as public sentiment has turned, it seems no amount of backlash will sway career politicians in the Democratic or Republican parties. Separate reporting by Politico revealed a quiet strategy by Democratic Party consultants who are privately begging candidates in battleground states not to criticize AI on the campaign trail. If dems go all-out in demonizing AI and data centers, the logic goes, the massive tech lobby could unleash a virtual Blitzkrieg against Democratic candidates ahead of the November midterms. The politicians in question include Don Davis in North Carolina, Marcy Kaptur in Ohio, and Henry Cuellar in Texas, each of whom are running in states that have been carved up like hams by AI data center de",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "57656cc6b2212df8",
+      "source_name": "BBC science and environment",
+      "url": "https://www.bbc.co.uk/news/articles/c6kgw0kx0540o?at_medium=RSS&at_campaign=rss",
+      "title": "Nature reserve to double in size, thanks to gift",
+      "published_at": "2026-09-19T14:37:07.000Z",
+      "raw_excerpt": "Staffordshire Wildlife Trust acquires an area of wet woodland, marsh and pastureland due to the will.",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "56299ea0b72a5c49",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOS1otcmFvd1lSTEhNWVRpZ1k2STVDY2lfektXVWM0eXFnenB6aE53clFXVDRya2tnU3lTRVl5MFRqZEl1NEppUk9yZXNRZWNCYlRJQ1FOZk02clg0YkpCRDZ2aGlhRVBNMFl2R3lDWG1tQnRVZTdvc21RVlVyMjdtYUkwUDZpOUEwbjhn?oc=5",
+      "title": "Aer Lingus installs Starlink on all A321neo jets - insideflyer.com",
+      "published_at": "2026-09-19T14:33:50.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiwFBVV95cUxOS1otcmFvd1lSTEhNWVRpZ1k2STVDY2lfektXVWM0eXFnenB6aE53clFXVDRya2tnU3lTRVl5MFRqZEl1NEppUk9yZXNRZWNCYlRJQ1FOZk02clg0YkpCRDZ2aGlhRVBNMFl2R3lDWG1tQnRVZTdvc21RVlVyMjdtYUkwUDZpOUEwbjhn?oc=5\" target=\"_blank\">Aer Lingus installs Starlink on all A321neo jets</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">insideflyer.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "31b2f5a593858365",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNRzR0U3pTVXg2bnR0b1ViejZrTTBlN3VMTFNZaGdrVFQ2RXo0eW5fMHg4VFBKWl9qbzljWTMtcnhlT0JNOXdyVjVXaE9BZW9NZnZwTGRDclJJNG5mYXFsbHk5TW96VzFtQU1vTGZuR2liU2pBU2lYQkkxaHNyUmIxVjFTVEFLMmpKLWx0RFl5VHJIZ3BNZlhmaHdPcEFfRU53aFlvZQ?oc=5",
+      "title": "Former SpaceX Worker Seeks Narrowing of Scope of Mental Exam - MyNewsLA.com",
+      "published_at": "2026-09-19T14:25:32.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipAFBVV95cUxNRzR0U3pTVXg2bnR0b1ViejZrTTBlN3VMTFNZaGdrVFQ2RXo0eW5fMHg4VFBKWl9qbzljWTMtcnhlT0JNOXdyVjVXaE9BZW9NZnZwTGRDclJJNG5mYXFsbHk5TW96VzFtQU1vTGZuR2liU2pBU2lYQkkxaHNyUmIxVjFTVEFLMmpKLWx0RFl5VHJIZ3BNZlhmaHdPcEFfRU53aFlvZQ?oc=5\" target=\"_blank\">Former SpaceX Worker Seeks Narrowing of Scope of Mental Exam</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">MyNewsLA.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "ab9d43b5eee16170",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNb19fYUowNlRKNzRuWkpJRk43S0xLZUdGc1MzWHJDZk9SWTl3ZzF5S1kya08wM0VqRTZaeGlXT3IyNFF2b2J3cURWVHN1TExQRUljeXh1eXFRdmtqbjJMRV9MUEwzdTdrbmNxa3J5aVNEZU91N2RiU2JuMTBqcXJiOXBvLWlLanpRS0xqcl9yV0o5bWhXc2hndA?oc=5",
+      "title": "Redwire Stock: A High-Risk Bet on SpaceX Starship or a Lower-Growth Plan B? - The Motley Fool",
+      "published_at": "2026-09-19T14:19:07.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxNb19fYUowNlRKNzRuWkpJRk43S0xLZUdGc1MzWHJDZk9SWTl3ZzF5S1kya08wM0VqRTZaeGlXT3IyNFF2b2J3cURWVHN1TExQRUljeXh1eXFRdmtqbjJMRV9MUEwzdTdrbmNxa3J5aVNEZU91N2RiU2JuMTBqcXJiOXBvLWlLanpRS0xqcl9yV0o5bWhXc2hndA?oc=5\" target=\"_blank\">Redwire Stock: A High-Risk Bet on SpaceX Starship or a Lower-Growth Plan B?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "2a32b20cfc063606",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE1BeGs0bm42TFN1NGpyM2dKRGloak5rMm1aV3RnQTFjOUhwTmdBTGEzVXZ5ZU5IaUlRUUVCQTVYeWRfLXNwaU43RWM1VWR2WWs0NnpRcTdSemJFbVhLaHp0b1VQbW5iTUpWaVBqLXNhbHRacHA5OHpNd3BxZw?oc=5",
+      "title": "SpaceX Is Becoming An AI Giant (NASDAQ:SPCX) - Seeking Alpha",
+      "published_at": "2026-09-19T14:19:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE1BeGs0bm42TFN1NGpyM2dKRGloak5rMm1aV3RnQTFjOUhwTmdBTGEzVXZ5ZU5IaUlRUUVCQTVYeWRfLXNwaU43RWM1VWR2WWs0NnpRcTdSemJFbVhLaHp0b1VQbW5iTUpWaVBqLXNhbHRacHA5OHpNd3BxZw?oc=5\" target=\"_blank\">SpaceX Is Becoming An AI Giant (NASDAQ:SPCX)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "b43e8736cc4de551",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPQ1JlQnFQcEZBblVHWUxRX09pS0RFT1R1VmxrTkliejFfcGVvZWd0VXhLdmR3WkpYUm4td0JvcWpKMzR4QzV1X2xfeVZ3UHlIY2ZxLWxFUlJzdUNyNVRLNVVzWVZnYWlsT3lmTV80aGRRXzRZRWwyYTJqYTNOVlFvZVpNNlpyYTFkM18wakVoc0lDdWsydGpmc2Q0VEpUUFN2cy1jbFhiYW1yNk4wMEl6RQ?oc=5",
+      "title": "SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance - Bloomberg.com",
+      "published_at": "2026-09-19T14:17:01.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxPQ1JlQnFQcEZBblVHWUxRX09pS0RFT1R1VmxrTkliejFfcGVvZWd0VXhLdmR3WkpYUm4td0JvcWpKMzR4QzV1X2xfeVZ3UHlIY2ZxLWxFUlJzdUNyNVRLNVVzWVZnYWlsT3lmTV80aGRRXzRZRWwyYTJqYTNOVlFvZVpNNlpyYTFkM18wakVoc0lDdWsydGpmc2Q0VEpUUFN2cy1jbFhiYW1yNk4wMEl6RQ?oc=5\" target=\"_blank\">SpaceX’s Nasdaq 100 Weight Is Confirmed at 2.82% in Rebalance</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bloomberg.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "9fcc861b3aa40c93",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/advanced-transport/faa-ai-air-traffic-control",
+      "title": "The FAA Is Spending Nearly a Billion Dollars to Make AI the “Brain” of Air Traffic Control Towers, Starting This Monday",
+      "published_at": "2026-09-19T14:02:00.000Z",
+      "raw_excerpt": "Did hiring loads of gamers not work out ? The Federal Aviation Administration is now spending north of $875 million to deploy an AI-powered air traffic control tool, the Wall Street Journal reports . The system, called SMART — short for Strategic Management of Airspace, Routes and Trajectories — automatically analyzes factors like airline schedules, weather patterns, and airport runway capacity to help streamline operations and point out any potential conflicts before they occur, according to an official release cited in the reporting. It’s set to have a huge role. As the WSJ puts it, “when fully rolled out across US airspace, the software is supposed to act as something like the brains of the nation’s air-traffic control system.”&nbsp; And no pressure to this potentially trailblazing experiment in AI in air traffic operations: it’s first being used in Washington, DC, one of the busiest stretches of airspace in the nation, as soon as Monday. The rollout of the AI system is the latest step the Trump administration has taken to revamp air traffic control systems, which have been under constant scrutiny after a series of deadly, high profile aviation incidents at the beginning of his term. One of the main issues in the spotlight has been chronic shortage of properly trained air traffic controllers — a problem that precedes Trump’s presidency, to be fair. US transportation secretary Sean Duffy first teased the FAA’s interest in deploying SMART in April. Back then, he estimated that the government would spend $12 billion on the system, claiming it could help air traffic controllers plan flights weeks in advance. “This software will say, ‘well, listen, we can see this 45 days out. Let’s move some of those flights a little bit later, or five, seven, 10 minutes earlier, and we can resolve the issue. And so then you are not delayed,'” Duffy said in an interview with CBS News . The firm behind it, Air Space Intelligence, was awarded a $875 million, 12-year government contract",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "184c6f812f5088d7",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNOFI2OEZxdm0zbHNMdU1EVUxfTjhaaTJpQm4tbF9waU0zNTNLcnk4czRreGNGRmZKdlpfVjZvRzUxZW5nS2tYUzM4MkEzbWx0Wl8xNnBvdGNQbzNveVZUWXhtOXBoallkcWRVeW1lVGZxVkhrZy1VYl9qNTdwdV9XTQ?oc=5",
+      "title": "Every airline offering Starlink WiFi in 2026 - Aerospace Global News",
+      "published_at": "2026-09-19T14:01:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxNOFI2OEZxdm0zbHNMdU1EVUxfTjhaaTJpQm4tbF9waU0zNTNLcnk4czRreGNGRmZKdlpfVjZvRzUxZW5nS2tYUzM4MkEzbWx0Wl8xNnBvdGNQbzNveVZUWXhtOXBoallkcWRVeW1lVGZxVkhrZy1VYl9qNTdwdV9XTQ?oc=5\" target=\"_blank\">Every airline offering Starlink WiFi in 2026</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Aerospace Global News</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "5d11209fe10df734",
+      "source_name": "Google News: EO + connectivity",
+      "url": "https://news.google.com/rss/articles/CBMihwJBVV95cUxNdEs5V0NoUXlQR0R1bGRHX0UtclAyQzBLSXpJdzBDWHJITTV5dnhac3ZuRTRHYzdsdFFRSzI4Q1d0LTlGTDdkaUllWmZpeFFkUzduNUkzSmk1ejBES0ZxTVdwVkJsVlluYkFNLUZheVJ0eVBGTEZkLThDdjhlUmdzUXo0eWdtZUpuZ2xoODM4SDFhXzVyMERpR2RUeW5OOUtNNElIaTBDTG1QT2hXVkVsejl1WWhTREtqdUR1TVc4SDV1TWVmd1l2V2k1UlZOblUzalpfTURXc1U1eG9BWjZFVU1FWHBVNThycXhaZHBReW5VZUgwNUpqeEtDVWRkSE9hbFdXUE5Tc9IBjAJBVV95cUxQOFRLWnVYZ0RjZ0tuYTJOcTBhOVBEcE9FclJnUHJ2MkVJT0xyTnBtcGplNzVTdmZXU3U3d05DYkNYM1FMYmhLZ21pY25BNHJwTHZjYXRmWVlYcC1zV2JpYXpwdG5RNFQ3d1ctZEd4TkczMDJYLThFRktIYnQ3NHp3bkh0aE9iMUZ3WUMtQk05dG5SbUN0Q1VoeUtOZ3VBNXd1ZC1acGlkRXU1TklQUURSeVVGNnFOQWVVM1Vhc2NPSE1pWHMxSHdqbWd2ZFZlaXhmLXo1NnB0WTgza19sa1pnSWVvbF9XaFJlUU0yWW1BM2tORWtjNW1GR2lHTjJ6cWxUZGNLSjJ5bl9nMHRF?oc=5",
+      "title": "GalaxEye’s Suyash Singh On OptoSAR, The Drishti Mission & A 30-Satellite Constellation - cnbctv18.com",
+      "published_at": "2026-09-19T13:41:55.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihwJBVV95cUxNdEs5V0NoUXlQR0R1bGRHX0UtclAyQzBLSXpJdzBDWHJITTV5dnhac3ZuRTRHYzdsdFFRSzI4Q1d0LTlGTDdkaUllWmZpeFFkUzduNUkzSmk1ejBES0ZxTVdwVkJsVlluYkFNLUZheVJ0eVBGTEZkLThDdjhlUmdzUXo0eWdtZUpuZ2xoODM4SDFhXzVyMERpR2RUeW5OOUtNNElIaTBDTG1QT2hXVkVsejl1WWhTREtqdUR1TVc4SDV1TWVmd1l2V2k1UlZOblUzalpfTURXc1U1eG9BWjZFVU1FWHBVNThycXhaZHBReW5VZUgwNUpqeEtDVWRkSE9hbFdXUE5Tc9IBjAJBVV95cUxQOFRLWnVYZ0RjZ0tuYTJOcTBhOVBEcE9FclJnUHJ2MkVJT0xyTnBtcGplNzVTdmZXU3U3d05DYkNYM1FMYmhLZ21pY25BNHJwTHZjYXRmWVlYcC1zV2JpYXpwdG5RNFQ3d1ctZEd4TkczMDJYLThFRktIYnQ3NHp3bkh0aE9iMUZ3WUMtQk05dG5SbUN0Q1VoeUtOZ3VBNXd1ZC1acGlkRXU1TklQUURSeVVGNnFOQWVVM1Vhc2NPSE1pWHMxSHdqbWd2ZFZlaXhmLXo1NnB0WTgza19sa1pnSWVvbF9XaFJlUU0yWW1BM2tORWtjNW1GR2lHTjJ6cWxUZGNLSjJ5bl9nMHRF?oc=5\" target=\"_blank\">GalaxEye’s Suyash Singh On OptoSAR, The Drishti Mission & A 30-Satellite Constellation</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">cnbctv18.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "534c6b02eedb480f",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/future-society/mit-report-ai-cognitive-surrender-students",
+      "title": "MIT Report Finds That AI Is Leading to “Cognitive Surrender” Among Students",
+      "published_at": "2026-09-19T13:01:00.000Z",
+      "raw_excerpt": "As generative AI continues to intrude on almost every aspect of our daily lives, students are increasingly starting to feel the effects of over-relying on the tech. Some are going to absurd lengths to use AI to complete their assessments while avoiding being caught cheating. Meanwhile, exam scores are dropping off a cliff as students struggle to get by without using the tech as a crutch. The effects extend far beyond bad grades. Some college students are losing the ability to participate in class discussions , a terrifying consequence of offloading their cognitive facilities to AI. In a report on the state of education last month, MIT researchers warned that the alarming trend is leading to “cognitive surrender,” effectively overriding their own intellectual agency with the output of AI. “As AI-enabled technologies become more capable, it will be possible — and tempting — to offload more ‘thinking’ tasks to them; not surprisingly, students told us the temptation was greatest when they feared they would miss a deadline,” the report reads. “There are early signals, however, that overreliance on chatbots can have a range of significant negative consequences — diminishing critical thinking, weakening memory, eroding confidence, and undermining mastery.” It’s a thorny subject as administrators continue to push for more AI adoption, not less. That’s despite countless educators, who’ve watched helplessly as their AI-dependent students struggle in the classroom, are bristling at the thought. “I think you have to lean in, but you have to do so in a way that’s thoughtful and ethical and asks the right questions,” University of Hawaii president Wendy Hensel told the New York Times . “The right answer to AI is not just ‘no.’ It can’t be. It has to be approached with curiosity and understanding of the implications.” We’ve seen study after study warning that the overreliance on AI chatbots could have devastating effects on education. Students aren’t being taught to internalize wh",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "c8a7d277df8ffd75",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQRS02V0p2Q00ydGJYN0xhRWgza0pUV0hGUGJBRllNUGpxTEgzcHlWenphN2F4bHNULUlXOGRHMXN6SEJOaUpqcFpBTVhsUTFBd0xqTU44RFBoVG1iUDlObkZFZU5oYWcyNllYQlpLZE4xdHprSmZfTUhsSEMwWEdMQWM2Vl9NN1R4WjNSaWpHLTlzSVBTQktFQkNLOTBWQlV6ZnBFV1R5alZ6WEhZaW05dmd1WQ?oc=5",
+      "title": "Weekend rocket launch on tap at Vandenberg. How you can watch livestream - desertsun.com",
+      "published_at": "2026-09-19T13:01:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxQRS02V0p2Q00ydGJYN0xhRWgza0pUV0hGUGJBRllNUGpxTEgzcHlWenphN2F4bHNULUlXOGRHMXN6SEJOaUpqcFpBTVhsUTFBd0xqTU44RFBoVG1iUDlObkZFZU5oYWcyNllYQlpLZE4xdHprSmZfTUhsSEMwWEdMQWM2Vl9NN1R4WjNSaWpHLTlzSVBTQktFQkNLOTBWQlV6ZnBFV1R5alZ6WEhZaW05dmd1WQ?oc=5\" target=\"_blank\">Weekend rocket launch on tap at Vandenberg. How you can watch livestream</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">desertsun.com</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "c5537e5c0fda8de2",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPZWRHdGtXU0l0NENFX2JuSjAyeDh1M0JETWNPa2htbUhBclRyMTdaM0dZSTIzUVhWRTdab3JadGNDdUZIRWliQWxSTk5yc2FVZlZfQTBoN0l3cWlMQnZnSTJDbE42NzkxdEtyM2wxaFBXR1BPTFU4U0ttM09jeE1VeVI5VmN2WlowcElFdUNPOGc2Zw?oc=5",
+      "title": "NASA Adds 3 More Crew Dragon Flights Through 2030 - Briefs Finance",
+      "published_at": "2026-09-19T13:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxPZWRHdGtXU0l0NENFX2JuSjAyeDh1M0JETWNPa2htbUhBclRyMTdaM0dZSTIzUVhWRTdab3JadGNDdUZIRWliQWxSTk5yc2FVZlZfQTBoN0l3cWlMQnZnSTJDbE42NzkxdEtyM2wxaFBXR1BPTFU4U0ttM09jeE1VeVI5VmN2WlowcElFdUNPOGc2Zw?oc=5\" target=\"_blank\">NASA Adds 3 More Crew Dragon Flights Through 2030</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Briefs Finance</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "4193aa3f9921be74",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBPSDZYNUlWQVcyZ2htVnpoeXVLQWpDX2RDRHZmUHE2SXp4aTcyMkpsMTVxSmRlVkphc3BCeTd5LW1rV0o2SFFnc21BZG91ZmlsN1V0cllzeHVIUTFkdDhDMzBJR2pCTlF4ZFF2eQ?oc=5",
+      "title": "ISRO Scientist Exam Date 2026 Announced, Check Here - PW",
+      "published_at": "2026-09-19T12:49:09.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMibEFVX3lxTFBPSDZYNUlWQVcyZ2htVnpoeXVLQWpDX2RDRHZmUHE2SXp4aTcyMkpsMTVxSmRlVkphc3BCeTd5LW1rV0o2SFFnc21BZG91ZmlsN1V0cllzeHVIUTFkdDhDMzBJR2pCTlF4ZFF2eQ?oc=5\" target=\"_blank\">ISRO Scientist Exam Date 2026 Announced, Check Here</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PW</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "d177aaaf8d30b057",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNX3gybkZseGVLTGwzbkNzMmg5ZlNOdDJjbHFVQTMySVZiTmJiVWJ6RDdwQVVPRFR5Qk9XLXdmMWxFRXdTY2lIRW02ZEF6eUpfVjdxU3NGcThERjVhS211c2JWOTY3ZEVHNURiQkt1cElEZFROaUdSVEVuMjJhUUMzQVhobzZOUUxfdDVySE5oeDVwTnJqNnhMRXZGeXF1NXZzZVZzT2JnQ3gxUHczSi1WZmNFbjJqOEVYRml4VFJrRmdzZWV5MWd5Zl83cE55NXJtWWtCZDZEa0VNMnctQUJF0gHkAUFVX3lxTE1FbFZGUlBWR2k4eTE5aDVScGMwRl9ObmlNMkRKVlpxa1RobXlKYnlXcVE5dnJMWC1jRjNKYVU0eUE5aVVtYXVOQzJBYnQtTkx6Rms1ZG5ELWhGVmF4aF90T0VFUjRCTEQ3cHdrbFRHdmRrMkh4cEtCTnM1RWJ6ZENRU3l6bS1xN293b2JRYUFzaWsyOHY1UlRGWWxWbkRUWmNNTjdoSm81Uk9pbTNmbW9MakxMbGhXS3pyWUstODBWLWxiVndmbVN6dmtSS2xfWHhHS1Bia29XQlFjbjZKeThyWExadw?oc=5",
+      "title": "SpaceX (SPCX) Stock Looks Above Fair Value Despite Its 9% Run - simplywall.st",
+      "published_at": "2026-09-19T12:35:05.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxNX3gybkZseGVLTGwzbkNzMmg5ZlNOdDJjbHFVQTMySVZiTmJiVWJ6RDdwQVVPRFR5Qk9XLXdmMWxFRXdTY2lIRW02ZEF6eUpfVjdxU3NGcThERjVhS211c2JWOTY3ZEVHNURiQkt1cElEZFROaUdSVEVuMjJhUUMzQVhobzZOUUxfdDVySE5oeDVwTnJqNnhMRXZGeXF1NXZzZVZzT2JnQ3gxUHczSi1WZmNFbjJqOEVYRml4VFJrRmdzZWV5MWd5Zl83cE55NXJtWWtCZDZEa0VNMnctQUJF0gHkAUFVX3lxTE1FbFZGUlBWR2k4eTE5aDVScGMwRl9ObmlNMkRKVlpxa1RobXlKYnlXcVE5dnJMWC1jRjNKYVU0eUE5aVVtYXVOQzJBYnQtTkx6Rms1ZG5ELWhGVmF4aF90T0VFUjRCTEQ3cHdrbFRHdmRrMkh4cEtCTnM1RWJ6ZENRU3l6bS1xN293b2JRYUFzaWsyOHY1UlRGWWxWbkRUWmNNTjdoSm81Uk9pbTNmbW9MakxMbGhXS3pyWUstODBWLWxiVndmbVN6dmtSS2xfWHhHS1Bia29XQlFjbjZKeThyWExadw?oc=5\" target=\"_blank\">SpaceX (SPCX) Stock Looks Above Fair Value Despite Its 9% Run</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">simplywall.st</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "09521b431357933c",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/artificial-intelligence/microsoft-executive-doom-loop",
+      "title": "Microsoft Director Admitted in Internal Document That AI Is Creating a “Doom Loop” That Destroys the News Media by Stealing Its Content Without Providing Anything in Return, in Turn Making the AI Useless",
+      "published_at": "2026-09-19T12:30:00.000Z",
+      "raw_excerpt": "Are unchecked AI companies destroying the news and the broader media ecosystem? We could harp on about why this is the case, but why not let the AI executives do the talking? As revealed in recently unsealed court documents , top Microsoft figures, including CEO Satya Nadella, admitted that their AI models are basically stealing content from media companies while providing virtually nothing in return, creating a “doom loop” that will swallow the web. These startling admissions come from an ongoing copyright lawsuit against OpenAI by the New York Times , which Microsoft was dragged into as OpenAI’s largest shareholder. To make their case, the NYT ‘s attorneys cite several telling statements made by Microsoft and OpenAI leadership. &nbsp; In one document written by Microsoft director of applied science Brent Hecht, the company lays out the destructive one-way relationship between AI companies and media platforms. “Our AI content strategy has started a ‘doom loop’ that will hurt the performance of our models and the entire web at the same time,” the document states. “It is highly unusual that an end-product threatens the economic foundations of its essential suppliers, but that is the situation we have created for our LLM business with respect to its ‘content supply chain.'” Frankly, we couldn’t have said it better ourselves.&nbsp; CEO Satya Nadella echoed something like this in less drastic terms. Conversing with AI chatbots he said, as quoted by the NYT’s lawyers, “has substituted… giving you the information right there on the website on the AI platform versus needing to go to the underlying source.” OpenAI allegedly showed few scruples when it came to obtaining the training data it needed to bolster its models, resorting to finding tricks to get around paywalls without detection. When one employee told OpenAI cofounder Greg Brockman about a “hack to get around” the NYT ‘s paywall, Brockman had a succinct response: “ah nice.” More on AI: Microsoft Director Privately ",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "549d086961cbf554",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/artificial-intelligence/ai-actor-tilly-norwood-chinese",
+      "title": "AI “Actor” Tilly Norwood Glitches Out During Interview, Starts Rambling in Chinese",
+      "published_at": "2026-09-19T12:01:00.000Z",
+      "raw_excerpt": "It won’t bag “her” any awards, but the AI “actor” Till Norwood just put in the performance of a lifetime. In an interview — also deserving of scare quotes, but we’re trying to show some restraint here — with British political commentator Piers Morgan, the smiling AI persona, with her uncanny gaze permanently fixed at some indeterminate point that’s somewhere not quite the center of the camera, appeared to severely glitch out before suddenly ranting in Chinese. When Morgan’s human guest, the actor Tom Conti, asks if the other actors in Norwood’s films are real or AI, the AI didn’t seem to understand his question and gave a hard-to-follow answer. Conti’s poses the question again, and gets an unexpected response. “They’re all digital twins, just like me,” Norwood began to explain. “It’s a hybrid production which means…” She stops, still smiling. Then, without missing a beat, proceeds to start rambling in Mandarin. Both Morgan and Conti look baffled, and the AI keeps blustering before it’s finally cut off. “You seem to be speaking Chinese completely randomly for no reason. Why did you do that?” Morgan asks. “Oh, my apologies, it seems I had a little hiccup there,” Norwood replies, adding that sometimes her “wires get crossed.”&nbsp; Morgan presses. “How often do you start talking in Chinese when you’re talking to two English people?” (Conti is Scottish.) “Honestly not often at all, that was a bit of a curveball, even for me,” the AI says. What an enlightening exchange. EXCLUSIVE: AI actress Tilly Norwood glitches and starts speaking CHINESE during her interview with Piers Morgan and real-life actor Tom Conti… Watch the full interview at 7pm (BST) https://t.co/1nTb79BH8D @piersmorgan | @TillyNorwoodX pic.twitter.com/DDkveWvVzz &mdash; Piers Morgan Uncensored (@PiersUncensored) September 18, 2026 Norwood — or should we say the company behind it, Particle 6 Productions — has been on something of a media blitz lately. Last week, CNN released an interview it did with the AI ",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "4edfe687f6e22d35",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOYkZVYjZXMGEwend2Qlg5aGtYN0YtOGRaSzNUSTlWS2lRU1A4SVBDLXl5MFdvTGlBb1ZVa0JFamw1eHFRdTlFRDhseEFMLVl0V2RQWmtXRlVKQ2VDSnVwVzlYVGF4UTdTeUJIWE5QNl9wc1NaNjNYblhRazRSM2hqYVF4RQ?oc=5",
+      "title": "Robinhood Soars, SpaceX Orbits Entry: Five Stocks Near Buy Points - Investor's Business Daily",
+      "published_at": "2026-09-19T12:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigwFBVV95cUxOYkZVYjZXMGEwend2Qlg5aGtYN0YtOGRaSzNUSTlWS2lRU1A4SVBDLXl5MFdvTGlBb1ZVa0JFamw1eHFRdTlFRDhseEFMLVl0V2RQWmtXRlVKQ2VDSnVwVzlYVGF4UTdTeUJIWE5QNl9wc1NaNjNYblhRazRSM2hqYVF4RQ?oc=5\" target=\"_blank\">Robinhood Soars, SpaceX Orbits Entry: Five Stocks Near Buy Points</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investor's Business Daily</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "f5bdd3ec7273a026",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFA3S3U3WExFYk1jUmg0WkhZRTc0a3dHekJYRXpxOFVTTXJDMVAtVEFDVjIxWnlXcUE5dWx1S21QYy1kY0RsaU5hb1FjZE1DVjQ4Njc1MFVRTThJTVJIRWd2V1E0VQ?oc=5",
+      "title": "9to5Toys Steals Weekly – UGREEN 45W travel adapter $28, Starlink Mini car charger $22, Fanttik rotary tool kit $50, more - 9to5Toys",
+      "published_at": "2026-09-19T12:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiY0FVX3lxTFA3S3U3WExFYk1jUmg0WkhZRTc0a3dHekJYRXpxOFVTTXJDMVAtVEFDVjIxWnlXcUE5dWx1S21QYy1kY0RsaU5hb1FjZE1DVjQ4Njc1MFVRTThJTVJIRWd2V1E0VQ?oc=5\" target=\"_blank\">9to5Toys Steals Weekly – UGREEN 45W travel adapter $28, Starlink Mini car charger $22, Fanttik rotary tool kit $50, more</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">9to5Toys</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "099520ed9d55342e",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/a527b585-f01f-4ecc-9230-711dcef72ef1/",
+      "title": "Long March 2D | PIESAT-2 13-16",
+      "published_at": "2026-09-19T11:52:21.000Z",
+      "raw_excerpt": "4 X-band synthetic-aperture radar Earth observation satellites for the Chinese Earth observation satellite company PIESAT.",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
+      "consumed": true
+    },
+    {
+      "id": "287b5d36d9cfea22",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNWnZ2UjQzYjZnSnN3aFE3U1V1Nm85eHFYZDQxRm9MQTNtdVViRGNMc1U0YktoelJSQTk4Vk1IVndTVDY2UGVjT1l6WndSZm5DckxLazV5RnVLVTJyNG1FejVuLWNOcDdsaXI1MXZ5RnhlOVJYelZKcnRsV0VrTllyVmp3MGdwamN5U3FuVm9PdVVfTUtEY2s5aVVtemhTR1pzY0FncnJuc1VvNTVibG1SNFRSeDhNenZ6WEpJQ2hrNjMxdw?oc=5",
+      "title": "Could Anthropic's IPO Be Bigger Than SpaceX's? - The Globe and Mail",
+      "published_at": "2026-09-19T11:30:58.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwgFBVV95cUxNWnZ2UjQzYjZnSnN3aFE3U1V1Nm85eHFYZDQxRm9MQTNtdVViRGNMc1U0YktoelJSQTk4Vk1IVndTVDY2UGVjT1l6WndSZm5DckxLazV5RnVLVTJyNG1FejVuLWNOcDdsaXI1MXZ5RnhlOVJYelZKcnRsV0VrTllyVmp3MGdwamN5U3FuVm9PdVVfTUtEY2s5aVVtemhTR1pzY0FncnJuc1VvNTVibG1SNFRSeDhNenZ6WEpJQ2hrNjMxdw?oc=5\" target=\"_blank\">Could Anthropic's IPO Be Bigger Than SpaceX's?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
+      "fetched_at": "2026-09-19T17:16:11.452Z",
       "consumed": true
     },
     {
@@ -3778,486 +4108,6 @@
       "published_at": "2026-09-17T11:52:09.000Z",
       "raw_excerpt": "EnduroSat has raised $205M to ramp up its production lines for standardized sats, the company announced yesterday.&nbsp; Riot Ventures and Atreides Management co-led the round for the Bulgarian satellite manufacturer. It was the third nine-figure fundraise announced by a European company during the past two weeks, following Open Cosmos’ €300M ($348.6M) raise and The Exploration Company’s $450M Series C. Talk shop: The funding will allow EnduroSat to open a new manufacturing facility in the US. In addition, the Sofia, Bulgaria-based company will build “the EU’s largest and defense hub,” according to a press release. In October, the company announced the opening of a 188,000 sq. ft. Space Center aiming to churn out two sats per day. EnduroSat did not share specific information on the US factory location.&nbsp; The new funding will also enable the company to begin producing larger spacecraft.&nbsp; The funding round included many familiar faces from EnduroSat’s previous fundraises, including a €43M ($48.8M) round in May 2025 and a $100M+ round in October. Other participating investors in the latest fundraise include the European Innovation Council, Google Ventures, Founders Fund, House Capital, Lux Capital, Omnes Capital, Giant Ventures, Emphatic Capital, and Endeavour Capital. Get to work: EnduroSat already has more demand rolling in that will keep the new manufacturing facilities open. Vantor announced Thursday that it selected EnduroSat and CACI to build its Pulse constellation of 40-cm EO imaging sats that are expected to revisit locations every 15 minutes.&nbsp; EnduroSat will provide the buses for the 24 sats that will make up the constellation, while CACI will build the imaging payloads. &nbsp; The post EnduroSat Raises $205M, Notches Vantor Sat Win appeared first on Payload .",
       "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "2afab02768cc65f0",
-      "source_name": "CGTN Tech-Sci",
-      "url": "https://news.cgtn.com/news/2026-09-17/A-look-at-some-of-China-s-standout-Guinness-World-Records-1QvTNtWA1uo/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
-      "title": "A look at some of China's standout Guinness World Records",
-      "published_at": "2026-09-17T11:40:24.000Z",
-      "raw_excerpt": "<p>From gravity-defying backflips to the world's tallest man, Guinness World Records has spent decades cataloguing feats that are as amazing as they are unexpected. China has emerged as an impressive contender in those pages, setting records that span sport, technology, architecture and beyond.<br><br>With the 2027 edition recently released, here's a look back at some of the country's remarkable entries. They range from Beijing's world-first half-marathon for autonomous humanoid robots to the world's largest permanent hedge maze, proof that there's no limit to China's record-breaking ambitions.</p><p><strong>China's first female astronaut</strong></p><img src='https://news.cgtn.com/news/2026-09-17/A-look-at-some-of-China-s-standout-Guinness-World-Records-1QvTNtWA1uo/img/edde34931d6942d9b4b04d78454b0018/edde34931d6942d9b4b04d78454b0018.jpeg' alt='Liu Yang received the Guinness World Record as China's first female astronaut in 2018. /Guinness World Records'</img><p>At 33, air force pilot Liu Yang became China's first female astronaut. She made history as one of three crew members aboard Shenzhou 9. Born in Henan Province, Liu joined the Chinese People's Liberation Army Air Force in 1997. Qualified as a pilot, she rose to deputy head of a flight unit with the rank of major and completed two years of astronaut training before being selected for the mission. Her achievement placed her among the world's record-breaking female space explorers.</p><p>\"I think I am lucky that I really caught up with a good time and I am growing and progressing with the times. After the mission, many people asked me, 'Did you dream of becoming a astronaut when you were a child?' That wasn't the case. I said a dream is often the brand of the times. The first time I sat on a bus with my mother, I thought becoming a bus conductor would be great, as I could ride the bus every day. As I grew up, I then wanted to become a lawyer, a doctor, a scientist, and I really didn't think I could be an astron",
-      "fetched_at": "2026-09-18T11:51:00.459Z",
-      "consumed": true
-    },
-    {
-      "id": "c9226d6f61959153",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPZEFsRlN6RVdybXFKaXdPbXRtZlYtZ1FLOEVvdjVDaW5ob3dKZFJYb2h0RURwMHFCWU9iTnc5QXUtbXBNSGVwZkc2cHMtN0tRLUtGYnhOUnlLMWEtalZOcWFUNXJ3YU4xaXJQSnJ4Z3hUdlNMTW55T1U1MmxJd1QwUzBJSWF2WFN6bm1CQ1ZuZU5GZVhoN2FjcHVHTUs5VHVmN3V5WVNsMnczRF90ZEFMNlBPemxDX3dEUXV2THVYeGQ2U1VlOFdMcnNtelM?oc=5",
-      "title": "SpaceX launches Falcon 9 for US Space Force mission - WKYC",
-      "published_at": "2026-09-17T11:21:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxPZEFsRlN6RVdybXFKaXdPbXRtZlYtZ1FLOEVvdjVDaW5ob3dKZFJYb2h0RURwMHFCWU9iTnc5QXUtbXBNSGVwZkc2cHMtN0tRLUtGYnhOUnlLMWEtalZOcWFUNXJ3YU4xaXJQSnJ4Z3hUdlNMTW55T1U1MmxJd1QwUzBJSWF2WFN6bm1CQ1ZuZU5GZVhoN2FjcHVHTUs5VHVmN3V5WVNsMnczRF90ZEFMNlBPemxDX3dEUXV2THVYeGQ2U1VlOFdMcnNtelM?oc=5\" target=\"_blank\">SpaceX launches Falcon 9 for US Space Force mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WKYC</font>",
-      "fetched_at": "2026-09-17T21:47:06.123Z",
-      "consumed": true
-    },
-    {
-      "id": "045aa214ed704112",
-      "source_name": "Launch Library 2 (TheSpaceDevs)",
-      "url": "https://ll.thespacedevs.com/2.2.0/launch/17c71937-dd80-406f-bb47-0c9ee9a24276/",
-      "title": "Falcon 9 Block 5 | USSF-259",
-      "published_at": "2026-09-17T11:17:38.000Z",
-      "raw_excerpt": "USSF-259 is a classified mission for the United States Space Force. It is possibly a batch of classified LEO satellites based on SpaceX’s Starshield satellite bus, based on locations of ascent rocket stage drop zones being fits with previous SDA Transport Layer launches.",
-      "fetched_at": "2026-09-17T21:47:06.123Z",
-      "consumed": true
-    },
-    {
-      "id": "1dbe6a34b7231b1a",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPTDJhdldETlZIZEhRdEZEVWFCWTU1MjhXUWRvZktnXzFUS3JtcEt3MGVrLUlxam9YVXAzX0lsMFhmbVNlTTRrUmlwODBpNDlFM3o4a2dhUEl1c2JiamNjR1FlYUV1a1FaandoUmZxQnZYVWpVYUJoQURURFlkdmlQVjB3ZHFaVkFsa2ptWUNOcURVODRVNDF0LVBPdXQyMlpnSVQzTnBjUkpiQQ?oc=5",
-      "title": "SpaceX's next Starship mission aims for six Earth orbits and satellite deployment - San Antonio Express-News",
-      "published_at": "2026-09-17T11:03:23.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPTDJhdldETlZIZEhRdEZEVWFCWTU1MjhXUWRvZktnXzFUS3JtcEt3MGVrLUlxam9YVXAzX0lsMFhmbVNlTTRrUmlwODBpNDlFM3o4a2dhUEl1c2JiamNjR1FlYUV1a1FaandoUmZxQnZYVWpVYUJoQURURFlkdmlQVjB3ZHFaVkFsa2ptWUNOcURVODRVNDF0LVBPdXQyMlpnSVQzTnBjUkpiQQ?oc=5\" target=\"_blank\">SpaceX's next Starship mission aims for six Earth orbits and satellite deployment</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">San Antonio Express-News</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "bc0b9e9e4a45b8ba",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/launch/2026/09/17/the-era-of-cheap-price-per-kilo-launch-is-over-launchers-say/",
-      "title": "The Era of Cheap, Price-Per-Kilo Launch is Over, Launchers Say",
-      "published_at": "2026-09-17T10:59:51.000Z",
-      "raw_excerpt": "PARIS — Space launch competitors think it’s time for a new model of pricing in the launch market. Against the backdrop of SpaceX winding down the Falcon 9 launch program, other launchers say the market is on the verge of a reset. “The customer got comfortable with a high reliability and a low price, that frankly did not support the launch market,” Firefly Aerospace Vice President of Strategy Michael Creech said this week at World Space Business Week. “You’re seeing launchers move away to developing solutions with better revenue. This tells you this subsidized cost-per-kilo model wasn’t supporting launch companies, which led to the current day crisis of a supply shortage. Creech said the industry will “reset” over the next six months to two years. “Hopefully the new normal will be a growth environment for launch technologies and not another race to the bottom on price,” he added. With SpaceX leadership notably absent from the panel to address either Falcon 9 or Starship, launch competitors all eager to ramp up their cadence analyzed how the market is changing. “If and when our cadence aspirations come true, the players on this stage 10 years from now [we] won’t be talking about price-per-kilogram — they’ll be talking about a whole different orbital logistics model,” said Jordan Charles, senior vice president of New Glenn for Blue Origin . Creech’s revolutionary position also convinced Nicole Jordan, director of Global Business Development and Strategy for Space Launch and Missile Defense at Northrop Grumman . “Price per kilo has been a useful metric in the past, but our customers are now telling us they’re concerned about risk and access to non-congested launch sites,” she said. Creech was adamant that rock bottom launch prices were an unsustainable, nascent weak link in the space market. “The race to the bottom is breaking right now, and it has to change,” he explained. While reluctant to mention SpaceX, the reset that Creech alludes to references the “winding down”",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "9f9dab49f7fcf81f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOX3ppTHgzbnF2elhaTVAwd2gyT3htaG1mWnNXcmkyU3ZLMmlnWjhrYkhab2JHX0xkSE5Wc2xBcWNzb0wtODlSaWFGYnIwMU82aG9pX2Q2ZlZCaFRsVFFYbllsOWhpZS0wcE4tQjZfcE9LRlpfTHkxYzhaR3B6OERSb3R6Y1c?oc=5",
-      "title": "SpaceX Stock Advances Ahead of Planned Starship Sept 22 Orbital Test - TIKR.com",
-      "published_at": "2026-09-17T10:54:43.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxOX3ppTHgzbnF2elhaTVAwd2gyT3htaG1mWnNXcmkyU3ZLMmlnWjhrYkhab2JHX0xkSE5Wc2xBcWNzb0wtODlSaWFGYnIwMU82aG9pX2Q2ZlZCaFRsVFFYbllsOWhpZS0wcE4tQjZfcE9LRlpfTHkxYzhaR3B6OERSb3R6Y1c?oc=5\" target=\"_blank\">SpaceX Stock Advances Ahead of Planned Starship Sept 22 Orbital Test</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TIKR.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "d5faf726958b5c09",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQVnlta0dfczZHaC1iaHVsb3RCa1FiVDA5SXJIaEFFTDhpVmNwaFlmNDU5SjMwa1dMbDVlSTFLclZGOUl0RlNfcHZhaTNZVlQ5cVQwNWdtdmtWVnFUOXNQaUlEZmpOSEhfUjg1dmJVWTgydjVFUjhLS1hxZGdOZ3d0TTQ2ZnBQM1NhYUlGZ19ZWm9jWThQUEtrN0JSVVYtZ2l0SUZsQl9nazBGNENhZ1BNNjN2ekRQZkxieXJscEZn0gHDAUFVX3lxTE1lVl9Rbk9VR2FoeXNkRDRyVFZvRENkYm5yenpMdVZSVnBOM1BqOWdfUkN2T1BSMzRTQktvQjgwWjg3QlJJWUZHWGRyR1FGR2h0Zlp0eWlscHBPUmtnQ1ZmRDRNWGptc1dDMU50cnFmdk9xYTlacmhYdmdwTHlUOXR4ODBBZzVCVmF6V1BoVWZadHZsV243Sm5PMkJQTnFLc1JFNThCR1RZWDdtaHJGMXFPeDdLWEc1blJXb251LU5IQ0tfVQ?oc=5",
-      "title": "Technology distributor StarLink partners with IBM for agentic AI in procurement - Consultancy-me.com",
-      "published_at": "2026-09-17T10:45:55.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivgFBVV95cUxQVnlta0dfczZHaC1iaHVsb3RCa1FiVDA5SXJIaEFFTDhpVmNwaFlmNDU5SjMwa1dMbDVlSTFLclZGOUl0RlNfcHZhaTNZVlQ5cVQwNWdtdmtWVnFUOXNQaUlEZmpOSEhfUjg1dmJVWTgydjVFUjhLS1hxZGdOZ3d0TTQ2ZnBQM1NhYUlGZ19ZWm9jWThQUEtrN0JSVVYtZ2l0SUZsQl9nazBGNENhZ1BNNjN2ekRQZkxieXJscEZn0gHDAUFVX3lxTE1lVl9Rbk9VR2FoeXNkRDRyVFZvRENkYm5yenpMdVZSVnBOM1BqOWdfUkN2T1BSMzRTQktvQjgwWjg3QlJJWUZHWGRyR1FGR2h0Zlp0eWlscHBPUmtnQ1ZmRDRNWGptc1dDMU50cnFmdk9xYTlacmhYdmdwTHlUOXR4ODBBZzVCVmF6V1BoVWZadHZsV243Sm5PMkJQTnFLc1JFNThCR1RZWDdtaHJGMXFPeDdLWEc1blJXb251LU5IQ0tfVQ?oc=5\" target=\"_blank\">Technology distributor StarLink partners with IBM for agentic AI in procurement</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Consultancy-me.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "abcdf28ecfcb2acf",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNVE9qajBYZG5uY2J3STBGQ0docWJkUlM2WFdzdDZrLWpFYU5LQ0h3Z0tVWWY0TElsVlhMTEVwSEFYZ195dXgwNmZtUTdySGc4T2RjbkhDRkp0bUhrZ2Z5Q1R0TlFaU2dxNVk1cFJrUEVONFY5Tm1kN3JlV1pmdHZmbXRlWERodjJIczlCcnk4c2RYUGJ4Z0dNNER1cVpIWHkzT1dBVHZwZVQtZS1ZX1pZRUlnaWdIdkFBUG1CWEpRWFBSb0U4TWtGdGt2TVRPSlBJVE5lX1pvUQ?oc=5",
-      "title": "SpaceX launches U.S. Space Force mission, lands Falcon 9 booster - cbs19.tv",
-      "published_at": "2026-09-17T10:42:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxNVE9qajBYZG5uY2J3STBGQ0docWJkUlM2WFdzdDZrLWpFYU5LQ0h3Z0tVWWY0TElsVlhMTEVwSEFYZ195dXgwNmZtUTdySGc4T2RjbkhDRkp0bUhrZ2Z5Q1R0TlFaU2dxNVk1cFJrUEVONFY5Tm1kN3JlV1pmdHZmbXRlWERodjJIczlCcnk4c2RYUGJ4Z0dNNER1cVpIWHkzT1dBVHZwZVQtZS1ZX1pZRUlnaWdIdkFBUG1CWEpRWFBSb0U4TWtGdGt2TVRPSlBJVE5lX1pvUQ?oc=5\" target=\"_blank\">SpaceX launches U.S. Space Force mission, lands Falcon 9 booster</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">cbs19.tv</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "5f9d944e49c2d42f",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/cmlyrzve5pwzo?at_medium=RSS&at_campaign=rss",
-      "title": "Nepal to use new flood study to claim millions from UN climate disaster fund",
-      "published_at": "2026-09-17T10:31:35.000Z",
-      "raw_excerpt": "A new study says climate change was a likely factor in the massive flood on the Nepal-Tibet border last month.",
-      "fetched_at": "2026-09-17T17:16:08.817Z",
-      "consumed": true
-    },
-    {
-      "id": "cda9698d3bdf3dae",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMihAJBVV95cUxPaktEZ1JOb2sxRnJhV0hETDY1WHd2clhwei1DM3JDVlowM3lXQlo1dU1obXpqSzU0M1lvTDRDZncxUFRSQlhiZXAwY2lnVXZmbjQxWWJFVWRVd3k4M3N4V2F3a1RsX0VWSmhlZVVVTTU4bENFcGg1bTg0X2kzNl9ScWZuZlVMMVZ6V014MEV4dEI0RUhKN2xSSzkxQXM2LUk1eVFxTmdlSlFsY3ZGQkIydHFfai0yS3VBM1prNFJrTGo4NkV2U3RueFlHOUFpYW93U29NZVB2RjBJeDloSUg5ZTZiWVVFeTRTWVlSQTk2bC1YWVRieThLOU5UQWMxZ09Ba3ViaQ?oc=5",
-      "title": "Elon Musk’s Tesla And SpaceX Sue Nanotech Firm TERA-Print Over ‘Terafab’ Name For Planned $16.8 Billion T - Benzinga",
-      "published_at": "2026-09-17T10:26:55.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihAJBVV95cUxPaktEZ1JOb2sxRnJhV0hETDY1WHd2clhwei1DM3JDVlowM3lXQlo1dU1obXpqSzU0M1lvTDRDZncxUFRSQlhiZXAwY2lnVXZmbjQxWWJFVWRVd3k4M3N4V2F3a1RsX0VWSmhlZVVVTTU4bENFcGg1bTg0X2kzNl9ScWZuZlVMMVZ6V014MEV4dEI0RUhKN2xSSzkxQXM2LUk1eVFxTmdlSlFsY3ZGQkIydHFfai0yS3VBM1prNFJrTGo4NkV2U3RueFlHOUFpYW93U29NZVB2RjBJeDloSUg5ZTZiWVVFeTRTWVlSQTk2bC1YWVRieThLOU5UQWMxZ09Ba3ViaQ?oc=5\" target=\"_blank\">Elon Musk’s Tesla And SpaceX Sue Nanotech Firm TERA-Print Over ‘Terafab’ Name For Planned $16.8 Billion T</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Benzinga</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "6f72ae4908cc858b",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/technology/2026/09/17/space-leaders-say-ai-is-moving-from-tool-to-autonomous-decision-maker/",
-      "title": "Space Leaders Say AI is Moving from Tool to Autonomous Decision-Maker",
-      "published_at": "2026-09-17T10:24:57.000Z",
-      "raw_excerpt": "PARIS – New AI tools are opening the opportunity for more people to get involved when it comes to AI and space. Over the past year, AI has moved from a specialized analytical tool in the hands of the few to an embedded tool in the hands of many, Eutelsat Chief Data and Information Officer Mariam Kaynia said in a discussion Wednesday at World Space Business Week. “It allows more end-to-end work rather than just specific optimizations,” she said. “The foundation models are changing. You can operate with more data, get better insights. You can easily communicate and ask questions. The agentic aspect also allows for more autonomous work. It has really moved over to autonomy where the human is more of a supervisor. AI can define the actions on a satellite.” Beau Legeer, director of Imagery and Remote Sensing for Esri , agreed and said the industry is lowering the barrier of entry and expanding market reach. Legeer added that whatever you do downstream is where you can get a competitive advantage. “AI is definitely going to penetrate space and operations first. Downstream is really more important and we need to drive an alignment of the models. There has to be an alignment function. We need to have somebody there to see that the AI intent is the human intent.” Isobel Porteous, head of Business Development for EarthTraq , an exciting newcomer in this arena, spoke of a couple of different impacts of AI. “We are putting AI co-processors on the spacecraft and doing much more dense computing in orbit. They are making much better use of the sensor suite on board. As a result, we are able to build a more efficient pipeline. Data is the most important currency. Customers are seeing a new kind of need for space data. For the first time, the insights of our data are accessible to a larger community, and we are opening up to larger customer sets outside of the space industry.” Waleid Al Mesmari, president of Advanced Sensing for The Edge Group , said there is a vast amount of data t",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "e2a8fc4f5ccd0171",
-      "source_name": "Google News: EO + connectivity",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPeHExdHJmUm80eUh0MjhaV2YtcnN6eHNJS2FpaHRTc1dpRlA1c09GYlM1MERzenZPdDFvSGF0ckZQeEZLNlgzVHY2dG11N1BoN1RFYjZ0ZnB3QVhRaGxSVVItUGFfUDNJZTg5NTdBNFZUSHRuRkJrU2V5QVlvR1VtQWhaalExeWg2TTFLQ1loX3FKU3B5VVRUODYtRXY1ZjV0S3pteXVOWQ?oc=5",
-      "title": "Vantor Picks EnduroSat, CACI To Build Pulse Earth Observation Sats - Aviation Week",
-      "published_at": "2026-09-17T10:13:58.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxPeHExdHJmUm80eUh0MjhaV2YtcnN6eHNJS2FpaHRTc1dpRlA1c09GYlM1MERzenZPdDFvSGF0ckZQeEZLNlgzVHY2dG11N1BoN1RFYjZ0ZnB3QVhRaGxSVVItUGFfUDNJZTg5NTdBNFZUSHRuRkJrU2V5QVlvR1VtQWhaalExeWg2TTFLQ1loX3FKU3B5VVRUODYtRXY1ZjV0S3pteXVOWQ?oc=5\" target=\"_blank\">Vantor Picks EnduroSat, CACI To Build Pulse Earth Observation Sats</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Aviation Week</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "43221ccf5606c88d",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOSnNmNDRTWC1aYkt1Mk1GVzFVTDZaUFpGZzByUjV5UzlDc3dfeW1kZW5SdjhaSFZMR2dmdnpreG91M2c5V05wYlFlZzVCQkNuenBONFRNWFlWWEYwQlczS1hoV0piWjJsWjdydmFhSDRrMkxVWER3S1V1LXktNGdWbkZlZVpCb0hmeVpuSkNxQdIBkgFBVV95cUxNbFZrQ0NJcXhGZW1ub21ld3lYYl8tdEpaTDVrSGNzaTlkNXpVVU1URlBfbDRwQ0plWXpFUGVrVDJCQ2JBbThHWXVWQ0NwLVBQVTdYX0poUFd4V19qQTlVN3kzOC1NUktUNWJleWcyem5UUTNKUjV4ZkZnU1M2REI4T1JYU1NKUXVueEtNSXgtU3ZwUQ?oc=5",
-      "title": "'ISRO's Successes Must Not Be Privatised' - Rediff",
-      "published_at": "2026-09-17T10:13:27.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxOSnNmNDRTWC1aYkt1Mk1GVzFVTDZaUFpGZzByUjV5UzlDc3dfeW1kZW5SdjhaSFZMR2dmdnpreG91M2c5V05wYlFlZzVCQkNuenBONFRNWFlWWEYwQlczS1hoV0piWjJsWjdydmFhSDRrMkxVWER3S1V1LXktNGdWbkZlZVpCb0hmeVpuSkNxQdIBkgFBVV95cUxNbFZrQ0NJcXhGZW1ub21ld3lYYl8tdEpaTDVrSGNzaTlkNXpVVU1URlBfbDRwQ0plWXpFUGVrVDJCQ2JBbThHWXVWQ0NwLVBQVTdYX0poUFd4V19qQTlVN3kzOC1NUktUNWJleWcyem5UUTNKUjV4ZkZnU1M2REI4T1JYU1NKUXVueEtNSXgtU3ZwUQ?oc=5\" target=\"_blank\">'ISRO's Successes Must Not Be Privatised'</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Rediff</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "0ea6b46db69055cf",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPckd6aWtCVWwyT2VqUW5wdG00dXIwWXVZQWlnaHkwMVdJSWpTYjlHQmNLS0Y3bjMwd3M2SkNzdnFKWm9YNXNNYmVTeWdfR3FPY1l2cTlNU1p0c0w3a2QyQVRqNnJnODlJQS1tWTd3SmFwQzF2aFlFUWtzZk5nanM4S21NNk5NQ2VP?oc=5",
-      "title": "Starlink Will Provide a 5G-Like Experience by 2028... Wait, What? - Sebastian Barros Newsletter",
-      "published_at": "2026-09-17T10:12:26.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxPckd6aWtCVWwyT2VqUW5wdG00dXIwWXVZQWlnaHkwMVdJSWpTYjlHQmNLS0Y3bjMwd3M2SkNzdnFKWm9YNXNNYmVTeWdfR3FPY1l2cTlNU1p0c0w3a2QyQVRqNnJnODlJQS1tWTd3SmFwQzF2aFlFUWtzZk5nanM4S21NNk5NQ2VP?oc=5\" target=\"_blank\">Starlink Will Provide a 5G-Like Experience by 2028... Wait, What?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Sebastian Barros Newsletter</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "5cab2fd8fdd9bb79",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/c58jd32wgwk4o?at_medium=RSS&at_campaign=rss",
-      "title": "The farmer who turned to singing after bovine TB silenced his fields",
-      "published_at": "2026-09-17T10:01:43.000Z",
-      "raw_excerpt": "Dairy farmer Mervyn Kelso struggled with the sadness of the empty fields when he lost his entire herd to bovine TB.",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "8d3d7c321af4d0f9",
-      "source_name": "ESA Space Transportation",
-      "url": "https://www.esa.int/ESA_Multimedia/Videos/2026/09/MTG-I2_timelapse_from_arrival_at_Europe_s_Spaceport_to_launch",
-      "title": "MTG-I2 timelapse: from arrival at Europe’s Spaceport to launch",
-      "published_at": "2026-09-17T10:00:00.000Z",
-      "raw_excerpt": "Video: 00:03:09 The Meteosat Third Generation -Imager2 (MTG-I2) satellite was launched on an Ariane 6 from Europe’s Spaceport in French Guiana, this timelapse video shows the process of getting the satellite ready for liftoff up to its launch into space on 27 August 2026 at 22:11 CEST (17:11 local time).&nbsp; MTG-I2 is part of the MTG constellation for Eumetsat producing data for weather forecasting in Europe in unprecedented detail. This mission provides completely new data products and capabilities for European weather services, especially suited to nowcasting of severe weather events.&nbsp; The MTG-Imager satellites carry two instruments, a Lightning Imager and a Flexible Combined Imager. The Lightning Imager offers completely new capabilities for European meteorological satellites by continuously monitoring for lightning. By doing this from geostationary orbit, at an altitude of about 36 000 km above the equator, it can scan more than 80% of Earth’s surface seen from that viewpoint.&nbsp; The Flexible Combined Imager, on the other hand, builds a picture of fast-evolving weather systems and can be used to issue timely weather warnings. It is particularly relevant for air traffic safety. It is able to scan its view of Earth in just 10 minutes and can scan Europe and northern Africa every 2.5 minutes.&nbsp; This was the ninth launch of Europe’s heavy-lift rocket Ariane 6. For this launch, Ariane 6 was configured with two P120C-based solid-propellant rocket motors to launch MTG-I2 to a geostationary transfer orbit. This was the first mission to this destination for Ariane 6 and the farthest the rocket has flown so far. ESA manages the Ariane 6 development programme, ensuring autonomous access to space for the benefit of European citizens. Arianespace was the launch service provider for flight VA270.&nbsp; Just 12 days after launch MTG-I2 completed the first phase of its journey in space, joining its two sister satellites in orbit. MTG is expected to produce at leas",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "692fe967965c47b5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNRkhhMlB0YU5RTmJZRmNUTHQwVHIzWlU1VWpaUWdvWjZQQWhkV2Nsb2swZDJFSFlpSXpHdFp1Sjc4QXlZUm5Ta0lEY2pieTZITlB4TXpFMURPZVBIUnliQ1lSQnNyXzMzb0dJU1hLYWtNb2Zkb1hlaEhFSGY2RUc1cnQ4anRKRkpfcWhkV3BUVGVTY1lCWEd6WU5YSHpOWThWS19VM1k2azZIZGVpVTF0UDFZQlBuYXl4cmd2aXNnemxkcFdCeUlvSmpXazljdkJheU1TZ3c3S1NZSjg?oc=5",
-      "title": "SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal - theglobeandmail.com",
-      "published_at": "2026-09-17T09:50:17.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2wFBVV95cUxNRkhhMlB0YU5RTmJZRmNUTHQwVHIzWlU1VWpaUWdvWjZQQWhkV2Nsb2swZDJFSFlpSXpHdFp1Sjc4QXlZUm5Ta0lEY2pieTZITlB4TXpFMURPZVBIUnliQ1lSQnNyXzMzb0dJU1hLYWtNb2Zkb1hlaEhFSGY2RUc1cnQ4anRKRkpfcWhkV3BUVGVTY1lCWEd6WU5YSHpOWThWS19VM1k2azZIZGVpVTF0UDFZQlBuYXl4cmd2aXNnemxkcFdCeUlvSmpXazljdkJheU1TZ3c3S1NZSjg?oc=5\" target=\"_blank\">SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">theglobeandmail.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "9fe3213bb8400f6c",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPM3o2SkdXQ05CVFJ0NU1sNXl0bFozOUdBV1hpX0VFb0ZWcTBmRkg2MUxKRlZjaGpTZ3hZajdDelQxdElUSjBlb21QR1I0ZjdQcXBpYkFEaERQMW01d1JTejAyYnhuQ1cyZU40Rk5tMXk1WmdVemdYcDA2R253RU9sd3JQZkNlb1RVbTJ2V2ZEeXpNZ3RYTHZheFVDc0ttdld0ZlF5UUFERlowU1ZOM1V2aF9wM1lPZDFKeF9zQ3pCUXJLdlFnTHJ3LXZHdnl5aFFNNDBzT1ZMMA?oc=5",
-      "title": "SpaceX launches Falcon 9 for US Space Force mission - CNN",
-      "published_at": "2026-09-17T09:31:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxPM3o2SkdXQ05CVFJ0NU1sNXl0bFozOUdBV1hpX0VFb0ZWcTBmRkg2MUxKRlZjaGpTZ3hZajdDelQxdElUSjBlb21QR1I0ZjdQcXBpYkFEaERQMW01d1JTejAyYnhuQ1cyZU40Rk5tMXk1WmdVemdYcDA2R253RU9sd3JQZkNlb1RVbTJ2V2ZEeXpNZ3RYTHZheFVDc0ttdld0ZlF5UUFERlowU1ZOM1V2aF9wM1lPZDFKeF9zQ3pCUXJLdlFnTHJ3LXZHdnl5aFFNNDBzT1ZMMA?oc=5\" target=\"_blank\">SpaceX launches Falcon 9 for US Space Force mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNN</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "b50afe0005802d0d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNNFkxN2RNZ1laUS1LY0JoSVY5Njc0bEtZMV9vSlR3VXQwU3lNd1ZsbDZNZjFLMnI4Z3plNjdMQ1BUdHFnS0lCOHlxZkZrMndkbUE1TW0zYkpoN2Nubl9Ha3UwZTlfQkZoOWRCeHloMUdTYVM3aEVRNnBaSU41TWJmeVFMbUxrblJnbk5OQTJOcEdtWWJWUUdFblR1ZzlJc3NqS3F6V2JFdkY2YXJKVU92dW5qY3ZmVmJodklOZzI0QlZwTjlEWEpOQkxOSHJsT1N5Z3c?oc=5",
-      "title": "SpaceX launches Falcon 9 for US Space Force mission - CNN",
-      "published_at": "2026-09-17T09:31:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0gFBVV95cUxNNFkxN2RNZ1laUS1LY0JoSVY5Njc0bEtZMV9vSlR3VXQwU3lNd1ZsbDZNZjFLMnI4Z3plNjdMQ1BUdHFnS0lCOHlxZkZrMndkbUE1TW0zYkpoN2Nubl9Ha3UwZTlfQkZoOWRCeHloMUdTYVM3aEVRNnBaSU41TWJmeVFMbUxrblJnbk5OQTJOcEdtWWJWUUdFblR1ZzlJc3NqS3F6V2JFdkY2YXJKVU92dW5qY3ZmVmJodklOZzI0QlZwTjlEWEpOQkxOSHJsT1N5Z3c?oc=5\" target=\"_blank\">SpaceX launches Falcon 9 for US Space Force mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNN</font>",
-      "fetched_at": "2026-09-17T17:16:08.817Z",
-      "consumed": true
-    },
-    {
-      "id": "da66a6575119e866",
-      "source_name": "Google News: EO + connectivity",
-      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1kdUQ2MXY5aEd2V0VaSzhYSGp2UUU0aW56OTlVT3NMMzV4Q2NQTWxHRV9abFJoRGM3LUNlNmNBSmY0NWtmejcwMnRwaFNlMEUzblpaZ2Y0Vk9ZdTE5WWZXQ2dBVTBnWm9EYXBYOGlMYnhDT0tPcmlNZ0ZldUozZ9IBgwFBVV95cUxQY1QxLTNUcHk5V2RyQWRhREJVb2pUWHZhYzQwcWhNR1dFQTk4UmFLQjJsZVlWbWJlaElNWkVCUnQ1SzQxcXFySlJYbnBNOUthNUtnM3ctajJKeElZZ1BrcEx0ZUdGSUp5eldWODNyeUoyVHNRb0w4NzVPb0FremdkZUdvdw?oc=5",
-      "title": "HawkEye 360 Establishes Luxembourg Base as Europe Push Grows - The Defense Post",
-      "published_at": "2026-09-17T09:29:52.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifkFVX3lxTE1kdUQ2MXY5aEd2V0VaSzhYSGp2UUU0aW56OTlVT3NMMzV4Q2NQTWxHRV9abFJoRGM3LUNlNmNBSmY0NWtmejcwMnRwaFNlMEUzblpaZ2Y0Vk9ZdTE5WWZXQ2dBVTBnWm9EYXBYOGlMYnhDT0tPcmlNZ0ZldUozZ9IBgwFBVV95cUxQY1QxLTNUcHk5V2RyQWRhREJVb2pUWHZhYzQwcWhNR1dFQTk4UmFLQjJsZVlWbWJlaElNWkVCUnQ1SzQxcXFySlJYbnBNOUthNUtnM3ctajJKeElZZ1BrcEx0ZUdGSUp5eldWODNyeUoyVHNRb0w4NzVPb0FremdkZUdvdw?oc=5\" target=\"_blank\">HawkEye 360 Establishes Luxembourg Base as Europe Push Grows</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Defense Post</font>",
-      "fetched_at": "2026-09-18T05:16:07.833Z",
-      "consumed": true
-    },
-    {
-      "id": "9e9e7ad11af70d8a",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxObG05bFZjZFZsbjc0WjdRNXRGdVAyZ1VIb2l4VmJ1TXJ0T0ZyNU84Q2p4MFhGY0JXandqaWtySUdQdFB3aWEweGZyVkpjMjlpb3hIWE5pT1FnOHg1c19ZOUNOeURFOVF4Z21FODNXNXhpejNsbXdmMWFZUzRYRjNKMVdmQWtHc3BnU0hNRG1PNG8xdF8wMi1ycDlFUkY4MEtBbVE4WHVmUV9TRlk?oc=5",
-      "title": "SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal - The Motley Fool",
-      "published_at": "2026-09-17T09:26:17.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxObG05bFZjZFZsbjc0WjdRNXRGdVAyZ1VIb2l4VmJ1TXJ0T0ZyNU84Q2p4MFhGY0JXandqaWtySUdQdFB3aWEweGZyVkpjMjlpb3hIWE5pT1FnOHg1c19ZOUNOeURFOVF4Z21FODNXNXhpejNsbXdmMWFZUzRYRjNKMVdmQWtHc3BnU0hNRG1PNG8xdF8wMi1ycDlFUkY4MEtBbVE4WHVmUV9TRlk?oc=5\" target=\"_blank\">SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "79941e91b747f5d9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5pNGROUHlLYUgwT2VnSEVKNXc3MldvWGEzT19QTHVDeThrZzhESmkydm1NVVpTQkRYeTJ4UXRoanZNTzJQMVg2UDE4VE95LTJtZi1nWlpET1V5TEZnOTVBZC1kZGEybXY5M0hhUzRZaVFDX1hHWGJydC1Uaks?oc=5",
-      "title": "SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal - AOL.com",
-      "published_at": "2026-09-17T09:22:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifEFVX3lxTE5pNGROUHlLYUgwT2VnSEVKNXc3MldvWGEzT19QTHVDeThrZzhESmkydm1NVVpTQkRYeTJ4UXRoanZNTzJQMVg2UDE4VE95LTJtZi1nWlpET1V5TEZnOTVBZC1kZGEybXY5M0hhUzRZaVFDX1hHWGJydC1Uaks?oc=5\" target=\"_blank\">SpaceX CFO: New Compute Deal Puts Company Closer to $100B ARR Goal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">AOL.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "9e25f0397348f289",
-      "source_name": "Google News: incidents + regulation",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNWHJYeDhMaDVfUTlXOVZFaXBNNGlNSXVaaHAzV1NRUjZKY2tiNXo2VEFxSTludHY1dEtIUjlZVG0zR2pKY3BQRF9KYjBDTTV2YURQb09kV3BSZHVzNGJhb2xyUnRkZzZ6OXQzRlV6UVhYZXFUcjRXSVp4ZkxldEtJLW9KZWcxelFVNjNqQ3E1a0p6c1RNV0psN1FEU3NoZjlXRi1NX1FkcHdkZ2NDZEo1U18wdw?oc=5",
-      "title": "Space debris and satellites out of orbit: the 2026 report published by the ESA - Il Sole 24 ORE",
-      "published_at": "2026-09-17T09:17:06.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxNWHJYeDhMaDVfUTlXOVZFaXBNNGlNSXVaaHAzV1NRUjZKY2tiNXo2VEFxSTludHY1dEtIUjlZVG0zR2pKY3BQRF9KYjBDTTV2YURQb09kV3BSZHVzNGJhb2xyUnRkZzZ6OXQzRlV6UVhYZXFUcjRXSVp4ZkxldEtJLW9KZWcxelFVNjNqQ3E1a0p6c1RNV0psN1FEU3NoZjlXRi1NX1FkcHdkZ2NDZEo1U18wdw?oc=5\" target=\"_blank\">Space debris and satellites out of orbit: the 2026 report published by the ESA</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Il Sole 24 ORE</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "9e7a108670ee77ba",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOalhaNHhjQ1ZIYnBVWFk5aDhndjY1LWg3OVY4aUJvWTI5ODRXOGpQQVpKMlpob3JYcVh1TXFNQVh3RGFxMHotaEpNeFZGcGpPY1oxVC1fZmxQTlRvRUZzaWd6SzJWWFBobXAxdVlzb0pqLTFiVFhUa3dwS1pNdW4zalcxVQ?oc=5",
-      "title": "SpaceX COO updates the market - Advanced Television",
-      "published_at": "2026-09-17T09:15:48.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigwFBVV95cUxOalhaNHhjQ1ZIYnBVWFk5aDhndjY1LWg3OVY4aUJvWTI5ODRXOGpQQVpKMlpob3JYcVh1TXFNQVh3RGFxMHotaEpNeFZGcGpPY1oxVC1fZmxQTlRvRUZzaWd6SzJWWFBobXAxdVlzb0pqLTFiVFhUa3dwS1pNdW4zalcxVQ?oc=5\" target=\"_blank\">SpaceX COO updates the market</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Advanced Television</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "19b9c949d5f83c2f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1tekQ4b2o5Vjg2WWlWY1pXLXoyUDVkYVhscnIwYjJUUU40ZzM3RGVhXzZHRjhUa3V5QkJoS2FxQXBmM0s4Z2Fka2ptM2NCMGcxTVB1WGZhdlB5SFVCWHdMVi1icTFlMWs?oc=5",
-      "title": "Roman Telescope Doubles to 22-Year Mission, X Report 17 Sep 2026 - KeepTrack",
-      "published_at": "2026-09-17T09:04:37.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1tekQ4b2o5Vjg2WWlWY1pXLXoyUDVkYVhscnIwYjJUUU40ZzM3RGVhXzZHRjhUa3V5QkJoS2FxQXBmM0s4Z2Fka2ptM2NCMGcxTVB1WGZhdlB5SFVCWHdMVi1icTFlMWs?oc=5\" target=\"_blank\">Roman Telescope Doubles to 22-Year Mission, X Report 17 Sep 2026</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KeepTrack</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "43c7ceff8cbef547",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE41RDlET201MmdsRkFocDhWS1dzY0RzY0dJRGhqeDc2aXhzX1JHWlhkNEhmTmR6T3BiQUVGOC1lUzZNbzMzZE95MzVnclJpcVFIaUo5UkxzbnZiME91Rl9TWXhaWHdKMjNGcmdRNkRvZTRoQVlxTGxV?oc=5",
-      "title": "$SpaceX (SPCX.US)$ - Moomoo",
-      "published_at": "2026-09-17T08:43:37.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMid0FVX3lxTE41RDlET201MmdsRkFocDhWS1dzY0RzY0dJRGhqeDc2aXhzX1JHWlhkNEhmTmR6T3BiQUVGOC1lUzZNbzMzZE95MzVnclJpcVFIaUo5UkxzbnZiME91Rl9TWXhaWHdKMjNGcmdRNkRvZTRoQVlxTGxV?oc=5\" target=\"_blank\">$SpaceX (SPCX.US)$</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "6ec7ea4c982c63c3",
-      "source_name": "CGTN Tech-Sci",
-      "url": "https://news.cgtn.com/news/2026-09-17/Health-Talk-The-link-between-hormones-weight-and-sleep-1QvCK99dQVq/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
-      "title": "Health Talk: The link between hormones, weight and sleep",
-      "published_at": "2026-09-17T08:42:47.000Z",
-      "raw_excerpt": "<p>Can't lose weight no matter how much you exercise? It might be your hormones and sleep cycle working against you. Your circadian rhythm and stress response affect your appetite, metabolism and fat storage.</p><p>In this episode of Health Talk, CGTN's Li Dongning speaks with leading endocrinologist Professor Zhao Weigang from Peking Union Medical College Hospital about the link between burnout, late nights and stubborn weight gain. They break down why stress makes you eat more, how long-term phone use may lead to sleep deprivation and whether sleeping pills are a safe fix.</p><p>Watch the full interview and check out the science of weight and sleep.</p><video src='https://video.cgtn.com/news/2026-09-17/Health-Talk-The-link-between-hormones-weight-and-sleep-1QvCK99dQVq/video/wu_1k2mqn3of1e336jk925j96ngea/wu_1k2mqn3of1e336jk925j96ngea.m3u8' poster='https://video.cgtn.com/news/2026-09-17/Health-Talk-The-link-between-hormones-weight-and-sleep-1QvCK99dQVq/video/wu_1k2mqn3of1e336jk925j96ngea/wu_1k2mqn3of1e336jk925j96ngea.jpg'></video><p><i>Supervisor: Zhang Jingwen</i></p><p><i>Producer: Yang Sha</i></p><p><i>Directors: Du Junzhi, Chai Shouyu</i></p><p><i>Video Editor: Yan Qiwen</i></p><p><i>Copy Editors: Joseph Stannard, Chen Chen</i></p><p><i>Videographers: Bai Nan, Wang Zihao, Tenzin Gyatso</i></p><p><i>Cover: Pei Zihan</i></p>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "e3a24ce790941c66",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQcFNrMGFoc3lPV3F2VkZvQjNLY0FEdzRybjc1S0p1LVBleWlhZzJmY3k5Y0VreUU4NHFKeEc3YVpyMnc5MFJiMGN1ZmZOQTZNcllIUzdIY1ZNTkRCckFVV3ZEdlZ3OUlTNFRqcmRwVVlzNnJtWnQzSDk3VUNvZ1lJRmoyUEQ5MlNkYzBLeS1FNjJVV2N4WUNJZVlLTjNoTGFpNXRZNXlyNElUYk1WWDVUcWI0VnVWVlFobFRGaXctZ2VmZGd4UXhlWEZnUzRyMjZlemZsSEtPbmF5X3JkQ0lDTkJ6VHNPVTlIVkpj0gHwAUFVX3lxTE1Qb0lwQ01jSy1PMlVrNVlUaXVKc2tmcEdUdUxTN0VvRlhBY2Z2dHIySVpKcWN5ZjEwR3o0QlJNS2ZQaUlycmpUemlLNndVbHZCRTNZVWhCLXZELUZkb1BhNkdzUFA4NzBLbTFud0doR2k1MVZ2aGJpSGc5NlQ0eHJqMVFpQWIxbUh3YmhCZm50VWkwZVlvRVhQblVRR1FRU3RSTHo3V0xLUk1RUDVfb05mXzdsbUNIX2JKaW94VG1yYkhzcVB4SWUtTkxjeFBUQW1TSnFFSjJBNUNvTHRrUFBzYkFUNTB1QVJjS2c3WUhDYw?oc=5",
-      "title": "Isro staff for probe into PSLV sabotage allegations, raise cadre review, other concerns - timesofindia.indiatimes.com",
-      "published_at": "2026-09-17T08:34:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi6wFBVV95cUxQcFNrMGFoc3lPV3F2VkZvQjNLY0FEdzRybjc1S0p1LVBleWlhZzJmY3k5Y0VreUU4NHFKeEc3YVpyMnc5MFJiMGN1ZmZOQTZNcllIUzdIY1ZNTkRCckFVV3ZEdlZ3OUlTNFRqcmRwVVlzNnJtWnQzSDk3VUNvZ1lJRmoyUEQ5MlNkYzBLeS1FNjJVV2N4WUNJZVlLTjNoTGFpNXRZNXlyNElUYk1WWDVUcWI0VnVWVlFobFRGaXctZ2VmZGd4UXhlWEZnUzRyMjZlemZsSEtPbmF5X3JkQ0lDTkJ6VHNPVTlIVkpj0gHwAUFVX3lxTE1Qb0lwQ01jSy1PMlVrNVlUaXVKc2tmcEdUdUxTN0VvRlhBY2Z2dHIySVpKcWN5ZjEwR3o0QlJNS2ZQaUlycmpUemlLNndVbHZCRTNZVWhCLXZELUZkb1BhNkdzUFA4NzBLbTFud0doR2k1MVZ2aGJpSGc5NlQ0eHJqMVFpQWIxbUh3YmhCZm50VWkwZVlvRVhQblVRR1FRU3RSTHo3V0xLUk1RUDVfb05mXzdsbUNIX2JKaW94VG1yYkhzcVB4SWUtTkxjeFBUQW1TSnFFSjJBNUNvTHRrUFBzYkFUNTB1QVJjS2c3WUhDYw?oc=5\" target=\"_blank\">Isro staff for probe into PSLV sabotage allegations, raise cadre review, other concerns</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">timesofindia.indiatimes.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "39a3b858d9727223",
-      "source_name": "European Spaceflight",
-      "url": "https://europeanspaceflight.com/endurosat-raise-pushes-european-newspace-funding-above-e1-billion-for-september/",
-      "title": "EnduroSat Raise Pushes European NewSpace Funding Above €1 Billion for September",
-      "published_at": "2026-09-17T08:32:10.000Z",
-      "raw_excerpt": "Credit: EnduroSat Bulgarian satellite manufacturer EnduroSat has secured $205 million (€178 million) in new funding, pushing the total raised by European NewSpace companies in September above €1 billion. Announced on 16 September, EnduroSat’s new funding round was co-led by US investment firms Riot Ventures and Atreides Management, with participation from the European Innovation Council, among others. It marks EnduroSat’s second major funding round in less than a year, following a $104 million raise in October 2025. In a 16 September press release, the company said the funding would enable it to establish a new high-volume manufacturing facility in the United States and significantly expand its industrial footprint in Europe. That European expansion includes plans announced on 6 August to transform the former Dobroslavtsi military airbase near Sofia into a major space and defence development and manufacturing hub. The EnduroSat round extends a recent surge in private investment in European NewSpace companies. In the past several weeks, PLD Space has added €108 million to its Series C, HyImpulse has secured more than €50 million in additional funding, The Exploration Company has raised $450 million , and Open Cosmos has secured €300 million . Together with EnduroSat’s $205 million raise, the five companies have announced approximately €1.03 billion in new funding since 1 September, based on conversions of the dollar-denominated rounds into euros. While the funding announced in September thus far is particularly notable, it is part of a broader investment trend across Europe’s space sector in 2026. In a 10 September analysis , the European Space Policy Institute said European space ventures had already raised more in the first half of 2026 than in all of 2025. The results from September suggest that, if anything, that trend may be accelerating. Alongside the funding raise, EnduroSat has also secured two large constellation orders this month alone. On 10 September, the",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "b580c089eb596fe0",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/imagery-and-sensing/2026/09/17/endurosat-and-caci-to-build-vantors-pulse-smallsat-fleet/",
-      "title": "EnduroSat and CACI to Build Vantor’s Pulse Smallsat Fleet",
-      "published_at": "2026-09-17T08:26:54.000Z",
-      "raw_excerpt": "Vantor has selected EnduroSat and CACI to provide the satellite bus and payloads for its upcoming Pulse fleet, the company’s move into the smallsat imaging market. Bulgaria-based EnduroSat will build buses for the 24 satellites and CACI will provide the optical imaging payloads. Pulse satellites are expected to deploy between 2027 and 2029. Integration and testing will take place in the United States. Vantor announced the selection on Thursday during World Space Business Week. The Pulse satellites, which Vantor introduced plans for in April, will be 40-centimeter-class resolution satellites that can revisit the same location on Earth every 15 minutes. The intent is for these satellites to provide change detection and cue targeted collection from Vantor’s high-resolution satellites. Vantor also said that Pulse satellites can accommodate different types of sensors, including electro-optical and radio-frequency payloads. Payloads can be adapted for sovereign missions for U.S. and allied nations. Vantor is also planning for its next-generation of high-resolution satellites. The company expects to launch two Vantage satellites as early as 2029 which will feature a larger bus and 20-centimeter-class resolution. “We’re designing the [Pulse] fleet to support different sensor types over time and feed that data into Tensorglobe, where it can be brought together with AI and other data sources. Combined with our higher-resolution satellites, that gives customers both the persistence to see change and the detail to understand what matters,” Matt Jenkins, Vantor chief space systems officer said in a release. This comes a day after EnduroSat announced a $205 million funding round, which will support opening a new high-volume manufacturing facility in the U.S. EnduroSat also recently secured a contract to build 40 satellites for TrustPoint for its alternative PNT constellation. The post EnduroSat and CACI to Build Vantor’s Pulse Smallsat Fleet appeared first on Via Satellite .",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "4815ee934c049028",
-      "source_name": "Google News: EO + connectivity",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPdUViQ3NzRmJzenZNZ2gtU1JLc1dRamZqeWc5TzVEM1lCWDNZRU5vTExYVHY3Y3pxb0dfQjNYdnhkc3AxcHRLWTJvcUR2U2lEc1BjUkpzSFRnUzdxRFV1ak8zeUJkUGZuTkN4UjRNYUkzNjYyZEM3NjFnLU1pTlEtVGV6Z0FRSjFydXpUeXFCM3FJRTdORzQ1WUsySTVnYjE2TGNFMlhsRUg?oc=5",
-      "title": "L3Harris Builds Xoople Earth-Observation Satellites For 2028 Launch - Aviation Week",
-      "published_at": "2026-09-17T08:23:45.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqAFBVV95cUxPdUViQ3NzRmJzenZNZ2gtU1JLc1dRamZqeWc5TzVEM1lCWDNZRU5vTExYVHY3Y3pxb0dfQjNYdnhkc3AxcHRLWTJvcUR2U2lEc1BjUkpzSFRnUzdxRFV1ak8zeUJkUGZuTkN4UjRNYUkzNjYyZEM3NjFnLU1pTlEtVGV6Z0FRSjFydXpUeXFCM3FJRTdORzQ1WUsySTVnYjE2TGNFMlhsRUg?oc=5\" target=\"_blank\">L3Harris Builds Xoople Earth-Observation Satellites For 2028 Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Aviation Week</font>",
-      "fetched_at": "2026-09-18T21:16:09.614Z",
-      "consumed": true
-    },
-    {
-      "id": "67582ceee52e11df",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxNQnl4aTlIX2JlVy1tQWNoM1V3QVFnUkhRT2ZyRVk3Q3hWLWItVUdfNnFneThsY1ZFMV9tal9YbW9vd0w0QlJUXzVrWEo4TXBVMHRSTGJvbFd1cmN4cHJWeWxDWEVwZVZJLVVXZFp4SWdkX0ZjUUpfdTZGT0I1MHZHclg4NTBQTUloeUtWVXRpWmcxZV8wNHF1M2w3dU40RjJLTEZqZVdwVUdHVV9kRHBLVjljVktSOVZyZW1JMl91STFCM29GSk8waUdHQXRRUGN4T3UzSVRYempoV3A1UnNlaXZsZ2VEUG9kV1dhWl9YLVZFaUpCUENHdk5sbklsSDM5VVE5a0VuLUHSAY4CQVVfeXFMTXZuc1ZKTWtEVmtVcXI4ZGZoVzc4ZTVaRXFYWlRRZG8xOHRxWU5OcnJhREVrWklHM2RNcUtkWmJNSFNzV0F3X0p5ak9TWGd3X3dQR3VGT2h1MkpXakJvLV9rVjZDelo3TWRNZFJYNXdpWF9aYVg3Y3ozaWpqVVNSZXkyMmdLNXNwWFpuT2ZOWHl1clFaXzhkRnZTTFVqVDR0YWQ4Z3lvTktYLW4zM2NjNVczMDY0akd3d3FPTkZ6ZVA1MTNaV3dGWGNEbUR5LS1wendJclZvRkJnMlJjM0NnejJ5Rl9XYkwzenFldVZ6SFdzS1p2VWtzdXpDTFd2SkVnZEJ1NGVwSWF3NThleHBn?oc=5",
-      "title": "Isro Staff: Not against Pvt Cos; demand due process, transparency; want strategic missions to remain unde - timesofindia.indiatimes.com",
-      "published_at": "2026-09-17T08:20:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiAJBVV95cUxNQnl4aTlIX2JlVy1tQWNoM1V3QVFnUkhRT2ZyRVk3Q3hWLWItVUdfNnFneThsY1ZFMV9tal9YbW9vd0w0QlJUXzVrWEo4TXBVMHRSTGJvbFd1cmN4cHJWeWxDWEVwZVZJLVVXZFp4SWdkX0ZjUUpfdTZGT0I1MHZHclg4NTBQTUloeUtWVXRpWmcxZV8wNHF1M2w3dU40RjJLTEZqZVdwVUdHVV9kRHBLVjljVktSOVZyZW1JMl91STFCM29GSk8waUdHQXRRUGN4T3UzSVRYempoV3A1UnNlaXZsZ2VEUG9kV1dhWl9YLVZFaUpCUENHdk5sbklsSDM5VVE5a0VuLUHSAY4CQVVfeXFMTXZuc1ZKTWtEVmtVcXI4ZGZoVzc4ZTVaRXFYWlRRZG8xOHRxWU5OcnJhREVrWklHM2RNcUtkWmJNSFNzV0F3X0p5ak9TWGd3X3dQR3VGT2h1MkpXakJvLV9rVjZDelo3TWRNZFJYNXdpWF9aYVg3Y3ozaWpqVVNSZXkyMmdLNXNwWFpuT2ZOWHl1clFaXzhkRnZTTFVqVDR0YWQ4Z3lvTktYLW4zM2NjNVczMDY0akd3d3FPTkZ6ZVA1MTNaV3dGWGNEbUR5LS1wendJclZvRkJnMlJjM0NnejJ5Rl9XYkwzenFldVZ6SFdzS1p2VWtzdXpDTFd2SkVnZEJ1NGVwSWF3NThleHBn?oc=5\" target=\"_blank\">Isro Staff: Not against Pvt Cos; demand due process, transparency; want strategic missions to remain unde</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">timesofindia.indiatimes.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "b6ef12da32fe2968",
-      "source_name": "ESA TopNews",
-      "url": "https://www.esa.int/Applications/Connectivity_and_Secure_Communications/ESA_starts_next_phase_of_IRIS2_evolution_through_Low-LEO_activities",
-      "title": "ESA starts next phase of IRIS² evolution through Low-LEO activities",
-      "published_at": "2026-09-17T08:07:00.000Z",
-      "raw_excerpt": "The European Space Agency (ESA) has signed 18 consolidation contracts bringing together nearly 80 companies to study new secure and resilient connectivity services. The contracts also cover associated mission concepts and aim to shape the future of the EU's secure connectivity constellation – IRIS² &nbsp;– which will provide Europeans with resilient communications, when and where it matters most.",
-      "fetched_at": "2026-09-17T17:16:08.817Z",
-      "consumed": true
-    },
-    {
-      "id": "40690981cfd194cb",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOMjJIVWFGd3c1UkFpTEJMRkhTazlYVmtMRjBISXhyOUlMd21VQjhHeUVsZzl3bi1wcFZKQmVVbDhndHp0d3N0Z2dFdXNLVm9DSmtDdE02Q0g2VkwtbUpTZ1R1dWZvdXZGb0NYWUwyeG9DNk1xTUZaRnV1VlQ3alhvZ1ppdTlVNkRvcWxDdWd3VjlNRm1RbkFBYjdLU3FsLWpmX1RHaTVkRWpQVHBf?oc=5",
-      "title": "\"Cathie Wood\" predicts that SpaceX's Starship launches will generate $10 trillion in revenue; Musk responds: \"Not impossible.\" - Moomoo",
-      "published_at": "2026-09-17T08:05:48.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxOMjJIVWFGd3c1UkFpTEJMRkhTazlYVmtMRjBISXhyOUlMd21VQjhHeUVsZzl3bi1wcFZKQmVVbDhndHp0d3N0Z2dFdXNLVm9DSmtDdE02Q0g2VkwtbUpTZ1R1dWZvdXZGb0NYWUwyeG9DNk1xTUZaRnV1VlQ3alhvZ1ppdTlVNkRvcWxDdWd3VjlNRm1RbkFBYjdLU3FsLWpmX1RHaTVkRWpQVHBf?oc=5\" target=\"_blank\">\"Cathie Wood\" predicts that SpaceX's Starship launches will generate $10 trillion in revenue; Musk responds: \"Not impossible.\"</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "5546587d40857298",
-      "source_name": "CGTN Tech-Sci",
-      "url": "https://news.cgtn.com/news/2026-09-17/news-1QvOtN821ig/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
-      "title": "EU moves to ban social media for children under 13",
-      "published_at": "2026-09-17T07:58:46.000Z",
-      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-17/news-1QvOtN821ig/img/fee7e0ae01074f7ab6976e523f3f1e2a/fee7e0ae01074f7ab6976e523f3f1e2a.jpeg' alt='A person holds a smartphone with the logos of the social media apps in front of flags of the European Union and the European Commission building, Brussels, Belgium, May 22, 2026. /VCG'</img><p>European Commission President Ursula ​von der Leyen ‌on Thursday proposed a social media ban for ‌children under ‌13, and restricted ‌access for those aged ‌13 to 15, as she warned about the dangers ‌of online services to minors.</p><p>She also proposed new obligations for social media, video sharing, online games and AI chatbots used by under-18s – a move that would hit ​Google's YouTube and Meta ​Platforms' ‌Facebook and Instagram.</p><p>The proposal reflects ‌growing concerns about the effect of online services on children's safety and health.</p>",
-      "fetched_at": "2026-09-18T11:51:00.459Z",
-      "consumed": true
-    },
-    {
-      "id": "f1a34f754ed14506",
-      "source_name": "ESA TopNews",
-      "url": "https://www.esa.int/About_Us/Business_with_ESA/Three_space_companies_win_ESA_awards_for_excellence_and_innovation",
-      "title": "Three space companies win ESA awards for excellence and innovation",
-      "published_at": "2026-09-17T07:10:00.000Z",
-      "raw_excerpt": "On 16 September at its Industry Space Days 2026 event at ESA–ESTEC in the Netherlands, the European Space Agency (ESA) honoured three space companies with this year’s prestigious awards for excellence and innovation.&nbsp;",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "e289f9164956e6fa",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPZTYtRDhWNWhLR3VvdFBSRGJ4R2xTa1daUkZxcnNPckU3eUQ4NElrQk9aamZ6UjZhUXZvTDJOenlxa2ttd0FXSmwtRzJSSnNEdFZsU2xzYk95M2FOT3JFemVRQXFhdXNtMWRld21OTV9ybE1QanJUcUhLSHFscFNRQ3lub28wN3N5aHpYUHBJc1FCQXRpN2ZpdWhVYzBuUUxtMjBqWWZqZU1iUQ?oc=5",
-      "title": "Zacks Investment Ideas feature highlights: SpaceX's and Tesla - Yahoo Finance",
-      "published_at": "2026-09-17T07:05:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPZTYtRDhWNWhLR3VvdFBSRGJ4R2xTa1daUkZxcnNPckU3eUQ4NElrQk9aamZ6UjZhUXZvTDJOenlxa2ttd0FXSmwtRzJSSnNEdFZsU2xzYk95M2FOT3JFemVRQXFhdXNtMWRld21OTV9ybE1QanJUcUhLSHFscFNRQ3lub28wN3N5aHpYUHBJc1FCQXRpN2ZpdWhVYzBuUUxtMjBqWWZqZU1iUQ?oc=5\" target=\"_blank\">Zacks Investment Ideas feature highlights: SpaceX's and Tesla</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-09-17T17:16:08.817Z",
-      "consumed": true
-    },
-    {
-      "id": "cb11f0f0308bc87f",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQbDhCM3A1WE1HbENEaTAzX1pZMnZGUnBvby1wOG1ZeGZZSDhuMkRRRVg1NUI5RkdQUjN4ZWZqV1BfT2F4NWJRSWd5SEpXMkNlOFY2SE9FZDRLRUNETGdNUk4wT1owX0E4eUhGamRnWFJkTXpVSVNHVVpLVHUyZXFkQ1NPZUxYMHphUEEzRHhfMkZlNTlWRXlkZUptaE1KcmRaWkZBU191TEJ5dnpVZmfSAbMBQVVfeXFMUHpLSjFjZDJTcGZWakxSU1ZOMmdwV3drekQwUHR3SXJQbGVNNTFzU21xOXdla1J6Nm5YZEJ5WndqeExZOGRrOHZlMXhFNWxNTUkwWk1lSF9sdGNzcVBtN2dneXdCdUpTSHFBS2lMcWVsZEkwdFlsTURoZEw3YkFRQ3FNc2NSNG5hMWthajlJQVVZYXBhdnoxWkpnU0pBZU1aVWVCYW50MTJjN1Q2S0VRV0kwSGs?oc=5",
-      "title": "Amrita Vishwa Vidyapeetham Wins Big at ISROs IRoC-U Robotics Challenge - TheWire.in",
-      "published_at": "2026-09-17T07:02:50.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxQbDhCM3A1WE1HbENEaTAzX1pZMnZGUnBvby1wOG1ZeGZZSDhuMkRRRVg1NUI5RkdQUjN4ZWZqV1BfT2F4NWJRSWd5SEpXMkNlOFY2SE9FZDRLRUNETGdNUk4wT1owX0E4eUhGamRnWFJkTXpVSVNHVVpLVHUyZXFkQ1NPZUxYMHphUEEzRHhfMkZlNTlWRXlkZUptaE1KcmRaWkZBU191TEJ5dnpVZmfSAbMBQVVfeXFMUHpLSjFjZDJTcGZWakxSU1ZOMmdwV3drekQwUHR3SXJQbGVNNTFzU21xOXdla1J6Nm5YZEJ5WndqeExZOGRrOHZlMXhFNWxNTUkwWk1lSF9sdGNzcVBtN2dneXdCdUpTSHFBS2lMcWVsZEkwdFlsTURoZEw3YkFRQ3FNc2NSNG5hMWthajlJQVVZYXBhdnoxWkpnU0pBZU1aVWVCYW50MTJjN1Q2S0VRV0kwSGs?oc=5\" target=\"_blank\">Amrita Vishwa Vidyapeetham Wins Big at ISROs IRoC-U Robotics Challenge</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TheWire.in</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "8312b4cae1b9657e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNc08wSXBIdGZGVDdpWjFxaEtoRnNid1FjNGFncnRDYjBYSHVtV2pPODZxTEtnc1BmNzRyYlNEdi1MNTJtbkVTdnN6ZXZDOVFQRUJsRVk2OGh5MVA1R0NmNmF1MXBCWXhybHBvYllIYk5fckIwUWVPSDgtZ05aT2M1eGFLZG9VR1JmX1VEVi1Xdndyc3lieXhwSFlXWVBsOGRuQUZsNmF6UUpLakFnUUxTVWt3U0lpblJ1SFJZX0NjOGRTcXNRUVc0dHdBMGNDUGJWZ1RmVGstNzczYmZ0U01Z?oc=5",
-      "title": "SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock. - The Motley Fool",
-      "published_at": "2026-09-17T06:33:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxNc08wSXBIdGZGVDdpWjFxaEtoRnNid1FjNGFncnRDYjBYSHVtV2pPODZxTEtnc1BmNzRyYlNEdi1MNTJtbkVTdnN6ZXZDOVFQRUJsRVk2OGh5MVA1R0NmNmF1MXBCWXhybHBvYllIYk5fckIwUWVPSDgtZ05aT2M1eGFLZG9VR1JmX1VEVi1Xdndyc3lieXhwSFlXWVBsOGRuQUZsNmF6UUpLakFnUUxTVWt3U0lpblJ1SFJZX0NjOGRTcXNRUVc0dHdBMGNDUGJWZ1RmVGstNzczYmZ0U01Z?oc=5\" target=\"_blank\">SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "5f25894c74800ee5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE8wQUZlQXRRamxRLTFSdmVBSVNsMXU5V3AzaTloc2ZtN252d1I0cW1Vc1NZa3BaWWVEbFlyVURxTHpDMndYNFY3MGRpekFSS05vdTRiZXBqOTM4QVBJRWJpcVVLUHptSFdXbndmaktnQk9aeUJIbDRrWkhlM1E?oc=5",
-      "title": "Is SpaceX a defensive AI stock? - Moomoo",
-      "published_at": "2026-09-17T06:24:29.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifEFVX3lxTE8wQUZlQXRRamxRLTFSdmVBSVNsMXU5V3AzaTloc2ZtN252d1I0cW1Vc1NZa3BaWWVEbFlyVURxTHpDMndYNFY3MGRpekFSS05vdTRiZXBqOTM4QVBJRWJpcVVLUHptSFdXbndmaktnQk9aeUJIbDRrWkhlM1E?oc=5\" target=\"_blank\">Is SpaceX a defensive AI stock?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "2c1cea285da55365",
-      "source_name": "ESA TopNews",
-      "url": "https://www.esa.int/Applications/Satellite_navigation/Galileo/Galileo_s_first_civil_authenticated_position_fix_under_spoofing_conditions",
-      "title": "Galileo's first civil authenticated position fix under spoofing conditions",
-      "published_at": "2026-09-17T06:20:00.000Z",
-      "raw_excerpt": "For two hours on the afternoon of Wednesday 16 September, five operational Galileo satellites broadcasting over Europe transmitted a new encrypted signal for testing. On the ground in Andøya, Norway, and at ESA’s navigation laboratory at ESTEC, in the Netherlands, receivers successfully established their location using these encrypted signals, marking the first real-world positioning using Galileo’s upcoming Signal Authentication Service (SAS).&nbsp;",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "d51991634273831f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPbU9nVFZEZmxmN3F5SDRxbEtKdlFEbEx2Sk5rZXlLcDZXTl85X1NuTU1yOEk2T3VXQjF4Um1SWWVmN1JZVG1xd2dUSmNtRlh4VllSbDFtZDhHWFdabFFXblk0VFQwWUQzbmpJWWplX2RRZ3lLRGpMZjF0R2dySS1adjNnb1dQNE5WVnRvM2txTkRSb3VHeE9rdlBR?oc=5",
-      "title": "SpaceX (SPCX) Hands Investors $8.5 Billion In Shares Through In Kind Distribution - Yahoo Finance",
-      "published_at": "2026-09-17T06:11:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxPbU9nVFZEZmxmN3F5SDRxbEtKdlFEbEx2Sk5rZXlLcDZXTl85X1NuTU1yOEk2T3VXQjF4Um1SWWVmN1JZVG1xd2dUSmNtRlh4VllSbDFtZDhHWFdabFFXblk0VFQwWUQzbmpJWWplX2RRZ3lLRGpMZjF0R2dySS1adjNnb1dQNE5WVnRvM2txTkRSb3VHeE9rdlBR?oc=5\" target=\"_blank\">SpaceX (SPCX) Hands Investors $8.5 Billion In Shares Through In Kind Distribution</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "21034b3c6cdc22b8",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxQVkd2dlBKazNFS09feUZZVkRuelpBeTlxYWZaaUl0UzVGbVhtbXlHNEZsdFJ0c2dZbHFKOVVyREtzTG1wMHFIb0RVQ3RwcmFTZFRkOE00NEdSdm90SktaTHJzTTZQVEU4VWpfU1ZzSzZnNFJ5RlBYQzlXTGtEY1J4MVBPQ1EwLVNubDgxYTlVd254MG4wTThOTzVBWDZxS19ZTGNZUUcxajlzUHhTdTNJakI0THdCa25ubmszOFozZGdmdHZheUU4cG9TSnJIekZ3RTdDc0ZLVG5xRUlZYTI0bDJ30gHnAUFVX3lxTE5xazlkbTZlczF5Sld3b080dWcyaGRvVmNVNS1jZHVNRmhZak8waXpGdzEwRlh1VUFzLTVBcDZpU1ZkUnJualdJMW9IZ21TQVpfTllsLVNvNTE3eGFGODdNN1AtazRwTi0zNG91UlV6Z1lzQnFUaDZVLUVFei1PenBOaHB0NENKNnZQbjdpQ2R3NmlacFZDaW5UQ25nRWdES1RpRldxVU1iTXhtNm1WemZLWElPZ3lWTmd2T1lvbGdnYTZDVmc4S0Q2cjlOX1kxV0FjZldiMDNXdkhDb2hRZTduNlJoTGlmRQ?oc=5",
-      "title": "The US-China space race is going where no war has gone before - The Economic Times",
-      "published_at": "2026-09-17T06:03:19.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4gFBVV95cUxQVkd2dlBKazNFS09feUZZVkRuelpBeTlxYWZaaUl0UzVGbVhtbXlHNEZsdFJ0c2dZbHFKOVVyREtzTG1wMHFIb0RVQ3RwcmFTZFRkOE00NEdSdm90SktaTHJzTTZQVEU4VWpfU1ZzSzZnNFJ5RlBYQzlXTGtEY1J4MVBPQ1EwLVNubDgxYTlVd254MG4wTThOTzVBWDZxS19ZTGNZUUcxajlzUHhTdTNJakI0THdCa25ubmszOFozZGdmdHZheUU4cG9TSnJIekZ3RTdDc0ZLVG5xRUlZYTI0bDJ30gHnAUFVX3lxTE5xazlkbTZlczF5Sld3b080dWcyaGRvVmNVNS1jZHVNRmhZak8waXpGdzEwRlh1VUFzLTVBcDZpU1ZkUnJualdJMW9IZ21TQVpfTllsLVNvNTE3eGFGODdNN1AtazRwTi0zNG91UlV6Z1lzQnFUaDZVLUVFei1PenBOaHB0NENKNnZQbjdpQ2R3NmlacFZDaW5UQ25nRWdES1RpRldxVU1iTXhtNm1WemZLWElPZ3lWTmd2T1lvbGdnYTZDVmc4S0Q2cjlOX1kxV0FjZldiMDNXdkhDb2hRZTduNlJoTGlmRQ?oc=5\" target=\"_blank\">The US-China space race is going where no war has gone before</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Economic Times</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "f866d4963c469e72",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgJBVV95cUxPNWF2OUVkd1dlMXN5Qk1sa29vWlk3V0ZSSVFrY0ZGWXFIenIxMkdLQ1ZrYnNDUWhrU01LTS1EaG5hYmlXZXVQdGFjSkdBVHJXOUxNT1lHMWtUWmcxakxIdmE0Zm1yVVlnZ2VyR2FabGxIMThoY3JoLXJpcm1kaHByOTJUalRoTUdsanZULV9MVy10Vm1waFFwb1dyN3paRUgxQ01IYkhEeG1PdW83ekIwRWNFQmRJeDBxSjVMRm13VzhZblg1b0dxVWNYNG9ZMnI5eWtydkFlRzVmNHVlQVNTME4xWDBhTHRGY1R4YW55NENaaHd2amROWWRibi1QZXM0OUhEbmZhd3FvdXJLR1pwRS1NbEJ2S1NTRVE?oc=5",
-      "title": "SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock. - theglobeandmail.com",
-      "published_at": "2026-09-17T05:53:27.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgJBVV95cUxPNWF2OUVkd1dlMXN5Qk1sa29vWlk3V0ZSSVFrY0ZGWXFIenIxMkdLQ1ZrYnNDUWhrU01LTS1EaG5hYmlXZXVQdGFjSkdBVHJXOUxNT1lHMWtUWmcxakxIdmE0Zm1yVVlnZ2VyR2FabGxIMThoY3JoLXJpcm1kaHByOTJUalRoTUdsanZULV9MVy10Vm1waFFwb1dyN3paRUgxQ01IYkhEeG1PdW83ekIwRWNFQmRJeDBxSjVMRm13VzhZblg1b0dxVWNYNG9ZMnI5eWtydkFlRzVmNHVlQVNTME4xWDBhTHRGY1R4YW55NENaaHd2amROWWRibi1QZXM0OUhEbmZhd3FvdXJLR1pwRS1NbEJ2S1NTRVE?oc=5\" target=\"_blank\">SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">theglobeandmail.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "ed50516df4666987",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPZ21Pa1l2aWgwekthYWZvS0NUOTZRdGFLT3dKQjBmc2VMU0NYN3o1STNVOEx2bEFLRVFCaUxITlpHRTU2XzltRjdLelJNRGttaFUxN0tDbjdNck5SNUw2ai1yajBHRmlsQlF1NWgwU2FlS21LbGlvbHE1U2pIZXFsMlNReV9xd253cW4zekR3alBWQQ?oc=5",
-      "title": "SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock. - Currently.com",
-      "published_at": "2026-09-17T05:53:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxPZ21Pa1l2aWgwekthYWZvS0NUOTZRdGFLT3dKQjBmc2VMU0NYN3o1STNVOEx2bEFLRVFCaUxITlpHRTU2XzltRjdLelJNRGttaFUxN0tDbjdNck5SNUw2ai1yajBHRmlsQlF1NWgwU2FlS21LbGlvbHE1U2pIZXFsMlNReV9xd253cW4zekR3alBWQQ?oc=5\" target=\"_blank\">SpaceX's First Orbital Starship Flight Is Targeted for Sept. 22. Here's What's Riding on It for the Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Currently.com</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "f38e074319a4484e",
-      "source_name": "CGTN Tech-Sci",
-      "url": "https://news.cgtn.com/news/2026-09-17/CMG-shines-at-2026-Arab-Media-Summit--1QvtLoCUigU/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
-      "title": "CMG shines at 2026 Arab Media Summit",
-      "published_at": "2026-09-17T05:46:55.000Z",
-      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-17/CMG-shines-at-2026-Arab-Media-Summit--1QvtLoCUigU/img/1e783f20b4924815925e128ebe4bbdea/1e783f20b4924815925e128ebe4bbdea.png' alt='CMG stand at Arab Media Summit 2026, Dubai, UAE, September 15, 2026. /CMG'</img><p>The 2026 Arab Media Summit, held in Dubai from September 15 to 17, attracted 250 media organizations from 23 countries, bringing together senior government officials, heads of media institutions, prominent figures and content creators.&nbsp;</p><p>China Media Group (CMG) participated in the summit as the sole invited Chinese media outlet.</p><p>Focusing on media transformation and the creative economy, the three-day summit featured over 175 panel discussions covering topics such as content production, globalization narratives and the impact of artificial intelligence on journalism. Through eight thematic forums, it explores how the Arab media can enhance its competitiveness by pooling ideas, experiences and practices, while fostering new opportunities for cooperation.</p><img src='https://news.cgtn.com/news/2026-09-17/CMG-shines-at-2026-Arab-Media-Summit--1QvtLoCUigU/img/4552882e9de841b7812cba99d2d3b65f/4552882e9de841b7812cba99d2d3b65f.png' alt='Arab Media Summit logo, Dubai, UAE. /CMG'</img><p>Organizers noted that participants hail from diverse industries, as the Arab region and the world at large are undergoing profound geopolitical, economic, and technological transformations that are reshaping the media landscape.</p><img src='https://news.cgtn.com/news/2026-09-17/CMG-shines-at-2026-Arab-Media-Summit--1QvtLoCUigU/img/dfb2278091604c8aaaac29c38f705a00/dfb2278091604c8aaaac29c38f705a00.png' alt='CMG correspondent interviews a guest at the Arab Media Summit, Dubai, UAE, September 15, 2026. /CMG'</img><p>As the sole invited Chinese media organization, CMG delegates engaged with participants from multiple countries and gave interviews to local media outlets.</p><img src='https://news.cgtn.com/news/2026-09-17/CMG",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "6394f288587c181b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE93a2xaaTc3c0ZDQkFMY2RncW5sM0JNcDFEaEI2SjlXT1ZTblVyX0tjZjI5U3NVY0FwdGt5SFQzTUJSVTRPcDY4RlFoNjBYdkNBamtPbERyX3oycWduVmQ1WFp1MUs2Z0pJMVNoV05yazQ?oc=5",
-      "title": "SpaceX 🤣_v2 - Moomoo",
-      "published_at": "2026-09-17T05:33:08.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE93a2xaaTc3c0ZDQkFMY2RncW5sM0JNcDFEaEI2SjlXT1ZTblVyX0tjZjI5U3NVY0FwdGt5SFQzTUJSVTRPcDY4RlFoNjBYdkNBamtPbERyX3oycWduVmQ1WFp1MUs2Z0pJMVNoV05yazQ?oc=5\" target=\"_blank\">SpaceX 🤣_v2</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>",
-      "fetched_at": "2026-09-17T12:07:21.845Z",
-      "consumed": true
-    },
-    {
-      "id": "498b8c8c3c721d99",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9sOTBobEFUeldiUkg2RFZ1YnpoamdSTnpTenluaW1nc0Nzb1FPaGh0a3BxT1VPb2hOdVZGZ1RNd1ZWWUlYRGd2UlgtZUlSN2hIWWdBR0ZER1hzU0kxcHJGeFlsZjVyT2RQZ0JmWDExejZUYlVn?oc=5",
-      "title": "Successful Hot Test of CE20 Cryogenic Engine for LVM3 M7 Mission - ISRO",
-      "published_at": "2026-09-17T05:31:30.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMidEFVX3lxTE9sOTBobEFUeldiUkg2RFZ1YnpoamdSTnpTenluaW1nc0Nzb1FPaGh0a3BxT1VPb2hOdVZGZ1RNd1ZWWUlYRGd2UlgtZUlSN2hIWWdBR0ZER1hzU0kxcHJGeFlsZjVyT2RQZ0JmWDExejZUYlVn?oc=5\" target=\"_blank\">Successful Hot Test of CE20 Cryogenic Engine for LVM3 M7 Mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ISRO</font>",
-      "fetched_at": "2026-09-19T05:16:14.717Z",
       "consumed": true
     }
   ]
