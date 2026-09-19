@@ -4986,3 +4986,38 @@ a newer entry if a lesson changes.
   updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
   and the three automatic persistence-bump `snr_movements` entries
   logged in `state.json` as the build-health signal.
+
+## Narrow re-check, ~3h37m gap, unfiltered full source list (2026-09-19, second)
+
+- 2026-09-19-E: The Google News "launch" leg was almost entirely SpaceX
+  stock-reaction/analyst-rating churn (Nasdaq-100 rebalance weighting,
+  "stock has gone nowhere" pieces, buy-rating roundups) plus an
+  unrelated Trump "AI Force" politics story and a scheduled-launch
+  preview (Starship IFT-14's already-published Sept 28 slip); none
+  needed more than a title check against `existing[]` or the
+  don't-draft-scheduled-launches precedent.
+- 2026-09-19-F: A Global Times article on the same day's Kuaizhou-11
+  Tianyi-51/52 launch (already published, Launch Library/Xinhua lead)
+  turned out to carry substantive detail the original sources didn't:
+  a 55-degree medium-inclination orbit designed for daily InSAR revisit
+  (vs. the days-long cycle of sun-synchronous InSAR birds) and a "world's
+  first commercial medium-inclination InSAR satellites" claim. Confirmed
+  the technical/orbit facts via the non-state trade outlet China in
+  Space (china-in-space.com) before drafting, and kept the "world's
+  first" superlative labeled "per Global Times, unverified" per the
+  state-media performance-claim rule rather than stating it as fact;
+  used `rescore`-free `attach` since the lead source and base tier
+  didn't change, only impact (noise -> notable) on the strength of the
+  now-attested daily-revisit capability. Worth remembering: a same-day
+  state-media follow-up on an already-published Chinese launch is worth
+  a second look even when the original wire brief gave no payload
+  detail, since Global Times/Xinhua sometimes carry the actual technical
+  substance a day or two after the bare launch-confirmation wire.
+- 2026-09-19-G: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new,
+  1 updated, 0 held") plus a direct read of the updated item's
+  `headline`/`explainer`/`impact`/`sources`/`snr`/`snr_trace` fields as
+  the build-health signal. No `snr_movements` were logged this run (the
+  update added corroboration sources but didn't change the base tier or
+  trigger a persistence/reinforcement bump).
