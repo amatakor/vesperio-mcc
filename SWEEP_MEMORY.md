@@ -93,121 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-19)
-
-- 2026-08-19-A: LandSpace's Zhuque-3 second flight (Aug 18) landed its
-  booster on legs, China's first private-company orbital-booster recovery
-  and the first in China on legs rather than net capture (CASC's Long
-  March 10B used net capture in July). Scored it `seismic` on the direct
-  precedent of the 2026-07-10 Long March 10B item (also a "second country/
-  first for the entity" booster-recovery milestone, also led on a trade
-  source, also landed at final SNR 4 via the same extraordinary-reset ->
-  corroboration_2plus -> mainstream_pickup -> corroboration_4plus chain).
-  No registry vehicle entry exists for Zhuque-3 (only Zhuque-2 and the
-  LandSpace org profile do), so crossfeed was an honest empty block.
-- 2026-08-19-B: SCMP (mainstream, fetched directly) and Space.com/
-  NASASpaceflight/SpaceNews (trade, via harvester raw_excerpt) framed the
-  Zhuque-3 landing two different ways that are both true and worth
-  reconciling before drafting: "third entity after SpaceX and Blue Origin"
-  counts only LEG landings, while "fourth entity after SpaceX, Blue
-  Origin, and CASC" counts ANY controlled recovery method including CASC's
-  net capture. Used the leg-landing framing as primary (matches the site's
-  own July 10 CZ-10B item's framing) and folded the net-capture distinction
-  into why_it_matters rather than picking one number and dropping the
-  other.
-- 2026-08-19-C: A trade outlet's follow-up write-up of an ALREADY-PUBLISHED
-  contract award can still carry genuinely new, citable detail worth a
-  patch even when the underlying award itself is stale: Rocket Lab's own
-  Aug 18 release about its specific SDN implementation plan (Photon
-  spacecraft, optical inter-satellite links, 2027 demo date) is new
-  information layered onto the Aug 13 $60M multi-vendor SDN award already
-  on the site; folded into the existing item's what_happened via
-  `updates[].patch` rather than treated as a new item or ignored as a
-  rehash. Same pattern applied to Via Satellite's L3Harris CEO-ouster
-  follow-up (added Kubasik's 2012 Lockheed Martin dismissal for a similar
-  conduct violation, a citable and genuinely new-to-the-item fact) even
-  though that item was already at its SNR ceiling (first_party, 5) and the
-  patch couldn't move the score.
-- 2026-08-19-D: Confirms `hostMatches()` in finalize-sweep.ts does subdomain
-  matching via `endsWith("."+base)`: a registry `website` value of
-  `rocketlabcorp.com` should pass `investors.rocketlabcorp.com` as
-  `first_party` per the code, but the URL 60-second-timed-out on WebFetch
-  twice this run before a first-party fetch could be attempted; led with
-  Via Satellite + SatNews (both trade) instead. Worth a retry next time a
-  Rocket Lab IR-subdomain press release is needed and time allows.
-- 2026-08-19-E: A same-company-plus-category dedup false positive fired
-  between a brand-new Viasat/Rocket Lab PTS-G satellite-bus item (category
-  contract) and the existing 2026-08-10 Kepler/Rocket Lab Neutron 2028
-  launch-booking item (also category contract, also within 7 days),
-  despite sharing no program, agency, or subject beyond the company name
-  Rocket Lab. One `dedup_distinct` entry cleared it, extending the long
-  running finding that this heuristic fires on any shared company
-  regardless of relatedness.
-- 2026-08-19-F: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate on the first attempt,
-  continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 4 updated,
-  0 held") plus a direct read of all seven touched items'
-  `snr`/`category`/`impact` fields as the build-health signal.
-
-## Normal-mode sweep, ~11h45m gap, unfiltered full source list (2026-08-19, third)
-
-- 2026-08-19-G: A discovery-pass hit that reads as brand-new, week-old
-  news (SatNews's Aug 13 "Private Consortium Allied Orbits Secures
-  Approval to Build India's Rs1,200 Crore Commercial Satellite
-  Constellation") can actually be over a YEAR stale, not just weeks:
-  direct fetches of Dhruva Space's own press release and the Tribune's
-  writeup both stated the IN-SPACe award actually happened August 13,
-  **2025**, not 2026 -- SatNews (and possibly other outlets) republished
-  or re-dated the story a year later with no "anniversary"/recap framing
-  at all, reading exactly like fresh news. Left undrafted entirely.
-  Extends the standing stale-resurfacing pattern (2026-07-20-C and many
-  later entries) to a full-year gap; always check a fetched primary
-  source's own stated date even when a trade aggregator's date looks
-  current, especially for any story that reads as a "historic first."
-- 2026-08-19-H: A "mysterious space activity" headline (Space.com's US
-  Air Force Antarctica-flight-turnback story, also widely covered by
-  CNN/Yahoo/local NZ outlets) traced via WebSearch to a Russian-issued
-  NOTAM about a **missile launch**, not a satellite/debris hazard: New
-  Zealand's CAA statement specifically named "a planned missile launch"
-  as the hazard. Despite the "space activity" framing in headlines, this
-  is a geopolitical/military story with no satellite operator, no
-  debris-from-orbit claim, and no commercial-space angle stated anywhere
-  -- left out of scope rather than drafted as an `incident`, distinct
-  from genuine orbital-debris NOTAMs which would qualify.
-- 2026-08-19-I: `applyModifier` in finalize-sweep.ts rejects a repeated
-  `bump: "corroboration_2plus"` on an item that already carries that
-  modifier ("already applied; modifiers saturate") -- attaching 2 MORE
-  distinct sources (Ukrainska Pravda, UNN) to the already-3-source
-  2026-08-15 Progress/Samara strike item needed `bump:
-  "corroboration_4plus"` instead, which the gate accepted cleanly.
-  Check an update target's current `snr_trace.modifiers` before picking
-  a bump tier rather than assuming the lowest corroboration bump always
-  applies.
-- 2026-08-19-J: Ukraine's General Staff issuing its OWN follow-up
-  statement naming a specific facility (RKTs Progress's Soyuz
-  engine-assembly workshop, a 5,000 sq m fire) four days after an
-  already-published strike item is a legitimate `updates[].patch`, unlike
-  the 2026-08-18-G case it superficially resembles: the difference is
-  attribution -- an unattributed "satellite imagery shows X" claim stays
-  out, but a named government body's own on-the-record statement (here
-  relayed by Ukrainska Pravda and UNN, both citing the General Staff
-  directly) clears the same attribution bar as the original strike
-  report.
-- 2026-08-19-K: Two lunar-lander CLPS payload demo announcements (Firefly/
-  Zeno Power's radioisotope heater unit) drafted cleanly at first_party
-  base tier 5 (fireflyspace.com matches the registry's stored website
-  exactly) with SpaceNews and Payload as independent trade corroboration
-  -- Payload's own reporting added the CLPS "CS-8" task-order detail and
-  a Firefly-exec quote not in the SpaceNews or Firefly copy, confirming
-  independent (non-rewrite) coverage.
-- 2026-08-19-L: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1 updated,
-  0 held") plus a direct jq spot-check of all three new items'
-  `snr`/`category`/`impact` fields as the build-health signal.
-
 ## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-20)
 
 - 2026-08-20-A: A same-day scheduled-but-not-yet-flown launch (Rocket
@@ -5054,3 +4939,50 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of the new item's `snr`/
   `snr_trace`/`category`/`impact`/`sources` fields as the build-health
   signal.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-19)
+
+- 2026-09-19-A: An ISRO-first-party press release
+  (`isro.gov.in/Successful_Hot_Test_of_CE20_Cryogenic.html`, published
+  Sept 10) for an already-published Sept 9 CE20 hot test item surfaced
+  through a Google News redirect a full sweep late; confirmed via
+  WebSearch (the redirect itself was an empty JS shell) that it was the
+  same test, not a new one, then used `rescore` (not just `attach`) to
+  promote the lead from mainstream (The Hans India, tier 3) to
+  first-party (tier 5): `rescore.sources[0].url` had to equal the
+  item's patched `source_url`, and the patch had to land before the
+  rescore in the same update entry. Worth remembering that a stale
+  first-party press release for a known event is still worth chasing
+  down and merging as a `rescore`, not just an `attach`, since `attach`
+  alone doesn't change which source the base tier is computed from.
+- 2026-09-19-B: A near-total-junk 24-candidate queue (scheduled-launch
+  previews, SpaceX stock-reaction churn, several already-published
+  stories resurfacing via Google News) plus a 10-query discovery pass
+  still yielded one genuinely new item: Valor Equity Partners'
+  Form-4-disclosed $8.5B in-kind SpaceX stock distribution to its LPs
+  (official_record lead, SNR 5). It hit the standing same-company
+  (SpaceX) + same-category (financial) dedup false-positive shape
+  against `2026-09-10-spacex-ai-compute-deal-1-1b-monthly`; one
+  `dedup_distinct` entry cleared it, extending the running list of that
+  false-positive pattern to a same-financial-category collision (prior
+  instances were cross-category via shared company/category pairs, not
+  strictly within the same category).
+- 2026-09-19-C: A South Korea Mirae Asset/SpaceX-private-offering story
+  (Google News, UPI) turned out to be an ongoing regulatory probe
+  running since June 2026 with no new concrete outcome (fine, finding,
+  ruling) in this window, just an escalation in investigative intensity
+  reported piecemeal across several Korean outlets on different days;
+  left undrafted as process-not-yet-fact rather than try to pin a single
+  new dateable fact to it. A NASASpaceflight China-roundup item on
+  Tianwen-3 entering "prototype development phase" traced via WebSearch
+  to a Sept 3 Global Times original (predates window by 16 days,
+  routine-tier program milestone, not a first) and was left undrafted
+  rather than invoked under the predates-window chase-it exception,
+  which is reserved for notable/seismic events.
+- 2026-09-19-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1
+  new, 1 updated, 0 held") plus a direct read of the new item's and the
+  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  and the three automatic persistence-bump `snr_movements` entries
+  logged in `state.json` as the build-health signal.
