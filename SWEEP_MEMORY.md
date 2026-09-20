@@ -93,124 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-20)
-
-- 2026-08-20-A: A same-day scheduled-but-not-yet-flown launch (Rocket
-  Lab's ninth Electron mission for iQPS, window opening ~8 hours after
-  this sweep ran) was correctly left undrafted rather than written as a
-  completed past-tense event; the "every on-scope launch publishes" rule
-  (2026-07-12) covers launches that occurred, not previews of ones still
-  scheduled. Caught a related trap while researching it: a WebFetch
-  summary of the Launch Library record and a WebSearch synthesis both
-  asserted today's payload was "QPS-SAR-13," which is actually the
-  designation of the ALREADY-PUBLISHED Aug 6 satellite (`2026-08-06-
-  rocket-lab-iqps-8th-launch`) -- Space.com's own verbatim raw_excerpt
-  only confirmed the nickname "SUSANOO-II," never a QPS-SAR number for
-  today's satellite. A WebFetch/WebSearch summary can silently carry
-  over a numeric designation from adjacent context into a superficially
-  similar new story; verbatim source text is the only thing to trust for
-  a payload's exact designation.
-- 2026-08-20-B: A same-day SES press release ("SES Expands into Global
-  Direct-to-Device Services through Strategic Collaboration with Elveo
-  Mobile," surfaced fresh via SES's own newsroom listing with no visible
-  date on the top slot, same shape as 2026-08-16-F) was actually SES's
-  Aug 17 release already fully folded into the existing Aug 14 Lynk/
-  Omnispace/Elveo merger item -- that item's own `source_url` is the
-  literal same SES release URL. Caught only by grepping "elveo" against
-  items.json before drafting, per the standing company-name-grep
-  practice (2026-07-23-J, 2026-08-15-A); a company newsroom's top listing
-  slot with no date is not itself proof of a new, undrafted story.
-- 2026-08-20-C: A SpaceNews "Landspace secures launch contracts for
-  China's megaconstellation projects" headline surfaced by discovery-pass
-  WebSearch reads fresh but a second search explicitly returned
-  "according to reports from January 2026" for the same underlying fact
-  (Zhuque-2E/Zhuque-3 selected for Guowang/Qianfan demonstration
-  contracts); left undrafted as a stale resurfacing (extends
-  2026-08-13-A/E/G, 2026-08-19-G) rather than chased, especially since
-  the SpaceNews article itself 403'd on direct fetch and couldn't be
-  dated independently.
-- 2026-08-20-D: The standing same-company-plus-category dedup false
-  positive (SpaceX + category `regulatory`) fired between a new India
-  IN-SPACe Starlink Gen 2 reapplication and the existing Aug 13 Starlink
-  Vietnam market-entry item, 7 days apart, sharing no country, agency, or
-  subject beyond the company name -- cleared with one `dedup_distinct`
-  entry, extending the long-running pattern to yet another country pair.
-- 2026-08-20-E: A widely mirrored regulatory story (Starlink's India Gen
-  2 reapplication) traced to a single underlying Economic Times report
-  once multiple outlets were checked: BusinessToday, Investing.com (both
-  explicitly "ET reports"), Moneycontrol, and a Reuters wire copy all
-  carried identical facts and figures with no independent reporting
-  found; Business Standard's own differently framed headline 403'd on
-  direct fetch and couldn't be verified as genuinely independent, so it
-  was left uncited per the standing "only cite pages with genuinely
-  fetched content" rule. Landed a clean single-source `crawl:
-  "found_none"` at SNR 2 (mainstream base tier 3, per CLAUDE.md's base-
-  tier table -- mainstream and trade are both tier 3, not 4; press-wire
-  copy and established aggregators are the tier-4 classes) rather than
-  stack the ET-derived mirrors as fake corroboration.
-- 2026-08-20-F: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 5 new, 1 updated, 0 held") plus a direct grep
-  spot-check of all five new items' and the one updated item's
-  `snr`/`category`/`impact` fields as the build-health signal.
-
-## Normal-mode sweep, ~11h46m gap, unfiltered full source list (2026-08-20, second)
-
-- 2026-08-20-G: A satellite-designation trap flagged the previous sweep
-  (2026-08-20-A) recurred and was caught the same way: the harvester
-  queue and every English trade write-up for Rocket Lab's 9th iQPS
-  launch gave only the nickname "SUSANOO-II" or vague "latest QPS-SAR
-  sat," and one WebSearch synthesis even said "QPS-SAR-9" (conflating
-  9th-deployment-count with the satellite's own serial number). The
-  correct designation, QPS-SAR-18, only turned up by fetching iQPS's own
-  pre-launch release (i-qps.net) directly; classed as an unscored
-  secondary link rather than first_party since iQPS has no registry
-  entity (same workaround as Orbit Fab/ArkEdge/IHI/Kuva, 2026-07-21-H
-  and earlier). rocketlabcorp.com's own mission-success update page
-  403'd on direct fetch again (extends 2026-08-19-D); a StockTitan
-  mirror of Rocket Lab's GlobeNewswire release supplied the confirmed
-  success status and totals (93rd Electron, 14th of 2026, 9th for iQPS)
-  instead.
-- 2026-08-20-H: A press release's own dateline can be flatly wrong in a
-  way worth catching before drafting: SpaceNews's "Draper Selects
-  Proteus Space for Advanced On-Orbit Mission" (RSS-fed, published_at
-  2026-08-20T10:00 UTC, matching the harvester's fetch window) opened
-  with the literal dateline "LOS ANGELES, CA, September 8th, 2026" --
-  seventeen days in the future from today. Treated as a template/copy-
-  paste artifact in the source press release rather than evidence of a
-  backdated or embargoed story; dated the item to the actual RSS publish
-  date (Aug 20) and did not quote the erroneous September date in copy.
-- 2026-08-20-I: SpaceSail's August 19 $1B/7-billion-yuan Series B close
-  (South China Morning Post, record for China's satellite-internet
-  sector) is a genuinely distinct financial event from the June 22
-  "SpaceSail opens new fundraising round" item already on the site --
-  59 days apart, well past both the 7-day update window and the 30-day
-  reinforcement window -- but shares company (SpaceSail) and category
-  (financial) with it, so it still tripped the standing same-company-
-  plus-category dedup heuristic (2026-07-21-F and many later entries)
-  and needed one `dedup_distinct` entry despite being unambiguously a
-  different transaction (round opening vs. round closing, two months
-  apart, different stated figures).
-- 2026-08-20-J: A Federal Register regulatory notice and the issuing
-  agency's own plain-English blog post announcing the same action on
-  the same day (OSC's "Notice of Mission Authorization Pilot Program" /
-  "OSC Releases SCC 'Call For Interest'") are both genuinely official
-  record (space.commerce.gov is a `.gov` host, passes the fixed-list
-  check cleanly) and worth citing together: the Federal Register text is
-  the legally operative notice, but OSC's own post states the plainer
-  facts (application deadline, which agencies participate, the "pathway
-  to yes" framing) more usably for the copy. A same-day SpaceNews
-  write-up ("Office of Space Commerce to move ahead on mission
-  authorization") supplied the corroboration crawl's `found_some` even
-  though both leads were already at the direct-source ceiling.
-- 2026-08-20-K: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 8 new, 0 updated, 0 held") plus a direct grep
-  spot-check of all eight new items' `snr`/`category`/`impact` fields as
-  the build-health signal.
-
 ## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-21)
 
 - 2026-08-21-A: SWEEP_MEMORY 2026-08-05-A had flagged two SpaceX Golden
@@ -5021,3 +4903,37 @@ a newer entry if a lesson changes.
   the build-health signal. No `snr_movements` were logged this run (the
   update added corroboration sources but didn't change the base tier or
   trigger a persistence/reinforcement bump).
+
+## Narrow re-check, ~8h07m gap, unfiltered full source list (2026-09-20)
+
+- 2026-09-20-A: Drafted a SpaceNews-sourced Simera Sense/IDOM
+  MultiScape350 optics-partnership item from a same-day queue candidate
+  without first grepping `items.json` for the company names; it was
+  already published under an identical id from earlier the same day.
+  finalize-sweep's dedup gate caught it on the first submit ("id already
+  exists... duplicate"), but the wasted drafting pass (scoring block,
+  crossfeed, corroboration search) would have been avoided by the
+  standing grep-before-drafting practice (2026-08-22-E and many peers) —
+  worth remembering that practice applies even to queue-surfaced
+  candidates the harvester flags as fresh, not just signals/discovery
+  finds.
+- 2026-09-20-B: A Chinese Launch Library entry ("Kinetica 1 | 9
+  satellites", generic "details TBD" raw_excerpt) is not evidence of
+  which specific mission it is: an initial WebSearch for the exact
+  payload count and vehicle name surfaced a superficially matching but
+  stale Dec. 10, 2025 Kinetica-1 flight with the identical "9 satellites"
+  framing. Only a Chinese-language search for the specific date ("力箭一号
+  9月20日") resolved it to the correct, distinct Sept. 20, 2026 Yao-18
+  flight (carrying Supercomputing-1, an AI-computing EO demo satellite).
+  Extends the standing 2026-08-25-C "generic rideshare excerpt is not
+  proof of payload identity" pattern to Launch Library's own generic
+  mission titles, not just harvester excerpts; a same-shaped title with a
+  matching satellite count from a different year is a stale-resurfacing
+  trap even when it comes from the authoritative launch-tracking
+  aggregator itself.
+- 2026-09-20-C: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  0 updated, 0 held") plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
