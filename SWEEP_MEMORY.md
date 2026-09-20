@@ -5019,3 +5019,37 @@ a newer entry if a lesson changes.
   harmless but worth proofreading the summary string before it lands in
   a future draft, since `state.json` is machine-owned and not
   hand-editable after merge.
+
+## Narrow re-check, ~3h45m gap, unfiltered full source list (2026-09-20, fourth)
+
+- 2026-09-20-J: A "Space-Eyes confirms $638m SPAC merger with McKinley"
+  discovery-pass lead traced (via a follow-up WebSearch on what Space-Eyes
+  actually does) to a counter-drone/geospatial-AI company: its C-UAS
+  platform fuses RF, EO/IR and satellite inputs for detection, but it is
+  not an EO/SAR operator, launch provider, or connectivity constellation
+  itself. Left out of scope entirely rather than drafted as a financial
+  SPAC event, distinct from the standing Quantum Space/other space-SPAC
+  precedents that ARE in scope because the underlying company builds
+  space hardware. Worth remembering: a SPAC merger headline mentioning
+  "satellite" or "geospatial" needs the same what-does-this-company-
+  actually-do check as any other borderline actor before drafting.
+- 2026-09-20-K: `europeanspaceflight.substack.com/feed` 403'd on a direct
+  WebFetch this run (first observed failure for this channel); fell back
+  on Andrew Parsonson's bluesky and site coverage from the same run
+  instead of treating the person as unchecked. Worth a re-try next sweep
+  before assuming the substack feed itself, not just this one fetch, is
+  now blocked.
+- 2026-09-20-L: A fully quiet run start to finish: the harvested queue (9
+  candidates post-filter) was entirely FAA/NOAA fishery-council notices,
+  SpaceX stock-advice churn, and off-topic Futurism content, or stories
+  already published earlier the same day (StarBurst, United/DISH,
+  Starship Flight 14 orbit coverage); all six mandatory HTML sources, 14
+  of 17 signals channels (rotation skipped Anatoly Zak's bluesky and
+  Andrew Parsonson's site), and an 8-query discovery pass covering the
+  full matrix (launch, financial, incident, China, India, EO contracts,
+  regulatory, M&A) surfaced only already-published leads or the
+  Space-Eyes scope exclusion above. Zero new items, zero updates, zero
+  held; `bun run build` not attempted per the 2026-09-09 CLAUDE.md
+  procedure update, relying on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 0 updated, 0 held") as the build-health
+  signal.
