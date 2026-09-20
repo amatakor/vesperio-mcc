@@ -4981,3 +4981,41 @@ a newer entry if a lesson changes.
   touched data files (703 items, up from 702) and a direct read of the
   new item's and both updated items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~5h24m gap, unfiltered full source list (2026-09-20, third)
+
+- 2026-09-20-H: Both leads the signals pass surfaced this run (Vivienne
+  Machi's Aviation Week author page listing the Sept 18 GHOST-R
+  Northrop Grumman/True Anomaly GEO-recon prototype award, and Andrew
+  Parsonson's bluesky post on ESA's Sept 18 IRIS2 Low-LEO consolidation
+  contracts) were fully drafted, sourced, and scored before a
+  `grep -i` company/program-name check against `items.json` revealed
+  both already published under existing ids
+  (`2026-09-18-northrop-grumman-true-anomaly-ghost-r`,
+  `2026-09-17-esa-iris2-low-leo-consolidation-contracts`) from an
+  earlier same-day sweep. No time was lost past the drafting stage
+  since the grep ran before `sweep-draft.json` was written, but it
+  confirms 2026-09-20-A's lesson from earlier the same day: run the
+  items.json grep on signals/discovery leads BEFORE building the
+  scoring block and crossfeed attestation, not just before writing the
+  final draft, especially on a day with several same-day sweeps already
+  ahead of you.
+- 2026-09-20-I: A fully quiet run start to finish: the harvested queue
+  (30 candidates post-filter) was entirely SpaceX stock/valuation churn,
+  Google News redirects to already-published stories, and off-topic
+  Futurism filler; all six mandatory HTML sources and 15 of 17 signals
+  channels were current with nothing new in window; a 9-query discovery
+  pass covering the full matrix (launch, financial, incident, regulatory,
+  China, India) surfaced only already-published stories (Impulse Space
+  Series D extension, Safran/Dhruva SBS-III, Stoke Space Series E/Nova
+  Block 2) or process-not-yet-fact exclusions (the FCC's draft
+  12.7-13.25/42-42.5 GHz satellite-spectrum order, scheduled for a Sept
+  30 vote, not yet decided). Zero new items, zero updates, zero held;
+  confirms a genuinely quiet day rather than an under-worked one, per
+  the standing "quiet is not the same as nothing to check" discipline
+  (2026-08-24-C and peers) followed to its honest zero-item conclusion.
+  Note: the merged sweep-entry summary text in `state.json` has a typo
+  ("an 8-8h discovery pass" should read "a 9-query discovery pass");
+  harmless but worth proofreading the summary string before it lands in
+  a future draft, since `state.json` is machine-owned and not
+  hand-editable after merge.
