@@ -4937,3 +4937,47 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a direct read of both new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~6h22m gap, unfiltered full source list (2026-09-20, second)
+
+- 2026-09-20-D: A near-total-junk queue (33 candidates: SpaceX stock/IPO
+  speculation, off-topic CGTN/BBC science filler) had its only two
+  real China-launch stories (Lijian-1 Yao-18, PIESAT-2) and the Rocket
+  Lab/Synspective launch already published by the prior same-day sweep;
+  the sole genuinely new item, a routine 27-satellite Starlink batch on
+  booster B1093's 17th flight, came from a discovery-pass search after
+  the queue's own Google News entries for it (a keeptrack.space X-report
+  aggregator, a Space.com headline) didn't resolve to fetchable content
+  directly.
+- 2026-09-20-E: An NPR piece on Starbase Louisiana ("Thousands of planned
+  launches, terms of deal, worry some") genuinely cleared the
+  standing "trend/reaction piece adds nothing" bar (2026-08-27-A and
+  peers) other Louisiana follow-ups have failed: it carried three facts
+  the original Aug 25 item never stated (SpaceX's own ~30-rockets-a-day
+  cadence claim, the "Project Osprey" NDA codename from records-request
+  documents, and outdoor educator Gabe Giffin's on-record migratory-bird
+  concern) verified via a syndicated NPR-affiliate mirror after npr.org
+  itself timed out twice. Folded in via `updates[].attach`+patch with no
+  bump requested (item already at the SNR 5 ceiling).
+- 2026-09-20-F: A same-day RFE/RL piece on the Rassvet constellation,
+  fetched directly rather than assumed to be another rehash of the
+  well-trodden ISW/altitude-failure story (2026-09-07-H and peers this
+  item has attracted), turned out to carry genuinely new facts: reported
+  Ukrainian strikes on ground infrastructure the program depends on
+  (the Dubna satellite comms center, the Progress Rocket and Space
+  Center that builds Bureau 1440's Soyuz launch vehicles, a drone threat
+  to Plesetsk) and revised satellite-count targets. Treated as
+  `updates[].patch`+attach, framed as an industrial-capacity risk to the
+  deployment timeline rather than conflict analysis, consistent with the
+  2026-08-16-A Progress/Samara precedent; explicitly did not characterize
+  the war itself. No bump requested: base tier 3 (whitelist observer)
+  plus `corroboration_2plus` already sits at this non-first-party lead's
+  ceiling of 4, confirming the 2026-09-02-A silent-no-op pattern once
+  more on a 7th total source.
+- 2026-09-20-G: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
+  2 updated, 0 held") plus a `jq empty` parse check across all six
+  touched data files (703 items, up from 702) and a direct read of the
+  new item's and both updated items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
