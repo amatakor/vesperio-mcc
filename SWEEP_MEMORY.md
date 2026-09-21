@@ -93,119 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-21)
-
-- 2026-08-21-A: SWEEP_MEMORY 2026-08-05-A had flagged two SpaceX Golden
-  Dome contracts (the $2.29B SDN Backbone award, May 26, and the $4.16B
-  SB-AMTI award, May 29) as "never covered under any id... still open";
-  a plain WebSearch for the Investing.com "SpaceX secures over $8
-  billion in Golden Dome contracts" queue hit traced straight back to
-  these same two never-drafted May awards. Chased both, each dated to
-  its actual award date, each needing a `dedup_distinct` entry against
-  the other (same company, same category, 3 days apart, genuinely
-  different programs). A flagged-but-unchased gap noted in this file is
-  worth a company-name/dollar-figure grep against items.json on a later
-  sweep, not just a one-time flag; it stayed unchased for over two weeks
-  of sweeps until today.
-- 2026-08-21-B: Amazon's $11.6 billion Globalstar acquisition
-  (announced April 14, 2026, per Amazon's own press.aboutamazon.com
-  release) was NEVER covered under its own id despite being referenced
-  as background context in two later items (the July 24 Amazon Leo D2D
-  FCC filing, and in passing elsewhere) -- grepped items.json for
-  "11.6 billion"/"Globalstar acquisition" and found only the context
-  mentions, no dedicated card. A seismic-tier M&A between two tracked
-  operators is exactly the kind of gap worth a deliberate items.json
-  grep (not just an `existing[]` skim) whenever a company's own site or
-  a discovery-pass hit references a big prior deal only in passing --
-  the reference itself is a signal the underlying event may never have
-  been drafted.
-- 2026-08-21-C: Vivienne Machi's Aviation Week author-page listing
-  (aviationweek.com/author/vivienne-machi, a signals-context fetchable
-  channel) surfaced two NRO commercial-sensing contract stories
-  (HawkEye 360 CRFCA, Aug 17; Capella/ICEYE US/Umbra RCA, dated Aug 21
-  feature but reporting an Aug 5 award) that both read as fresh but
-  traced via items.json headline grep to already-published items
-  ("HawkEye 360 wins NRO's first operational commercial RF contract",
-  "NRO awards Capella, ICEYE and Umbra new commercial radar-imagery
-  contracts") -- a later sweep had independently resolved the exact gap
-  2026-08-17-G flagged as unverifiable. Confirms grepping items.json
-  headlines for the actor+program name before drafting a
-  signals-surfaced story is cheap insurance even when the source finally
-  fetches cleanly after a prior sweep couldn't reach it.
-- 2026-08-21-D: A competitive spectrum-bidding process (SpaceX and AST
-  SpaceMobile named among "companies that have expressed interest" in
-  Grain Management's $6B-asking 800MHz licenses, preliminary offers due
-  first week of September) is a "process not yet fact" exclusion, same
-  standard as the T-Mobile/Sateliot pattern: no confirmed bid amount
-  attributed to either company specifically, just an asking price and a
-  deadline. Similarly, Gov. Landry's SpaceX Louisiana spaceport deal was
-  reported as scheduled for announcement Aug. 25, five days after this
-  sweep -- left undrafted as not-yet-occurred rather than written in the
-  past tense, consistent with the standing "don't draft a scheduled
-  event before it happens" rule for launches, extended here to a
-  political announcement event.
-- 2026-08-21-E: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 0
-  updated, 0 held") plus a direct jq spot-check of all five new items'
-  `snr`/`category`/`impact`/`snr_trace` fields as the build-health
-  signal.
-
-## Normal-mode sweep, ~11h46m gap, unfiltered full source list (2026-08-21, second)
-
-- 2026-08-21-F: A state defense institute's first-ever test flight of a
-  "satellite launch vehicle" prototype that self-destructs after a
-  trajectory deviation (Taiwan's NCSIST, Jiupeng Base, Aug 19) is out of
-  scope even though press coverage calls it a satellite launch vehicle:
-  the pre-test notice's own danger-zone parameters (100,000 ft max
-  altitude, 20nm radius) confirm it was a suborbital test, and CLAUDE.md's
-  launch-vehicle scope is explicitly orbital-only (same standing exclusion
-  as Gravitilab's suborbital hybrid rockets, 2026-08-14-B). Also a state
-  weapons-development institute, not a commercial launch provider. Worth
-  flagging for Florian if a defense institute's *eventual-orbital* SLV
-  program should be tracked differently from a routine suborbital test.
-- 2026-08-21-G: An India Today headline read via Google News RSS
-  ("Isro will not make any launch vehicle, all tech to be handed to
-  private sector") could not be fetched at all this run (Claude Code's
-  WebFetch tool refused indiatoday.in outright, and the Google News
-  redirect resolved to a bare "Google News" header with no content,
-  extending the standing redirect-failure pattern). A WebSearch for the
-  claim only surfaced ISRO's already-known, already-published LVM3
-  tech-transfer and PSLV-privatization threads (2025-vintage and
-  mid-2026 announcements), no distinct new fact; left undrafted rather
-  than guess whether the headline states something genuinely new.
-- 2026-08-21-H: An FT-sourced story on Trump declining to press Musk to
-  extend Starlink for Ukrainian long-range strikes into Russia (widely
-  mirrored, Kyiv Post among others) was judged out of scope as
-  conflict/operational-use analysis rather than a commercial-service
-  fact, even though a government figure is on the record: the actual
-  news content is about battlefield strike-targeting capability
-  (dwindling Patriot interceptors, precision targeting), not a stated
-  service change, sanction, or export-control notice. Distinct from the
-  2026-08-16-A Progress/Samara manufacturing-strike precedent, which
-  reported facility damage without touching operational use of any space
-  asset; this story's entire premise IS operational use. Flag for
-  Florian if the "government statement directly concerning commercial
-  space services in a conflict" carve-out was meant to reach this far.
-- 2026-08-21-I: Vivienne Machi's Aviation Week author-page listing
-  surfaced a same-day headline ("NRO Takes Commercial SAR Partnerships
-  To New Operational Level," Aug 21) that could not be verified: a
-  guessed article URL 404'd, and a WebSearch found only a 2019 article
-  with the identical title plus the already-published Aug 5 NRO/Capella/
-  ICEYE/Umbra RCA contract-award coverage. Left undrafted per the
-  standing "only cite pages with genuinely fetched content" rule;
-  extends 2026-08-17-G's identical trap (an author-listing headline is
-  not proof of a fresh, distinct story) to a case where the exact title
-  also collides with a 7-year-old unrelated article.
-- 2026-08-21-J: Both `bun run build` and `bun scripts/check-feed.ts`
-  were denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 1
-  updated, 0 held") plus a direct read of both new items' and the one
-  updated item's `snr`/`category`/`impact`/`snr_trace` fields as the
-  build-health signal.
-
 ## Normal-mode sweep, ~11h50m gap, unfiltered full source list (2026-08-22)
 
 - 2026-08-22-A: `signalsPass.checked` must list the exact `url` field
@@ -5053,3 +4940,59 @@ a newer entry if a lesson changes.
   procedure update, relying on `finalize-sweep.ts`'s own merge
   confirmation ("merged 0 new, 0 updated, 0 held") as the build-health
   signal.
+
+## Deep sweep (mode "deep", triggered after two zero-add sweeps), ~8h07m gap, 7-day window, unfiltered full source list (2026-09-21)
+
+- 2026-09-21-A: A Payload "DIU and SSC Announce Joint GHOST-R Mission" queue
+  hit and a Planet Pulse "Next Chapter in Germany" satellite-manufacturing
+  post both read as fresh discovery-pass-shaped finds but were caught
+  before drafting: GHOST-R was already the Sept 18 Northrop
+  Grumman/True Anomaly item (grep on "ghost-r"), and the Planet post
+  restated the exact investment figure ("expected to exceed 8 figures"),
+  headcount ("~150 to ~220 by 2027"), and Martin Polak quote from a
+  September 2025 Berlin-facility announcement (SatNews/Via
+  Satellite/European Spaceflight, dated a year earlier) with only the
+  publish date changed to today -- left undrafted as a stale company-blog
+  recap, not a fresh opening milestone, since nothing in the fetched text
+  stated a new fact beyond the year-old plan.
+- 2026-09-21-B: Extends 2026-09-20-A/H's "grep before building the
+  scoring block" lesson to a case where the grep target isn't obvious
+  from the headline: a Payload/SpaceQ/Kepler-press-release story
+  ("Maverick Books 10 Kepler Sats...") read as a clean, undrafted
+  three-way launch-integrator deal, but grepping "Maverick" against
+  `items.json` (not just checking for a `maverick`-slugged id) found the
+  identical fact already folded into the existing Aug 20 Portal Space
+  Systems item's `why_it_matters` as background context, added by an
+  earlier same-topic sweep. An id-based grep alone would have missed
+  this; grep the actor's plain name across the full item body too.
+- 2026-09-21-C: In deep mode, a genuinely new fact can still hide behind
+  a wall of already-published queue hits: of roughly a dozen promising-
+  looking EO/connectivity/launch candidates checked this run (Open
+  Cosmos funding, Planet German federal contract, Viasat/Space42
+  Equatys JV, Hydrosat Osiris, SEOPS/Isar five-launch deal, ESA
+  EOGS/ARISE study contracts, IRIS2 Low-LEO consolidation, NigComSat/
+  Hughes gateway, ST Engineering/Datacom, Lynred/constellr, Kymeta rail
+  certification, Impulse Space Series D, Kuva Space poppy detection,
+  State Dept Space Catalyst Partnership), every single one was already
+  published under an existing id. Only two candidates that required an
+  open-web discovery chase (not sitting in the queue at all) were
+  genuinely new: Hanwha Systems' Korea K-SSA debris-tracking contract
+  and SpaceX's Starmind FCC re-entry/collision-risk filing. Worth
+  expecting this ratio (queue mostly re-presentation, real finds from
+  chasing thin discovery leads) as the deep-mode norm, not a sign the
+  queue check was wasted effort.
+- 2026-09-21-D: A Satellogic/IDT/ONR "Slingshot III" SpaceNews headline
+  that resurfaces every few days (first flagged 2026-09-14-D as a
+  self-referential PR restating a March release) still adds no new fact
+  on a fourth appearance: the Sept 20-21 SpaceNews/Stocktwits wave
+  restates the identical six-satellite/18-month/2027-2028 figures word
+  for word. Confirmed via direct search rather than re-guessing; worth
+  treating this specific headline shape as a standing dead lead like the
+  Aviation Week NRO/SAR case (2026-08-24-H) unless a source states a new
+  satellite count or dollar figure.
+- 2026-09-21-E: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  0 updated, 0 held") plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
