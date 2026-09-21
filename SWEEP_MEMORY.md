@@ -5082,3 +5082,43 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of the new item's and the updated
   item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields (710
   items, up from 709) as the build-health signal.
+
+## Narrow re-check, ~5h04m gap, unfiltered full source list (2026-09-21, fourth)
+
+- 2026-09-21-O: A same-day federal court ruling on the standing Starbase
+  land-swap lawsuit (2026-06-10-starbase-land-swap-lawsuit) surfaced as
+  four independent Google News hits (NYT, Bloomberg Law News,
+  BorderReport, MyRGV) but every one of the four redirect URLs resolved
+  to a bare "Google News" placeholder via WebFetch, the same failure
+  mode as 2026-09-21-I; only MyRGV's actual publisher URL was recoverable,
+  via a plain (non-domain-restricted) WebSearch for the exact queue
+  headline text rather than the redirect itself. Worth trying an
+  unrestricted WebSearch for the verbatim queue title before giving up
+  on a story whose Google News redirect won't resolve; it surfaced the
+  real URL and enough synthesized page content (court, ruling, date) to
+  draft an honest, appropriately thin update even though the direct
+  WebFetch on that URL also 403'd.
+- 2026-09-21-P: The anti-spoof gate rejects `first_party` for a company's
+  own domain when that company has no `src/data/registry/organizations/`
+  profile (`isOfficialHost` only matches `.gov`, the fixed official list,
+  or a registry-recorded website): Katalyst Space Technologies' own
+  katalystspace.com news post and Network Innovations' own blog post
+  both had to be classed `informal` rather than `first_party` for this
+  reason, even though both were verbatim company statements about
+  themselves. Led with the trade-press pickup (Via Satellite) and the
+  wire release (PR Newswire) instead, both of which score fine unaided.
+  Worth remembering for any unprofiled company's own announcement: check
+  for a registry entry before attesting `first_party`, or expect a
+  rejection and reclassify to `informal`/`wire_pr`/`trade` instead.
+- 2026-09-21-Q: An Intellian/Network Innovations WGS flyaway terminal
+  partnership surfaced via a same-day Via Satellite queue entry actually
+  traced (via WebSearch) to a September 15-16 announcement, six days
+  before the queue picked it up; drafted dated on the actual announcement
+  date per the standing predates-window chase-it precedent (2026-08-18
+  Vikram-1 and peers), not on the queue's discovery date.
+- 2026-09-21-R: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  1 updated, 0 held") plus a direct read of both new items' and the
+  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  (712 items, up from 710) as the build-health signal.
