@@ -4996,3 +4996,47 @@ a newer entry if a lesson changes.
   0 updated, 0 held") plus a direct read of both new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-21, second)
+
+- 2026-09-21-F: The dedup gate's shared-company + shared-category heuristic
+  produced two false positives on genuinely distinct events, extending the
+  standing pattern (2026-09-19-B and peers): an Exolaunch/SpaceX Starfall
+  payload-integrator deal (category `launch`) matched against a same-day
+  routine Starlink Vandenberg launch purely on shared company `SpaceX`, and
+  an ESA Investor Forum financing item (category `financial`) matched
+  against the unrelated Sept 8 ESA Space Environment Report purely on
+  shared company `ESA`. Both cleared with a `dedup_distinct` entry citing
+  the actual distinguishing facts (different mission/topic entirely, not
+  just a different date).
+- 2026-09-21-G: `updates[].note` must sit at the top level of the update
+  object, sibling to `patch`/`attach`, not nested inside `patch` alongside
+  the patched fields; nesting it under `patch` produced a hard rejection
+  ("updates[N].note: required non-empty string") on an otherwise-valid
+  draft with three updates. The worked example in prompts/update-items.md
+  already shows it top-level; worth re-reading the schema shape literally
+  rather than by pattern-matching the newItems `crossfeed.note` shape.
+- 2026-09-21-H: A CGTN state-media follow-up gave genuinely new payload
+  detail (mass, 5G NTN payload, laser link, on-orbit computing) for a
+  satellite the already-published item had only named ("the Pengcheng-
+  branded debut satellite") without specs, on the same already-published
+  Sept 20 Lijian-1/Yao-18 launch -- a same-launch variant of the 2026-09-19-F
+  "same-day state-media follow-up carries the technical substance" pattern,
+  this time for a *named-but-undetailed* payload rather than a wholly
+  unmentioned one.
+- 2026-09-21-I: A Google News redirect URL for a marketscreener.com
+  headline ("Airbus Defence and Space Hires SSC Space...") failed to
+  resolve via WebFetch (returned only a bare "Google News" placeholder,
+  no redirect target) on two separate attempts; recovered by searching the
+  actor's own newsroom (`sscspace.com/news/`) directly, which listed the
+  same-day first-party release with a working link. Worth trying the named
+  company's own newsroom before spending further attempts on a
+  non-resolving Google News redirect.
+- 2026-09-21-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 3
+  updated, 0 held") plus a direct read of all four new items' and all
+  three updated items' `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields, and the state.json `corroboration_collapses` entry (SSC's own
+  release vs. Satellite Evolution's near-identical republish, correctly
+  auto-collapsed as `wire_rewrite`), as the build-health signal.
