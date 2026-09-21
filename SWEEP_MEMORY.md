@@ -5040,3 +5040,45 @@ a newer entry if a lesson changes.
   fields, and the state.json `corroboration_collapses` entry (SSC's own
   release vs. Satellite Evolution's near-identical republish, correctly
   auto-collapsed as `wire_rewrite`), as the build-health signal.
+
+## Narrow re-check, ~3h45m gap, unfiltered full source list (2026-09-21, third)
+
+- 2026-09-21-K: The Albania Artemis Accords signing (73rd signatory,
+  scheduled 12pm ET Sept 21 at NASA HQ) was still only "invites media"
+  pre-event framing in every source checked over an hour after the
+  scheduled time, including a same-day Albanian outlet (exit.al, future
+  tense "will become"); left undrafted per the standing 2026-09-18-M
+  scheduled-not-yet-confirmed precedent (mirrors the Turkey 71st-signatory
+  case, drafted only once NASA's own post-ceremony release existed). Worth
+  a same-day re-check once NASA/State publish a past-tense confirmation.
+- 2026-09-21-L: A same-company (Telesat) + same-category (partnership)
+  dedup false positive fired on a new Kongsberg Canada/MDA Space/Telesat
+  defence-ISR MOU+LOI (Sept 21) against the unrelated Sept 15 Telesat/
+  SatPort ground-infrastructure MSA, extending the standing pattern once
+  more; one `dedup_distinct` entry cleared it.
+  Separately, a same-day PCMag-sourced Google News item ("Viasat Readies
+  Faster Service, Despite SpaceX's Protest of Its F2 Satellite") would not
+  resolve via the Google News redirect (bare placeholder, both attempts),
+  but the underlying fact — Viasat-3 F2 actually entered commercial
+  service Sept 17, reassigned from its originally planned EMEA coverage to
+  the Americas, while SpaceX's Aug 31 FCC block petition is still pending
+  — was independently confirmable via two aviation trade outlets (PaxEx.
+  Aero, Runway Girl Network) neither of which mentioned the FCC dispute at
+  all; folded into the existing Aug 31 item as an `updates[].patch`+attach
+  rather than held for the unfetchable lead, since the fact itself was
+  fully corroborated by sources that were fetched.
+- 2026-09-21-M: The mandatory HTML source pass surfaced BlackSky's own
+  Sept 9 "$1B Altair-Next Gen AI constellation" and Sept 14 "fifth Gen-3
+  first light" press releases and ICEYE's own Sept 17 ARISE-consortium and
+  Sept 7 Sompo Japan releases; all four grepped straight to already-
+  published items (the Altair/BlackSky story alone had 14 matching
+  mentions across items.json). Worth the reminder that a mandatory-pass
+  "new-looking" press release still needs the same items.json grep as any
+  discovery or queue lead before drafting time is spent (extends
+  2026-09-20-A/H to the HTML-source leg specifically).
+- 2026-09-21-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a direct read of the new item's and the updated
+  item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields (710
+  items, up from 709) as the build-health signal.
