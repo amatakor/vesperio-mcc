@@ -5167,3 +5167,43 @@ a newer entry if a lesson changes.
   held") plus a direct read of all four new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
   signal.
+
+## Narrow re-check, ~4h14m gap, unfiltered full source list (2026-09-22, fourth)
+
+- 2026-09-22-N: Two same-day near-duplicates were caught only by grepping
+  `items.json` before drafting, not by title recognition: a Google-News
+  "ESA awards contracts for Europe's EOGS blueprint" candidate and a Via
+  Satellite "Boeing Taps Lite Coms..." mandatory-pass headline both read as
+  fresh, but the real trap was the mandatory Telesat HTML pass's "Orange and
+  Telesat inaugurate Europe's first Telesat Lightspeed Gateway in France"
+  release (Sept 17), which was already published verbatim under
+  `2026-09-17-orange-telesat-lightspeed-gateway-france` -- and the
+  Andrew Parsonson signals-pass find "SaxaVord has abandoned plans for a
+  shared suborbital launch rail" was already published same-day as
+  `2026-09-22-saxavord-launch-rail-scrapped`. Both were fully sourced and
+  ready to draft before a plain `grep -o '"id": "2026-09-1[6-9]...'` dump of
+  recent ids caught them; extends 2026-09-20-A/H/I/2026-09-21-B/M's
+  grep-before-drafting discipline to the mandatory HTML pass and signals
+  pass specifically, not just discovery/queue finds.
+- 2026-09-22-O: Confirms 2026-09-22-F's apex-domain reduction a second time
+  on a different company: `ir.spire.com` (Spire's IR press-release page)
+  classed clean as `first_party` against the registry's `https://spire.com`
+  website field for a same-day $33.2M NOAA task-order announcement, no
+  registry edit needed.
+- 2026-09-22-P: The MAGPIE upgrade-path (2026-09-02-H) worked again on a
+  live item, this time via `patch.source_url` + `rescore` rather than a bare
+  `attach`: Kymeta's Sept 17 TÜV rail-certification item (originally led by
+  Kymeta's own no-registry-entity site, capped `informal`, SNR 2) got a
+  genuinely better lead five days later when Eutelsat's own Sept 22 release
+  confirmed the certified terminal's first live rail trial (named operator,
+  route, integration partners) -- Eutelsat's release lives on
+  `mynewsdesk.com`, not the registry-recorded `eutelsat.com`, so it still
+  classed `wire_pr` (the standing 2026-08-07-L mynewsdesk precedent) rather
+  than `first_party`, but wire_pr beats the original informal lead and the
+  item moved from SNR 2 to SNR 4 on the rescore.
+- 2026-09-22-Q: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1 updated, 0
+  held") plus a direct read of all five new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields (723 items, up from
+  718) as the build-health signal.
