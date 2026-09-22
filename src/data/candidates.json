@@ -1,24 +1,24 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-09-21T22:15:34.975Z",
-  "window_start": "2026-09-19T17:27:28.188Z",
+  "generated_at": "2026-09-22T05:16:13.505Z",
+  "window_start": "2026-09-19T22:31:48.611Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-15T20:03:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "BlackSky IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-14T06:00:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Vantor (ex-Maxar Intelligence)",
@@ -27,14 +27,6 @@
       "entry_count": 20,
       "newest_entry": "2026-09-17T00:00:00.000Z",
       "detail": "20 entries"
-    },
-    {
-      "source_name": "Synspective",
-      "ok": false,
-      "http_status": 404,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -134,11 +126,11 @@
     },
     {
       "source_name": "SEC EDGAR 8-K feed: SATL",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 21,
+      "newest_entry": "2026-09-08T20:18:07.000Z",
+      "detail": "21 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: SPIR",
@@ -150,11 +142,11 @@
     },
     {
       "source_name": "SEC EDGAR 8-K feed: ASTS",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-08-10T20:38:57.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: VSAT",
@@ -255,10 +247,10 @@
     {
       "source_name": "SpaceflightNow",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-21T17:25:37.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Via Satellite",
@@ -271,18 +263,10 @@
     {
       "source_name": "SpacePolicyOnline",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-20T20:28:01.000Z",
-      "detail": "10 entries"
-    },
-    {
-      "source_name": "Space.com",
-      "ok": false,
-      "http_status": 200,
+      "http_status": 304,
       "entry_count": 0,
       "newest_entry": null,
-      "detail": "dead re-probe: 200 but no entries parsed"
+      "detail": "304 not modified"
     },
     {
       "source_name": "Ars Technica space",
@@ -377,7 +361,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-21T22:10:00.000Z",
+      "newest_entry": "2026-09-22T04:47:54.000Z",
       "detail": "100 entries"
     },
     {
@@ -385,7 +369,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-21T13:42:00.000Z",
+      "newest_entry": "2026-09-22T01:24:13.000Z",
       "detail": "100 entries"
     },
     {
@@ -401,7 +385,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-21T15:18:00.000Z",
+      "newest_entry": "2026-09-21T22:45:07.000Z",
       "detail": "100 entries"
     },
     {
@@ -409,7 +393,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-21T18:21:00.000Z",
+      "newest_entry": "2026-09-22T04:26:12.000Z",
       "detail": "100 entries"
     },
     {
@@ -429,87 +413,313 @@
       "detail": "86 entries"
     },
     {
-      "source_name": "Bluesky search: spacex launch",
-      "ok": false,
-      "http_status": 403,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 403"
-    },
-    {
-      "source_name": "Bluesky search: satellite constellation",
-      "ok": false,
-      "http_status": 403,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 403"
-    },
-    {
-      "source_name": "Bluesky search: earth observation satellite",
-      "ok": false,
-      "http_status": 403,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 403"
-    },
-    {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 9,
-      "newest_entry": "2026-09-15T04:00:08.000Z",
-      "detail": "9 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-20T01:57:02.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-08-30T12:25:17.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-19T11:01:42.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-18T13:33:01.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     }
   ],
   "candidates": [
+    {
+      "id": "5db19d14de248379",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPQUx6UVY2YkdhMW03SVdYajBPaWZzQXdNLV9HZUpXdmN1bzNBU0Rza1RFRWN1SUZvNjJjMGNVLWhYYmMxTXYyMHBOaklRNXRJZm1SZVd0M1QwcVZvM0VQcmZKSzgwb0NPdnJzd25oMktmY0lrZk1lbHk1dWpQNHNkU0RraFRWbi1yUFhwTHhkYzdUMERDak83ODJqVnFmLUNxMF9UZkR5bExST3RKUEdhekY1WkxfdV81NVlCeHJkV0x4QVcwVzZLNnpEVQ?oc=5",
+      "title": "Morgan Stanley Sees SpaceX-Tesla Ties Could Lead to a Potential Merger: Report - SpaceX (NASDAQ:SPCX) - Benzinga",
+      "published_at": "2026-09-22T04:47:54.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxPQUx6UVY2YkdhMW03SVdYajBPaWZzQXdNLV9HZUpXdmN1bzNBU0Rza1RFRWN1SUZvNjJjMGNVLWhYYmMxTXYyMHBOaklRNXRJZm1SZVd0M1QwcVZvM0VQcmZKSzgwb0NPdnJzd25oMktmY0lrZk1lbHk1dWpQNHNkU0RraFRWbi1yUFhwTHhkYzdUMERDak83ODJqVnFmLUNxMF9UZkR5bExST3RKUEdhekY1WkxfdV81NVlCeHJkV0x4QVcwVzZLNnpEVQ?oc=5\" target=\"_blank\">Morgan Stanley Sees SpaceX-Tesla Ties Could Lead to a Potential Merger: Report - SpaceX (NASDAQ:SPCX)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Benzinga</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "d8ddeeb510ca188e",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPbVAzTmNhZ3h1cmpsdjFPS2xWb0EzbW0zSVRLNVhwZi13bGZ5OGxWTkdDN1cxaW5aWTlMcGNQZzhmMjlWS0pUVUhiLW5rOEhlMVZOYW5NRnJqZktVZ013MERNSEVJd3ZqM2JqbFp5aENWNnJqS0d2OVN4SGlNYnkyLXdIUjdrYjBsSkRFUm9CMUJ0eTg0bUdTNFh6VUFMRXJSbHVCS3lfc1hCUjdPSDZHZEtsUVJJdGNnME13LUVjRUZQZ3hWV0h1aHRHUkRJek3SAdYBQVVfeXFMTl85clZqZDliY1E4WEtYTFJXQXQ3NXAwckNXYWNQY0pPMTdPWm9GajNuRHVSdnVTWkxCZHp1c0FEWi1BckJRNldDZHk5akhkMkZIWm8wbUdvYXJVaHc0aWtNNEdhaUhTLUdsZjZ4Skg5R1ZyNXk1TUNIRi1PU2RaaFEtZThvUjRWOTYwUGlLZk1OUVdkanUwVnhvQVdObkNqaldFT3E3QWMyeFRlaDFCb3JUUF8tWFRsSVBxRmx1SVhlaWtGMEtIaC00RnJQREoxMXY5NnI5QQ?oc=5",
+      "title": "ISRO-ESA broaden co-operation agreement to include human and robotic exploration - The Hindu",
+      "published_at": "2026-09-22T04:26:12.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizwFBVV95cUxPbVAzTmNhZ3h1cmpsdjFPS2xWb0EzbW0zSVRLNVhwZi13bGZ5OGxWTkdDN1cxaW5aWTlMcGNQZzhmMjlWS0pUVUhiLW5rOEhlMVZOYW5NRnJqZktVZ013MERNSEVJd3ZqM2JqbFp5aENWNnJqS0d2OVN4SGlNYnkyLXdIUjdrYjBsSkRFUm9CMUJ0eTg0bUdTNFh6VUFMRXJSbHVCS3lfc1hCUjdPSDZHZEtsUVJJdGNnME13LUVjRUZQZ3hWV0h1aHRHUkRJek3SAdYBQVVfeXFMTl85clZqZDliY1E4WEtYTFJXQXQ3NXAwckNXYWNQY0pPMTdPWm9GajNuRHVSdnVTWkxCZHp1c0FEWi1BckJRNldDZHk5akhkMkZIWm8wbUdvYXJVaHc0aWtNNEdhaUhTLUdsZjZ4Skg5R1ZyNXk1TUNIRi1PU2RaaFEtZThvUjRWOTYwUGlLZk1OUVdkanUwVnhvQVdObkNqaldFT3E3QWMyeFRlaDFCb3JUUF8tWFRsSVBxRmx1SVhlaWtGMEtIaC00RnJQREoxMXY5NnI5QQ?oc=5\" target=\"_blank\">ISRO-ESA broaden co-operation agreement to include human and robotic exploration</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Hindu</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "3bc62f9837908d76",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPMTVwZFFjN05Ed1BYT2FzcjZqZnpBeXpJZEY5cTJCVlEyb19ObHc0NlgzU3lkNlp3YWlWM3JPZU9rQWltWTl2NjdYNUs3OXBCMWdpX05WYndDZjR2SzhraHVKSzg4MnE3ekc1bE5Rel9kNjlpOWdLZDNzOGxwTTNSVUw5RV9ERC1hSDlndTZEUk1ZelZ4UmFZR3VDNGM2YnQ3WGFneTdHbWJELUNWaFY2UA?oc=5",
+      "title": "Falcon 9 rideshare sales paused as SpaceX winds down flagship vehicle: WSJ - Seeking Alpha",
+      "published_at": "2026-09-22T04:15:41.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxPMTVwZFFjN05Ed1BYT2FzcjZqZnpBeXpJZEY5cTJCVlEyb19ObHc0NlgzU3lkNlp3YWlWM3JPZU9rQWltWTl2NjdYNUs3OXBCMWdpX05WYndDZjR2SzhraHVKSzg4MnE3ekc1bE5Rel9kNjlpOWdLZDNzOGxwTTNSVUw5RV9ERC1hSDlndTZEUk1ZelZ4UmFZR3VDNGM2YnQ3WGFneTdHbWJELUNWaFY2UA?oc=5\" target=\"_blank\">Falcon 9 rideshare sales paused as SpaceX winds down flagship vehicle: WSJ</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "45ab8998a9f548ef",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOUEppNDZZRTJ5WFdFU21kWFlQUXBBd0tmY2h6d1hSbC1JdnBTU3luRzBtQ1VuNHVoSU42dTRuLWN5c20yVURHRndPQkRRQzgtWnZvNU01QzZXbzlzWDA1ZGllUE5TcnFSQ3MtNFRoVEpRTk1FWE1xLS1WWUNVaVBEMUFNYk45cnE5MDhMMVBpZUVEZE9hRWtzSlpncXRRVV9JVkNQNkpQdFRGaGxQbS11LXhrN1nSAboBQVVfeXFMTjZrZEVyb2tzdzlsdnJWWHRnN0YxUUFVbEVtV1hDTmNfMUFoaXdycmtoZWtReUZPM1RWT2YwUVlicUVNNzJ3X3JIelF6MGJ2ZVBvRjhZblVwemp4cXpKZ3duN1o0c0FkaWwxajNwQVFTUkNzMmJIdlB0Sm5IdjJycjFtbUZCWF9OVDNkNGdoa0NHZm9TNGNuZUY3QVlwT1VIV3Q1VHN1MmpnTXZ1Xzd4RUNRUGJYRVhOM0pR?oc=5",
+      "title": "Federal judge allows SpaceX-wildlife refuge land exchange to move forward - Louisiana First News",
+      "published_at": "2026-09-22T03:55:32.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxOUEppNDZZRTJ5WFdFU21kWFlQUXBBd0tmY2h6d1hSbC1JdnBTU3luRzBtQ1VuNHVoSU42dTRuLWN5c20yVURHRndPQkRRQzgtWnZvNU01QzZXbzlzWDA1ZGllUE5TcnFSQ3MtNFRoVEpRTk1FWE1xLS1WWUNVaVBEMUFNYk45cnE5MDhMMVBpZUVEZE9hRWtzSlpncXRRVV9JVkNQNkpQdFRGaGxQbS11LXhrN1nSAboBQVVfeXFMTjZrZEVyb2tzdzlsdnJWWHRnN0YxUUFVbEVtV1hDTmNfMUFoaXdycmtoZWtReUZPM1RWT2YwUVlicUVNNzJ3X3JIelF6MGJ2ZVBvRjhZblVwemp4cXpKZ3duN1o0c0FkaWwxajNwQVFTUkNzMmJIdlB0Sm5IdjJycjFtbUZCWF9OVDNkNGdoa0NHZm9TNGNuZUY3QVlwT1VIV3Q1VHN1MmpnTXZ1Xzd4RUNRUGJYRVhOM0pR?oc=5\" target=\"_blank\">Federal judge allows SpaceX-wildlife refuge land exchange to move forward</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Louisiana First News</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "b19901a14229797d",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE9hbERNcDl6amVvS2UzRGR2bTlxX1F3dGZFNXcxdWZDQWtfbHZ1dnhVdWd0OGZTUnk2OU84ajFQa1NscXZtRDRXZGx3aU9MOTVVa1VsNkFVSWRUR0tlN3ktMVN3?oc=5",
+      "title": "Pakistani astronauts to fly aboard China’s space station soon: senior Chinese astronaut - Global Times",
+      "published_at": "2026-09-22T03:47:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiYkFVX3lxTE9hbERNcDl6amVvS2UzRGR2bTlxX1F3dGZFNXcxdWZDQWtfbHZ1dnhVdWd0OGZTUnk2OU84ajFQa1NscXZtRDRXZGx3aU9MOTVVa1VsNkFVSWRUR0tlN3ktMVN3?oc=5\" target=\"_blank\">Pakistani astronauts to fly aboard China’s space station soon: senior Chinese astronaut</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Global Times</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "61200d76d227fa3e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOQnBpbS1OTTYzOXNhb2NuQk14QkVrTjhqaG5nckdzWEFMMEVfRkJfMUs5em1lQ1U5WnBPOTBqWGlEa0dHcGZ4dUVRbHZ1NUFnM3JrSENSb29DMlZyR043em9McVptRWRSNnVGamphNHo0cFFPem0zVGpRQVVPTFA5TTRKRTQyUjlpOWlYNTU1RjliRUNVZkhXRTdvak5Zb0g5SEpuVFF3?oc=5",
+      "title": "SpaceX debris raises Gulf fishing concerns near Boca Chica - KABB",
+      "published_at": "2026-09-22T03:19:24.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxOQnBpbS1OTTYzOXNhb2NuQk14QkVrTjhqaG5nckdzWEFMMEVfRkJfMUs5em1lQ1U5WnBPOTBqWGlEa0dHcGZ4dUVRbHZ1NUFnM3JrSENSb29DMlZyR043em9McVptRWRSNnVGamphNHo0cFFPem0zVGpRQVVPTFA5TTRKRTQyUjlpOWlYNTU1RjliRUNVZkhXRTdvak5Zb0g5SEpuVFF3?oc=5\" target=\"_blank\">SpaceX debris raises Gulf fishing concerns near Boca Chica</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KABB</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "049151c78a74526e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQWTZqNlYyZURTMWNEcEcySldPajluMkg4amg1S2Y4VkY0Y3FyeFNJa2xuTDRUY2NEY29kenktUFBWS2JpVjBqeFV3b211QUh2MlVwNGxyRlprcVlVSUhEVzRCZmlPOUZPTVNSdlRvb2JoYzJuWHpWWDhEamtsTEstcHJHM1Z3NkROLWRKT1RERzdKY0hOVGhselJzVQ?oc=5",
+      "title": "SpaceX debris raises Gulf fishing concerns near Boca Chica - KABB",
+      "published_at": "2026-09-22T03:16:55.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxQWTZqNlYyZURTMWNEcEcySldPajluMkg4amg1S2Y4VkY0Y3FyeFNJa2xuTDRUY2NEY29kenktUFBWS2JpVjBqeFV3b211QUh2MlVwNGxyRlprcVlVSUhEVzRCZmlPOUZPTVNSdlRvb2JoYzJuWHpWWDhEamtsTEstcHJHM1Z3NkROLWRKT1RERzdKY0hOVGhselJzVQ?oc=5\" target=\"_blank\">SpaceX debris raises Gulf fishing concerns near Boca Chica</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KABB</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "23dfec4dd9d869c6",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNbno0b3lmSjVmQzlSVWhLY3NORndMWURXVnI4bEVHckhtSUZZU0kzeWJWSVhNR2VDaWlaTGtadDloWUNvaDdwYnJxQUJoTVhpcldjeE00RjFCcTB1THI0M3pWMDFDNTJ4Si1MWVV6T0FNNUxUeC1hRThabU1kZ0NUSW9FYmt1OEh5c3FDakZ6bjNHTHdNZVBZ?oc=5",
+      "title": "Prediction: Here's What a $1,000 Investment in SpaceX Stock Could Be Worth in 2031 - The Motley Fool",
+      "published_at": "2026-09-22T02:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNbno0b3lmSjVmQzlSVWhLY3NORndMWURXVnI4bEVHckhtSUZZU0kzeWJWSVhNR2VDaWlaTGtadDloWUNvaDdwYnJxQUJoTVhpcldjeE00RjFCcTB1THI0M3pWMDFDNTJ4Si1MWVV6T0FNNUxUeC1hRThabU1kZ0NUSW9FYmt1OEh5c3FDakZ6bjNHTHdNZVBZ?oc=5\" target=\"_blank\">Prediction: Here's What a $1,000 Investment in SpaceX Stock Could Be Worth in 2031</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "95f7e1796c07b30e",
+      "source_name": "Google News: EO + connectivity",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1EZVQ2cG1OMlYyMm5yVnM5UmhwZHdzYUNVdVRCSExDWTZtdkFWQVRiOW9fVDJFMll5U25WZzlQbERxXzZPNGhlY1RFUFQteVA2UG5vZnNGVjVTdkN6TmRwblM2c3VqcUtVRTU4VHgzTWtBal9IVU1aRVY0dTdVanM?oc=5",
+      "title": "Nominations open for the 2026 EOA Awards - Spatial Source",
+      "published_at": "2026-09-22T01:24:13.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMif0FVX3lxTE1EZVQ2cG1OMlYyMm5yVnM5UmhwZHdzYUNVdVRCSExDWTZtdkFWQVRiOW9fVDJFMll5U25WZzlQbERxXzZPNGhlY1RFUFQteVA2UG5vZnNGVjVTdkN6TmRwblM2c3VqcUtVRTU4VHgzTWtBal9IVU1aRVY0dTdVanM?oc=5\" target=\"_blank\">Nominations open for the 2026 EOA Awards</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spatial Source</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "91139166ea4a0bd7",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQX0VMb2VjTFl4alJsLXE3Y1FGZWl2cEstMUtVRkszaTlQb3c2b0tNTDUybUR0QjU4b0VDeWFRaWVUa1lJVGFxMl9ScUhVV1dza3M3cU1jWklzcHJiZmRoWkEwU0tfTWl0aFZpclVsS0JDYjBNSlBZR25BX19oX0J4WUJXMUQ1RXp1VU9ZaUxMUTdQSk9nSVRPRG5WS05CTTA?oc=5",
+      "title": "Prediction: Here's What a $1,000 Investment in SpaceX Stock Could Be Worth in 2031 - Yahoo Finance",
+      "published_at": "2026-09-22T01:20:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxQX0VMb2VjTFl4alJsLXE3Y1FGZWl2cEstMUtVRkszaTlQb3c2b0tNTDUybUR0QjU4b0VDeWFRaWVUa1lJVGFxMl9ScUhVV1dza3M3cU1jWklzcHJiZmRoWkEwU0tfTWl0aFZpclVsS0JDYjBNSlBZR25BX19oX0J4WUJXMUQ1RXp1VU9ZaUxMUTdQSk9nSVRPRG5WS05CTTA?oc=5\" target=\"_blank\">Prediction: Here's What a $1,000 Investment in SpaceX Stock Could Be Worth in 2031</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "faa8a3b2a71e84ed",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNZTdGWlRNQ0FEWHE0V1hUbjNfbm45cC1VX2NaTU03QkNSVWZpMmFJcE4xd2ZYS3Fkb1ctT2ZKN2s3WU8wcFdka3pJZndqajdwdERKV18wTnNkSjhDVkNCRFBVS1NYNnJaSFVPTDQ0MUkxMU94UVU1NnNQMU1vQUhLSnY3a2FVTE9KbGJXLWwwVDlYQVVGUGxuRDgwOF9OemotT0J5U1RkalBCdw?oc=5",
+      "title": "SpaceX launches Grok 4.7 with long-horizon processing, safety upgrades - SiliconANGLE",
+      "published_at": "2026-09-22T00:32:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxNZTdGWlRNQ0FEWHE0V1hUbjNfbm45cC1VX2NaTU03QkNSVWZpMmFJcE4xd2ZYS3Fkb1ctT2ZKN2s3WU8wcFdka3pJZndqajdwdERKV18wTnNkSjhDVkNCRFBVS1NYNnJaSFVPTDQ0MUkxMU94UVU1NnNQMU1vQUhLSnY3a2FVTE9KbGJXLWwwVDlYQVVGUGxuRDgwOF9OemotT0J5U1RkalBCdw?oc=5\" target=\"_blank\">SpaceX launches Grok 4.7 with long-horizon processing, safety upgrades</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SiliconANGLE</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "0707cac1410fdfd1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPcE9hc0F1OUhRQy1hdGZLVTZGUHRTYlRNQmlfV1Y5V2F6Z3dDUHpJTkZVMDhKVTJQal9qM3hiTnBuZXlfcGpxcDU5Q3MwZ0ZYR3pfeHJ0eE1UY0xDc2g5cXhpcmwtQ3hqVVhXR3B4OFh6aHR4bWJsSjI5X0M0NDBHQkpEWnFKcUFGWHowMDlWSlFnT1BwOVVReWsyZkdRSHVqR0HSAacBQVVfeXFMT3lDZEt3anpVUlpaM1lUbzZqNlpGbG9FOEh0WVkxcjVJVi1hYWZLcUltV3M3Qks3OEpsZnZxUnc5bTFJcVoxZmdESHE2RzN0ZmU4N0QxY1JpVHRIQ0VLVERIeGc3NHRuRkl4X1JwLTBtWUlhaXdrMmJRd3BvcUZGY3BFLW91TjRDaWtqTjZVdE1MT2NuRVk2MDJoOEVHWnNkdGdReko0bFk?oc=5",
+      "title": "Federal judge allows SpaceX-wildlife refuge land exchange to move forward - WGN Radio 720",
+      "published_at": "2026-09-22T00:20:35.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxPcE9hc0F1OUhRQy1hdGZLVTZGUHRTYlRNQmlfV1Y5V2F6Z3dDUHpJTkZVMDhKVTJQal9qM3hiTnBuZXlfcGpxcDU5Q3MwZ0ZYR3pfeHJ0eE1UY0xDc2g5cXhpcmwtQ3hqVVhXR3B4OFh6aHR4bWJsSjI5X0M0NDBHQkpEWnFKcUFGWHowMDlWSlFnT1BwOVVReWsyZkdRSHVqR0HSAacBQVVfeXFMT3lDZEt3anpVUlpaM1lUbzZqNlpGbG9FOEh0WVkxcjVJVi1hYWZLcUltV3M3Qks3OEpsZnZxUnc5bTFJcVoxZmdESHE2RzN0ZmU4N0QxY1JpVHRIQ0VLVERIeGc3NHRuRkl4X1JwLTBtWUlhaXdrMmJRd3BvcUZGY3BFLW91TjRDaWtqTjZVdE1MT2NuRVk2MDJoOEVHWnNkdGdReko0bFk?oc=5\" target=\"_blank\">Federal judge allows SpaceX-wildlife refuge land exchange to move forward</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WGN Radio 720</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "37e2930fe461caf1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNUVUwV1RDbkhWczVwWUdIS1NWX3FRYkJhaEstc1RnWTRFVU11eGVzTHZvRWRVa3RGemRoUjdwNmFqejA2SHlsYzdYeFNiekNXLXNxZGlfM1pmOVVibndNaHlGWi1aZEVMakFwWTlzWE5IV082Nms2Q2Q3azRaUTZOUFJsSnMxOW8tVU1qdE9mMWlhejBDS1hSUGl0akh6dGFGVVptVllmUEJEem8?oc=5",
+      "title": "SpaceX Texas - dailyrecordnews.com",
+      "published_at": "2026-09-22T00:13:57.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxNUVUwV1RDbkhWczVwWUdIS1NWX3FRYkJhaEstc1RnWTRFVU11eGVzTHZvRWRVa3RGemRoUjdwNmFqejA2SHlsYzdYeFNiekNXLXNxZGlfM1pmOVVibndNaHlGWi1aZEVMakFwWTlzWE5IV082Nms2Q2Q3azRaUTZOUFJsSnMxOW8tVU1qdE9mMWlhejBDS1hSUGl0akh6dGFGVVptVllmUEJEem8?oc=5\" target=\"_blank\">SpaceX Texas</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">dailyrecordnews.com</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "9910d7c463038697",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxONzY4NzZ2Q3g5bVFYRElZbnFoWEpMWjFvQ0xCYWhNblZFUGJrYm9zN0t2elhUM2VGNExtYW81YWZFQnBsT2c2QjREbWYtQ09TeUw3UFRTUEtjOEJMMmpXeER0ZkRaVVZzVjVVcEhnY1BnZmNCaEo4UmdxaWMtNVpiS2pNRmxwdjJm?oc=5",
+      "title": "US judge declines to block transfer of wildlife refuge land to Musk’s SpaceX - The Guardian",
+      "published_at": "2026-09-21T23:54:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxONzY4NzZ2Q3g5bVFYRElZbnFoWEpMWjFvQ0xCYWhNblZFUGJrYm9zN0t2elhUM2VGNExtYW81YWZFQnBsT2c2QjREbWYtQ09TeUw3UFRTUEtjOEJMMmpXeER0ZkRaVVZzVjVVcEhnY1BnZmNCaEo4UmdxaWMtNVpiS2pNRmxwdjJm?oc=5\" target=\"_blank\">US judge declines to block transfer of wildlife refuge land to Musk’s SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Guardian</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "1161b73733ca7c45",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPd3Z0MG9CZ2FvOEFVd3l2WHB5Y25UUkRibHRaWGZxV185NVF0WGM4M1M5dTBPUFByYS1FV2JEc3RvanpCUFkxWXpvSmcwQlE4V1hMc0t5a2E4RmdlaFNBVFZhOHpJYzNEbzNRZWI2S0Y3bEJmZWc1YXBYUmd5NW9SSjBJZlRRQ2FpWXNOWE9YZkQ5WHpF?oc=5",
+      "title": "SpaceX Texas - The Herald Journal",
+      "published_at": "2026-09-21T23:12:05.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxPd3Z0MG9CZ2FvOEFVd3l2WHB5Y25UUkRibHRaWGZxV185NVF0WGM4M1M5dTBPUFByYS1FV2JEc3RvanpCUFkxWXpvSmcwQlE4V1hMc0t5a2E4RmdlaFNBVFZhOHpJYzNEbzNRZWI2S0Y3bEJmZWc1YXBYUmd5NW9SSjBJZlRRQ2FpWXNOWE9YZkQ5WHpF?oc=5\" target=\"_blank\">SpaceX Texas</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Herald Journal</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "f8ac6fdbe3035223",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxOX0txZzlyQ1hTbkdqMWw5Z29ERFJES1JEc3JfWDRQOEJRR1QxUjhpN2haTkIzRDhMOHVuMmxNOEJqQ0wxZC05Yzh4U0J4bEl2U1dSeFdBSDRoSnRHaFY2RHBHWWR2bllNVjBFVDJmeF9Oel9qX2lSVUtDdnYzTWwtRHFKdnRKcUdzN2NLMkp0QmZLTEkyZDNVZDQyUGJsVnBDWXQyaDhjd0FDZjBfSmhpZHdVLTBKTVEyOGtMaXM0YjA5a08yTmdXT0ZmZG1TZ1NhcEtpcEd0bm5YNWlXcS1PYVgyQXRkamxlS0V1UC1yVlNla1R0d2gzWGN2SktLeUg3T1FONGRVemtrTHVLQUtlUEV1SnVoY09tYW9aWjAydw?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - Toronto Star",
+      "published_at": "2026-09-21T23:08:18.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwJBVV95cUxOX0txZzlyQ1hTbkdqMWw5Z29ERFJES1JEc3JfWDRQOEJRR1QxUjhpN2haTkIzRDhMOHVuMmxNOEJqQ0wxZC05Yzh4U0J4bEl2U1dSeFdBSDRoSnRHaFY2RHBHWWR2bllNVjBFVDJmeF9Oel9qX2lSVUtDdnYzTWwtRHFKdnRKcUdzN2NLMkp0QmZLTEkyZDNVZDQyUGJsVnBDWXQyaDhjd0FDZjBfSmhpZHdVLTBKTVEyOGtMaXM0YjA5a08yTmdXT0ZmZG1TZ1NhcEtpcEd0bm5YNWlXcS1PYVgyQXRkamxlS0V1UC1yVlNla1R0d2gzWGN2SktLeUg3T1FONGRVemtrTHVLQUtlUEV1SnVoY09tYW9aWjAydw?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Toronto Star</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "04c1a9678b0c570d",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxNM05sMUk4Y0pYNUFnVG01ejJCY25KZFJuTlFnT2VDYVNSTVA5cEg0MVN4bkJOQ1RQbEcwNTc3dU5xYlJoMVd3THNWZ3J0RU51SHVEem4yemg0VUNyWUpKb2hOVEF5TUNjeWczV2lrd0trVGZWdzVHTDUtNkF3S3hCYVVlcmQxM1FOSjltVmRFRHB4QWNJWG84b0tkM2xrYm93dS01bFRscjZlUk5OLW9QXzBtcWhzdnAxR2NocDJEQmM2NXV5cm5IQkZZSmk1cnk2N1pXQW1EaW56V1ZSMEo4OXVkNER4U2RpZUttNXFCZDQ1QWxwdnJNaHdtX3kyeGUxRlRyWUNVZ3Bmc1RnWUtpNjg3OA?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - The Daily Gazette",
+      "published_at": "2026-09-21T23:07:33.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikwJBVV95cUxNM05sMUk4Y0pYNUFnVG01ejJCY25KZFJuTlFnT2VDYVNSTVA5cEg0MVN4bkJOQ1RQbEcwNTc3dU5xYlJoMVd3THNWZ3J0RU51SHVEem4yemg0VUNyWUpKb2hOVEF5TUNjeWczV2lrd0trVGZWdzVHTDUtNkF3S3hCYVVlcmQxM1FOSjltVmRFRHB4QWNJWG84b0tkM2xrYm93dS01bFRscjZlUk5OLW9QXzBtcWhzdnAxR2NocDJEQmM2NXV5cm5IQkZZSmk1cnk2N1pXQW1EaW56V1ZSMEo4OXVkNER4U2RpZUttNXFCZDQ1QWxwdnJNaHdtX3kyeGUxRlRyWUNVZ3Bmc1RnWUtpNjg3OA?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Daily Gazette</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "4983afc5de38a75a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxObjR6aHZDVkRTQmZSX3N1VFNpbTNzdmZVZXl2UGd0ay1GNmdwWk90ZU9xc1YxNy1kSnJmdXFwVkVZSHE0Y1l4eUJEQkc5Zjd3WW04U1h4UFlKcW5NamhqSFlqckp4aEVCVDh6UUNnTTRzaXhSTDIwQmlXRUwyTU15anRmT1VFNWZiVG95dHdZdUVMVGRlMGtneFJRajVkRVdaTEF6OWlwdTloUUZoNS1UYVVMVXpwMUI0bzFsQkctcUxzLVpjR2hFcHdBUlFsSDRkc2Fuc0F3bWw2Nmt6aVJxZmJFQ2ZSdHRycGJ3MzRreUNwdUhiSDNEeGZqNHFHUHlMTF9CUklGR0VBN1BwNVNST1o4c3VwQQ?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - Jonesboro Sun",
+      "published_at": "2026-09-21T23:07:33.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilgJBVV95cUxObjR6aHZDVkRTQmZSX3N1VFNpbTNzdmZVZXl2UGd0ay1GNmdwWk90ZU9xc1YxNy1kSnJmdXFwVkVZSHE0Y1l4eUJEQkc5Zjd3WW04U1h4UFlKcW5NamhqSFlqckp4aEVCVDh6UUNnTTRzaXhSTDIwQmlXRUwyTU15anRmT1VFNWZiVG95dHdZdUVMVGRlMGtneFJRajVkRVdaTEF6OWlwdTloUUZoNS1UYVVMVXpwMUI0bzFsQkctcUxzLVpjR2hFcHdBUlFsSDRkc2Fuc0F3bWw2Nmt6aVJxZmJFQ2ZSdHRycGJ3MzRreUNwdUhiSDNEeGZqNHFHUHlMTF9CUklGR0VBN1BwNVNST1o4c3VwQQ?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Jonesboro Sun</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "5a96974bcfe4f712",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiogJBVV95cUxNekM4ZDB0Mk9hQ0ItNGlIaEpvY0JCcHZDREJDSXNlRUZJVDRLWmpyVTJWZjg1YnRPN21NOGRhLXhSbFNCMkQ2VVJPQ1U5QjRtRUNwQ1NQU0Y0aHpwUFQxbWMyRGFwbG1sZXFKZEVtV1BuY0prQ2ZHYVFoM0cwTDBMZ1phMlFlUFZUaXFUaEo1bDFKWjVUSFlpTmg0REx2bmxyXzZJdl81U1hRQmVVdDNELW54eEQzdGplRE1pMW5zS0RKRW5ZTi1BXzZ5ZGVvaDFLc3ZtTFJhSjF6QXJXUWhWS3FzNXNxcElSSEVSS3NRUU9hUW04VUFYTEV6bHZuZlhWemtsSjZXd0VCV01zcUNIQUhUQy1DTU0yWDFCVWtMVy1SUQ?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - Bozeman Daily Chronicle",
+      "published_at": "2026-09-21T23:07:33.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogJBVV95cUxNekM4ZDB0Mk9hQ0ItNGlIaEpvY0JCcHZDREJDSXNlRUZJVDRLWmpyVTJWZjg1YnRPN21NOGRhLXhSbFNCMkQ2VVJPQ1U5QjRtRUNwQ1NQU0Y0aHpwUFQxbWMyRGFwbG1sZXFKZEVtV1BuY0prQ2ZHYVFoM0cwTDBMZ1phMlFlUFZUaXFUaEo1bDFKWjVUSFlpTmg0REx2bmxyXzZJdl81U1hRQmVVdDNELW54eEQzdGplRE1pMW5zS0RKRW5ZTi1BXzZ5ZGVvaDFLc3ZtTFJhSjF6QXJXUWhWS3FzNXNxcElSSEVSS3NRUU9hUW04VUFYTEV6bHZuZlhWemtsSjZXd0VCV01zcUNIQUhUQy1DTU0yWDFCVWtMVy1SUQ?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bozeman Daily Chronicle</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "68cc758b6c171a1b",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQQkw4ZjhqQ3kyNFZ4MGdoR0pCb1AtVE9rTW9fVzREandfV2xSakZ0YlVCazVmdW1JcXVvMzlsLUl6RVNka3BvYVpVQXFjMjhKbmxMeWZlZExSNURrbFBvRXVfMW9oOUR0ZnNKNTdUYUpFSFc3VmN3ZjNMWWJEdUxfM2NCOHoySzR4ZmlTVDV5NXNoNkFVdWFDVnNWN2Y0N1ZzRUFCTDhfRGhOUEJjT04ySA?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - The Independent",
+      "published_at": "2026-09-21T23:07:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxQQkw4ZjhqQ3kyNFZ4MGdoR0pCb1AtVE9rTW9fVzREandfV2xSakZ0YlVCazVmdW1JcXVvMzlsLUl6RVNka3BvYVpVQXFjMjhKbmxMeWZlZExSNURrbFBvRXVfMW9oOUR0ZnNKNTdUYUpFSFc3VmN3ZjNMWWJEdUxfM2NCOHoySzR4ZmlTVDV5NXNoNkFVdWFDVnNWN2Y0N1ZzRUFCTDhfRGhOUEJjT04ySA?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Independent</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "8f60eea9bcd14f05",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilAJBVV95cUxOdGZCTTBXN0xMc1U1VEJtV2VuZjBndDd4REZUdUhtRXJIbmtQWE1nMFpZWG9XSGVOLWZYd1UxTEdEbHVSNUpod3UzZGhhYkpLSlBJUEZkcUpYZnVXTEJnZ21RY240dWYzeTV6NWlWRUhLSEtERkROc2dRNzhOallEeWRHVUJlMktHRVBsVVdKYTFNYlBpbTBOZFJaTU1YX3hCQWludnFNOFhoVHRjMXk4NENmbTR2Q2hzXzNNbkFKSGw4Z2RCRXJzYTJUSnlFTDJ3X0JHbFhxTkJEdjdBRWE3WWdod294Mng2cGdBVlV2bmZoN0RIcDJ1WkNtOGtDcDF4VmgyRTBqRUpTcXNqNWRVbzcwUkQ?oc=5",
+      "title": "Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap - morning-times.com",
+      "published_at": "2026-09-21T23:07:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAJBVV95cUxOdGZCTTBXN0xMc1U1VEJtV2VuZjBndDd4REZUdUhtRXJIbmtQWE1nMFpZWG9XSGVOLWZYd1UxTEdEbHVSNUpod3UzZGhhYkpLSlBJUEZkcUpYZnVXTEJnZ21RY240dWYzeTV6NWlWRUhLSEtERkROc2dRNzhOallEeWRHVUJlMktHRVBsVVdKYTFNYlBpbTBOZFJaTU1YX3hCQWludnFNOFhoVHRjMXk4NENmbTR2Q2hzXzNNbkFKSGw4Z2RCRXJzYTJUSnlFTDJ3X0JHbFhxTkJEdjdBRWE3WWdod294Mng2cGdBVlV2bmZoN0RIcDJ1WkNtOGtDcDF4VmgyRTBqRUpTcXNqNWRVbzcwUkQ?oc=5\" target=\"_blank\">Judge won't block Trump administration from giving SpaceX acres of wildlife refuge in land swap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">morning-times.com</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "459a7229faf0dff2",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNNmJaSTRDRVNodEIxbGxUOVFWbUxmWllWc2kyem5iaENkMW5WRll3WUUxOXpRSzdXUllwZE9MTC1iSDlPcndsc1Bhc2JVNTdqdGREY0R1cER6Uk5fdDg1Z3FsSTE3QjBQelpObUJsS2dHc2N2Z1RhcGhHOVh0UURVQVl0YkIwVkNpN1dydWwyeVRDOHF6?oc=5",
+      "title": "SpaceX Texas - The Herald Journal",
+      "published_at": "2026-09-21T23:04:29.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxNNmJaSTRDRVNodEIxbGxUOVFWbUxmWllWc2kyem5iaENkMW5WRll3WUUxOXpRSzdXUllwZE9MTC1iSDlPcndsc1Bhc2JVNTdqdGREY0R1cER6Uk5fdDg1Z3FsSTE3QjBQelpObUJsS2dHc2N2Z1RhcGhHOVh0UURVQVl0YkIwVkNpN1dydWwyeVRDOHF6?oc=5\" target=\"_blank\">SpaceX Texas</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Herald Journal</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "30947a028a056f37",
+      "source_name": "Google News: incidents + regulation",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPR1djT0I3c1R3ZFRCQnhLbElic01xV0pBZU9VWjFRTkZSSlVVYm4xTFRNTEg1UDV0Q2VYcFppVlJzSzlvcFM2M0pic21CakdHTTVpUGVZNTdESk54bHFPc2xxT2RWQW9YQmNYSWdvZ0k2QVkwZjlTVkN6Q3MxMjJsVkZrRk16ZXNvZ3BsZEpNM29hNWwtaWdrVjRIZUJqOVdDYld1MERsUnRiUTFrZXZuWlR2YlJDaUsxelpJeXlVT2JLVTNJX0NHdUlfONIBywFBVV95cUxNRVNPbVJWdGtCajdVYlpfSjVaVHZRWjBZZHY5N0xGXzRDMFZYRFozdWxFZ0VtR1FZbEZqOVhlS1J1MEhfY1YzbU9wUFBZVjFaSGFzUXM3N21ueFBab2tmd3djb2hHdmcyemN1WFBMTFdPWUhmMUFSdlZuamJhdk5zUjVNTmc0anI1NXFLc2FfNE03YVRmcHEzYVNDU0RNeGt1NUhzSjgyaUUyQjladGVYRDZIWjVodGREcFNDV1k0NlM3emhFVjV4LXRkQQ?oc=5",
+      "title": "U.S. space weapon raises concerns over satellite warfare and space debris - MARCA",
+      "published_at": "2026-09-21T22:45:07.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxPR1djT0I3c1R3ZFRCQnhLbElic01xV0pBZU9VWjFRTkZSSlVVYm4xTFRNTEg1UDV0Q2VYcFppVlJzSzlvcFM2M0pic21CakdHTTVpUGVZNTdESk54bHFPc2xxT2RWQW9YQmNYSWdvZ0k2QVkwZjlTVkN6Q3MxMjJsVkZrRk16ZXNvZ3BsZEpNM29hNWwtaWdrVjRIZUJqOVdDYld1MERsUnRiUTFrZXZuWlR2YlJDaUsxelpJeXlVT2JLVTNJX0NHdUlfONIBywFBVV95cUxNRVNPbVJWdGtCajdVYlpfSjVaVHZRWjBZZHY5N0xGXzRDMFZYRFozdWxFZ0VtR1FZbEZqOVhlS1J1MEhfY1YzbU9wUFBZVjFaSGFzUXM3N21ueFBab2tmd3djb2hHdmcyemN1WFBMTFdPWUhmMUFSdlZuamJhdk5zUjVNTmc0anI1NXFLc2FfNE03YVRmcHEzYVNDU0RNeGt1NUhzSjgyaUUyQjladGVYRDZIWjVodGREcFNDV1k0NlM3emhFVjV4LXRkQQ?oc=5\" target=\"_blank\">U.S. space weapon raises concerns over satellite warfare and space debris</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">MARCA</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "5ddb74326431b832",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOQzVJZlFOUkluR3ozRHAybFhDUjM0Y3ZqTFBaX0tpeUprNGlFajRIZ2tITFpLOElqeHBXUkpPdkd0Y0lCU2RtWlcyYlc0dDRUbWltWU9STlBuRU5TYXNFblhXSEJ1bjE3OGVNLVJkTGF5LVRXZ2h2S1V1bmtBNkQwalFZMU13MkMxMVhjLUdlSndhTlFaZldTLWdoblFuWHk5SDFsckNPcm04Z2pMSkJPRndhTzdTaDUwVUIyOWJLOGHSAcYBQVVfeXFMTVlJSG9JNjFXZjk4NWRqMWlBR19VZ1V4aTFKcjdLZDJ2SUdITXI1X3kzaEY1bVVQcVB3Z1FEOG1TWlQ2bGpiRThVRWpZOFoyajhIMjd6TVVoUW94MHdpbHI3QnRSN1Z4YmxJdXA4WlB6VXJQUEoxTG9nOFk2X2FKZ2RGZXZBYVR0Vl9hWUtOZ3RHUXhIMTFYWmVxMksyeHJuM1JjX3BFdGFfSXJfOUh5QkxKSG5qQm1IR3hrZFRHZG9STDd4YnhR?oc=5",
+      "title": "Federal judge rejects attempt to block SpaceX land swap with wildlife refuge - ValleyCentral.com",
+      "published_at": "2026-09-21T22:44:32.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwAFBVV95cUxOQzVJZlFOUkluR3ozRHAybFhDUjM0Y3ZqTFBaX0tpeUprNGlFajRIZ2tITFpLOElqeHBXUkpPdkd0Y0lCU2RtWlcyYlc0dDRUbWltWU9STlBuRU5TYXNFblhXSEJ1bjE3OGVNLVJkTGF5LVRXZ2h2S1V1bmtBNkQwalFZMU13MkMxMVhjLUdlSndhTlFaZldTLWdoblFuWHk5SDFsckNPcm04Z2pMSkJPRndhTzdTaDUwVUIyOWJLOGHSAcYBQVVfeXFMTVlJSG9JNjFXZjk4NWRqMWlBR19VZ1V4aTFKcjdLZDJ2SUdITXI1X3kzaEY1bVVQcVB3Z1FEOG1TWlQ2bGpiRThVRWpZOFoyajhIMjd6TVVoUW94MHdpbHI3QnRSN1Z4YmxJdXA4WlB6VXJQUEoxTG9nOFk2X2FKZ2RGZXZBYVR0Vl9hWUtOZ3RHUXhIMTFYWmVxMksyeHJuM1JjX3BFdGFfSXJfOUh5QkxKSG5qQm1IR3hrZFRHZG9STDd4YnhR?oc=5\" target=\"_blank\">Federal judge rejects attempt to block SpaceX land swap with wildlife refuge</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ValleyCentral.com</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
+      "id": "00cf5a31d3b0d715",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPQ1NlUHU4YUZrQkNmT1VrZUcwQ3pPQTBCWERvMWYzM25tNlR5MDNhNkpHVnZ4SkllRnhLblhJdWlnOFpsTHo4ZFZHeGlhekZTN0YwTTJUZE9RRVQyS1N0MURZellIRy1FVXpQbkU2MnQxa2R1QkhmZWkwZmNZVzVtUlB3Qmo5OGFOM2dTT3g1bUgwSi1adjlWUQ?oc=5",
+      "title": "Exchange of land between SpaceX and federal refuge in Texas OK’d despite conservationists’ objections - The Texas Tribune",
+      "published_at": "2026-09-21T22:44:04.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxPQ1NlUHU4YUZrQkNmT1VrZUcwQ3pPQTBCWERvMWYzM25tNlR5MDNhNkpHVnZ4SkllRnhLblhJdWlnOFpsTHo4ZFZHeGlhekZTN0YwTTJUZE9RRVQyS1N0MURZellIRy1FVXpQbkU2MnQxa2R1QkhmZWkwZmNZVzVtUlB3Qmo5OGFOM2dTT3g1bUgwSi1adjlWUQ?oc=5\" target=\"_blank\">Exchange of land between SpaceX and federal refuge in Texas OK’d despite conservationists’ objections</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Texas Tribune</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
     {
       "id": "95495e6402f6d8a5",
       "source_name": "Google News: launch",
@@ -531,6 +741,16 @@
       "consumed": true
     },
     {
+      "id": "44c2cfe22adf161d",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOd2Nsb1lUVGZmZ3hVckZMMGdMMVBOZEdER2otaHJuOHFwbUhMcnE0TVYzVW9OUHdTbjBmSlFfM2JmZE9NeV9kUlRhWHQ4eUhxd1l6ZVozX0dwM0FnZzlTNDhMMUJOUFhROUszTmRyeWxPdGZLaU14QWhHd2FmMFh6ZjV1Vnh0NktGWlUwa0ZoR1k1RW05V2JmTVViQTZrbm5oNHowOGNR?oc=5",
+      "title": "ISRO successfully conducts 2nd integrated air drop test for Gaganyaan mission - News On AIR",
+      "published_at": "2026-09-21T21:37:07.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxOd2Nsb1lUVGZmZ3hVckZMMGdMMVBOZEdER2otaHJuOHFwbUhMcnE0TVYzVW9OUHdTbjBmSlFfM2JmZE9NeV9kUlRhWHQ4eUhxd1l6ZVozX0dwM0FnZzlTNDhMMUJOUFhROUszTmRyeWxPdGZLaU14QWhHd2FmMFh6ZjV1Vnh0NktGWlUwa0ZoR1k1RW05V2JmTVViQTZrbm5oNHowOGNR?oc=5\" target=\"_blank\">ISRO successfully conducts 2nd integrated air drop test for Gaganyaan mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">News On AIR</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
       "id": "1442909f10de74e8",
       "source_name": "Futurism",
       "url": "https://futurism.com/artificial-intelligence/meta-banning-ads-virginia-woolf-facebook-instagram-feminism",
@@ -538,6 +758,16 @@
       "published_at": "2026-09-21T21:23:44.000Z",
       "raw_excerpt": "For years, human rights monitors have been outraged at the selective policing of content on Meta’s social media platforms like Facebook and Instagram. The company’s latest enforcement action is hardly shocking at this point, but it provides a crystal clear example of the kinds of things Meta will — and won’t —&nbsp;allow on its apps. In a bizarre case of digital censorship, Meta’s content moderation system stepped in to stop a local theatre in Barcelona from promoting a stage adaptation on the grounds that it violated a rule on promoting “social topics,” per the Guardian . The production in question is an adaptation of “A Room of One’s Own,” a book by the legendary English author and feminist Virginia Woolf. According to the Teatre Raval, planned promotional posts about the show were blocked on both Instagram and Facebook, likely by an automated content moderation system. After reaching out to Meta about why the promo campaign had been stomped out, the company replied that “any mention of civil rights, feminism or social reform are usually classified as ‘social topics’ by our automatic system,” and therefore rejected. According to the Guardian , the company then cryptically recommended the Raval remove “key words” related to social activism, so the promo campaign can pass the automated censor — though the company failed to explain what, exactly, its content system objected to. “We don’t know if the publicity has been rejected because of the name of Virginia Woolf or because of the word feminism, or both,” Clara Sanchis, who stars in the one-woman show told the Spanish newspaper La Vanguardia , per the Guardian , which translated the comments. “In any case, it’s a way of erasing from the map advances that have taken centuries to achieve,” Sanchis continued. “We have given social media unlimited power and every day we can see how dangerous this is. It’s bias and manipulation.” The automated rejection and the ensuing apathy from Meta come after some galling incidents w",
       "fetched_at": "2026-09-21T22:15:34.975Z",
+      "consumed": true
+    },
+    {
+      "id": "b7f5582dd321e7a9",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNOTJCQ3U4Wmw1VlBtS2NOdjBHcHAtSGFMODk2Z2tKT3NuLXdpb2tlWUo3VXFOdGt2RDVvc00yWGlkNFRxeF90VjZaUUNJSm93dVRyakNBVTdLckZDR1pqY3Utc00xQzRpcjE3Y0Z3aDZXNmowb2dDX1R3dVZDc3J1bWVZLTdOT2lsVG1wbmxpUURiemgydVNlZ1dyVHZnX0U?oc=5",
+      "title": "SpaceX Seems to Expand 'Free' Starlink Mini Perk to All Residential Plans - PCMag",
+      "published_at": "2026-09-21T21:16:35.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxNOTJCQ3U4Wmw1VlBtS2NOdjBHcHAtSGFMODk2Z2tKT3NuLXdpb2tlWUo3VXFOdGt2RDVvc00yWGlkNFRxeF90VjZaUUNJSm93dVRyakNBVTdLckZDR1pqY3Utc00xQzRpcjE3Y0Z3aDZXNmowb2dDX1R3dVZDc3J1bWVZLTdOT2lsVG1wbmxpUURiemgydVNlZ1dyVHZnX0U?oc=5\" target=\"_blank\">SpaceX Seems to Expand 'Free' Starlink Mini Perk to All Residential Plans</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PCMag</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
       "consumed": true
     },
     {
@@ -701,6 +931,16 @@
       "consumed": true
     },
     {
+      "id": "0d028dec1bd72a8a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxORkMwU0FRa1FVTW9lZVJPVXpDUnV3UU9aX2RfNVhQU1ZOTm1BUVVSQ0ZoQzIycThWaklELWpTX2lSdXUzMjBVVFhsbWRiYVpkQ0R3SG5lZnFxVFRVQ1RrY1NzQ2hKZnh4Sl9nUmhCS0FZeGJMSVoxdVF0MDdKWVI3YUhQc0ExclpaZXRWSUswTUJEYjhsMVhGZkV1aUFvUUlhSkHSAacBQVVfeXFMTUFZc1RYOC1mb3hqdnlmODRMcGppMTlwSkVrYVZsWmtrWXphSk94YVFONzZYbHdjbVlxY240ZTlNS0U1akVrSnc2c0toUUJJaGZudEw0WUw1Vi1naEhWN00xYmlMWEhMOWd1VVZDQ1E4M0ZTc3VsNFFxYjdGZ3dRZDJwY3VGRkdna2ZTWmlEUllUSlVkYXBOdTcwOGdkYVpfNTFqT0FBRm8?oc=5",
+      "title": "AutoZone In, SpaceX Out: HALX’s New Rebalance - etftrends.com",
+      "published_at": "2026-09-21T19:06:59.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxORkMwU0FRa1FVTW9lZVJPVXpDUnV3UU9aX2RfNVhQU1ZOTm1BUVVSQ0ZoQzIycThWaklELWpTX2lSdXUzMjBVVFhsbWRiYVpkQ0R3SG5lZnFxVFRVQ1RrY1NzQ2hKZnh4Sl9nUmhCS0FZeGJMSVoxdVF0MDdKWVI3YUhQc0ExclpaZXRWSUswTUJEYjhsMVhGZkV1aUFvUUlhSkHSAacBQVVfeXFMTUFZc1RYOC1mb3hqdnlmODRMcGppMTlwSkVrYVZsWmtrWXphSk94YVFONzZYbHdjbVlxY240ZTlNS0U1akVrSnc2c0toUUJJaGZudEw0WUw1Vi1naEhWN00xYmlMWEhMOWd1VVZDQ1E4M0ZTc3VsNFFxYjdGZ3dRZDJwY3VGRkdna2ZTWmlEUllUSlVkYXBOdTcwOGdkYVpfNTFqT0FBRm8?oc=5\" target=\"_blank\">AutoZone In, SpaceX Out: HALX’s New Rebalance</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">etftrends.com</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
+      "consumed": true
+    },
+    {
       "id": "034b12ac2f0a0aea",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE52SEwzbDRYOUs0Smk3NlJIMHZsSGlhUEV3SnpwNG42eHhiWkl6WHRYazh6Z28zS0NxT2F2ZmZDNFpna2h0NU9LZEhreDRsYV9xWUNBTURqWk0zclF6WWJiMUotWDhOY0RXcnVYcFh0a3RyR0ZCRlc5VTh3ZzUxdw?oc=5",
@@ -758,6 +998,16 @@
       "published_at": "2026-09-21T19:00:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxOWnNFckVQNWNNUEVDOWZ2dnQtVFRxNG45UTQwRVlSVWJBXzBHb1lhenRIT1FKMWpHNEJTTXRWSDdvYkQtX09tM0kwM0E0SVFTbUF0U05GbVlzVDFyM0NabGxscGdXS2FaT1h1cFFUS2cwRm5iRXY3a2p1QmcwdV8yVHhXTktSS2Q3WDR3Y1JuTm85TUUxQk8wTQ?oc=5\" target=\"_blank\">The Case for (and Against) Buying SpaceX Stock Right Now</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
       "fetched_at": "2026-09-21T22:15:34.975Z",
+      "consumed": true
+    },
+    {
+      "id": "ed093eaa611ef738",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxPUXN2UnlYWnA3VGZKQXdSN0stM1lsUmxHa0VaMHBVMXBoT0J6S2JCY0RNLTRJdjdWeDFWeVZnOFdPci1PdWtxNDVxWGtTY2FDTTN4UTFEV1FFeVBtZXBjbDhhNDQxSldIckpTaktWdjV4Umludm5jTXBSN3NUeWpzMEhPVGcxZ3M4NFRLTzBJclVCZkJ4VWpVcXBBNGd0akx3ZTIxUHl3RlVkV2lmS1l2SGVOaHJsOERYT3dlc050ZWV2Zw?oc=5",
+      "title": "SpaceX IPO’d at $1.8 Trillion, Crashed 32%, and Morgan Stanley Still Sees It Doubling - 24/7 Wall St.",
+      "published_at": "2026-09-21T19:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwgFBVV95cUxPUXN2UnlYWnA3VGZKQXdSN0stM1lsUmxHa0VaMHBVMXBoT0J6S2JCY0RNLTRJdjdWeDFWeVZnOFdPci1PdWtxNDVxWGtTY2FDTTN4UTFEV1FFeVBtZXBjbDhhNDQxSldIckpTaktWdjV4Umludm5jTXBSN3NUeWpzMEhPVGcxZ3M4NFRLTzBJclVCZkJ4VWpVcXBBNGd0akx3ZTIxUHl3RlVkV2lmS1l2SGVOaHJsOERYT3dlc050ZWV2Zw?oc=5\" target=\"_blank\">SpaceX IPO’d at $1.8 Trillion, Crashed 32%, and Morgan Stanley Still Sees It Doubling</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">24/7 Wall St.</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
       "consumed": true
     },
     {
@@ -1318,6 +1568,16 @@
       "published_at": "2026-09-21T13:39:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwJBVV95cUxOdThmMDlvWDN2cE9pb0FlTlJ0X2JySVZyT1lRSm8yX29wM0FjSGJsa2picjFJSDQzall5dkFKZjdKekE1ZXhCZG1md21rUG1ReG1YVS1zSkM3c0NKSjhwQ0hUaDV6TkZsTkI5SWxfd1BnaDRtRnBOV3VrZjQ3aWdybWdZTHh4UFRCN2VsdkJwek9IdFBWa05BeVlzdHUyVmRUMVlEWmFZUTlUdE1RdGZCWXg3ckdyYVA0b2M5UENmZjNnQ29tcFNPNDJYRjJEeDhZekNjTjNUNlVOdHl2Tml0SlhUX0dqZGFuSnFacXp2Uk9JZW5pN0ZiVUE5X3diT3NJTUROMjRfOW1QS0NxLUFZ?oc=5\" target=\"_blank\">Assam CM performs bhumi pujan, lays foundation stone of ISRO’s ISTRAC Advanced Radar Research Facility at Chandrapur</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ANI News</font>",
       "fetched_at": "2026-09-21T17:16:09.849Z",
+      "consumed": true
+    },
+    {
+      "id": "a97d89835e77cff4",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWw0Q3VTY2ZRNTN2ZGcwRGxFZU95WlZfMWxxbEJsSWNzQm1vWV9vUkdnVGxKZjlIX1loTmFobFNzMG1nYmdJQ2E2TmhqSlZMb2djUUxLbHdMN1JQd2cwSUdYb2RsWlpXTHhzSzZOb19oSEJNS3pHbnhWTDFielMxbks0Qk1YUF9xLUgyWHBrSzJYTEJ1SDMxZ0FTSUZqNlNESXFnX1BPYmhqZUg4RS1HTi1kSzZuTVZR?oc=5",
+      "title": "ISRO's advanced radar facility in Assam marks state's entry into space research era: CM (Ld) - FM Bharat",
+      "published_at": "2026-09-21T13:20:05.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxNYWw0Q3VTY2ZRNTN2ZGcwRGxFZU95WlZfMWxxbEJsSWNzQm1vWV9vUkdnVGxKZjlIX1loTmFobFNzMG1nYmdJQ2E2TmhqSlZMb2djUUxLbHdMN1JQd2cwSUdYb2RsWlpXTHhzSzZOb19oSEJNS3pHbnhWTDFielMxbks0Qk1YUF9xLUgyWHBrSzJYTEJ1SDMxZ0FTSUZqNlNESXFnX1BPYmhqZUg4RS1HTi1kSzZuTVZR?oc=5\" target=\"_blank\">ISRO's advanced radar facility in Assam marks state's entry into space research era: CM (Ld)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FM Bharat</font>",
+      "fetched_at": "2026-09-22T05:16:13.505Z",
       "consumed": true
     },
     {
@@ -3118,206 +3378,6 @@
       "published_at": "2026-09-19T22:35:52.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxPQXJ3OHRpV3RqVVZ6VzI3T2ZmeHpVRFJ2M1BOVDJqdWlYdWRsa0pibTRkRHVZcllyZ01Ia1BId1ItZmxiLXJUem5Eb0o2S29vcVhJdDNGZ2Q0Nmp0Wnh4dUdRckNBUk5KelN1QXRWeHBMYUstRUZ4dEZCazBJb1FDVWRIV19XY2VCN3l2dzFwZXVmanJy0gGaAUFVX3lxTFBCSjVMS0FBakFSZE9HWmZLUjVJOGE3M2czRmI2elllV1ZXbXZuMmthMDY3bVZDOWQtcTRIUUJ4OTFfR0M5em4taFRCUVplOVJyQjFXTXJzY1ViU0RUTlA3TzB2cjgtaU5mNlZCRmh6dXRIRmtuVzZmOFgtVlFXVnpVUl96Skg1N0szVXNHZ2lrZlFkMnRQNFJWNXc?oc=5\" target=\"_blank\">SpaceX Starship to attempt first orbital mission with 14th flight</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ABC13 Houston</font>",
       "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "a635786e6341c9ee",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPZFNQQTFKMFdweXhpNHJWNjdTYjVhSURDOHhJYW44UWQzeXlfeXNtUG90Z3ctRGthWXp1V1p3REFqNnNjTjRYVVh3VHVDejFISjM1VmN1Y1VXY2JjTm11UWdPVHRRU2QxN2JpVjd4NHB0MzlzdEt6ZWNzWl9rWHdnblppd3EyR3FWMm50S2tZT3k3c2pNMkk3ZDRWY0w2dG9qeVg3dE51dmlkSDFMcWdKQ2dXaWx4UVJIa05STGxkcHZJam85?oc=5",
-      "title": "UNC Endowment Fund Jumps 37.8%, Driven by Early SpaceX Stake - bloomberg.com",
-      "published_at": "2026-09-19T21:51:56.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixAFBVV95cUxPZFNQQTFKMFdweXhpNHJWNjdTYjVhSURDOHhJYW44UWQzeXlfeXNtUG90Z3ctRGthWXp1V1p3REFqNnNjTjRYVVh3VHVDejFISjM1VmN1Y1VXY2JjTm11UWdPVHRRU2QxN2JpVjd4NHB0MzlzdEt6ZWNzWl9rWHdnblppd3EyR3FWMm50S2tZT3k3c2pNMkk3ZDRWY0w2dG9qeVg3dE51dmlkSDFMcWdKQ2dXaWx4UVJIa05STGxkcHZJam85?oc=5\" target=\"_blank\">UNC Endowment Fund Jumps 37.8%, Driven by Early SpaceX Stake</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">bloomberg.com</font>",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "bb24e07ba2e98160",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZHNIanlVek5TVGxreENsdHBmT3NlcnM5ZlVhcHJIV01wclZuS2FDUURmV3lkRWhFLXdXQVhZVTQ0NHhkWGx1djN4UjdQNDdkcE1jejdVdlkwc3Bob2NMNmsxM2g0ZldYVDlpdHMwSUtyQUJwak9YbzZlejJLbHZlU1VrZ0FoWlloMHlYekM3VURYQUttdVRPV0lfRUpDU0xXUDBtQjJIUjhHWDZjSXc?oc=5",
-      "title": "UNC Endowment Fund Jumps 37.8%, Driven by Early SpaceX Stake - Bloomberg.com",
-      "published_at": "2026-09-19T21:51:56.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxPZHNIanlVek5TVGxreENsdHBmT3NlcnM5ZlVhcHJIV01wclZuS2FDUURmV3lkRWhFLXdXQVhZVTQ0NHhkWGx1djN4UjdQNDdkcE1jejdVdlkwc3Bob2NMNmsxM2g0ZldYVDlpdHMwSUtyQUJwak9YbzZlejJLbHZlU1VrZ0FoWlloMHlYekM3VURYQUttdVRPV0lfRUpDU0xXUDBtQjJIUjhHWDZjSXc?oc=5\" target=\"_blank\">UNC Endowment Fund Jumps 37.8%, Driven by Early SpaceX Stake</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bloomberg.com</font>",
-      "fetched_at": "2026-09-20T11:50:20.975Z",
-      "consumed": true
-    },
-    {
-      "id": "f5ad3c58ad6ceb8d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNLTRpdVNoclNWelY2cXRIV1dXanJyakpWQ2hxYjRTcVc0aGdkVUI0bnkxTlBfZjRnUGJLT2NDaHJRZV96NmRaLXgzRWFTWmpOY21rMl9JTm9raVVrRmlKMjZaUGlSRDNtQ2ljQ1VUa3JnZjF1WlZLYU9aUE1kWWI3eWJ2M1NXck1ObDB6Y09seU9ONGVlbkZySEtB?oc=5",
-      "title": "SpaceX-Tesla Merger: Ron Baron Told Elon Musk 'Whatever You Decide... Is What I'm Going to Support' - Yahoo Finance",
-      "published_at": "2026-09-19T21:30:24.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxNLTRpdVNoclNWelY2cXRIV1dXanJyakpWQ2hxYjRTcVc0aGdkVUI0bnkxTlBfZjRnUGJLT2NDaHJRZV96NmRaLXgzRWFTWmpOY21rMl9JTm9raVVrRmlKMjZaUGlSRDNtQ2ljQ1VUa3JnZjF1WlZLYU9aUE1kWWI3eWJ2M1NXck1ObDB6Y09seU9ONGVlbkZySEtB?oc=5\" target=\"_blank\">SpaceX-Tesla Merger: Ron Baron Told Elon Musk 'Whatever You Decide... Is What I'm Going to Support'</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "bb2beea4fecdf422",
-      "source_name": "SpaceflightNow",
-      "url": "https://spaceflightnow.com/2026/09/19/russian-progress-cargo-ship-arrives-at-international-space-station/",
-      "title": "Russian Progress cargo ship arrives at International Space Station",
-      "published_at": "2026-09-19T21:11:15.000Z",
-      "raw_excerpt": "Russia’s Progress M-35 makes its final approach to the International Space Station. Image: NASA. An unpiloted Russian Progress cargo ship arrived at the International Space Station Saturday carrying supplies and equipment for the orbiting outpost. The Progress M-25 docked at the space-facing port of Russia’s Poisk module at 9:44 a.m. EDT (1344 UTC). It circled the station before making its final approach using the automated Kurs rendezvous system. Russian cosmonauts Pyotr Dubrov and Anna Kikina were standing by to take manual control of the approach using remote controls, but everything went smoothly as the craft closed in, 260 miles above the Black Sea. A series of hooks inside the docking mechanism were driven closed to complete the docking operation. Making up the rest of the station crew, dubbed Expedition 75, are NASA’s Jessica Meir, Anil Menon, and Jack Hathaway, Russia’s Andrey Fedyaev, and the European Space Agency’s Sophie Adenot. View from the docking camera as the Progress M-35 closed in on the Poisk module docking port. Image: NASA. The freighter, operated by the Russian space agency Roscosmos, lifted off from the Baikonur Cosmodrome on Wednesday, Sept. 16, 2026, at 9:33 a.m. EDT (1333 UTC). It was delayed a week due to a problem with the Soyuz-2-1b rocket’s third stage. Roscosmos did not disclose the nature of the technical issue, which required the rocket to be rolled off the launch pad and returned to its hangar. It was the first time the Soyuz-2-1b variant had been used to launch a Progress mission. The Progress M-35 mission lifts off from the Baikonur Cosmodrome in Kazakhstan atop a Soyuz-2-1b rocket. Image: NASA/Roscosmos. The docking came three days after liftoff, longer than the more typical two-day rendezvous sequence. “Uncommon but not unprecedented,” said Rob Navias, NASA’s commentator in mission control. “The orbital mechanics for this particular launch date of September 16th drove the Progress to a three-day, 49-orbit rendezvous profile.” Th",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "e54d7a27b378fb41",
-      "source_name": "Launch Library 2 (TheSpaceDevs)",
-      "url": "https://ll.thespacedevs.com/2.2.0/launch/97c6f5e1-299e-4652-b72d-9618ac047076/",
-      "title": "Falcon 9 Block 5 | Starlink Group 15-25",
-      "published_at": "2026-09-19T21:07:18.000Z",
-      "raw_excerpt": "A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for space-based Internet communication system.",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "6d9e3083ad8abca8",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQRlJlYWRETTFuRHNEZXM4SnBPN2tya2xkaGRBZnhKWHdCOWhoSFU5RWdtZWFUWDNJTlQ2djB2a3FwcGtPclQ5Y3lvbmlOaVZsX3BVM1QwLWlBaU11LXFiSW1IcHd1MWhXQ3dKY2p0RzBHOU1KWnFkZWdOYlR1MEFwUzZaUzlYZ1dVbEJfYXhpSkZ6R0hya3VB?oc=5",
-      "title": "FAA No-Fly Zone Near Waco Points to Tesla Roadster Reveal - BASENOR - Tesla Accessories",
-      "published_at": "2026-09-19T21:04:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxQRlJlYWRETTFuRHNEZXM4SnBPN2tya2xkaGRBZnhKWHdCOWhoSFU5RWdtZWFUWDNJTlQ2djB2a3FwcGtPclQ5Y3lvbmlOaVZsX3BVM1QwLWlBaU11LXFiSW1IcHd1MWhXQ3dKY2p0RzBHOU1KWnFkZWdOYlR1MEFwUzZaUzlYZ1dVbEJfYXhpSkZ6R0hya3VB?oc=5\" target=\"_blank\">FAA No-Fly Zone Near Waco Points to Tesla Roadster Reveal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BASENOR - Tesla Accessories</font>",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "3cf82dd0ff2d8eba",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/cqlykr2vrv04o?at_medium=RSS&at_campaign=rss",
-      "title": "Trump says US will form 'AI Force' and appoint an artificial intelligence tsar",
-      "published_at": "2026-09-19T21:01:56.000Z",
-      "raw_excerpt": "The president said his administration \"will not in any way hinder or stifle the growth\" amid amid warnings about the emergent technology.",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "ef309eda7ecd61a7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOTklZdlp2SmZ6X3FSamo3dXJrc2FkQ04xMzF5STVrS0c0Y01qNGdMUzJCTjJabmY0TEMtTDhSeFZrd1g3bFBUY2VKUkt3ZHR5NTdnV1NlNlp2c2cta2lSc0hCUW5LdU1QZ3doWm40bkk5QUxqbEhqdE84UGZNNTZHOEZSQzJKRzY3VHc?oc=5",
-      "title": "Starlink Mobile is no longer just a satellite partner - PhoneArena",
-      "published_at": "2026-09-19T20:28:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxOTklZdlp2SmZ6X3FSamo3dXJrc2FkQ04xMzF5STVrS0c0Y01qNGdMUzJCTjJabmY0TEMtTDhSeFZrd1g3bFBUY2VKUkt3ZHR5NTdnV1NlNlp2c2cta2lSc0hCUW5LdU1QZ3doWm40bkk5QUxqbEhqdE84UGZNNTZHOEZSQzJKRzY3VHc?oc=5\" target=\"_blank\">Starlink Mobile is no longer just a satellite partner</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PhoneArena</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "d78c52f2e2cd95f2",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPbmJXVV9SYmNkdl85el9TSXFBYVdDRmhhakhzZmVRQW1EOXVUMXBjckJrejBwbVg2ZkJRcWNVSHNPYV96Z2VSVnR2bXNreTZHUkdxSlFxQjdsOWNyM0NwZU0zSHA4WkpQeE51RmVFREFycVJlUmYyQW1ybkFFbnBvYVZWaUQ2MEhiM0twME5QOFhVV2t5RHN1ZExFTnFjTzR4cFBiQkJR?oc=5",
-      "title": "SpaceX Stock Has Gone Nowhere Since Its First Day of Trading - The Motley Fool",
-      "published_at": "2026-09-19T20:26:23.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxPbmJXVV9SYmNkdl85el9TSXFBYVdDRmhhakhzZmVRQW1EOXVUMXBjckJrejBwbVg2ZkJRcWNVSHNPYV96Z2VSVnR2bXNreTZHUkdxSlFxQjdsOWNyM0NwZU0zSHA4WkpQeE51RmVFREFycVJlUmYyQW1ybkFFbnBvYVZWaUQ2MEhiM0twME5QOFhVV2t5RHN1ZExFTnFjTzR4cFBiQkJR?oc=5\" target=\"_blank\">SpaceX Stock Has Gone Nowhere Since Its First Day of Trading</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "16c4494fa806ca5f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZk9xc2tFc2RBNXJaNGNYNG5fdDhod1F2enpRaUdHZWllWEdkVHZrRFViNjNvU0FZcVB3TnJ0aDlLczBYM1JIN3FWM2YtcTdyODhLbDZ4RktULVpvbFVnX3dKY1QzQVR6MXpJeG41UEtQbHpSTkVqQ1FIWEQ1bFFHQmhEQXpZRFNHSGVPMjBqRFkzRGNtd3ZvVUhCQUZFY3ktazl4QXFEeVlkV0JsejAwY2V2NkRjMldPY3RxYmRHMkJBSGI0VFJIZmh6ZHpfWkJa?oc=5",
-      "title": "Live coverage: SpaceX to launch 27 Starlink V2 Mini satellites on Falcon 9 rocket from Vandenberg - Spaceflight Now",
-      "published_at": "2026-09-19T20:06:36.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZk9xc2tFc2RBNXJaNGNYNG5fdDhod1F2enpRaUdHZWllWEdkVHZrRFViNjNvU0FZcVB3TnJ0aDlLczBYM1JIN3FWM2YtcTdyODhLbDZ4RktULVpvbFVnX3dKY1QzQVR6MXpJeG41UEtQbHpSTkVqQ1FIWEQ1bFFHQmhEQXpZRFNHSGVPMjBqRFkzRGNtd3ZvVUhCQUZFY3ktazl4QXFEeVlkV0JsejAwY2V2NkRjMldPY3RxYmRHMkJBSGI0VFJIZmh6ZHpfWkJa?oc=5\" target=\"_blank\">Live coverage: SpaceX to launch 27 Starlink V2 Mini satellites on Falcon 9 rocket from Vandenberg</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spaceflight Now</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "e4d81e8d103d94fe",
-      "source_name": "SpaceflightNow",
-      "url": "https://spaceflightnow.com/2026/09/19/live-coverage-spacex-to-launch-27-starlink-v2-mini-satellites-on-falcon-9-rocket-from-vandenberg/",
-      "title": "Live coverage: SpaceX to launch 27 Starlink V2 Mini satellites on Falcon 9 rocket from Vandenberg",
-      "published_at": "2026-09-19T20:06:04.000Z",
-      "raw_excerpt": "File: SpaceX’s Falcon 9 rocket stands at Space Launch Complex 4 East at Vandenberg Space Force Base ahead of the Starlink 17-31 mission on March 13, 2026. Image: SpaceX An early-evening Falcon 9 launch from Vandenberg Space Force Base Saturday will add another 27 satellites to SpaceX’s Starlink constellation. Liftoff of the Falcon 9 rocket from Space Launch Complex 4 East is scheduled during a window that opens at 6:47 p.m. PDT (9:47 p.m. EDT / 0147 UTC). The rocket will hug the Californian coast line and should be visible to millions as it soars on southeasterly trajectory upon leaving the pad. It will be the 81st Starlink mission of the year. Spaceflight Now will have live coverage beginning about 30 minutes prior to liftoff. The Falcon 9 booster, B1093, will be making its 17th flight to space and back after previously launching two missions for the U.S. Space Force’s Space Development Agency (SDA), Transporter-16, and 13 batches of Starlink satellites. About 8.5 minutes after liftoff, B1093 will target a landing on the droneship, Of Course I Still Love You , positioned in the Pacific Ocean. If successful, this will be the 225th landing on this vessel and the 662nd Falcon booster landing to date. The 27 Starlink V2 Mini Optimized satellites onboard the Starlink 15-27 mission are set to deploy a little more than an hour after liftoff.",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "e3b4aaace44e27d1",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQVENBcUNVeFNNQXNBa0dUaU1OUGk4OThDcUcyRk44TGVzdUc3c2hFV1o1SllDS09QNDQ3STdJNjhQUHJySnpvcm1CdnVheW5MWFBOb28tVVRoMUN2YkllM0ltZFNnd0JxeWEySi1WemhjaTlrYmFLU1RYSjlOczVKOGxqc3dwSmhZTERSVXlvSGRsZlk?oc=5",
-      "title": "Peter Roff: SpaceX’s wireless ambitions need a cold, hard look - TribLIVE.com",
-      "published_at": "2026-09-19T20:01:41.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxQVENBcUNVeFNNQXNBa0dUaU1OUGk4OThDcUcyRk44TGVzdUc3c2hFV1o1SllDS09QNDQ3STdJNjhQUHJySnpvcm1CdnVheW5MWFBOb28tVVRoMUN2YkllM0ltZFNnd0JxeWEySi1WemhjaTlrYmFLU1RYSjlOczVKOGxqc3dwSmhZTERSVXlvSGRsZlk?oc=5\" target=\"_blank\">Peter Roff: SpaceX’s wireless ambitions need a cold, hard look</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TribLIVE.com</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "3038f2e09b1bf99e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOc2dTby1tdGl5bGcyT3QtUm5tZUhTZnNmQmVOU3BsOUNtUm1FQUNPNl9tcURGOWxtWU1sSS1Ic1lrWXZ0UVd5ZnN2eWpSUXNyajdpeDR6QnRPclVJN1ZYdXNsX3kzX2g5MnhGVzZ4UXhFd1F1aWNva3pBR0ZGMThlZWZjV293NjVSbUhUc0ZPRk5FY19QazN3N3hpY1pkSzhQX3AxUmhxOXVrVEFadW5yMkExVVlJRnNPbWJHQjhNVDBXalRqRnRadklOYUpmM3UxMmhsZ3RPSmVSTkdiVGc?oc=5",
-      "title": "SpaceX Stock Has Gone Nowhere Since Its First Day of Trading - The Globe and Mail",
-      "published_at": "2026-09-19T19:58:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3gFBVV95cUxOc2dTby1tdGl5bGcyT3QtUm5tZUhTZnNmQmVOU3BsOUNtUm1FQUNPNl9tcURGOWxtWU1sSS1Ic1lrWXZ0UVd5ZnN2eWpSUXNyajdpeDR6QnRPclVJN1ZYdXNsX3kzX2g5MnhGVzZ4UXhFd1F1aWNva3pBR0ZGMThlZWZjV293NjVSbUhUc0ZPRk5FY19QazN3N3hpY1pkSzhQX3AxUmhxOXVrVEFadW5yMkExVVlJRnNPbWJHQjhNVDBXalRqRnRadklOYUpmM3UxMmhsZ3RPSmVSTkdiVGc?oc=5\" target=\"_blank\">SpaceX Stock Has Gone Nowhere Since Its First Day of Trading</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "73d6c113b20810c3",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxPd3paeGpjRkc3QWtFb2pQY3Q4Uk9aSUllOUtIejl1cDBQalpsRmwzOER6ZjJmMi00WDlkTTJTczBCbmZMY0RxVUhZSnlNUGVJQnR3WWM3bnZ5TWUwZGxlZTZSWVhneWU2YkF1ZE16QTBNRzE3Y1BuR0dWUUlxWlRDWmpBWE82enhPUlE?oc=5",
-      "title": "SpaceX Stock Has Gone Nowhere Since Its First Day of Trading - Currently.com",
-      "published_at": "2026-09-19T19:57:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxPd3paeGpjRkc3QWtFb2pQY3Q4Uk9aSUllOUtIejl1cDBQalpsRmwzOER6ZjJmMi00WDlkTTJTczBCbmZMY0RxVUhZSnlNUGVJQnR3WWM3bnZ5TWUwZGxlZTZSWVhneWU2YkF1ZE16QTBNRzE3Y1BuR0dWUUlxWlRDWmpBWE82enhPUlE?oc=5\" target=\"_blank\">SpaceX Stock Has Gone Nowhere Since Its First Day of Trading</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Currently.com</font>",
-      "fetched_at": "2026-09-20T17:16:43.624Z",
-      "consumed": true
-    },
-    {
-      "id": "ecc63da59fa57f24",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOTGl3c3hsQ1ZhSkc4cUdVMDkwanFKMlJ0NUE4ejlHQ0IwQ3JpbTY4TUp0YnA5OHc3MVZCQ3RfSjhWR1VsWFlPNmlSd2NueDhsYzhuRkFJcHZ1VDYtUWoyVUVqWndvNUp2Q1otbTlwREpXLWNCdV9DUFUwS3NHWkRuWjZ1MEc1MDRvRVQzSExOM0c0eTJfdHN1akJGRnFnRU9icXc?oc=5",
-      "title": "SpaceX Targets September 28 For Starship's First Orbital Flight - Engadget",
-      "published_at": "2026-09-19T19:45:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxOTGl3c3hsQ1ZhSkc4cUdVMDkwanFKMlJ0NUE4ejlHQ0IwQ3JpbTY4TUp0YnA5OHc3MVZCQ3RfSjhWR1VsWFlPNmlSd2NueDhsYzhuRkFJcHZ1VDYtUWoyVUVqWndvNUp2Q1otbTlwREpXLWNCdV9DUFUwS3NHWkRuWjZ1MEc1MDRvRVQzSExOM0c0eTJfdHN1akJGRnFnRU9icXc?oc=5\" target=\"_blank\">SpaceX Targets September 28 For Starship's First Orbital Flight</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Engadget</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "3dc06800f1e2fbb9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOR01KWG5RYThLR3VtQXZNWGpwNmRJOW82bDVWbGRVQWVjMzI2OHpxTGdld0l5ZWpkY0ZJWmQ2T2QwZjRCWTF0UEw0enZCc3F0NTI4UU1xMGlPaURmZkZSalg2WU5GelNyLTJsZWI4Q0dmcklCYWhWeHY1UXJrMVpqY05ab2hPZVAwenJlNjEzSUM4Y3FuYmtJdGhGM0ZlcWFoOW1qaG1HSGlZTjhDYkctNEo2cjFlTTFwOEw3YWthQjk3SDZuOVdPZg?oc=5",
-      "title": "SpaceX Nasdaq 100 weight to jump to 2.82% in quarterly rebalance -Bloomberg - Investing.com",
-      "published_at": "2026-09-19T19:31:48.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiyAFBVV95cUxOR01KWG5RYThLR3VtQXZNWGpwNmRJOW82bDVWbGRVQWVjMzI2OHpxTGdld0l5ZWpkY0ZJWmQ2T2QwZjRCWTF0UEw0enZCc3F0NTI4UU1xMGlPaURmZkZSalg2WU5GelNyLTJsZWI4Q0dmcklCYWhWeHY1UXJrMVpqY05ab2hPZVAwenJlNjEzSUM4Y3FuYmtJdGhGM0ZlcWFoOW1qaG1HSGlZTjhDYkctNEo2cjFlTTFwOEw3YWthQjk3SDZuOVdPZg?oc=5\" target=\"_blank\">SpaceX Nasdaq 100 weight to jump to 2.82% in quarterly rebalance -Bloomberg</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investing.com</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "5ac9891199bf55ef",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8xZllSUlllLTF0SmFsZEI0S1h3YVVOdW1jZDJfQkJvN0FQMElBUkgyaFJPQTVpdmFpMkxQZExQZGhOb0VlUXRLdFdPWUpOVkd1TVVOYVdlY0ltOHBEYkNiNnRGZWRMYWxQUHFwcXZtdXo?oc=5",
-      "title": "SpaceX Launch Tonight: Watch 27 Starlink Satellites Blast Off From California - TeslaNorth.com",
-      "published_at": "2026-09-19T19:23:08.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTE8xZllSUlllLTF0SmFsZEI0S1h3YVVOdW1jZDJfQkJvN0FQMElBUkgyaFJPQTVpdmFpMkxQZExQZGhOb0VlUXRLdFdPWUpOVkd1TVVOYVdlY0ltOHBEYkNiNnRGZWRMYWxQUHFwcXZtdXo?oc=5\" target=\"_blank\">SpaceX Launch Tonight: Watch 27 Starlink Satellites Blast Off From California</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TeslaNorth.com</font>",
-      "fetched_at": "2026-09-20T05:16:12.722Z",
-      "consumed": true
-    },
-    {
-      "id": "22692a0985849bc2",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOWFFCZUhEQ0hpeFlrLVZnUVRPNjRuRnNLelkwUEl0SGN4Y0o4d3g2WG94M294em9XUGNDdWZBWXQyczZCZ2toeEp1SkZuNGVjTU9kTEFJMHliX3lNVDNkcmZoU3JJN2pNdC1XM05PNUZVRE5kVHNfRmpnb1hOeW1fUEVZZkZOcXJSSXlJV1h0ZXpReG1aVTkyU2RkYVVPLXVPU3NzQnV2Wm9kNVNHcVZzUUlwbVRYV1YwQndWVElnTUc?oc=5",
-      "title": "Korean Air launches high-speed Starlink WiFi with fleet-wide expansion planned in 2027 - futuretravelexperience.com",
-      "published_at": "2026-09-19T18:20:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwAFBVV95cUxOWFFCZUhEQ0hpeFlrLVZnUVRPNjRuRnNLelkwUEl0SGN4Y0o4d3g2WG94M294em9XUGNDdWZBWXQyczZCZ2toeEp1SkZuNGVjTU9kTEFJMHliX3lNVDNkcmZoU3JJN2pNdC1XM05PNUZVRE5kVHNfRmpnb1hOeW1fUEVZZkZOcXJSSXlJV1h0ZXpReG1aVTkyU2RkYVVPLXVPU3NzQnV2Wm9kNVNHcVZzUUlwbVRYV1YwQndWVElnTUc?oc=5\" target=\"_blank\">Korean Air launches high-speed Starlink WiFi with fleet-wide expansion planned in 2027</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">futuretravelexperience.com</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "35891376fc711824",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOZXNhcGlFek5UY3lhZDZNSGtjS05VbVpDU0FTYkJmNk0xY0tBdGg3YXZFNW5WZWt0d0xtdEQ1SEVlY0Z0a1otQmE2bVpfb2JVaUM1SmdJdVV3R0dNUTQyMkFYYWJWT0FTMm1uemt3M3E2MkV2dWsxS3VFM3lhendTLUp0UjZJR3dGa1R5X2kwTQ?oc=5",
-      "title": "Elon Musk Warns Rocket Startups: Don’t Try to Copy SpaceX’s Raptor 3 — ‘Very Complex Geometry’ Inside - Yahoo Tech",
-      "published_at": "2026-09-19T18:00:30.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxOZXNhcGlFek5UY3lhZDZNSGtjS05VbVpDU0FTYkJmNk0xY0tBdGg3YXZFNW5WZWt0d0xtdEQ1SEVlY0Z0a1otQmE2bVpfb2JVaUM1SmdJdVV3R0dNUTQyMkFYYWJWT0FTMm1uemt3M3E2MkV2dWsxS3VFM3lhendTLUp0UjZJR3dGa1R5X2kwTQ?oc=5\" target=\"_blank\">Elon Musk Warns Rocket Startups: Don’t Try to Copy SpaceX’s Raptor 3 — ‘Very Complex Geometry’ Inside</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Tech</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
-      "consumed": true
-    },
-    {
-      "id": "a91d54765ae9a674",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOWDRxeG9OOVc2UTVyMnBOM2p3dDV1V3dsODZFZkZ4TGlqSGNxNzlsQ3JlNGNhUk1OWkhqN1Uxc2ZXMmZOSURLS0IyZHR1azVka3FEOFVpbnh3bUNNZ09UZXNFa2xIbDlBUXFpTWRjMmNBb28wQlVwM0lkM3JUSGE0WDdnOS1IOWRkRmZVLW9jT3N4dw?oc=5",
-      "title": "SpaceX, Google, Anthropic, OpenAI face antitrust lawsuit over AI slowdown - Seeking Alpha",
-      "published_at": "2026-09-19T17:28:37.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxOWDRxeG9OOVc2UTVyMnBOM2p3dDV1V3dsODZFZkZ4TGlqSGNxNzlsQ3JlNGNhUk1OWkhqN1Uxc2ZXMmZOSURLS0IyZHR1azVka3FEOFVpbnh3bUNNZ09UZXNFa2xIbDlBUXFpTWRjMmNBb28wQlVwM0lkM3JUSGE0WDdnOS1IOWRkRmZVLW9jT3N4dw?oc=5\" target=\"_blank\">SpaceX, Google, Anthropic, OpenAI face antitrust lawsuit over AI slowdown</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
-      "fetched_at": "2026-09-19T21:03:19.631Z",
       "consumed": true
     }
   ]

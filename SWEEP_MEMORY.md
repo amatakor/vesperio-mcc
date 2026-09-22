@@ -93,81 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h50m gap, unfiltered full source list (2026-08-22)
-
-- 2026-08-22-A: `signalsPass.checked` must list the exact `url` field
-  signals-context prints for a channel, not the `rss` field: submitting
-  `https://europeanspaceflight.substack.com/feed` (the RSS endpoint
-  actually fetched) got the draft rejected as "not a fetchable
-  whitelisted signal channel"; swapping to the plain
-  `https://europeanspaceflight.substack.com` (the `url` field) merged
-  clean. Fetch the `rss` URL when present, but report the channel's
-  `url` in the draft.
-- 2026-08-22-B: A market-forecast press release from a firm with no
-  registry entity (Novaspace's own "6,500 EO satellites by 2035"
-  report) can't be led as `first_party` even though it's the actor
-  speaking about itself, because the anti-spoof gate only checks
-  registry/fixed-official hosts, and Novaspace has no registry profile
-  to match: extends the ArkEdge/Orbit Fab/Arianespace no-registry-host
-  pattern (2026-07-26-E and earlier) to analytics-firm press releases.
-  SpaceNews's own RSS `raw_excerpt` for the same release (harvester-
-  fetched, verbatim, matching the actor's own page word for word once
-  independently checked via a guessed nova.space press-release URL)
-  was usable as the `trade`-class lead instead, landing at SNR 2 after
-  an honest `crawl: "found_none"` (no independent pickup found yet for
-  a report published the same day). A company's own market-forecast
-  report is a legitimate item in the same vein as the Space Foundation
-  state-of-the-economy report (2026-07-21), category `financial`,
-  `notable` impact, even when it isn't tied to a specific tracked
-  actor's contract or event.
-- 2026-08-22-C: Guessing a company's press-release URL slug from its
-  headline can work when the listing page is reachable: fetching
-  `nova.space/about-us/press-release/` first (to confirm the release
-  was genuinely dated Aug 20, not a stale resurfacing) then guessing
-  `nova.space/press-release/6500-eo-satellites-to-launch-by-2035/`
-  from the headline's slug pattern landed the exact page on the first
-  try, cross-confirming SpaceNews's raw_excerpt figures independently
-  even though SpaceNews itself 403'd on direct fetch (both attempts).
-- 2026-08-22-D: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
-  updated, 0 held") plus a direct read of both new items'
-  `snr`/`category`/`impact`/`snr_trace` fields as the build-health
-  signal.
-
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-22, second)
-
-- 2026-08-22-E: Piping an items.json dedup grep through `head -5` (or any
-  small limit) is dangerous when the matched term is common: grepping
-  "muon" for a dedup check returned 30 matches, but `head -5` showed only
-  the earliest-in-file hits (the July 7 FireSat item), silently hiding
-  the later `2026-08-20-muon-space-series-c` entry an earlier sweep
-  published that same day. Drafted a discovery-pass find (Muon Space's
-  $250M Series C) as a brand-new item on the strength of that truncated
-  grep; `finalize-sweep.ts`'s own dedup gate caught it before merge (as
-  did a second duplicate, the SpaceWERX STRATFI $562.5M/11-company
-  award, surfaced independently via the signals-pass Aviation Week
-  leg). Recovered both by redirecting the newly-found corroborating
-  sources (a GlobeNewswire wire copy, Via Satellite, Tech Startups for
-  Muon; Aviation Week's own author-page listing for STRATFI) into
-  `updates[].attach` with the appropriate bump instead of discarding the
-  research. Lesson: never cap a dedup grep against items.json with a
-  small `head`/`tail`; use `grep -c` first to see the true match count,
-  or grep for the specific slug/id shape, not just a company name.
-- 2026-08-22-F: The gap between sweeps within one calendar day can be
-  short enough (a same-day sweep already ran and published before this
-  one started) that `sweep-context.ts`'s printed `existing[]` sample is
-  not exhaustive proof an event is undrafted; a full `grep` against
-  `items.json` is still the only reliable dedup check, and even that
-  needs its full output read, not a truncated preview (see 2026-08-22-E).
-- 2026-08-22-G: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 1 new, 2 updated, 0 held") plus a direct read of
-  the new item's and both updated items' `snr`/`category`/`impact`/
-  `snr_trace` fields as the build-health signal.
-
 ## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-23)
 
 - 2026-08-23-A: `federalregister.gov`'s own HTML document pages redirect
@@ -5122,3 +5047,38 @@ a newer entry if a lesson changes.
   1 updated, 0 held") plus a direct read of both new items' and the
   updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
   (712 items, up from 710) as the build-health signal.
+
+## Narrow re-check, ~6h47m gap, unfiltered full source list (2026-09-22)
+
+- 2026-09-22-A: A same-underlying-round headline can show two different
+  dollar figures for a genuinely non-stale reason: "HEO Space raises
+  $37m" (Startup Daily/Capital Brief) and "HEO raises $25M" (Axios/
+  Dealroom/Tech Startups) are the SAME Sept. 21 Series B, just quoted in
+  AUD vs. USD (confirmed by Startup Daily's own body text stating
+  "US$25 million (A$37 million)" once fetched directly) -- distinct from
+  the yen/dollar conversion-snapshot trap (2026-09-04-N) in that here
+  both figures came from the same day's coverage, not different publish
+  dates. Worth checking for a stated FX conversion before treating two
+  differing dollar figures on the same story as a stale-resurfacing or
+  wrong-round trap.
+- 2026-09-22-B: Confirms 2026-09-17-A's refinement a second time: a lead
+  source and its sole corroboration source at the EQUAL tier (both
+  `informal`, HEO's Startup Daily lead + Tech Startups corroboration)
+  triggered `corroboration_2plus` (+1) with just one attach, consistent
+  with "same-or-higher-tier corroboration earns the bump, a weaker
+  addition doesn't" rather than raw source count.
+- 2026-09-22-C: The Starbase land-swap item's Sept. 21 injunction-denial
+  fact (added same-day by the prior sweep per MyRGV) needed a same-day
+  follow-up patch once the Texas Tribune's own fuller Sept. 21 article
+  became fetchable: the original MyRGV-sourced text named no judge and
+  no legal basis; the Tribune's direct-fetched follow-up supplied the
+  judge's name (Fernando Rodriguez Jr.), the standing/irreparable-harm
+  ruling basis, the debris-allegation rejection, and the Sept. 1
+  agreement / Sept. 22 title-transfer dates -- a genuine enrichment
+  patch, not corroboration of an already-complete fact.
+- 2026-09-22-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  1 updated, 0 held") plus a direct read of both new items' and the
+  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  as the build-health signal.
