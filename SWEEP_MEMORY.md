@@ -5082,3 +5082,48 @@ a newer entry if a lesson changes.
   1 updated, 0 held") plus a direct read of both new items' and the
   updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
   as the build-health signal.
+
+## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-09-22, second)
+
+- 2026-09-22-E: A Planet Labs IR press release ("Planet Opens
+  State-of-the-Art Satellite Manufacturing in Berlin", Sept. 22, first
+  seen via the mandatory HTML pass since raw_excerpt was empty) is a
+  distinct dateable event from the Sept. 17 "opening this fall" plan
+  announcement already published as `2026-09-17-planet-berlin-satellite-
+  factory`: the actual handover/ribbon-cutting, with Germany's economy
+  minister Katherina Reiche attending, plus facility size (5,700 sqm),
+  satellite specs, 60-sat/year capacity, and the Isar Aerospace launch
+  plan. Folded in as `updates[].patch`+attach within the 7-day dedup
+  window rather than a new item, consistent with the standing
+  plan-vs-actual-event enrichment pattern (the 2026-09-22-C Starbase
+  ruling case and peers).
+- 2026-09-22-F: Confirms `loadRegistryHosts`' apex-domain reduction
+  (finalize-sweep.ts) treats `investors.planet.com` as the same actor as
+  the registry's `www.planet.com` website field (the "www." prefix is
+  stripped before matching, per the code comment), so a company's IR
+  subdomain classes cleanly as `first_party` without a registry edit.
+  Worth checking this reduction before assuming an unprofiled-looking
+  subdomain (investors., newsroom., ir.) needs `informal` per the
+  2026-09-21-P precedent, which applies to companies with NO registry
+  profile at all, not to subdomains of an already-profiled company's
+  registered site.
+- 2026-09-22-G: `draft.signalsPass.checked` must list the exact
+  whitelisted channel URL from `signals-context.ts`'s `fetchable[]`
+  array (e.g. `https://europeanspaceflight.substack.com`), never the
+  underlying `rss` fetch URL (`.../feed`) even when that's the URL
+  actually requested; finalize-sweep rejected the draft on the first
+  submit for listing the feed URL. List the channel URL and note the
+  feed 403 in the pass's `note` field instead.
+- 2026-09-22-H: A fully quiet run otherwise: of ~65 harvested candidates
+  (mostly SpaceX stock/valuation churn, Google News redirects to
+  same-day-earlier-sweep stories -- the Starbase land-swap ruling
+  picked up by 8+ more outlets, the SSC/Pleiades Neo deal restated by
+  defence-industry.eu, ISRO-ESA cooperation picked up by 4 Indian
+  outlets -- and off-topic BBC/CGTN/FAA-NOAA fishery filler), all 5
+  mandatory HTML sources, all 17 signals channels, and an 8-query
+  discovery pass covering the full matrix surfaced nothing new beyond
+  the Planet Berlin item above. `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
+  updated, 0 held") plus a direct read of the updated item's fields as
+  the build-health signal.
