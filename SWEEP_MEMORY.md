@@ -5127,3 +5127,43 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
   updated, 0 held") plus a direct read of the updated item's fields as
   the build-health signal.
+
+## Narrow re-check, ~5h07m gap, unfiltered full source list (2026-09-22, third)
+
+- 2026-09-22-I: All the loudest queue/discovery leads this run were already
+  fully covered same-day or earlier: a Newser "Judge OKs Land Swap" hit added
+  nothing beyond the existing Starbase land-swap item's Sept. 21/22 patch; a
+  fresh ThePrint/satnews/Space Daily wave on "ESA and ISRO extend to 2032"
+  restated the identical Paris-signing, Jan. 8 2032 date, and scope details
+  already in the Sept. 10 item; and Payload's own "HEO Raises $25M Series B"
+  and the TRL11/Firefly Mars-mission $13M-aeroshell background were each
+  already published. Confirms the standing grep-before-drafting discipline
+  (2026-09-20-A/H/I, 2026-09-21-B/M) generalizes past headline-name matches to
+  full-body company/program mentions.
+- 2026-09-22-J: The FCC's Sept. 30 vote on waiving NEPA review for satellite
+  ops (Payload) is a second, independent not-yet-decided draft order sharing
+  the same Sept. 30 Open Meeting date as the already-excluded 12.7-13.25/
+  42-42.5 GHz spectrum order (2026-09-20-I); left undrafted for the same
+  reason (a draft order on a meeting agenda is not adopted commission
+  action). Worth checking both items' outcomes together after Sept. 30.
+- 2026-09-22-K: An EarthDaily first-party blog post ("EarthDaily Secures
+  Marigold Renewals With Two Global Mining Majors") named no customers but
+  did state a concrete, quotable figure ("each six figure contracts") --
+  drafted as a thin but honest noise item rather than held or discarded,
+  since the source itself (not a paraphrase) supplied the only figure used
+  and EarthDaily's constellation registry profile satisfies the first-party
+  anti-spoof host check even without an `organizations/` profile.
+- 2026-09-22-L: The dedup gate's shared-company + shared-category heuristic
+  fired twice on one new item: a TRL11/NASA SR-1 Freedom imaging subcontract
+  (category `science`) matched against both the unrelated Sept. 16 Roman
+  Space Telescope WFI activation and the unrelated Sept. 17 SpaceX/StarBurst
+  launch task order, purely on shared company "NASA" plus shared category,
+  extending the standing pattern (2026-09-19-B, 2026-09-21-F and peers) to a
+  two-way simultaneous false-positive on the same draft item. Two
+  `dedup_distinct` entries cleared both.
+- 2026-09-22-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0 updated, 0
+  held") plus a direct read of all four new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
+  signal.
