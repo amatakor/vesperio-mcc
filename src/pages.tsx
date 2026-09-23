@@ -3356,6 +3356,15 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
     const isDate = typeof raw === "string" && /^\d{4}(-\d{2}){0,2}$/.test(raw);
     const isEmpty = raw === null || raw === undefined;
     const kind = isEmpty ? "empty" : isCount ? "count" : isDate ? "date" : "text";
+    // Short stated values (status, class, country, yes/no) are chrome and
+    // read in caps; anything carrying a digit (units, ranges) stays as
+    // authored so "550 km" never becomes "550 KM".
+    const caps = kind === "text" && !/\d/.test(text) && text.length <= 48;
+    // A unit in the label ("payload to leo (kg)") becomes a tag at the
+    // label's right edge; the label itself loses the bracket.
+    const unitMatch = label.match(/^(.*?)\s*\(([a-z%\/]+)\)$/i);
+    const labelText = unitMatch ? unitMatch[1]! : label;
+    const unit = unitMatch ? unitMatch[2]! : null;
     const entityHref =
       ENTITY_ROW_LABELS.has(label) && typeof raw === "string"
         ? entityHrefFor(raw, orgHrefs)
@@ -3365,9 +3374,10 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
       <div key={label} className={`fact-cell fact-cell-${kind}`}>
         <span className="fact-label">
           <span className="fact-glyph" aria-hidden="true" />
-          {label}
+          {labelText}
+          {unit && <span className="fact-unit">{unit}</span>}
         </span>
-        <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
+        <span className={`fact-value${isEmpty ? " empty" : ""}${caps ? " fact-value-caps" : ""}`}>
           {isUrl ? (
             <a href={raw as string} rel="noopener">
               {hostOf(raw as string)}

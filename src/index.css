@@ -5527,3 +5527,57 @@ table.stat-table th {
     transition: none;
   }
 }
+/* Facts grid, second polish (Florian, 2026-09-23: "even more polished,
+   background graphics"). Short stated values render in caps (chrome
+   register; digits keep authored case so units survive). A unit in the
+   label becomes a right-aligned tag. Every cell sits on instrument paper:
+   a 1px dot every 8px (an SVG tile, not a gradient), faint at rest and
+   stronger under the pointer; the glyph blinks once when the cell is
+   entered. */
+.registry-profile .fact-value-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.fact-unit {
+  margin-left: auto;
+  padding-left: 8px;
+  color: var(--text-2);
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.registry-profile .fact-cell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect x='3.5' y='3.5' width='1' height='1' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-size: 8px 8px;
+  background-position: 3px 3px;
+  opacity: 0.06;
+  transition: opacity var(--dur-fast, 120ms) var(--ease, linear);
+}
+[data-theme="light"] .registry-profile .fact-cell::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect x='3.5' y='3.5' width='1' height='1' fill='%23000000'/%3E%3C/svg%3E");
+  opacity: 0.08;
+}
+.registry-profile .fact-cell:hover::before {
+  opacity: 0.16;
+}
+.registry-profile .fact-cell > * {
+  position: relative;
+}
+@keyframes fact-glyph-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+.registry-profile .fact-cell:hover .fact-glyph {
+  animation: fact-glyph-blink 360ms steps(2, end) 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .registry-profile .fact-cell:hover .fact-glyph {
+    animation: none;
+  }
+}
