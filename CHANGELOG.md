@@ -416,3 +416,14 @@ under a hairline, fact cells carry theirs as a quiet third line,
 timeline rows on a line of their own; the bracketed "(source, as of
 ...)" and the SOURCE word are gone from reading surfaces. The SOURCES
 section keeps the full ledger.
+
+Update cards (2026-09-23): a story that changes after publication no
+longer jumps back to the top of the feed. It stays in its own date
+slot, and the update gets its own card at the top on the day it
+happened: the original headline, an UPDATE chip, the date of the
+update, and one sentence saying what changed, with "original 29 Jun
+2026" in the footer. Opening it shows the item with an UPDATES ledger
+at the top. Only updates a reader can name count: new facts in the
+copy, or a moved score; sources merely attached make no card. Every
+item's update record was reconstructed from the feed's history, so
+past updates show too.

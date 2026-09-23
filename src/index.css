@@ -5656,41 +5656,25 @@ a.stamp:focus-visible {
   }
 }
 
-/* ------------------------------------------------- update notes (80)
-   A resurfaced item says what changed (Florian, 2026-09-23): cards carry
-   one T3 line under the meta row ("↻ updated 23 Sep · 3 sources attached
-   (stocktwits.com, tradingview.com)"); the modal and the item page open
-   with an UPDATES ledger, one row per day, hosts as stamps. */
-.card-update {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1.45;
-  color: var(--text-2);
-  margin: 6px var(--pad-card) 0;
+/* ------------------------------------------------- update cards (80)
+   An update is its own feed card (Florian, 2026-09-23): neutral ground
+   whatever the item's impact, an UPDATE chip with the ↻ glyph, the update
+   date where the event date sits on ordinary cards, the original headline,
+   the sweep's one-sentence note as the body, and the original's date in
+   the footer. The item and modal open with the UPDATES ledger. */
+.card-upd {
+  border-top: 2px solid var(--text-2);
 }
-.update-when {
-  font-size: var(--fs-label);
-  font-weight: 500;
-  letter-spacing: var(--ls-label);
-  text-transform: uppercase;
+.chip-upd {
+  border-color: var(--text-2);
   color: var(--text-1);
 }
-.card-seismic .update-when {
-  color: #0a0a0a;
+.card-upd .card-headline {
+  font-size: 17px;
+  margin-top: 8px;
 }
-.card:not(.card-seismic):hover .update-when,
-.card-seismic:hover .update-when {
-  color: inherit;
-}
-.card-seismic .card-update {
-  color: #0a0a0a;
-}
-.card:not(.card-seismic):hover .card-update {
-  color: var(--bg-page);
-}
-.card-seismic:hover .card-update {
-  color: #f5f5f5;
+.card-upd-note {
+  color: var(--text-1);
 }
 .update-glyph {
   display: inline-block;

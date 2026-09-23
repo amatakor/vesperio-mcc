@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { activityAt, freshnessChip, latestUpdateNote, updateEntries } from "../../src/lib/activity";
+import { cardNote, feedRowKey, feedRows, updateEntries } from "../../src/lib/activity";
 import type { Item } from "../../src/data/schema";
 
 function item(over: Partial<Item>): Item {
@@ -23,8 +23,6 @@ function item(over: Partial<Item>): Item {
   } as Item;
 }
 
-import { cardNote } from "../../src/lib/activity";
-
 describe("cardNote", () => {
   test("keeps abbreviations whole and stops at the first real sentence end", () => {
     expect(cardNote("DOJ's own Sept. 22 release confirms the Sept. 21 ruling. More follows.")).toBe(
@@ -36,25 +34,21 @@ describe("cardNote", () => {
   });
 });
 
-describe("feed activity (2026-09-23 rule: attachments never resurface)", () => {
-  test("an attach-only update leaves the item in its event slot", () => {
-    const i = item({
-      sources: [
-        { url: "https://a.example/1", outlet: "A", class: "trade", added: "2026-06-29", via: "initial" },
-        { url: "https://stocktwits.com/x", outlet: "S", class: "informal", added: "2026-09-23", via: "corroboration" },
-      ],
-      updates: [{ date: "2026-09-23", kind: "attach", note: "Two forum pages attached." }],
-    });
-    expect(activityAt(i)).toBe("2026-06-29");
-    expect(freshnessChip(i)).toBeNull();
-    expect(latestUpdateNote(i)).toBeNull();
+describe("feed rows (2026-09-23: updates are their own rows; items never move)", () => {
+  test("an attach-only update makes no row", () => {
+    const i = item({ updates: [{ date: "2026-09-23", kind: "attach", note: "Two forum pages attached." }] });
+    const rows = feedRows([i]);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.kind).toBe("item");
+    expect(updateEntries(i)).toEqual([]);
   });
 
-  test("a copy update resurfaces with its note", () => {
-    const i = item({ updates: [{ date: "2026-09-23", kind: "copy", note: "The deal closed on 22 September." }] });
-    expect(activityAt(i)).toBe("2026-09-23");
-    expect(freshnessChip(i)).toBe("updated 23 Sep");
-    expect(latestUpdateNote(i)).toEqual({ day: "23 Sep", note: "The deal closed on 22 September." });
+  test("a copy update becomes a row dated by the update, ahead of newer items", () => {
+    const old = item({ updates: [{ date: "2026-09-23", kind: "copy", note: "The deal closed on 22 September." }] });
+    const newer = item({ id: "2026-09-20-y", date: "2026-09-20", publishDate: "2026-09-20T10:00:00.000Z" });
+    const rows = feedRows([old, newer]);
+    expect(rows.map((r) => `${r.kind}:${r.date}`)).toEqual(["update:2026-09-23", "item:2026-09-20", "item:2026-06-29"]);
+    expect(feedRowKey(rows[0]!)).toBe("2026-06-29-x@2026-09-23");
   });
 
   test("a score update carries from/to; legacy history moves count once", () => {
@@ -74,6 +68,6 @@ describe("feed activity (2026-09-23 rule: attachments never resurface)", () => {
     const e = updateEntries(i);
     expect(e).toHaveLength(1);
     expect(e[0]!.score).toEqual({ from: 4, to: 5 });
-    expect(activityAt(i)).toBe("2026-09-22");
+    expect(feedRows([i]).map((r) => r.kind)).toEqual(["update", "item"]);
   });
 });
