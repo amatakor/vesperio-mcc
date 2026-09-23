@@ -1308,6 +1308,22 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
       }
     }
 
+    // Record what this update was (Florian, 2026-09-23): the note is the
+    // agent's reader-facing sentence; the kind decides whether the item
+    // resurfaces (copy or score) or stays put (attach only).
+    const scoreMoved = merged.snr !== current.snr;
+    const copyChanged = Object.keys(patch).some((k) => k !== "secondary_urls" && k !== "sources");
+    const kind = scoreMoved ? "score" : copyChanged ? "copy" : "attach";
+    merged.updates = [
+      ...(current.updates ?? []),
+      {
+        date: today,
+        kind,
+        note: u.note,
+        ...(scoreMoved ? { score: { from: current.snr, to: merged.snr } } : {}),
+      },
+    ];
+
     const before = errors.length;
     validateItem(merged, `${path} (after patch)`, errors);
     if (errors.length === before) patchedItems.set(u.id, merged);

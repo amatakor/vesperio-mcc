@@ -5663,13 +5663,29 @@ a.stamp:focus-visible {
    with an UPDATES ledger, one row per day, hosts as stamps. */
 .card-update {
   font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--text-2);
+  margin: 6px var(--pad-card) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.update-when {
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: var(--ls-label);
-  line-height: 1.3;
   text-transform: uppercase;
-  color: var(--text-2);
-  margin: 6px var(--pad-card) 0;
+  color: var(--text-1);
+}
+.card-seismic .update-when {
+  color: #0a0a0a;
+}
+.card:not(.card-seismic):hover .update-when,
+.card-seismic:hover .update-when {
+  color: inherit;
 }
 .card-seismic .card-update {
   color: #0a0a0a;
@@ -5709,9 +5725,8 @@ a.stamp:focus-visible {
   color: var(--dim);
   line-height: 1.55;
 }
-.update-links {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-left: 10px;
+.update-score {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-2);
 }

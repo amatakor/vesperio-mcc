@@ -223,6 +223,18 @@ export const TAGLINE_MAX_CHARS = 140;
  * 2026-07-11 backfill migration stamped existing items. Additive and
  * optional: names with no registry match simply carry no entry.
  */
+export const ITEM_UPDATE_KINDS = ["copy", "score", "attach"] as const;
+export type ItemUpdateKind = (typeof ITEM_UPDATE_KINDS)[number];
+export interface ItemUpdate {
+  /** YYYY-MM-DD the update merged. */
+  date: string;
+  kind: ItemUpdateKind;
+  /** The agent's reader-facing sentence: what changed for the story. */
+  note: string;
+  /** Present on score updates. */
+  score?: { from: SnrValue; to: SnrValue };
+}
+
 export interface ItemEntity {
   name: string;
   ref: string;
@@ -289,6 +301,15 @@ export interface Item {
   companies: string[];
   /** companies[] names resolved to registry profiles (see ItemEntity). */
   entities?: ItemEntity[];
+  /**
+   * Post-publication updates, oldest first, stamped by finalize-sweep from
+   * the draft's updates[] notes (Florian, 2026-09-23: a resurfaced item
+   * must say what changed). kind: "copy" when the patch changed what the
+   * reader sees, "score" when the score moved (bump or rescore), "attach"
+   * when only corroboration was attached. Only copy and score updates
+   * resurface an item in the feed; attach is recorded and silent.
+   */
+  updates?: ItemUpdate[];
   /** Lead source: the best source attached to the item. Required. */
   source_url: string;
   secondary_urls: string[];

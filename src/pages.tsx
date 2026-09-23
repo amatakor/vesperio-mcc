@@ -453,25 +453,17 @@ function UpdatesSection({ item }: { item: Item }) {
     <section className="panel updates">
       <h2>updates</h2>
       <ul className="update-list">
-        {entries.map((e) => (
-          <li key={e.date} className="update-row">
-            <span className="update-date">{e.date}</span>
-            <span className="update-text">
-              {e.text}
-              {e.sources.length > 0 && (
-                <span className="update-links">
-                  {e.sources.map((s) => (
-                    <a key={s.url} href={s.url} rel="noopener" className="stamp">
-                      {s.host}
-                      <span className="stamp-glyph" aria-hidden="true">
-                        {" "}
-                        &#8599;
-                      </span>
-                    </a>
-                  ))}
+        {entries.map((e, i) => (
+          <li key={`${e.date}-${i}`} className="update-row">
+            <span className="update-date">
+              {e.date}
+              {e.score && (
+                <span className="update-score">
+                  score {e.score.from} &rarr; {e.score.to}
                 </span>
               )}
             </span>
+            <span className="update-text">{e.note}</span>
           </li>
         ))}
       </ul>
@@ -886,10 +878,13 @@ function Card({
       </div>
       {latestUpdateNote(item) && (
         <p className="card-update">
-          <span className="update-glyph" aria-hidden="true">
-            &#8635;
+          <span className="update-when">
+            <span className="update-glyph" aria-hidden="true">
+              &#8635;
+            </span>{" "}
+            {latestUpdateNote(item)!.day}
           </span>{" "}
-          updated {latestUpdateNote(item)}
+          {latestUpdateNote(item)!.note}
         </p>
       )}
       <h2 className="card-headline">

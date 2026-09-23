@@ -641,6 +641,23 @@ describe("finalize-sweep merge", () => {
     expect(state.sweeps[0]!.snr_movements).toBeUndefined();
   });
 
+  test("an update stamps updates[] with its kind and the agent's note (2026-09-23)", () => {
+    writeDraft({
+      updates: [
+        {
+          id: existingItem.id,
+          patch: { explainer: { tagline: "ICEYE grows its Finnish line; the expansion is now complete." } },
+          note: "ICEYE says the expansion is complete.",
+        },
+      ],
+    });
+    const result = finalizeSweep({ dataDir, draftPath, now: new Date("2026-07-20T05:00:00.000Z") });
+    expect(result.errors).toEqual([]);
+    const it = readItems().items.find((i) => i.id === existingItem.id)!;
+    expect(it.updates).toEqual([{ date: "2026-07-20", kind: "copy", note: "ICEYE says the expansion is complete." }]);
+    expect(it.explainer.tagline).toContain("complete");
+  });
+
   test("resolveHeld removes a queued entry by exact headline", () => {
     // Seed a held entry, then resolve it in a follow-up draft.
     writeDraft({

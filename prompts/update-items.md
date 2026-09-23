@@ -377,7 +377,7 @@ entry is a failed run, not a handoff.
        {
          "id": "existing-id",
          "patch": { },
-         "note": "what changed and why",
+         "note": "ONE reader-facing sentence: what changed for the story, e.g. \"DOJ confirms the ruling in its own press release\". It is shown on the card and on the item page whenever the update changes the copy or the score; attaching corroboration alone is recorded but never resurfaces the item, so never write \"attached N sources\" as a note.",
          "attach": [ { "url": "...", "outlet": "...", "class": "...", "via": "corroboration" } ],
          "bump": "reinforcement"
        }
