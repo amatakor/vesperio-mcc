@@ -2964,10 +2964,7 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
     <section id="stock" className="panel">
       <h2>stock</h2>
       <p>
-        {ticker.value}{" "}
-        <a href={ticker.source ?? undefined} rel="noopener" className="dim">
-          (source, as of {ticker.as_of})
-        </a>
+        {ticker.value} <Stamp source={ticker.source} asOf={ticker.as_of} />
       </p>
       {head}
       <div
@@ -3106,12 +3103,7 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
         <ul className="positioning-claims">
           {claims.map((c, i) => (
             <li key={i}>
-              <span>{c.value}</span>{" "}
-              {c.source && (
-                <a className="src-link" href={c.source} rel="noopener">
-                  source
-                </a>
-              )}
+              <span>{c.value}</span> <Stamp source={c.source} asOf={c.as_of} />
             </li>
           ))}
         </ul>
@@ -3120,17 +3112,16 @@ function PositioningSection({ positioning }: { positioning?: Positioning | null 
         <div className="mcc-read">
           <span className="mcc-read-label">MCC READ</span>
           <p className="mcc-read-text">{read.text}</p>
-          <p className="dim mcc-read-basis">
-            basis:{" "}
+          <p className="mcc-read-basis">
+            <span className="stamp">as of {read.as_of} · basis</span>{" "}
             {read.basis.map((u, i) => (
-              <span key={u}>
-                {i > 0 && " "}
-                <a className="src-link" href={u} rel="noopener">
-                  [{i + 1}]
-                </a>
-              </span>
-            ))}{" "}
-            · as of {read.as_of}
+              <a key={u} className="stamp stamp-num" href={u} rel="noopener">
+                {i + 1}
+                <span className="stamp-glyph" aria-hidden="true">
+                  &#8599;
+                </span>
+              </a>
+            ))}
           </p>
         </div>
       )}
@@ -3171,10 +3162,7 @@ function FaqSection({ items }: { items: FaqItem[] }) {
         <details className="cite faq-item" key={q}>
           <summary>{q}</summary>
           <p className="citation">
-            {render(field.value)}{" "}
-            <a href={field.source ?? undefined} rel="noopener" className="dim">
-              (source, as of {field.as_of})
-            </a>
+            {render(field.value)} <Stamp source={field.source} asOf={field.as_of} />
           </p>
         </details>
       ))}
@@ -3262,10 +3250,7 @@ function GenerationsSection({ generations }: { generations?: GenerationRow[] }) 
           <div key={g.name} className="gen-row">
             <span className="gen-name">{g.name}</span>
             <span className="gen-text">
-              {g.text}{" "}
-              <a href={g.source} rel="noopener" className="dim">
-                (source, as of {g.as_of})
-              </a>
+              {g.text} <Stamp source={g.source} asOf={g.as_of} />
             </span>
           </div>
         ))}
@@ -3321,10 +3306,7 @@ function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
             </span>
           </span>
           <span className="fact-meta">
-            <a href={m.source} rel="noopener">
-              source
-            </a>{" "}
-            <span className="dim">as of {m.as_of}</span>
+            <Stamp source={m.source} asOf={m.as_of} />
           </span>
         </div>
       ))}
@@ -3337,6 +3319,38 @@ function ImagingModeCards({ modes }: { modes?: ImagingMode[] }) {
  * micro label, prominent value, dim meta line. Same information as the old
  * table, none of the spreadsheet reading.
  */
+/**
+ * Provenance stamp (rule 79, Florian 2026-09-23: sources were set as
+ * sentences in link cyan on every surface): one dim T3 stamp,
+ * "AS OF date ↗", the whole stamp the link, cyan only under the pointer.
+ * A label ("computed", "basis") may lead; no source, no glyph.
+ */
+function Stamp({
+  source,
+  asOf,
+  label,
+  block,
+}: {
+  source?: string | null;
+  asOf?: string | null;
+  label?: string | null;
+  block?: boolean;
+}) {
+  const text = [label ?? null, asOf ? `as of ${asOf}` : null].filter(Boolean).join(" · ");
+  if (text === "" && !source) return null;
+  const cls = `stamp${block ? " stamp-block" : ""}`;
+  if (!source) return <span className={cls}>{text}</span>;
+  return (
+    <a className={cls} href={source} rel="noopener">
+      {text || "source"}
+      <span className="stamp-glyph" aria-hidden="true">
+        {" "}
+        &#8599;
+      </span>
+    </a>
+  );
+}
+
 function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }) {
   const cell = (label: string, f: SourcedField<unknown>, computed: boolean) => {
     const raw = f.value;
@@ -3404,19 +3418,12 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
           </span>
         )}
         <span className="fact-meta">
-          {f.source ? (
-            <a href={f.source} rel="noopener">
-              source
-            </a>
-          ) : computed ? (
-            <span className="dim">computed</span>
-          ) : null}
-          {f.as_of && <span className="dim">as of {f.as_of}</span>}
           {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+          <Stamp source={f.source} asOf={f.as_of} label={computed ? "computed" : null} />
           {f.source && (
             <a className="fact-host" href={f.source} rel="noopener" tabIndex={-1} aria-hidden="true">
               {hostOf(f.source) ?? "source"}
-              {f.as_of ? ` · as of ${f.as_of}` : ""}
+              {f.as_of ? ` · as of ${f.as_of}` : ""} &#8599;
             </a>
           )}
         </span>
@@ -3486,10 +3493,8 @@ function TimelineSection({ history }: { history: TimelineEvent[] }) {
                 <span className="tl-title">
                   {e.headline}
                   {e.outcome && <span className="incident-line">outcome: {e.outcome}</span>}
-                  {e.cause && <span className="incident-line">cause: {e.cause}</span>}{" "}
-                  <a href={e.source} rel="noopener" className="dim">
-                    (source, as of {e.as_of})
-                  </a>
+                  {e.cause && <span className="incident-line">cause: {e.cause}</span>}
+                  <Stamp source={e.source} asOf={e.as_of} block />
                 </span>
               </span>
             </li>
@@ -3804,10 +3809,8 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
               {profile.overview.value && (
                 <>
                   <p className="overview-block">{profile.overview.value}</p>
-                  <p className="dim source-line">
-                    <a href={profile.overview.source ?? undefined} rel="noopener">
-                      (source, as of {profile.overview.as_of})
-                    </a>
+                  <p className="stamp-line">
+                    <Stamp source={profile.overview.source} asOf={profile.overview.as_of} />
                   </p>
                 </>
               )}
