@@ -1137,24 +1137,20 @@ function UpdateCard({ item, update, onOpen }: { item: Item; update: UpdateEntry;
     onOpen(item);
   };
   return (
-    <article className="card card-upd" data-item-id={item.id} data-update={update.date} onClick={open}>
+    <article className={`card card-upd card-${item.impact}`} data-item-id={item.id} data-update={update.date} onClick={open}>
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
           {item.category}
         </a>
         <ImpactBadge impact={item.impact} variant="chip" />
-        <span className="chip chip-upd">
-          <span className="update-glyph" aria-hidden="true">
-            &#8635;
-          </span>{" "}
-          update
-        </span>
         <span className="date">
           <span className="date-event">{update.date}</span>
         </span>
       </div>
       <h2 className="card-headline">
-        <a href={`/item/${item.id}/`}>{item.headline}</a>
+        <a href={`/item/${item.id}/`}>
+          <span className="card-upd-prefix">Update:</span> {item.headline}
+        </a>
       </h2>
       <p className="card-tagline card-upd-note">{cardNote(update.note)}</p>
       <div className="card-foot">
