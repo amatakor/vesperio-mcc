@@ -3349,14 +3349,17 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
             : "no"
           : Array.isArray(raw)
             ? raw.join(", ")
-            : String(raw);
+            : typeof raw === "number" && !/founded|year/i.test(label)
+              ? fmtNum(raw)
+              : String(raw);
+    const isCount = typeof raw === "number" && !/founded|year/i.test(label);
     const entityHref =
       ENTITY_ROW_LABELS.has(label) && typeof raw === "string"
         ? entityHrefFor(raw, orgHrefs)
         : undefined;
     const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
     return (
-      <div key={label} className="fact-cell">
+      <div key={label} className={`fact-cell${isCount ? " fact-cell-count" : ""}`}>
         <span className="fact-label">{label}</span>
         <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
           {isUrl ? (
@@ -3990,11 +3993,11 @@ export function ConstellationPage({ data }: { data: DataFor<"constellation"> }) 
     generations: profile.generations,
     orbitTab: {
       rows: [
-        ["orbit", profile.orbit],
         countRow("sats launched (total)", "sats_launched_total"),
         countRow("sats active (claimed)", "sats_active_claimed"),
         verifiedRow,
         ["sats planned", profile.sats_planned],
+        ["orbit", profile.orbit],
       ],
       hasLayer: hasOrbitsLayer,
     },
