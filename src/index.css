@@ -5593,3 +5593,65 @@ table.stat-table th {
     animation: none;
   }
 }
+
+/* ------------------------------------------------ provenance stamps (79)
+   One form for every "where does this come from" on the registry: a dim
+   T3 stamp, "AS OF date ↗", the whole stamp the link. Dim at rest, link
+   cyan only under the pointer or focus (the one exception to constant-
+   cyan links, Florian 2026-09-23). The overview and the read close on a
+   right-aligned stamp under a hairline; timeline rows carry theirs on a
+   right-aligned line; fact cells set it as the third line, right-aligned,
+   with the PROV badge beside it. The SOURCES section stays the ledger. */
+.stamp {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--dim);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur-fast, 120ms) var(--ease, linear);
+}
+a.stamp:hover,
+a.stamp:focus-visible {
+  color: var(--link);
+}
+.stamp-glyph {
+  display: inline-block;
+}
+.stamp-block {
+  display: block;
+  text-align: right;
+  margin-top: 4px;
+}
+.stamp-num {
+  margin-left: 6px;
+}
+.stamp-line {
+  margin: -0.6rem 0 1.1rem;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  text-align: right;
+}
+.mcc-read-basis {
+  text-align: right;
+  margin-top: 8px;
+}
+.registry-profile .fact-meta {
+  justify-content: flex-end;
+}
+.registry-profile .fact-host {
+  justify-content: flex-end;
+}
+.positioning-claims li .stamp,
+.faq-item .citation .stamp,
+.gen-text .stamp {
+  margin-left: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    transition: none;
+  }
+}

@@ -407,3 +407,12 @@ that frames the cell in the domain accent and reveals the source host
 without moving anything (rule 78). Orbit facts beside the 3D view
 fill the column as a two-column ledger. "Events" is now "crawled
 events", capped at the latest twelve with a count line.
+
+Provenance stamps (2026-09-23): the registry stops setting sources as
+sentences. Every "where does this come from" is now one dim stamp,
+"AS OF date ↗", which is the link and turns cyan only under the
+pointer. The overview and the MCC READ close on a right-aligned stamp
+under a hairline, fact cells carry theirs as a quiet third line,
+timeline rows on a line of their own; the bracketed "(source, as of
+...)" and the SOURCE word are gone from reading surfaces. The SOURCES
+section keeps the full ledger.

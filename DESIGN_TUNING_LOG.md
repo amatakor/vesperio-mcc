@@ -1618,3 +1618,23 @@ the figure register, the orbit sentence as the full-width last row.
 IMPLEMENTATION: FactGrid (pages.tsx: fact-cell-{count,date,text,empty},
 .fact-glyph, .fact-unit, .fact-host overlay); "Facts grid polish" blocks
 at the end of index.css; .orbit-facts rules.
+
+## 79 · Provenance is a stamp, not a sentence
+
+RULE (Florian, 2026-09-23, "sources are too prominent and cluttered",
+proposal agreed): every "where does this come from" on a registry
+profile is ONE form, the stamp: T3 mono caps, "AS OF date ↗", the
+whole stamp the link, dim at rest, link cyan only under the pointer or
+focus. This is the one standing exception to constant-cyan links.
+Placement: the overview and the MCC READ close on a right-aligned
+stamp under a hairline (the read's reads "AS OF date · BASIS 1↗ 2↗");
+fact cells set it as the third line, right-aligned, PROV badge beside
+it, the hover overlay showing the host; timeline rows carry a
+right-aligned stamp line under the headline; claims, FAQ answers,
+generation rows, imaging modes, and the ticker line take it inline.
+The bracketed "(source, as of ...)" sentence and the "SOURCE" word are
+retired from reading surfaces. The SOURCES section remains the full
+ledger with class and score per fact.
+
+IMPLEMENTATION: Stamp (pages.tsx), "provenance stamps (79)" block in
+index.css; .source-line and .src-link survive only for the item page.
