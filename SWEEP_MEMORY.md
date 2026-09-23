@@ -93,88 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-23)
-
-- 2026-08-23-A: `federalregister.gov`'s own HTML document pages redirect
-  every WebFetch to the `unblock.federalregister.gov` bot-check (2026-07-30-H's
-  pattern held again), and this run additionally found the FAA's own PDF
-  NEPA documents at `faa.gov/space/environmental/nepa_docs/*.pdf` 403
-  outright, unlike the 2026-07-28-H case where a saved PDF was at least
-  readable after a failed WebFetch. The `federalregister.gov/api/v1/documents/<id>.json`
-  form still worked cleanly and gave title/publication_date/docket_id/
-  comments_close_on/agencies -- used those verified fields only (a new FAA
-  NEPA comment period on Reditus Space's ENOS reentry vehicle, closing Aug
-  28) and deliberately left out more specific figures a WebSearch synthesis
-  offered (reentry count per year, exact geographic bounds, cooperating
-  agencies) since those were never confirmed by a direct fetch of the
-  notice's actual text, only by search-engine paraphrase.
-- 2026-08-23-B: A federal RFI/press-release fact can be real and
-  well-corroborated even when the ONLY page that actually loads is an
-  obscure aggregator: transportation.gov and faa.gov both 403'd for the
-  FAA's spaceport-siting/priority-airspace RFI (implementing the Aug 20
-  space transportation policy), and no English trade outlet covering it
-  specifically could be found; it-boltwise.de (a German tech-news site)
-  was the only page that fetched, and its docket number (FAA-2026-9736)
-  and 60-day comment window matched independent WebSearch synthesis
-  snippets of the DOT release closely enough to trust as a genuine, if
-  thin, informal-class corroboration attach on the already-published
-  Aug 20 policy item (already at the SNR 5 ceiling, so no bump applied).
-- 2026-08-23-C: A very quiet queue (296 consumed, only 27 candidates, all
-  SpaceX stock/IPO-lockup speculation or ISRO National Space Day recap
-  noise) and a fully clean discovery/signals pass still surfaced two
-  genuinely new facts, both regulatory follow-ons to already-published
-  items rather than standalone stories -- worth remembering that a thin
-  queue doesn't mean thin sourcing work; both finds required chasing a
-  signals-pass lead (Jeff Foust's FAA-spaceport-RFI post) or a targeted
-  Federal Register API query rather than appearing readymade. Also
-  reconfirmed two standing stale-resurfacing traps on new instances: an
-  "ISRO exits rocket manufacturing" IN-SPACe-chairman quote traced
-  straight to the year-old Sept 2025 HAL/SSLV tech-transfer signing
-  (extends 2026-08-21-G), and a "Starlink now largest ISP in Zimbabwe"
-  CleanTechnica piece cited the same Q1 2026 POTRAZ data already covered
-  by Orbital Today/Space in Africa in May 2026, with no new figures at
-  all in the body text despite the fresh-sounding Aug 22 headline.
-- 2026-08-23-D: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 0 new, 2 updated, 0 held") plus `jq` validating
-  `items.json` parses (452 items, matching `sweep-context.ts`'s pre-run
-  `feedSize`) and a direct read of both updated items' `snr`/`sources`
-  fields as the build-health signal.
-
-## Normal-mode sweep, ~11h49m gap, unfiltered full source list (2026-08-23, second)
-
-- 2026-08-23-E: China's Manned Space Engineering Office (cmse.gov.cn), the
-  actual first-party publisher of the Chang'e-7 launch-postponement
-  statement Xinhua and Ars Technica both quoted, had not yet had the
-  Aug. 23 announcement indexed by WebSearch within a few hours of the
-  event (a targeted `site:cmse.gov.cn` search and a direct fetch of its
-  `/xwzx/` news-listing page both surfaced only its Aug. 19
-  vertical-transfer update, one step behind). Led with Xinhua/Ars
-  Technica/SCMP instead rather than block on the primary; worth a
-  same-metric re-check of cmse.gov.cn next sweep in case a first-party
-  rescore to the direct-source ceiling becomes available once it
-  indexes, same pattern as the 2026-07-30-E CASC case (though note
-  english.news.cn/Xinhua itself is NOT on the gate's official_record
-  allowlist per 2026-08-03-F, so cmse.gov.cn would need its own
-  anti-spoof check before it could class higher than `trade`).
-- 2026-08-23-F: europeanspaceflight.substack.com's `/feed` endpoint
-  403'd on WebFetch this session even though the bare `europeanspaceflight.com`
-  site and a Bluesky-linked article on it both fetched fine; the
-  substack leg's flakiness looks session-dependent like the Bluesky API
-  (2026-07-25-F and peers), not a permanent block. A whitelisted
-  signal's Bluesky post pointing at a europeanspaceflight.com article
-  (CNES's Aug. 18 mass-producible-telescope RFI) was still fully
-  chaseable via WebSearch + direct fetch of the linked page without the
-  substack feed.
-- 2026-08-23-G: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate on the first
-  attempt, continuing the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
-  updated, 0 held") plus a direct `jq` read of all three new items' and
-  the one updated item's `snr`/`category`/`impact`/`snr_trace` fields
-  (455 items total, up from 452) as the build-health signal.
-
 ## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-24)
 
 - 2026-08-24-A: A significant fact for an already-published item can sit
@@ -5207,3 +5125,42 @@ a newer entry if a lesson changes.
   held") plus a direct read of all five new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields (723 items, up from
   718) as the build-health signal.
+
+## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-09-23)
+
+- 2026-09-23-A: A near-total-junk queue (SpaceX stock/valuation churn, Trump's
+  personal SpaceX stock-trade disclosures under the standing 2026-08-31-J
+  passive-disclosure exclusion, Starship Flight 14 pre-launch prep) still
+  yielded one genuinely new item via the mandatory signals pass: Anatoly
+  Zak's bluesky post on Russia's Okulus radar satellite reaching orbit and
+  beginning to supply data to federal agencies, per Roscosmos chief Dmitry
+  Bakanov. RussianSpaceWeb's own article was paywalled ("insider content");
+  the fact was sourced instead to vz.ru (mainstream) and Ruscable.ru
+  (informal, an odd small outlet that nonetheless wrote independently, same
+  shape as the standing NordiskPost/it-boltwise.de precedent). Novyy Kosmos
+  (the private developer) has no `src/data/registry` entity, so its own
+  `newspacecorp.ru` product page capped at `informal` per the standing
+  no-registry-host workaround, extending that list to a Russian company for
+  the first time; its page still supplied genuinely new, directly-fetched
+  technical specs (0.4m resolution, 400km swath, 475km SSO) the news
+  coverage didn't state.
+- 2026-09-23-B: A SpaceNews trend piece Jeff Foust linked ("Satellite
+  industry grapples with the end of Falcon 9," Sept 21) bundles only
+  already-published facts (the June rideshare-booking freeze, the Sept 10
+  Avio CEO commentary) under a bigger-sounding headline; left undrafted per
+  the standing 2026-09-04-T/2026-09-06-H/2026-09-14-D "trend piece bundles
+  old facts" pattern. Worth treating this specific headline shape as a
+  standing dead lead unless a source states a genuinely new fact (an actual
+  Falcon 9 retirement date, a stated production wind-down timeline).
+- 2026-09-23-C: A DOJ press release (`justice.gov`, a bare `.gov` host) on
+  the already-published Sept 21 Starbase land-swap injunction ruling
+  cleanly upgraded the item's lead from mainstream to official_record via
+  the documented MAGPIE `rescore` path (patch `source_url` first, then
+  `rescore.sources[0].url` must match), moving SNR 4 to 5 and adding DOJ's
+  own on-record characterization of the swap as a "win-win" for
+  conservation and national security. Aviation Week's Sept 18 "USSF Seeks
+  Agile, Docking-Capable Sats For Future Victus Mission" is a request for
+  industry proposals (responses due Oct 19, first deliveries targeted
+  FY2029), not an award; left undrafted per the standing
+  CLPS/NDAA/Resilient-GPS process-not-yet-fact pattern, worth re-checking
+  once Space Systems Command actually selects a vendor.
