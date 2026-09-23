@@ -5429,3 +5429,101 @@ table.stat-table th {
     font-size: 21px;
   }
 }
+/* Facts grid polish (Florian, 2026-09-23: "hard to read"). A fixed-column
+   ledger: cells keep their column width on the last row instead of
+   stretching; every label carries a 6px glyph coded by value kind (filled
+   in the domain accent for counts, outlined for dates, neutral for text,
+   dashed for unknown); labels read at text-2 and step to text-1 on hover;
+   hovering a cell grows a 2px accent frame inward (the card grammar) and
+   reveals the source host beside SOURCE. Rule 77 registers unchanged. */
+:where(.registry-profile) .fact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0;
+  background: var(--panel);
+  overflow: hidden;
+}
+.registry-profile .fact-cell {
+  position: relative;
+  flex: none;
+  margin: 0 -1px -1px 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 14px 10px;
+  gap: 6px;
+  transition: background var(--dur-fast, 120ms) var(--ease, linear);
+}
+.registry-profile .fact-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0 solid var(--reg-acc, var(--shell-accent));
+  pointer-events: none;
+  transition: border-width 100ms ease-out;
+}
+.registry-profile .fact-cell:hover::after {
+  border-width: 2px;
+}
+.registry-profile .fact-cell:hover {
+  background: var(--bg-raised, var(--panel));
+  z-index: 1;
+}
+.registry-profile .fact-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  transition: color var(--dur-fast, 120ms) var(--ease, linear);
+}
+.registry-profile .fact-cell:hover .fact-label {
+  color: var(--text-1);
+}
+.fact-glyph {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--n4);
+}
+.fact-cell-count .fact-glyph {
+  background: var(--reg-acc, var(--shell-accent));
+}
+.fact-cell-date .fact-glyph {
+  background: transparent;
+  border: 1px solid var(--reg-acc, var(--shell-accent));
+}
+.fact-cell-empty .fact-glyph {
+  background: transparent;
+  border: 1px dashed var(--n4);
+}
+.registry-profile .fact-cell-count .fact-value,
+.registry-profile .fact-cell-date .fact-value {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.registry-profile .fact-meta {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fact-host {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-width 160ms ease-out,
+    opacity var(--dur-fast, 120ms) var(--ease, linear);
+}
+.registry-profile .fact-cell:hover .fact-host {
+  max-width: 14rem;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .registry-profile .fact-cell,
+  .registry-profile .fact-cell::after,
+  .registry-profile .fact-label,
+  .fact-host {
+    transition: none;
+  }
+}

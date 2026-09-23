@@ -3353,14 +3353,20 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
               ? fmtNum(raw)
               : String(raw);
     const isCount = typeof raw === "number" && !/founded|year/i.test(label);
+    const isDate = typeof raw === "string" && /^\d{4}(-\d{2}){0,2}$/.test(raw);
+    const isEmpty = raw === null || raw === undefined;
+    const kind = isEmpty ? "empty" : isCount ? "count" : isDate ? "date" : "text";
     const entityHref =
       ENTITY_ROW_LABELS.has(label) && typeof raw === "string"
         ? entityHrefFor(raw, orgHrefs)
         : undefined;
     const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
     return (
-      <div key={label} className={`fact-cell${isCount ? " fact-cell-count" : ""}`}>
-        <span className="fact-label">{label}</span>
+      <div key={label} className={`fact-cell fact-cell-${kind}`}>
+        <span className="fact-label">
+          <span className="fact-glyph" aria-hidden="true" />
+          {label}
+        </span>
         <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
           {isUrl ? (
             <a href={raw as string} rel="noopener">
@@ -3390,7 +3396,7 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
         <span className="fact-meta">
           {f.source ? (
             <a href={f.source} rel="noopener">
-              source
+              source<span className="fact-host"> · {hostOf(f.source) ?? ""}</span>
             </a>
           ) : computed ? (
             <span className="dim">computed</span>
