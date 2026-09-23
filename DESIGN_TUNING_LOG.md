@@ -1535,3 +1535,86 @@ none; the grid sets the measure, justification keeps paragraphs
 equal-width at any size). The rail clamp and the middle gap floor
 stay; space-between is gone. Single-column /system/YYYY-MM/ archive
 pages keep the 46rem cap.
+
+## 76 · Registry canvas: one page, a rail and a reading column
+
+RULE (Florian, 2026-09-10, "really good changes"): a registry profile
+is ONE scrolling page on the full frame; the tabs are retired. Left,
+a 20rem sticky instrument rail: monogram, name (T1), kind (T3), chips,
+the page sourcing mark, KEY DETAILS as a vertical ledger (the key
+spec cells, topped up from short fact rows and the ticker so thin
+entities still carry their defining numbers; founding years take no
+thousands separator), then LINKS (website, part-of, same-operator
+siblings). Right, the reading column under a sticky jump bar
+(overview / details / orbit / history / sources; active state in the
+page's domain accent per rule 68d; scroll-spy measured against the
+bar itself, a click owns the highlight until its scroll settles,
+smooth scroll unless reduced motion): overview lead, on-orbit chart,
+positioning, facts across the width, orbit view, CRAWLED EVENTS
+(latest 12 with a count line; every item naming the entity, so
+Falcon 9 would otherwise list every SpaceX story), timeline, sources,
+FAQ last and unframed. Alphabetical prev/next, the footer strip, and
+the 46rem profile cap are gone; one right edge (rule 71) holds.
+Below 64rem the grid stacks, rail first, rail no longer sticky.
+
+IMPLEMENTATION: ProfilePage (pages.tsx: .canvas-grid, .canvas-rail,
+.rail-ledger, .jump-bar, scroll-spy + click lock); "registry canvas"
+block at the end of index.css. RelatedSection, KeySpecsPanel and the
+tab-owner map are deleted.
+
+## 77 · Registry type system: six levels, nothing else
+
+RULE (Florian, 2026-09-10, "more consistent, simplified, abide by a
+system"): registry surfaces use exactly six type levels, and no
+registry selector carries any other font-size, weight, tracking, or
+transform:
+
+  T1 TITLE      Plex Sans 28 / 200 / +.12em / caps   (rail name)
+  T2 HEADING    Plex Mono 11 / 500 / +.14em / caps   (// section heads,
+                the same register as the item page)
+  T3 LABEL      Plex Mono 10 / 500 / +.08em / caps / dim  (every caption:
+                spec and fact labels, as-of stamps, dates, breadcrumbs,
+                source lines, notes, basis lines)
+  T4 BODY       Plex Mono 12.5 / 400 / 0 / as authored / lh 1.55  (every
+                value and every sentence: fact values, overview, MCC
+                READ, claims, timeline and event headlines, FAQ answers,
+                source labels, generation and imaging-mode text)
+  T5 INSTRUMENT Plex Mono 11 / 500 / +.14em / caps   (jump bar, range
+                chips)
+  T6 FIGURE     Plex Sans 300 caps tabular: 21 in the rail ledger and
+                the stock price, 52/200 for the on-orbit hero
+
+Caps are chrome (T1, T2, T3, T5, T6); T4 is never transformed, so the
+MCC READ, the overview, and every fact value read in sentence case as
+written. The rem-based sizes (0.62 to 0.95rem) that produced 23
+distinct sizes across the profile are retired for the token scale.
+
+IMPLEMENTATION: the registry regions of index.css and the canvas
+block; rule-70 opt-outs extended to every T4 class.
+
+## 78 · Facts grid: a ledger with kind glyphs and instrument paper
+
+RULE (Florian, 2026-09-23, "hard to read", then "even more polished,
+background graphics, be creative"): the profile facts grid is a fixed-
+column ledger (auto-fill 14rem columns; last-row cells keep their width).
+Each label carries a 6px kind glyph: filled in the domain accent for
+counts and figures, outlined for dates, neutral for text, dashed for
+unknown; labels read at text-2 (the one amendment to rule 77's dim T3)
+and step to text-1 on hover. Short stated values with no digit render
+in caps (YES, ACTIVE, MEDIUM-LIFT LAUNCH VEHICLE); values carrying a
+number keep authored case so units survive. A unit in a label
+("payload to leo (kg)") becomes a right-aligned KG / M / USD tag.
+Counts take thousands separators (founding years exempt). Every cell
+sits on instrument paper: a 1px dot every 8px (an SVG tile, never a
+gradient), faint at rest, stronger under the pointer. Hover grows a 2px
+accent frame inward (card grammar), lifts the ground one step, blinks
+the glyph once, and overlays the source host on the meta line; the
+overlay is absolutely positioned so nothing in the cell ever moves
+(a first version let the meta row wrap and the cell grew: rejected).
+Reduced motion disables all of it. Orbit facts beside the 3D view are
+a two-column ledger whose rows stretch to the view's height, counts in
+the figure register, the orbit sentence as the full-width last row.
+
+IMPLEMENTATION: FactGrid (pages.tsx: fact-cell-{count,date,text,empty},
+.fact-glyph, .fact-unit, .fact-host overlay); "Facts grid polish" blocks
+at the end of index.css; .orbit-facts rules.

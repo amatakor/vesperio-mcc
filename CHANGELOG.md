@@ -340,3 +340,70 @@ now runs the script right after the artwork pipeline and before the
 build, and /system/ gained a "registry coverage" panel listing the open
 gaps (name, item count, last seen, category breakdown, and links to
 the two most recent items) plus a totals line.
+
+Stock chart redesign (2026-09-10): the organization profile's close-price
+chart read heavier than everything around it, a tall gridded SVG with a
+thick line and labeled axes on both sides. It is now a light instrument:
+140px tall on desktop (120px on phones), full width of its panel, one
+hairline frame, and just two faint reference lines for the period's high
+and low (values as small labels at the right edge) plus the first and
+last date at the bottom; no gridlines, no y-axis column. The line itself
+is thin (1.25px), colored green or red by whether the close is up or
+down against the period's opening price (a small "vs period open" label
+says so), with a flat 8% tint fill underneath and a dotted baseline at
+the opening price. Hovering, touching, or focusing the chart and using
+the arrow keys moves a crosshair with a square marker (no circles,
+house rule) and swaps the header numbers for a readout of that day's
+date, price, and change; releasing the pointer returns to the latest
+close. The line draws itself in left to right whenever the range tab
+changes, and the latest close pulses once when the chart first appears;
+both respect reduced-motion settings. Same data path as before (the
+daily Yahoo Finance pipeline, sliced client-side by the 1M/6M/1Y/ALL
+toggle) and the same SSR/hydration behavior (the chart still renders
+nothing until the client fetch resolves). Fixed a real bug uncovered
+while building this: the chart's wrap div used to change element type
+between its loading and loaded states, so React silently remounted it
+the moment data arrived and the size-tracking observer was left
+watching a detached node, a genuine (if intermittent) reason the old
+chart could fail to size itself correctly. The wrap div is now one
+stable element across every state, and its size is measured
+synchronously on mount rather than waiting on the browser's own resize
+notification.
+
+Registry type system (2026-09-10, rule 77): the registry profile pages
+(rail, key-details ledger, facts grid, timeline, sources, positioning,
+FAQ, generations, imaging modes, on-orbit chart, stock chart) had grown
+23 distinct font sizes, thirteen of them rem values that didn't line up
+with any design token. They now render on six type levels: a title
+(28/200 caps), a section heading (11/500 caps), a label for every small
+caption (10/500 caps, dim), a body value for sourced sentences and
+numbers (12.5/400, sentence case), an instrument register for the jump
+bar and the stock range chips (11/500 caps, tighter tracking), and a
+figure register for the three places a number is the page's lead
+(the rail's key-details values, the on-orbit count, the stock price).
+Sourced prose that needs to read in its original case (fact values,
+FAQ answers, positioning claims, timeline entries, incident lines,
+event headlines, source names) is opted out of the registry's
+container-level uppercase rule one class at a time rather than
+case-by-case, and a long stated phrase in the rail's key-details ledger
+now reliably renders at body scale instead of being shadowed by the
+figure register regardless of source order in the stylesheet. No
+registry data changed; this is type sizing only.
+
+Registry canvas (2026-09-23): the registry profile is one scrolling
+page on the full frame. A sticky rail on the left carries the name,
+kind, chips, the sourcing mark, key details as a vertical ledger, and
+links; the reading column on the right runs under a sticky jump bar
+that replaced the tabs (overview, details, orbit, history, sources).
+The type system is six levels and nothing else (design log rule 77),
+so the MCC READ and every fact value now read in sentence case at body
+scale while chrome stays in caps. The stock chart is a 140px
+instrument with a sign-colored hairline, a tint fill, period high and
+low, a crosshair readout under the pointer or the arrow keys, and a
+draw-in on range change. The facts grid is a fixed-column ledger with
+kind glyphs on every label, unit tags, thousands separators, caps for
+short stated values, instrument paper behind the cells, and a hover
+that frames the cell in the domain accent and reveals the source host
+without moving anything (rule 78). Orbit facts beside the 3D view
+fill the column as a two-column ledger. "Events" is now "crawled
+events", capped at the latest twelve with a count line.

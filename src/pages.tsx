@@ -2649,13 +2649,15 @@ function Breadcrumbs({
   );
 }
 
+const EVENTS_SHOWN = 12;
 function EventsSection({ events }: { events: ProfileEventRef[] }) {
   if (events.length === 0) return null;
+  const shown = events.slice(0, EVENTS_SHOWN);
   return (
     <section id="events" className="panel">
-      <h2>events</h2>
+      <h2>crawled events</h2>
       <ul className="index-list event-list">
-        {events.map((i) => (
+        {shown.map((i) => (
           <li key={i.id} className="event-row">
             <span className={`chip chip-${i.impact}`}>{i.impact}</span>
             <span className="date">{i.date}</span>
@@ -2663,48 +2665,15 @@ function EventsSection({ events }: { events: ProfileEventRef[] }) {
           </li>
         ))}
       </ul>
+      {events.length > shown.length && (
+        <p className="dim event-more">
+          latest {shown.length} of {events.length} items naming this entity
+        </p>
+      )}
     </section>
   );
 }
 
-function RelatedSection({
-  profile,
-  related,
-  prev,
-  next,
-}: {
-  profile: ProfileMeta;
-  related: Array<{ slug: string; name: string; href: string }>;
-  prev: { slug: string; name: string } | null;
-  next: { slug: string; name: string } | null;
-}) {
-  if (related.length === 0 && !prev && !next) return null;
-  const sameLabel = profile.affiliation ?? "same operator";
-  return (
-    <section id="related" className="panel">
-      <h2>related</h2>
-      {related.length > 0 && (
-        <div className="related-group">
-          <span className="related-label">{sameLabel}</span>
-          <div className="tag-row">
-            {related.map((r) => (
-              <a key={r.slug} className="chip chip-tag" href={r.href}>
-                {r.name}
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-      <div className="related-group related-browse">
-        <span className="related-label">browse</span>
-        <div className="prev-next">
-          <span>{prev ? <a href={`${profile.siblingsBase}${prev.slug}/`}>&larr; {prev.name}</a> : <span className="dim">&larr; start</span>}</span>
-          <span>{next ? <a href={`${profile.siblingsBase}${next.slug}/`}>{next.name} &rarr;</a> : <span className="dim">end &rarr;</span>}</span>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /** Named sub-constellations of a fleet-level parent (e.g. Planet's SkySat, SuperDove). */
 function ChildConstellationsSection({ children }: { children: Array<{ slug: string; name: string }> }) {
@@ -2725,8 +2694,10 @@ function ChildConstellationsSection({ children }: { children: Array<{ slug: stri
 
 /** Close-price chart for listed entities; ~2y series via the Yahoo Finance pipeline
  * (scripts/fetch-stocks.ts), sliced client-side by the 1M/6M/1Y/ALL toggle.
- * Hand-rolled SVG: labeled Y gridlines in real currency, dated X ticks, a
- * pointer/touch crosshair readout, and padded normalization so amplitude reads. */
+ * A light instrument, not a data-dense chart: two reference lines (period
+ * high/low), first/last date only, a hover/keyboard crosshair readout, and a
+ * draw-in on range change. The SVG's viewBox tracks the wrap div's measured
+ * box 1:1 (ResizeObserver), so nothing here is non-uniformly stretched. */
 type StockRangeKey = "1M" | "6M" | "1Y" | "ALL";
 const STOCK_RANGES: Array<{ key: StockRangeKey; days: number }> = [
   { key: "1M", days: 31 },
@@ -2748,19 +2719,6 @@ function stockCurrencyPrefix(code: string | null): string {
   if (!code) return "";
   return CURRENCY_SYMBOLS[code] ?? `${code} `;
 }
-/** 3-4 evenly-rounded gridline values spanning [lo, hi]. */
-function stockNiceTicks(lo: number, hi: number, count: number): number[] {
-  const range = hi - lo;
-  if (!(range > 0)) return [lo];
-  const rawStep = range / count;
-  const mag = Math.pow(10, Math.floor(Math.log10(rawStep)));
-  const norm = rawStep / mag;
-  const step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
-  const start = Math.ceil(lo / step) * step;
-  const ticks: number[] = [];
-  for (let v = start; v <= hi + step * 1e-6; v += step) ticks.push(Number(v.toFixed(6)));
-  return ticks;
-}
 function stockDecimals(step: number): number {
   if (step >= 10) return 0;
   if (step >= 1) return 1;
@@ -2772,7 +2730,9 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
   const [failed, setFailed] = useState(false);
   const [range, setRange] = useState<StockRangeKey>("6M");
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [box, setBox] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
   const svgRef = useRef<SVGSVGElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     fetch(`/data/stocks/${slug}.json`)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
@@ -2780,19 +2740,26 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
       .catch(() => setFailed(true));
   }, [slug]);
 
-  // Geometry (viewBox units); CSS scales the SVG to container width.
-  const W = 640;
-  const H = 210;
-  const ML = 48; // room for Y labels
-  const MR = 12;
-  const MT = 12;
-  const MB = 22; // room for X labels
-  const plotL = ML;
-  const plotR = W - MR;
-  const plotT = MT;
-  const plotB = H - MB;
-  const plotW = plotR - plotL;
-  const plotH = plotB - plotT;
+  // Track the wrap's own rendered box (CSS sets its height per breakpoint);
+  // the SVG viewBox mirrors these px 1:1 so stroke widths and the 4px marker
+  // never get non-uniformly scaled. A layout effect measures synchronously
+  // on mount (no waiting on ResizeObserver's own first callback, which some
+  // browsers defer well past the frame); the observer then just tracks
+  // later changes (breakpoint switch, window resize).
+  useIsoLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const apply = (w: number, h: number) => setBox((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+    const initial = el.getBoundingClientRect();
+    apply(Math.round(initial.width), Math.round(initial.height));
+    const ro = new ResizeObserver((entries) => {
+      const rect = entries[0]?.contentRect;
+      if (!rect) return;
+      apply(Math.round(rect.width), Math.round(rect.height));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const closes = data?.closes ?? null;
 
@@ -2824,55 +2791,87 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
     return closes.filter(([d]) => new Date(d).getTime() >= cutoff);
   }, [closes, effRange]);
 
-  let chart: ReactNode = null;
-  if (sliced.length > 1) {
+  // The wrap div below is ONE stable element rendered at a fixed spot
+  // regardless of state (loading / empty / chart): its ref must never see a
+  // remount, or the ResizeObserver effect (mount-once) would end up watching
+  // a detached node and `box` would never update.
+  const hasChart = sliced.length > 1 && box.w > 0 && box.h > 0;
+  const isEmpty = !hasChart && (failed || (data != null && (!closes || closes.length < 2)));
+  let head: ReactNode = null;
+  let wrapInner: ReactNode = null;
+  let ariaLabel: string | undefined;
+  let onMove: ((clientX: number) => void) | undefined;
+  let onKeyDown: ((e: ReactKeyboardEvent<HTMLDivElement>) => void) | undefined;
+
+  if (hasChart) {
     const n = sliced.length;
     const vals = sliced.map(([, c]) => c);
     const dmin = Math.min(...vals);
     const dmax = Math.max(...vals);
-    const pad = (dmax - dmin || dmax || 1) * 0.08;
+    const pad = (dmax - dmin || dmax || 1) * 0.12;
     const lo = dmin - pad;
     const hi = dmax + pad;
     const span = hi - lo || 1;
     const cur = stockCurrencyPrefix(data?.currency ?? null);
+    const dec = stockDecimals(dmax - dmin || dmax || 1);
+
+    // Geometry mirrors the measured box 1:1 (no y-axis column; the reference
+    // labels float inside the plot's right edge instead of a reserved rail).
+    const W = box.w;
+    const H = box.h;
+    const plotL = 2;
+    const plotR = W - 2;
+    const plotT = 6;
+    const plotB = H - 16;
+    const plotW = plotR - plotL;
+    const plotH = plotB - plotT;
 
     const x = (i: number) => plotL + (i / (n - 1)) * plotW;
     const y = (c: number) => plotT + ((hi - c) / span) * plotH;
 
-    const line = sliced.map(([, c], i) => `${x(i).toFixed(1)},${y(c).toFixed(1)}`).join(" ");
-
-    const ticks = stockNiceTicks(lo, hi, 4).filter((t) => t >= lo && t <= hi);
-    const step = ticks.length > 1 ? ticks[1]! - ticks[0]! : span;
-    const dec = stockDecimals(step);
-
-    // ~4 date ticks across the window.
-    const xtCount = Math.min(4, n);
-    const longWindow = (STOCK_RANGES.find((r) => r.key === effRange)!.days ?? Infinity) > 300 || effRange === "ALL";
-    const fmtDate = (iso: string) => (longWindow ? iso.slice(0, 7) : iso.slice(5));
-    const xTicks = Array.from({ length: xtCount }, (_, k) => Math.round((k / (xtCount - 1 || 1)) * (n - 1)));
+    const linePoints = sliced.map(([, c], i) => `${x(i).toFixed(1)},${y(c).toFixed(1)}`).join(" ");
+    const areaPoints = `${plotL.toFixed(1)},${plotB.toFixed(1)} ${linePoints} ${plotR.toFixed(1)},${plotB.toFixed(1)}`;
 
     const first = vals[0]!;
     const last = vals[n - 1]!;
     const up = last >= first;
     const pct = first ? ((last - first) / first) * 100 : 0;
+    const lineColor = up ? "var(--acc-green)" : "var(--acc-red)";
+
+    const dmaxY = y(dmax);
+    const dminY = y(dmin);
+    const openY = y(first);
 
     const hIdx = hoverIdx == null ? null : Math.max(0, Math.min(n - 1, hoverIdx));
     const hPoint = hIdx == null ? null : sliced[hIdx]!;
+    const readout = hPoint ?? sliced[n - 1]!;
+    const readoutChg = first ? ((readout[1] - first) / first) * 100 : 0;
+    const readoutUp = readout[1] >= first;
 
-    const onMove = (clientX: number) => {
+    onMove = (clientX: number) => {
       const svg = svgRef.current;
       if (!svg) return;
       const rect = svg.getBoundingClientRect();
       if (rect.width === 0) return;
-      const vx = ((clientX - rect.left) / rect.width) * W;
+      const vx = clientX - rect.left;
       const frac = (vx - plotL) / plotW;
       setHoverIdx(Math.max(0, Math.min(n - 1, Math.round(frac * (n - 1)))));
     };
+    onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setHoverIdx((v) => Math.max(0, (v ?? n - 1) - 1));
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setHoverIdx((v) => Math.min(n - 1, (v ?? n - 1) + 1));
+      }
+    };
+    ariaLabel = `${effRange} close prices, last ${cur}${last.toFixed(2)}, ${up ? "up" : "down"} ${Math.abs(pct).toFixed(1)}% versus period open`;
 
-    chart = (
+    head = (
       <>
         <div className="stock-head">
-          <span className="stock-last mono">
+          <span className="stock-last">
             {cur}
             {last.toFixed(2)}
           </span>
@@ -2880,6 +2879,7 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
             {up ? "+" : ""}
             {pct.toFixed(1)}%
           </span>
+          <span className="stock-legend dim mono">vs period open</span>
           <span className="stock-attr dim mono">market data: Yahoo Finance, end of day</span>
         </div>
         <div className="sig-tabs stock-tabs">
@@ -2898,80 +2898,65 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
             </button>
           ))}
         </div>
-        <div className="stock-chart-wrap">
-          <svg
-            ref={svgRef}
-            viewBox={`0 0 ${W} ${H}`}
-            className="stock-chart"
-            role="img"
-            aria-label={`${effRange} close prices, last ${cur}${last.toFixed(2)}`}
-            onPointerMove={(e) => onMove(e.clientX)}
-            onPointerDown={(e) => onMove(e.clientX)}
-            onPointerLeave={() => setHoverIdx(null)}
-          >
-            {/* Y gridlines + labels */}
-            {ticks.map((t) => {
-              const gy = y(t);
-              return (
-                <g key={`y${t}`}>
-                  <line x1={plotL} y1={gy} x2={plotR} y2={gy} stroke="var(--line)" strokeWidth="1" />
-                  <text x={plotL - 6} y={gy + 3} textAnchor="end" className="stock-axis-label">
-                    {cur}
-                    {t.toFixed(dec)}
-                  </text>
-                </g>
-              );
-            })}
-            {/* X ticks */}
-            {xTicks.map((i, k) => (
-              <text
-                key={`x${i}`}
-                x={x(i)}
-                y={H - 6}
-                textAnchor={k === 0 ? "start" : k === xTicks.length - 1 ? "end" : "middle"}
-                className="stock-axis-label"
-              >
-                {fmtDate(sliced[i]![0])}
-              </text>
-            ))}
-            {/* price line */}
-            <polyline points={line} fill="none" stroke="var(--fg)" strokeWidth="1.5" />
-            {/* crosshair */}
-            {hIdx != null && hPoint && (
-              <g>
-                <line
-                  x1={x(hIdx)}
-                  y1={plotT}
-                  x2={x(hIdx)}
-                  y2={plotB}
-                  stroke="var(--acc-cyan)"
-                  strokeWidth="1"
-                />
-                {/* telemetry cursor: cyan is the DATA constant */}
-                <circle cx={x(hIdx)} cy={y(hPoint[1])} r="3" fill="var(--acc-cyan)" />
-                <text
-                  x={x(hIdx) < W / 2 ? x(hIdx) + 6 : x(hIdx) - 6}
-                  y={plotT + 10}
-                  textAnchor={x(hIdx) < W / 2 ? "start" : "end"}
-                  className="stock-readout"
-                >
-                  {hPoint[0]}  {cur}
-                  {hPoint[1].toFixed(2)}
-                </text>
-              </g>
-            )}
-          </svg>
-        </div>
       </>
     );
-  } else if (failed || (data && (!closes || closes.length < 2))) {
-    chart = (
-      <div className="stock-chart-wrap stock-empty">
-        <p className="dim">No price series available yet; the daily pipeline fills it.</p>
-      </div>
+
+    wrapInner = (
+      <>
+        <div className="stock-readout" aria-hidden="true">
+          <span className="stock-readout-date mono">{readout[0]}</span>
+          <span className={`stock-readout-price mono ${readoutUp ? "up" : "down"}`}>
+            {cur}
+            {readout[1].toFixed(2)} {readoutUp ? "+" : ""}
+            {readoutChg.toFixed(1)}%
+          </span>
+        </div>
+        <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="stock-chart" aria-hidden="true">
+          {/* period high / low: the only reference lines */}
+          <line x1={plotL} y1={dmaxY} x2={plotR} y2={dmaxY} className="stock-ref-line" />
+          <line x1={plotL} y1={dminY} x2={plotR} y2={dminY} className="stock-ref-line" />
+          <text x={plotR - 4} y={dmaxY + 11} textAnchor="end" className="stock-axis-label">
+            {cur}
+            {dmax.toFixed(dec)}
+          </text>
+          <text x={plotR - 4} y={dminY - 4} textAnchor="end" className="stock-axis-label">
+            {cur}
+            {dmin.toFixed(dec)}
+          </text>
+          {/* period-open baseline, dotted */}
+          <line x1={plotL} y1={openY} x2={plotR} y2={openY} className="stock-open-line" />
+          {/* first / last date only */}
+          <text x={plotL} y={H - 4} textAnchor="start" className="stock-axis-label">
+            {sliced[0]![0]}
+          </text>
+          <text x={plotR} y={H - 4} textAnchor="end" className="stock-axis-label">
+            {sliced[n - 1]![0]}
+          </text>
+          {/* flat fill under the line */}
+          <polygon points={areaPoints} fill={lineColor} className="stock-area" />
+          {/* price line, drawn in on mount and on every range change */}
+          <polyline key={`line-${effRange}`} points={linePoints} pathLength={1000} stroke={lineColor} className="stock-line" />
+          {/* latest close: pulses once on mount */}
+          <rect x={x(n - 1) - 2} y={y(last) - 2} width="4" height="4" fill={lineColor} className="stock-flash" />
+          {/* crosshair: hover, touch or arrow keys */}
+          {hIdx != null && hPoint && (
+            <g>
+              <line x1={x(hIdx)} y1={plotT} x2={x(hIdx)} y2={plotB} className="stock-crosshair" />
+              <rect
+                x={x(hIdx) - 2}
+                y={y(hPoint[1]) - 2}
+                width="4"
+                height="4"
+                fill={lineColor}
+                className="stock-marker"
+              />
+            </g>
+          )}
+        </svg>
+      </>
     );
-  } else {
-    chart = <div className="stock-chart-wrap" />;
+  } else if (isEmpty) {
+    wrapInner = <p className="dim mono">no price series available yet</p>;
   }
 
   if (!ticker.value) return null;
@@ -2984,7 +2969,26 @@ function StockSection({ slug, ticker }: { slug: string; ticker: SourcedField<str
           (source, as of {ticker.as_of})
         </a>
       </p>
-      {chart}
+      {head}
+      <div
+        className={`stock-chart-wrap${isEmpty ? " stock-empty" : ""}`}
+        ref={wrapRef}
+        tabIndex={hasChart ? 0 : undefined}
+        aria-label={ariaLabel}
+        onPointerMove={onMove ? (e) => onMove!(e.clientX) : undefined}
+        onPointerDown={
+          onMove
+            ? (e) => {
+                onMove!(e.clientX);
+                e.currentTarget.focus();
+              }
+            : undefined
+        }
+        onPointerLeave={hasChart ? () => setHoverIdx(null) : undefined}
+        onKeyDown={onKeyDown}
+      >
+        {wrapInner}
+      </div>
     </section>
   );
 }
@@ -3088,36 +3092,6 @@ function OrbitYearsChart({ slug }: { slug: string }) {
 }
 
 /** The entity's defining numbers as anchored, citable stat cells (registry v2). */
-function KeySpecsPanel({ cells, note }: { cells: SpecCell[]; note?: string | null }) {
-  if (cells.length < 2) return null;
-  return (
-    <section id="specs" className="panel">
-      <h2>key details</h2>
-      <div className="specs-grid">
-        {cells.map((c) => (
-          <div key={c.field} id={`spec-${c.field}`} className="spec-cell">
-            <span className="spec-label">
-              {c.label}{" "}
-              <a className="spec-anchor" href={`#spec-${c.field}`}>
-                {"//"}
-              </a>
-            </span>
-            {/* Numbers earn the display size; stated phrases ("under 6 hour
-                global revisit") read at body scale so they never tower. */}
-            <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
-              {c.value}
-            </span>
-            <span className="spec-meta">
-              {c.computed && <span className="dim spec-computed">computed</span>}
-              {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
-            </span>
-          </div>
-        ))}
-      </div>
-      {note && <p className="dim spec-note">{note}</p>}
-    </section>
-  );
-}
 
 /** Where the entity sits: sourced positioning claims, then MCC's own read. */
 function PositioningSection({ positioning }: { positioning?: Positioning | null }) {
@@ -3375,16 +3349,35 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
             : "no"
           : Array.isArray(raw)
             ? raw.join(", ")
-            : String(raw);
+            : typeof raw === "number" && !/founded|year/i.test(label)
+              ? fmtNum(raw)
+              : String(raw);
+    const isCount = typeof raw === "number" && !/founded|year/i.test(label);
+    const isDate = typeof raw === "string" && /^\d{4}(-\d{2}){0,2}$/.test(raw);
+    const isEmpty = raw === null || raw === undefined;
+    const kind = isEmpty ? "empty" : isCount ? "count" : isDate ? "date" : "text";
+    // Short stated values (status, class, country, yes/no) are chrome and
+    // read in caps; anything carrying a digit (units, ranges) stays as
+    // authored so "550 km" never becomes "550 KM".
+    const caps = kind === "text" && !/\d/.test(text) && text.length <= 48;
+    // A unit in the label ("payload to leo (kg)") becomes a tag at the
+    // label's right edge; the label itself loses the bracket.
+    const unitMatch = label.match(/^(.*?)\s*\(([a-z%\/]+)\)$/i);
+    const labelText = unitMatch ? unitMatch[1]! : label;
+    const unit = unitMatch ? unitMatch[2]! : null;
     const entityHref =
       ENTITY_ROW_LABELS.has(label) && typeof raw === "string"
         ? entityHrefFor(raw, orgHrefs)
         : undefined;
     const isUrl = typeof raw === "string" && /^https?:\/\//.test(raw);
     return (
-      <div key={label} className="fact-cell">
-        <span className="fact-label">{label}</span>
-        <span className={`fact-value${raw === null || raw === undefined ? " empty" : ""}`}>
+      <div key={label} className={`fact-cell fact-cell-${kind}`}>
+        <span className="fact-label">
+          <span className="fact-glyph" aria-hidden="true" />
+          {labelText}
+          {unit && <span className="fact-unit">{unit}</span>}
+        </span>
+        <span className={`fact-value${isEmpty ? " empty" : ""}${caps ? " fact-value-caps" : ""}`}>
           {isUrl ? (
             <a href={raw as string} rel="noopener">
               {hostOf(raw as string)}
@@ -3420,6 +3413,12 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
           ) : null}
           {f.as_of && <span className="dim">as of {f.as_of}</span>}
           {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+          {f.source && (
+            <a className="fact-host" href={f.source} rel="noopener" tabIndex={-1} aria-hidden="true">
+              {hostOf(f.source) ?? "source"}
+              {f.as_of ? ` · as of ${f.as_of}` : ""}
+            </a>
+          )}
         </span>
       </div>
     );
@@ -3561,23 +3560,6 @@ function SourceCardsSection({
   );
 }
 
-/** Which tab owns each legacy in-page anchor, for #hash deep links. */
-const TAB_OF_ANCHOR: Record<string, string> = {
-  specs: "overview",
-  "on-orbit": "overview",
-  generations: "overview",
-  stock: "overview",
-  constellations: "overview",
-  vehicles: "overview",
-  faq: "overview",
-  facts: "specs",
-  incidents: "history",
-  events: "history",
-  positioning: "overview",
-  sources: "sources",
-  "fact-ledger": "sources",
-};
-
 /** Shared destination-page shell for every registry profile type (tabbed, registry v3). */
 function ProfilePage({ profile }: { profile: ProfileMeta }) {
   const children = profile.children ?? [];
@@ -3596,11 +3578,6 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
         )
         .map((s) => ({ slug: s.slug, name: s.name, href: `${profile.siblingsBase}${s.slug}/` }))
     : [];
-  const ordered = profile.siblings.slice().sort((a, b) => a.name.localeCompare(b.name));
-  const idx = ordered.findIndex((s) => s.slug === profile.slug);
-  const prev = idx > 0 ? ordered[idx - 1]! : null;
-  const next = idx >= 0 && idx < ordered.length - 1 ? ordered[idx + 1]! : null;
-
   const hasEvents = profile.events.length > 0;
   const hasSources = profile.rows.some(([, f]) => !!f.source);
   const orbitTab = profile.orbitTab ?? null;
@@ -3620,51 +3597,110 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
     else if (c.source) unscored++;
   }
 
-  const tabs: Array<[string, string]> = [["overview", "overview"]];
-  // Display label is "details" (Florian, 2026-07-12: "specs" fits vehicles
-  // and spacecraft, not spaceports or organizations); the tab id and its
-  // #specs deep-link anchors stay unchanged.
-  tabs.push(["specs", profile.imagingModes && profile.imagingModes.length > 0 ? "details & sensors" : "details"]);
-  if (hasOrbit) tabs.push(["orbit", "orbit"]);
-  if (timeline.length > 0 || hasEvents) tabs.push(["history", "history"]);
-  if (hasSources) tabs.push(["sources", "sources"]);
+  // Canvas layout (move 1 mockup, Florian 2026-09-10): one scrolling page
+  // on the full frame. The tabs became a sticky jump bar over in-page
+  // sections; deep links (#history, #facts, #spec-*) resolve natively.
+  const jumps: Array<[string, string]> = [["overview", "overview"]];
+  jumps.push(["facts", profile.imagingModes && profile.imagingModes.length > 0 ? "details & sensors" : "details"]);
+  if (hasOrbit) jumps.push(["orbit-view", "orbit"]);
+  if (timeline.length > 0 || hasEvents) jumps.push(["history", "history"]);
+  if (hasSources) jumps.push(["sources", "sources"]);
 
-  const [tab, setTab] = useState("overview");
-  const tabIds = tabs.map(([id]) => id).join(",");
+  // Scroll-spy for the jump bar: the section whose top last crossed the
+  // bar is the active one.
+  const [activeJump, setActiveJump] = useState("overview");
+  const jumpIds = jumps.map(([id]) => id).join(",");
+  const jumpBarRef = useRef<HTMLElement>(null);
+  // A click owns the highlight until the scroll it started has settled;
+  // the spy must not flicker through every section on the way.
+  const jumpLockRef = useRef(0);
   useEffect(() => {
-    const ids = tabIds.split(",");
-    const apply = () => {
-      const h = window.location.hash.replace(/^#/, "");
-      if (!h) return;
-      const direct = ids.includes(h) ? h : null;
-      const owner =
-        direct ?? TAB_OF_ANCHOR[h] ?? (h.startsWith("spec-") ? "overview" : null);
-      if (owner && ids.includes(owner)) {
-        setTab(owner);
-        if (!direct) {
-          requestAnimationFrame(() => document.getElementById(h)?.scrollIntoView());
-        }
+    const ids = jumpIds.split(",");
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      if (Date.now() < jumpLockRef.current) return;
+      const barBottom = (jumpBarRef.current?.getBoundingClientRect().bottom ?? 96) + 8;
+      let current = ids[0]!;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= barBottom) current = id;
       }
+      // At the very bottom the last section wins even when it is short.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) current = ids[ids.length - 1]!;
+      setActiveJump((prev) => (prev === current ? prev : current));
     };
-    apply();
-    window.addEventListener("hashchange", apply);
-    return () => window.removeEventListener("hashchange", apply);
-  }, [tabIds]);
-  const pick = (id: string) => {
-    setTab(id);
+    const onScroll = () => {
+      if (raf === 0) raf = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf !== 0) cancelAnimationFrame(raf);
+    };
+  }, [jumpIds]);
+  const jumpTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    setActiveJump(id);
+    jumpLockRef.current = Date.now() + 700;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     window.history.replaceState(null, "", `#${id}`);
   };
-  // The 3D view (three.js, lazy chunk) mounts only once the orbit tab has
-  // actually been opened; until then profile pages ship none of it.
+
+  // The 3D view (three.js, lazy chunk) mounts only once the orbit section
+  // has scrolled near the viewport; until then profile pages ship none of it.
   const [orbitSeen, setOrbitSeen] = useState(false);
+  const orbitRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (tab === "orbit") setOrbitSeen(true);
-  }, [tab]);
+    const el = orbitRef.current;
+    if (!el || orbitSeen) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) setOrbitSeen(true);
+      },
+      { rootMargin: "400px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [orbitSeen]);
+
+  // Rail ledger: the key-spec cells, topped up from short fact rows when an
+  // entity has few defining figures (organizations, connectivity fleets),
+  // so the instrument column always carries the defining numbers.
+  const RAIL_SKIP = new Set(["operator", "provider", "country", "status", "website", "sensor types", "focus"]);
+  const railCells: SpecCell[] = [...specs];
+  if (profile.stockTicker?.value) {
+    railCells.push({ field: "ticker", label: "ticker", value: profile.stockTicker.value, as_of: profile.stockTicker.as_of, snr: profile.stockTicker.snr, snr_trace: profile.stockTicker.snr_trace });
+  }
+  if (railCells.length < 5) {
+    for (const [label, f] of profile.rows) {
+      if (railCells.length >= 5) break;
+      if (RAIL_SKIP.has(label) || railCells.some((c) => c.label === label)) continue;
+      // The on-orbit hero already carries the verified count when a CelesTrak layer exists.
+      if (label === "sats active (verified)" && orbitTab?.hasLayer) continue;
+      const v = f.value;
+      if (v === null || v === undefined) continue;
+      // Years never take a thousands separator; counts and figures do.
+      const text =
+        typeof v === "number" ? (label === "founded" ? String(v) : fmtNum(v)) : Array.isArray(v) ? v.join(", ") : String(v);
+      if (text.length === 0 || text.length > 40) continue;
+      railCells.push({ field: label.replace(/[^a-z0-9]+/gi, "-"), label, value: text, as_of: f.as_of, snr: f.snr, snr_trace: f.snr_trace });
+    }
+  }
+  const websiteRow = profile.rows.find(([label]) => label === "website");
+  const website = websiteRow && typeof websiteRow[1].value === "string" ? websiteRow[1].value : null;
+  const sameLabel = profile.affiliation ?? "same operator";
 
   return (
     <Layout current="registry">
       <div
-        className="registry-profile"
+        className="registry-profile canvas"
         style={profile.accent ? ({ "--reg-acc": profile.accent } as CSSProperties) : undefined}
       >
         <Breadcrumbs
@@ -3672,133 +3708,173 @@ function ProfilePage({ profile }: { profile: ProfileMeta }) {
           name={profile.name}
           parentLink={profile.parentLink}
         />
-        <div className="profile-head">
-          <h1 className="page-title profile-title">
-            <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
-            {profile.name}
-            {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}{" "}
-            <span className="dim">/ {profile.typeLabel}</span>
-          </h1>
-          <PageSourcingMark scored={scored} unscored={unscored} />
-        </div>
-        {profile.headerChips && profile.headerChips.length > 0 && (
-          <div className="profile-chips">
-            {profile.headerChips.map((c) => (
-              <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
-                {/* Status casing drifts in the source data ("Active" /
-                    "active" / "In Development"); normalize to lowercase at
-                    render only, never touching the stored value. Non-status
-                    chips (sensor types, country) keep their sourced casing. */}
-                {c.kind === "status" ? c.label.toLowerCase() : c.label}
-              </span>
-            ))}
-          </div>
-        )}
-        <div className="profile-tabs" role="tablist">
-          {tabs.map(([id, label]) => (
-            <button
-              key={id}
-              role="tab"
-              aria-selected={tab === id}
-              className={`profile-tab${tab === id ? " active" : ""}`}
-              onClick={() => pick(id)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        <div className="tab-panel" hidden={tab !== "overview"}>
-          {profile.overview.value && (
-            <>
-              <p className="overview-block">{profile.overview.value}</p>
-              <p className="dim source-line">
-                <a href={profile.overview.source ?? undefined} rel="noopener">
-                  (source, as of {profile.overview.as_of})
-                </a>
-              </p>
-            </>
-          )}
-          <KeySpecsPanel cells={specs} note={profile.specNote} />
-          {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
-          <GenerationsSection generations={profile.generations} />
-          <ChildConstellationsSection children={children} />
-          <VehicleRosterSection roster={roster} />
-          {profile.stockTicker?.value && (
-            <StockSection slug={profile.slug} ticker={profile.stockTicker} />
-          )}
-          {/* The house read closes the overview, just before the FAQ
-              (Florian 2026-07-09). */}
-          <PositioningSection positioning={positioning} />
-          <FaqSection items={profile.faq} />
-        </div>
-
-        <div className="tab-panel" hidden={tab !== "specs"}>
-          {profile.imagingModes && profile.imagingModes.length > 0 && (
-            <section id="imaging-modes" className="panel">
-              <h2>imaging modes</h2>
-              <ImagingModeCards modes={profile.imagingModes} />
-            </section>
-          )}
-          <section id="facts" className="panel">
-            <h2>facts</h2>
-            <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
-            {profile.tableNote && <p className="dim">{profile.tableNote}</p>}
-          </section>
-        </div>
-
-        {hasOrbit && orbitTab && (
-          <div className="tab-panel" hidden={tab !== "orbit"}>
-            <section id="orbit-view" className="panel">
-              <h2>orbit</h2>
-              <div className="orbit-grid">
-                {orbitTab.hasLayer && (
-                  <div className="orbit-view">
-                    {/* The SVG schematic defines the box and doubles as the
-                        no-WebGL / no-data fallback; the real 3D globe (same
-                        render as /orbits/, this constellation only) overlays
-                        it once loaded. No accent is passed to the 3D view:
-                        it resolves the constellation's own orbits palette
-                        token, so colors match the /orbits/ page exactly. */}
-                    <OrbitMini slug={profile.slug} accent={profile.accent} />
-                    {orbitSeen && (
-                      <div className="orbit-3d">
-                        <OrbitMini3D slug={profile.slug} />
-                      </div>
-                    )}
-                    <a className="orbit-open" href="/mcc/">
-                      open in mcc &rarr;
+        <div className="canvas-grid">
+          <aside className="canvas-rail">
+            <div className="rail-identity">
+              <RegistryLogo slug={profile.slug} name={profile.name} size="lg" />
+              <h1 className="page-title profile-title">
+                {profile.name}
+                {profile.variant && <span className="chip chip-variant">{profile.variant}</span>}
+              </h1>
+              <p className="rail-kind">{profile.typeLabel}</p>
+              {profile.headerChips && profile.headerChips.length > 0 && (
+                <div className="profile-chips">
+                  {profile.headerChips.map((c) => (
+                    <span key={c.label} className={`chip${c.kind === "status" ? " chip-status" : ""}`}>
+                      {c.kind === "status" ? c.label.toLowerCase() : c.label}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <PageSourcingMark scored={scored} unscored={unscored} />
+            </div>
+            {railCells.length > 0 && (
+              <section id="specs" className="rail-block">
+                <h2>key details</h2>
+                <div className="rail-ledger">
+                  {railCells.map((c) => (
+                    <div key={c.field} id={`spec-${c.field}`} className="rail-row">
+                      <span className="spec-label">{c.label}</span>
+                      <span className={`spec-value${c.value.length > 14 ? " spec-value-long" : ""}`}>
+                        {c.value}
+                      </span>
+                      <span className="spec-meta">
+                        {c.computed && <span className="dim spec-computed">computed</span>}
+                        {c.as_of && <span className="dim spec-asof">as of {c.as_of}</span>}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {profile.specNote && <p className="dim spec-note">{profile.specNote}</p>}
+              </section>
+            )}
+            {(website || related.length > 0 || profile.parentLink) && (
+              <section className="rail-block rail-links">
+                <h2>links</h2>
+                {website && (
+                  <p className="rail-link">
+                    <span className="spec-label">website</span>
+                    <a href={website} rel="noopener">
+                      {website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
                     </a>
+                  </p>
+                )}
+                {profile.parentLink && (
+                  <p className="rail-link">
+                    <span className="spec-label">part of</span>
+                    <a href={`/registry/constellations/${profile.parentLink.slug}/`}>{profile.parentLink.name}</a>
+                  </p>
+                )}
+                {related.length > 0 && (
+                  <div className="rail-link">
+                    <span className="spec-label">{sameLabel}</span>
+                    <div className="tag-row">
+                      {related.map((r) => (
+                        <a key={r.slug} className="chip chip-tag" href={r.href}>
+                          {r.name}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
-                <div className="orbit-facts">
-                  <FactGrid rows={orbitTab.rows} orgHrefs={profile.orgHrefs} />
+              </section>
+            )}
+            <p className="rail-back">
+              <a href="/registry/">&larr; back to the registry</a>
+            </p>
+            <LogoCredit slug={profile.slug} />
+          </aside>
+
+          <div className="canvas-main">
+            <nav className="jump-bar" aria-label="On this page" ref={jumpBarRef}>
+              {jumps.map(([id, label]) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  className={activeJump === id ? "active" : undefined}
+                  aria-current={activeJump === id ? "location" : undefined}
+                  onClick={(e) => jumpTo(e, id)}
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
+
+            <div id="overview" className="canvas-section">
+              {profile.overview.value && (
+                <>
+                  <p className="overview-block">{profile.overview.value}</p>
+                  <p className="dim source-line">
+                    <a href={profile.overview.source ?? undefined} rel="noopener">
+                      (source, as of {profile.overview.as_of})
+                    </a>
+                  </p>
+                </>
+              )}
+              {orbitTab?.hasLayer && <OrbitYearsChart slug={profile.slug} />}
+              <GenerationsSection generations={profile.generations} />
+              <ChildConstellationsSection children={children} />
+              <VehicleRosterSection roster={roster} />
+              {profile.stockTicker?.value && (
+                <StockSection slug={profile.slug} ticker={profile.stockTicker} />
+              )}
+              <PositioningSection positioning={positioning} />
+            </div>
+
+            <div className="canvas-section">
+              {profile.imagingModes && profile.imagingModes.length > 0 && (
+                <section id="imaging-modes" className="panel">
+                  <h2>imaging modes</h2>
+                  <ImagingModeCards modes={profile.imagingModes} />
+                </section>
+              )}
+              <section id="facts" className="panel canvas-anchor">
+                <h2>facts</h2>
+                <FactGrid rows={profile.rows} orgHrefs={profile.orgHrefs} />
+                {profile.tableNote && <p className="dim table-note">{profile.tableNote}</p>}
+              </section>
+            </div>
+
+            {hasOrbit && orbitTab && (
+              <section id="orbit-view" className="panel canvas-anchor" ref={orbitRef}>
+                <h2>orbit</h2>
+                <div className="orbit-grid">
+                  {orbitTab.hasLayer && (
+                    <div className="orbit-view">
+                      <OrbitMini slug={profile.slug} accent={profile.accent} />
+                      {orbitSeen && (
+                        <div className="orbit-3d">
+                          <OrbitMini3D slug={profile.slug} />
+                        </div>
+                      )}
+                      <a className="orbit-open" href="/mcc/">
+                        open in mcc &rarr;
+                      </a>
+                    </div>
+                  )}
+                  <div className="orbit-facts">
+                    <FactGrid rows={orbitTab.rows} orgHrefs={profile.orgHrefs} />
+                  </div>
                 </div>
+              </section>
+            )}
+
+            {(timeline.length > 0 || hasEvents) && (
+              <div id="history" className="canvas-section canvas-anchor">
+                <EventsSection events={profile.events} />
+                <TimelineSection history={timeline} />
               </div>
-            </section>
-          </div>
-        )}
+            )}
 
-        {(timeline.length > 0 || hasEvents) && (
-          <div className="tab-panel" hidden={tab !== "history"}>
-            <EventsSection events={profile.events} />
-            <TimelineSection history={timeline} />
-          </div>
-        )}
+            {hasSources && (
+              <div id="sources-section" className="canvas-section">
+                <SourceCardsSection rows={profile.rows} positioning={positioning} />
+              </div>
+            )}
 
-        {hasSources && (
-          <div className="tab-panel" hidden={tab !== "sources"}>
-            <SourceCardsSection rows={profile.rows} positioning={positioning} />
+            <FaqSection items={profile.faq} />
           </div>
-        )}
-
-        <footer className="profile-foot">
-          <RelatedSection profile={profile} related={related} prev={prev} next={next} />
-          <LogoCredit slug={profile.slug} />
-          <p>
-            <a href="/registry/">BACK TO THE REGISTRY</a>
-          </p>
-        </footer>
+        </div>
       </div>
     </Layout>
   );
@@ -3939,11 +4015,11 @@ export function ConstellationPage({ data }: { data: DataFor<"constellation"> }) 
     generations: profile.generations,
     orbitTab: {
       rows: [
-        ["orbit", profile.orbit],
         countRow("sats launched (total)", "sats_launched_total"),
         countRow("sats active (claimed)", "sats_active_claimed"),
         verifiedRow,
         ["sats planned", profile.sats_planned],
+        ["orbit", profile.orbit],
       ],
       hasLayer: hasOrbitsLayer,
     },
