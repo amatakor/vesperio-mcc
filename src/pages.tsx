@@ -25,7 +25,7 @@ import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS, CROSSFEED_OUTCOMES } from "./data/schema";
-import { freshnessChip } from "./lib/activity";
+import { freshnessChip, latestUpdateNote, updateEntries } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
 import { OrbitsLinkProvider } from "./orbits/chrome";
@@ -445,6 +445,40 @@ function SnrTraceRows({
     right), an axes strip, the calculation as an accounting ledger with
     the deltas on one right-aligned gutter, a sum row, and a footer.
     The hover popover keeps its own compact renderer (SnrTraceRows). */
+/** Post-publication changes as a dated ledger (Florian, 2026-09-23). */
+function UpdatesSection({ item }: { item: Item }) {
+  const entries = updateEntries(item).filter((e) => e.date > item.date);
+  if (entries.length === 0) return null;
+  return (
+    <section className="panel updates">
+      <h2>updates</h2>
+      <ul className="update-list">
+        {entries.map((e) => (
+          <li key={e.date} className="update-row">
+            <span className="update-date">{e.date}</span>
+            <span className="update-text">
+              {e.text}
+              {e.sources.length > 0 && (
+                <span className="update-links">
+                  {e.sources.map((s) => (
+                    <a key={s.url} href={s.url} rel="noopener" className="stamp">
+                      {s.host}
+                      <span className="stamp-glyph" aria-hidden="true">
+                        {" "}
+                        &#8599;
+                      </span>
+                    </a>
+                  ))}
+                </span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function SnrLedger({ item }: { item: Item }) {
   const trace = item.snr_trace;
   const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
@@ -850,6 +884,14 @@ function Card({
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
         <DateStamp item={item} />
       </div>
+      {latestUpdateNote(item) && (
+        <p className="card-update">
+          <span className="update-glyph" aria-hidden="true">
+            &#8635;
+          </span>{" "}
+          updated {latestUpdateNote(item)}
+        </p>
+      )}
       <h2 className="card-headline">
         <a href={`/item/${item.id}/`}>{item.headline}</a>
       </h2>
@@ -1382,6 +1424,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             <SourceList item={item} />
           </div>
           <div className="modal-right">
+            <UpdatesSection item={item} />
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1794,6 +1837,7 @@ export function ItemPage({ item }: { item: Item }) {
             <SourceList item={item} />
           </div>
           <div className="item-main">
+            <UpdatesSection item={item} />
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>

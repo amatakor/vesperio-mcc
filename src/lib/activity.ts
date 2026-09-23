@@ -50,3 +50,76 @@ export function freshnessChip(i: Item): string | null {
   const act = activityAt(i);
   return act > i.date ? `updated ${dayMonth(act)}` : null;
 }
+
+/** Registrable-ish host of a URL for update notes ("stocktwits.com"). */
+function hostOfUrl(url: string): string | null {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
+
+export interface UpdateEntry {
+  /** YYYY-MM-DD of the change. */
+  date: string;
+  /** Plain-English one-liner: what happened to the item that day. */
+  text: string;
+  /** The same without score reasons, for cards ("2 sources attached (...) · score 4 to 5"). */
+  brief: string;
+  /** Sources attached that day (hosts, deduplicated), for linking. */
+  sources: { host: string; url: string }[];
+}
+
+/**
+ * Every substantive post-publication change, newest day first, one entry
+ * per day (Florian, 2026-09-23: a resurfaced item must say WHAT changed,
+ * not only that it did). Sources attached after the publication day and
+ * score movements other than the persistence bump count; initial sourcing
+ * and scoring on the publication day do not.
+ */
+export function updateEntries(i: Item): UpdateEntry[] {
+  const pub = (i.publishDate ?? i.date).slice(0, 10);
+  const byDay = new Map<string, { sources: { host: string; url: string }[]; moves: string[]; briefs: string[] }>();
+  const day = (d: string) => {
+    let e = byDay.get(d);
+    if (!e) {
+      e = { sources: [], moves: [], briefs: [] };
+      byDay.set(d, e);
+    }
+    return e;
+  };
+  for (const s of i.sources ?? []) {
+    if (s.added <= pub) continue;
+    const host = hostOfUrl(s.url);
+    if (!host) continue;
+    const e = day(s.added);
+    if (!e.sources.some((x) => x.host === host)) e.sources.push({ host, url: s.url });
+  }
+  for (const h of i.snr_trace.history ?? []) {
+    if (h.reason.includes(PERSISTENCE_REASON) || h.date <= pub) continue;
+    const e = day(h.date);
+    e.moves.push(`score ${h.from} to ${h.to}: ${h.reason}`);
+    e.briefs.push(`score ${h.from} to ${h.to}`);
+  }
+  return [...byDay.entries()]
+    .sort((a, b) => (a[0] < b[0] ? 1 : -1))
+    .map(([date, e]) => {
+      const parts: string[] = [];
+      if (e.sources.length > 0) {
+        parts.push(
+          `${e.sources.length} source${e.sources.length === 1 ? "" : "s"} attached (${e.sources.map((s) => s.host).join(", ")})`,
+        );
+      }
+      const brief = [...parts, ...e.briefs].join(" · ");
+      parts.push(...e.moves);
+      return { date, text: parts.join(" · "), brief, sources: e.sources };
+    });
+}
+
+/** The latest update as one line for cards: "23 Sep · 3 sources attached (...)". */
+export function latestUpdateNote(i: Item): string | null {
+  const [latest] = updateEntries(i);
+  if (!latest || latest.date <= i.date) return null;
+  return `${dayMonth(latest.date)} · ${latest.brief}`;
+}

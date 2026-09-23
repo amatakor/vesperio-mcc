@@ -5655,3 +5655,63 @@ a.stamp:focus-visible {
     transition: none;
   }
 }
+
+/* ------------------------------------------------- update notes (80)
+   A resurfaced item says what changed (Florian, 2026-09-23): cards carry
+   one T3 line under the meta row ("↻ updated 23 Sep · 3 sources attached
+   (stocktwits.com, tradingview.com)"); the modal and the item page open
+   with an UPDATES ledger, one row per day, hosts as stamps. */
+.card-update {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 6px var(--pad-card) 0;
+}
+.card-seismic .card-update {
+  color: #0a0a0a;
+}
+.card:not(.card-seismic):hover .card-update {
+  color: var(--bg-page);
+}
+.card-seismic:hover .card-update {
+  color: #f5f5f5;
+}
+.update-glyph {
+  display: inline-block;
+}
+.update-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+}
+.update-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.update-row + .update-row {
+  border-top: 1px solid var(--line);
+}
+.update-date {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 1.55;
+}
+.update-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 10px;
+}
