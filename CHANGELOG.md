@@ -389,3 +389,21 @@ case-by-case, and a long stated phrase in the rail's key-details ledger
 now reliably renders at body scale instead of being shadowed by the
 figure register regardless of source order in the stylesheet. No
 registry data changed; this is type sizing only.
+
+Registry canvas (2026-09-23): the registry profile is one scrolling
+page on the full frame. A sticky rail on the left carries the name,
+kind, chips, the sourcing mark, key details as a vertical ledger, and
+links; the reading column on the right runs under a sticky jump bar
+that replaced the tabs (overview, details, orbit, history, sources).
+The type system is six levels and nothing else (design log rule 77),
+so the MCC READ and every fact value now read in sentence case at body
+scale while chrome stays in caps. The stock chart is a 140px
+instrument with a sign-colored hairline, a tint fill, period high and
+low, a crosshair readout under the pointer or the arrow keys, and a
+draw-in on range change. The facts grid is a fixed-column ledger with
+kind glyphs on every label, unit tags, thousands separators, caps for
+short stated values, instrument paper behind the cells, and a hover
+that frames the cell in the domain accent and reveals the source host
+without moving anything (rule 78). Orbit facts beside the 3D view
+fill the column as a two-column ledger. "Events" is now "crawled
+events", capped at the latest twelve with a count line.
