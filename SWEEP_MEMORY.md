@@ -5164,3 +5164,47 @@ a newer entry if a lesson changes.
   FY2029), not an award; left undrafted per the standing
   CLPS/NDAA/Resilient-GPS process-not-yet-fact pattern, worth re-checking
   once Space Systems Command actually selects a vendor.
+
+## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-09-23, second)
+
+- 2026-09-23-D: ESA's own program name "Boost!" (with a literal exclamation
+  mark) trips the site's no-exclamation-marks rule when used verbatim in
+  headline/tagline/what_happened; finalize-sweep rejects on
+  "exclamation marks never publish" regardless of the mark being part of a
+  proper noun. Wrote around it as "Boost" (no punctuation) in all prose
+  fields while leaving the literal `Boost!_` segment untouched in URLs,
+  which the gate does not flag.
+- 2026-09-23-E: A same-day NASA Isaacman quote (Italy committing over $5
+  billion to the Multi-Purpose Habitat lunar module, securing two Italian
+  astronauts Moon-surface seats) is genuinely single-sourced: European
+  Spaceflight's Sept 23 writeup is the only outlet reporting Isaacman's
+  Sept 15 Air, Space & Cyber Conference remarks with that specific dollar
+  figure and astronaut count; every other hit (Decode39, KeepTrack's own
+  space-brief) is either the stale March Statement-of-Intent story or a
+  bare rewrite of European Spaceflight itself, and the AFA's own
+  airandspaceforces.com writeup of the same conference didn't mention
+  Italy at all. Dated the item on the actual Sept 15 statement date per
+  the standing predates-window chase-it precedent rather than Sept 23
+  (the reporting date), landed an honest single-source SNR 2
+  (`crawl: "found_none"`, trade base 3 minus 1).
+- 2026-09-23-F: The dedup gate's shared-company + shared-category
+  heuristic fired again (extends 2026-09-19-B/2026-09-21-F/L/2026-09-22-L
+  and peers): the new Italy/NASA lunar-habitat item (category
+  `human-spaceflight`) matched against the unrelated Sept 17 SpaceX
+  Dragon-retirement/Starliner item purely on shared company NASA. One
+  `dedup_distinct` entry cleared it.
+- 2026-09-23-G: All 13 unique signals-pass people were checked (bluesky
+  author-feed API for the bluesky accounts, direct site fetch for the
+  rest); everything on-scope found (Aschbacher's ISRO post, Parsonson's
+  Italy/SaxaVord/Ariane-6-turbopump posts, Andrew Jones's China roundups,
+  Vivienne Machi's Victus RFP piece) traced to already-published items or
+  the standing process-not-yet-fact exclusion. The mandatory 5-source
+  HTML pass and an 8-query discovery pass covering the full matrix
+  (launch, financial, incident, regulatory, China, India, EO contracts,
+  M&A) surfaced nothing else new; every substantive hit traced to an
+  already-published item. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update (the workflow runs the build
+  itself); relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 3 new, 0 updated, 0 held") plus a direct read of all three new
+  items' `snr`/`category`/`impact`/`sources` fields as the build-health
+  signal.
