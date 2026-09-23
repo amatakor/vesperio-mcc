@@ -3406,13 +3406,19 @@ function FactGrid({ rows, orgHrefs }: { rows: ProfileRow[]; orgHrefs: OrgHrefs }
         <span className="fact-meta">
           {f.source ? (
             <a href={f.source} rel="noopener">
-              source<span className="fact-host"> · {hostOf(f.source) ?? ""}</span>
+              source
             </a>
           ) : computed ? (
             <span className="dim">computed</span>
           ) : null}
           {f.as_of && <span className="dim">as of {f.as_of}</span>}
           {f.tier === "provisional" && <span className="tag-provisional">prov</span>}
+          {f.source && (
+            <a className="fact-host" href={f.source} rel="noopener" tabIndex={-1} aria-hidden="true">
+              {hostOf(f.source) ?? "source"}
+              {f.as_of ? ` · as of ${f.as_of}` : ""}
+            </a>
+          )}
         </span>
       </div>
     );

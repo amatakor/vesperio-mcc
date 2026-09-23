@@ -1591,3 +1591,30 @@ distinct sizes across the profile are retired for the token scale.
 
 IMPLEMENTATION: the registry regions of index.css and the canvas
 block; rule-70 opt-outs extended to every T4 class.
+
+## 78 · Facts grid: a ledger with kind glyphs and instrument paper
+
+RULE (Florian, 2026-09-23, "hard to read", then "even more polished,
+background graphics, be creative"): the profile facts grid is a fixed-
+column ledger (auto-fill 14rem columns; last-row cells keep their width).
+Each label carries a 6px kind glyph: filled in the domain accent for
+counts and figures, outlined for dates, neutral for text, dashed for
+unknown; labels read at text-2 (the one amendment to rule 77's dim T3)
+and step to text-1 on hover. Short stated values with no digit render
+in caps (YES, ACTIVE, MEDIUM-LIFT LAUNCH VEHICLE); values carrying a
+number keep authored case so units survive. A unit in a label
+("payload to leo (kg)") becomes a right-aligned KG / M / USD tag.
+Counts take thousands separators (founding years exempt). Every cell
+sits on instrument paper: a 1px dot every 8px (an SVG tile, never a
+gradient), faint at rest, stronger under the pointer. Hover grows a 2px
+accent frame inward (card grammar), lifts the ground one step, blinks
+the glyph once, and overlays the source host on the meta line; the
+overlay is absolutely positioned so nothing in the cell ever moves
+(a first version let the meta row wrap and the cell grew: rejected).
+Reduced motion disables all of it. Orbit facts beside the 3D view are
+a two-column ledger whose rows stretch to the view's height, counts in
+the figure register, the orbit sentence as the full-width last row.
+
+IMPLEMENTATION: FactGrid (pages.tsx: fact-cell-{count,date,text,empty},
+.fact-glyph, .fact-unit, .fact-host overlay); "Facts grid polish" blocks
+at the end of index.css; .orbit-facts rules.

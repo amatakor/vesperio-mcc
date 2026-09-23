@@ -5500,23 +5500,35 @@ table.stat-table th {
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
+/* The host reveal is an overlay on the meta line: nothing in the cell
+   moves on hover (Florian, 2026-09-23: the wrapping meta row made the
+   cell grow). */
 .registry-profile .fact-meta {
+  position: relative;
+  flex-wrap: nowrap;
   white-space: nowrap;
   overflow: hidden;
+}
+.registry-profile .fact-meta > :not(.fact-host) {
+  transition: opacity var(--dur-fast, 120ms) var(--ease, linear);
+}
+.registry-profile .fact-cell:hover .fact-meta > :not(.fact-host) {
+  opacity: 0;
 }
 .fact-host {
-  display: inline-block;
-  max-width: 0;
-  overflow: hidden;
-  vertical-align: bottom;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: 0;
-  transition:
-    max-width 160ms ease-out,
-    opacity var(--dur-fast, 120ms) var(--ease, linear);
+  color: var(--link);
+  text-decoration: none;
+  transition: opacity var(--dur-fast, 120ms) var(--ease, linear);
 }
 .registry-profile .fact-cell:hover .fact-host {
-  max-width: 14rem;
   opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
