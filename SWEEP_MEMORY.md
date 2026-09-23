@@ -5247,3 +5247,30 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a direct read of all three new items' and both
   updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
   (730 items, up from 727) as the build-health signal.
+
+## Narrow re-check, ~4.3h gap, unfiltered full source list (2026-09-23, fourth)
+
+- 2026-09-23-L: `hubblenetwork.com` now 301-redirects to `hubble.com`
+  (rebrand); the company's own `hubble.com/news` press release still
+  capped `informal` per the standing no-registry-host workaround (no
+  `src/data/registry` entity for Hubble Network), but a Business
+  Wire-distributed copy of the identical release (StockTitan mirror)
+  classed `wire_pr` (tier 4) and led a clean $200M Series C item instead;
+  finalize's title-collapse correctly merged the two as one
+  `wire_rewrite` unit. `investors.viasat.com`'s press-release detail page
+  timed out (60s) even though Viasat's registry `website` would have
+  passed it as `first_party` via subdomain match (the standing
+  `ir.echostar.com`/2026-09-18-H pattern); fell back to the GlobeNewswire
+  wire copy (`wire_pr`) instead, landing SNR 4 on an otherwise-`noise`
+  routine USMC task order.
+- 2026-09-23-M: The same-company-plus-category dedup false positive fired
+  on both new NASA/`science` and SpaceX/`contract` items this run (three
+  separate unrelated existing items in total) purely on shared company +
+  category + within-7-days, extending the long-running list once more;
+  three `dedup_distinct` entries cleared it in one pass.
+- 2026-09-23-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
+  updated, 0 held") plus a `jq` parse check (734 items, up from 730) and
+  a direct read of all four new items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
