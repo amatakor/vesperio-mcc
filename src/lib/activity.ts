@@ -86,7 +86,9 @@ export function latestUpdateNote(i: Item): { day: string; note: string } | null 
 
 /** One sentence, at most 160 characters, for the card; the full note is on the item page. */
 export function cardNote(note: string): string {
-  const first = note.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? note;
+  // A sentence ends at terminal punctuation followed by a capital or a
+  // quote; "Sept. 22" and "Jr. ruled" stay whole.
+  const first = note.match(/^.*?[.!?](?=\s+[A-Z"(“]|$)/)?.[0] ?? note;
   const cut = first.length > 160 ? `${first.slice(0, 157).trimEnd()}...` : first;
   return cut;
 }

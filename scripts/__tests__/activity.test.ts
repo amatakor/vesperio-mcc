@@ -23,6 +23,19 @@ function item(over: Partial<Item>): Item {
   } as Item;
 }
 
+import { cardNote } from "../../src/lib/activity";
+
+describe("cardNote", () => {
+  test("keeps abbreviations whole and stops at the first real sentence end", () => {
+    expect(cardNote("DOJ's own Sept. 22 release confirms the Sept. 21 ruling. More follows.")).toBe(
+      "DOJ's own Sept. 22 release confirms the Sept. 21 ruling.",
+    );
+    expect(cardNote("US District Judge Fernando Rodriguez Jr. denied the request.")).toBe(
+      "US District Judge Fernando Rodriguez Jr. denied the request.",
+    );
+  });
+});
+
 describe("feed activity (2026-09-23 rule: attachments never resurface)", () => {
   test("an attach-only update leaves the item in its event slot", () => {
     const i = item({
