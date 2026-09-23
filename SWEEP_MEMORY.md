@@ -5208,3 +5208,42 @@ a newer entry if a lesson changes.
   ("merged 3 new, 0 updated, 0 held") plus a direct read of all three new
   items' `snr`/`category`/`impact`/`sources` fields as the build-health
   signal.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-23, third)
+
+- 2026-09-23-H: A discovery-pass-shaped SpaceNews headline ("Ethereal Space
+  Awarded NOAA SBEM Task Order 1," $27.4M covering GNSS-RO + thermospheric +
+  multispectral imagery) contradicted NOAA's own NESDIS release ($67,053,698
+  split three ways: Spire $33,158,160, PlanetiQ $28,413,038, Ethereal Space
+  $5,482,500, GNSS-RO only) for what reads like the same Sept. 18 award.
+  Rather than reconcile or repeat both figures, cited only NOAA's official,
+  internally-consistent breakdown and omitted the SpaceNews piece entirely
+  from sources; the detour was avoidable if the queue's "Ethereal Space
+  Awarded NOAA SBEM Task Order 1" headline had been grepped against
+  `items.json` (NOAA, radio occultation) before chasing the dollar figure,
+  since it turned out to already be a same-week update to
+  `2026-09-22-spire-noaa-33m-radio-occultation-task-order`, not a new item.
+  When a single-company NOAA task-order headline appears days after a
+  same-program multi-company award already published, check whether it is
+  actually a fuller breakdown of the same underlying award before treating
+  the new company name as an undrafted story.
+- 2026-09-23-I: Confirms 2026-09-22-F/O's apex-domain and registry-match
+  reduction does not require the item's `companies[]` to include the org:
+  Vast's own `vastspace.com/updates/...` post classed clean `first_party`
+  against `organizations/vast.json`'s website field for a division
+  announcement with zero dollar figure or contract, landing SNR 5 (ceiling
+  reached from the lead alone) even at `noise` impact -- SNR and impact are
+  fully independent axes, a routine company-strategy post can still hit the
+  direct-source ceiling if the company has a matching registry profile.
+- 2026-09-23-J: China SatNet's GuoWang launches recur inside the 7-day
+  dedup window almost every sweep now (25th group Sept 17, 26th group Sept
+  23, six days apart); `dedup_distinct` against the immediately-prior
+  numbered group is now the default expectation for this actor, not an
+  edge case, per the standing 2026-08-26-D "two launches by the same
+  provider inside 7 days are distinct events" rule.
+- 2026-09-23-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
+  updated, 0 held") plus a direct read of all three new items' and both
+  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  (730 items, up from 727) as the build-health signal.
