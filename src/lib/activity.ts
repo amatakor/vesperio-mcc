@@ -81,5 +81,12 @@ export function freshnessChip(i: Item): string | null {
 export function latestUpdateNote(i: Item): { day: string; note: string } | null {
   const [latest] = updateEntries(i);
   if (!latest || latest.date <= i.date) return null;
-  return { day: dayMonth(latest.date), note: latest.note };
+  return { day: dayMonth(latest.date), note: cardNote(latest.note) };
+}
+
+/** One sentence, at most 160 characters, for the card; the full note is on the item page. */
+export function cardNote(note: string): string {
+  const first = note.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? note;
+  const cut = first.length > 160 ? `${first.slice(0, 157).trimEnd()}...` : first;
+  return cut;
 }
