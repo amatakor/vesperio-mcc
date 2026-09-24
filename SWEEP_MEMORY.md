@@ -93,100 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-24)
-
-- 2026-08-24-A: A significant fact for an already-published item can sit
-  uncaptured for over a week even on a heavily-tracked company: SpaceX's
-  Cursor/Anysphere acquisition (announced June 16, still at "targets a
-  close in Q3 2026" in the item's copy) actually closed Aug. 14 -- a
-  fresh WebSearch surfaced it 10 days later purely from a stray Google
-  News headline ("...sold to SpaceX for $60 billion") in the routine
-  queue. sec.gov itself still 403'd on direct WebFetch for the closing
-  8-K, but a StockTitan mirror (classed `informal`, same as the
-  2026-08-02-A/2026-08-03-A precedent) plus a Yahoo Finance writeup gave
-  clean, verbatim, independently-fetchable text for the closing share
-  count and the new SpaceXAI/Colossus integration detail. Treated as an
-  `updates[].patch` full-explainer replacement rather than a new item,
-  since no new dollar figure was disclosed at closing, only the same
-  $60B value becoming effective -- consistent with the 2026-08-05-I
-  "closing-tranche confirmation" precedent, not the 2026-08-02-A
-  EchoStar/AT&T case (which got a new item because closing disclosed a
-  genuinely new figure).
-- 2026-08-24-B: LandSpace's own Zhuque-3 booster-recovery milestone
-  (2026-08-18, seismic) needed a same-item update five days later: both
-  NASASpaceflight and a China in Space direct fetch confirmed the
-  recovered booster tipped over on the pad after a post-landing
-  propellant fire weakened a landing leg, damaging the interstage, both
-  tanks, and two engine nozzles. Landed as an `updates[].patch` (new
-  trade-class sources attached, no bump requested since the item's
-  non-first-party lead was already capped at the direct-source ceiling
-  of 4) rather than held or ignored; the tension between the item's
-  "targeting reflight within six months" line and the new damage was
-  folded into `why_it_matters` as an attributed caveat, not dropped.
-- 2026-08-24-C: A fully quiet queue/HTML/signals/discovery pass
-  (38 post-filter candidates, ~95% SpaceX stock-merger speculation and
-  Indian National-Space-Day political noise about ISRO privatization;
-  all 10 HTML sources and 17 signals channels current; an 8-query
-  discovery matrix traced every hit to an already-published story)
-  still yielded two genuine, non-obvious updates once each queue hit
-  was checked against `items.json` rather than discarded on its
-  surface framing -- confirms the standing pattern that "quiet" and
-  "nothing to do" are not the same thing.
-- 2026-08-24-D: `bun run build` was denied outright by this session's
-  permission gate on the first attempt, continuing the standing pattern
-  since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 0 new, 2 updated, 0 held") plus a `jq` parse
-  check (455 items, matching the pre-run `feedSize`) and a direct read
-  of both updated items' `snr`/`category`/`impact`/`sources` fields as
-  the build-health signal.
-
-## Normal-mode sweep, ~11h51m gap, unfiltered full source list (2026-08-24, second)
-
-- 2026-08-24-E: A trade outlet's specific, technical follow-up story
-  (European Spaceflight's Aug 24 piece on ESA confirming Ariane 64 Block 2
-  as Argonaut's baseline, with new RPS-adaptation detail from an ESA
-  spokesperson) tripped the same-company-plus-category dedup gate against
-  the already-published Aug 20 "ESA shelves Ariane 6 Block 3" item on the
-  same outlet, same companies (ESA/ArianeGroup), same category `launch`,
-  4 days apart -- correctly folded into the existing item via
-  `updates[].patch` rather than drafted standalone or forced through with
-  `dedup_distinct`, since both stories are genuinely the same underlying
-  Argonaut/Ariane-6-capability thread the earlier item's own why_it_matters
-  already flagged ("narrows the payload margin available to ESA's Argonaut
-  lunar lander"). Worth checking whether a dedup-gate hit is actually the
-  SAME story continuing before reaching for `dedup_distinct`; not every
-  gate hit is a false positive.
-- 2026-08-24-F: `turkiyetoday.com` fetched cleanly (mainstream class,
-  citing Iran's state news agency IRNA) for a 163-arrests/997-device
-  Starlink-seizure report; the outlet that broke it first (iranwire.com)
-  403'd on direct fetch, and a second candidate mirror
-  (breakingthenews.net) returned an empty JS-shell page despite both
-  appearing in WebSearch results with real-looking snippets -- landed a
-  clean single-source `crawl: "found_none"` per the standing 2026-08-20-E
-  precedent (WebSearch snippets/summaries of an unfetched page never
-  substitute for a direct fetch, even when multiple independent-looking
-  hits exist).
-- 2026-08-24-G: An unregistered startup's own site (beyondreachlabs.io,
-  no registry organization entity to match) confirmed and slightly
-  refined a Payload article's product specs (splitting Payload's single
-  "8 kW" Flarewing-S figure into 5 kW Si-cell / 8 kW triple-junction-cell
-  variants) -- attached as `informal` class per the standing
-  2026-07-26-E/2026-07-31-I no-registry-host workaround, since anti-spoof
-  `first_party` matching requires a registry-recorded website regardless
-  of whether the item is a new draft or an update.
-- 2026-08-24-H: Vivienne Machi's Aviation Week author-page "NRO Takes
-  Commercial SAR Partnerships To New Operational Level" (Aug 21) is still
-  unverifiable three sweeps after first flagged (2026-08-21-I): still no
-  fetchable article behind the headline. Worth treating this specific
-  headline as a standing dead lead rather than re-attempting it each
-  sweep.
-- 2026-08-24-I: `bun run build` was denied outright by this session's
-  permission gate, continuing the standing pattern since 2026-07-11-B;
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
-  2 updated, 0 held") plus a `jq` parse check (458 items, up from 455)
-  and a direct read of all three new items' `snr`/`category`/`impact`
-  fields as the build-health signal.
-
 ## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-25)
 
 - 2026-08-25-A: A registry organization entity's `website` field can
@@ -5274,3 +5180,44 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (734 items, up from 730) and
   a direct read of all four new items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~7h17m gap, unfiltered full source list (2026-09-24)
+
+- 2026-09-24-A: A Jamestown Foundation trend piece on Russia's Rassvet
+  program ("Russia Trying to Replace Starlink") mostly bundled
+  already-published satellite-failure statistics (32 satellites, 800km
+  orbit misses) per the standing trend-piece-bundles-old-facts pattern,
+  but buried inside it was a genuinely new, never-covered discrete fact:
+  Ukraine's Foreign Ministry formally petitioned the ITU on Aug. 28 to
+  exclude Ukrainian territory from Rassvet's coverage in all frequency
+  bands. Confirmed independently via Militarnyi (trade) and the Kyiv Post
+  (mainstream) rather than cited to Jamestown itself. Worth remembering
+  a "bundles old facts, skip it" trend piece can still be worth reading
+  in full for one buried, dateable sub-fact rather than discarded whole.
+  Also confirms Bureau 1440/Rassvet still has no `src/data/registry`
+  entity (no crossfeed metric touched by a diplomatic filing anyway).
+- 2026-09-24-B: `basenor.com` (already flagged 2026-09-16-R as a
+  low-quality SEO mirror) supplied specific-looking but unverifiable
+  figures for the Vietjet/Starlink deal (a VND 300 billion Galaxy Pay
+  investment, a $500K-per-aircraft hardware estimate) that no other
+  fetched source stated; left both figures out of the draft entirely
+  rather than risk citing an unverified number from a site with a
+  standing unreliability flag. `tradingview.com`'s Reuters mirror pages
+  render only the headline behind a hard paywall (no teaser paragraph,
+  unlike SpaceNews's lede-before-paywall pattern) -- the headline text
+  itself is still a legitimate citable fact when nothing else is
+  visible, just a thinner one than a teaser paragraph would give.
+- 2026-09-24-C: A "SpaceX alums found a startup" headline is not itself
+  evidence of scope: Applied Atomics (small modular nuclear reactors for
+  AI data centers, Bywater New Orleans HQ) joins the standing terrestrial-
+  diversification exclusion list (Intel Terafab, APR Energy, the Bastrop
+  turbine foundry, Ursa Major's SPAC) -- no orbital product, regardless of
+  founder pedigree or Louisiana/Starbase-adjacent framing in local coverage.
+- 2026-09-24-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 2
+  updated, 0 held") plus a `jq` parse check (736 items, up from 734) and
+  a direct read of both new items' and both updated items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields, and the six
+  automatic persistence-bump `snr_movements` entries logged in
+  `state.json`, as the build-health signal.
