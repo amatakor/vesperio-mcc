@@ -5221,3 +5221,36 @@ a newer entry if a lesson changes.
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields, and the six
   automatic persistence-bump `snr_movements` entries logged in
   `state.json`, as the build-health signal.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-24, second)
+
+- 2026-09-24-E: "Lunar Outpost" (a lunar-rover company, several existing
+  items) and "Outpost Technologies" (an unrelated reentry/in-space-
+  manufacturing startup, "Space Factories") are two entirely different
+  companies that both go by "Outpost" in casual references -- grep by the
+  full company name, not the short form, before concluding a same-named
+  candidate is already covered.
+- 2026-09-24-F: `explainer.tagline`'s 140-char cap is tighter than it
+  looks when a headline-worthy fact needs full attribution clauses;
+  five of seven drafted items this run needed a tagline trim after
+  finalize-sweep rejected an over-length one (each rejection names only
+  the FIRST offending item, so a multi-item draft with several
+  over-length taglines needs several successive fix-and-rerun passes,
+  one per item, not one pass). Worth drafting taglines noticeably under
+  140 chars on the first pass rather than at the limit.
+- 2026-09-24-G: Google's and Outpost Technologies' own announcements
+  both had no `src/data/registry` organization entity to anti-spoof
+  against (neither Google/Alphabet nor Outpost Technologies has one),
+  capping their own blog/PR-wire posts at `informal`/`wire_pr`; led both
+  items instead with a mainstream wire pickup (Reuters via Yahoo
+  Finance) and the PR Newswire wire copy respectively, extending the
+  standing no-registry-host workaround to two more frequently-recurring
+  actor shapes (a Big Tech company entering space, and a reentry/
+  manufacturing startup).
+- 2026-09-24-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 7 new,
+  0 updated, 0 held") plus a `jq` parse check (745 items, up from 736)
+  and a direct read of all seven new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
