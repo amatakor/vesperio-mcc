@@ -5254,3 +5254,55 @@ a newer entry if a lesson changes.
   and a direct read of all seven new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~4h25m gap, unfiltered full source list (2026-09-24, third)
+
+- 2026-09-24-I: ESA's "European Resilience from Space-Earth Observation"
+  (ERS-EO, a 167M-to-350M-euro funding line per a Sept 24 SatNews/Space
+  Intel Report pair) and the already-published Sept 17 EOGS/ARISE item
+  ("ESA awards contracts for Europe's EOGS blueprint") are the SAME
+  underlying architecture-study contracts (identical ICEYE-led ARISE vs.
+  Leonardo-led consortium, both traced to "Element 1 of ESA's European
+  Resilience from Space for Earth Observation programme" per the Sept 17
+  item's own text) reported under two different framings, ISR-military
+  vs. EOGS-civilian-governmental. Today's story is ESA now asking
+  governments to raise that same program's funding from 167M to 350M
+  euros ahead of a Nov 30 deadline; folded in as `updates[].patch` (a
+  same-program funding development) rather than a new item, since
+  drafting it standalone risked a same-week duplicate the dedup gate
+  might not catch (different category framing, same shape as the
+  2026-08-30-N Sutherland/HIE near-miss). Worth treating "ERS-EO" and
+  "EOGS" as the same program by default when the named companies and
+  contract-award dates line up, not two adjacent EU space initiatives.
+- 2026-09-24-J: An Iridium 8-K (Item 5.07, filed same day) reporting the
+  special-meeting vote adopting the Rocket Lab merger agreement (~99.6%
+  of votes cast, 81.0% of outstanding shares) was a genuine new item, not
+  an update, despite being the same M&A story as the June 29 announcement:
+  87 days outside the 7-day window, and a shareholder-approval vote is a
+  distinct, separately newsworthy closing-condition milestone. Led with
+  the SEC EDGAR exhibit (Ex. 99.1, the joint press release) as
+  `official_record`; every other hit (GlobeNewswire, PR Newswire,
+  StockTitan, Manila Times) was a wire mirror of the identical release,
+  correctly left as one `wire_pr` corroboration unit rather than stacked.
+  `crossfeed.facts` stayed empty since the deal has not closed (expected
+  mid-2027, still subject to regulatory approvals) -- a shareholder vote
+  is not itself a registry status/parent_org change.
+- 2026-09-24-K: The mandatory signals pass again outperformed the queue on
+  a near-total SpaceX-stock/Futurism-junk 36-candidate window: Marcia
+  Smith's (SpacePolicyOnline) bluesky post surfaced NASA's Crew-14
+  assignment release before any trade outlet's writeup existed, and
+  Vivienne Machi's Aviation Week author page surfaced L3Harris's SDA
+  Tranche 3 preliminary-design-review milestone, both fully undrafted
+  gaps confirmed via grep against `items.json` before scoring. Neither
+  needed the whitelist floor (both had usable first-party leads at the
+  SNR 5 ceiling already), consistent with the standing pattern that
+  whitelisted-channel corroboration is often just a free find-signal, not
+  a scoring necessity, when the underlying actor's own site is
+  first-party-eligible.
+- 2026-09-24-L: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1
+  updated, 0 held") plus a `jq` parse check (749 items, up from 745) and a
+  direct read of all four new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
