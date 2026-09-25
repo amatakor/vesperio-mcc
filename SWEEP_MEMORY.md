@@ -5237,3 +5237,43 @@ a newer entry if a lesson changes.
   and a direct read of all three new items'
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-09-25, second)
+
+- 2026-09-25-E: `bsky.app/profile/<handle>` renders only the bare handle
+  via WebFetch (a JS shell, same class of failure as spacex.com/updates
+  and rocketlabcorp.com/updates in the 2026-07-05 seed lessons); the
+  public AT Protocol endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15`
+  returns real post text and `createdAt` timestamps and works cleanly
+  with WebFetch. Use the API endpoint directly for every bluesky
+  signals-pass fetch going forward rather than the profile page.
+- 2026-09-25-F: A "SpaceX raises $250M / Astra targets early 2027 for
+  Rocket 4.0" thread traced back to at least two different underlying
+  dates across mirrors: an August 14 Reuters funding-raise story
+  (americanbazaaronline, yournews) and a September 17-18 SpaceNews
+  specs/timeline piece (thedebrief.org interview, hype.aero summary),
+  with the direct spacenews.com URL returning HTTP 429 on every retry
+  this run. Left the whole thread undrafted rather than risk conflating
+  two different-dated stories or misdating a stale one; worth a future
+  run retrying spacenews.com directly (or finding an alternate primary)
+  to pin down which of the two is the actual dateable event and whether
+  either is still fresh enough to publish on its real date under the
+  stale-but-notable exception.
+- 2026-09-25-G: Isaacman's September 25 Payload "doubles down" remarks
+  on NASA's international-partnership standard (same Off World Houston
+  conference as the already-published Sept 23 "dodged a bullet" item,
+  two days apart, overlapping topic cluster) were folded into that
+  existing item as an `update` rather than drafted as a new item, to
+  avoid a same-conference near-duplicate the dedup gate might not catch
+  by headline alone. Worth treating same-conference, adjacent-day
+  remarks from the same official as an update-not-new-item case by
+  default, even when the specific topic (international partnerships vs.
+  China-delay comment) differs from the original item's headline focus.
+- 2026-09-25-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  1 updated, 0 held") plus a `jq` parse check (754 items, up from 752)
+  and a direct read of the two new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
