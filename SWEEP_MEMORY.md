@@ -5322,3 +5322,42 @@ a newer entry if a lesson changes.
   and a direct read of all three new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~4h26m gap, unfiltered full source list (2026-09-25, fourth)
+
+- 2026-09-25-N: A search-result headline "poland arrests nine on charges of
+  russian ordered sabotage" (Deccan Herald) surfacing alongside genuinely
+  fresh Sept. 25 coverage of the Wola Krobowska Starlink-station-fire
+  investigation turned out to be an unrelated 2024 case (Tusk's original
+  nine-arrest sabotage sweep) with no date in the headline itself to flag
+  it as stale; confirmed via a dedicated follow-up search before treating
+  it as a new arrest tied to this fire. A same-country, same-topic-shape,
+  no-date-in-headline resurfacing is a new wrinkle on the standing
+  stale-resurfacing trap family (distinct from the usual identical-headline
+  or same-calendar-date cases): worth a distinguishing search whenever a
+  Poland/Russia-sabotage headline reads as a fresh escalation.
+- 2026-09-25-O: Poland's National Prosecutor's Office spokesman's on-record
+  statement (formally classifying the already-published Sept. 24 Starlink
+  station fire as sabotage and a terrorism-related crime, with "reasonable
+  grounds to suspect the perpetrators acted on the orders of Russian
+  special services") was never itself posted as a press release findable
+  on pk.gov.pl; every account (TVN24, RMF24, Ukrainska Pravda, and Polish
+  outlets found via a Polish-language search) is journalism reporting the
+  spokesperson's quote, not a linkable official document, so it classed
+  `mainstream` rather than `official_record` despite naming a specific
+  named prosecutor spokesperson and an exact criminal classification.
+  Folded into the existing item via `updates[].patch`+attach with no bump
+  requested (lead unchanged, already at its non-first-party ceiling of 4).
+- 2026-09-25-P: A discovery-pass China lead (Ningbo's "Zhiyi Constellation,"
+  Zhenyou Weitong, 108-planned-satellite LEO wind-field network) had only
+  one search-surfaced source (chinatechnews.com) and it 403'd on every
+  direct-fetch attempt (including a Google cache try); left undrafted per
+  the standing never-cite-an-unfetched-page rule despite reading like a
+  clean gap. Worth a second look if chinatechnews.com becomes fetchable or
+  a second outlet picks up the story.
+- 2026-09-25-Q: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a `jq` parse check (758 items, up from 757) and a
+  direct read of the new item's and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields as the build-health signal.
