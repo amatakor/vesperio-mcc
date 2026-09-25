@@ -5277,3 +5277,48 @@ a newer entry if a lesson changes.
   and a direct read of the two new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~4h47m gap, unfiltered full source list (2026-09-25, third)
+
+- 2026-09-25-I: A VC-portfolio puff piece ("FUSE Grows Its Space Portfolio,"
+  Payload) naming a fresh seed round for Pluto Aerospace read as an
+  in-scope launch-sector funding round, but Pluto's own description
+  ("building the fastest path from lab bench to hypersonic flight,"
+  a "reusable sub-orbital rocket") makes it a suborbital hypersonics-
+  testing vehicle, not an orbital launch vehicle -- left undrafted per
+  the standing CLAUDE.md orbital-only launch-vehicle scope, same logic
+  as the 2026-09-11-I Avio FD1 suborbital-demonstrator exclusion. Worth
+  the reminder that a space-VC "portfolio" framing doesn't itself confer
+  scope; check what the specific funded company's vehicle actually flies.
+- 2026-09-25-J: Two same-day "SpaceX benefits from X" trend/analysis
+  pieces (Bloomberg's "SpaceX-Focused Pentagon Contracts Leave Rivals
+  Feeling Squeezed," Yahoo Finance's "The U.S. Just Confirmed It Has
+  Weapons in Space. Here's How SpaceX Is Already Benefiting") both
+  bundle only already-disclosed contract figures (the May Golden Dome
+  satellite-network award, SB-AMTI/NSSL figures) under a competitive-
+  dynamics or institutional-disclosure news peg (Sept. 14 Air Force
+  Secretary Meink space-weapons admission, already excluded
+  2026-09-18-D) with no new dateable fact stated; left both undrafted
+  per the standing trend-piece-bundles-old-facts pattern.
+- 2026-09-25-K: A "ClearanceJobs" roundup headline bundling two unrelated
+  defense-industry items in one post title ("S23 Holdings Adding 414
+  Jobs in Virginia and SpaceX Lands $946M NASA Contract Mod") is a pure
+  headline collision, not two related facts: S23 Holdings is a maritime
+  ship-repair/fabrication private-equity firm expanding a Newport News
+  shipyard, with zero satellite or space connection despite sharing a
+  headline with an already-published SpaceX NASA contract mod. Worth a
+  reminder to check what an unfamiliar company actually does before
+  assuming a shared headline implies a shared story.
+- 2026-09-25-L: `blacksky.com/company/news/` again rendered only the
+  page's search/filter shell on WebFetch (no dated items), continuing
+  2026-09-25-C's anomaly a second consecutive sweep; logged no
+  sourceHealth entry again rather than a bare-evidence "verified" claim
+  or an unwarranted demotion. Worth flagging as a possibly-recurring
+  rendering issue (not a one-off) if it persists into a third sweep.
+- 2026-09-25-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
+  1 updated, 0 held") plus a `jq` parse check (757 items, up from 754)
+  and a direct read of all three new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
