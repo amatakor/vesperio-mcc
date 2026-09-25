@@ -6123,3 +6123,124 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   and a direct read of all three new items' `snr`/`category`/`impact`
   fields as the build-health signal.
 
+## Normal-mode sweep, ~11h48m gap, unfiltered full source list (2026-08-25)
+
+- 2026-08-25-A: A registry organization entity's `website` field can
+  belong to a JOINT VENTURE profile and still class that entity's own
+  same-day newsroom post as `first_party`: KSAT (equally owned by Space
+  Norway and Kongsberg Defence & Aerospace) has an `organizations/ksat.json`
+  entry with `website: https://www.ksat.no`, so KSAT's own Aug 24 Hyperion
+  demo-campaign post matched cleanly and scored a tier-5 lead, beating the
+  same-day PR Newswire wire copy and Via Satellite trade write-up of the
+  identical release. Worth checking a company's registry profile even when
+  its news reads like a routine wire-distributed press release; the
+  company's own newsroom URL is often findable one hop from a listing page
+  the wire copy doesn't link.
+- 2026-08-25-B: A launch-preview candidate ("B1067 Preps Record 37th
+  Flight") whose own live-coverage article stated a NET later than the
+  sweep's own `now` timestamp (booster scheduled 09:33 UTC Aug 25; sweep
+  ran at 05:17 UTC Aug 25) was correctly left undrafted per the standing
+  2026-08-20-A "don't draft a scheduled-but-not-yet-flown launch" rule,
+  confirmed by checking the Launch Library API's own `status`/`net` fields
+  directly (`status.id: 1`, "Go for Launch") rather than trusting a
+  "Live coverage: SpaceX to launch..." headline as evidence the launch had
+  already happened.
+- 2026-08-25-C: A batch of Chinese Long March 6C payloads that read like a
+  fresh commercial rideshare from the raw_excerpt alone ("share ride of 7
+  satellites... details TBD") turned out, once searched, to carry only two
+  named payloads and both were student/amateur-radio education microsats
+  (JAMX01 from a Shanghai school project, BY70-4 from Harbin Institute of
+  Technology's LilacSat team) with no commercial operator aboard at all --
+  left undrafted as out of scope despite the launch itself succeeding
+  within window. A generic rideshare raw_excerpt is not evidence the
+  payloads are commercial; check the actual manifest before drafting any
+  "successful launch" candidate as an item.
+- 2026-08-25-D: A Gulf News headline ("Abu Dhabi's Space42 lines up $695.5m
+  to build new satellites") read as fresh discovery-pass news but every
+  detail (the exact $695.5 million figure, Crédit Agricole/Santander/
+  Societe Generale/Natixis arrangers, Al Yah 4/5, the 2027/2028 launch
+  dates) traced to a July 2025 Via Satellite/SpaceWatch.Global/Zawya
+  financing announcement, over a year stale -- caught by searching the
+  exact dollar figure before drafting rather than trusting the outlet's
+  current-looking publish context. Extends the standing stale-resurfacing
+  pattern (2026-08-19-G and many peers) to a financial/financing story,
+  not just product or personnel news.
+- 2026-08-25-E: Two same-day announcements from unrelated companies
+  (OrbitAID's Q1 2027 RPO demo via a Payload exclusive, Star Catcher/
+  Aethero's power purchase agreement via PR Newswire) both landed at
+  honest `crawl: found_none` single-source scores (SNR 2 and 3
+  respectively) after genuine multi-query corroboration searches came up
+  empty; publishing them at the floor rather than holding for thin
+  sourcing is the model working, not a defect.
+- 2026-08-25-F: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 5 new, 3 updated, 0 held") plus a `jq` parse
+  check (463 items, up from 458) and a direct read of all five new items'
+  and all three updated items' `snr`/`category`/`impact`/`snr_trace`
+  fields as the build-health signal.
+
+## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-25, second)
+
+- 2026-08-25-G: SpaceX's Louisiana spaceport story (flagged "close to
+  finalizing a deal" and left as a `notable`-tier item on 2026-08-03) had
+  its scheduled Aug. 25 announcement (foreseen and correctly left
+  undrafted on 2026-08-21) actually happen this run, 22 days after the
+  original item and well outside the 7-day update/30-day reinforcement
+  windows -- drafted as a new item rather than an update per the
+  standard dedup rule, cross-referencing the old item only in prose (no
+  unfetched URL added). Louisiana Economic Development's own
+  `opportunitylouisiana.gov/spacex/` page classed `official_record`
+  (a state economic-development agency's own domain stating a deal it
+  brokered, same treatment as a NASA program-announcement page) and
+  landed the item at the SNR 5 ceiling with three mainstream corroborations
+  attached for free; spacex.com/updates and starlink.com/updates both
+  still render as unreadable JS shells, confirming the standing
+  2026-07-05-I dead-source call.
+- 2026-08-25-H: A SpaceNews-only headline ("SpaceX offers space safety
+  service for satellite operators," Aug 25) that read like a fresh
+  Stargaze rollout announcement turned out to be unverifiable: SpaceNews
+  itself 403'd, the Google News redirect resolved to a bare header, and
+  no other outlet's Aug 25 coverage of the specific claim could be found
+  (Stargaze was originally unveiled in January with a vague "spring"
+  general-availability target, and starlink.com/updates/stargaze is a
+  JS shell). Left undrafted per the standing "only cite pages with
+  genuinely fetched content" rule rather than guess whether this is a
+  genuine GA-launch follow-up or a rehash; worth re-checking next sweep
+  if SpaceNews becomes fetchable or another outlet picks it up.
+- 2026-08-25-I: A same-day KSAT press release ("KSAT Delivers Integrated
+  Mission Services for Kongsberg's N3X Satellite Constellation," via a
+  Manila Times PR Newswire mirror) read like a new constellation-ops
+  story but a direct fetch confirmed it explicitly recaps KONGSBERG's
+  prior N3X expansion announcement rather than stating anything new;
+  left undrafted. Separately, a same-day YourStory.com profile of
+  VyomIC's India PNT-constellation "GPS alternative" traced every
+  concrete figure (the $1.6M raise, the founder quote) to a September
+  2025 announcement, another stale-resurfacing case a full year later
+  than the September 2025 original, not just the 2026-08-19-G one-year
+  case -- worth treating any startup-profile piece with a suspiciously
+  round, oft-repeated raise figure as a resurfacing candidate by default.
+- 2026-08-25-J: A never-covered, week-old gap surfaced via the harvester
+  queue itself (not discovery): the WA government's $1.75M Space Angel
+  spaceport-establishment grant. The SpaceNews entry in today's queue was
+  itself a catch-up piece of an Aug. 18 announcement (confirmed via
+  Space Connect's own byline date); dated the item to the actual Aug. 18
+  event per the standing predates-window chase rule rather than to
+  today's SpaceNews republish date, even though the chase started from
+  the queue rather than a discovery-pass search.
+- 2026-08-25-K: Confirmed the standing `ir.rdw.com`/`rdw.com` anti-spoof
+  failure (2026-08-05/2026-08-12-H: Redwire's registry `website` is
+  `redwirespace.com`, a different domain) on a fresh Redwire press
+  release, but found a better fallback than `informal`: the release was
+  distributed via BusinessWire (confirmed by checking a Yahoo Finance
+  mirror's own dateline, "--(BUSINESS WIRE)--"), so it led `wire_pr`
+  (tier 4) instead. Worth checking a wire-distributed release's syndicated
+  mirror for its actual wire-service dateline before defaulting a
+  registry-mismatched company newsroom URL straight to `informal`.
+- 2026-08-25-L: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 8 new,
+  0 updated, 0 held") plus a `grep -c` parse check (471 items, up from
+  463) and a direct read of the Louisiana and Ares Shield items'
+  `snr`/`category`/`impact`/`snr_trace` fields as the build-health signal.
+
