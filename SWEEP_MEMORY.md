@@ -5316,3 +5316,53 @@ a newer entry if a lesson changes.
   own merge confirmation ("merged 1 new, 0 updated, 0 held") and a direct
   read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
   fields as the build-health signal.
+
+## Narrow re-check, ~4h12m gap, unfiltered full source list (2026-09-26, fourth)
+
+- 2026-09-26-L: A genuine zero-item sweep: the queue (13 candidates after
+  filtering, mostly SpaceX stock/valuation churn and Google News Crew-13
+  reaction pieces) carried only two not-yet-flown launches (Starship
+  Flight 14/Starlink Group 31-1, net Sept 28 per Launch Library; Falcon
+  Heavy/NROL-97, net Oct 2) and Crew-13's routine pre-launch travel to
+  KSC (already tracked, still targeting Oct 1) -- nothing draftable. The
+  mandatory 4-fetchable-source HTML pass (Planet Labs, ICEYE, EUSPA,
+  Telesat), a 13-person signals pass, and an 8-query discovery matrix
+  (launch, financial/M&A, incident/regulatory, China, India, EO
+  contracts, ESA, D2D) all traced every substantive hit to an
+  already-published item. Confirms narrow same-day re-checks can
+  legitimately net zero even after full-effort, full-matrix discovery
+  (2026-08-28-H and many peers).
+- 2026-09-26-M: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell (no dated items) for a SIXTH consecutive sweep
+  (2026-09-25-C, -L; 2026-09-26-E, -K, and this run's own two separate
+  fetch attempts, both empty). This is no longer a one-off rendering
+  miss; per the 2026-09-26-E note, six sweeps confirms a real site
+  change (the listing likely now requires a filter selection or a
+  client-side render the fetcher can't trigger). No sourceHealth entry
+  logged again this run either. Flag for Florian: this source needs a
+  `fetch_note` at the next structural touch to stop the repeated
+  no-evidence retry every sweep.
+- 2026-09-26-N: A new stale-resurfacing trap shape: a Sept 15 Via
+  Satellite trend piece ("Satellite-Mobile Partnerships for D2D
+  Multiply...") surfaced by a discovery-pass D2D query restates Orange's
+  MOU with AST SpaceMobile and Satellite Connect Europe (the AST/Vodafone
+  D2D joint venture) for Romania demonstrations -- the underlying Orange
+  newsroom release traces to March 2, 2026, seven months stale, with the
+  actual Romania demo still only planned for "H2 2026" in the original
+  release, not a completed event. Left undrafted; worth a same-topic
+  re-check once a Romania demo actually occurs.
+- 2026-09-26-O: The intermittent stale-Bluesky-cache pattern (2026-09-26-B)
+  persisted on a same-run retry with a smaller `limit` parameter: Caleb
+  Henry, Tim Farrar, and Eric Berger's feeds still returned posts from
+  July 2026, March 2026, and April/May 2025 respectively on a second
+  fetch; Andrew Jones's retry improved slightly (from Aug 19-28 stale to
+  Sept 23) but still missed the last ~3 days. Retrying with a different
+  `limit` value did not fix it; worth trying a fully distinct request
+  shape (e.g. a cursor param) or simply accepting these four handles as
+  occasionally cache-locked for a whole session rather than retriable
+  mid-run.
+- 2026-09-26-P: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and the unchanged item count (763) as the
+  build-health signal.
