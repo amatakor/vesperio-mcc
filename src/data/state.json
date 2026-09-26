@@ -1,5 +1,5 @@
 {
-  "lastSweep": "2026-09-26T05:30:37.138Z",
+  "lastSweep": "2026-09-26T12:00:17.304Z",
   "sweeps": [
     {
       "at": "2026-07-05T06:04:08.173Z",
@@ -7586,6 +7586,33 @@
       "discovery": {
         "queries": 8,
         "note": "Matrix covered (launch, financial, incident, non-US x2, EO/contract, regulatory, M&A); surfaced the Relativity FONSI/ROD and the StriX-13 launch as new gaps. A Yaogan-50 (02) breakup lead and a USSF-385 classified-launch lead both turned out to be dead ends: Yaogan-50 was already published (grep miss on my first pass, caught by finalize-sweep's duplicate check), and USSF-385's sources gave conflicting launch dates/booster tail numbers (Sept 25 vs 26, B1100 vs B1096) with no single fetched page confirming a completed launch, so it was left undrafted. Space Epoch, PLD Space, HyImpulse, and Long March 6C were all confirmed already published via items.json grep."
+      }
+    },
+    {
+      "at": "2026-09-26T12:00:17.304Z",
+      "added": 1,
+      "updated": 0,
+      "held": 0,
+      "summary": "Narrow re-check on a thin, mostly stock-speculation queue; one genuine new item, a Russian-claimed drone strike on Starlink-supporting data-center infrastructure in Kyiv, surfaced via the queue itself and confirmed by direct fetch.",
+      "coverage": [
+        "geopolitical"
+      ],
+      "corroboration_collapses": [
+        {
+          "id": "2026-09-26-russia-strikes-cosmonova-starlink-datacenter-kyiv",
+          "kept": "https://www.newsweek.com/russian-forces-strike-starlink-data-center-in-ukraine-12492220",
+          "dropped": "https://www.yahoo.com/news/world/articles/russian-forces-strike-starlink-104830081.html",
+          "rule": "wire_rewrite"
+        }
+      ],
+      "signals": {
+        "checked": 13,
+        "x_attempted": 2,
+        "note": "13 of 17 fetchable channels checked (rotated out Marcia Smith site, Anatoly Zak site, Andrew Parsonson site/substack as bluesky duplicates already covering the same person this run). Eric Berger, Caleb Henry, and Tim Farrar's bluesky feeds returned stale months-old cached posts again (standing intermittent-cache pattern). Everything else on-scope traced to already-published items or thin/unconfirmed leads (Zak's Roskosmos ~400-satellite/Bureau 1440 new-generation posts were too thin and largely about the aggregate Russian orbital grouping, not a specific Rassvet commercial fact, to draft). Searched 2 X handles (Isaacman, Beck), both recycled already-known talking points."
+      },
+      "discovery": {
+        "queries": 11,
+        "note": "Full matrix covered (launch, financial, incident/regulatory, China, India, EO contract, spaceport, M&A) plus 3 queue-chase searches; every hit beyond the Cosmonova/Starlink strike traced to already-published items, still-scheduled launches (Starship Flight 14, Google's Project Suncatcher on Oct 1, USSF-385 pre-window at fetch time), or out-of-scope leads."
       }
     }
   ]

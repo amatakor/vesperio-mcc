@@ -5228,3 +5228,51 @@ a newer entry if a lesson changes.
   direct read of all three new items' and the updated item's
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
+
+## Narrow re-check, ~6h21m gap, unfiltered full source list (2026-09-26, second)
+
+- 2026-09-26-E: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell (no dated items) again this run, a fourth
+  consecutive sweep of the same anomaly (2026-09-25-C, -L); logged no
+  sourceHealth entry rather than a bare-evidence "verified"/"stale" claim.
+  Four sweeps running is long enough that this reads like a real site
+  change (e.g. the listing now requires a filter selection or client-side
+  render finalize-sweep's fetcher can't trigger), not a one-off rendering
+  miss; worth a `fetch_note` at the next structural touch if a fifth
+  sweep confirms the same empty shell.
+- 2026-09-26-F: A near-total-junk 28-candidate queue (SpaceX stock/
+  valuation churn, off-topic BBC/Futurism filler, pre-launch Starship/
+  USSF-385 coverage) still yielded one genuinely new item straight from
+  the queue itself: Russia's defense ministry said it struck Kyiv's
+  Cosmonova data center with drones, claiming the facility supported
+  Starlink connectivity for the Ukrainian military (per TASS); Ukrainian
+  officials confirmed the strike and casualties elsewhere in the capital
+  (per Newsweek) but disputed any military impact. This is the second
+  Starlink-ground-infrastructure attack claim in three days after Poland's
+  Sept. 24 station-fire item -- a `dedup_distinct` against that item
+  (same company SpaceX + category geopolitical, different country and
+  actor claim) cleared cleanly, and Yahoo's mirror of the Newsweek piece
+  correctly auto-collapsed as a `wire_rewrite`, leaving TASS (mainstream
+  class per the standing 2026-07-19/2026-08-10/2026-09-01 precedent) as
+  the only genuine second source: `corroboration_2plus` landed a clean
+  SNR 4 off two mainstream-class sources.
+- 2026-09-26-G: A Google-News queue entry naming Poland's "reasonable
+  suspicion" of Russian involvement in the Sept. 24 Starlink-station fire
+  added no new fact beyond the already-published item's Sept. 25 patch
+  (same prosecutor-spokesman quote); left unpatched. Two Bluesky signals
+  leads (Anatoly Zak on Roskosmos's ~400-satellite/~60-in-2026 orbital
+  grouping claim and on Bureau 1440 "working on new-generation
+  satellites") were left undrafted as too thin and too aggregate: the
+  400-satellite figure is Roskosmos's whole orbital grouping (GLONASS,
+  Sfera, military, etc.), not a Rassvet-specific commercial count, reading
+  like the standing institutional-capability-disclosure exclusion rather
+  than a discrete Bureau 1440 fact, and RussianSpaceWeb's own "new-
+  generation satellites" post was a single captioned image with no
+  article text (its fuller detail is paywalled "insider content").
+- 2026-09-26-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct read of the new item's `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields and the sweep log's
+  `corroboration_collapses` entry (Yahoo News mirror of Newsweek correctly
+  collapsed as a wire rewrite) as the build-health signal.
