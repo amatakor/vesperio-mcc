@@ -5276,3 +5276,43 @@ a newer entry if a lesson changes.
   `snr_trace`/`category`/`impact`/`sources` fields and the sweep log's
   `corroboration_collapses` entry (Yahoo News mirror of Newsweek correctly
   collapsed as a wire rewrite) as the build-health signal.
+
+## Narrow re-check, ~7h13m gap, unfiltered full source list (2026-09-26, third)
+
+- 2026-09-26-I: Resolves the 2026-09-26-C same-day conflict (Spaceflight
+  Now's pre-launch preview said Sept 25 with booster B1100, a WebSearch
+  synthesis said Sept 26 with B1096): a direct Launch Library query for
+  "USSF-385" gave an unambiguous `net` of 2026-09-26T14:00:54Z, and
+  Spaceflight Now's OWN dedicated post-launch article (a different URL
+  than the pre-launch preview, despite carrying a "2026/09/25" path
+  segment from when the preview was first published) confirmed the same
+  facts as Teslarati's independently-published piece (Sept 26, booster
+  B1100, 10th flight and landing) once actually fetched — the earlier
+  session's B1096 figure traced to an unfetched WebSearch synthesis, not
+  a real source. Lesson: a Spaceflight Now per-mission URL's date-stamped
+  path segment reflects when the article was FIRST created (the preview),
+  not the actual launch date once updated in place (extends
+  2026-09-26-C); query Launch Library's `net` field directly by mission
+  name for the authoritative date/booster before trusting either a URL
+  slug or an unfetched search-snippet synthesis.
+- 2026-09-26-J: The same-company-plus-category dedup heuristic fired
+  twice on the USSF-385 item (against the unrelated Sept 19 Starlink
+  batch and the unrelated Sept 21 Exolaunch rideshare, both Vandenberg
+  SpaceX launches), extending the long-running SpaceX-volume pattern to
+  a third distinct Vandenberg mission inside one 7-day dedup window. Two
+  `dedup_distinct` entries cleared it.
+- 2026-09-26-K: A near-total-junk 26-candidate queue (SpaceX stock
+  churn, Starship Flight 14 pre-launch hype, Crew-13's routine
+  aircraft travel from Houston to Kennedy for pre-launch review
+  mislabeled by several outlets as "lands at Kennedy"/"arrives at
+  Kennedy" in a way that reads like a spacecraft landing until checked
+  against the existing Crew-13 item, which confirms the mission is
+  still pre-launch targeting Oct 1) and a fully clean mandatory 4-source
+  HTML pass (BlackSky's news page rendered only its filter shell for a
+  5th consecutive sweep, no sourceHealth entry logged again) and 14-of-17
+  signals channels plus an 8-query discovery matrix all traced to
+  already-published ground. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 1 new, 0 updated, 0 held") and a direct
+  read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields as the build-health signal.
