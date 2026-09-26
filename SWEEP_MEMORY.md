@@ -93,182 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h42m gap, unfiltered full source list (2026-08-26)
-
-- 2026-08-26-A: The mandatory HTML-source pass (`fetch-list.ts`'s list)
-  surfaced two genuinely new, never-covered items the queue and
-  discovery legs both missed entirely: ICEYE's own newsroom carried
-  "establishes Netherlands entity" (Aug 25) and "establishes Indian
-  entity" (Aug 24) press releases, extending the standing Germany/
-  Portugal/UAE country-entity pattern (noise-tier, `partnership`,
-  `first_party`), and SES's own press-releases page carried an Aug 17
-  expanded Elveo Mobile D2D investment (chased back to its actual
-  announcement date per the predates-window notable-event exception,
-  found via the mandatory source list rather than discovery). Worth
-  remembering the HTML source pass is not just a health check: company
-  newsrooms on the fixed list can carry stories the Google
-  News/Bluesky/candidate queue never surfaces at all.
-- 2026-08-26-B: A queue candidate ("China's AI-equipped satellite
-  constellation launched to boost early warnings," bastillepost.com via
-  Google News, timestamped fresh in this run's window) traced on direct
-  fetch to an Anadolu Agency (aa.com.tr) piece about a Smart Dragon-3/
-  Star.ai launch dated August 6, three weeks stale; a small-scale,
-  no-dollar-figure story like this doesn't clear the
-  notable-or-seismic bar for the predates-window chase exception, so it
-  was left undrafted rather than chased. Extends the standing
-  stale-resurfacing pattern to a Google-News-fed Chinese wire rewrite,
-  not just search-surfaced or listing-page hits.
-- 2026-08-26-C: `federalregister.gov/api/v1/documents/<doc-id>.json`
-  (2026-07-30-H's pattern) worked again to pin an exact FAA
-  comment-deadline date (Oct 26, 2026) for the same RFI docket
-  (FAA-2026-9736) a SpacePolicyOnline Bluesky post had also just
-  surfaced same-day; used as an `official_record` update-only source
-  (no bump possible, item already at the SNR 5 ceiling) purely to
-  replace the item's vaguer "within 60 days of publication" phrasing
-  with the exact date. Confirms the API-form fetch is reliable enough to
-  reach for by default whenever a federalregister.gov HTML page (still
-  bot-gated) is the only otherwise-blocked source for an exact date.
-- 2026-08-26-D: One SpaceX event (B1067's 37th flight) carried three
-  independently newsworthy facts across separately-focused outlets that
-  needed combining into one item rather than three: a UPI wire piece
-  (via Yahoo News Canada) led with the booster-reuse-record framing
-  (100th Falcon 9 launch of 2026, closing on the Shuttle's 39-flight
-  mark), while mynews13.com (Spectrum News, local Orlando TV) led with
-  SpaceX VP Kiko Dontchev's on-record X post about it being the last
-  planned Falcon 9 Starlink launch from Florida (Starship taking over).
-  Same launch, same booster, genuinely complementary facts from
-  differently-focused outlets, not a wire rewrite of each other despite
-  publishing within hours of one another same day.
-- 2026-08-26-E: Kiko Dontchev (SpaceX VP of Launch)'s own X account
-  (@TurkeyBeaver, confirmed via a second targeted search, not the
-  @-mention account a Google search snippet first suggested) is a named
-  executive of the actor concerned per CLAUDE.md's signals-sourcing
-  carve-out, but not a signals.json whitelist entry and not "the actor's
-  official corporate account" per the first_party domain test; classed
-  the tweet `informal` (attributable, corroborating) rather than
-  `first_party`, leading instead with the mainstream outlet that quoted
-  him. Worth the reminder that "named executive of the actor concerned"
-  only grants ELIGIBILITY to be a basis for an item via social posts, not
-  an automatic tier bump to first_party.
-- 2026-08-26-F: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 8 new, 1 updated, 0 held") plus a `jq` parse check (479
-  items, up from 471) and a direct read of all eight new items' and the
-  updated item's `snr`/`category`/`impact` fields as the build-health
-  signal.
-
-## Normal-mode sweep, ~11h44m gap, unfiltered full source list (2026-08-26, second)
-
-- 2026-08-26-G: The queue was almost entirely a single story (SpaceX's
-  Aug 25 Starbase Louisiana announcement) re-reported by 40+ outlets
-  plus a wave of unrelated SpaceX-valuation/analyst-note financial
-  blogs (Motley Fool, Barron's, 24/7 Wall St, Seeking Alpha, Stocktwits
-  price-target pieces); none of the analyst takes were drafted as
-  commentary since none came from a signals.json whitelist person or a
-  distinguishing named bank call beyond what the existing Aug 25 item
-  already carries (Morgan Stanley) — publishing every repeat "SpaceX
-  valuation" take would be padding, not signal. Instead the mandatory
-  HTML-source pass caught the genuinely new fact the queue buried: a
-  same-day ICEYE Korea entity release, extending the standing country-
-  entity pattern (Germany/Portugal/UAE/India/Netherlands) to a sixth
-  country; drafted with `dedup_distinct` against the two most recent
-  same-category ICEYE entries (Netherlands Aug 25, India Aug 24) since
-  each is a genuinely separate country/leadership/MOU event, not a
-  rewrite.
-- 2026-08-26-H: Payload's own Starbase Louisiana article, fetched via
-  its queue `raw_excerpt` (not a WebFetch summary), carried real
-  operational detail the Aug 25 item's official-record lead source
-  didn't state (five launch complexes, self-sustaining site plan,
-  a jobs estimate revised up to 10,000, and the ExxonMobil-lawsuit
-  dismissal that freed the land) — patched into the existing item's
-  `what_happened` via `updates[]` even though the item was already at
-  the SNR 5 ceiling and no rescore was possible; the value was in the
-  copy, not the score. Reminder: `explainer` patches are a full-field
-  replace, not an append (confirmed against `finalize-sweep.ts`'s
-  `{...base.explainer, ...patch.explainer}` merge), so the patch must
-  carry the complete new text, original sentences included.
-- 2026-08-26-I: A single-source Payload exclusive (City Labs' second
-  nuclear demo, testing a lunar-night radioisotope heating unit) got a
-  genuine `crawl: "found_none"` after a real search turned up nothing
-  beyond the same Payload piece — landed at trade tier 3 minus one for
-  the uncorroborated claim, SNR 2, published anyway per the standing
-  "weak sourcing is not a hold reason" rule.
-- 2026-08-26-J: `spacenews.com` 403'd on a queue candidate (RTX/Blue
-  Canyon "new spacecraft mission enabler") and the queue's own
-  `raw_excerpt` cut off before naming the actual product; a WebSearch
-  surfaced a plausibly-related "FleXbus" RTX release but dated Aug 14,
-  a mismatch with the Aug 26 SpaceNews republish date and never
-  independently confirmed as the same announcement — left undrafted
-  rather than guess which product the SpaceNews piece meant, per the
-  standing "only cite pages with genuinely fetched content" rule.
-- 2026-08-26-K: A Reuters/Washington Times/AP set of pickups on
-  "Zelensky awards Musk Ukraine's Order of Freedom, seeks wider
-  Starlink access over Russia" all 403'd or were unreachable directly;
-  Fortune and the Kyiv Independent both fetched cleanly and corroborated
-  each other (mainstream tier 3 + corroboration bump = SNR 4) despite
-  disagreeing on the award's English name (Order of Freedom vs. Order
-  of Liberty, likely a Ukrainian-to-English translation variance) —
-  went with "Order of Freedom" per the majority of headlines seen in
-  WebSearch results (AP, Reuters, Fortune, Washington Post, ABC) without
-  citing any of the unfetched pages. Classed as `geopolitical` under the
-  CLAUDE.md carve-out (a government statement about commercial space
-  services in a conflict), not conflict analysis, since the item reports
-  Zelensky's on-record ask and Musk's on-record refusal without
-  characterizing the war itself.
-- 2026-08-26-L: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate, continuing
-  the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1
-  updated, 0 held") plus a `jq` parse check (484 items, up from 479)
-  and a direct read of all five new items' and the updated item's
-  `snr`/`category`/`impact` fields as the build-health signal.
-
-## Narrow same-day re-check, ~3h48m gap, unfiltered full source list (2026-08-26, third)
-
-- 2026-08-26-M: A near-total-duplicate queue (400 of ~447 candidates
-  already consumed, the remainder almost entirely SpaceX Louisiana
-  Starbase follow-up coverage from 40+ outlets and SpaceX/Tesla stock
-  speculation) still surfaced one genuinely new, well-sourced item via
-  the queue's own Spire IR/Via Satellite entries: NOAA's TMATE program
-  (Temperature and Moisture Advanced Technology Evolution) awarded
-  Spire ($27,982,177), Muon Space ($11M), and Weather Stream ($7.5M)
-  combined $46.5M to develop new microwave sounding instruments,
-  announced Aug 26. Spire's own IR release didn't name the "TMATE"
-  program (called it "HyMS" work generically) and the raw_excerpt was
-  empty; NOAA's own NESDIS press release (found via WebSearch, not the
-  queue) named the program, listed all three exact award figures, and
-  gave the 24-month/Aug 25 start timeline -- led with NESDIS as
-  `official_record` (SNR 5) rather than Spire's own release, since the
-  government award notice is the more complete and more authoritative
-  primary source when both exist for a procurement.
-- 2026-08-26-N: Extends the standing same-company-plus-category dedup
-  false positive to a new instance: the new NOAA TMATE award (company
-  Muon Space, category `procurement`) tripped the gate against the
-  Aug 20 SpaceWERX STRATFI awards (also company Muon Space, also
-  `procurement`, within 7 days) despite being unrelated agencies
-  (NOAA vs. Space Force), programs, and cohorts. One `dedup_distinct`
-  entry cleared it.
-- 2026-08-26-O: A Polish government institute's GNSS-jamming report
-  (widespread interference along the Baltic coast, also flagged
-  same-day by Andrew Parsonson on Bluesky) was left out of scope
-  despite reading like a regulatory/incident story: no commercial
-  satellite operator is named, no operator or government statement
-  ties it to a specific space asset or service change, and the
-  disruption is described purely in terms of ground-receiver/PNT
-  effects (phones, drones, city bikes) -- distinct from the
-  attributable-incident carve-out (which covers debris, collisions,
-  and satellite anomalies attributed to a reporting authority), and
-  matching the 2026-08-19-H "space-adjacent but no commercial-space
-  angle stated" exclusion pattern.
-- 2026-08-26-P: `bun run build` and `bun scripts/check-feed.ts` were
-  both denied outright by this session's permission gate, continuing
-  the standing pattern since 2026-07-11-B; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
-  updated, 0 held") plus a grep parse check (485 items, up from 484)
-  and a direct read of the new item's `snr`/`snr_trace`/`category`/
-  `impact` fields as the build-health signal.
-
 ## Narrow same-day re-check, ~7h55m gap, unfiltered full source list (2026-08-27)
 
 - 2026-08-27-A: A near-total Louisiana-Starbase-follow-up queue (24 of
@@ -5361,3 +5185,46 @@ a newer entry if a lesson changes.
   updated, 0 held") plus a `jq` parse check (758 items, up from 757) and a
   direct read of the new item's and the updated item's `snr`/`snr_trace`/
   `category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~7h14m gap, unfiltered full source list (2026-09-26)
+
+- 2026-09-26-A: A regex grep for "Yaogan 50" (space) against items.json
+  missed the already-published "Yaogan-50 (02)" items entirely (hyphen,
+  not space) and a discovery-pass Yaogan-50 breakup lead nearly drafted as
+  a duplicate; finalize-sweep's own dedup gate caught it before merge.
+  Worth grepping company/object names with the punctuation variant
+  actually used in past headlines (hyphens, slashes) rather than a
+  loosely-spaced guess, since jq regex is a literal substring match, not
+  fuzzy.
+- 2026-09-26-B: Several `bsky.app` public-API signals-pass fetches this
+  run (chenryspace, tmfassociates, sciguyspace, andrewjonesspace) returned
+  posts from months-old dates (July, June, August) instead of the
+  requested last-day window, despite the 2026-09-25-E lesson confirming
+  the API endpoint works cleanly; other accounts fetched in the same
+  batch (Josef Aschbacher, Jeff Foust, Marcia Smith, Anatoly Zak, Andrew
+  Parsonson) returned correctly dated Sept 25-26 posts. Looks like an
+  intermittent stale-cache/rate-limit response on a subset of calls in a
+  large parallel batch rather than a systemic endpoint problem; worth a
+  retry on the affected handles specifically (not the whole batch) if
+  budget allows, rather than assuming the endpoint itself regressed.
+- 2026-09-26-C: A discovery-pass "SpaceX launches classified USSF-385"
+  lead had internally conflicting facts across every source found
+  (Spaceflight Now's dated article said Sept 25 liftoff with booster
+  B1100; a WebSearch synthesis citing spacex.com/keyt.com/supercluster
+  said Sept 26 with booster B1096), and the one page directly fetched for
+  confirmation (spaceflightnow.com's dedicated launch page) was itself
+  still a pre-launch preview with no completed-launch facts. Left
+  undrafted rather than assert a specific date/booster for a launch whose
+  actual occurrence I could not confirm via any single fetched page;
+  worth remembering that Spaceflight Now runs a persistent per-mission
+  URL (`/launch/falcon-9-<mission>/`) that gets updated in place, so a
+  same-URL refetch during the pre-launch window still reads as a preview
+  even close to or after the scheduled time, distinct from AI-summarized
+  search snippets claiming completion.
+- 2026-09-26-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
+  updated, 0 held") plus a `jq` parse check (761 items, up from 758) and a
+  direct read of all three new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
