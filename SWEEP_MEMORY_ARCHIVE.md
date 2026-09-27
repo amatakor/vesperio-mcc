@@ -6420,3 +6420,137 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   and a direct read of the new item's `snr`/`snr_trace`/`category`/
   `impact` fields as the build-health signal.
 
+## Narrow same-day re-check, ~7h55m gap, unfiltered full source list (2026-08-27)
+
+- 2026-08-27-A: A near-total Louisiana-Starbase-follow-up queue (24 of
+  31 candidates were local-TV/Google-News reaction pieces on the Aug 25
+  SpaceX deal: NDAs/"Project Osprey" secrecy criticism, permitting
+  timelines, community/environmental concern coverage) yielded no
+  update: every Google News redirect resolved to a bare "Google News"
+  header (the standing 2026-07-31-J/2026-08-21-G pattern), and
+  WebSearch summaries of the same headlines surfaced only vague framing
+  ("NDAs," "permits within months") with no specific new fact
+  independently confirmable by a direct fetch. Left the already-SNR-5
+  item untouched rather than attach unverified reaction-piece framing.
+- 2026-08-27-B: The same-company-plus-category dedup heuristic fired
+  twice on one new item for entirely different reasons: a new TraCSS
+  pilot-status/budget item (company "Office of Space Commerce",
+  category `regulatory`) matched BOTH the July 15 TraCSS-budget-cut
+  congressional-hearing item (42 days prior, same underlying funding
+  saga, still a legitimately distinct dateable statement) AND the Aug
+  20 Space Commerce Certification pilot item (6 days prior, a
+  completely unrelated mission-authorization program). Needed two
+  separate `dedup_distinct` entries on one item; the gate checks each
+  window-eligible existing item independently, so one dedup_distinct
+  clearing one match does not pre-clear a second unrelated match on
+  the same company+category.
+  Also note: `Ethan Baumann` (TraCSS's actual acting program manager
+  per space.commerce.gov's own staff page) is a different named
+  individual from `Dmitry Poisik` (a TraCSS program manager quoted in
+  older, unrelated pilot-user-count coverage found via WebSearch) --
+  don't assume a single "TraCSS program manager" byline is
+  interchangeable across articles months apart; check the specific
+  quote's attribution before merging facts from two searches.
+- 2026-08-27-C: An important, well-corroborated event surfaced by
+  discovery search can carry conflicting dates across secondary
+  aggregators even when nothing is actually wrong: India's Pixxel-led
+  "Allied Orbits" national EO-constellation PPP deal was reported with
+  three different dates across five outlets (an Aug 2025 Via Satellite
+  "IN-SPACe selects Pixxel" selection-stage story, a domain-b.com
+  mirror stamped "January 21, 2026," and SatNews/Newsage.in both dated
+  Aug 12-13, 2026 and both explicitly tracing the fact to a written Lok
+  Sabha reply from Minister Jitendra Singh). Treated the two outlets
+  that independently cited the specific parliamentary-reply mechanism
+  (with matching satellite-sensor breakdowns) as the reliable date
+  rather than the single outlier mirror date, and dated the item to the
+  Lok Sabha reply (Aug 12) rather than either the year-old selection
+  announcement or the unverifiable January date; pib.gov.in and
+  inspace.gov.in were both unreachable (DNS failure / blank JS shell)
+  so no first-party confirmation was possible. When aggregator dates
+  disagree, prefer the date consistently tied to a specific, named
+  disclosure mechanism (a parliamentary reply, a filing) over a lone
+  outlier, rather than defaulting to the earliest or most recent.
+- 2026-08-27-D: A second India-privatization headlines trap
+  ("ISRO will not make any launch vehicles" / PSLV and LVM3
+  manufacturing moving to HAL/L&T, IN-SPACe chairman Pawan Goenka,
+  National Space Day Aug 23) looked like a genuine escalation beyond
+  the already-flagged-stale SSLV-only HAL transfer (2026-08-21-G,
+  2026-08-23-C), since it explicitly named PSLV and LVM3 too -- but no
+  source stated a signed contract or a named consortium for those two
+  vehicles specifically (only SSLV had a completed "competitive bidding
+  process"), and pib.gov.in/isro.gov.in were unreachable to confirm.
+  Left undrafted as still-ambiguous policy intent rather than a
+  completed transfer; worth a direct check of isro.gov.in or
+  inspace.gov.in next sweep if either becomes fetchable, since this
+  could be a genuine, larger story if a specific consortium and
+  contract for PSLV/LVM3 gets confirmed.
+- 2026-08-27-E: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") plus a `jq` parse check (488 items, up from 485)
+  and a direct read of all three new items' `snr`/`snr_trace`/
+  `category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~11h47m gap, unfiltered full source list (2026-08-27, second)
+
+- 2026-08-27-F: The mandatory HTML-source pass (`fetch-list.ts`) again
+  surfaced the sweep's only genuinely new, well-sourced find: ESA's own
+  newsroom carried "First contracts kick off European Launcher
+  Challenge" (Aug 27), confirming ESA's first three European Launcher
+  Challenge awards (Isar Aerospace €197.8M, Rocket Factory Augsburg
+  €186.9M, PLD Space €158.9M; MaiaSpace excluded this round). The queue
+  and Google News legs carried only Louisiana-Starbase follow-up chatter
+  and SpaceX stock-analyst noise. `esa.int` classes clean as
+  `first_party` per existing item precedent (registry `organizations/
+  esa.json` website field matches exactly, e.g.
+  `2026-07-02-esa-emxys-don-quijote-cubesat-contract`'s snr_trace),
+  landing the item at the SNR 5 ceiling with European Spaceflight
+  (trade, harvester raw_excerpt) and Euronews (mainstream, direct fetch)
+  as free corroboration. Same ICEYE newsroom fetch also caught two
+  already-published items (Korea entity Aug 26, Netherlands entity Aug
+  25) alongside one genuinely new one (a Water Institute FloodID
+  partnership, Aug 27, noise-tier `product`, no independent corroboration
+  found beyond a PR Newswire wire-copy of the same release).
+- 2026-08-27-G: Extends the standing "already-published, just needs a
+  grep" pattern (2026-08-22-E and peers) to Spire Global's own IR page:
+  both a "$28M NOAA hyperspectral microwave sounding" release (Aug 26)
+  and a "€4M EUMETSAT contract renewal" release (Aug 25) read like fresh
+  finds from the mandatory source pass but grepped straight to
+  already-published items from earlier the same day
+  (`2026-08-26-noaa-tmate-spire-muon-weatherstream`,
+  `2026-08-25-spire-eumetsat-contract-renewal`) — the $28M figure is
+  Spire's individual share of the $46.5M three-company TMATE award
+  already covered under NOAA's own program name. Grep company-page
+  press-release headlines against items.json before treating a "new"
+  IR-page release as undrafted, not just Google News/queue hits.
+- 2026-08-27-H: The Bluesky public API (2026-07-30-I's pattern) worked
+  cleanly for Josef Aschbacher, Andrew Jones, Marco Langbroek, Caleb
+  Henry, and Tim Farrar this run, but returned obviously stale content
+  for Eric Berger (posts dated April-June 2025/2026, over a year old,
+  despite a fresh `now` timestamp) — a session-dependent caching quirk,
+  not a dead account; worth a retry next sweep rather than treating the
+  account as unreachable. Aschbacher's own post confirmed the ELC
+  signing same-day but added no fact beyond ESA's own press release.
+- 2026-08-27-I: A discovery-pass hit ("SpaceX folded xAI into its own
+  stack... deal effective on announcement," from a general funding-round
+  search) turned out to already be folded into an existing item's prose
+  as background context (grepped "xAI" against items.json body text, not
+  just headlines) — worth grepping full item bodies, not just headlines,
+  when a discovery search surfaces something that reads like it could be
+  a standalone event.
+- 2026-08-27-J: Confirms 2026-08-27-D from the same day's earlier sweep:
+  a fresh WebSearch on India's ISRO PSLV/LVM3/SSLV privatization still
+  traced only to the same SatNews/BusinessToday synthesis (no named
+  consortium or signed contract for PSLV/LVM3 specifically), and
+  `pib.gov.in` still 403'd on direct WebFetch. Left undrafted a second
+  time this day rather than re-litigate a same-day call with no new
+  primary source.
+- 2026-08-27-K: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (490 items, up from 488) and a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact` fields as the
+  build-health signal.
+
