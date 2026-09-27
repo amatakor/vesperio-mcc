@@ -5388,3 +5388,43 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
   updated, 0 held") and the item count moving from 766 to 767 as the
   build-health signal.
+
+## Narrow re-check, ~4h01m gap, unfiltered full source list (2026-09-27, fifth)
+
+- 2026-09-27-N: A near-total-junk 23-candidate queue (Starship Flight 14
+  pre-launch hype, SpaceX stock/valuation churn, off-topic Futurism
+  filler) plus an already-published Kremlin/Peskov Starlink item and a
+  too-thin, repetitive Budanov Starlink/Starshield access request (no new
+  dateable action beyond the standing Ukraine-access-ask thread) yielded
+  zero drafts. `fetch-list.ts` returned zero due HTML sources this pass
+  (all 39 currently `stale`/`dead`/`fetch_note`). A discovery matrix of 10
+  queries (launch, financial, incident/debris, China, FCC, EO contracts,
+  India, ESA, Japan, M&A) traced every hit to already-published items
+  (Stoke Space Series E, HEO Series B, Hubble Network Series C,
+  Exploration Company ALADDIN, EOGS ICEYE/Leonardo, IRIS2 study
+  contracts, NOAA GNSS-RO task orders, EnduroSat/Vantor, Yaogan-50
+  breakup) or not-yet-occurred scheduled events (the FCC's Sept. 30
+  12/42 GHz spectrum vote, Starship Flight 14 itself).
+- 2026-09-27-O: Re-broke a mistake this same session made and then
+  self-corrected before the memory write: fetched the 8 fetchable
+  Bluesky signals channels via their plain `bsky.app/profile/<handle>`
+  URLs first (which render only the bare handle, no posts, per the
+  standing lesson since 2026-09-06-Q/2026-09-10-K/2026-09-12-J/
+  2026-09-18-N/2026-09-25-E) instead of
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N`,
+  and merged a first zero-item draft with a signalsPass note that
+  described the blank-page symptom as if it were the outcome. Caught
+  before moving on, re-fetched all 8 via the correct API endpoint, and
+  merged a second corrective draft in the same run with an accurate
+  note; the substantive result was unchanged (nothing past lastSweep on
+  any account, Josef Aschbacher/Marco Langbroek/Anatoly Zak/
+  SpacePolicyOnline all confirmed via real post data with timestamps,
+  Caleb Henry/Tim Farrar/Eric Berger/Andrew Jones stuck on the standing
+  stale-cache pattern), but the lesson is procedural: this specific
+  wrong-URL mistake recurs across sessions despite five prior memory
+  entries naming it; worth checking this exact note before starting the
+  signals pass rather than defaulting to the profile URL out of habit.
+- 2026-09-27-P: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 0 updated, 0 held" twice) and the
+  unchanged item count (767) as the build-health signal.

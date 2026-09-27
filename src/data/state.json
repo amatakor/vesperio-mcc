@@ -1,5 +1,5 @@
 {
-  "lastSweep": "2026-09-27T17:38:22.820Z",
+  "lastSweep": "2026-09-27T21:46:53.017Z",
   "sweeps": [
     {
       "at": "2026-07-05T06:04:08.173Z",
@@ -7721,6 +7721,48 @@
       "discovery": {
         "queries": 8,
         "note": "Matrix covered (launch, financial, incident/regulatory, China, India, EO contracts, FCC, Europe); two leads surfaced (Google Suncatcher/SpaceX launch pick, Dhruva/Safran SBS-III) were both already published."
+      }
+    },
+    {
+      "at": "2026-09-27T21:45:30.034Z",
+      "added": 0,
+      "updated": 0,
+      "held": 0,
+      "summary": "Genuine zero-item narrow re-check: the post-filter queue (23 candidates) was almost entirely Starship Flight 14 pre-launch hype, SpaceX stock/valuation churn, and off-topic Futurism filler; the one already-known Starlink-Russia geopolitical thread item and a repetitive, too-thin Budanov Starlink/Starshield access request were left undrafted. No sources.json HTML sources were due for a direct fetch this pass (all currently stale/dead/fetch_note). Signals and discovery passes ran at full effort and found nothing new.",
+      "coverage": [
+        "launch",
+        "financial",
+        "regulatory"
+      ],
+      "signals": {
+        "checked": 17,
+        "x_attempted": 4,
+        "note": "All 17 fetchable channels attempted (no rotation needed). The 8 Bluesky profile URLs rendered only the bare handle with no post content or timestamps (a persistent WebFetch/Bluesky rendering limitation noted in prior sweeps, not a claim of 'nothing new'); europeanspaceflight.substack.com/feed returned HTTP 403. The remaining site-based channels (Jonathan's Space Report, Main Engine Cutoff, European Spaceflight, RussianSpaceWeb, SpacePolicyOnline, Aviation Week/Vivienne Machi) all confirmed no content newer than this run's ~4h gap since lastSweep. Searched 4 X handles (Foust, Erwin, Jones, Beck); no on-scope post with verbatim-retrievable text from after lastSweep surfaced."
+      },
+      "discovery": {
+        "queries": 10,
+        "note": "Full matrix covered (launch/vehicle, financial/M&A, incident/regulatory, China, India, Japan, EO contracts, ESA). Every substantive hit traced to an already-published item (Stoke Space Series E, HEO Series B, Hubble Network Series C, Exploration Company ALADDIN/Series C, EOGS ICEYE/Leonardo contracts, IRIS2 study contracts, NOAA GNSS-RO task orders, EnduroSat/Vantor, Yaogan-50 breakup) or is a not-yet-occurred scheduled event (FCC's Sept. 30 spectrum vote, Starship Flight 14 pre-launch coverage)."
+      }
+    },
+    {
+      "at": "2026-09-27T21:46:53.017Z",
+      "added": 0,
+      "updated": 0,
+      "held": 0,
+      "summary": "Follow-up merge in the same narrow re-check to correct the signals-pass method (bsky.app profile pages vs. the public API endpoint) after the first merge already recorded a genuine zero-item outcome; the corrected Bluesky fetches confirm the same result, nothing new since lastSweep.",
+      "coverage": [
+        "launch",
+        "financial",
+        "regulatory"
+      ],
+      "signals": {
+        "checked": 17,
+        "x_attempted": 4,
+        "note": "Correction to the prior merge in this same run: the first pass mistakenly fetched bsky.app/profile/... pages directly (which always render as a bare handle, per standing lesson) instead of the public.api.bsky.app getAuthorFeed endpoint. Re-fetched all 8 Bluesky accounts via the correct API this pass. Josef Aschbacher, Marco Langbroek, Anatoly Zak, Jeff Foust's followed-feed, and SpacePolicyOnline's own account all returned real posts, but every one is timestamped before this run's lastSweep (2026-09-27T17:38:22Z) except SpacePolicyOnline's 20:33 post, which only promotes the already-reviewed weekly digest with no new fact. Caleb Henry, Tim Farrar, Eric Berger, and Andrew Jones's feeds returned stale cached posts from March-July 2026 (the standing intermittent stale-Bluesky-cache pattern, 2026-09-26-B/O), not retriable this session. Site-based channels (Jonathan's Space Report, Main Engine Cutoff, European Spaceflight, RussianSpaceWeb, SpacePolicyOnline, Aviation Week/Vivienne Machi) and the europeanspaceflight.com substack (403 on the /feed path) confirmed nothing newer than lastSweep. Searched 4 X handles (Foust, Erwin, Jones, Beck); no on-scope post with verbatim-retrievable text from after lastSweep surfaced. Net effect on the sweep outcome: none, zero new items either way."
+      },
+      "discovery": {
+        "queries": 10,
+        "note": "Unchanged from the prior merge this run: full matrix covered, every substantive hit traced to an already-published item or a not-yet-occurred scheduled event."
       }
     }
   ]
