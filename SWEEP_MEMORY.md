@@ -5342,3 +5342,49 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 3 new, 0 updated, 0 held") and the item count
   moving from 763 to 766 as the build-health signal.
+
+## Narrow re-check, ~4h29m gap, unfiltered full source list (2026-09-27, third)
+
+- 2026-09-27-J: A near-total-junk 31-candidate queue (SpaceX stock/IPO
+  churn, Starship Flight 14 pre-launch viewing guides, off-topic
+  BBC/Futurism filler) still yielded one genuinely new item: Kremlin
+  spokesman Peskov warned that letting Ukraine use Starlink for deep
+  strikes into Russia would be "dangerous," responding to Finland's
+  Stubb reiterating his Starlink-access push to Musk. The dedup gate's
+  same-company-plus-category heuristic fired against both prior
+  Starlink-conflict items (Poland's station-fire sabotage, the Cosmonova
+  Kyiv strike) despite this being a distinct diplomatic-statement event;
+  two `dedup_distinct` entries cleared it. Anadolu Agency (aNews) and The
+  Moscow Times, both independently reporting the same Peskov quote via
+  Russian TV (Vesti/Zarubin), landed a clean SNR 4 as two mainstream
+  sources; found no kremlin.ru transcript to upgrade further.
+- 2026-09-27-K: The queue's "SpaceX just got the green light Starship
+  has waited years for" (Teslarati) confirmed the FAA had granted
+  Starship Flight 14's launch license (late Sept. 26), closing out the
+  standing item's own "awaiting its FAA launch license" open point from
+  its last update. Patched as an update rather than a new item despite
+  being 26 days after the item's creation date, since it's a direct
+  continuation of a story the item had already been receiving updates
+  on; bumped impact from notable to major given the stated regulatory
+  grant unlocking Starship's first orbital, revenue-generating flight
+  (the stated-value/first-of-kind test, not the eventual launch outcome
+  itself, which will be its own event next sweep).
+- 2026-09-27-L: Two discovery-pass leads that read as clean gaps (Google's
+  "Suncatcher" orbital-AI-chip project picking SpaceX as launch provider;
+  Dhruva Space/Safran's SBS-III contract) were both already published
+  under headlines with no shared keywords with the search terms that
+  surfaced them (`2026-09-24-google-project-suncatcher-orbital-test`,
+  `2026-09-10-safran-dhruva-space-sbs3-contract`) -- caught by an id/
+  headline grep against sweep-context's `existing[]` before drafting,
+  extending the 2026-09-27-E company-name-search lesson.
+- 2026-09-27-M: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell for an EIGHTH consecutive sweep; no sourceHealth
+  entry logged again. A thin general-commentary lead (Elon Musk's CGTN
+  interview on US-China orbital-collision coordination and rocket
+  reusability) was left undrafted: no new dateable action, matching the
+  standing thin-trend-piece exclusion pattern even though Musk is a
+  first-party voice for SpaceX. `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") and the item count moving from 766 to 767 as the
+  build-health signal.
