@@ -5268,3 +5268,77 @@ a newer entry if a lesson changes.
   2026-09-09 CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s
   own merge confirmation ("merged 0 new, 0 updated, 0 held") and the
   unchanged item count (763) as the build-health signal.
+
+## Deep sweep (auto-escalated, mode: deep), ~7h08m gap, unfiltered full source list (2026-09-27, second)
+
+- 2026-09-27-D: The harvester auto-escalated to a 7-day deep sweep (427
+  post-collapse candidates, 73 syndicated titles pre-collapsed) after
+  consecutive quiet narrow re-checks. Almost the entire queue was
+  re-presented Starship Flight 14 pre-launch hype (not yet flown, still
+  targeting Sept 28), SpaceX stock/executive-equity churn, and
+  already-published ground; a keyword-filtered pass (funding/contract/
+  regulatory/incident terms) cut the non-Federal-Register queue from 385
+  entries to a manageable review set and is worth reusing on future deep
+  sweeps rather than reading the full queue serially.
+- 2026-09-27-E: Three separate discovery-pass leads that read as clean
+  gaps (a WebSearch synthesis for "17,000 satellites... orbital
+  collisions" ESA debris report; "ESA awards study contracts for
+  dual-use Earth observation system" plus the ICEYE ARISE press
+  release; "Planet's Next Chapter in Germany" Berlin factory post) were
+  each already published under headlines that did not share obvious
+  keywords with the search terms that surfaced them (`2026-09-14-esa-
+  space-environment-report-2026`, `2026-09-17-esa-eogs-arise-leonardo-
+  study-contracts`, `2026-09-17-planet-berlin-satellite-factory`), and a
+  targeted `jq` grep against items.json for terms like "space
+  environment", "dual-use", and "germany" missed all three. Only
+  finalize-sweep's own dedup gate caught the duplicates before merge.
+  Lesson: for a discovery-pass lead that reads like an ESA/first-party
+  announcement or a Planet/ICEYE blog post, search items.json by
+  company name and rough date window (not just topic keywords) before
+  spending further research budget drafting it; the existing items had
+  materially more detail (e.g. the EOGS item's own €167M-to-€350M
+  funding figures, sourced from SatNews, Space Intel Report AND
+  Leonardo's own press release, which this session never found) than a
+  fresh draft would have carried.
+- 2026-09-27-F: A prior session had already resolved the ESA EOGS/ICEYE-
+  ARISE vs. "€350M European military ISR constellation" framing
+  confusion this session spent significant effort on (satnews.com and
+  Space Intel Report describe the same Sept. 17 ICEYE/Leonardo
+  architecture-study contracts using military-ISR language, while
+  ESA's and ICEYE's own releases frame it as the dual-use EOGS
+  program): Leonardo's own press release (findable via WebSearch,
+  `leonardo.com/en/press-release-detail/.../leonardo-selected-to-help-
+  shape-europe-s-future-sovereign-earth-observation-capability`) is the
+  piece that ties the two framings together as one event. Worth
+  remembering for any future ESA/EU sovereign-program story that reads
+  ambiguous between a "civil/dual-use" framing and a "military ISR"
+  framing: check whether the losing/other named contractor (here,
+  Leonardo, the second consortium lead) has its own release before
+  concluding the two framings are separate events.
+- 2026-09-27-G: Three genuinely new items cleared: China's S-AIDC
+  Supercomputing-1 onboard-AI EO satellite (RunTimeWire as lead since
+  Data Center Dynamics 403'd and Tom's Hardware's page wouldn't render
+  via WebFetch; a Thai tech-blog translation independently confirmed
+  the same facts for corroboration), Sanyark Space's $2M Indian NAV-COM
+  pre-seed (Dealroom lead, a regional business outlet for
+  corroboration), and EU commissioner Kubilius's Ariane 6 capacity
+  remarks at the Sept. 23 Access to Space Conference (SatNews as lead
+  since SpaceNews itself was paywalled beyond the headline/date/author
+  metadata WebFetch could still confirm). All landed SNR 4 off a trade
+  lead plus one corroboration source.
+- 2026-09-27-H: Several arstechnica.com and realclearscience.com URLs
+  failed outright via WebFetch this run (arstechnica.com: "unable to
+  fetch"; realclearscience.com: HTTP 403), consistent with prior notes
+  that these sites block the fetcher; a Yahoo News mirror that surfaced
+  in the same search for the ESA debris report turned out to be a
+  stale 2024 article recycled under a similar headline (a new
+  same-topic-no-date-in-snippet trap distinct from the Poland/Russia
+  case in 2026-09-25-N) and was correctly not used after a direct
+  fetch caught the wrong year. A WordPress reblog site
+  (nuclear-news.net) that credited and rehosted the original Ars
+  Technica piece fetched cleanly and was usable for corroboration
+  credit once the standalone ESA item turned out to already exist.
+- 2026-09-27-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") and the item count
+  moving from 763 to 766 as the build-health signal.
