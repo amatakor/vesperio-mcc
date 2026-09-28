@@ -5337,3 +5337,60 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 0 updated, 0 held") and the item count
   moving from 767 to 769 as the build-health signal.
+
+## Narrow re-check, ~9h07m gap, unfiltered full source list (2026-09-28, second)
+
+- 2026-09-28-E: A verified company's own X/Twitter posts do NOT pass the
+  first_party anti-spoof gate even when genuinely fetched and confirmed
+  verbatim via the syndication endpoint: the gate only matches a
+  source's URL host against the registry's recorded `website` domain (or
+  a fixed official-hosts list), and `x.com` is neither, so two of
+  SpaceX's own posts confirming today's Starship Starlink V3 deployment
+  classed `informal`, not `first_party`, despite being the actor's own
+  official account. Worth remembering before assuming a verified
+  company account earns first_party the way a whitelisted person's
+  signals.json channel does; the anti-spoof rule cares about domains,
+  not verification badges.
+- 2026-09-28-F: Starship's actual first ORBITAL flight (the 14th test
+  flight, Sept. 28, engine loss during ascent, orbit reached ~25 minutes
+  after liftoff, 26 Starlink V3 satellites deployed into the operational
+  constellation for the first time rather than discarded on reentry, per
+  Payload/UPI/BBC/TechCrunch) was a genuinely undrafted gap distinct
+  from the already-published Sept. 1 FAA-license item and its Sept. 27
+  update noting the license grant: drafted as a new `launch`-category
+  item rather than folded into the license item, since a regulatory
+  approval and the actual flight execution are separate dateable events
+  (same logic as Flight 13's abort/flight being its own item apart from
+  license news). Landed `major` impact (a demonstrated first-of-kind
+  operational capability) rather than `seismic`: CLAUDE.md's seismic
+  example specifically names a vehicle's maiden flight, and Starship's
+  literal first flight was years prior (this is its first flight to
+  actually reach orbit after 13 suborbital-only attempts) -- picked the
+  lower tier per the standing "when torn, pick the lower one" rule.
+  spacex.com/updates and the dedicated spacex.com/launches/starship-
+  flight-14 page both remained unfetchable JS shells (no first_party
+  lead available), so the item led on Payload (trade) with UPI/BBC/
+  TechCrunch (mainstream) corroboration, landing SNR 4 off 5 distinct
+  sources -- the direct-source ceiling applies regardless of magnitude
+  when no first-party lead is fetchable.
+- 2026-09-28-G: The same-company-plus-category dedup heuristic fired on
+  the Starship item against two unrelated Falcon 9 missions (the Sept.
+  21 Exolaunch Starfall reentry rideshare and the Sept. 26 USSF-385
+  Vandenberg launch), purely on shared company SpaceX + category
+  `launch` + within 7 days, despite being a different vehicle and
+  program entirely. Two `dedup_distinct` entries cleared it, extending
+  the long-running pattern to same-company-different-vehicle collisions
+  specifically.
+- 2026-09-28-H: A discovery-pass "satellite company funding" query
+  resurfaced Sateliot's April 2026 Series C round-OPENING announcement
+  (not a close) under a September-dated search; confirmed stale via a
+  second targeted search finding no September close, left undrafted.
+  ESA's "first office in Japan" (europeanspaceflight.com) traced to an
+  October 2025 opening, also stale. Both genuinely new items this run
+  (Starship orbital flight, Meridian Space's spinout from SpinLaunch)
+  came from the harvester queue itself, not the 8-query discovery
+  matrix, which traced entirely to already-published ground.
+- 2026-09-28-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") and the item count
+  moving from 769 to 771 as the build-health signal.
