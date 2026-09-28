@@ -5447,3 +5447,56 @@ a newer entry if a lesson changes.
   both new items' and the updated item's `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields, and the state.json sweep-log entry, as the
   build-health signal.
+
+## Narrow re-check, ~6h05m gap, unfiltered full source list (2026-09-28, fourth)
+
+- 2026-09-28-O: WebFetch's AI summarization of a Bluesky
+  `getAuthorFeed` JSON response is not reliably reproducible: fetching
+  Jeff Foust's and Eric Berger's feeds twice each (once asking for
+  text+timestamp, once asking additionally for the `uri` field) returned
+  materially different post sets each time, and one live-tweet-style
+  quote about the Starliner briefing shifted from being attributed to
+  Foust's feed on the first call to Berger's feed on the second. Rather
+  than risk a misattributed quote or fabricated post URI, dropped both
+  Bluesky posts from the Starliner item's sourcing entirely and drafted
+  from Payload/Scientific American/ClickOrlando instead, which was
+  already sufficient for SNR 4. Lesson: when a signals-channel fetch
+  needs an exact quote or post URI (not just "is there anything new"),
+  don't trust a single WebFetch summarization pass; re-fetching the same
+  endpoint can silently change which posts and attributions come back.
+- 2026-09-28-P: arstechnica.com again failed outright via WebFetch
+  ("unable to fetch"), but its content on the ISS mobile-transporter
+  fault ahead of Crew-13 (Sept 27-28) had already propagated through
+  rewrite/preview sites that explicitly credit Ars Technica
+  (hwbusters.com with the fuller rewrite, physicalainews.com with a
+  shorter preview linking through to the original). Used hwbusters.com
+  as the lead, classed `informal` (not `mainstream`), since Ars Technica
+  itself was never actually fetched this run; citing the rewrite site
+  honestly rather than laundering Ars Technica's tier through it. Only
+  one such rewrite cluster existed for this story (no independent
+  outlet had it yet), so `crawl: "found_none"` and the item landed SNR 1
+  -- still drafted per the standing "weak sourcing is never a reason to
+  hold" rule, since it's a genuine, dateable, on-scope Commercial Crew
+  operational risk two days before Crew-13's targeted launch.
+- 2026-09-28-Q: `finalize-sweep.ts` rejects an `updates[].attach` entry
+  missing `via` even when the attached source is first-party and is
+  functionally the new lead-quality source, not mere corroboration;
+  every attach entry needs an explicit `via` from the enum
+  (`initial`/`corroboration`/`reinforcement`/`upgrade`), not just the
+  ones that are obviously additive.
+- 2026-09-28-R: Three genuinely new items cleared after the queue (dominated
+  by already-published Starship Flight 14 coverage) and an 8-query
+  discovery matrix both traced entirely to already-published ground:
+  Boeing/NASA's Starliner return-to-flight schedule (uncrewed NET
+  December, crewed mid-2028, Vulcan Centaur certification needed since
+  Atlas V is retiring) from the harvester queue's Payload entry; the ISS
+  mobile-transporter fault above; and Northrop Grumman's first-21-of-150
+  PWSA Tranche 1 Transport Layer satellite delivery, found via the
+  signals pass (Aviation Week's Vivienne Machi) but sourced to the
+  company's own first-party press release once found, landing SNR 5
+  with Defense Daily corroboration. Also closed out the
+  2026-07-03-katalyst-swift-reboost-launch saga with NASA's first-party
+  lessons-learned page (nasa.gov concluded involvement Sept 3, Link
+  reentered Sept 25, plus quotes and the drag-minimization detail),
+  found via a Jeff Foust Bluesky headline-teaser pointing at a paywalled
+  SpaceNews piece that in turn led to the NASA source.
