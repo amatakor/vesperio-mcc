@@ -6554,3 +6554,141 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   items' `snr`/`snr_trace`/`category`/`impact` fields as the
   build-health signal.
 
+## Narrow same-day re-check, ~9h gap, unfiltered full source list (2026-08-28)
+
+- 2026-08-28-A: "USAF: Our Starbase Louisiana is not affiliated with SpaceX" (KATC,
+  Google News queue) is a genuine name collision, not a story about SpaceX's
+  Starbase Louisiana: STARBASE is a 27-year-old DoD youth STEM education program
+  (the Louisiana Air/Army National Guard's science-outreach initiative), unrelated
+  to SpaceX's own "Starbase" branding. Confirmed via WebSearch before drafting;
+  discarded as out of scope rather than treated as a regulatory clarification on
+  the Aug 25 SpaceX deal.
+  Separately, a Satellogic `SEC EDGAR 8-K feed: SATL` Item 5.02 filing traced (via
+  WebSearch, sec.gov 403'd as usual) to a routine Interim CFO appointment
+  (Corporate Controller since 2022 stepping up), below the inclusion bar per the
+  standing routine-executive-hire exclusion.
+- 2026-08-28-B: `esa.int` classes `first_party` for an update's `rescore` even
+  when the item's `companies` array names a different party (Arianespace, not
+  ESA): the anti-spoof gate checks the URL's domain against the FULL registry
+  host set, not just the item's own companies, confirming 2026-08-27-F's finding
+  generalizes to the update/rescore path, not just newItems. Used it to upgrade
+  the MTG-I2 scheduled-launch item (Via Satellite lead, SNR 4) to the completed
+  launch via ESA's own post-launch article (SNR 5 ceiling) once the Aug 27 mission
+  actually flew; `rescore.sources[0].url` had to equal a `patch.source_url` set in
+  the same update object first, per the documented upgrade-path contract.
+- 2026-08-28-C: A quiet, near-total SpaceX-Starbase-Louisiana-follow-up queue
+  (stock speculation, local-TV reaction pieces, Motley Fool/Barron's SpaceX
+  valuation churn) still yielded two genuinely new items straight from the
+  Via Satellite/Payload queue entries once each was actually read rather than
+  assumed to be more Louisiana follow-up: Astrum Space's ~$1B SPAC merger with
+  Black Spade Acquisition III (a Singapore satellite-to-device operator with no
+  registry entity, landed at trade+mainstream SNR 4, `major` impact on the
+  stated-valuation test) and a Kepler Communications/NorthStar Earth & Space
+  hosted-payload SDA partnership (two independent trade outlets, SNR 4,
+  `notable`). Neither needed a corroboration WebSearch beyond confirming no
+  further pickup existed; the queue's own distinct-outlet entries (Via Satellite
+  + Payload, Via Satellite + BNN Bloomberg/Reuters) supplied the required second
+  source directly.
+- 2026-08-28-D: The Bluesky public API 504-timed-out on all seven attempted
+  accounts in one batch, then succeeded cleanly on an identical retry of the same
+  URLs roughly two minutes later — confirms 2026-08-27-H's "session-dependent,
+  not dead" read of Bluesky API flakiness; worth one immediate retry before
+  logging an account as unreachable this session.
+- 2026-08-28-E: Two same-day discovery-pass leads that read like fresh finds
+  traced to already-covered ground once checked against `items.json`: NOAA's
+  Spire/PlanetiQ radio-occultation contracts ($3.7M/$2.7M) were the same Aug 14
+  award already published, and the FCC's "200 MHz unlicensed D2D spectrum"
+  initiative was the same Aug 6 NPRM vote already published under its own id.
+  Relativity Networks' "$22M SAFE note" hit (from a generic funding-round query)
+  is a terrestrial hollow-core-fiber data-center company with no satellite
+  connection at all despite ranking high in a space-adjacent search; confirmed
+  via a direct read of its own business description before discarding, not
+  assumed out of scope from the headline alone.
+- 2026-08-28-F: `bun run build` was denied outright by this session's permission
+  gate, continuing the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 1 updated, 0
+  held") plus a `jq` parse check (492 items, up from 490) and a direct read of
+  both new items' and the updated item's `snr`/`snr_trace`/`category`/`impact`
+  fields as the build-health signal.
+
+## Narrow same-day re-check, ~2h48m gap, unfiltered full source list (2026-08-28, second)
+
+- 2026-08-28-G: A genuine "government's own announcement is forward-looking,
+  not confirmation" trap: Turks and Caicos Islands' Telecommunications
+  Commission own site (telecommission.tc) carried a page titled "Signing and
+  Presentation of Licences Ceremony" (published Aug 20) announcing that
+  Starlink Caribbean LLC's licence ceremony was SCHEDULED for Aug 27, in
+  future tense throughout ("is facilitating... on August 27, 2026"). By the
+  time this sweep ran (Aug 28), search snippets from suntci.com and other
+  local outlets described the ceremony in the past tense ("Starlink Goes Live
+  in TCI"), but suntci.com and tcweeklynews.com both 403'd on every direct
+  fetch attempt, and telecommission.tc's own site had no follow-up post
+  confirming completion (checked its homepage listing directly). Left
+  undrafted rather than assert a completed-event fact from an announcement
+  page that only speaks in future tense plus unfetchable search snippets;
+  worth a direct re-check of telecommission.tc and suntci.com next sweep for
+  a post-ceremony confirmation post, since the underlying event (a small but
+  genuine market-access regulatory grant, matching the Vietnam market-entry
+  precedent) is real and worth publishing once confirmable.
+- 2026-08-28-H: A same-day re-check with a genuinely near-total-duplicate
+  14-candidate queue (SpaceX/Starlink stock speculation, an AP-wire Ship 40
+  recovery piece resurfacing days late via Gulf Coast News/WTAE that traced
+  to the already-covered Aug 20/24 Christmas Island recovery already in the
+  existing Flight 13 item, and Jalopnik's late pickup of the already-published
+  Aug 25 Starbase Louisiana announcement) plus a clean mandatory 10-source
+  HTML pass and a 10-query discovery matrix all traced to already-published
+  ground: confirms the standing pattern that a short re-check can legitimately
+  net zero even after full-effort discovery. `bun run build` and
+  `bun scripts/check-feed.ts` were both denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B; relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated, 0
+  held") plus a grep parse check (492 items, unchanged from the prior sweep)
+  as the build-health signal.
+
+## Normal-mode sweep, ~11h51m gap, unfiltered full source list (2026-08-28, third)
+
+- 2026-08-28-I: The registry's `official_record` anti-spoof allowlist rejects
+  a state economic-development agency's own domain unless it is already on the
+  allowlist: `hie.co.uk` (Scotland's Highlands and Islands Enterprise,
+  confirming a spaceport asset acquisition it brokered) was rejected as "not an
+  official official_record host" even though the 2026-08-25-G precedent
+  (Louisiana Economic Development's `opportunitylouisiana.gov`) classed an
+  analogous state-agency announcement page as `official_record` and it passed.
+  The distinguishing factor is likely the `.gov` TLD; a non-`.gov` development
+  agency domain needs `trade` instead until the allowlist is extended. Reclassed
+  to `trade` and the draft passed.
+- 2026-08-28-J: The finalize-sweep gate rejects exclamation marks anywhere in
+  `headline`/`explainer.tagline`/`explainer.what_happened`, including inside a
+  company's own stylized legal name: French rideshare broker RIDE! (styled
+  with a trailing exclamation mark on its own site and by every outlet
+  covering it) had to be written as "Ride" throughout the prose (kept as
+  "RIDE!" in the `companies` array, which the gate did not flag) to pass the
+  no-hype/no-exclamation-marks house style rule. Worth checking a newly
+  introduced company's stylized name for punctuation before drafting.
+- 2026-08-28-K: MaiaSpace's own newsroom (`maia-space.com`, note the hyphen;
+  `maiaspace.com` without one does not resolve via WebFetch, ENOTFOUND) is a
+  genuine first-party source for its own announcements, but MaiaSpace has no
+  standalone registry organization entity (it appears only inside
+  ArianeGroup's org profile) — per the standing 2026-07-26-E/2026-08-04-B
+  no-registry-host workaround, its own domain still capped at `informal`
+  class rather than `first_party`; landed the item at SNR 2 despite being a
+  clean, well-corroborated (3 independent outlets) own-source lead. Confirms
+  MaiaSpace joins the standing list of frequently-recurring actors (Apex
+  Space, ispace, Orbit Fab, ArkEdge) worth a registry add at the next
+  structural touch.
+- 2026-08-28-L: A months-old dormant registry spaceport entity can resurface
+  as a genuine new item once its parent company's insolvency saga produces a
+  new, distinct event: `src/data/registry/spaceports/sutherland.json` already
+  existed (operator "Orbex", status "on hold") from the original February
+  Orbex-administration coverage, and HIE's August 25 acquisition of the site's
+  assets out of liquidation is a clean crossfeed touch on the `operator`
+  field, six-plus months outside the 7-day window of the original item, so it
+  drafted as a new standalone item rather than an update.
+- 2026-08-28-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") plus a grep parse check
+  (495 items, up from 492) and a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
+  signal.
+
