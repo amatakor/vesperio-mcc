@@ -5394,3 +5394,56 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 0 updated, 0 held") and the item count
   moving from 769 to 771 as the build-health signal.
+
+## Narrow re-check, ~2h30m gap, unfiltered full source list (2026-09-28, third)
+
+- 2026-09-28-J: A queue dominated by hundreds of Starship Flight 14
+  pickup pieces buried a genuine correction: the already-published
+  item's TechCrunch-sourced text conflated the mission's ORIGINALLY
+  PLANNED six-orbit/Chile splashdown with what actually happened once
+  mission managers cut the flight short after satellite deployment. CBS
+  News, fetched directly, gave the real outcome: splashdown in the
+  Pacific north of Hawaii about three hours in, the ship tipping over
+  and catching fire on impact (a normal ocean-landing occurrence per
+  CBS), and a Super Heavy booster splashdown off Texas after a second
+  engine issue during boost-back. ABC News and SpacePolicyOnline's
+  bluesky (real-time launch-day posts) both independently corroborated
+  "north Pacific"/"north of Hawaii" over TechCrunch's "west of Chile"
+  phrasing. Patched via `updates[].patch.explainer.what_happened` (full
+  field replacement, not an append) plus an `attach`; no bump requested,
+  since the item's non-first-party trade lead was already at its
+  corroboration ceiling of 4. Worth remembering: a same-day launch
+  item's first-draft copy can describe the PLAN rather than the OUTCOME
+  when the lead source was still live-blogging pre-splashdown; a
+  same-day follow-up fetch of a different outlet is worth doing even on
+  an already-published seismic/major item, not just thin ones.
+- 2026-09-28-K: Two genuinely new items surfaced entirely from the
+  harvester queue's own non-Starship entries, not discovery: Beeline
+  Kazakhstan's commercial Starlink Mobile direct-to-cell launch (Via
+  Satellite's `raw_excerpt` carried the full article; Kazakhstan's
+  government ministry announcement and VEON's own two prior press
+  releases, Nov 2025 and Dec 2025, were both confirmed stale on direct
+  fetch and used only for background, not as today's news peg) and
+  ESA's Digital EO cloud-infrastructure contract with OVHcloud and CGI
+  (a Reuters wire piece, credited "Thomson Reuters by Leo Marchandon"
+  on one of its many identical local-radio-station mirror hosts;
+  Techzine.eu, an independently-written tech-infra trade outlet, gave
+  the same facts in its own words for `corroboration_2plus`). Neither
+  OVHcloud nor CGI has a `src/data/registry` organization entity, but
+  the lead was never their own site, so the no-registry-host workaround
+  never came up.
+- 2026-09-28-L: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell again this run (a ninth consecutive sweep,
+  2026-09-25-C through 2026-09-27-M); no sourceHealth entry logged
+  again, per the standing practice. Still flagged for Florian: needs a
+  `fetch_note` at the next structural touch.
+- 2026-09-28-M: A NASA/Boeing Starliner press conference was scheduled
+  for 3 p.m. ET today (after this run's `now`); left uncovered as a
+  scheduled, not-yet-occurred event. Worth checking next sweep for the
+  actual announcement.
+- 2026-09-28-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 1 updated, 0 held") plus a direct read of
+  both new items' and the updated item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields, and the state.json sweep-log entry, as the
+  build-health signal.
