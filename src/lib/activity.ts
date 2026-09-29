@@ -50,15 +50,6 @@ export function updateEntries(i: Item): UpdateEntry[] {
   return out.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
-// Day-month, never month-day (Florian, 2026-07-13): "updated 07-12"
-// reads as 7 December to a European; "updated 12 Jul" is unambiguous
-// in every locale. Hand-rolled, no locale APIs: the server prerender
-// and client hydration must produce identical bytes.
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
-export function dayMonth(date: string): string {
-  return `${Number(date.slice(8, 10))} ${MONTHS[Number(date.slice(5, 7)) - 1]}`;
-}
-
 /** One sentence, at most 160 characters, for a card; the full note is on the item page. */
 export function cardNote(note: string): string {
   // A sentence ends at terminal punctuation followed by a capital or a

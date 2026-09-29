@@ -25,7 +25,8 @@ import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS, CROSSFEED_OUTCOMES } from "./data/schema";
-import { cardNote, dayMonth, feedRowKey, feedRows, updateEntries } from "./lib/activity";
+import { cardNote, feedRowKey, feedRows, updateEntries } from "./lib/activity";
+import { label } from "./lib/labels";
 import type { FeedRow, UpdateEntry } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
@@ -870,7 +871,7 @@ function Card({
       <CardMedia item={item} />
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
-          {item.category}
+          {label(item.category)}
         </a>
         <ImpactBadge impact={item.impact} variant="chip" />
         {item.disputed && <span className="chip chip-disputed">disputed</span>}
@@ -1140,7 +1141,7 @@ function UpdateCard({ item, update, onOpen }: { item: Item; update: UpdateEntry;
     <article className={`card card-upd card-${item.impact}`} data-item-id={item.id} data-update={update.date} onClick={open}>
       <div className="card-meta">
         <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
-          {item.category}
+          {label(item.category)}
         </a>
         <ImpactBadge impact={item.impact} variant="chip" />
         <span className="date">
@@ -1161,7 +1162,7 @@ function UpdateCard({ item, update, onOpen }: { item: Item; update: UpdateEntry;
           corroborated={hasAttachedCorroboration(item.sources)}
         />
         <span className="card-foot-div" aria-hidden="true" />
-        <span className="card-companies">original {dayMonth(item.date)} {item.date.slice(0, 4)}</span>
+        <span className="card-companies">original {item.date}</span>
         {update.score && (
           <span className="card-sources">
             score {update.score.from} &rarr; {update.score.to}
@@ -1426,7 +1427,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
           />
           <ImpactBadge impact={item.impact} variant="band" />
           <a className="chip" href={`/news/${item.category}/`}>
-            {item.category}
+            {label(item.category)}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
@@ -1701,7 +1702,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
         aria-pressed={on}
         onClick={() => toggle(axis, value)}
       >
-        {value} <span className="count">{count}</span>
+        {label(value)} <span className="count">{count}</span>
       </button>
     );
   };
@@ -1789,8 +1790,8 @@ export function FeedPagePage({ data }: { data: DataFor<"feed-page"> }) {
 export function CategoryPage({ data }: { data: DataFor<"category"> }) {
   return (
     <Layout current="news">
-      <h1 className="page-title">news / {data.category}</h1>
-      <FeedList list={feedRows(data.items)} emptyNote={`No ${data.category} items tracked yet.`} />
+      <h1 className="page-title">news / {label(data.category)}</h1>
+      <FeedList list={feedRows(data.items)} emptyNote={`No ${label(data.category)} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1841,7 +1842,7 @@ export function ItemPage({ item }: { item: Item }) {
         <div className="item-band">
           <ImpactBadge impact={item.impact} variant="band" />
           <a className="chip" href={`/news/${item.category}/`}>
-            {item.category}
+            {label(item.category)}
           </a>
           {item.disputed && <span className="chip chip-disputed">disputed</span>}
         {item.kind === "commentary" && <span className="chip chip-commentary">commentary</span>}
@@ -1902,7 +1903,7 @@ export function ItemPage({ item }: { item: Item }) {
                 <dt>Companies</dt>
                 <dd>{item.companies.length > 0 ? <CompanyLinks item={item} sep=", " /> : "none listed"}</dd>
                 <dt>Category</dt>
-                <dd>{item.category}</dd>
+                <dd>{label(item.category)}</dd>
                 <dt>Impact</dt>
                 <dd>{item.impact}</dd>
                 <dt>SNR</dt>
