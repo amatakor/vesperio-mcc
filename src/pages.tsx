@@ -2051,14 +2051,6 @@ function GcatAttribution({ rows }: { rows: ProfileRow[] }) {
 // dataset; the client receives the built data.entries.* arrays). Only the
 // render-side labels and predicates remain here.
 
-const KIND_LABEL: Record<string, string> = {
-  eo: "eo constellation",
-  connectivity: "connectivity",
-  iot: "iot / rf",
-  vehicle: "launch vehicle",
-  spaceport: "spaceport",
-  org: "organization",
-};
 
 const REGION_LABEL: Record<string, string> = {
   "north-america": "north america",
@@ -2192,60 +2184,98 @@ const CARD_ACCENT: Record<string, string> = {
 /** The entity card: status badges, display-voice name, the accented spec
  * grid, a clamped overview, modality chips, and the cyan open link. Clicking
  * navigates to the entity's profile page. */
-function RegCard({ entry }: { entry: RegEntry }) {
-  const status = statusBadge(entry.status);
-  const acc = CARD_ACCENT[entry.kind];
+
+/**
+ * The selected group as a ledger (rule 83, Florian 2026-09-29: the card
+ * stack ran a screen per provider with 146px seams). One 40px row per
+ * entity: status glyph, name, the group's spec columns (the union of the
+ * entries' stated specs, so a missing value leaves an empty cell instead of
+ * stretching its neighbours), sensors when any entry has them, the as-of
+ * date. Spec values keep the rule-63 accent. The row is the link.
+ */
+function RegLedger({
+  entries,
+  profileHref,
+  groupLabel,
+}: {
+  entries: RegEntry[];
+  profileHref: string | null;
+  groupLabel: string;
+}) {
+  // The pane already says which domain or kind the group is; those
+  // columns would repeat it on every row.
+  const cols: string[] = [];
+  for (const e of entries)
+    for (const s of e.specs) if (s.label !== "domain" && s.label !== "kind" && !cols.includes(s.label)) cols.push(s.label);
+  const hasSensors = entries.some((e) => e.sensors.length > 0);
   return (
-    <a
-      className="reg-card"
-      href={entry.href}
-      style={acc ? ({ "--card-acc": acc } as CSSProperties) : undefined}
-    >
-      <div className="card-meta">
-        <span className="chip">{KIND_LABEL[entry.kind]}</span>
-        {status && (
-          <span className="chip">
-            {status.glyph && (
-              <span className={`stat-glyph stat-glyph-${status.glyph}`} aria-hidden="true">
-                {status.glyph === "live" ? "●" : "◆"}
-              </span>
-            )}
-            {status.text}
-          </span>
+    <div className="reg-ledger-wrap">
+      <div className="reg-ledger-head">
+        <span className="reg-ledger-group">
+          {groupLabel} <span className="reg-pane-count">{entries.length}</span>
+        </span>
+        {profileHref && (
+          <a className="reg-ledger-profile" href={profileHref}>
+            company profile &rarr;
+          </a>
         )}
-        {entry.asOf && <span className="date">{entry.asOf}</span>}
       </div>
-      <h3 className="sig-name">{entry.name}</h3>
-      {entry.specs.length > 0 && (
-        <dl className="reg-specs">
-          {entry.specs.map((s) => (
-            <div key={s.label} className="reg-spec">
-              <dt>{s.label}</dt>
-              <dd className="mono">{s.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-      {entry.snippet ? (
-        <p className="reg-snippet">
-          {entry.snippet.length > 220 ? entry.snippet.slice(0, 220) + "..." : entry.snippet}
-        </p>
-      ) : (
-        <p className="reg-snippet dim">
-          No sourced overview yet. Unknowns stay unknown rather than estimated.
-        </p>
-      )}
-      {entry.sensors.length > 0 && (
-        <div className="tag-row">
-          {entry.sensors.map((s) => (
-            <span key={s} className="chip sig-tag">
-              {s}
-            </span>
-          ))}
-        </div>
-      )}
-      <span className="reg-open">facts, events &amp; sources &rarr;</span>
-    </a>
+      <table className="reg-ledger">
+        <thead>
+          <tr>
+            <th scope="col">name</th>
+            {cols.map((c) => (
+              <th key={c} scope="col" data-col={c}>
+                {c}
+              </th>
+            ))}
+            {hasSensors && (
+              <th scope="col" className="reg-ledger-sensors">
+                sensors
+              </th>
+            )}
+            <th scope="col" className="reg-ledger-asof">
+              as of
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((e) => {
+            const status = statusBadge(e.status);
+            const acc = CARD_ACCENT[e.kind];
+            return (
+              <tr
+                key={e.slug}
+                className="reg-ledger-row"
+                style={acc ? ({ "--card-acc": acc } as CSSProperties) : undefined}
+                onClick={(ev) => {
+                  if ((ev.target as HTMLElement).closest("a")) return;
+                  window.location.href = e.href;
+                }}
+              >
+                <td className="reg-ledger-name">
+                  <span
+                    className={`reg-ledger-glyph${status?.glyph ? ` stat-glyph stat-glyph-${status.glyph}` : ""}`}
+                    aria-hidden="true"
+                  >
+                    {status?.glyph === "live" ? "\u25CF" : status?.glyph === "state" ? "\u25C6" : "\u25A1"}
+                  </span>
+                  <a href={e.href}>{e.name}</a>
+                  {status && <span className="reg-ledger-state">{status.text}</span>}
+                </td>
+                {cols.map((c) => (
+                  <td key={c} className="reg-ledger-spec" data-col={c} title={e.specs.find((s) => s.label === c)?.value}>
+                    {e.specs.find((s) => s.label === c)?.value ?? ""}
+                  </td>
+                ))}
+                {hasSensors && <td className="reg-ledger-sensors">{e.sensors.join(", ")}</td>}
+                <td className="reg-ledger-asof">{e.asOf ?? ""}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -2418,24 +2448,27 @@ function PaneBrowser({
     >
       {superGroup && (
         <div className="reg-pane reg-ops">
-          <div className="reg-pane-head">
-            {superGroup.label} <span className="reg-pane-count">{supers.length}</span>
+          <div className="reg-pane-scroll">
+            <div className="reg-pane-head">
+              {superGroup.label} <span className="reg-pane-count">{supers.length}</span>
+            </div>
+            {supers.map(([k, list]) => (
+              <RegRow
+                key={k}
+                label={superGroup.display(k)}
+                aside={list.length}
+                selected={k === curSuper}
+                onClick={() => {
+                  setSelSuper(k);
+                  setSelGroup(null);
+                }}
+              />
+            ))}
           </div>
-          {supers.map(([k, list]) => (
-            <RegRow
-              key={k}
-              label={superGroup.display(k)}
-              aside={list.length}
-              selected={k === curSuper}
-              onClick={() => {
-                setSelSuper(k);
-                setSelGroup(null);
-              }}
-            />
-          ))}
         </div>
       )}
       <div className="reg-pane reg-ops">
+        <div className="reg-pane-scroll">
         <div className="reg-pane-head">
           {groupLabel} <span className="reg-pane-count">{groups.length}</span>
         </div>
@@ -2455,16 +2488,10 @@ function PaneBrowser({
             onClick={() => setSelGroup(g.key)}
           />
         ))}
+        </div>
       </div>
-      <div className="reg-pane reg-stack">
-        {profileHref && (
-          <a className="reg-profile-bar" href={profileHref}>
-            company profile &rarr;
-          </a>
-        )}
-        {groupEntries.map((e) => (
-          <RegCard key={e.slug} entry={e} />
-        ))}
+      <div className="reg-pane reg-stack reg-ledger-pane">
+        <RegLedger entries={groupEntries} profileHref={profileHref} groupLabel={group?.label ?? ""} />
       </div>
     </div>
   );

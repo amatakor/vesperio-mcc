@@ -3992,7 +3992,7 @@ a.sig-card:hover .sig-p-x {
   display: grid;
   grid-template-columns: 15rem 1fr;
   border: 1px solid var(--line);
-  min-height: 24rem;
+  min-height: 14rem; /* the ledger sets the height; this floor keeps a one-row group's panes usable (2026-09-29, was 24rem) */
   margin-top: 0.75rem;
 }
 .reg-browser-4 {
@@ -5740,4 +5740,226 @@ a.stamp:focus-visible {
 }
 .cat-chip[data-axis].active .count {
   color: var(--chip-ink);
+}
+
+/* ------------------------------------------------ registry ledger (83)
+   The registry index'"'"'s selected group is a ledger, not a card stack
+   (Florian, 2026-09-29): a 40px group header (group name, count, the
+   company-profile link), a T3 column header row, then one 40px row per
+   entity: status glyph, name in caps, spec columns in the rule-63 accent,
+   sensors, as-of. Rows are links; hover lifts the ground and sets a 2px
+   accent leading edge. The table scrolls inside its own frame on narrow
+   viewports. */
+.reg-ledger-pane {
+  padding: 0;
+  gap: 0;
+}
+.reg-ledger-wrap {
+  overflow-x: auto;
+}
+.reg-ledger-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+.reg-ledger-profile {
+  color: var(--link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.reg-ledger-profile:hover {
+  color: var(--link-hover);
+}
+.reg-ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1;
+}
+.reg-ledger th {
+  height: 28px;
+  padding: 0 12px;
+  text-align: left;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--dim);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.reg-ledger td {
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.reg-ledger-row {
+  cursor: pointer;
+  transition: background var(--dur-fast, 120ms) var(--ease, linear);
+}
+.reg-ledger-row:hover td {
+  background: var(--bg-raised);
+}
+.reg-ledger-row:hover td:first-child {
+  box-shadow: inset 2px 0 0 var(--reg-acc, var(--shell-accent));
+}
+.reg-ledger-name a {
+  color: var(--text-1);
+  text-decoration: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.reg-ledger-glyph {
+  display: inline-block;
+  width: 12px;
+  margin-right: 8px;
+  color: var(--n4);
+  font-size: 9px;
+  vertical-align: middle;
+}
+.reg-ledger-state {
+  margin-left: 10px;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.reg-ledger-spec {
+  color: var(--card-acc, var(--text-1));
+  font-variant-numeric: tabular-nums;
+}
+.reg-ledger-sensors {
+  color: var(--text-2);
+  text-transform: uppercase;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+.reg-ledger-asof,
+th.reg-ledger-asof {
+  text-align: right;
+  color: var(--dim);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reg-ledger-row {
+    transition: none;
+  }
+}
+/* The panes never dictate the section height: their lists scroll inside
+   an absolutely positioned inner frame, so the row is as tall as the
+   ledger (never under the browser's 24rem floor) and a 26-provider list
+   scrolls beside a five-row ledger instead of leaving a void. */
+.reg-browser .reg-pane.reg-ops {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+.reg-pane-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+}
+.reg-browser .reg-pane.reg-ledger-pane {
+  align-self: start;
+}
+
+/* Stacked panes (narrow viewports): the absolute scroller would collapse
+   the pane to its header, so the list flows normally inside a capped,
+   scrollable pane instead. */
+@media (max-width: 60rem) {
+  .reg-browser .reg-pane.reg-ops {
+    position: static;
+    overflow-y: auto;
+    max-height: 14rem;
+  }
+  .reg-pane-scroll {
+    position: static;
+    overflow: visible;
+  }
+}
+/* Scrollers inside the browser wear thin dark bars, never the system's
+   wide light ones (Florian, 2026-09-29: "massively clashing"). */
+.reg-pane-scroll,
+.reg-browser .reg-pane.reg-ops,
+.reg-ledger-wrap {
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+[data-theme="light"] .reg-pane-scroll,
+[data-theme="light"] .reg-browser .reg-pane.reg-ops,
+[data-theme="light"] .reg-ledger-wrap {
+  color-scheme: light;
+}
+.reg-pane-scroll::-webkit-scrollbar,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar,
+.reg-ledger-wrap::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.reg-pane-scroll::-webkit-scrollbar-thumb,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar-thumb,
+.reg-ledger-wrap::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+}
+.reg-pane-scroll::-webkit-scrollbar-track,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar-track,
+.reg-ledger-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Spec columns hug a fixed width so a wide screen does not spread them
+   across the frame; the name column takes the rest. */
+.reg-ledger th:not(:first-child):not(.reg-ledger-asof),
+.reg-ledger td:not(:first-child):not(.reg-ledger-asof) {
+  width: 11rem;
+}
+.reg-ledger th.reg-ledger-sensors,
+.reg-ledger td.reg-ledger-sensors {
+  width: 18rem;
+}
+.reg-ledger th.reg-ledger-asof,
+.reg-ledger td.reg-ledger-asof {
+  width: 7rem;
+}
+/* Text columns (focus, operator, country) read in the neutral ink and
+   clip with an ellipsis; figures keep the accent. */
+.reg-ledger td[data-col="focus"],
+.reg-ledger td[data-col="operator"],
+.reg-ledger td[data-col="country"],
+.reg-ledger td[data-col="hq"],
+.reg-ledger td[data-col="class"] {
+  color: var(--text-2);
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+.reg-ledger th[data-col="focus"],
+.reg-ledger td[data-col="focus"] {
+  width: 18rem;
+}
+.reg-ledger td[data-col="first flight"],
+.reg-ledger td[data-col="last flight"],
+.reg-ledger td[data-col="first launch"],
+.reg-ledger td[data-col="latest launch"] {
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
 }
