@@ -2225,7 +2225,7 @@ function RegLedger({
           <tr>
             <th scope="col">name</th>
             {cols.map((c) => (
-              <th key={c} scope="col">
+              <th key={c} scope="col" data-col={c}>
                 {c}
               </th>
             ))}
@@ -2264,7 +2264,7 @@ function RegLedger({
                   {status && <span className="reg-ledger-state">{status.text}</span>}
                 </td>
                 {cols.map((c) => (
-                  <td key={c} className="reg-ledger-spec">
+                  <td key={c} className="reg-ledger-spec" data-col={c} title={e.specs.find((s) => s.label === c)?.value}>
                     {e.specs.find((s) => s.label === c)?.value ?? ""}
                   </td>
                 ))}

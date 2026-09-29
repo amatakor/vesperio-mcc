@@ -5937,3 +5937,29 @@ th.reg-ledger-asof {
 .reg-ledger td.reg-ledger-asof {
   width: 7rem;
 }
+/* Text columns (focus, operator, country) read in the neutral ink and
+   clip with an ellipsis; figures keep the accent. */
+.reg-ledger td[data-col="focus"],
+.reg-ledger td[data-col="operator"],
+.reg-ledger td[data-col="country"],
+.reg-ledger td[data-col="hq"],
+.reg-ledger td[data-col="class"] {
+  color: var(--text-2);
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+.reg-ledger th[data-col="focus"],
+.reg-ledger td[data-col="focus"] {
+  width: 18rem;
+}
+.reg-ledger td[data-col="first flight"],
+.reg-ledger td[data-col="last flight"],
+.reg-ledger td[data-col="first launch"],
+.reg-ledger td[data-col="latest launch"] {
+  color: var(--text-1);
+  font-variant-numeric: tabular-nums;
+}

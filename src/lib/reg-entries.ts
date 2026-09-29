@@ -105,6 +105,11 @@ export function constellationEntries(constellations: ConstellationProfile[]): Re
     else if (c.sats_launched_total.value !== null)
       specs.push({ label: "launched", value: String(c.sats_launched_total.value) });
     if (c.resolution_m?.value != null) specs.push({ label: "resolution", value: `${c.resolution_m.value} m` });
+    // Ledger columns (2026-09-29): the index rows carry the stated
+    // planning figure, the country, and the latest launch date.
+    if (c.sats_planned.value !== null) specs.push({ label: "planned", value: c.sats_planned.value.toLocaleString("en-US") });
+    if (c.country.value) specs.push({ label: "country", value: c.country.value });
+    if (c.latest_launch_date.value) specs.push({ label: "latest launch", value: c.latest_launch_date.value });
     // Domain is a tag, not prose: the tile renders it in caps (Florian,
     // 2026-07-11, registry casing pass).
     specs.push({ label: "domain", value: (DOMAIN_LABEL[kind] ?? kind).toUpperCase() });
@@ -141,6 +146,10 @@ export function vehicleEntries(vehicles: VehicleProfile[]): RegEntry[] {
             : String(v.flights_total.value),
       });
     if (v.reusable.value !== null) specs.push({ label: "reusable", value: v.reusable.value ? "yes" : "no" });
+    const cls = normVehicleClass(v.vehicle_class.value);
+    if (cls) specs.push({ label: "class", value: cls });
+    if (v.first_flight_date.value) specs.push({ label: "first flight", value: v.first_flight_date.value });
+    if (v.last_flight_date.value) specs.push({ label: "last flight", value: v.last_flight_date.value });
     return {
       slug: v.slug,
       name: v.name,
@@ -165,6 +174,8 @@ export function spaceportEntries(spaceports: SpaceportProfile[]): RegEntry[] {
     const specs: RegSpec[] = [];
     if (s.launches_total.value !== null) specs.push({ label: "launches", value: String(s.launches_total.value) });
     if (s.country.value) specs.push({ label: "country", value: s.country.value });
+    if (s.operator.value) specs.push({ label: "operator", value: s.operator.value });
+    if (s.first_launch_date.value) specs.push({ label: "first launch", value: s.first_launch_date.value });
     return {
       slug: s.slug,
       name: s.name,
@@ -189,6 +200,8 @@ export function orgEntries(organizations: OrgProfile[]): RegEntry[] {
     const specs: RegSpec[] = [];
     if (o.founded.value !== null) specs.push({ label: "founded", value: String(o.founded.value) });
     if (o.country.value) specs.push({ label: "country", value: o.country.value });
+    if (o.headquarters?.value) specs.push({ label: "hq", value: o.headquarters.value });
+    if (o.focus.value) specs.push({ label: "focus", value: o.focus.value });
     // Kind is a tag, not prose: caps like the DOMAIN tile (Florian,
     // 2026-07-12: "launch-services, manufacturer" read lowercase).
     specs.push({ label: "kind", value: (ORG_KIND_LABEL[o.kind] ?? o.kind).toUpperCase() });

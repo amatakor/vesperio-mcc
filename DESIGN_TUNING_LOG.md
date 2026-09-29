@@ -1707,7 +1707,12 @@ green for operational, ◆ for development states, □ neutral), the name
 in caps, the group's spec columns (the union of the entries' stated
 specs, so a missing value is an empty cell and never stretches its
 neighbours; the DOMAIN and KIND columns are dropped because the pane
-already says them), sensors when any entry has them, the as-of date.
+already says them; 2026-09-29 second pass, "add a column of data":
+vehicles add class, first and last flight; constellations add planned,
+country, latest launch; spaceports add operator and first launch;
+organizations add hq and focus, text columns in the neutral ink,
+clipped with an ellipsis), sensors when any entry has them, the as-of
+date.
 Spec values keep the rule-63 accent. The row is the link; hover lifts
 the ground and sets a 2px accent leading edge. The panes scroll inside
 an absolutely positioned inner frame, so a 26-provider list never
