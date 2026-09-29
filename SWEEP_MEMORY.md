@@ -5467,3 +5467,37 @@ a newer entry if a lesson changes.
   `corroboration_collapses` entry (ICEYE's own release vs. Insurity's own
   mirrored release, correctly collapsed as a wire rewrite despite living
   on two different companies' domains), as the build-health signal.
+
+## Narrow re-check, ~5h08m gap, unfiltered full source list (2026-09-29, fourth)
+
+- 2026-09-29-L: A vendor's own press release restating its inclusion in an
+  already-published multi-vendor IDIQ list is not a new item even when it
+  reads as a fresh company-specific announcement: Umbra's Sept. 17
+  umbra.space post ("Umbra Selected by NOAA to Provide Commercial SAR
+  Data") looked like a standalone procurement win, but the already-
+  published `2026-09-11-noaa-sbem-idiq-commercial-data` item's own
+  category breakdown already named "Iceye US, Umbra Lab" under scatterometry/
+  SAR/radar. Caught only by grepping `items.json` for the NOAA program
+  name (a plain "umbra noaa" grep found nothing, since the existing item's
+  headline and id never mention Umbra by name) before drafting; worth
+  checking a suspiciously-standalone vendor-selection press release
+  against any existing multi-vendor IDIQ/contract-vehicle item covering
+  the same program, not just a direct company-name grep.
+- 2026-09-29-M: Two genuinely new items surfaced entirely from the
+  mandatory signals pass (Jeff Foust's and Andrew Jones' bluesky feeds),
+  not the queue or discovery matrix, which both traced to a near-total
+  Starship Flight 14 pickup wave: AstroForge's Solo autonomy-AI
+  announcement (Sept. 21, TechCrunch lead since AstroForge's own site
+  wasn't needed) and Momentus' Vigoride-7 AI-sensor RPO demo with a NASA
+  satellite (Sept. 29, `wire_pr` lead via a StockTitan/BusinessWire
+  mirror, SatNews independently-written trade corroboration). Both
+  companies have no `src/data/registry` entity. A third signals-pass lead
+  (UK's new No. III Space Effects Squadron, Sept. 23) was left undrafted
+  as a military-organization stand-up naming no commercial contractor,
+  procurement figure, or market-access change, per the standing
+  institutional-disclosure exclusion.
+- 2026-09-29-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") and a direct read of
+  both new items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  as the build-health signal.
