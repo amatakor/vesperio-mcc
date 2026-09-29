@@ -5963,3 +5963,30 @@ th.reg-ledger-asof {
   color: var(--text-1);
   font-variant-numeric: tabular-nums;
 }
+
+/* ------------------------------------------------- scrollbars, sitewide
+   Every scroll container wears a thin dark bar in the hairline gray on a
+   transparent track (Florian, 2026-09-29: the item modal's two columns
+   showed the system's wide light bars). color-scheme follows the theme so
+   native bars match the ground even where the pseudo-elements do not
+   apply. */
+:root {
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}

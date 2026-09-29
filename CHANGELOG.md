@@ -465,3 +465,8 @@ profile. Five Long March vehicles now take five rows where they took
 a screen, the provider and operator lists scroll beside the ledger
 instead of stretching the section, and the empty seams between
 sections are gone.
+
+Thin scrollbars (2026-09-29): every scroll container on the site, the
+item modal's two columns included, now wears a thin dark bar in the
+hairline gray on a transparent track, matched to the theme, instead of
+the system's wide light bars.
