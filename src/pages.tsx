@@ -1696,6 +1696,8 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
         key={value}
         type="button"
         className={`cat-chip${on ? " active" : ""}`}
+        data-axis={axis}
+        data-value={value}
         aria-pressed={on}
         onClick={() => toggle(axis, value)}
       >
