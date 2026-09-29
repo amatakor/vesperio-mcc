@@ -1682,3 +1682,17 @@ values would exhaust the palette.
 
 IMPLEMENTATION: data-axis / data-value on .cat-chip (pages.tsx);
 "filter chips, color-coded (81)" block in index.css.
+
+## 82 · One date form: ISO 8601; slugs read as words
+
+RULE (Florian, 2026-09-29, "all dates should use the same format
+throughout the site, whatever is most scientific / international"):
+every date the reader sees is ISO 8601, YYYY-MM-DD; times are UTC with
+the Z suffix (plus the local clock on the sweep card). The last non-ISO
+forms are retired: the update card's "original 29 Jun 2026", the MCC
+freshness stamps' "09-08 19:29Z", the /system weekly bucket labels'
+"09-08". Category and domain slugs display as words ("human
+spaceflight"); slugs and URLs are unchanged, tags stay hashtags.
+
+IMPLEMENTATION: src/lib/labels.ts (label()); zTime in orbits/chrome.tsx;
+stats.ts bucket labels; dayMonth retired from src/lib/activity.ts.
