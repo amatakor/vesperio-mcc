@@ -1666,3 +1666,19 @@ of that sweep's copy as the note).
 IMPLEMENTATION: feedRows() in src/lib/activity.ts (pure; server slices
 and the client corpus use it), UpdateCard + UpdatesSection (pages.tsx),
 "update cards (80)" block in index.css. Feed pages count rows.
+
+## 81 · Filter chips wear their hue
+
+RULE (Florian, 2026-09-29): the news filter panel's domain and impact
+chips are color-coded. Rest state: the hue as text over a dim-hue
+border (badge grammar); selected: filled with the hue, ink text.
+Domains take the rule-63 palette (eo green, connectivity magenta, iot
+cyan, launch orange) plus the two feed-only domains (human-spaceflight
+uv, science blue). Impact chips mirror the impact badges exactly once
+selected (seismic red / white, major yellow / black, notable blue,
+noise neutral); Florian: "they look like the feed when selected", so
+the outlined rest state stands. Category chips stay neutral: twelve
+values would exhaust the palette.
+
+IMPLEMENTATION: data-axis / data-value on .cat-chip (pages.tsx);
+"filter chips, color-coded (81)" block in index.css.
