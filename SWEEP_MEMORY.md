@@ -5403,3 +5403,67 @@ a newer entry if a lesson changes.
   confirmation ("merged 0 new, 1 updated, 0 held") and a direct read of
   the updated item's patched `why_it_matters`/`sources`/`secondary_urls`
   fields as the build-health signal.
+
+## Deep sweep (auto-escalated after two zero-add sweeps), ~3h49m gap, unfiltered full source list (2026-09-29, third)
+
+- 2026-09-29-F: A same-outlet self-correction is a clean `updates[].patch`
+  case with no `attach`: Via Satellite silently corrected its own Sept 25
+  NSSLGlobal article in place (same URL) to say NSSLGlobal acquired
+  "MetOcean Security UK, a division of MetOcean Telematics" rather than
+  MetOcean Telematics itself, which "continues to operate as an
+  independent company" -- caught only because the harvester re-queued the
+  same URL with different `raw_excerpt` text days later, carrying an
+  explicit "Correction -- An earlier version of this story stated..."
+  paragraph. Patched `headline`/`explainer`/`companies` to the corrected
+  facts with no `attach` (no new URL exists, the same source_url was
+  simply edited by the outlet) and no rescore (same lead, same tier).
+  Worth checking a re-queued identical URL's `raw_excerpt` for a
+  correction notice before assuming it's pure re-syndication.
+- 2026-09-29-G: A `class: "whitelist"` lead source needs no second source
+  to reach its floor: Andrew Parsonson's own europeanspaceflight.com
+  article (bare-domain, satisfies the path-prefix whitelist match per
+  2026-09-10-H) on a CNES spaceport-procurement call, single-sourced with
+  `crawl: "found_none"` (the only other hit was a UFO Feed wire-rewrite
+  mirror, left uncited), still landed SNR 4 via the whitelist-floor
+  modifier alone -- base tier 3 (whitelist, before floors) would floor at
+  3 unmodified, but the observer floor of 4 applies regardless of
+  corroboration count, same mechanism as the informal-plus-whitelist-
+  observer cases (2026-09-01-C and peers), just with the whitelisted
+  person's own writing as both the fact source and the floor source.
+- 2026-09-29-H: `federalregister.gov` passes the anti-spoof gate as
+  `official_record` via the blanket bare-`*.gov`-TLD rule (its own domain
+  ends `.gov`), not via the small fixed-hosts list -- a Draft EA Notice of
+  Availability for Blue Origin's proposed New Glenn cadence increase at
+  SLC-36A (12 to 50 launches/year) landed a clean single-source SNR 5 with
+  no `found_none` penalty (direct-source ceiling) even though no
+  independent trade pickup existed yet at fetch time. Used the
+  `federalregister.gov/api/v1/documents/<doc-number>.json` and
+  `.../full_text/xml/...` endpoints (2026-09-04-H) to pull the exact
+  "from 12 to 50 launches per year" figure verbatim, since the canonical
+  HTML document page itself redirects to `unblock.federalregister.gov`.
+- 2026-09-29-I: A government-insourcing/contractor-layoff story with a
+  quantified financial impact (NASA insourcing Kennedy Space Center's
+  Amentum-run Base Operations and Spaceport Services contract, 70 jobs
+  cut via WARN notice, ~3% of Amentum's FY2027 revenue per Washington
+  Technology) was judged below the inclusion bar and left undrafted: it's
+  a facility-support-services staffing/contracting change, not a fact
+  about commercial launch, EO, connectivity, or IoT operators, resellers
+  or investors acting differently -- distinct from the in-scope
+  "government procurement of commercial space services" carve-out, which
+  covers agencies buying commercial space CAPABILITIES, not routine base-
+  ops contractor staffing.
+- 2026-09-29-J: A thin queue candidate with a real-sounding headline can
+  be pure thought-leadership marketing content with zero dateable fact:
+  Planet's own Sept 29 blog post ("Beyond the Soda Straw: Why Modern
+  Defense Needs Continual GEOINT") named no new contract, customer, or
+  product, just an argument for daily imaging cadence in defense
+  contexts -- left undrafted despite being a same-day first-party post on
+  a mandatory HTML-pass source.
+- 2026-09-29-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 5 new, 1 updated, 0 held") plus a direct read of
+  all five new items' and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields, and the sweep log's
+  `corroboration_collapses` entry (ICEYE's own release vs. Insurity's own
+  mirrored release, correctly collapsed as a wire rewrite despite living
+  on two different companies' domains), as the build-health signal.
