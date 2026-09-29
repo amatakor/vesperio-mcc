@@ -5706,3 +5706,38 @@ a.stamp:focus-visible {
   margin-top: 2px;
   color: var(--text-2);
 }
+
+/* --------------------------------------- filter chips, color-coded (81)
+   Florian, 2026-09-29: the panel's domain and impact chips wear their
+   hue. Rest: dim-hue border + colored text (the badge grammar); active:
+   filled with the hue, ink text. Domains take the rule-63 palette (eo
+   green, connectivity magenta, iot cyan, launch orange) extended for the
+   two feed-only domains (human-spaceflight uv, science blue). Impact
+   chips mirror the impact badges: seismic red, major yellow, notable
+   blue outline, noise neutral. Category chips stay neutral. */
+.cat-chip[data-axis] {
+  --chip-hue: var(--text-1);
+  --chip-hue-dim: var(--border-2);
+  --chip-ink: #000;
+  border-color: var(--chip-hue-dim);
+  color: var(--chip-hue);
+}
+.cat-chip[data-axis="domains"][data-value="eo"] { --chip-hue: var(--acc-green); --chip-hue-dim: var(--acc-green-dim); }
+.cat-chip[data-axis="domains"][data-value="connectivity"] { --chip-hue: var(--acc-magenta); --chip-hue-dim: var(--acc-magenta-dim); }
+.cat-chip[data-axis="domains"][data-value="iot"] { --chip-hue: var(--acc-cyan); --chip-hue-dim: var(--acc-cyan-dim); }
+.cat-chip[data-axis="domains"][data-value="launch"] { --chip-hue: var(--acc-orange); --chip-hue-dim: var(--acc-orange-dim); }
+.cat-chip[data-axis="domains"][data-value="human-spaceflight"] { --chip-hue: var(--acc-uv); --chip-hue-dim: var(--acc-uv-dim); --chip-ink: #fff; }
+.cat-chip[data-axis="domains"][data-value="science"] { --chip-hue: var(--acc-blue); --chip-hue-dim: var(--acc-blue-dim); --chip-ink: #fff; }
+.cat-chip[data-axis="impacts"][data-value="seismic"] { --chip-hue: var(--acc-red); --chip-hue-dim: var(--acc-red-dim); --chip-ink: #fff; }
+.cat-chip[data-axis="impacts"][data-value="major"] { --chip-hue: var(--acc-yellow); --chip-hue-dim: var(--acc-yellow-dim); }
+.cat-chip[data-axis="impacts"][data-value="notable"] { --chip-hue: var(--acc-blue); --chip-hue-dim: var(--acc-blue-dim); --chip-ink: #fff; }
+.cat-chip[data-axis="impacts"][data-value="noise"] { --chip-hue: var(--text-2); --chip-hue-dim: var(--border-2); }
+.cat-chip[data-axis="cats"] { --chip-hue: var(--text-1); --chip-hue-dim: var(--border-2); }
+.cat-chip[data-axis].active {
+  background: var(--chip-hue);
+  border-color: var(--chip-hue);
+  color: var(--chip-ink);
+}
+.cat-chip[data-axis].active .count {
+  color: var(--chip-ink);
+}

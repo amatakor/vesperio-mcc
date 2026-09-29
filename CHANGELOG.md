@@ -427,3 +427,11 @@ at the top. Only updates a reader can name count: new facts in the
 copy, or a moved score; sources merely attached make no card. Every
 item's update record was reconstructed from the feed's history, so
 past updates show too.
+
+Color-coded filter chips (2026-09-29): the news filter panel's domain
+chips wear the domain palette (EO green, connectivity magenta, IoT
+cyan, launch orange, human-spaceflight violet, science blue) and the
+impact chips mirror the impact badges (seismic red, major yellow,
+notable blue outline, noise neutral). At rest a chip shows its hue as
+text and a dim border; selected, it fills with the hue. Category
+chips stay neutral.
