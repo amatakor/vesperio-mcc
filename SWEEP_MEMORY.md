@@ -5362,3 +5362,44 @@ a newer entry if a lesson changes.
   `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated,
   0 held") and three persistence-bump `snr_movements` in the sweep log
   entry as the build-health signal.
+
+## Narrow re-check, ~5h08m gap, unfiltered full source list (2026-09-29, second)
+
+- 2026-09-29-C: A same-day Reuters piece ("SpaceX's Starship engine
+  failure could impact NASA's moon mission objectives," fetched via an
+  Investing.com wire mirror since reuters.com itself wasn't tried) added a
+  genuinely new, attributed analysis angle to the already-published Sept
+  28 Starship-reaches-orbit item: a named aerospace engineer (Dean Sladen,
+  Accu Components) on the specific Artemis III/2027-rehearsal/2028-landing
+  timeline risk from the same in-flight engine that failed. Folded in via
+  `updates[].patch.explainer.why_it_matters` (full-field replacement,
+  appending one attributed sentence) plus `attach`, no bump requested
+  since the item's non-first-party trade lead was already at its
+  corroboration ceiling of 4 -- a clean instance of the standing
+  "enrichment patch, not corroboration of the original claim" pattern
+  (2026-09-07-N and peers) on a major/seismic-adjacent item the same day
+  it published, not weeks later.
+- 2026-09-29-D: Singapore's "Earth Observation Initiative" (EDB/OSTIn,
+  Google-News-queue "Singapore sets up Earth Observation Initiative in
+  space sector push") is a year-and-a-half-stale resurfacing: the EOI
+  itself launched Feb. 26, 2025 at GSTC 2025 (S$60M/US$44.8M STDP
+  investment, UN/World Bank/WEF partners), confirmed via WebSearch: no
+  today-dated peg in the EDB "business insights" page. A China-Global
+  South Project analysis piece on Pakistan's still-undecided first
+  Tiangong astronaut pick (two trainees, Zeeshan Ali and Khurram Daud,
+  selection expected mid-to-late October) was left undrafted as
+  process-not-yet-fact/scheduled-not-yet-occurred, same standard as a
+  not-yet-awarded contract or not-yet-flown launch; worth a same-topic
+  chase once China names the pilot or the flight actually occurs.
+- 2026-09-29-E: A near-total-junk queue (mostly Starship Flight 14
+  reaction/stock churn and Google News redirects) plus a fully clean
+  mandatory 5-source HTML pass (Planet Labs, ICEYE, BlackSky, EUSPA,
+  Telesat, all current with nothing new since lastSweep), a 14-of-17
+  fetchable-channel signals pass (3 X-handle searches, none retrievable
+  via the syndication endpoint), and a 10-query discovery matrix covering
+  the full scope matrix all traced to already-published ground or the two
+  exclusions above. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") and a direct read of
+  the updated item's patched `why_it_matters`/`sources`/`secondary_urls`
+  fields as the build-health signal.
