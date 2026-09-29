@@ -2229,7 +2229,11 @@ function RegLedger({
                 {c}
               </th>
             ))}
-            {hasSensors && <th scope="col">sensors</th>}
+            {hasSensors && (
+              <th scope="col" className="reg-ledger-sensors">
+                sensors
+              </th>
+            )}
             <th scope="col" className="reg-ledger-asof">
               as of
             </th>

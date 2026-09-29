@@ -3992,7 +3992,7 @@ a.sig-card:hover .sig-p-x {
   display: grid;
   grid-template-columns: 15rem 1fr;
   border: 1px solid var(--line);
-  min-height: 24rem;
+  min-height: 14rem; /* the ledger sets the height; this floor keeps a one-row group's panes usable (2026-09-29, was 24rem) */
   margin-top: 0.75rem;
 }
 .reg-browser-4 {
@@ -5892,4 +5892,48 @@ th.reg-ledger-asof {
     position: static;
     overflow: visible;
   }
+}
+/* Scrollers inside the browser wear thin dark bars, never the system's
+   wide light ones (Florian, 2026-09-29: "massively clashing"). */
+.reg-pane-scroll,
+.reg-browser .reg-pane.reg-ops,
+.reg-ledger-wrap {
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+[data-theme="light"] .reg-pane-scroll,
+[data-theme="light"] .reg-browser .reg-pane.reg-ops,
+[data-theme="light"] .reg-ledger-wrap {
+  color-scheme: light;
+}
+.reg-pane-scroll::-webkit-scrollbar,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar,
+.reg-ledger-wrap::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.reg-pane-scroll::-webkit-scrollbar-thumb,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar-thumb,
+.reg-ledger-wrap::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+}
+.reg-pane-scroll::-webkit-scrollbar-track,
+.reg-browser .reg-pane.reg-ops::-webkit-scrollbar-track,
+.reg-ledger-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Spec columns hug a fixed width so a wide screen does not spread them
+   across the frame; the name column takes the rest. */
+.reg-ledger th:not(:first-child):not(.reg-ledger-asof),
+.reg-ledger td:not(:first-child):not(.reg-ledger-asof) {
+  width: 11rem;
+}
+.reg-ledger th.reg-ledger-sensors,
+.reg-ledger td.reg-ledger-sensors {
+  width: 18rem;
+}
+.reg-ledger th.reg-ledger-asof,
+.reg-ledger td.reg-ledger-asof {
+  width: 7rem;
 }
