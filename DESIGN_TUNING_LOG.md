@@ -1696,3 +1696,25 @@ spaceflight"); slugs and URLs are unchanged, tags stay hashtags.
 
 IMPLEMENTATION: src/lib/labels.ts (label()); zTime in orbits/chrome.tsx;
 stats.ts bucket labels; dayMonth retired from src/lib/activity.ts.
+
+## 83 · Registry index: the group is a ledger, not a card stack
+
+RULE (Florian, 2026-09-29, from the registry audit's move 3): the
+registry browser's selected group renders as a ledger. A 40px group
+header (group name, count, the COMPANY PROFILE link), a T3 column
+header row, then one 40px row per entity: a status glyph (● live
+green for operational, ◆ for development states, □ neutral), the name
+in caps, the group's spec columns (the union of the entries' stated
+specs, so a missing value is an empty cell and never stretches its
+neighbours; the DOMAIN and KIND columns are dropped because the pane
+already says them), sensors when any entry has them, the as-of date.
+Spec values keep the rule-63 accent. The row is the link; hover lifts
+the ground and sets a 2px accent leading edge. The panes scroll inside
+an absolutely positioned inner frame, so a 26-provider list never
+dictates the section height beside a five-row ledger; the browser's
+24rem floor is the minimum. The table scrolls inside its own frame on
+narrow viewports. Snippets, kind chips, and sensor tag rows are gone
+from the index: the profile carries them.
+
+IMPLEMENTATION: RegLedger replaces RegCard (pages.tsx; .reg-pane-scroll
+wraps the pane lists); "registry ledger (83)" block in index.css.

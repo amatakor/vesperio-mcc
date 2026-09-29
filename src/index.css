@@ -5741,3 +5741,140 @@ a.stamp:focus-visible {
 .cat-chip[data-axis].active .count {
   color: var(--chip-ink);
 }
+
+/* ------------------------------------------------ registry ledger (83)
+   The registry index'"'"'s selected group is a ledger, not a card stack
+   (Florian, 2026-09-29): a 40px group header (group name, count, the
+   company-profile link), a T3 column header row, then one 40px row per
+   entity: status glyph, name in caps, spec columns in the rule-63 accent,
+   sensors, as-of. Rows are links; hover lifts the ground and sets a 2px
+   accent leading edge. The table scrolls inside its own frame on narrow
+   viewports. */
+.reg-ledger-pane {
+  padding: 0;
+  gap: 0;
+}
+.reg-ledger-wrap {
+  overflow-x: auto;
+}
+.reg-ledger-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+.reg-ledger-profile {
+  color: var(--link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.reg-ledger-profile:hover {
+  color: var(--link-hover);
+}
+.reg-ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1;
+}
+.reg-ledger th {
+  height: 28px;
+  padding: 0 12px;
+  text-align: left;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--dim);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.reg-ledger td {
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.reg-ledger-row {
+  cursor: pointer;
+  transition: background var(--dur-fast, 120ms) var(--ease, linear);
+}
+.reg-ledger-row:hover td {
+  background: var(--bg-raised);
+}
+.reg-ledger-row:hover td:first-child {
+  box-shadow: inset 2px 0 0 var(--reg-acc, var(--shell-accent));
+}
+.reg-ledger-name a {
+  color: var(--text-1);
+  text-decoration: none;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.reg-ledger-glyph {
+  display: inline-block;
+  width: 12px;
+  margin-right: 8px;
+  color: var(--n4);
+  font-size: 9px;
+  vertical-align: middle;
+}
+.reg-ledger-state {
+  margin-left: 10px;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.reg-ledger-spec {
+  color: var(--card-acc, var(--text-1));
+  font-variant-numeric: tabular-nums;
+}
+.reg-ledger-sensors {
+  color: var(--text-2);
+  text-transform: uppercase;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+.reg-ledger-asof,
+th.reg-ledger-asof {
+  text-align: right;
+  color: var(--dim);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reg-ledger-row {
+    transition: none;
+  }
+}
+/* The panes never dictate the section height: their lists scroll inside
+   an absolutely positioned inner frame, so the row is as tall as the
+   ledger (never under the browser's 24rem floor) and a 26-provider list
+   scrolls beside a five-row ledger instead of leaving a void. */
+.reg-browser .reg-pane.reg-ops {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+.reg-pane-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+}
+.reg-browser .reg-pane.reg-ledger-pane {
+  align-self: start;
+}

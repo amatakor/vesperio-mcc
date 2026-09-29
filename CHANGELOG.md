@@ -456,3 +456,12 @@ unchanged, and tags keep their hashtag form. Dates use ISO 8601
 "original 29 Jun 2026", the MCC freshness stamps ("09-08 19:29Z"),
 and the /system weekly bucket labels ("09-08"), now read
 2026-06-29, 2026-09-08 19:29Z, and 2026-09-08.
+
+Registry ledger (2026-09-29): the registry index shows a selected
+group as a ledger instead of a stack of cards. One 40px row per
+entity: status glyph, name, the group's spec columns (a missing value
+leaves an empty cell), sensors, as-of date; the whole row opens the
+profile. Five Long March vehicles now take five rows where they took
+a screen, the provider and operator lists scroll beside the ledger
+instead of stretching the section, and the empty seams between
+sections are gone.
