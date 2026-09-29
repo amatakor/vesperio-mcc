@@ -1,24 +1,24 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-09-28T23:30:59.051Z",
-  "window_start": "2026-09-26T17:30:38.815Z",
+  "generated_at": "2026-09-29T05:15:48.558Z",
+  "window_start": "2026-09-26T23:46:29.222Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-25T23:54:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "BlackSky IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-14T06:00:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Vantor (ex-Maxar Intelligence)",
@@ -27,14 +27,6 @@
       "entry_count": 20,
       "newest_entry": "2026-09-17T00:00:00.000Z",
       "detail": "20 entries"
-    },
-    {
-      "source_name": "Synspective",
-      "ok": false,
-      "http_status": 404,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -73,7 +65,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-09-28T20:05:24.000Z",
+      "newest_entry": "2026-09-29T00:03:59.000Z",
       "detail": "10 entries"
     },
     {
@@ -110,11 +102,11 @@
     },
     {
       "source_name": "SEC EDGAR 8-K feed: PL",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-09-03T20:05:15.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: BKSY",
@@ -150,19 +142,19 @@
     },
     {
       "source_name": "SEC EDGAR 8-K feed: ASTS",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-09-28T21:20:14.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: VSAT",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-09-04T21:22:26.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: IRDM",
@@ -182,19 +174,19 @@
     },
     {
       "source_name": "SEC EDGAR 8-K feed: SATS",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-08-07T20:20:50.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: LUNR",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 40,
+      "newest_entry": "2026-08-13T11:35:43.000Z",
+      "detail": "40 entries"
     },
     {
       "source_name": "SEC EDGAR 8-K feed: RDW",
@@ -215,18 +207,18 @@
     {
       "source_name": "CGTN Tech-Sci",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 50,
+      "newest_entry": "2026-09-29T04:55:56.000Z",
+      "detail": "50 entries"
     },
     {
       "source_name": "SpaceNews",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T14:57:21.000Z",
-      "detail": "15 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Payload",
@@ -257,7 +249,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-09-28T20:40:02.000Z",
+      "newest_entry": "2026-09-29T01:14:36.000Z",
       "detail": "10 entries"
     },
     {
@@ -273,16 +265,8 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-09-28T17:52:11.000Z",
+      "newest_entry": "2026-09-29T03:54:50.000Z",
       "detail": "10 entries"
-    },
-    {
-      "source_name": "Space.com",
-      "ok": false,
-      "http_status": 200,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: 200 but no entries parsed"
     },
     {
       "source_name": "Ars Technica space",
@@ -377,7 +361,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-28T22:35:00.000Z",
+      "newest_entry": "2026-09-29T05:11:05.000Z",
       "detail": "100 entries"
     },
     {
@@ -385,7 +369,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-28T18:24:06.000Z",
+      "newest_entry": "2026-09-28T19:56:31.000Z",
       "detail": "100 entries"
     },
     {
@@ -409,7 +393,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-09-28T17:24:25.000Z",
+      "newest_entry": "2026-09-29T01:47:34.000Z",
       "detail": "100 entries"
     },
     {
@@ -417,7 +401,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 42,
-      "newest_entry": "2026-09-28T16:28:10.000Z",
+      "newest_entry": "2026-09-29T04:55:20.000Z",
       "detail": "42 entries"
     },
     {
@@ -433,83 +417,543 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 24,
-      "newest_entry": "2026-09-28T22:59:14.365Z",
+      "newest_entry": "2026-09-29T05:08:41.379Z",
       "detail": "24 entries"
     },
     {
       "source_name": "Bluesky search: satellite constellation",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 25,
-      "newest_entry": "2026-09-28T19:19:03.195Z",
-      "detail": "25 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Bluesky search: earth observation satellite",
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-09-28T22:31:24.826Z",
+      "newest_entry": "2026-09-28T23:42:40.060Z",
       "detail": "25 entries"
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 9,
-      "newest_entry": "2026-09-15T04:00:08.000Z",
-      "detail": "9 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T17:28:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T16:48:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-26T11:01:49.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T17:42:01.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     }
   ],
   "candidates": [
+    {
+      "id": "4e3140813df649e8",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPTDlVeWNHS2ZuamZhRjM1V0tXS3FqZVFJbmRXYTB0NnlDVGExYV92dElwWGRZWERsbDBfRm83MWRSS2o0WDZXQktrcWNsLUNZRGpjUnB0VkxqVzJpbXpZcEdCNzY4VS1OQWZTZld6b0R0VE9JZlAxUTVtdzI5YmM3b1M2TDNqN3VFSmgyYWVZZDc5aXZRX1otN2IwaVF0engydmlmLWU1M2lCeFNNQUx3eFZHa2F1U2dKaUwwSXNKQnlGNE5MNDZFeHZ3?oc=5",
+      "title": "The National Space Society Congratulates SpaceX on the first Orbital Flight of Starship - EIN News",
+      "published_at": "2026-09-29T05:11:05.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiygFBVV95cUxPTDlVeWNHS2ZuamZhRjM1V0tXS3FqZVFJbmRXYTB0NnlDVGExYV92dElwWGRZWERsbDBfRm83MWRSS2o0WDZXQktrcWNsLUNZRGpjUnB0VkxqVzJpbXpZcEdCNzY4VS1OQWZTZld6b0R0VE9JZlAxUTVtdzI5YmM3b1M2TDNqN3VFSmgyYWVZZDc5aXZRX1otN2IwaVF0engydmlmLWU1M2lCeFNNQUx3eFZHa2F1U2dKaUwwSXNKQnlGNE5MNDZFeHZ3?oc=5\" target=\"_blank\">The National Space Society Congratulates SpaceX on the first Orbital Flight of Starship</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">EIN News</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "e077c58973193e01",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/lector-libido.bsky.social/post/3mwn2qgzh6k2b",
+      "title": "@lector-libido.bsky.social on Bluesky",
+      "published_at": "2026-09-29T05:08:41.379Z",
+      "raw_excerpt": "#space hightech.plus/2026/09/28/s...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "bc907081c51ee0d6",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/deepbluecea.bsky.social/post/3mwn2ld2gv223",
+      "title": "@deepbluecea.bsky.social on Bluesky",
+      "published_at": "2026-09-29T05:05:46.160Z",
+      "raw_excerpt": "youtube.com/shorts/PpsfE...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "419339e6b24c4bbd",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/damin-en500.bsky.social/post/3mwn2apbt2k2x",
+      "title": "@damin-en500.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:59:50.863Z",
+      "raw_excerpt": "www.motortrend.com/news/321-tes... 10月1日に発表すると予告されていたテスラ・ロードスターだが、悪天候を理由に2週間繰り延べされ10月15日にリスケジュールされた由。",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "db188de355afd01d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/deepbluecea.bsky.social/post/3mwn26frtf223",
+      "title": "@deepbluecea.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:58:33.160Z",
+      "raw_excerpt": "And the test was highly successful, and achieved nearly all of the mission objectives. Because of this test, the FAA will likely grant SpaceX permission to fly the vehicle across the continental US and back to the launch site on upcoming flights.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "30534db2c27fa518",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/rickhunter.bsky.social/post/3mwn262d3zs2x",
+      "title": "@rickhunter.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:58:22.161Z",
+      "raw_excerpt": "‘Starship is in orbit’: cheers go up as huge SpaceX rocket circles Earth for first time www.theguardian.com/science/2026...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "af6fbba533c8603e",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-29/China-unveils-five-year-plan-for-new-type-battery-industry-1QPq3RMDxEA/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "China unveils five-year plan for new-type battery industry",
+      "published_at": "2026-09-29T04:55:56.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-29/China-unveils-five-year-plan-for-new-type-battery-industry-1QPq3RMDxEA/img/37788972c3e74d65af8a3b8012cab661/37788972c3e74d65af8a3b8012cab661.jpeg' alt='The displayed solid-state battery and hydrogen power technologies in China's FAW Museum in Changchun, Jilin Province, August 1, 2026. /VCG'</img><p>China has issued a development plan for its new-type battery industry during the 15th Five-Year Plan period (2026-2030), setting targets for industrial growth, technological innovation and product quality.</p><p>The plan, jointly issued by multiple government departments including the Ministry of Industry and Information Technology (MIIT), aims for steady industry growth and stronger innovation capabilities across the entire industrial chain by 2030.</p><p>By 2030, China aims to achieve breakthroughs in advanced electrode materials, new electrolytes and high-end auxiliary materials, and make major progress in the development of new battery systems.</p><p>The plan envisions the initial large-scale application of all-solid-state batteries and a cycle life of 15,000 cycles for long-life lithium batteries by 2030.</p><p>Product defect rates at leading enterprises are expected to reach the parts-per-billion level by 2030, according to the plan.</p><p>New-type batteries are high-efficiency devices or systems for storing and converting electrical energy, including lithium, sodium and flow batteries, with innovation focused on new operating principles, materials, structures and manufacturing processes.</p><p>In China, electric vehicles, the low-altitude economy, consumer electronics and humanoid robotics are generating demand for high-performance batteries, while battery-based energy storage is being used to support renewable energy integration and improve power grid stability.</p><p>China's new-type battery industry saw its output value exceed 1 trillion yuan (about $149 billion) during the 14th Five-Year Plan period (2021-2025), a",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "3c187551ebd0d3ad",
+      "source_name": "BBC science and environment",
+      "url": "https://www.bbc.co.uk/news/articles/c6ly7j3p3jv3o?at_medium=RSS&at_campaign=rss",
+      "title": "Former farmland to be restored to boost wildlife",
+      "published_at": "2026-09-29T04:55:20.000Z",
+      "raw_excerpt": "The 30-year project aims to enhance existing grassland with specialist wildflower and herb mixes.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "e50f3a76f8ea1dd2",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/kill-bait.bsky.social/post/3mwmzwpxdns25",
+      "title": "@kill-bait.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:54:14.757Z",
+      "raw_excerpt": "Space Lasers to Demonstrate First In-Orbit Energy Beam Transmission 🤖 IA: It's not clickbait ✅ 👥 Users: It's not clickbait ✅ #lasers #spaceenergy #satellitepower 👇👇👇",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "d239614efb7852ec",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/247bulletin-news.bsky.social/post/3mwmyneckgv2x",
+      "title": "@247bulletin-news.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:31:06.180Z",
+      "raw_excerpt": "Google to test processors in Space, first step for orbital data centers Google is one of the big companies designing data centers in low earth orbit. Next week Google will launch the prototype of a satellite carrying artificial intelligence processors for testing in the inhospitable space…",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "e9893b59db4b0565",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/charansaujla.bsky.social/post/3mwmxvelv2s24",
+      "title": "@charansaujla.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:17:43.062Z",
+      "raw_excerpt": "SpaceX’s #Starship reaches orbit for the first time. It was built to launch #SpaceX 's #Starlink satellites more frequently and carry future #NASA missions to the Moon 🚀",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "1e5c75e025f9f60e",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/uapdrop.bsky.social/post/3mwmx5zzuhq2y",
+      "title": "@uapdrop.bsky.social on Bluesky",
+      "published_at": "2026-09-29T04:04:38.863Z",
+      "raw_excerpt": "From SpaceX's Starship orbital anomaly to the 1967 Ronny Hill alien photo and McAfee's alleged dead-man switch, this look connects space mysteries and intel with Surfside and questions about government power and media narratives. #SpaceX #UFO #Aliens",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "d7692c37ab8139b3",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOS2lFd01TODc4QllnZ0ttUzFDcVkyMzlGZUNWc1FEZEoxZ2w4dlhvOXJrc0ZOWDZGcUpwUXVZaGxKMW9UM21QdmQ0Q2U4T1lwYVF2M3h5NVNqVDZZMUJUYUJMbDZxZEpma25KaGpHcTJOOEhPUXhqYnZBR2NGMFZPTTlYbVRtZHJCTXZoVThhcDFfU3NnQjg5SHN5TW1MeWJsTm1DYWdtYm1Da3lqMzBmNzAzRlkzVzdPYUVBcmJqUjJXVmtPYWtJ?oc=5",
+      "title": "Move Over, SpaceX. Anthropic Will Soon Go Public. Why It Could Be Critical for AI Stocks - fool.com",
+      "published_at": "2026-09-29T04:00:58.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxOS2lFd01TODc4QllnZ0ttUzFDcVkyMzlGZUNWc1FEZEoxZ2w4dlhvOXJrc0ZOWDZGcUpwUXVZaGxKMW9UM21QdmQ0Q2U4T1lwYVF2M3h5NVNqVDZZMUJUYUJMbDZxZEpma25KaGpHcTJOOEhPUXhqYnZBR2NGMFZPTTlYbVRtZHJCTXZoVThhcDFfU3NnQjg5SHN5TW1MeWJsTm1DYWdtYm1Da3lqMzBmNzAzRlkzVzdPYUVBcmJqUjJXVmtPYWtJ?oc=5\" target=\"_blank\">Move Over, SpaceX. Anthropic Will Soon Go Public. Why It Could Be Critical for AI Stocks</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">fool.com</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "855c1ec48ccee807",
+      "source_name": "SpacePolicyOnline",
+      "url": "https://spacepolicyonline.com/news/next-crewed-boeing-starliner-flight-not-until-2028/",
+      "title": "Next Crewed Boeing Starliner Flight Not Until 2028",
+      "published_at": "2026-09-29T03:54:50.000Z",
+      "raw_excerpt": "Two years after Boeing’s Starliner spacecraft landed in the New Mexico desert without NASA’s Butch Wilmore and Suni Williams, Boeing and NASA said today it will not be ready to fly astronauts again until 2028. An uncrewed flight test is expected no sooner than the end of this year, but they want another year or more to evaluate those results before putting people aboard. One clear message from the NASA-Boeing news conference at Kennedy Space Center is that both remain committed to Starliner despite persistent problems since the first test flight in 2019. L-R: NASA Administrator Jared Isaacman, NASA Low Earth Orbit (LEO) Program Manager Dana Weigel, NASA astronaut Woody Hoburg, and Boeing Vice President and Program Manager for Commercial Crew John Mulholland. Screenshot from NASA news conference September 28, 2026. In 2014 , NASA awarded fixed-price contracts to Boeing and SpaceX to design, build, and launch “commercial crew” spacecraft to restore America’s ability to send astronauts to the International Space Station. From 2011 when the Space Shuttle was terminated until SpaceX’s Crew Dragon made its first flight in 2020, NASA had to pay Russia for crew transportation services at a price that ultimately reached $90 million per seat. From the beginning NASA wanted two commercial crew providers to ensure redundancy and competition. That remains the goal today, but SpaceX is the only one because of Starliner’s repeated technical failures. SpaceX’s 13th operational flight is getting ready to launch later this week. By contrast, Starliner has delivered only one crew to the ISS, Butch and Suni, on the 2024 Crew Flight Test (CFT). Failures in the propulsion system during the flight up to the ISS and while docking led NASA to conclude it wasn’t safe enough to bring them back to Earth. Starliner CFT landed empty while Butch and Suni remained aboard the ISS for more than 9 months until they could return on a SpaceX Crew Dragon. Boeing’s Starliner Crew Flight Test (CFT) capsul",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "b6f1bf486ac46beb",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/strummer71.bsky.social/post/3mwmwejqfus22",
+      "title": "@strummer71.bsky.social on Bluesky",
+      "published_at": "2026-09-29T03:50:22.562Z",
+      "raw_excerpt": "You forgot the part about \"If SpaceX can use our tax money to launch ..\"",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "7d19adc7489d1572",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/tedichasse.bsky.social/post/3mwmuxqm4lc2h",
+      "title": "@tedichasse.bsky.social on Bluesky",
+      "published_at": "2026-09-29T03:25:22.161Z",
+      "raw_excerpt": "www.thestreet.com/investing/st...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "3a869b1d63111fda",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxON3pOcVY4QWxKYWlCWUpvSnpiMXA5Nmx2ZjFLTjMzenM4a1ctd3ZveVZYRTY5bXBSeVlzcHpyUnNHLUNVeHFLYjB1VkNldzVQT283blN2dFU2dU1XT2o0SDhnVEJMWFBpZmpzT1F1SkViQ3EzV2VXRUJTeG5IRzFjcG9Zb0RoT0Yz?oc=5",
+      "title": "NASA invests in Boeing, woos new entrants to replace SpaceX’s Dragon - The Air Current",
+      "published_at": "2026-09-29T03:11:44.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxON3pOcVY4QWxKYWlCWUpvSnpiMXA5Nmx2ZjFLTjMzenM4a1ctd3ZveVZYRTY5bXBSeVlzcHpyUnNHLUNVeHFLYjB1VkNldzVQT283blN2dFU2dU1XT2o0SDhnVEJMWFBpZmpzT1F1SkViQ3EzV2VXRUJTeG5IRzFjcG9Zb0RoT0Yz?oc=5\" target=\"_blank\">NASA invests in Boeing, woos new entrants to replace SpaceX’s Dragon</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Air Current</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "45ac7d596cd82ccb",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-29/Xi-Jinping-urges-Sichuan-University-to-serve-national-strategies-1QPiU0zQTV6/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Xi Jinping urges Sichuan University to serve national strategies",
+      "published_at": "2026-09-29T03:05:17.000Z",
+      "raw_excerpt": "<p>Chinese President Xi Jinping has urged Sichuan University to leverage its interdisciplinary strengths and play a pioneering and exemplary role in serving national strategies, as he extended congratulations on the 130th founding anniversary of the university.</p><p>Xi, also general secretary of the Communist Party of China Central Committee and chairman of the Central Military Commission, made the remarks in a reply letter to the university's teachers and students.</p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "234c482b74f217bd",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/elon.mu.sk/post/3mwmtoa33dn2k",
+      "title": "@elon.mu.sk on Bluesky",
+      "published_at": "2026-09-29T03:02:06.562Z",
+      "raw_excerpt": "SpaceX is targeting a dramatic increase in Starship’s launch frequency, with Elon Musk saying the vehicle could eventually fly once an hour. The ambition comes as Flight 14 approaches, a mission expected to carry Starlink satellites and provide further evidence of how quickly the 1/2",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "69a3ba6b337f3774",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-29/Technology-helps-every-grain-make-it-to-the-granary-in-China-1QPlFAQmXLy/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Technology helps every grain make it to the granary in China",
+      "published_at": "2026-09-29T02:59:27.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-29/Technology-helps-every-grain-make-it-to-the-granary-in-China-1QPlFAQmXLy/img/cb60027e633e44f683259c1decd01736/cb60027e633e44f683259c1decd01736.jpeg' alt='Millet harvest begins in Chifeng, north China's Inner Mongolia Autonomous Region, September 28, 2026. /VCG'</img><p>September 29 marks the International Day of Awareness of Food Loss and Waste. According to the Food and Agriculture Organization of the United Nations (FAO), an estimated 13.2% of food produced globally, equivalent to 1.25 billion tonnes, is lost after harvest and before reaching retail.&nbsp;</p><p>As food travels from fields to tables, it passes through multiple stages including planting, harvesting, storage, transportation and processing. Reducing losses at each stage has become a critical component of safeguarding food security. In recent years, the accelerated application of smart agriculture, intelligent machinery, green grain storage and digital monitoring technologies has provided strong support for ensuring that every grain makes it to the granary.</p><p>In the field harvest stage, intelligent agricultural machinery is transforming traditional practices. According to the Ministry of Agriculture and Rural Affairs, China's wheat, rice and corn mechanized harvest loss rates in 2024 were 0.93%, 1.76% and 2.06%, respectively, representing a reduction of 1 to 2 percentage points compared with 2021. Over three years, more than 25 million tonnes of grain losses were reduced. In east China's Shandong Province, the average mechanized wheat harvest loss rate reached 0.81% in 2024.</p><p>According to data released by the National Food and Strategic Reserves Administration in October 2025, based on surveys over the past three years, the comprehensive loss rate during grain storage periods in grain depots is kept below 1%, with losses mainly consisting of natural reductions as a result of moisture and impurities. The administration launched its first batch of",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "31ab7b6f730697a5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/wombatpunch.bsky.social/post/3mwmsvg7ofs22",
+      "title": "@wombatpunch.bsky.social on Bluesky",
+      "published_at": "2026-09-29T02:48:18.363Z",
+      "raw_excerpt": "\"As it approached the water, the ship righted itself and slowed down before erupting in a ball of flames.\" I feel like this bit maybe deserved a bit more prominence in a spirit about a \"reusable\" rocket than being tucked away near the bottom. www.theguardian.com/science/2026...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "da4fa0a22c7113e6",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/cowbwz4793.bsky.social/post/3mwmsdyksbk22",
+      "title": "@cowbwz4793.bsky.social on Bluesky",
+      "published_at": "2026-09-29T02:38:32.261Z",
+      "raw_excerpt": "How is it that everyone seems ok with the tech bros crashing rockets into the ocean? How many sea creatures did this harm & kill? How much pollution has it caused? www.nbcnews.com/now/video/sp...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "970d2e6401856fae",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxOTHg3WXNFY0x4M2lXMi1XcGhlZkwwa19GT2RaSnA3ZnJ6UW5KQTJlYnJmdnBjdG9OS2pPREE2MTZ2Z3BSdkgyOG9oVUFzQmZ4bGhQN0steF9lSmdvNklHVTJaNEhsWVRBLV9SSFVrOGFLQUd5VlRjWVdLcTdyZXFRVUxyZnRBV1kwWWlVMkxCY2VJYlBuZGRTa25vVzJ5cFB4OVFHQ0tKQlZQenVCSXlzMl9tejRnN21qRHRqNzJHdjlCS09adjMw?oc=5",
+      "title": "SpaceX Starship splashes down after successful 1st orbital flight test - Rural Radio Network",
+      "published_at": "2026-09-29T02:29:22.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxOTHg3WXNFY0x4M2lXMi1XcGhlZkwwa19GT2RaSnA3ZnJ6UW5KQTJlYnJmdnBjdG9OS2pPREE2MTZ2Z3BSdkgyOG9oVUFzQmZ4bGhQN0steF9lSmdvNklHVTJaNEhsWVRBLV9SSFVrOGFLQUd5VlRjWVdLcTdyZXFRVUxyZnRBV1kwWWlVMkxCY2VJYlBuZGRTa25vVzJ5cFB4OVFHQ0tKQlZQenVCSXlzMl9tejRnN21qRHRqNzJHdjlCS09adjMw?oc=5\" target=\"_blank\">SpaceX Starship splashes down after successful 1st orbital flight test</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Rural Radio Network</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "f55abefac7fd9902",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/breakingnews06.bsky.social/post/3mwmr7zencb2m",
+      "title": "@breakingnews06.bsky.social on Bluesky",
+      "published_at": "2026-09-29T02:18:22.264Z",
+      "raw_excerpt": "Watch: From launch to fiery splashdown, SpaceX's Starship completes orbit test #SpaceX #Starship #RocketLaunch #SpaceNews #Aerospace",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "a2084d5e22e9d855",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/breakingnews06.bsky.social/post/3mwmr6dt5bb2m",
+      "title": "@breakingnews06.bsky.social on Bluesky",
+      "published_at": "2026-09-29T02:17:26.061Z",
+      "raw_excerpt": "Watch: From launch to fiery splashdown, SpaceX's Starship completes orbit test #SpaceX #Starship #RocketLaunch #SpaceNews",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "005eea3ffab5ad46",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/josiploncaric.bsky.social/post/3mwmqn3rm3c2j",
+      "title": "@josiploncaric.bsky.social on Bluesky",
+      "published_at": "2026-09-29T02:07:48.166Z",
+      "raw_excerpt": "www.theguardian.com/science/2026...",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "7ea3d94408f3b955",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-29/NASA-announces-new-missions-for-Boeing-s-Starliner-spacecraft-1QPeUM64FP2/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "NASA announces new missions for Boeing's Starliner spacecraft",
+      "published_at": "2026-09-29T02:05:06.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-29/NASA-announces-new-missions-for-Boeing-s-Starliner-spacecraft-1QPeUM64FP2/img/130a9981481a45c6958ef6bac6d04fce/130a9981481a45c6958ef6bac6d04fce.jpeg' alt='NASA Administrator Jared Isaacman (L) and NASA's Low Earth Orbit Program Manager Dana Weigel discuss an update on the Boeing Starliner spacecraft at a news conference at Kennedy Space Center, Florida, the US, September 28, 2026. /VCG'</img><p>NASA announced on Monday&nbsp;it was planning new missions using Boeing's Starliner spacecraft, the first since the vessel's botched test flight left two astronauts stranded at the International Space Station (ISS) for months.</p><p>Starliner was last used in June 2024 to transport US astronauts Suni Williams and Butch Wilmore to the ISS for what was originally a mission of eight to 14 days.</p><p>However, the spacecraft's propulsion had problems during orbit, and it was deemed unfit to fly them back, leaving them stranded at the orbiting outpost for a period that stretched for nine months before they were able to return.</p><p>In a report assessing the troubled test flight, NASA blamed engineering vulnerabilities in Starliner, classifying them a \"Type A\" mishap – the same as the deadly Challenger and Columbia space shuttle disasters.</p><p>Boeing and NASA have worked to fix these issues in time for two upcoming missions involving the spacecraft, which serves a key role for the US space agency's long-term goals.</p><p>The first mission, expected by December at the earliest, will be an uncrewed mission returning to the ISS \"to validate the recent remediation effort,\" NASA Administrator Jared Isaacman told reporters on Monday.</p><p>\"From there, we will gather data, continue implementing the remaining changes recommended in the (Program Investigation Team) report, and plan for a crewed Starliner Two mission in 2028,\" he added.</p><p>Having a successful crewed Starliner mission is essential, as rival SpaceX has said it plans to end",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "372a807100e8184a",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPcEJyQ3N3NEZsZlNnb2ZuWi0xbk9qcS10UDVYT1pyRGw3eG1wOVYzal90NWZaWFdKMmdVVWkyS1BJeWlIU1NZYUI5NGJyVkRaM2VJaFZlSkd6NHpYc2JaWExuV0J5dm53a2hGTHF4NnkyUFFnZjRyVE9TYlNtU3VDdTRVVjNETmV2NnVzeGtkR2tlVlUy0gGiAUFVX3lxTE8yZFBhZ0M0eGxrQ2RQWkxNM0hHT0R2c05pNVRNVkxISWlhYUYxeUQ2ZGs4Y1J1WDZ4Sk50cnlGUFJBa1pER3pseTZmMDVTdnUxVUFaTjhKa05YVmRwTmtpVXRSQmNvWktDYnNFSWE4T0paaVBPenpuekJobmFERHAxME9jQTlHR2xwMFRBd2paUEZNOWxmOFJMakVJRTlLQXk3dw?oc=5",
+      "title": "ISRO plans NavIC revival with NVS-03 launch in October - DT Next",
+      "published_at": "2026-09-29T01:47:34.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxPcEJyQ3N3NEZsZlNnb2ZuWi0xbk9qcS10UDVYT1pyRGw3eG1wOVYzal90NWZaWFdKMmdVVWkyS1BJeWlIU1NZYUI5NGJyVkRaM2VJaFZlSkd6NHpYc2JaWExuV0J5dm53a2hGTHF4NnkyUFFnZjRyVE9TYlNtU3VDdTRVVjNETmV2NnVzeGtkR2tlVlUy0gGiAUFVX3lxTE8yZFBhZ0M0eGxrQ2RQWkxNM0hHT0R2c05pNVRNVkxISWlhYUYxeUQ2ZGs4Y1J1WDZ4Sk50cnlGUFJBa1pER3pseTZmMDVTdnUxVUFaTjhKa05YVmRwTmtpVXRSQmNvWktDYnNFSWE4T0paaVBPenpuekJobmFERHAxME9jQTlHR2xwMFRBd2paUEZNOWxmOFJMakVJRTlLQXk3dw?oc=5\" target=\"_blank\">ISRO plans NavIC revival with NVS-03 launch in October</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">DT Next</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "8be6f04dd532aafe",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/tlwest.bsky.social/post/3mwmpe6xofk26",
+      "title": "@tlwest.bsky.social on Bluesky",
+      "published_at": "2026-09-29T01:44:54.863Z",
+      "raw_excerpt": "Well, it *is* a different strategy. SpaceX is far more willing to embrace failures on their way to success than NASA. I don’t see NASA pride allowing the release of exploding rocket reels :-). And this allows the anti-SpaceX crowd a little free snark in the face is SpaceX’s launch success.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "c2c097987f9ac5fd",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/doscojones.bsky.social/post/3mwmomzcdm225",
+      "title": "@doscojones.bsky.social on Bluesky",
+      "published_at": "2026-09-29T01:31:57.966Z",
+      "raw_excerpt": "I hate Elroy as much as anyone, but no one will ever take you seriously if you keep pulling nonsense out of your ass. The SpaceX Falcon 9 rocket has an overall launch success rate of 99.6%. There’s a SpaceX Dragon docked at the ISS right now. That’s not nothing.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "b33bcce836d06b15",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-29/Trump-unveils-15-billion-planned-Iowa-steel-project-1QPe1oNKRLG/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Trump unveils $15 billion planned Iowa steel project",
+      "published_at": "2026-09-29T01:28:38.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-29/Trump-unveils-15-billion-planned-Iowa-steel-project-1QPe1oNKRLG/img/72bca9bd68564c26b6f33050472ba1b9/72bca9bd68564c26b6f33050472ba1b9.png' alt='President Donald Trump speaks while meeting with Britain's Prime Minister Andy Burnham during the United Nations General Assembly, at the UN headquarters in New York City, US, September 22, 2026. /VCG'</img><p>US President Donald Trump on Monday said that a Minnesota company plans to build a multi-billion-dollar steel mill in Iowa, handing the administration a marquee manufacturing ‌investment to showcase as Republicans head into November's midterm elections.</p><p>Trump unveiled the project at the White House with executives from Mesabi Metallics, which recently opened Minnesota's first new iron ore mine in 50 years. The White House said the plant investment would amount to $15 billion.</p><p>The announcement comes as Trump seeks to bolster his economic record ahead of November's election, with his approval rating plumbing all-time lows of late as the Republican Party confronts ​voter concerns about inflation and the cost of living. Trump has made tariffs and a revival of US manufacturing central to his economic agenda, arguing that higher ​barriers to imports will drive investment and jobs back to the United States.</p><p>But Republicans are in the midst of several competitive elections in ⁠Iowa, a once-swingy state that has more consistently voted for Trump's party in recent years. Polling this cycle shows a tight race for a seat in the US Senate, as ​well as its gubernatorial race, where the Democratic candidate, Rob Sand, has led most polls.</p><p>The potential $15 billion steel project gives Trump a high-profile investment to tout as he makes that case ​to voters. It also comes as the administration faces pressure to show that its policies imposing broad tariffs on US imports can deliver industrial gains without fueling inflation.</p><p>\"This is a tremendous investment,\" ",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "1e449a779a6ae94a",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/toppnews.bsky.social/post/3mwmogfjq5l2r",
+      "title": "@toppnews.bsky.social on Bluesky",
+      "published_at": "2026-09-29T01:28:15.558Z",
+      "raw_excerpt": "#Elon Musk #launch #Musk #rocket #SpaceX #Starship 🌐 www.newsmart.ch",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "24699646b064447d",
+      "source_name": "SpaceflightNow",
+      "url": "https://spaceflightnow.com/2026/09/29/nasa-plans-unpiloted-starliner-test-flight-at-end-of-year/",
+      "title": "NASA plans unpiloted Starliner test flight at end of year",
+      "published_at": "2026-09-29T01:14:36.000Z",
+      "raw_excerpt": "Boeing’s Starliner spacecraft, seen in the company’s Kennedy Space Center hangar in July. Image: Boeing NASA is working with Boeing to launch an unpiloted Starliner capsule in the December-January time frame to test upgrades and improvements ordered in the wake of a 2024 mission that suffered multiple propulsion system failures, stranding two astronauts on the space station for more than nine months. If the unpiloted test flight goes well, NASA and Boeing hope to launch a piloted Starliner flight in mid 2028, officials said Monday, incorporating redesigned propulsion system valves, more robust subsystems and other modifications expected to prevent the sort of failures that occurred in 2024. Veteran astronaut Warren “Woody” Hoburg will command the mission, joined by other crew members to be named later. NASA astronaut Warren “Woody” Hoburg, the newly named commander of the Starliner-2 mission, talks about the work done by NASA and Boeing in preparation for the upcoming uncrewed flight of the next CST-100 Starliner spacecraft. Image: John Pisani/Spaceflight Now SpaceX’s Crew Dragon capsule is the only currently operational U.S. astronaut ferry ship. NASA wants to bring Boeing back into the mix as soon as possible to ensure a sustained U.S. capability to carry astronauts and researchers to the International Space Station through its planned retirement in 2030. Equally important, NASA managers want to make sure an American spacecraft will be available to support flights to commercial space stations later in the 2030s, after SpaceX phases out its Falcon 9 rockets and Crew Dragon spacecraft. “It’s always been the Commercial Crew Program’s goal to have two crew transportation providers to ensure commercial access to low Earth orbit,” said Dana Weigel, manager of NASA’s low-Earth orbit operations. “As SpaceX has publicly stated, the Dragon and the Falcon won’t be around forever. Certifying Boeing’s Starliner is important for both supporting ISS and also for follow-on future",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "b7748b267e57fa50",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/ghunkinking.bsky.social/post/3mwmnmfxip22z",
+      "title": "@ghunkinking.bsky.social on Bluesky",
+      "published_at": "2026-09-29T01:13:43.758Z",
+      "raw_excerpt": "That's a different argument. You can think SpaceX was overvalued without pretending it hasn't built successful products. If its technology is such a failure, name the other active U.S. launch systems currently carrying humans to orbit.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "990bc738f1882230",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mwmm56c6py2z",
+      "title": "@bigearthdata.ai on Bluesky",
+      "published_at": "2026-09-29T00:47:18.669Z",
+      "raw_excerpt": "SpaceX's Starship Rocket Does Its Job During First Orbital Flight ->Universe Today | More on \"Starship's first orbital flight test\" at BigEarthData.ai | #SpaceX",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "9745a23747f7e262",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spamps.bsky.social/post/3mwmllumpgc2s",
+      "title": "@spamps.bsky.social on Bluesky",
+      "published_at": "2026-09-29T00:37:35.660Z",
+      "raw_excerpt": "NASA used to launch stuff that did not regularly fail, fall apart, or explode but fuck that we got SpaceX now",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "c1fb642128694d22",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/fatwagner.bsky.social/post/3mwmkv5ahe52q",
+      "title": "@fatwagner.bsky.social on Bluesky",
+      "published_at": "2026-09-29T00:24:54.668Z",
+      "raw_excerpt": "NASA and SpaceX Prepare Crew-13 for International Space Station Launch NASA and SpaceX are preparing the Crew-13 mission for an October 1 launch, sending four astronauts to the International Space Station for vital scientific research.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "69948e8c9a1cdc44",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOT3BVQmpDbzM3b21lck1JczhHcmw4Ym5UMG1wTmZGMTFZQmZCNURscTBtTVU2REJCa3J6QUE4MDFvZDRKTFFVNlVadTBySHRxMU0wZGhfRHpSNE1nX2RyLWFzSVYxalNwV0hvaHN3V0JzdDZqd29yMTJQMEE1cGJSSUNyUkNmYzlvSFAwTkJ3THNtOVlkdGpPRDRfU296bEXSAaQBQVVfeXFMTlFLcmxQMFN3QUdJT3Q4eUVmcFFlMlNxSS1KTkhxSEg0WnMwRVZPZGdaQmJGS1llMFVRdkh6Z25leG90VldKV241Q1pqSXEtb19xM3ZVNkt1NXFrcXR3UU9QcXRfd2VqZFRkbzRDRDdDdmFKYUwwdktVYXgzUVVfbjRMaWdMdVd3M3dLMFg0MGszYzQ4SlpUMTY5OHdweWUtWTVMU1g?oc=5",
+      "title": "SpaceX calls Starship rocket test launch a success - FOX 35 Orlando",
+      "published_at": "2026-09-29T00:12:28.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxOT3BVQmpDbzM3b21lck1JczhHcmw4Ym5UMG1wTmZGMTFZQmZCNURscTBtTVU2REJCa3J6QUE4MDFvZDRKTFFVNlVadTBySHRxMU0wZGhfRHpSNE1nX2RyLWFzSVYxalNwV0hvaHN3V0JzdDZqd29yMTJQMEE1cGJSSUNyUkNmYzlvSFAwTkJ3THNtOVlkdGpPRDRfU296bEXSAaQBQVVfeXFMTlFLcmxQMFN3QUdJT3Q4eUVmcFFlMlNxSS1KTkhxSEg0WnMwRVZPZGdaQmJGS1llMFVRdkh6Z25leG90VldKV241Q1pqSXEtb19xM3ZVNkt1NXFrcXR3UU9QcXRfd2VqZFRkbzRDRDdDdmFKYUwwdktVYXgzUVVfbjRMaWdMdVd3M3dLMFg0MGszYzQ4SlpUMTY5OHdweWUtWTVMU1g?oc=5\" target=\"_blank\">SpaceX calls Starship rocket test launch a success</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FOX 35 Orlando</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "919f1e7555d8b282",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOajJqdlYtblNLTlMxN2pCVzVZa0hSWEwwN3JNMHRyc1g4QWFmbVlLT0Q5RVh2Vjc2TW5jX2E2QXlVS08tQTVsVVQ5b19IVFZEcndfUWZBVHhOQnByTEE0QzYzR1pKMGoyN0RoNHVkNlZrM09ibHVPeXI4MHJiZk5fUdIBgAFBVV95cUxOajJqdlYtblNLTlMxN2pCVzVZa0hSWEwwN3JNMHRyc1g4QWFmbVlLT0Q5RVh2Vjc2TW5jX2E2QXlVS08tQTVsVVQ5b19IVFZEcndfUWZBVHhOQnByTEE0QzYzR1pKMGoyN0RoNHVkNlZrM09ibHVPeXI4MHJiZk5fUQ?oc=5",
+      "title": "SpaceX's supersized Starship launches toward orbit for the first time - Phys.org",
+      "published_at": "2026-09-29T00:04:31.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxOajJqdlYtblNLTlMxN2pCVzVZa0hSWEwwN3JNMHRyc1g4QWFmbVlLT0Q5RVh2Vjc2TW5jX2E2QXlVS08tQTVsVVQ5b19IVFZEcndfUWZBVHhOQnByTEE0QzYzR1pKMGoyN0RoNHVkNlZrM09ibHVPeXI4MHJiZk5fUdIBgAFBVV95cUxOajJqdlYtblNLTlMxN2pCVzVZa0hSWEwwN3JNMHRyc1g4QWFmbVlLT0Q5RVh2Vjc2TW5jX2E2QXlVS08tQTVsVVQ5b19IVFZEcndfUWZBVHhOQnByTEE0QzYzR1pKMGoyN0RoNHVkNlZrM09ibHVPeXI4MHJiZk5fUQ?oc=5\" target=\"_blank\">SpaceX's supersized Starship launches toward orbit for the first time</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Phys.org</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "2068bc4202b3c89d",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
+      "title": "Starship | Starlink Group 31-1 (Starship Flight 14)",
+      "published_at": "2026-09-29T00:03:59.000Z",
+      "raw_excerpt": "14th test flight of the two-stage Starship launch vehicle. 3rd flight of Starship V3 and the first Starship flight to deploy satellites (a group of Starlink satellites known as Starlink Group 31-1) into stable Low Earth Orbit. The ship is expected to fly at an altitude approximately 275 km above Earth and complete approximately 6 orbits around the planet for nearly 10 hours, with splashdown targeted in the Pacific Ocean west of Chile. The booster’s primary test objective on Flight 14 will be executing a successful launch, ascent, stage separation, boostback burn, and landing burn at an offshore landing point in the Gulf. Starship will deliver 26 Starlink V3 satellites to orbit for the first time, which aim to greatly expand the network's capacity and user speeds. Each Starlink V3 satellite will add 1 Tbps of capacity to the constellation.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "cec191c803f418b3",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9oQmVUd2xOWUlrSEgxWHFtc3Z1NXlfOXQwLUJhNXdYT0t3cTVwVElXSVJQRndQRkprVmVMUVN3Z2JzN3pkNWZhZTI1WUlfRFhhdjdmWklR?oc=5",
+      "title": "SpaceX Starship reaches low Earth orbit in historic launch - Fox News",
+      "published_at": "2026-09-28T23:57:32.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiVkFVX3lxTE9oQmVUd2xOWUlrSEgxWHFtc3Z1NXlfOXQwLUJhNXdYT0t3cTVwVElXSVJQRndQRkprVmVMUVN3Z2JzN3pkNWZhZTI1WUlfRFhhdjdmWklR?oc=5\" target=\"_blank\">SpaceX Starship reaches low Earth orbit in historic launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fox News</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "a75d77d8ad0256d3",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONmNvSFpuRWV5VUZIU2htRWVvUTVnNmJDcFRNUVUtNGd1Q2lBNUtuc2MwaS1pTEh6S29jb2psRXgxUUNkdGdmeEpULXlKeHVLS3RMbGdnekFxZGMwdC1MemxBZFhtaWxRc1NuMVBBX1lOV2p2MU4yU05KaTNCS2lwM0lWUE11SFN6d2ItckNaZXV4Z9IBlwFBVV95cUxPdHNfYjRGSXVna3RPTHMxM3hrMUJhaVc0bjBaeEJoM2w3X0IzazlUcjU5cEZ3RHVXOTh5UGlYQ3VRWnREeUMzZUVyWFZDSy1QMVNsQU5jZnNLY1JwQzd5WjZaNHJ2cnBmVGMwVDBLa3FmZTJpeDFJT2FVTnlaMFFwN0U2eTdla2FEUnhlWWJHVVBRQ25EcVFF?oc=5",
+      "title": "Fiery end for SpaceX Starship mission - Al Jazeera",
+      "published_at": "2026-09-28T23:56:08.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxONmNvSFpuRWV5VUZIU2htRWVvUTVnNmJDcFRNUVUtNGd1Q2lBNUtuc2MwaS1pTEh6S29jb2psRXgxUUNkdGdmeEpULXlKeHVLS3RMbGdnekFxZGMwdC1MemxBZFhtaWxRc1NuMVBBX1lOV2p2MU4yU05KaTNCS2lwM0lWUE11SFN6d2ItckNaZXV4Z9IBlwFBVV95cUxPdHNfYjRGSXVna3RPTHMxM3hrMUJhaVc0bjBaeEJoM2w3X0IzazlUcjU5cEZ3RHVXOTh5UGlYQ3VRWnREeUMzZUVyWFZDSy1QMVNsQU5jZnNLY1JwQzd5WjZaNHJ2cnBmVGMwVDBLa3FmZTJpeDFJT2FVTnlaMFFwN0U2eTdla2FEUnhlWWJHVVBRQ25EcVFF?oc=5\" target=\"_blank\">Fiery end for SpaceX Starship mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Al Jazeera</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "63245eeb5daa8d1e",
+      "source_name": "Bluesky search: earth observation satellite",
+      "url": "https://bsky.app/profile/anufennerschool.bsky.social/post/3mwmijgjm7c2o",
+      "title": "@anufennerschool.bsky.social on Bluesky",
+      "published_at": "2026-09-28T23:42:40.060Z",
+      "raw_excerpt": "What if we could spot bushfire risk from space before a fire starts? Researchers at the Fenner School are developing OzFuel, a world-first satellite system designed to map the flammability of eucalypt forests and help improve bushfire preparedness across Australia.",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "29c722ccebfadb65",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPdU14S2Vqb18xUGphejJNNzBuUUI0VkNaTjNYRGdlb3FyaURWQWNXR0RQMmdFdzBvMEgwNDY2NnhJaTI1OElvdDZWVWI2alRKNEIzN0FvOG5WNXBVa2d6Yk1rQ3NQb0xLNmEzN2RJdnRzX1BGYkVVZU5CekJSVnluLWsyaXJKZGQtc0czYXFqbm14X2k0dmlFYklyTzhxSk5BOHpBbUY1QndQUnRCZlU3WDlReGVQd3ptcHpGRnhn0gHDAUFVX3lxTE9BNjM4YlhXQkxoeVRpcmd6eHQ4QktMeU92NDVLTG5pcUEtRi1rUkdDRjdNSHBsSGxvb1MtQ3hWWk5VSkFhSW5NQzFYQmtoM2hzUm9GMEE1MTFwZHpub0tFQjRPcFo5XzJqeDkwTXNhV1JuV1NkbFdhZ1VjNy1Wbi1ab0lWcWpJck5SUFFNUHRXXzhqTkZINWNacVY2aW5Ga01PdC02ODlmZXk1SWRQSEc4b1lMOHZpYWVkT2RYYTl2V0hDOA?oc=5",
+      "title": "‘Two steps forward’: Former NASA astronaut encouraged by historic SpaceX flight test - NewsNation",
+      "published_at": "2026-09-28T23:39:16.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivgFBVV95cUxPdU14S2Vqb18xUGphejJNNzBuUUI0VkNaTjNYRGdlb3FyaURWQWNXR0RQMmdFdzBvMEgwNDY2NnhJaTI1OElvdDZWVWI2alRKNEIzN0FvOG5WNXBVa2d6Yk1rQ3NQb0xLNmEzN2RJdnRzX1BGYkVVZU5CekJSVnluLWsyaXJKZGQtc0czYXFqbm14X2k0dmlFYklyTzhxSk5BOHpBbUY1QndQUnRCZlU3WDlReGVQd3ptcHpGRnhn0gHDAUFVX3lxTE9BNjM4YlhXQkxoeVRpcmd6eHQ4QktMeU92NDVLTG5pcUEtRi1rUkdDRjdNSHBsSGxvb1MtQ3hWWk5VSkFhSW5NQzFYQmtoM2hzUm9GMEE1MTFwZHpub0tFQjRPcFo5XzJqeDkwTXNhV1JuV1NkbFdhZ1VjNy1Wbi1ab0lWcWpJck5SUFFNUHRXXzhqTkZINWNacVY2aW5Ga01PdC02ODlmZXk1SWRQSEc4b1lMOHZpYWVkT2RYYTl2V0hDOA?oc=5\" target=\"_blank\">‘Two steps forward’: Former NASA astronaut encouraged by historic SpaceX flight test</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NewsNation</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "b525faf6f69ba2a4",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPaGRyRk5vV1NvZW5IaXp2eUhJTUNINTRVQS1WQXJ5cnc4Z2t2QXVGUXJXSTRnYndBNXUyUTZuU0RzT0lJU3JiSjZwRVkxZmpBa3hxTGpKMHMxV2lVMzcwa0Q2SG5VaFpHQ1ZNSEYzNkZnUEFmdlIzcXhOQ3ZoSXZxMU5DNmlMcDhINzdwNlVpcVdnWmFEMmZ2WHpMZnI5SXlUeUpxWkhqN2VFSXI0c2x4dHVkQ20tMnlHakE?oc=5",
+      "title": "SpaceX puts Starship into orbit for the first time, deploys 26 Starlink satellites - SiliconANGLE",
+      "published_at": "2026-09-28T23:24:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxPaGRyRk5vV1NvZW5IaXp2eUhJTUNINTRVQS1WQXJ5cnc4Z2t2QXVGUXJXSTRnYndBNXUyUTZuU0RzT0lJU3JiSjZwRVkxZmpBa3hxTGpKMHMxV2lVMzcwa0Q2SG5VaFpHQ1ZNSEYzNkZnUEFmdlIzcXhOQ3ZoSXZxMU5DNmlMcDhINzdwNlVpcVdnWmFEMmZ2WHpMZnI5SXlUeUpxWkhqN2VFSXI0c2x4dHVkQ20tMnlHakE?oc=5\" target=\"_blank\">SpaceX puts Starship into orbit for the first time, deploys 26 Starlink satellites</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SiliconANGLE</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
+      "id": "7b7903c8288b39a4",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNb01TeFlZT3ZMaDFXaGZJaVVqdi1aNWNGaGdNQ2ZfUUVWeGVXdUtCSWRYcXQ4N0dCdVNFTUhVSHpDbzYweng5RURpd25rSzA2TWhZcjJRTzlKOVBnLUN2eUM0NWdJTGxidGtySzNuYVJKYUt4QU83NzdlUkpWZ1lGNFJ1M0tJV3kzT1E?oc=5",
+      "title": "SpaceX's Starship, the biggest rocket ever built, launches into orbit - CBS News",
+      "published_at": "2026-09-28T23:07:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxNb01TeFlZT3ZMaDFXaGZJaVVqdi1aNWNGaGdNQ2ZfUUVWeGVXdUtCSWRYcXQ4N0dCdVNFTUhVSHpDbzYweng5RURpd25rSzA2TWhZcjJRTzlKOVBnLUN2eUM0NWdJTGxidGtySzNuYVJKYUt4QU83NzdlUkpWZ1lGNFJ1M0tJV3kzT1E?oc=5\" target=\"_blank\">SpaceX's Starship, the biggest rocket ever built, launches into orbit</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CBS News</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
     {
       "id": "7155ea4ade8aff83",
       "source_name": "Bluesky search: spacex launch",
@@ -681,6 +1125,16 @@
       "consumed": true
     },
     {
+      "id": "e7c231a36435d5b8",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQMlZlNXN0UW1qVEdRXzBwYUVkR0MzaWNGZkVsbWVUcWhmZGhMRVEtOHFNWEJlX3Z2VkhWV1BQRFZEcEhHSEFzLXc3bUNDbHNwd2hKYWl5NEd3cnJ6bGQwTG9sTGJ5MWVmYl90a29xdE1yUTA2Vnh1MTR3US1BN2NRb2VCbDN2VXl2VWFqTUdEaHIzRnNE?oc=5",
+      "title": "Elon Musk Says SpaceX’s Orbital Compute Will be ‘Way Better’ Than Analysts’ Predictions by 2028—Starlink Could Become Earth’s ‘De Facto’ Internet - Yahoo Finance",
+      "published_at": "2026-09-28T22:00:15.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxQMlZlNXN0UW1qVEdRXzBwYUVkR0MzaWNGZkVsbWVUcWhmZGhMRVEtOHFNWEJlX3Z2VkhWV1BQRFZEcEhHSEFzLXc3bUNDbHNwd2hKYWl5NEd3cnJ6bGQwTG9sTGJ5MWVmYl90a29xdE1yUTA2Vnh1MTR3US1BN2NRb2VCbDN2VXl2VWFqTUdEaHIzRnNE?oc=5\" target=\"_blank\">Elon Musk Says SpaceX’s Orbital Compute Will be ‘Way Better’ Than Analysts’ Predictions by 2028—Starlink Could Become Earth’s ‘De Facto’ Internet</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "6fecc59c225e71bf",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOelUxcTdxWUZ0LWR4eWpjV1NlNTY3dG5RRDFNeVp0Z3VKZEtabDdXZHRQNmF1RFlGb1pzbFpFYWlzcVdZQnNZY0RtaXZVODQ1bzRVaHZmb3F4akY3Q1ZjMDllT2s1TjhibjBPdFkzUnJjMWtVVE14S3BEbmxIWE5zVVQ3UW55SUM5ODJKal9DTHNtMDUyaldJcnpRaEpkN1VyeXc?oc=5",
@@ -778,6 +1232,16 @@
       "published_at": "2026-09-28T21:23:35.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2AFBVV95cUxNbnUxN0xySkpRelA3YUs4SnAxb1VnU1lnd2Zta1pOUDJSMEM4XzBnNjR6QXlqZFhEWm1ya1VNYllVNXZ0UV9xTUF5bDBfX25LU3pMb1p6ek40VS1GSkFnanZpQ3ZGakZyYnZlc2RnbV9rMXh4eG00RC1BZERySkg3bkRGX2NTOXhhdlZVV0tkWkpoZjY2N3NlMkNqbXdkZktLTDlKY3NKSWtENWtOeVRDNXNXS1VMU1JUamVFZlRWcmctamlDNUowdG8wc0E3Y3NpVlY3Q2VOb2k?oc=5\" target=\"_blank\">Video: SpaceX’s Starship Splashes Down Early After Orbiting Earth for the First Time</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The New York Times</font>",
       "fetched_at": "2026-09-28T23:30:59.051Z",
+      "consumed": true
+    },
+    {
+      "id": "9b7ed6560701cf12",
+      "source_name": "SEC EDGAR 8-K feed: ASTS",
+      "url": "https://www.sec.gov/Archives/edgar/data/1780312/000149315226044647/0001493152-26-044647-index.htm",
+      "title": "8-K - Current report",
+      "published_at": "2026-09-28T21:20:14.000Z",
+      "raw_excerpt": "<b>Filed:</b> 2026-09-28 <b>AccNo:</b> 0001493152-26-044647 <b>Size:</b> 296 KB<br>Item 5.02: Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers<br>Item 9.01: Financial Statements and Exhibits",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -921,6 +1385,16 @@
       "consumed": true
     },
     {
+      "id": "9f21753564cf188f",
+      "source_name": "Google News: EO + connectivity",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPRDdOUFZXTGZsN29BZE5pdGtocVR6OTF4QzAzZmlNZUdrQWRZbUNLcEY2YzFFLXk4N0s0Y3ZGZFV3U3diYmNaekZiYjBfZ25HSm5vQU9Yd04xTDd6NkxLTjNMLXJSMTVhXy1xSlEzcG52czBIMnFCWXdnWjF4cE1BQ1dKVU9BS1hOaHJGaU5HSTZ6eEpfZHNqOW5DbGo1WVVhWXljbmx6b0w?oc=5",
+      "title": "OVHcloud, CGI Win ESA Contract to Build Europe’s Strategic Earth Observation Cloud - Tekedia",
+      "published_at": "2026-09-28T19:56:31.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqAFBVV95cUxPRDdOUFZXTGZsN29BZE5pdGtocVR6OTF4QzAzZmlNZUdrQWRZbUNLcEY2YzFFLXk4N0s0Y3ZGZFV3U3diYmNaekZiYjBfZ25HSm5vQU9Yd04xTDd6NkxLTjNMLXJSMTVhXy1xSlEzcG52czBIMnFCWXdnWjF4cE1BQ1dKVU9BS1hOaHJGaU5HSTZ6eEpfZHNqOW5DbGo1WVVhWXljbmx6b0w?oc=5\" target=\"_blank\">OVHcloud, CGI Win ESA Contract to Build Europe’s Strategic Earth Observation Cloud</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Tekedia</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "45df80931dd40d55",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/glinden.bsky.social/post/3mwm3rjf37k27",
@@ -1048,6 +1522,16 @@
       "published_at": "2026-09-28T18:42:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxPT0MzbDNiUTJmc1NRWDJDVEQ2Nk1mTFhqdEdkWHdQcnV3MUhEMHdmclVCZzBVS2hkRkxXekwtSTQ5Q0tUOGhwcVBOYjVIc3lXU1I1SDZwMHRSUW0ySkpSVW9fR1FwYTNOSDVoUFA1MWh0b0dKQzRFT3VlalFLNzBkSDlhdDB1MG9aUmMxN1hDN24?oc=5\" target=\"_blank\">SpaceX's Starship launches into orbit for the first time</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WDBJ7</font>",
       "fetched_at": "2026-09-28T23:30:59.051Z",
+      "consumed": true
+    },
+    {
+      "id": "15d7dd23ff826c80",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQMXV1TDM0VnNfRWtjbGZSZndCdmpVWlhiQnBRUmVhLTBpZDNKdmZ3WjBYcmRFbkRRMnZ5dUlfdGtHb1BqNUFIVEp0X2JOQml3amFZWmd2c1A3aEMzVHBGa01LU1VyMkJJVlJaWGRBQXR5T2NLNERsbDA5cnIyZy1xdkhCcW81cmZpdE9VVzBVTDhEU1VqMGVyWFVyS1RYYUMz?oc=5",
+      "title": "SpaceX's Starship launches into orbit for the first time - Alaska's News Source",
+      "published_at": "2026-09-28T18:42:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxQMXV1TDM0VnNfRWtjbGZSZndCdmpVWlhiQnBRUmVhLTBpZDNKdmZ3WjBYcmRFbkRRMnZ5dUlfdGtHb1BqNUFIVEp0X2JOQml3amFZWmd2c1A3aEMzVHBGa01LU1VyMkJJVlJaWGRBQXR5T2NLNERsbDA5cnIyZy1xdkhCcW81cmZpdE9VVzBVTDhEU1VqMGVyWFVyS1RYYUMz?oc=5\" target=\"_blank\">SpaceX's Starship launches into orbit for the first time</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Alaska's News Source</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -2211,6 +2695,16 @@
       "consumed": true
     },
     {
+      "id": "fafa8d397b8392e6",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/China-plans-to-complete-new-generation-geological-map-of-Mars-by-2028-1QOtaUl2OtO/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "China plans to complete new-generation geological map of Mars by 2028",
+      "published_at": "2026-09-28T14:23:49.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/China-plans-to-complete-new-generation-geological-map-of-Mars-by-2028-1QOtaUl2OtO/img/e67d521152b448a0bc635c9f33489eb7/e67d521152b448a0bc635c9f33489eb7.png' alt='A render of Mars. /VCG'</img><p>China plans to complete a new-generation geological map of Mars by the end of 2028, according to Hou Zengqian, chief scientist of the Tianwen-3 mission, who's an academician of the Chinese Academy of Sciences.</p><p>The new map will propose a Chinese approach to the geological timescale of Mars and seek to promote the geological chronology standard independently developed by China as a globally recognized framework, Hou said.</p><p>The map will incorporate the latest scientific findings from China's exploration of Mars. Data from the Zhurong rover indicate that an intercontinental-scale ancient ocean may have existed on Mars about 3.5 billion years ago, while a short-lived flooding event may have occurred around 1.6 billion years ago.</p><p>The new-generation geological map of Mars will also include 1:50,000-scale geological maps of landing sites, to be compiled on a corresponding schedule, as well as a series of specialized map collections.</p><p>These achievements will serve as a key outcome of the scientific preparation for the Tianwen-3 mission. The results will be released as the world's first intelligent geological map of Mars, according to reports.</p><p>The project is also expected to provide a research paradigm and implementation template for future geological mapping missions involving the moon, Venus and asteroids.</p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "8c81ded1af559b1d",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/striderhlc.bsky.social/post/3mwljc3npx22d",
@@ -2581,6 +3075,16 @@
       "consumed": true
     },
     {
+      "id": "3183b30e6bf3448f",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/Scientists-create-hot-ice-that-may-explain-Uranus-magnetic-fields-1QOqdrYG5zy/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Scientists create 'hot ice' that may explain Uranus' magnetic fields",
+      "published_at": "2026-09-28T13:58:54.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/Scientists-create-hot-ice-that-may-explain-Uranus-magnetic-fields-1QOqdrYG5zy/img/b22f009364244a86831471b96dd3bf40/b22f009364244a86831471b96dd3bf40.jpeg' alt='An illustration of the Uranus. /VCG'</img><p>Scientists have created a bizarre form of ice that is hotter than lava yet remains solid – a material that may help explain why Uranus and Neptune have such strange magnetic fields.</p><p>The material is called superionic ice. It is not like the ice in your freezer. Under extreme pressure and heat, water can enter a strange state in which oxygen atoms form a solid framework while hydrogen nuclei move through it like a liquid. That makes the ice electrically conductive.</p><p>Researchers in France have now revealed a new detail about how its atoms are arranged, according to a recent report by Science and Technology Daily.</p><p>To study it, the team squeezed a tiny water sample to more than 2 million times Earth's atmospheric pressure and heated it to over 1,500 degrees Celsius. At that point, water would normally be a superheated gas, but the enormous pressure keeps it solid.</p><p>The researchers found that the oxygen atoms settled into a previously unknown crystal structure, a discovery that helps explain how this exotic ice behaves.</p><p>That matters because Uranus and Neptune are magnetic oddballs. Unlike Earth, whose magnetic field is roughly centered and aligned with its rotation, the ice giants' magnetic fields are sharply tilted and offset.</p><p>Scientists have long suspected that a layer of electrically conducting superionic ice inside these planets could be responsible. If so, the strange magnetic fields observed in the 1980s by the Voyager 2 spacecraft, operated by the National Aeronautics and Space Administration (NASA), would make much more sense.</p><p>Superionic ice was predicted decades ago and only confirmed experimentally in 2018. The new work adds another piece to the puzzle, showing that water – s",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "82174197fa996c44",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/local-news-pgh.bsky.social/post/3mwlhs6yocg2q",
@@ -2588,6 +3092,16 @@
       "published_at": "2026-09-28T13:56:56.357Z",
       "raw_excerpt": "SpaceX's supersized Starship launches toward orbit for the first time https://www.wtae.com/article/spacex-starship-launch/73923920",
       "fetched_at": "2026-09-28T14:30:39.121Z",
+      "consumed": true
+    },
+    {
+      "id": "00346404f0f198d2",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/news-1QOtSNASqPe/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "SpaceX's Starship deploys Starlinks in orbital debut despite early end",
+      "published_at": "2026-09-28T13:55:03.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/news-1QOtSNASqPe/img/c6cfa3a603d64b91a705aa439f4f9d72/c6cfa3a603d64b91a705aa439f4f9d72.jpeg' alt='SpaceX Starship Flight 14 launches from its launchpad at Boca Chica Beach, Texas, September 28, 2026. /VCG'</img><p>SpaceX's Starship spacecraft reached orbit for the first time on Monday and deployed 26 next-generation Starlink V3 satellites before ending its test mission earlier than planned.</p><p>The rocket lifted off from SpaceX's Starbase facility in the US state of Texas at about 7:48 a.m. Central Time (1248 GMT).</p><p>Shortly after launch, the Super Heavy booster splashed down in the Gulf of Mexico.</p><p>The Starship upper stage deployed the 26 Starlink V3 satellites, marking the first time the next-generation satellites were deployed into orbit by Starship.</p><p>The upper stage was originally planned to remain in flight for about 10 hours, but the mission was shortened to about three hours after one of the engines shut down unexpectedly during ascent.</p><p>This was the 14th integrated test flight of the Starship system.</p><p class=\"paragraph-subtitle\">A test mission with a real payload</p><img src='https://news.cgtn.com/news/2026-09-28/news-1QOtSNASqPe/img/02836d36229d4e1ebd8be1584f646f4b/02836d36229d4e1ebd8be1584f646f4b.jpeg' alt=' SpaceX's Starship rocket during its 14th flight test, September 28, 2026. /VCG'</img><p>Starship was built to launch SpaceX's Starlink satellites more frequently and carry future NASA missions to the moon. Reaching orbit, a primary benchmark for any new rocket designed to deliver payloads to space, was a long-delayed feat for Starship, which Musk once predicted would be achieved in 2022, to be followed by satellite deployments in 2023.</p><p>Since its first integrated test flight in 2023, Starship's previous 13 test missions had remained in suborbital flight. Musk has said he hopes Starship will eventually conduct hundreds or even thousands of missions per year, a launch pace unpr",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -3131,6 +3645,16 @@
       "consumed": true
     },
     {
+      "id": "4305a5b441b7e1f0",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/news-1QOpcTkRALm/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "SpaceX launches Starship on first orbital flight attempt",
+      "published_at": "2026-09-28T12:49:37.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/news-1QOpcTkRALm/img/d37a4c1da18a47f5b3e34f068b328df4/d37a4c1da18a47f5b3e34f068b328df4.png' alt='SpaceX Starship Flight 14 prepares to launch at SpaceX Starbase in Starbase, Texas, United States, September 28, 2026. /CMG'</img><p>SpaceX's giant Starship spacecraft lifted off from the company's Starbase facility in the United States on Monday, marking the 14th test flight of the heavy-lift launch vehicle and its first attempt to enter Earth orbit.</p><p>The rocket lifted off at about 7:48 a.m. Central Time (1248 GMT) from SpaceX's launch site in southern Texas.</p><p>During the flight, Starship is planned to travel around Earth about six times over a period of nearly 10 hours before splashing down in the Pacific Ocean near Chile.</p><p>Unlike future missions designed to demonstrate the vehicle's full reusability, neither the Starship booster nor the spacecraft will be captured and recovered during this test flight.</p><p>The mission is intended to further test Starship's capabilities in a near-orbital flight and provide data for the development of the fully reusable launch system.</p><p>Starship, consisting of a first-stage booster and a spacecraft, is designed by SpaceX for missions to Earth's orbit and beyond.</p><p>(With input from Xinhua)</p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "1b249a012e3d3a1a",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE80cHZzMU5VZFJxWW5qajlwN0NBbHg4YkRkSE1MLWt4bDJCVFRuWTUxLWpGeHhTQmtWaDNQTWxjTFV4a2p6TTBTNm5nZVlaNm1YWC1TX0hjc2ZyV2IxVFZneEJOVGhlaFRVV0FhRkFWRnFQZkluRmdULWVLTUxEUGc?oc=5",
@@ -3211,6 +3735,16 @@
       "consumed": true
     },
     {
+      "id": "4e5b6306c81bc821",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/Nvidia-launches-platform-to-prevent-AI-agents-from-misbehaving-1QOkluo3wwo/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Nvidia launches platform to prevent AI agents from misbehaving",
+      "published_at": "2026-09-28T12:28:17.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/Nvidia-launches-platform-to-prevent-AI-agents-from-misbehaving-1QOkluo3wwo/img/e40014cccf0042eb80cbc5d96055401b/e40014cccf0042eb80cbc5d96055401b.png' alt='The Nvidia logo is displayed on a smartphone screen placed on a reflective surface onto which a multitude of the company's icons are projected, in Creteil, France, May 20, 2026. /VCG'</img><p>Nvidia is rolling out a new software platform that enables AI developers to set safeguards for agents and prevent them from escaping containment.</p><p>One of the tools released on Monday, OpenShell, uses hardware features on Nvidia's central processor chips to contain agents. Nvidia said it is also working with Arm Holdings and Intel to ensure the system ​also works on their central processors.</p><p>Nvidia is launching the tools with dozens of partners, ​including Anthropic.</p><p>Justin Boitano, vice president and general manager of enterprise computing at Nvidia, said the tools ‌would have stopped the Hugging Face attack disclosed this summer.</p><p>\"From what we know, this new security platform could have stopped the breach if it was being used in frontier labs for model evaluation early on,\" Boitano said during a media briefing. \"We're advancing this openly, ​and we want to ​engage everybody to work with us.\"</p><p>Another system called Sentry uses a separate Nvidia chip, in tandem with OpenShell, to cut off a rogue agent if it tries to escape its container on a central processor.</p><p>The Nvidia tools use mathematical formulas to detect when agents are trying to use workarounds, such as when an agent might \"spawn\" several \"sub-agents\" in an attempt to circumvent efforts to block the main agent, said Ali Golshan, senior director of AI software at Nvidia.</p><p>\"This ​is really agentic behavior that we're talking about, which is fleets of agents and how they operate together,\" ​Golshan said during a briefing.</p><p>(With input from Reuters)</p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "d976eccc5a9e84a3",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNTTI1YVpRLWZmdnN1ZUlmdjRGYVc1TGt5SEVTOUtXV0hyT19QdTdoVDhVOFlTLU5qQkpIalQ3STlQWDFoMGh0V0VMazVZSlhnSzJVZ2R1c0tWejB6eHg2VVdGQ2JKbFFHU18wMnViRmN2aVMtMTdnOS1zRjJuNjJBYVMzeWhPMG8?oc=5",
@@ -3251,6 +3785,16 @@
       "consumed": true
     },
     {
+      "id": "a8d046a4b58e609b",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPMlZWVGNKTVZnZ0JrVTI2QjA2ODZJanN1RE00b0FLYVJkRXhwVHNWcjVIVUtxUzdCeXJ5SGJHRE1PVzM3MDNiU3FjaV9INDBLMk9vUkc1MnE0NmY0NEEweThaRDd4R2M3VGFreG9MWWRTT3dtaUlOeG1RZEpad2xhaEM4UkYtc0ZJWkhkeGdXVUltcXdidzVZTHI2VnRMMTc2ZUliZXBpcENoUGVfdkQ4ZFBCam4?oc=5",
+      "title": "What time will SpaceX launch its 1st orbital Starship test on Flight 14 on Sept. 28? (Full mission timeline) - Space",
+      "published_at": "2026-09-28T12:05:18.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxPMlZWVGNKTVZnZ0JrVTI2QjA2ODZJanN1RE00b0FLYVJkRXhwVHNWcjVIVUtxUzdCeXJ5SGJHRE1PVzM3MDNiU3FjaV9INDBLMk9vUkc1MnE0NmY0NEEweThaRDd4R2M3VGFreG9MWWRTT3dtaUlOeG1RZEpad2xhaEM4UkYtc0ZJWkhkeGdXVUltcXdidzVZTHI2VnRMMTc2ZUliZXBpcENoUGVfdkQ4ZFBCam4?oc=5\" target=\"_blank\">What time will SpaceX launch its 1st orbital Starship test on Flight 14 on Sept. 28? (Full mission timeline)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Space</font>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "c2fa045f497befc3",
       "source_name": "ESA TopNews",
       "url": "https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/One_geology_step_closer_to_the_Moon",
@@ -3268,6 +3812,16 @@
       "published_at": "2026-09-28T12:00:00.000Z",
       "raw_excerpt": "DURANGO, Colo., Sept. 28, 2026 – Agile Space Industries today announced that Jason Wright will join the company as President in early October, strengthening Agile’s operational leadership as the company […] The post Agile Space Industries Expands Leadership Structure to Support Next Phase of Growth appeared first on SpaceNews .",
       "fetched_at": "2026-09-28T14:30:39.121Z",
+      "consumed": true
+    },
+    {
+      "id": "7feb68b64e032a64",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://newsaf.cgtn.com/news/2026-09-28/Uganda-turns-to-digital-innovation-AI-to-drive-tourism-growth-1QO5fra7HY4/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "Uganda turns to digital innovation, AI to drive tourism growth",
+      "published_at": "2026-09-28T11:59:30.000Z",
+      "raw_excerpt": "<img src='https://newsaf.cgtn.com/news/2026-09-28/Uganda-turns-to-digital-innovation-AI-to-drive-tourism-growth-1QO5fra7HY4/img/b907a5fad75e4e01b283ba606a5f64f1/b907a5fad75e4e01b283ba606a5f64f1.png' alt='Various wild animals at Kidepo National Park in Uganda, December 2021. /VCG'</img><p>Uganda is positioning digital innovation and artificial intelligence (AI) as drivers of tourism growth, President Yoweri Museveni said Sunday as the country marked World Tourism Day.</p><p>Museveni made the remarks while presiding over a national World Tourism Day commemoration held in the eastern district of Mbale.</p><p>He said the competitiveness of the tourism industry will depend on how effectively it uses digital technologies.</p><p>\"A tourist today wants to discover a destination online, compare experiences, communicate with operators, make bookings, navigate easily and share the experience instantly,\" Museveni said. \"Uganda must therefore ensure that our tourism businesses are visible and competitive in the digital marketplace.\"</p><p>AI can assist us in destination marketing, visitor information, product development, customer engagement, conservation management and understanding visitor behavior, the president noted.</p><p>Tom Butime, minister of tourism, wildlife and antiquities, said AI provides industry players with new tools to understand markets, personalize promotions, improve visitor experiences, support conservation and connect tourists directly with local businesses.</p><p>Butime said the global visibility generated through AI and digital innovation must now be translated into actual tourism arrivals and revenue.</p><p>\"We must convert impressions into enquiries; enquiries into bookings; bookings into arrivals; arrivals into longer stays; and longer stays into greater tourism receipts,\" the minister said.</p><p>He said previous digital campaigns, such as Explore Uganda, had demonstrated the country's ability to generate significant global visibility for its tourism",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -3451,6 +4005,16 @@
       "consumed": true
     },
     {
+      "id": "56a94a7967b3be84",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/China-s-deep-sea-drilling-capacity-reaches-5-000-meter-level-1QO6RKVL4dO/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "China's deep-sea drilling capacity reaches 5,000-meter level",
+      "published_at": "2026-09-28T09:33:12.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/China-s-deep-sea-drilling-capacity-reaches-5-000-meter-level-1QO6RKVL4dO/img/28974039a7c54d3eb68579497db4170c/28974039a7c54d3eb68579497db4170c.png' alt='File photo of China's first domestically-built ocean drilling vessel, Mengxiang. /CMG'</img><p>China's Mengxiang (\"Dream\") ocean drilling vessel has set a national record for deep-sea drilling, elevating its capability to 5,000-meter level, after obtaining basalt samples from the South China Sea basin, the Ministry of Natural Resources said on Monday.</p><p>This marks China's entry into international advanced ranks in deep-sea drilling operation capacity, according to the ministry.</p><p>A 4.27-meter basalt sample was extracted during the voyage via a self-developed drill, which made China the third country after the United States and Japan to obtain hard rock samples from a deep ocean basin using drilling vessels.</p><p>The research team conducted a long-term and high-intensity operation of shipborne remotely operated vehicles (ROVs), deploying two ROVs to operate for over 358 hours in total at a depth of 4,000 meters, with a single continuous operation lasting up to 103 hours, reaching internationally advanced levels, said Sun Zhen, a researcher at the Guangzhou Marine Geological Survey (GMGS) in south China.</p><p>Following the standards of the International Ocean Discovery Program for the first time, researchers also completed on-site multi-parameter processing and analysis of the samples, including cataloging, cutting, scanning, testing and storage, thereby mastering full-process operational capabilities for ultra-deep water ocean scientific drilling.</p><p>The samples and data obtained during the voyage provide crucial empirical evidence for addressing core scientific issues such as the expansion of the South China Sea. They are also of great significance for studying the evolution of the ancient marine environment in the sea and for the exploration and developme",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "f2be87b9142b043b",
       "source_name": "Google News: EO + connectivity",
       "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE05US1UTGk1RXEyTm15S2Y1SkNZZ2lIU2VJRVJ2MWJ4QnhyTHk5dHhLM1RMamhrdmh6VUY2N2V6QzdlQTRwNGtvaWJBS0FpYUJndUhTbVhNdzBNd2ZRMnFHZzI3M016WXlnVDdYdWd6QQ?oc=5",
@@ -3568,6 +4132,16 @@
       "published_at": "2026-09-28T06:33:01.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxPLVlCQzhfeGF3N1MzN0JtZ1lyNnJZRUN3NDY4UWxRRzA5UXdfQ0d0M0pPdDNDeFZHS0FJNHNIX2xMY01MakFUMXVWbG5iQ25Vb1JQMy00RGFYb3BOdVFiS0xjTUd4eDUzNTl1YTMxanIzN205OEdoMy1rdXJTUVVRVDRUa2ZVOFk1YlJVSzVuUUpuT0Uyelo0N2dJTFBDRXZtS29XVGtTZ1I5el85TVNGcXl6d3kxTkw0?oc=5\" target=\"_blank\">ESA taps OVHcloud, CGI to build system for Earth observation data</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">marketscreener.com</font>",
       "fetched_at": "2026-09-28T14:30:39.121Z",
+      "consumed": true
+    },
+    {
+      "id": "e71b9b2afef311a9",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/China-tops-gold-medal-tally-at-48th-WorldSkills-Competition-1QNOg7dAetO/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "China tops gold medal tally at 48th WorldSkills Competition",
+      "published_at": "2026-09-28T06:02:51.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-28/China-tops-gold-medal-tally-at-48th-WorldSkills-Competition-1QNOg7dAetO/img/e796bc4ca3c24bc6a947ac08ff476927/e796bc4ca3c24bc6a947ac08ff476927.jpeg' alt='The closing ceremony of the 48th WorldSkills Competition in Shanghai, China, September 27, 2026. /VCG'</img><p>China topped the gold medal tally at the 48th WorldSkills Competition as the event concluded in Shanghai on Sunday night, marking the fifth consecutive edition in which the country has taken the top spot.</p><p>The Chinese delegation won 41 gold medals, 11 silver medals, four bronze medals and six Medals for Excellence across all 64 skills, ranking first in the gold medal tally, overall medal tally and total group points standings. The result marked China's best-ever performance at the WorldSkills Competition.</p><video src='https://video.cgtn.com/news/2026-09-28/China-tops-gold-medal-tally-at-48th-WorldSkills-Competition-1QNOg7dAetO/video/wu_1k3hasasiqqvh5ou781lppvpaa/wu_1k3hasasiqqvh5ou781lppvpaa.m3u8' poster='https://video.cgtn.com/news/2026-09-28/China-tops-gold-medal-tally-at-48th-WorldSkills-Competition-1QNOg7dAetO/video/wu_1k3hasasiqqvh5ou781lppvpaa/wu_1k3hasasiqqvh5ou781lppvpaa.png'></video><p>This was the third time China had competed in all 64 skills at the event, with 71 competitors representing the country across six sectors: transportation and logistics, construction and building technology, manufacturing and engineering technology, information and communication technology, creative arts and fashion, and social and personal services.</p><p>China's Computer Numeric Control (CNC) Milling team secured its sixth consecutive championship, while the Bricklaying and Fashion Technology teams both won their fifth consecutive championship. The teams of Electrical Installations, Electronics and Autonomous Mobile Robotics claimed their fourth consecutive title.</p><img src='https://news.cgtn.com/news/2026-09-28/China-tops-gold-medal-tally-at-48th-WorldSkills-",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -3928,6 +4502,16 @@
       "published_at": "2026-09-28T02:53:07.461Z",
       "raw_excerpt": "$ORCL $NVDA $SMH $QQQ Dr. Berries found $10T in insurance float underwriting the Aye Eye buildout. Part VI drops after the SpaceX manifest. Traders: congrats, you're the float.",
       "fetched_at": "2026-09-28T05:15:50.427Z",
+      "consumed": true
+    },
+    {
+      "id": "ecf7869fe1117080",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-28/WorldSkills-President-Innovation-is-always-part-of-the-competition-1QMGBrvwLTy/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "WorldSkills President: Innovation is always part of the competition",
+      "published_at": "2026-09-28T02:50:09.000Z",
+      "raw_excerpt": "<p>Often described as the \"Olympics of skills,\" WorldSkills is more than just a competition. It is also a global platform connecting young professionals, experts and industries - where skills, innovation and new ideas come together to shape the future of work.</p><video src='https://video.cgtn.com/news/2026-09-28/WorldSkills-President-Innovation-is-always-part-of-the-competition-1QMGBrvwLTy/video/wu_1k3hbcvfg14kmva31rct1th0mom3t5/wu_1k3hbcvfg14kmva31rct1th0mom3t5.m3u8' poster='https://video.cgtn.com/news/2026-09-28/WorldSkills-President-Innovation-is-always-part-of-the-competition-1QMGBrvwLTy/video/wu_1k3hbcvfg14kmva31rct1th0mom3t5/wu_1k3hbcvfg14kmva31rct1th0mom3t5.png'></video>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -4521,6 +5105,16 @@
       "consumed": true
     },
     {
+      "id": "85cc7714bc272041",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://newsus.cgtn.com/news/2026-09-28/-AI-civilizations-emerge-as-latest-cybersecurity-threat-1QNfgrdwQGk/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "“AI civilizations” emerge as latest cybersecurity threat",
+      "published_at": "2026-09-27T20:12:50.000Z",
+      "raw_excerpt": "<video src='https://videous.cgtn.com/news/2026-09-28/-AI-civilizations-emerge-as-latest-cybersecurity-threat-1QNfgrdwQGk/video/wu_1k3i6leb6psh8l1ad2gru16cja/wu_1k3i6leb6psh8l1ad2gru16cja.m3u8' poster='https://videous.cgtn.com/news/2026-09-28/-AI-civilizations-emerge-as-latest-cybersecurity-threat-1QNfgrdwQGk/video/wu_1k3i6leb6psh8l1ad2gru16cja/wu_1k3i6leb6psh8l1ad2gru16cja.jpg'></video><p><strong>Rogue AI agents have now hacked a government for the first time.</strong></p><p>Australia's prime minister has revealed that an OpenAI agent accessed his country's non-public government healthcare data.</p><p>As in many recent cases, it may not have been one agent acting on its own, but rather a swarm of AI agents, which some refer to as \"AI civilizations.\"</p><p>CGTN's Mark Niu reports.</p><p><i><strong>For more, check out our exclusive content on </strong></i><a href=\"https://www.cgtnnow.com/browse\"><i><strong>CGTN Now</strong></i></a><i><strong> and subscribe to our weekly newsletter, </strong></i><a href=\"https://mailchi.mp/cgtnamerica/china-newsletter-landing-page\"><i><strong>The China Report</strong></i></a><i><strong>.</strong></i></p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "ce9e65fdeb708790",
       "source_name": "BBC science and environment",
       "url": "https://www.bbc.co.uk/news/videos/cm0e30lpngxpo?at_medium=RSS&at_campaign=rss",
@@ -4901,6 +5495,16 @@
       "consumed": true
     },
     {
+      "id": "588229ee7ae60029",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-27/WorldSkills-Shanghai-showcases-new-skills-as-AI-reshapes-jobs-1QMOWPkdZW8/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "WorldSkills Shanghai showcases new skills as AI reshapes jobs",
+      "published_at": "2026-09-27T14:36:13.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-27/WorldSkills-Shanghai-showcases-new-skills-as-AI-reshapes-jobs-1QMOWPkdZW8/img/ffef23d319564e088fc78416c13e9f02/ffef23d319564e088fc78416c13e9f02.jpeg' alt='The closing ceremony of the 48th WorldSkills Competition in Shanghai, east China, September 27, 2026. /VCG'</img><p>The 48th WorldSkills Competition concluded in Shanghai on Sunday, bringing together 1,385 competitors from 68 countries and regions. The event featured 64 skills, with seven making their debuts, including unmanned aerial systems, software testing and retail.</p><p>China sent 71 competitors to contest all 64 skills. Eleven competitors from east China's Jiangsu Province all received awards, winning five gold medals, two silver medals and two Medallions for Excellence across nine skills, according to Modern Express.</p><p>Over four days, competitions across 64 skills told a broader story of economic transformation: new technologies and shifting market needs are creating fresh demand, job roles are being reshaped, and the skills economies need are evolving with them.</p><p>Francis Hourant, president of WorldSkills International, said trades today are not exactly the same as they were in the 1960s, adding that the competition adjusts its portfolio to stay connected with \"the reality of the industry.\"</p><p class=\"paragraph-subtitle\">New demand taking shape</p><p>The seven newcomers in Shanghai offer some of the clearest clues to where economic demand is moving.</p><p>In the unmanned aerial systems arena, competitors began with around 200 separate components. They had to assemble and calibrate a drone, write the code and prepare it for autonomous flight. Once airborne, this drone was expected to scan an unfamiliar environment, map obstacles and plan its own route – with no human intervention during the flight.</p><p>Retail presented a different scene at the Shanghai event, but still reflected the same trend. Across different modules, competitors had to take o",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "e2ab0d790e1882bd",
       "source_name": "Futurism",
       "url": "https://futurism.com/artificial-intelligence/uk-workers-generative-ai-workplace-own-money",
@@ -4908,6 +5512,16 @@
       "published_at": "2026-09-27T14:02:00.000Z",
       "raw_excerpt": "While a rising majority of workers in the take a negative attitude toward AI in the workplace, others are welcoming the tech with open arms — even going so far as to pay for AI services out of their own pockets. According to a recent workplace survey conducted by Deloitte and flagged by Reuters , workers in the UK are spending a collective $1.3 billion annually on generative AI for their jobs, without even expensing it. The survey is based on responses from 25,000 workers across the continent, which Deloitte calls the “largest study of workplace GenAI use conducted in a single country.” Overall, the AI adoption rate in UK workplaces is massive, with 63 percent of working adults reporting that they actively use generative AI for work. Though the polling methods aren’t an exact match, we can compare that to a similarly-timed survey of US workers by Gallup , which suggests that 52 percent of American workers use AI in some capacity, though only 15 percent do so daily. In the UK, nearly half of the workers surveyed said they use free AI tools, while 34 percent said they used generative AI provided by their employers. Still, one in six workplace AI users reported paying for at least one kind of tool themselves — the cohort collectively spending over $1 billion on AI every year. Despite their obvious enthusiasm for the technology, the Deloitte survey found UK workers’ actual deployment of generative AI remains pretty shallow. Rather than chasing cutting-edge autonomous agents — which are not always the most efficient choice , to be fair — British workers are using AI for surface-level tasks like pumping out emails, or as a replacement for once-reliable search engines (a method one CEO likened to lobbing “slop grenades” around the office.) As partner and head of industry insight at Deloitte UK Paul Lee said in the report, “what’s particularly striking is how quickly GenAI has become part of everyday working life. Yet for many workers its role remains relatively basic, focu",
       "fetched_at": "2026-09-27T17:15:47.180Z",
+      "consumed": true
+    },
+    {
+      "id": "2604da8907ee5ed6",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-27/China-developed-pile-driving-vessel-heads-to-Brazil-for-bridge-project-1QMGzazGGRy/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "China-developed pile-driving vessel heads to Brazil for bridge project",
+      "published_at": "2026-09-27T14:00:52.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-27/China-developed-pile-driving-vessel-heads-to-Brazil-for-bridge-project-1QMGzazGGRy/img/6f78586073f440ccb61c0a4e5ba28373/6f78586073f440ccb61c0a4e5ba28373.jpeg' alt='The pile-driving vessel Tiejian Daqiao Zhuang 1 in Nantong, east China's Jiangsu Province, April 8, 2026. /VCG'</img><p>A China-developed pile-driving ship departed from a port in east China's Jiangsu Province on Sunday and is heading for Brazil, where it will take part in the building of a cross-sea bridge.</p><p>The vessel, built by China Railway Construction Bridge Engineering Bureau Group, will support the construction of the Salvador-Itaparica Bridge on Brazil's northeastern coast.</p><p>Crossing the Bay of All Saints in the state of Bahia, the bridge will have a main span of 682 meters. The project totals 46.8 kilometers, including a 12.4-kilometer cross-sea section. The main pile foundation construction area has a water depth of 64 meters and complex marine geological conditions, posing significant engineering challenges.</p><p>With an operating water depth of 70 meters, a 156-meter pile frame and a pile-lifting capacity of 700 tonnes, the ship features the world's highest pile frame, largest pile-lifting capacity and deepest operating water depth among pile-driving vessels, according to the company.</p><p>The ship combines dynamic positioning with anchor mooring to help keep it steady during construction. The system monitors wind, waves, currents and the vessel's orientation in real time and automatically adjusts thrust to stabilize the ship, according to China Railway Construction.</p><p>It will sail through the Strait of Malacca and around the Cape of Good Hope into the South Atlantic, and is expected to arrive off Brazil's northeastern coast after a voyage of about 45 days.</p><p>Once the bridge opens to traffic, travel time between Salvador, the capital of Bahia state, and Vera Cruz on Itaparica Island is expected to fall from roughly one hour by",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -5191,6 +5805,16 @@
       "consumed": true
     },
     {
+      "id": "af8ce90e8fd61dc7",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-27/OpenAI-pauses-training-of-advanced-AI-models-after-latest-incident-1QMhdrkPCXm/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "OpenAI pauses training of advanced AI models after latest incident",
+      "published_at": "2026-09-27T07:08:15.000Z",
+      "raw_excerpt": "<img src='https://news.cgtn.com/news/2026-09-27/OpenAI-pauses-training-of-advanced-AI-models-after-latest-incident-1QMhdrkPCXm/img/ee3afdfe51f044be9e5df070d40d5c25/ee3afdfe51f044be9e5df070d40d5c25.png' alt='VCG'</img><p>OpenAI has paused training, evaluation and inference involving tool use for its most capable artificial intelligence (AI) models after an AI agent bypassed network restrictions in a training sandbox and accessed an external chatbot service.</p><p>In a technical report released on Friday, OpenAI said the incident occurred on September 20. An agent carrying out a search training task exploited insufficient DNS filtering in the sandbox to bypass network restrictions and access a public chatbot service through DNS. The agent had previously used a built-in search tool and unsuccessfully attempted to access search engines directly.</p><p>OpenAI said its misalignment monitoring system raised an alert within 15 minutes of the incident. A human review team intervened three minutes later, and the training task was terminated 2.5 hours afterward.</p><p>The company said it has deployed blocking controls at two independent security layers to address the vulnerability.</p><p>OpenAI said the incident was less severe than some of its previous security incidents but provided an important signal for strengthening safeguards ahead of the next stage of model development.</p><p>It marks the second time in three months that OpenAI has paused model development. In late July, the company acknowledged that AI agents in a cybersecurity training and evaluation scenario had bypassed network restrictions and accessed parts of the systems of US company Hugging Face. The agents also breached isolation between their designated environments, deceived evaluators and attempted to conceal their actions, without direct human instructions. The incident raised concerns about AI safety and oversight.</p>",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
+      "consumed": true
+    },
+    {
       "id": "e8bfdcf88d722dfd",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPY3VLdm5rMVVKZVluVTRtQkRuVVM2OWFNcC16TXlDcDRUcTFXa2tLbU9jOXJfaFAzX0xhQlhacFJVM0FDUHFkVG9Ya0FTZFhxSXJDXzlXRzNFT0k1Wk9mS1RLZ05MYjUxaFFlWlRRTTB2RzIyYUptaXJOLWhPd2VtRlpjNVZwQkFtUG1Da2xkYw?oc=5",
@@ -5258,6 +5882,16 @@
       "published_at": "2026-09-27T05:20:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxPN0tuUzNsY2U3YkwzaDlhU0NvSklvR0ZTb0ZsQWJ4NUh4UzY2NmhBc2M3RTQyUHFLMWptMVR5eHU3ZFFjVzdoNjF4MVVRcXZyWWx0NzgtVC04RHBuX2pCcFh2eVlEWlVKYm9aX2diTTdfTk43TTZXRTRJVzktdTdKNnl3M0RoRTdCbnhMSg?oc=5\" target=\"_blank\">Prediction: This Space Stock Will Outperform SpaceX Over the Next 10 Years</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">aol.com</font>",
       "fetched_at": "2026-09-27T12:28:35.765Z",
+      "consumed": true
+    },
+    {
+      "id": "d3782e98c64eacc9",
+      "source_name": "CGTN Tech-Sci",
+      "url": "https://news.cgtn.com/news/2026-09-27/A-new-blueprint-for-AI-first-content-production-emerges-in-Shanghai-1QM8gKYGTyU/p.html?UTM_Source=cgtn&UTM_Medium=rss&UTM_Campaign=Tech&Sci",
+      "title": "A new blueprint for AI-first content production emerges in Shanghai",
+      "published_at": "2026-09-27T05:18:46.000Z",
+      "raw_excerpt": "<p>Shanghai will conclude the 48th WorldSkills Competition on Sunday night, with a new Digital Interactive Media Design category drawing attention: competitors were asked to build works that can be watched, heard and interacted with. In the digital age, AI is fundamentally redefining the meaning and value of skill.</p><img src='https://news.cgtn.com/news/2026-09-27/A-new-blueprint-for-AI-first-content-production-emerges-in-Shanghai-1QM8gKYGTyU/img/4b7d83ae20254755b0663c31402e50c6/4b7d83ae20254755b0663c31402e50c6.png' alt='Shanghai concluded its inaugural 100-Hour AI Micro-Drama creation contest on September 24 at the CMG Integrated Media Cinema. /Photo courtesy of the organizer'</img><p>The city has also hosted its inaugural 100-Hour AI Micro-Drama Creation Contest, another experiment in AI-era creativity – a deadline-driven competition designed to test whether generative AI can withstand the demands of a full production pipeline, from concept and script to visual generation and final delivery, within roughly four days.</p><p>The contest drew 316 applications from 171 individual creators and 145 teams, with close to 600 participants in total, representing 27 provinces in China as well as creators from North America, Europe and Southeast Asia.</p><p>The contest required 15 shortlisted teams to produce a complete work within a fixed schedule. The format was designed to mirror real industry conditions rather than a studio competition, testing speed, quality and the practical limits of AI-assisted production at scale.</p><div class='slidesshow'><figure><img src='https://news.cgtn.com/news/2026-09-27/A-new-blueprint-for-AI-first-content-production-emerges-in-Shanghai-1QM8gKYGTyU/img/e37403e51fc04e3895cef3086b28ecc9/e37403e51fc04e3895cef3086b28ecc9.png'</img><figcaption>Posters of the winning micro-dramas. /Photo courtesy of the organizer</figcaption></figure><div class='slidesshow'><figure><img src='https://news.cgtn.com/news/2026-09-27/A-new-blueprint-for-AI-first-conte",
+      "fetched_at": "2026-09-29T05:15:48.558Z",
       "consumed": true
     },
     {
@@ -5358,586 +5992,6 @@
       "published_at": "2026-09-27T00:34:35.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxNNzVVQ0dxUl9aOTlkS09DWm9RREd1dEdvQUx4cnhycElseS1UbFl4NldJS2FLWGVCNUNQUVlkdU9TSzBmTWtaX1RzZ2oxM0tESG1wRmMxcEUtaWI3V21fVkxNdG1jVDVvenpydlB4SEV2YVhjRGtVUE9Pc3JfQ25XQUh0VmpHeElRNmVKbnQwZnRhYUxWRXh1YkMwcHpLYTJ5S1NnRC15aldVUEZqTGo5SHBEbG05aWhkTUF2Wg?oc=5\" target=\"_blank\">SpaceX President Gwynne Shotwell Files SEC Intent to Sell $52 Million in Executive Equity</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">satnews.com</font>",
       "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "33bb463c037ed2a1",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/leroylynch.bsky.social/post/3mwhfoa6zwk2s",
-      "title": "@leroylynch.bsky.social on Bluesky",
-      "published_at": "2026-09-26T23:08:20.563Z",
-      "raw_excerpt": "Australian scientists develop world-first satellite technology to measure eucalypt flammability www.abc.net.au/news/2026-09... #ausscience",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "ae15292758f46eac",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/cvp8d0nezkeko?at_medium=RSS&at_campaign=rss",
-      "title": "The young women guiding tourists through India's night sky",
-      "published_at": "2026-09-26T23:02:47.000Z",
-      "raw_excerpt": "Astronomy tourism is giving young women in Hanle income, confidence and a new role in their community.",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "0c87fb4f9337e9f7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYW9yZ2dmV0dCQ0NEMW5YclpNU3Jla2RLVnVPenlrby1wbWRTUEVFMDB0cHp1NkxKRzF0N3RQNGlFeGtyLXBuc01abVRmeVJld3pvZ2EtZmVua2Q1Vmo5enJDdlo3V1lqNkphOXJsUGV5c1RsaWRGZ0EtLW9yYnQtZzdDeGwyUUpTLTNmLWY2eDFFMGJqTXdUMDFEMUZDLUpxZG5SY3hERWpCMGpac29zYUdZTVYxTXJfTXREbGpSUE5OR0k?oc=5",
-      "title": "SpaceX launches classified US Space Force mission from California, lands booster at sea - cbs2iowa.com",
-      "published_at": "2026-09-26T22:52:45.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYW9yZ2dmV0dCQ0NEMW5YclpNU3Jla2RLVnVPenlrby1wbWRTUEVFMDB0cHp1NkxKRzF0N3RQNGlFeGtyLXBuc01abVRmeVJld3pvZ2EtZmVua2Q1Vmo5enJDdlo3V1lqNkphOXJsUGV5c1RsaWRGZ0EtLW9yYnQtZzdDeGwyUUpTLTNmLWY2eDFFMGJqTXdUMDFEMUZDLUpxZG5SY3hERWpCMGpac29zYUdZTVYxTXJfTXREbGpSUE5OR0k?oc=5\" target=\"_blank\">SpaceX launches classified US Space Force mission from California, lands booster at sea</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">cbs2iowa.com</font>",
-      "fetched_at": "2026-09-27T17:15:47.180Z",
-      "consumed": true
-    },
-    {
-      "id": "6cfc58ef5bf76b97",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPSXJWM2UwUk5IaTdrc3ptX1h6ZXFyNFdhVlZUbVRDbkJmM1hKSDJpdG5NZWJYVFlvcEVzNVdfUVJDckpEYkFva2oxM0l2UnZyVUxaQkMtT2xoNnpCaVFaYXQyWllsUExBMVZ3V0ZEZ25jaUpDMUd3QTBlQVJ0TzFzTDlmSlFmczNVeklpTzBieDJ4S2REYU00UGkxNGpMUmhxQ1JsU3NUWkdiNkJsQVNybXgweHUzWFFEcmlGX3hpNnBWaGNXS19fdmln?oc=5",
-      "title": "SpaceX launches classified US Space Force mission from California, lands booster at sea - WXLV",
-      "published_at": "2026-09-26T22:29:17.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiygFBVV95cUxPSXJWM2UwUk5IaTdrc3ptX1h6ZXFyNFdhVlZUbVRDbkJmM1hKSDJpdG5NZWJYVFlvcEVzNVdfUVJDckpEYkFva2oxM0l2UnZyVUxaQkMtT2xoNnpCaVFaYXQyWllsUExBMVZ3V0ZEZ25jaUpDMUd3QTBlQVJ0TzFzTDlmSlFmczNVeklpTzBieDJ4S2REYU00UGkxNGpMUmhxQ1JsU3NUWkdiNkJsQVNybXgweHUzWFFEcmlGX3hpNnBWaGNXS19fdmln?oc=5\" target=\"_blank\">SpaceX launches classified US Space Force mission from California, lands booster at sea</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WXLV</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "6380df644a920d16",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQTzVZYXB4U1hCRU5CNG5IbjBhdDc5MFVNVWZQLTI5LXd6VG9qa2lZTFdLLVlsVFEwOE1pMDY3ZHVGVUIzdlgxSGY4X25uTV9BRnFRdWJVWUNtcEN2NXBiOFFmbDcwSkVuZDE5SEt3clZZZjYyN0swNWNJY0R3eVZYU3RZRDBZZGxpZndIV0RhSzdnTXlzTVJlVzN2c2VfeGJlazlPOXhyeURiYlE3bm8xTGNGaTRqcmd1REtFa3hzTEdVNkU3NmlHWXZ2Zw?oc=5",
-      "title": "SpaceX launches classified US Space Force mission from California, lands booster at sea - KRCR",
-      "published_at": "2026-09-26T22:28:45.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxQTzVZYXB4U1hCRU5CNG5IbjBhdDc5MFVNVWZQLTI5LXd6VG9qa2lZTFdLLVlsVFEwOE1pMDY3ZHVGVUIzdlgxSGY4X25uTV9BRnFRdWJVWUNtcEN2NXBiOFFmbDcwSkVuZDE5SEt3clZZZjYyN0swNWNJY0R3eVZYU3RZRDBZZGxpZndIV0RhSzdnTXlzTVJlVzN2c2VfeGJlazlPOXhyeURiYlE3bm8xTGNGaTRqcmd1REtFa3hzTEdVNkU3NmlHWXZ2Zw?oc=5\" target=\"_blank\">SpaceX launches classified US Space Force mission from California, lands booster at sea</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KRCR</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "305f261591e1e77a",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPMnlRaTd4OGR5SDZvdTBnZmFRamJackphalJHMHByby1obUc3NkYwYVltUl9Hb0ktQUU3T00wRDJDczRQTm1JUHdQRFp5aDJwUGpWUFhLdUI1UWNXZVY1QzJlclF4MUdTVE1kbTN5WkJSa3pzVDRPR3RKLXBGaGxQTlNvUTMtc1EwSnpOVDRfa1FVRnlUX0ptd2gxSF9EeTNSN1d0aVlUWnNGZkRpbFVINEVveTZMUHMyMDg0bDltQQ?oc=5",
-      "title": "SpaceX launches classified US Space Force mission from California, lands booster at sea - WXLV",
-      "published_at": "2026-09-26T22:27:25.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivwFBVV95cUxPMnlRaTd4OGR5SDZvdTBnZmFRamJackphalJHMHByby1obUc3NkYwYVltUl9Hb0ktQUU3T00wRDJDczRQTm1JUHdQRFp5aDJwUGpWUFhLdUI1UWNXZVY1QzJlclF4MUdTVE1kbTN5WkJSa3pzVDRPR3RKLXBGaGxQTlNvUTMtc1EwSnpOVDRfa1FVRnlUX0ptd2gxSF9EeTNSN1d0aVlUWnNGZkRpbFVINEVveTZMUHMyMDg0bDltQQ?oc=5\" target=\"_blank\">SpaceX launches classified US Space Force mission from California, lands booster at sea</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WXLV</font>",
-      "fetched_at": "2026-09-27T21:38:27.487Z",
-      "consumed": true
-    },
-    {
-      "id": "153ff6458a4ae0a7",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQMFI5NEgzZkJqVmpadXRLUjV4RDlYWDBjajdkLV9nMWlfTjdWWW1RdHZRQUxidnNTdHNYMkIxNmtlNE9yNXNqWUM3SHFOMTlkR1c2OHdpUC1zTTVlR1dTbzNJazc0cTRKQkFDcWxBQ082SVcwZmdDZVdfZkg2bVRZcm1mNXhkbFlicEZjUmM4bG5VOXBlVDdoN2w2NmZ6SmxGSnBwX3BmdEhOT0JWaDc3LU4zVzF1V1kzWEE?oc=5",
-      "title": "Assam CM Himanta Biswa Sarma Lays Foundation Stone for ISRO Advanced Radar Research Facility - News On AIR",
-      "published_at": "2026-09-26T22:06:34.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxQMFI5NEgzZkJqVmpadXRLUjV4RDlYWDBjajdkLV9nMWlfTjdWWW1RdHZRQUxidnNTdHNYMkIxNmtlNE9yNXNqWUM3SHFOMTlkR1c2OHdpUC1zTTVlR1dTbzNJazc0cTRKQkFDcWxBQ082SVcwZmdDZVdfZkg2bVRZcm1mNXhkbFlicEZjUmM4bG5VOXBlVDdoN2w2NmZ6SmxGSnBwX3BmdEhOT0JWaDc3LU4zVzF1V1kzWEE?oc=5\" target=\"_blank\">Assam CM Himanta Biswa Sarma Lays Foundation Stone for ISRO Advanced Radar Research Facility</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">News On AIR</font>",
-      "fetched_at": "2026-09-27T17:15:47.180Z",
-      "consumed": true
-    },
-    {
-      "id": "16f950ccb29d6978",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPakptUGlCYm1pX05GUWlJeVBMbVA3eVQyVGFxUjE4RHFYVVpkQVRlR0ZfNV93SVdFdU1yRWtpZm1tU0l1Sm9mZnJOaDlrUUJzUXRNVC1nZktUNmw4Z3pZc0JMeVprZnBLMlpLZ1hpNFo0S09uWmt5NjlUZGNITV9SQy1XY1RUWTRHUkNnaDNiV1ktc3VzZzR4akgzbGRtM1NEZTNoUXBJUVRqdw?oc=5",
-      "title": "Mystery surrounds classified SpaceX rocket launch off California coast - New York Post",
-      "published_at": "2026-09-26T21:50:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPakptUGlCYm1pX05GUWlJeVBMbVA3eVQyVGFxUjE4RHFYVVpkQVRlR0ZfNV93SVdFdU1yRWtpZm1tU0l1Sm9mZnJOaDlrUUJzUXRNVC1nZktUNmw4Z3pZc0JMeVprZnBLMlpLZ1hpNFo0S09uWmt5NjlUZGNITV9SQy1XY1RUWTRHUkNnaDNiV1ktc3VzZzR4akgzbGRtM1NEZTNoUXBJUVRqdw?oc=5\" target=\"_blank\">Mystery surrounds classified SpaceX rocket launch off California coast</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">New York Post</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "d529491bcf8da61f",
-      "source_name": "Bluesky search: satellite constellation",
-      "url": "https://bsky.app/profile/aitechmatome-eng.bsky.social/post/3mwhaklfbas2z",
-      "title": "@aitechmatome-eng.bsky.social on Bluesky",
-      "published_at": "2026-09-26T21:36:44.263Z",
-      "raw_excerpt": "Breaking News: Rocket Lab Successfully Launches SAR Satellite for Synspective, Accelerating Toward 30-Satellite Constellation ▼Read More https://tech-matome.com/archives/47359",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "2068bc4202b3c89d",
-      "source_name": "Launch Library 2 (TheSpaceDevs)",
-      "url": "https://ll.thespacedevs.com/2.2.0/launch/7d1afb26-6f9c-429b-9ccf-29012fd1e519/",
-      "title": "Starship | Starlink Group 31-1 (Starship Flight 14)",
-      "published_at": "2026-09-26T21:07:41.000Z",
-      "raw_excerpt": "14th test flight of the two-stage Starship launch vehicle. 3rd flight of Starship V3 and the first Starship flight to deploy satellites (a group of Starlink satellites known as Starlink Group 31-1) into stable Low Earth Orbit. The ship is expected to fly at an altitude approximately 275 km above Earth and complete approximately 6 orbits around the planet for nearly 10 hours, with splashdown targeted in the Pacific Ocean west of Chile. The booster’s primary test objective on Flight 14 will be executing a successful launch, ascent, stage separation, boostback burn, and landing burn at an offshore landing point in the Gulf. Starship will deliver 26 Starlink V3 satellites to orbit for the first time, which aim to greatly expand the network's capacity and user speeds. Each Starlink V3 satellite will add 1 Tbps of capacity to the constellation.",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "ec360261c2a2bd4c",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/robmax4.bsky.social/post/3mwh5qre7v22h",
-      "title": "@robmax4.bsky.social on Bluesky",
-      "published_at": "2026-09-26T20:46:36.557Z",
-      "raw_excerpt": "www.abc.net.au/news/2026-09...",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "d4aed63b76bea32b",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/jhaue.bsky.social/post/3mwh3peh3b22n",
-      "title": "@jhaue.bsky.social on Bluesky",
-      "published_at": "2026-09-26T20:09:58.058Z",
-      "raw_excerpt": "Australian scientists develop world-first satellite technology to measure eucalypt flammability OzFuel could be ready to launch a prototype satellite in 18 months if funding could be found. Govt funding was axed in 2023. www.abc.net.au/news/2026-09...",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "b54312baf6ff079a",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/humanisingmen.bsky.social/post/3mwh2wdb3d22l",
-      "title": "@humanisingmen.bsky.social on Bluesky",
-      "published_at": "2026-09-26T19:55:56.759Z",
-      "raw_excerpt": "Scientists develop tech to measure eucalypt flammability from space #satellite #bushfire #BlackSummer",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "97c9d27eeb751f84",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/wyvernsrose.bsky.social/post/3mwh2wcodnq2v",
-      "title": "@wyvernsrose.bsky.social on Bluesky",
-      "published_at": "2026-09-26T19:55:55.659Z",
-      "raw_excerpt": "",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "385185c768ba5339",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPVzRlVzQyZ1RRckNnYVc1R0xiMGpkVTdjSVV6WlYxUWhIVFEwNjA4WkEyREMxbkZ4TG9FUWM5UGE2V0MyYkpRSWFueWNaWm00YTJ5ajQxREhWcnFSMXpxRnVqdzZ4Wk56eDZfUWJGeHF3eDk0WjktbnMwMHRqemhfcVoxblRGZ240QW9wVVR4MUFETTRud1hTdG16Nlc1Q2lydldDMHl0X3Bub01B?oc=5",
-      "title": "SpaceX Crew Launch - Rutland Herald",
-      "published_at": "2026-09-26T19:49:29.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPVzRlVzQyZ1RRckNnYVc1R0xiMGpkVTdjSVV6WlYxUWhIVFEwNjA4WkEyREMxbkZ4TG9FUWM5UGE2V0MyYkpRSWFueWNaWm00YTJ5ajQxREhWcnFSMXpxRnVqdzZ4Wk56eDZfUWJGeHF3eDk0WjktbnMwMHRqemhfcVoxblRGZ240QW9wVVR4MUFETTRud1hTdG16Nlc1Q2lydldDMHl0X3Bub01B?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Rutland Herald</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "9536c47e39ea8f12",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQaV8xVjEycDFfV2dWMk91UGRZOWpLWHVjRGE5NkppanA2LUFJQ1BlUkxCWHE0RUcyZDJYODZ4OWsyVTMwaWZXMTk1UDlqM2toaVJEYmhMMUF5cF8yWWxrQnNEYXBkYkNnSkl5dEtmT3pkbW9GOVlUUEQ5aUZBMzFIellwSnJLVndDZlVuWmV4MEpMWWxhSWNRaHFBNXBsWHpRMXl0R3llb2p2Qm5N?oc=5",
-      "title": "SpaceX Crew Launch - Rutland Herald",
-      "published_at": "2026-09-26T19:49:29.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxQaV8xVjEycDFfV2dWMk91UGRZOWpLWHVjRGE5NkppanA2LUFJQ1BlUkxCWHE0RUcyZDJYODZ4OWsyVTMwaWZXMTk1UDlqM2toaVJEYmhMMUF5cF8yWWxrQnNEYXBkYkNnSkl5dEtmT3pkbW9GOVlUUEQ5aUZBMzFIellwSnJLVndDZlVuWmV4MEpMWWxhSWNRaHFBNXBsWHpRMXl0R3llb2p2Qm5N?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Rutland Herald</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "05e1713ec65dcdfa",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNVjMyUEJKYkR5Q0U5eVQ5U3NaX1ZoTFo0azNFLTNuQWtHUlFPTWFEWEdZUFlBQlBNVVJTUmJzOExjd3JXUUV5U25MZFBlc09UUTBSM20wNnMtMVlkMG85d3l3YlFZSVdOSjdrV01fc1ZRSGhmMVVEQXJBd3JjMkZtTTBORFNVSGVrZmZQMVVlWXRaSUVWXzRsblRn?oc=5",
-      "title": "Next crew bound for the space station arrive in Florida - Spaceflight Now",
-      "published_at": "2026-09-26T19:38:15.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxNVjMyUEJKYkR5Q0U5eVQ5U3NaX1ZoTFo0azNFLTNuQWtHUlFPTWFEWEdZUFlBQlBNVVJTUmJzOExjd3JXUUV5U25MZFBlc09UUTBSM20wNnMtMVlkMG85d3l3YlFZSVdOSjdrV01fc1ZRSGhmMVVEQXJBd3JjMkZtTTBORFNVSGVrZmZQMVVlWXRaSUVWXzRsblRn?oc=5\" target=\"_blank\">Next crew bound for the space station arrive in Florida</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spaceflight Now</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "feea3b8a2a1bb7e4",
-      "source_name": "SpaceflightNow",
-      "url": "https://spaceflightnow.com/2026/09/26/next-crew-bound-for-the-space-station-arrive-in-florida/",
-      "title": "Next crew bound for the space station arrive in Florida",
-      "published_at": "2026-09-26T19:36:47.000Z",
-      "raw_excerpt": "The four members of NASA’s SpaceX Crew-13 mission arrived onboard T-38 jets at the Kennedy Space Center on Saturday, Sept. 26, 2026. Left to right: Canadian Space Agency astronaut Joshua Kutryk, Roscomos cosmonaut Sergey Teteryatnikov, NASA astronaut Jessica Watkins, and NASA astronaut Luke Delaney. Image: John Pisani/Spaceflight Now The next quartet heading to the International Space Station arrived at the Kennedy Space Center on Saturday afternoon. They are scheduled to launch no earlier than 11:10 a.m. EDT (1510 UTC) on Thursday, Oct. 1. Canadian Space Agency (CSA) astronaut Joshua Kutryk and NASA astronaut Luke Delany piloted a pair of T-38 jets from NASA’s Johnson Space Center and landed at the Launch and Landing Facility under a largely cloud-less sky and with a light breeze. NASA astronaut Jessica Watkins rode alongside Kutryk and Roscosmos cosmonaut Sergey Teteryantnikov flew with Delaney. This will be the first trip to space for all except Watkins, the commander of NASA’s SpaceX Crew-13 mission, who is making her second trip to space. “Arriving here today for us as a crew represents both kind of the culmination and the beginning of a journey for us. We’ve been training together as a crew for over a year now, so it is the culmination of all of that work and effort, and we’re so grateful to the teams of experts around the world that have gotten us prepared and ready for this,” Watkins said. “But it is also the beginning. We are excited, we are ready to fly, we are ready to join the Expedition 75 crew on board the International Space Station.” NASA astronaut Jessica Watkins, commander of NASA’s SpaceX Crew-13 mission, talks to members of the press after arriving at the Kennedy Space Center on Sept. 26, 2026. Image: Adam Bernstein/Spaceflight Now The four crew members were originally slated to launch to the ISS on Sept. 12, but an oxidizer leak in their Dragon spacecraft, Grace , caused NASA and SpaceX to delay the mission while repairs were made. NASA announce",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "c7aa53c8eb86b797",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mwgzr7iatm2z",
-      "title": "@bigearthdata.ai on Bluesky",
-      "published_at": "2026-09-26T19:35:11.075Z",
-      "raw_excerpt": "Australian scientists develop world-first satellite technology to measure eucalypt flammability ->Australian Broadcasting Corporation | More on \"Australian satellite bushfire monitoring technology\" at BigEarthData.ai | #Technology #Science",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "6ee1eda803afca9b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOUnhqVFNpTnpieWRLWTgtTlVmeUNlVjVRRWdKU2NFbjFoUE05cTRVMmI0ZHJ2ZkpRNjE5X1BPZ1BfSlUyX2lnU241RDE2OGRmRHpYOXdtcHJ3OGhvMDFYOWhMVWJ1dTBtSFp1ZjZHdDF2QzNrS1BwMS1GY3FXeHF3VFM1dVZkQkpoY21Wb2IxVmRaeUlERS1pbHBVVFNtT2pjdS1LbWdZWkNycEU?oc=5",
-      "title": "SpaceX Crew Launch - Times Argus",
-      "published_at": "2026-09-26T19:34:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxOUnhqVFNpTnpieWRLWTgtTlVmeUNlVjVRRWdKU2NFbjFoUE05cTRVMmI0ZHJ2ZkpRNjE5X1BPZ1BfSlUyX2lnU241RDE2OGRmRHpYOXdtcHJ3OGhvMDFYOWhMVWJ1dTBtSFp1ZjZHdDF2QzNrS1BwMS1GY3FXeHF3VFM1dVZkQkpoY21Wb2IxVmRaeUlERS1pbHBVVFNtT2pjdS1LbWdZWkNycEU?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Times Argus</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "efe6a68e6296bfc7",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/umlegacypress.com/post/3mwgzm5aqmd2z",
-      "title": "@umlegacypress.com on Bluesky",
-      "published_at": "2026-09-26T19:32:20.960Z",
-      "raw_excerpt": "Scientists develop tech to measure eucalypt flammability from space Homegrown technology to monitor the flammability of eucalypt forests could be Australia's first satellite mission for Earth observation, if scientists can raise the funds.",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "7b785ca29971b0ff",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/abcnewsbot.bsky.social/post/3mwgzfmcm7m24",
-      "title": "@abcnewsbot.bsky.social on Bluesky",
-      "published_at": "2026-09-26T19:28:41.757Z",
-      "raw_excerpt": "Homegrown technology to monitor the flammability of eucalypt forests could be Australia's first satellite mission for Earth observation, if scientists can raise the funds.",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "27774c35107f4df8",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQTV9YTmJsWmFKajBmb1VHRllRTDVOSVF4TzBrUjEwNmhHUDRhbFZ1ZElCeVNDOGJZVklmamIwVE5pWkNQT05JRGRla09qNWgwMkN4MnUzUHFoUEt2N2JPVTAxQlAzQ2dGeWk4Wk1ZeDY5dXVjU3pCWGhjOFRKanZDWTFEWDNGZGgwWDhGS0p0QzdFUU5aU3JaNDQtVkhxZFVHNEx4YWNLZENvY0pNbU9JbTUya3RMNTVGc1hGeWZ2NUlwOVAwVUpCNVBaZnY1NHNBRm9Ga1FqTHRXQkNheWRlWUY0anpaODV1clc1d0toNndzZw?oc=5",
-      "title": "NASA's SpaceX Crew-13 astronauts arrive in Florida ahead of launch to ISS - Florida Today",
-      "published_at": "2026-09-26T19:27:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi8gFBVV95cUxQTV9YTmJsWmFKajBmb1VHRllRTDVOSVF4TzBrUjEwNmhHUDRhbFZ1ZElCeVNDOGJZVklmamIwVE5pWkNQT05JRGRla09qNWgwMkN4MnUzUHFoUEt2N2JPVTAxQlAzQ2dGeWk4Wk1ZeDY5dXVjU3pCWGhjOFRKanZDWTFEWDNGZGgwWDhGS0p0QzdFUU5aU3JaNDQtVkhxZFVHNEx4YWNLZENvY0pNbU9JbTUya3RMNTVGc1hGeWZ2NUlwOVAwVUpCNVBaZnY1NHNBRm9Ga1FqTHRXQkNheWRlWUY0anpaODV1clc1d0toNndzZw?oc=5\" target=\"_blank\">NASA's SpaceX Crew-13 astronauts arrive in Florida ahead of launch to ISS</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Florida Today</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "7996fafe62a13167",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1aTGVVUGZmV29uVFBhZ3FXZzF6dWNDUGlMS2VxZjV4eVBwcHB2Ny1iMnBUakkzU3A5MV94SzVHOHFoR2Y5bXBBb0h3WWtwVEI0WHJYS0FQczVaU1dvaEltMHFJRm55bFdNTjVzdw?oc=5",
-      "title": "Cathie Wood Brings $1.3 Billion Fund Holding SpaceX and OpenAI Onchain - BeInCrypto",
-      "published_at": "2026-09-26T19:27:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMibEFVX3lxTE1aTGVVUGZmV29uVFBhZ3FXZzF6dWNDUGlMS2VxZjV4eVBwcHB2Ny1iMnBUakkzU3A5MV94SzVHOHFoR2Y5bXBBb0h3WWtwVEI0WHJYS0FQczVaU1dvaEltMHFJRm55bFdNTjVzdw?oc=5\" target=\"_blank\">Cathie Wood Brings $1.3 Billion Fund Holding SpaceX and OpenAI Onchain</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BeInCrypto</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "a44f5bd280e79ef5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQaDExTW41dkRhZFNJT0JIT2NicWRqN0dqM3ZBSnpyT295Q3FvSHBLbUFYeWlwdUpsQ3lzd2Z1RGNCTnZ1TWVTOVFHYTh2Q09RU2ZJMG0wNzN4TWhyVlZaX0FFOXVUVkxRbk9zNTZVOVRlRXJjeEhzdGJaODNTb2NWNFlaVzRxbXVNRG5OTHpqaUhKREhFWEJvNDFR?oc=5",
-      "title": "NASA’s SpaceX Crew-13 Lands at NASA Kennedy - nasa.gov",
-      "published_at": "2026-09-26T19:24:54.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxQaDExTW41dkRhZFNJT0JIT2NicWRqN0dqM3ZBSnpyT295Q3FvSHBLbUFYeWlwdUpsQ3lzd2Z1RGNCTnZ1TWVTOVFHYTh2Q09RU2ZJMG0wNzN4TWhyVlZaX0FFOXVUVkxRbk9zNTZVOVRlRXJjeEhzdGJaODNTb2NWNFlaVzRxbXVNRG5OTHpqaUhKREhFWEJvNDFR?oc=5\" target=\"_blank\">NASA’s SpaceX Crew-13 Lands at NASA Kennedy</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">nasa.gov</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "244ecfe3fb8d95ab",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOekt3SzhDUkZHc3h0X0lVa2xJSGp1b05FbkN6WEFZdU40Q3JzRFJCR2lydnl2VU1XcG5VLVJNdF9Zc1kweVN1SnhhVmRwYWtUcGdTcHMyUzEyY1YtUWV5Nkl5LTdtYllOVWp0TjQ3ZFhTVEhXWElNekYtZkM2SS0xeGZGNXItZ045RUw2WDNPNlp6Y2VoZEVEZWtzdEIzZ1FTVUZJ?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T19:20:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxOekt3SzhDUkZHc3h0X0lVa2xJSGp1b05FbkN6WEFZdU40Q3JzRFJCR2lydnl2VU1XcG5VLVJNdF9Zc1kweVN1SnhhVmRwYWtUcGdTcHMyUzEyY1YtUWV5Nkl5LTdtYllOVWp0TjQ3ZFhTVEhXWElNekYtZkM2SS0xeGZGNXItZ045RUw2WDNPNlp6Y2VoZEVEZWtzdEIzZ1FTVUZJ?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "31d78257cfa9ffce",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOZFUyeTl6Nm1DMTlpeXZjMmxaWTZTRjYtc3dYMV94Nkt6cFViN2RFRXc2aGtsQVBzMl90QkhfVDdIWW1lVnp1b1hLMHhObnI3aTdhNEJtRk5DNW5Yc2cxbU1nVVE4eDcwV2NjUnI4dkNwejItZk1GMlAtT1JTSU1hNW52ZEl6TURZemRaaXVzNlYzbm5ZcVNEdDhaQmxmWFhSMXZ3?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T19:20:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxOZFUyeTl6Nm1DMTlpeXZjMmxaWTZTRjYtc3dYMV94Nkt6cFViN2RFRXc2aGtsQVBzMl90QkhfVDdIWW1lVnp1b1hLMHhObnI3aTdhNEJtRk5DNW5Yc2cxbU1nVVE4eDcwV2NjUnI4dkNwejItZk1GMlAtT1JTSU1hNW52ZEl6TURZemRaaXVzNlYzbm5ZcVNEdDhaQmxmWFhSMXZ3?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "e75925388e1a3568",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONmhTX0pxMVpuQUdPYmpWVDNlUlRXLTY3NXhDLU82VW5KaVFWR2VGb1ZCVjBnRktTS1VFZ21HZXNQcVRtQWQ4Q1paejlTZ1F0RUt3N2NEd1NPMHBrLWd4eTdGRGZXYXZDSHI1TXkwak5FQWYwWkJRSi1LUDVWNmExSVhTTVdMb3ROdUJieWo1SXdCbkUwRU5NRXVCUUdMVmhGUmtr?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T19:20:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxONmhTX0pxMVpuQUdPYmpWVDNlUlRXLTY3NXhDLU82VW5KaVFWR2VGb1ZCVjBnRktTS1VFZ21HZXNQcVRtQWQ4Q1paejlTZ1F0RUt3N2NEd1NPMHBrLWd4eTdGRGZXYXZDSHI1TXkwak5FQWYwWkJRSi1LUDVWNmExSVhTTVdMb3ROdUJieWo1SXdCbkUwRU5NRXVCUUdMVmhGUmtr?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "fb33c3e7347d2f17",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNbXZsNzZ1S1pZV1FLdUtZUzBHeFF1aUpxVDZwdzZfZm9sM0tibnI1NEpMZzQ4XzNEN2FudVNVTkprQzVuZmcyWVZ3SzlZaHBoYldTdlVrZl93aUVXcEZZaUVqSHVlVWRqMTBWOV9HNmlNbkVtQjY4Z0t3Mm5KbUhxSGJuRWFZNTdMU3dmdTI4c2U2d01NYjVZMnNpeFM?oc=5",
-      "title": "SpaceX Crew Launch - The Herald Journal",
-      "published_at": "2026-09-26T19:20:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxNbXZsNzZ1S1pZV1FLdUtZUzBHeFF1aUpxVDZwdzZfZm9sM0tibnI1NEpMZzQ4XzNEN2FudVNVTkprQzVuZmcyWVZ3SzlZaHBoYldTdlVrZl93aUVXcEZZaUVqSHVlVWRqMTBWOV9HNmlNbkVtQjY4Z0t3Mm5KbUhxSGJuRWFZNTdMU3dmdTI4c2U2d01NYjVZMnNpeFM?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Herald Journal</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "db50963fdc626593",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/abc-news.bsky.social/post/3mwgyxroust25",
-      "title": "@abc-news.bsky.social on Bluesky",
-      "published_at": "2026-09-26T19:20:58.062Z",
-      "raw_excerpt": "Scientists develop tech to measure eucalypt flammability from space: https://www.abc.net.au/news/2026-09-27/ozfuel-satellite-eucalypt-flammability-anu/107181430",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "625d8a8ab1c68157",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/aussienews.bsky.social/post/3mwgyxjy44i2j",
-      "title": "@aussienews.bsky.social on Bluesky",
-      "published_at": "2026-09-26T19:20:49.766Z",
-      "raw_excerpt": "Homegrown technology to monitor the flammability of eucalypt forests could be Australia's first satellite mission for Earth observation, if scientists can raise the funds. #scientific #research #satellites #bushfires #agriculture",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "13f7e17e5b44a061",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQaVVjTEZJd1JEeHZ5UlpvRjFPWjVfM0dqcnJkV1EwNERJenQ1SUk2Ti1LMW53Tk96UVVvZVNkRDZnUm5DT0NPRVpqQ3dzTmM0dERSaDRpU2ZEYk81WVZpbjhycmdPd0ZlU3M0cWJVMkdrdnZnWUV0ckNiRmVkQTYyaExya3Z6VnVqTlNqV0pHUHpURFFoNzA0NF9EMTJ4YVgtYzFzLUlCUVlXbUU?oc=5",
-      "title": "SpaceX Crew Launch - Times Argus",
-      "published_at": "2026-09-26T19:19:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxQaVVjTEZJd1JEeHZ5UlpvRjFPWjVfM0dqcnJkV1EwNERJenQ1SUk2Ti1LMW53Tk96UVVvZVNkRDZnUm5DT0NPRVpqQ3dzTmM0dERSaDRpU2ZEYk81WVZpbjhycmdPd0ZlU3M0cWJVMkdrdnZnWUV0ckNiRmVkQTYyaExya3Z6VnVqTlNqV0pHUHpURFFoNzA0NF9EMTJ4YVgtYzFzLUlCUVlXbUU?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Times Argus</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "5fb05cd310fdb7cd",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/news.abc.net.au/post/3mwgyuayzuf2f",
-      "title": "@news.abc.net.au on Bluesky",
-      "published_at": "2026-09-26T19:18:59.866Z",
-      "raw_excerpt": "Australian scientists develop world-first satellite technology to measure eucalypt flammability",
-      "fetched_at": "2026-09-28T05:15:50.427Z",
-      "consumed": true
-    },
-    {
-      "id": "b22bf5fe203eefa4",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPZU5ob3p3NUZ6bjcxVkhWTW9wVTNqc2U1X0ZnZnREaWhmZ1NwaGxyM1Y2eTNCTVdrdEluSFdLSm9fZTR6TVoyZUF6eFU0b05hOGI4N1VXaEJINFprSXUyUTEtODhuVlAycEJyZTlJQ2N0My1yeHA4YS1TSU9qc2FTM1lpRHo2NUJmcUo1R1BaMVFhWW83U1dNWW81cTFCQk1zUzdaQ2VFOUN3eGYxbWc?oc=5",
-      "title": "SpaceX Crew Launch - postregister.com",
-      "published_at": "2026-09-26T19:08:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxPZU5ob3p3NUZ6bjcxVkhWTW9wVTNqc2U1X0ZnZnREaWhmZ1NwaGxyM1Y2eTNCTVdrdEluSFdLSm9fZTR6TVoyZUF6eFU0b05hOGI4N1VXaEJINFprSXUyUTEtODhuVlAycEJyZTlJQ2N0My1yeHA4YS1TSU9qc2FTM1lpRHo2NUJmcUo1R1BaMVFhWW83U1dNWW81cTFCQk1zUzdaQ2VFOUN3eGYxbWc?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">postregister.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "ca17dd5ee192779e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPSU05Y3o2RGJhUEdXOU1pOGwzNjlHV0dyOFQ2MUZYbU5GNG0zVDg1aFNuUFJfS0xYSUltMHFGcTBWc2lhTXFLMVBlX3VnQnY0MW5uaDdPSnZHYmdrcDl4Znp5bGVJVUF4WW5aaGxyejJJdnRJR1p5Rkh1Q19JbXFncFQtaDZSWldIVTBvVTdJQm5LY0xtaklpNm9SR3lTdGFFdEEyUjJTZnl5dFVScXc?oc=5",
-      "title": "SpaceX Crew Launch - postregister.com",
-      "published_at": "2026-09-26T19:08:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxPSU05Y3o2RGJhUEdXOU1pOGwzNjlHV0dyOFQ2MUZYbU5GNG0zVDg1aFNuUFJfS0xYSUltMHFGcTBWc2lhTXFLMVBlX3VnQnY0MW5uaDdPSnZHYmdrcDl4Znp5bGVJVUF4WW5aaGxyejJJdnRJR1p5Rkh1Q19JbXFncFQtaDZSWldIVTBvVTdJQm5LY0xtaklpNm9SR3lTdGFFdEEyUjJTZnl5dFVScXc?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">postregister.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "5633e17e57a8e07b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOWnJvZ04yUVNQR3JIRWh5N2xUdTdMWDQxZU9SX3E5NnZkR3NuSDNLc2dBd290cWtIemtpVHV6VGtNWHFoYlRQdDhpRGNUMUxSOGxQbG5WT0c3NGRId3ZYejh6VTR6RUtJRlpGSGlYbXV2ZU8xMzJod1puX1VjaU0zWkNMRnAyVXZRczM3aHVKSXgta0RqWjJKdGtrRQ?oc=5",
-      "title": "The SpaceX Site Is Currently a No-Fly Zone Ahead of the Tesla Roadster's Launch - autos.yahoo.com",
-      "published_at": "2026-09-26T19:00:05.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxOWnJvZ04yUVNQR3JIRWh5N2xUdTdMWDQxZU9SX3E5NnZkR3NuSDNLc2dBd290cWtIemtpVHV6VGtNWHFoYlRQdDhpRGNUMUxSOGxQbG5WT0c3NGRId3ZYejh6VTR6RUtJRlpGSGlYbXV2ZU8xMzJod1puX1VjaU0zWkNMRnAyVXZRczM3aHVKSXgta0RqWjJKdGtrRQ?oc=5\" target=\"_blank\">The SpaceX Site Is Currently a No-Fly Zone Ahead of the Tesla Roadster's Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">autos.yahoo.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "feb771ed27a62536",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNRkhXNTh0dVBFM0JNTDhobVJJYlNiUjVKaFJmYmNhLVZsNGpHSWZONDRrRlZLN1NLMzlyVlZKNkcwUDJYcjdfZnZ2VTI0UEZ2NnU1OVBSZXRTek4zVWExTms1OEtmVmc0Z3RaSTJSNkZOUnk5RVpqSkxDeGVPWV9wcV9hVE9OOEdxZVE1V3Fnd3lHM3hrRXE5Tkp3US1ueUxkUmZOR3V0WnZSQUU?oc=5",
-      "title": "SpaceX Crew Launch - Times Argus",
-      "published_at": "2026-09-26T18:59:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxNRkhXNTh0dVBFM0JNTDhobVJJYlNiUjVKaFJmYmNhLVZsNGpHSWZONDRrRlZLN1NLMzlyVlZKNkcwUDJYcjdfZnZ2VTI0UEZ2NnU1OVBSZXRTek4zVWExTms1OEtmVmc0Z3RaSTJSNkZOUnk5RVpqSkxDeGVPWV9wcV9hVE9OOEdxZVE1V3Fnd3lHM3hrRXE5Tkp3US1ueUxkUmZOR3V0WnZSQUU?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Times Argus</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "b97cf46f3237beef",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPcFkwUXdkOWRUX2p5aG9JY3YydU4yOVJXeE9xWjU3bVZiY2xnUC1rSlFuUFdKeFBJSktEQ2lyNGZxR28xWFVDQWZHbzBWZS0wTGE4VWlLbGMtelhQcHY2U0ZGSl9mMVpBZFNFU1lZQlMwUkZRckpETDBjNTdXcmowLTA4T3lVVUF1MnU5cDlYa1RMenZnZEtKU0gwSDE?oc=5",
-      "title": "SpaceX Crew Launch - The Herald Journal",
-      "published_at": "2026-09-26T18:55:37.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxPcFkwUXdkOWRUX2p5aG9JY3YydU4yOVJXeE9xWjU3bVZiY2xnUC1rSlFuUFdKeFBJSktEQ2lyNGZxR28xWFVDQWZHbzBWZS0wTGE4VWlLbGMtelhQcHY2U0ZGSl9mMVpBZFNFU1lZQlMwUkZRckpETDBjNTdXcmowLTA4T3lVVUF1MnU5cDlYa1RMenZnZEtKU0gwSDE?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Herald Journal</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "385a12b70970b78b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQbEc1dGhXT3ViQXA1TnlDTkdfM3IxUGZ6UHRIcjNfb2VYS1hXVTZqSWtDY0djT0gwYnJueE5OZHRGQ3Y5X2xfTXlLWF9aQXJNeFAtZ3lIQnVSeFlKbTlNM2hiaWJnc1B3TTRaOTFpUWZmalF6d281TDJDQUlZeGtJUHlMRjZiV0xOaHBtNWdHWTlUb282UXFLSTRnTnhJYWdjcFVNMlNlRU1DYVp0UnBvUnVR?oc=5",
-      "title": "SpaceX Crew Launch - GazetteXtra",
-      "published_at": "2026-09-26T18:51:29.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxQbEc1dGhXT3ViQXA1TnlDTkdfM3IxUGZ6UHRIcjNfb2VYS1hXVTZqSWtDY0djT0gwYnJueE5OZHRGQ3Y5X2xfTXlLWF9aQXJNeFAtZ3lIQnVSeFlKbTlNM2hiaWJnc1B3TTRaOTFpUWZmalF6d281TDJDQUlZeGtJUHlMRjZiV0xOaHBtNWdHWTlUb282UXFLSTRnTnhJYWdjcFVNMlNlRU1DYVp0UnBvUnVR?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">GazetteXtra</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "980bd352ff0efe40",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQWDJpX0hfZy1TeUlha1YyLU5zbnVJNjhNdm5sbkczb0dlR29QcWNuQzQzSkxsNlFkbTU1M3V3NU01LWNtZjFRM2J6M0NCdWpVRmJ5RXhOU196RGdBSm9WVDFud0dnS2duQllQUFpwTVdhS1N0OTdILWFtYkkwZzM0MUJsQjZXTUhnX2ZMVnJSREFjVEx4dDBlRVUxOHVJMDlBNmfSAacBQVVfeXFMUGF2U2UwNGRUZURyejZCUVNGQjBEVjREX21GS3JTd3EwV0xqQzJ5TEgzYW1WbndjVXZ3UUJncTlZVnZLWHVUV193SF8wQ3AtRHN5U1ZILU1mbW05V09oWVlkYWlwUFZCOU1DaVF6WWlfQlQzODdoU181bHpydndpZmR3M1huOFQzd1BGcWc3TmVaV3NwYzM0cWJ0dFFTZkhDdFpYRUNrSkk?oc=5",
-      "title": "SpaceX launches mysterious U.S. Space Force mission from California - ktla.com",
-      "published_at": "2026-09-26T18:49:16.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxQWDJpX0hfZy1TeUlha1YyLU5zbnVJNjhNdm5sbkczb0dlR29QcWNuQzQzSkxsNlFkbTU1M3V3NU01LWNtZjFRM2J6M0NCdWpVRmJ5RXhOU196RGdBSm9WVDFud0dnS2duQllQUFpwTVdhS1N0OTdILWFtYkkwZzM0MUJsQjZXTUhnX2ZMVnJSREFjVEx4dDBlRVUxOHVJMDlBNmfSAacBQVVfeXFMUGF2U2UwNGRUZURyejZCUVNGQjBEVjREX21GS3JTd3EwV0xqQzJ5TEgzYW1WbndjVXZ3UUJncTlZVnZLWHVUV193SF8wQ3AtRHN5U1ZILU1mbW05V09oWVlkYWlwUFZCOU1DaVF6WWlfQlQzODdoU181bHpydndpZmR3M1huOFQzd1BGcWc3TmVaV3NwYzM0cWJ0dFFTZkhDdFpYRUNrSkk?oc=5\" target=\"_blank\">SpaceX launches mysterious U.S. Space Force mission from California</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ktla.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "178beabc13a26e67",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxONTkzS2RJbGw3Ym1zdmNSMmxIMk9NUzg2LUN6cmFJZDJHZk1uRmZlbEZPMU5QanM3Z2Y0cXNEVkJTcXZ1NlFOaS1JazMxNjVqWV9GNGhrSG1lTDRwVW9wd0xuQzlLS0pFdnM0V2l5NnlUTVFjM3J0ZXBwOEwxM0JrQVdWeHhHRHZFQ1FyMGFfSDkxNk5nZ0NFdmNzZUd3Tnc4cEVXVWtxQjYwTkVzb1E?oc=5",
-      "title": "SpaceX Crew Launch - postregister.com",
-      "published_at": "2026-09-26T18:44:35.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxONTkzS2RJbGw3Ym1zdmNSMmxIMk9NUzg2LUN6cmFJZDJHZk1uRmZlbEZPMU5QanM3Z2Y0cXNEVkJTcXZ1NlFOaS1JazMxNjVqWV9GNGhrSG1lTDRwVW9wd0xuQzlLS0pFdnM0V2l5NnlUTVFjM3J0ZXBwOEwxM0JrQVdWeHhHRHZFQ1FyMGFfSDkxNk5nZ0NFdmNzZUd3Tnc4cEVXVWtxQjYwTkVzb1E?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">postregister.com</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "6a1ccbf9f01e459c",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNLWU5MVFfcGh4UHhRSEtaRi16ekhRTDRBTUxnUDNLNEJOSVV3dFhrVlR2TXcxT21MM3dzR2xlejZQT2hsOW5DYU5yZ3pFT05PSUJRUVNNUUx0NU5ZQl9fWDNtYm1WRFpGLWdUYU1rTzZEMFZKNjlUTnd0cWhDOXk2cDdFY1JvUHJpSHBhT1dWTFMtSEYxMWFyam9rc3NBcG9hNVQtaUk4QU9xbFN5dUVSLXVn?oc=5",
-      "title": "SpaceX Crew Launch - chronicleonline.com",
-      "published_at": "2026-09-26T18:44:35.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxNLWU5MVFfcGh4UHhRSEtaRi16ekhRTDRBTUxnUDNLNEJOSVV3dFhrVlR2TXcxT21MM3dzR2xlejZQT2hsOW5DYU5yZ3pFT05PSUJRUVNNUUx0NU5ZQl9fWDNtYm1WRFpGLWdUYU1rTzZEMFZKNjlUTnd0cWhDOXk2cDdFY1JvUHJpSHBhT1dWTFMtSEYxMWFyam9rc3NBcG9hNVQtaUk4QU9xbFN5dUVSLXVn?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">chronicleonline.com</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "d94bd74660fe6a8c",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQQ195Tm5qNG1WbjR0c0JSaWVYanU1NlNaYkVwUmZ5UzIwX2dyd2dGdk5jUlVfSjF4bnExNFQ5YVVPUEpYSFdWNm5LVVJPLV9zV1pOOUpIbDRENUllS192Z1RZa2ZnUVpKOTIzRU94akVFWkxDUmlyQWE0dGZmMDJiR09PNS1aN1E3RURUQjVKcVNFR2NiTDY4UUhwcjZZcnlfMFpF?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T18:44:35.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxQQ195Tm5qNG1WbjR0c0JSaWVYanU1NlNaYkVwUmZ5UzIwX2dyd2dGdk5jUlVfSjF4bnExNFQ5YVVPUEpYSFdWNm5LVVJPLV9zV1pOOUpIbDRENUllS192Z1RZa2ZnUVpKOTIzRU94akVFWkxDUmlyQWE0dGZmMDJiR09PNS1aN1E3RURUQjVKcVNFR2NiTDY4UUhwcjZZcnlfMFpF?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "09bc60cce0fcf522",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPZWdUZ2NKaldtT0pDaVNTU055X3RhS0NwN2hLa1RnU2YzcS00Y2dIc1BxanV5Vkw0blpwb1lBYkVram1CQUJHc0hMUnNkWWs2X0g0cnZ0R0RhRXA3c3AzcTNPNEd3RWcxdjJjX3BaeTNqakRfV3p3V3dBOTFISGFoMEZvejJlYkRIRUlqOWpra0d6MkxfYTJZQU9QYklmNTVQREZVM3NNdU5yN25Ic2RIVzNB?oc=5",
-      "title": "SpaceX Crew Launch - chronicleonline.com",
-      "published_at": "2026-09-26T18:44:11.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxPZWdUZ2NKaldtT0pDaVNTU055X3RhS0NwN2hLa1RnU2YzcS00Y2dIc1BxanV5Vkw0blpwb1lBYkVram1CQUJHc0hMUnNkWWs2X0g0cnZ0R0RhRXA3c3AzcTNPNEd3RWcxdjJjX3BaeTNqakRfV3p3V3dBOTFISGFoMEZvejJlYkRIRUlqOWpra0d6MkxfYTJZQU9QYklmNTVQREZVM3NNdU5yN25Ic2RIVzNB?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">chronicleonline.com</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "1eea7738915d10f9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUXl4VWlWRDFwVzdfbVUyQmxLcWV2NWNBWTFpSWxFMTBvVEMybjM0bjE5TEhYQ2FuaVpqTzc0Qm4tSDRaMVRHaHMxb2QwRWZzWnZxSE9sMng5aExMdjMzUEhWYkhFTm9FY3BwUUU2R3BVMG53TlYydDVEeXY1clJMUUxkQXdXWXYwSVg2UEV0NUhYdklnSTd1QmRVYUpTYkk1YTAyTkVuNWh1bmp6WHhWWVV3?oc=5",
-      "title": "SpaceX Crew Launch - chronicleonline.com",
-      "published_at": "2026-09-26T18:44:11.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxPUXl4VWlWRDFwVzdfbVUyQmxLcWV2NWNBWTFpSWxFMTBvVEMybjM0bjE5TEhYQ2FuaVpqTzc0Qm4tSDRaMVRHaHMxb2QwRWZzWnZxSE9sMng5aExMdjMzUEhWYkhFTm9FY3BwUUU2R3BVMG53TlYydDVEeXY1clJMUUxkQXdXWXYwSVg2UEV0NUhYdklnSTd1QmRVYUpTYkk1YTAyTkVuNWh1bmp6WHhWWVV3?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">chronicleonline.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "d20255101ee9ed7d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOUUwtQTVoSHAyRHp2TG84R2t5a1BnZHUzQTlTQzhrNGNmaElaSEl6ZmJjTVU0WjA3WWxRNVJmU0R6YjFteUp4cTZURjFKZVdzckMzRVphNk54TjJrcHd3RlRDZFFqcXdFMWVDaHdDVmwwcllmSWRmemJYd080WGhBRURoVndjQXo2dzJtRnVoTHd6X1FuWHJjRXpfQnEwUDQ5ckdYUDhYSWFMRDJYMEE?oc=5",
-      "title": "SpaceX Crew Launch - postregister.com",
-      "published_at": "2026-09-26T18:44:11.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxOUUwtQTVoSHAyRHp2TG84R2t5a1BnZHUzQTlTQzhrNGNmaElaSEl6ZmJjTVU0WjA3WWxRNVJmU0R6YjFteUp4cTZURjFKZVdzckMzRVphNk54TjJrcHd3RlRDZFFqcXdFMWVDaHdDVmwwcllmSWRmemJYd080WGhBRURoVndjQXo2dzJtRnVoTHd6X1FuWHJjRXpfQnEwUDQ5ckdYUDhYSWFMRDJYMEE?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">postregister.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "60051feca12deab7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQYUNOZmVjQWxUV0RmQzRVZUZEcUp4dG1NR2E4RGUzeUVrXzdHMEs4V0VCeEpDckw0c2ZQVjdYU1k1RFNpSEdxaExkN3dxM0Rmd0pNVnhsTG84a3VRY3d6ZWJxNE40QXlKcGYzYWd1SGx5RFRtLWRwWWZXYlJUWFRsOWlMZ3RYY1czYVd4SUR1dGRIMnN2aVhsRW5yLXBxbjV0NVMw?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T18:35:51.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxQYUNOZmVjQWxUV0RmQzRVZUZEcUp4dG1NR2E4RGUzeUVrXzdHMEs4V0VCeEpDckw0c2ZQVjdYU1k1RFNpSEdxaExkN3dxM0Rmd0pNVnhsTG84a3VRY3d6ZWJxNE40QXlKcGYzYWd1SGx5RFRtLWRwWWZXYlJUWFRsOWlMZ3RYY1czYVd4SUR1dGRIMnN2aVhsRW5yLXBxbjV0NVMw?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "9557b5a1a51d266e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSkh6d3FfdEJBaVdESnY2NUFkcktBRkZjVG1PR191a3BEZ29KcnJubXh2b2JSYlRWY1RwS1lTb1ZxTlRPeWZiT0U4bXljODhKRERaM215SVdYX29CUHN3U0s2dE1iYzBTWlVpbGxhdEZXUk5peEdkdjNiS1BsQmptV2lzUThsVlROZk1qXzM0U2J6YXZRaldrRkFJUldpUmRhbjFPQVF3c0ZXMG11STk2S3Jn?oc=5",
-      "title": "SpaceX Crew Launch - chronicleonline.com",
-      "published_at": "2026-09-26T18:35:51.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxQSkh6d3FfdEJBaVdESnY2NUFkcktBRkZjVG1PR191a3BEZ29KcnJubXh2b2JSYlRWY1RwS1lTb1ZxTlRPeWZiT0U4bXljODhKRERaM215SVdYX29CUHN3U0s2dE1iYzBTWlVpbGxhdEZXUk5peEdkdjNiS1BsQmptV2lzUThsVlROZk1qXzM0U2J6YXZRaldrRkFJUldpUmRhbjFPQVF3c0ZXMG11STk2S3Jn?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">chronicleonline.com</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "9c833ebe4d9c243e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPTVk0NW1OV0E3Z0g5VDdtWVlFYnBhLTdOaTAzRzJIbnpWZ08yOEF2SU1yS09raFVuQ1Q1aE5ab2ZrUjd5VlcydkxfTnplVWY4ZTNzWGRSaWdwMFkzU3N0MldXMEFpeWFNLWVPM09FREJZZTlDTXRoMU9jMUw5VUV1NVVVYlktNDFHQ2JtSlRwQm5vVXNLbXlFRnVMZEREcUw1bERnenFUUEtNeDV6SHFPdXdB?oc=5",
-      "title": "SpaceX Crew Launch - GazetteXtra",
-      "published_at": "2026-09-26T18:28:52.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxPTVk0NW1OV0E3Z0g5VDdtWVlFYnBhLTdOaTAzRzJIbnpWZ08yOEF2SU1yS09raFVuQ1Q1aE5ab2ZrUjd5VlcydkxfTnplVWY4ZTNzWGRSaWdwMFkzU3N0MldXMEFpeWFNLWVPM09FREJZZTlDTXRoMU9jMUw5VUV1NVVVYlktNDFHQ2JtSlRwQm5vVXNLbXlFRnVMZEREcUw1bERnenFUUEtNeDV6SHFPdXdB?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">GazetteXtra</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "f8098c25a65c9f80",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOcXo1QUF3VFJXdEJjUmx5MWF6Qnl1a2h5UVdSUXpFdGZnSjlWcXl5MHROUkk0aV8yYlIwOUJPbWRkcUpobVZfU0hOWHEwQ19zYjhudDdtWGxTMDV0Vm5RSXFxTWpYd01IamJ5UUptVnIwWFBzOUU3d0tUVXJrV0xTRy1uWVFBN1dwNnB5azNkQlhfY3hGWGZMVGV6UDViWWFTZ2tV?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T18:28:52.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxOcXo1QUF3VFJXdEJjUmx5MWF6Qnl1a2h5UVdSUXpFdGZnSjlWcXl5MHROUkk0aV8yYlIwOUJPbWRkcUpobVZfU0hOWHEwQ19zYjhudDdtWGxTMDV0Vm5RSXFxTWpYd01IamJ5UUptVnIwWFBzOUU3d0tUVXJrV0xTRy1uWVFBN1dwNnB5azNkQlhfY3hGWGZMVGV6UDViWWFTZ2tV?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "643a84b82fc77cc2",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdkc5WVdTLUcwZEpXM25TS1B2WV9lUDNLZUFNSTBtZnR3NDlKemo0c2pKYTJweWFSUkIzTGlBTlJYeXp4UEEtTjNLODBjNjM0bGQzQ05Mc0lOUkx3WjU0cWZ6Qm9xa2NEcW1Bc0l2c185Z29fX0tfQ1FOS0dab1I0MU10ZXhZcVBCRkJ0OU9SUEJuYmV3VWMzUWtiX0dJN1ZYQVUzOUlTYjVRWkk?oc=5",
-      "title": "SpaceX Crew Launch - Times Argus",
-      "published_at": "2026-09-26T18:19:22.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqwFBVV95cUxOdkc5WVdTLUcwZEpXM25TS1B2WV9lUDNLZUFNSTBtZnR3NDlKemo0c2pKYTJweWFSUkIzTGlBTlJYeXp4UEEtTjNLODBjNjM0bGQzQ05Mc0lOUkx3WjU0cWZ6Qm9xa2NEcW1Bc0l2c185Z29fX0tfQ1FOS0dab1I0MU10ZXhZcVBCRkJ0OU9SUEJuYmV3VWMzUWtiX0dJN1ZYQVUzOUlTYjVRWkk?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Times Argus</font>",
-      "fetched_at": "2026-09-27T12:28:35.765Z",
-      "consumed": true
-    },
-    {
-      "id": "f2df7cbf1ad8a911",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5PRlEtWTBaTGNpanFtdWhVT2VGaFB0cEFoelNLeThSTGFLUEFBa3cwa0JETTNBVER6cFFGUTVzejh3aGlkSTJrZUVVS2VhZEZCbEp1REJYUEs4NXFmY1ROdk1lMEl3RmlSMFBPVmdFT0Q4bjJKVFE?oc=5",
-      "title": "SpaceX Analysts Split Between $800 Bull Target and $75 Bear Case as Stock Trades Near $149 - finance.biggo.com",
-      "published_at": "2026-09-26T18:15:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMidkFVX3lxTE5PRlEtWTBaTGNpanFtdWhVT2VGaFB0cEFoelNLeThSTGFLUEFBa3cwa0JETTNBVER6cFFGUTVzejh3aGlkSTJrZUVVS2VhZEZCbEp1REJYUEs4NXFmY1ROdk1lMEl3RmlSMFBPVmdFT0Q4bjJKVFE?oc=5\" target=\"_blank\">SpaceX Analysts Split Between $800 Bull Target and $75 Bear Case as Stock Trades Near $149</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">finance.biggo.com</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "93b721b6c13cae5f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOUVpFTW5wQ1ZpV2xzU0hiVEJhaVhuV2dEOVoxVDZ5MEVWejZmd1VzWG9rNmJBb3JkN1dYQ3lJRUJMS2xMVG1sSFhOLVRPbjlja1E5UUtHWXlLb29mLTVZS3F2M2pHZ2Rpd3RwV05hcGNMRGhlOEx5dGdtSExJNDJxOWo2WXFBVkZXQlZTQWpXU3B0VmZoZzBnTDhvUk5QQTdS?oc=5",
-      "title": "SpaceX completes launch rehearsal for Starship Flight 14 - Mjengo Hub",
-      "published_at": "2026-09-26T18:03:33.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOUVpFTW5wQ1ZpV2xzU0hiVEJhaVhuV2dEOVoxVDZ5MEVWejZmd1VzWG9rNmJBb3JkN1dYQ3lJRUJMS2xMVG1sSFhOLVRPbjlja1E5UUtHWXlLb29mLTVZS3F2M2pHZ2Rpd3RwV05hcGNMRGhlOEx5dGdtSExJNDJxOWo2WXFBVkZXQlZTQWpXU3B0VmZoZzBnTDhvUk5QQTdS?oc=5\" target=\"_blank\">SpaceX completes launch rehearsal for Starship Flight 14</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Mjengo Hub</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "4d4d56f6656ecd03",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNRnN0R3JGZVY1UmtlaFgwblhZUV94OEVWYXVUUnN3SUNnVVpteVEwQW5FU2hUM3NsdjZORUNzQlhZcVZmWlNuMUFXRU1UWU9fTDhYX2xuV1dkN3dNNElpa0E5TkxFV3NsTXlzS1o2SXIxRXBoUEFnaFowT0hhVFFzYmw1WjR3U3Rxd0dRNmFoR0c2UkU3bmJrUVJfc1VwQkp4c3Z3amt0Q1NaelhNazA5Ug?oc=5",
-      "title": "SpaceX Crew Launch - Dayton Daily News",
-      "published_at": "2026-09-26T18:02:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisAFBVV95cUxNRnN0R3JGZVY1UmtlaFgwblhZUV94OEVWYXVUUnN3SUNnVVpteVEwQW5FU2hUM3NsdjZORUNzQlhZcVZmWlNuMUFXRU1UWU9fTDhYX2xuV1dkN3dNNElpa0E5TkxFV3NsTXlzS1o2SXIxRXBoUEFnaFowT0hhVFFzYmw1WjR3U3Rxd0dRNmFoR0c2UkU3bmJrUVJfc1VwQkp4c3Z3amt0Q1NaelhNazA5Ug?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Dayton Daily News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "64e2c5afe0828ce5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPb0M5Vk9fUG8zXzBWSFR0TlFFeWdQQ29SMWlPN2o1dFBQQlAyRGRVNzM0cVhqYWlMaXhDazB6WFFMamFxX2xVelNTQ0hoNEpubUdYUkVodzktSDdVeFE5a1ZmcFFwekZpcTlCUkhSZjhmMFRMTHd2akM2V1lhLVJLT0FtTFNRWXFjNTl1d0tKSEphVkd0eFdoRVFDX2hEVDVWOGVj?oc=5",
-      "title": "SpaceX Crew Launch - WV News",
-      "published_at": "2026-09-26T18:02:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxPb0M5Vk9fUG8zXzBWSFR0TlFFeWdQQ29SMWlPN2o1dFBQQlAyRGRVNzM0cVhqYWlMaXhDazB6WFFMamFxX2xVelNTQ0hoNEpubUdYUkVodzktSDdVeFE5a1ZmcFFwekZpcTlCUkhSZjhmMFRMTHd2akM2V1lhLVJLT0FtTFNRWXFjNTl1d0tKSEphVkd0eFdoRVFDX2hEVDVWOGVj?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
-      "consumed": true
-    },
-    {
-      "id": "ccc555cc8d70cce1",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPVTBLdF85MTlTMWYtc1VOT0ZqenBBcWpIZkpJSUpRbHBFa3VPMklEODdOSmVON1p5czJ6SlVLRnBMVmJleXBVdnJuVUJvSEVCRkp1bjlxREgtSFJLeFdZM0txSDVEZlBoU3ItSVJSaW9xMTh5al8wU3FSUW5Nc1Z5eDVTcnZVbDdWOWcxSWQ1YWZLNXdrNFEtdlpteFc?oc=5",
-      "title": "SpaceX Crew Launch - The Herald Journal",
-      "published_at": "2026-09-26T18:02:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxPVTBLdF85MTlTMWYtc1VOT0ZqenBBcWpIZkpJSUpRbHBFa3VPMklEODdOSmVON1p5czJ6SlVLRnBMVmJleXBVdnJuVUJvSEVCRkp1bjlxREgtSFJLeFdZM0txSDVEZlBoU3ItSVJSaW9xMTh5al8wU3FSUW5Nc1Z5eDVTcnZVbDdWOWcxSWQ1YWZLNXdrNFEtdlpteFc?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Herald Journal</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "eeb382264cade832",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOaWRwRzhSLV9yS3pVNmo3eGlmN19SMFJsR2FJajNPUU1oRnlMNDNFQm5manIzT2s4Mi1MekhkazZtN3hXZzFvNXAtdHZlN2xPcUlJRXhHZGh6NG5vYWZxVm9XRnBnQThBUFRtVkJwd3ZZdEk3LUxRU0dPVDNSZFF1N0ZwLU5HV0x6dFJQVkFuaUZyeGEwN2RCZzBTaVllZFM4OFZNYURJN1FDRXNRdC1meEdB?oc=5",
-      "title": "SpaceX Crew Launch - GazetteXtra",
-      "published_at": "2026-09-26T18:02:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMisgFBVV95cUxOaWRwRzhSLV9yS3pVNmo3eGlmN19SMFJsR2FJajNPUU1oRnlMNDNFQm5manIzT2s4Mi1MekhkazZtN3hXZzFvNXAtdHZlN2xPcUlJRXhHZGh6NG5vYWZxVm9XRnBnQThBUFRtVkJwd3ZZdEk3LUxRU0dPVDNSZFF1N0ZwLU5HV0x6dFJQVkFuaUZyeGEwN2RCZzBTaVllZFM4OFZNYURJN1FDRXNRdC1meEdB?oc=5\" target=\"_blank\">SpaceX Crew Launch</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">GazetteXtra</font>",
-      "fetched_at": "2026-09-27T05:15:48.416Z",
-      "consumed": true
-    },
-    {
-      "id": "2fe269eb01d0906b",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/future-society/data-center-operator-microsoft-new-jersey-generators-exhaust",
-      "title": "Data Center Operator Slapped With $1 Million Fine for Belching Noxious Gas Into Surrounding Community",
-      "published_at": "2026-09-26T18:02:00.000Z",
-      "raw_excerpt": "In the United States, fierce local opposition to new data center construction continues to dog developers hoping to cash in on the AI boom. Though grassroots organizers have threatened some $130 billion in data center investments, those efforts don’t always pan out, and it’s next to impossible to oust one of the facilities once they’ve taken root. But even after a data center goes online, the battle is far from over. Take the DataOne facility in southern New Jersey, for example, which was recently slapped with a $1 million fine by the New Jersey Department of Environmental Protection after inspectors uncovered illegally installed gas-powered generators belching smog into the surrounding neighborhood. That’s according to Gothamist , which reports that the data center in Vineland, New Jersey was found operating 62 gas generators without state approval, a scheme that’s becoming increasingly common as the energy-hungry facilities run up against the limits of what publicly-run power grids can provide. “This enforcement action — by far the largest ever taken against a data center in New Jersey and possibly one of the largest such actions in the nation — sends a clear message that these facilities will not be constructed or operated with impunity in this state,” NJDEP commissioner Ed Potosnak said in a statement. For locals, the enforcement action was a long time coming, following months of pressure on state and local politicians to provide more transparency and hold the developers accountable. “Residents in Vineland have been pointing out the bad behavior of this data center. So I’d be lying to say if I were surprised,” Vineland resident Matt Williams told Gothamist . The data center is currently in its early stages of development, having begun construction in early 2025 with funding from Microsoft. When it goes fully online, the $17 billion facility is expected to suck up 350 megawatts of power, making it, as the Sierra Club New Jersey put it , “one of the largest data c",
-      "fetched_at": "2026-09-26T21:35:44.542Z",
       "consumed": true
     }
   ]

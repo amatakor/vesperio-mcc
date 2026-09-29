@@ -93,181 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~11h47m gap, unfiltered full source list (2026-08-29)
-
-- 2026-08-29-A: A stock-move financial-blog headline ("Rocket Lab Falls 6% as
-  SpaceX Flags Iridium Deal to the FCC," 24/7 Wall St.) buried a genuine,
-  distinct regulatory development on the already-published June 29 Rocket
-  Lab/Iridium acquisition: SpaceX filed a letter with the FCC urging scrutiny
-  of Iridium's conduct (50+ petitions against rival satellite deployments)
-  during the merger's license-transfer review, tied to a real spectrum-sharing
-  dispute (Starlink gateways vs. Iridium in the 19.4-19.6/29.1-29.3 GHz bands).
-  MLex (paywalled but confirmed the core facts before cutting off) and a
-  Stocktwits/TradingView mirror (which alone carried Iridium's on-record
-  response quote) both independently corroborated 24/7 Wall St.'s reporting.
-  Drafted as a new item (not an update; ~2 months outside the dedup window)
-  cross-referenced only in prose per the 2026-08-25-G precedent, no unfetched
-  URL added to secondary_urls.
-- 2026-08-29-B: The same-company-plus-category dedup heuristic fired again on
-  a new SpaceX-adjacent item: the SpaceX/Iridium FCC-filing draft (category
-  `regulatory`) false-matched the Aug 24 Iran Starlink-crackdown item purely
-  on shared company (SpaceX/Starlink) + category + <7-day window, despite
-  being completely unrelated (a domestic terminal-seizure story vs. a
-  merger-review spectrum dispute). One `dedup_distinct` entry cleared it;
-  extends the standing SpaceX-volume false-positive pattern
-  (2026-08-03-H/2026-08-05-C and peers) to the `regulatory` category
-  specifically, not just `launch`/`procurement`.
-- 2026-08-29-C: Google News RSS redirects failed again on every attempt this
-  run (PCMag Viasat-interference and Chinese-rocket-debris headlines, a
-  247wallst/BPUB MyRGV.com redirect) -- WebFetch returned only a bare "Google
-  News" header each time, continuing the standing 2026-07-31-J/2026-08-21-G
-  pattern. WebSearch-by-headline recovered the Iridium/FCC story fully (see
-  2026-08-29-A) but could NOT independently confirm the PCMag Viasat-petition
-  or Chinese-rocket-debris headlines beyond generic background on long-running
-  SpaceX-Viasat EPFD disputes and the already-published June 15 Zhuque-2E
-  breakup; left both undrafted per the standing "only cite pages with
-  genuinely fetched content" rule rather than guess which specific claim the
-  unfetchable PCMag pieces were making.
-- 2026-08-29-D: A NASA press release that reads exactly like breaking news
-  from a routine discovery-pass query ("NASA Awards Spaceflight Operations,
-  Systems Organization Contract," $1.8B COSMOS award to ASCEND Aerospace &
-  Technology, appearing in a "commercial contract award this week" search)
-  traced via GovConWire and Space Coast Daily's own dateline
-  (spacecoastdaily.com/2025/08/...) to an August 29, **2025** award, exactly
-  one year stale. nasa.gov's own release page carries no visible publish date
-  in its rendered content, making this a new trap shape: a primary-source
-  government press page without an obvious date stamp needs its date
-  cross-checked via a secondary outlet's URL/dateline before treating a
-  search hit as fresh, not just Google News/publisher pages with visible
-  bylines.
-- 2026-08-29-E: The mandatory HTML-source pass and signals pass (12 of 17
-  fetchable channels checked, rotating out Vivienne Machi's still-dead
-  Aviation Week lead per 2026-08-24-H, plus Marcia Smith's and Anatoly Zak's
-  site legs since their Bluesky feeds and the harvester's own
-  SpacePolicyOnline queue feed already cover the same ground) surfaced
-  nothing beyond already-published stories this run (MTG-I2 completion,
-  the Aug 28 Space Academy executive order, Sutherland spaceport). Genuinely
-  new items instead came entirely from the routine candidates-queue (Via
-  Satellite's InspeCity/Ovzon entries) and a discovery-pass search (the
-  Iridium/FCC filing) -- confirms `bun run build`/`check-feed.ts` remain
-  denied outright by this session's permission gate (standing pattern since
-  2026-07-11-B); relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 3 new, 0 updated, 0 held") plus a grep parse check (498 items, up
-  from 495) and a direct read of all three new items' `snr`/`category`/
-  `impact` fields as the build-health signal.
-
-## Narrow same-day re-check, ~7.5hr gap, unfiltered full source list (2026-08-29, second)
-
-- 2026-08-29-F: A genuine near-total-zero sweep with full-effort discovery
-  behind it: the queue (53 candidates, mostly SpaceX stock/Cursor-OpenAI
-  drama and ISRO exam-recruitment noise), a 10-source mandatory HTML pass,
-  a 12-channel signals pass, and an 8-query discovery matrix all traced to
-  ground already covered by the earlier same-day sweep or before: MTG-I2's
-  Aug 27 launch (2026-07-20 item, updated per 2026-08-28-B), the ESA
-  European Launcher Challenge award (2026-08-27), ICEYE/Spire's newsroom
-  releases (2026-08-24 through -27 items), Muon Space's Series C
-  (2026-08-20), Astrum/Black Spade SPAC (2026-08-28), Sutherland spaceport
-  (2026-08-28), and the whole 2025 "New Glenn rocket explosion" Wikipedia
-  page (the same May 28, 2026 pad explosion already covered under several
-  ids, not a fresh incident despite reading like one from the title alone).
-  A single OHB Sweden EPS-Sterna EUR 248M contract lead traced on direct
-  fetch to a March 18, 2026 signing date, five-plus months stale despite
-  surfacing near the top of a fresh search.
-- 2026-08-29-G: A Nancy Grace Roman Space Telescope Falcon Heavy launch is
-  scheduled for Aug 30, 2026 (per space.com's own mission-timeline
-  article), one day after this sweep's `now`; left it undrafted rather than
-  publish pre-launch buildup coverage (fairing encapsulation, rollout)
-  as an event, consistent with the standing rule that a scheduled/upcoming
-  launch is not itself a dateable event until it actually flies. Revisit
-  next sweep once the launch has occurred.
-- 2026-08-29-H: A whitelisted signal's on-topic-looking lead can still miss
-  the scope bar: Andrew Parsonson's Aug 26 Bluesky post on Poland's
-  National Institute of Telecommunications reporting widespread GNSS
-  interference along its Baltic coast (63% of August days affected) named
-  no satellite operator, no space-industry actor, and no government
-  statement about a commercial-space angle -- it is a ground-based
-  navigation-jamming/electronic-warfare report, not a commercial-space
-  event, and stayed out per the conflict-analysis exclusion even coming
-  from a whitelisted, fetchable channel.
-- 2026-08-29-I: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 0 new, 0 updated, 0 held") plus a `jq` parse
-  check (498 items, unchanged from the prior sweep) and `state.json`'s
-  stamped `lastSweep` as the build-health signal.
-
-## Narrow same-day re-check, ~4h20m gap, unfiltered full source list (2026-08-29, third)
-
-- 2026-08-29-J: A near-total-zero queue (41 candidates, ~95% SpaceX stock/
-  Cursor-OpenAI-feud speculation, Futurism AI stories, and evergreen
-  Space.com content) and a fully clean HTML/signals pass still yielded a
-  genuine, never-covered find via the discovery pass's own "incident/
-  debris/regulatory" leg: SpaceX's Falcon 9 upper stage 2025-010D (the
-  Blue Ghost-1/ispace Resilience lunar-lander launch from Jan 15, 2025)
-  struck the Moon near Einstein crater on Aug 5, 2026, 24 days before this
-  sweep ran and well-forecast in advance (astronomy press covered it
-  extensively). Chased per the standing predates-window rule even at
-  noise tier, since CLAUDE.md's incident category names "uncontrolled
-  reentries... and satellite losses or anomalies" as in-scope regardless
-  of how routine, with no notable/seismic gate on the chase itself for a
-  genuinely never-covered fact (distinct from 2026-08-26-B, where a
-  small, no-dollar-figure story was left unchased because it was a
-  resurfacing of an *already-published* event, not a fresh gap). Led with
-  Forbes (mainstream, published the day of impact) over NASA's own page
-  (official_record, but published pre-impact as a "will attempt to
-  observe" forecast, not a confirmation the impact occurred) and a
-  specialist orbit-tracking site, Project Pluto (Bill Gray), classed
-  `informal` since it isn't CelesTrak/Space-Track (the only two sources
-  SNR_SPEC names for the `computed` class). cnn.com 451'd
-  ("Unavailable For Legal Reasons," a new failure mode for this project)
-  and techtimes.com 403'd on this specific article; space.com's own
-  article page rendered navigation chrome only, no body text, on
-  WebFetch.
-- 2026-08-29-K: Two Aug 2026 "space company" funding/M&A leads from a
-  generic discovery query were confirmed non-orbital defense companies
-  once checked, not space-scope name collisions: Castelion ($1B Series C,
-  $13B valuation) makes hypersonic missiles, and Space-Eyes (still
-  tracked from 2026-08-01-B) took an option to acquire KMS Solutions, a
-  Navy engineering services firm — neither has an orbital product. A
-  third lead, GovConWire's "Quantum Space to Go Public" piece, read fresh
-  in search results but was dated June 8, 2026, the same original SPAC
-  announcement already published under
-  `2026-06-08-quantum-space-spac-merger` (grepped before drafting).
-- 2026-08-29-L: `bun run build` was denied outright by this session's
-  permission gate, continuing the standing pattern since 2026-07-11-B;
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
-  0 updated, 0 held") plus a `jq` parse check (499 items, up from 498)
-  and a direct read of the new item's `snr`/`snr_trace`/`category`/
-  `impact`/`sources` fields as the build-health signal.
-
-## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-08-29, fourth)
-
-- 2026-08-29-M: A headline-shaped trap on Nvidia's own Q2 FY2027 earnings
-  release (Aug 26): outlets widely reported "SpaceX is ~5% of Nvidia's
-  revenue, nearly $5 billion" as if Nvidia disclosed it, but that figure
-  traces to analyst Gene Munster (Deepwater Asset Management), not
-  Nvidia's own press release or CFO Colette Kress's on-the-record
-  quote (which only confirmed SpaceXAI as a "lead partner" receiving
-  Vera CPU shipments, no dollar figure). Nvidia does not break out
-  customer-level revenue. Left the existing 2026-08-04 Starmind/Nvidia
-  item untouched rather than attach an analyst-estimated dollar figure
-  as if it were a company disclosure; a genuine update here would need
-  Nvidia's own confirmation quote, cleanly sourced, not folded together
-  with the analyst estimate the way most coverage presented it.
-- 2026-08-29-N: aboutamazon.com's own Project-Kuiper/Amazon-Leo news-tag
-  page can surface an older article ("375+ satellites now in orbit")
-  whose count is LOWER than the registry's current figure (396, as_of
-  Jul 13) despite reading like a fresh mission-update headline on the
-  tag listing page with no visible date — a new stale-resurfacing shape
-  on a primary company page, not just search snippets or Google News.
-  Cross-check a company's own "latest update" page's stated figures
-  against the registry before treating it as a fresh milestone.
-- 2026-08-29-O: `bun run build` was denied outright by this session's
-  permission gate, continuing the standing pattern since 2026-07-11-B;
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new,
-  0 updated, 0 held") plus a `grep -c` parse check (499 items, unchanged
-  from the prior sweep) as the build-health signal.
-
 ## Normal-mode sweep, ~7h52m gap, unfiltered full source list (2026-08-30)
 
 - 2026-08-30-A: A vague Google-News queue headline ("Reports of space debris
@@ -5500,3 +5325,40 @@ a newer entry if a lesson changes.
   reentered Sept 25, plus quotes and the drag-minimization detail),
   found via a Jeff Foust Bluesky headline-teaser pointing at a paywalled
   SpaceNews piece that in turn led to the NASA source.
+
+## Narrow re-check, ~5.5h gap, unfiltered full source list (2026-09-29)
+
+- 2026-09-29-A: `blacksky.com/company/news/` rendered a normal dated listing
+  this run (Sept 15 Via Satellite pickup, Sept 14 Gen-3 first light, Sept 9
+  press release and Bloomberg pickup, back through July), ending the
+  9-consecutive-sweep empty-filter-shell streak (2026-09-25-C through
+  2026-09-28-L). Nothing on the listing was newer than lastSweep or
+  unpublished, so this changed nothing substantively, but it supersedes
+  the standing "flag for Florian, needs a fetch_note" note: the anomaly
+  was transient after all, not a permanent site change, and a fetch_note
+  is not warranted at the next structural touch.
+- 2026-09-29-B: A genuine, fully clean zero-item sweep: a 65-candidate
+  post-filter queue (almost entirely Starship Flight 14 pickup and
+  SpaceX-stock/Bluesky-search-query chatter, plus off-topic CGTN
+  general-tech filler) yielded nothing draftable. Three queue leads
+  worth naming as screened-out rather than missed: an AST SpaceMobile
+  8-K's Item 5.02 was a routine Compensation-Committee change-of-control
+  severance POLICY adoption with no named departing/appointed officer,
+  below the inclusion bar regardless of honest low-confidence sourcing
+  (not a personnel change at all, so the routine-hire exclusion doesn't
+  even need to apply); Planet's Sept 28 "Counting 5.2 Billion Trees"
+  post is a peer-reviewed research-paper case study (2019 data, published
+  in the Journal of Remote Sensing Sept 28) with no contract, customer
+  action, or dollar figure, squarely the science/EO research-not-events
+  exclusion; The Air Current's "NASA invests in Boeing, woos new entrants
+  to replace SpaceX's Dragon" named zero specific companies, programs, or
+  RFPs behind its paywall, a thin trend piece per the standing pattern.
+  The mandatory 5-source HTML pass, a 13-channel signals pass (8 further
+  X-handle searches), and a 10-query discovery matrix (launch, funding,
+  incident/debris, China, India, EO contracts, FCC, Japan, M&A,
+  geopolitical) all traced to already-published items or to the FCC's
+  not-yet-occurred Sept 30 12.7/42 GHz spectrum vote. `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated,
+  0 held") and three persistence-bump `snr_movements` in the sweep log
+  entry as the build-health signal.
