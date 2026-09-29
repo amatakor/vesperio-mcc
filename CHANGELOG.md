@@ -435,3 +435,15 @@ impact chips mirror the impact badges (seismic red, major yellow,
 notable blue outline, noise neutral). At rest a chip shows its hue as
 text and a dim border; selected, it fills with the hue. Category
 chips stay neutral.
+
+Interactive source attach (2026-09-29): Florian can now give an item a
+better source by hand, through the same gate the sweep uses. The new
+tool fetches the page first, then re-scores the item from the engine,
+records the calibration claim, and stamps the update record; the only
+thing it waives is the sweep's discovery and signals passes, which a
+single-item edit has no business faking. First use: the ISS mobile
+transporter item, which had one informal source and a publisher's
+composited graphic, now leads with Ars Technica carrying NASA's
+statement (score 1 to 4) and wears the NASA photograph of Canadarm2
+from that page; Ars Technica's media host joined the known source
+media buckets so the override tool recognizes its images.

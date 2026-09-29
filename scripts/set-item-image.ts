@@ -64,6 +64,7 @@ if (!item) fail(`no item with id "${itemId}"`);
  */
 const CDN_HOST_ALIASES: Record<string, string> = {
   "thespacedevs-prod.nyc3.digitaloceanspaces.com": "thespacedevs.com",
+  "cdn.arstechnica.net": "arstechnica.com", // Ars Technica article media (2026-09-29)
 };
 
 function imageDomain(url: string): string | null {

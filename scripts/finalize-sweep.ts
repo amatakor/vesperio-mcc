@@ -265,6 +265,13 @@ export interface FinalizeOptions {
   dataDir: string;
   draftPath: string;
   now?: Date;
+  /**
+   * Florian-directed single-item edit (scripts/attach-source.ts,
+   * 2026-09-29): the draft carries no sweep, so the signals and discovery
+   * passes are not required. Everything else (scoring, anti-spoof, dedup,
+   * ledger, update records) applies unchanged. Never set by scheduled runs.
+   */
+  interactive?: boolean;
 }
 
 export interface FinalizeResult {
@@ -506,7 +513,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   // rejection, not a silent gap. X handles stay best-effort (unenforced).
   const fetchableSignalUrls = loadFetchableSignalUrls(opts.dataDir);
   let signalsSummary: SweepLogEntry["signals"] | undefined;
-  if (fetchableSignalUrls.size > 0) {
+  if (!opts.interactive && fetchableSignalUrls.size > 0) {
     const sp = draft.signalsPass;
     if (!isObj(sp)) {
       errors.push(
@@ -552,7 +559,7 @@ export function finalizeSweep(opts: FinalizeOptions): FinalizeResult {
   // Google News). Same medicine as the signals pass: attest what ran.
   const DISCOVERY_MIN_QUERIES = 6;
   let discoverySummary: SweepLogEntry["discovery"] | undefined;
-  {
+  if (!opts.interactive) {
     const dp = draft.discoveryPass;
     if (!isObj(dp)) {
       errors.push(

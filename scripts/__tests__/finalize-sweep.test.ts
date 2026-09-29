@@ -658,6 +658,17 @@ describe("finalize-sweep merge", () => {
     expect(it.explainer.tagline).toContain("complete");
   });
 
+  test("interactive mode waives the sweep passes; a scheduled draft still needs them (2026-09-29)", () => {
+    writeDraft({
+      discoveryPass: undefined,
+      updates: [{ id: existingItem.id, patch: { explainer: { tagline: "Updated by hand." } }, note: "Florian attached a source." }],
+    });
+    expect(finalizeSweep({ dataDir, draftPath }).errors.join("\n")).toContain("draft.discoveryPass");
+    const r = finalizeSweep({ dataDir, draftPath, interactive: true });
+    expect(r.errors).toEqual([]);
+    expect(r.updated).toBe(1);
+  });
+
   test("resolveHeld removes a queued entry by exact headline", () => {
     // Seed a held entry, then resolve it in a follow-up draft.
     writeDraft({
