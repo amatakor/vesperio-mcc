@@ -5878,3 +5878,18 @@ th.reg-ledger-asof {
 .reg-browser .reg-pane.reg-ledger-pane {
   align-self: start;
 }
+
+/* Stacked panes (narrow viewports): the absolute scroller would collapse
+   the pane to its header, so the list flows normally inside a capped,
+   scrollable pane instead. */
+@media (max-width: 60rem) {
+  .reg-browser .reg-pane.reg-ops {
+    position: static;
+    overflow-y: auto;
+    max-height: 14rem;
+  }
+  .reg-pane-scroll {
+    position: static;
+    overflow: visible;
+  }
+}
