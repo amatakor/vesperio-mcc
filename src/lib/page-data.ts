@@ -8,6 +8,7 @@
  * lib/page-data-server.ts).
  */
 
+import type { FeedRow } from "./activity";
 import type {
   Item,
   SweepLogEntry,
@@ -107,8 +108,8 @@ export interface RegistryCoverage {
 }
 
 export type PageData =
-  | { page: "home"; items: Item[]; pageCount: number; counts: FeedCounts; lastSweepAt: string | null }
-  | { page: "feed-page"; n: number; items: Item[]; pageCount: number; counts: FeedCounts }
+  | { page: "home"; rows: FeedRow[]; rowCount: number; pageCount: number; counts: FeedCounts; lastSweepAt: string | null }
+  | { page: "feed-page"; n: number; rows: FeedRow[]; rowCount: number; pageCount: number; counts: FeedCounts }
   | { page: "item"; item: Item }
   | { page: "category"; category: string; items: Item[] }
   | { page: "tag"; tag: string; items: Item[] }

@@ -336,6 +336,26 @@ export function validateItem(v: unknown, path: string, errors: string[]): void {
 
   reqStringArray(v, "companies", path, errors);
 
+  if (v.updates !== undefined) {
+    if (!Array.isArray(v.updates)) {
+      errors.push(`${path}.updates: must be an array when present`);
+    } else {
+      v.updates.forEach((u, i) => {
+        const p = `${path}.updates[${i}]`;
+        if (!isObj(u)) {
+          errors.push(`${p}: must be { date, kind, note }`);
+          return;
+        }
+        if (typeof u.date !== "string" || !isValidDate(u.date)) errors.push(`${p}.date: required YYYY-MM-DD`);
+        if (!["copy", "score", "attach"].includes(u.kind as string)) errors.push(`${p}.kind: must be copy, score, or attach`);
+        if (typeof u.note !== "string" || u.note.trim() === "") errors.push(`${p}.note: required non-empty string`);
+        if (u.score !== undefined) {
+          const s = u.score as Obj;
+          if (!isObj(s) || typeof s.from !== "number" || typeof s.to !== "number") errors.push(`${p}.score: must be { from, to }`);
+        }
+      });
+    }
+  }
   if (v.entities !== undefined) {
     if (!Array.isArray(v.entities)) {
       errors.push(`${path}.entities: must be an array when present`);

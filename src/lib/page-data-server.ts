@@ -17,6 +17,8 @@ import type {
   RegistryCoverage,
 } from "./page-data";
 import { FEED_PAGE_SIZE, feedPageCount, splitLogWindow } from "./page-data";
+import { feedRows } from "./activity";
+import type { FeedRow } from "./activity";
 import { computeLogKpis, leadSourcePresence, KPI_WINDOW_DAYS } from "./log-kpis";
 import type { CrossfeedCandidateRef, CrossfeedOutcomeRef } from "./log-kpis";
 import registryCandidatesJson from "../data/registry-candidates.json";
@@ -71,8 +73,9 @@ function feedCounts(): FeedCounts {
   return { categories, domains, impacts, total: items.length };
 }
 
-function feedPage(n: number): Item[] {
-  return items.slice((n - 1) * FEED_PAGE_SIZE, n * FEED_PAGE_SIZE);
+const allRows = /* @__PURE__ */ feedRows(items);
+function feedPage(n: number): FeedRow[] {
+  return allRows.slice((n - 1) * FEED_PAGE_SIZE, n * FEED_PAGE_SIZE);
 }
 
 /**
@@ -247,11 +250,11 @@ export function buildPageData(route: Route, generatedAt: string): PageData | nul
   const now = new Date(generatedAt);
   switch (route.page) {
     case "home":
-      return { page: "home", items: feedPage(1), pageCount: feedPageCount(items.length), counts: feedCounts(), lastSweepAt };
+      return { page: "home", rows: feedPage(1), rowCount: allRows.length, pageCount: feedPageCount(allRows.length), counts: feedCounts(), lastSweepAt };
     case "feed-page": {
       const list = feedPage(route.n);
       if (list.length === 0) return null;
-      return { page: "feed-page", n: route.n, items: list, pageCount: feedPageCount(items.length), counts: feedCounts() };
+      return { page: "feed-page", n: route.n, rows: list, rowCount: allRows.length, pageCount: feedPageCount(allRows.length), counts: feedCounts() };
     }
     case "item": {
       const item = itemById(route.id);
@@ -391,7 +394,7 @@ export function buildDataSlices(generatedAt: string): DataSlice[] {
     slices.push({ path, body: JSON.stringify(value) + "\n" });
   };
 
-  const pages = feedPageCount(items.length);
+  const pages = feedPageCount(allRows.length);
   for (let n = 1; n <= pages; n++) {
     put(`data/feed/page-${n}.json`, { page: n, pages, items: feedPage(n) });
   }

@@ -1638,3 +1638,31 @@ ledger with class and score per fact.
 
 IMPLEMENTATION: Stamp (pages.tsx), "provenance stamps (79)" block in
 index.css; .source-line and .src-link survive only for the item page.
+
+## 80 · Updates are their own feed cards; originals never move
+
+RULE (Florian, 2026-09-23, after two rejected attempts: "leave the
+original card alone; when an update is detected, an update card is
+created and shows up on top of the feed"): items sit in their event
+slot and never resurface. An update the reader can name (the copy
+changed with new facts, or the score moved) is its OWN feed row, dated
+by the update. Its card: neutral ground whatever the item's impact, a
+2px top rule in text-2, chips for category and impact plus an UPDATE
+chip with the ↻ glyph, the update date where the event date sits on
+ordinary cards, the original headline at 17px, the sweep's one-sentence
+note as the body, and a footer reading "ORIGINAL 29 JUN 2026" with
+"SCORE 4 → 5" when the score moved. Clicking opens the same item; the
+modal and item page lead with the UPDATES ledger (one row per update:
+date, note, score move). Attaching corroboration alone is recorded on
+the item but makes no row. Persistence bumps never count. The
+"updated d Mon" chip and the in-card note are retired.
+
+The note is the sweep's own sentence (draft updates[].note, stamped on
+the item at merge as updates[] with kind copy | score | attach); items
+updated before the record existed were backfilled from the git history
+of items.json (scripts/backfill-item-updates.ts: the first new sentence
+of that sweep's copy as the note).
+
+IMPLEMENTATION: feedRows() in src/lib/activity.ts (pure; server slices
+and the client corpus use it), UpdateCard + UpdatesSection (pages.tsx),
+"update cards (80)" block in index.css. Feed pages count rows.

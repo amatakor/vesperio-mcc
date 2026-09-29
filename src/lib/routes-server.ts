@@ -10,6 +10,7 @@ import { CATEGORIES } from "../data/schema";
 import { SITE_ORIGIN } from "./stats";
 import { matchRoute, normalizePath } from "../routes";
 import { FEED_PAGE_SIZE, feedPageCount, logArchiveMonths } from "./page-data";
+import { feedRows } from "./activity";
 import {
   items,
   constellations,
@@ -162,7 +163,7 @@ export function headFor(path: string): Head {
 
 /** Every path the prerender step must emit. */
 export function listRoutes(): string[] {
-  const feedPages = feedPageCount(items.length);
+  const feedPages = feedPageCount(feedRows(items).length);
   return [
     "/",
     ...Array.from({ length: Math.max(0, feedPages - 1) }, (_, i) => `/feed/${i + 2}/`),

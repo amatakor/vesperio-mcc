@@ -25,7 +25,8 @@ import { OrbitMini } from "./orbits/mini";
 import { OrbitMini3D } from "./orbits/mini3d";
 import { loadElements } from "./orbits/elements";
 import { CATEGORIES, DOMAIN_TAGS, IMPACTS, ORG_KINDS, CROSSFEED_OUTCOMES } from "./data/schema";
-import { freshnessChip } from "./lib/activity";
+import { cardNote, dayMonth, feedRowKey, feedRows, updateEntries } from "./lib/activity";
+import type { FeedRow, UpdateEntry } from "./lib/activity";
 import registryLogos from "./data/registry-logos.json";
 import { OrbitsStage } from "./orbits/stage";
 import { OrbitsLinkProvider } from "./orbits/chrome";
@@ -445,6 +446,32 @@ function SnrTraceRows({
     right), an axes strip, the calculation as an accounting ledger with
     the deltas on one right-aligned gutter, a sum row, and a footer.
     The hover popover keeps its own compact renderer (SnrTraceRows). */
+/** Post-publication changes as a dated ledger (Florian, 2026-09-23). */
+function UpdatesSection({ item }: { item: Item }) {
+  const entries = updateEntries(item).filter((e) => e.date > item.date);
+  if (entries.length === 0) return null;
+  return (
+    <section className="panel updates">
+      <h2>updates</h2>
+      <ul className="update-list">
+        {entries.map((e, i) => (
+          <li key={`${e.date}-${i}`} className="update-row">
+            <span className="update-date">
+              {e.date}
+              {e.score && (
+                <span className="update-score">
+                  score {e.score.from} &rarr; {e.score.to}
+                </span>
+              )}
+            </span>
+            <span className="update-text">{e.note}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function SnrLedger({ item }: { item: Item }) {
   const trace = item.snr_trace;
   const corr = trace.modifiers.filter((m) => CORROBORATION_MODIFIERS.has(m.type));
@@ -1098,7 +1125,54 @@ function SweepCountdownCard({ lastSweepAt }: { lastSweepAt: string | null }) {
 /** Card grid plus the item modal. Opening an item pushes /item/{id}/
     onto history so the URL is shareable; back (or close) returns to
     the feed. Direct visits to /item/ URLs get the prerendered page. */
-function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; lead?: ReactNode }) {
+/**
+ * An update as its own feed card (Florian, 2026-09-23): the original card
+ * stays in its event slot untouched; the update sits at the top of the feed
+ * on the day it happened, on neutral ground whatever the item's impact,
+ * and opens the same item (the modal leads with the UPDATES ledger).
+ */
+function UpdateCard({ item, update, onOpen }: { item: Item; update: UpdateEntry; onOpen: (item: Item) => void }) {
+  const open = (e: ReactMouseEvent) => {
+    e.preventDefault();
+    onOpen(item);
+  };
+  return (
+    <article className={`card card-upd card-${item.impact}`} data-item-id={item.id} data-update={update.date} onClick={open}>
+      <div className="card-meta">
+        <a className="chip" href={`/news/${item.category}/`} onClick={(e) => e.stopPropagation()}>
+          {item.category}
+        </a>
+        <ImpactBadge impact={item.impact} variant="chip" />
+        <span className="date">
+          <span className="date-event">{update.date}</span>
+        </span>
+      </div>
+      <h2 className="card-headline">
+        <a href={`/item/${item.id}/`}>
+          <span className="card-upd-prefix">Update:</span> {item.headline}
+        </a>
+      </h2>
+      <p className="card-tagline card-upd-note">{cardNote(update.note)}</p>
+      <div className="card-foot">
+        <SnrLed
+          snr={item.snr}
+          trace={item.snr_trace}
+          onCard
+          corroborated={hasAttachedCorroboration(item.sources)}
+        />
+        <span className="card-foot-div" aria-hidden="true" />
+        <span className="card-companies">original {dayMonth(item.date)} {item.date.slice(0, 4)}</span>
+        {update.score && (
+          <span className="card-sources">
+            score {update.score.from} &rarr; {update.score.to}
+          </span>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function FeedList({ list, emptyNote, lead }: { list: FeedRow[]; emptyNote: string; lead?: ReactNode }) {
   const [openId, setOpenId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -1195,7 +1269,7 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
   // only if it is already loaded (the home search fetches it); never block
   // the modal on a fetch. A miss just renders from the current list.
   const openItem = openId
-    ? (list.find((i) => i.id === openId) ??
+    ? (list.find((r) => r.item.id === openId)?.item ??
         allItemsIfLoaded()?.find((i) => i.id === openId) ??
         null)
     : null;
@@ -1205,9 +1279,13 @@ function FeedList({ list, emptyNote, lead }: { list: Item[]; emptyNote: string; 
     <>
       <div className="cards" ref={gridRef}>
         {lead}
-        {list.map((i) => (
-          <Card key={i.id} item={i} onOpen={open} />
-        ))}
+        {list.map((r) =>
+          r.kind === "update" ? (
+            <UpdateCard key={feedRowKey(r)} item={r.item} update={r.update} onOpen={open} />
+          ) : (
+            <Card key={feedRowKey(r)} item={r.item} onOpen={open} />
+          ),
+        )}
       </div>
       {openItem && <ItemModal item={openItem} onClose={close} />}
     </>
@@ -1382,6 +1460,7 @@ function ItemModal({ item, onClose }: { item: Item; onClose: () => void }) {
             <SourceList item={item} />
           </div>
           <div className="modal-right">
+            <UpdatesSection item={item} />
             <section className="panel">
               <h2>what happened</h2>
               <p>{item.explainer.what_happened}</p>
@@ -1489,7 +1568,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   // an IntersectionObserver sentinel then appends BATCH more until every
   // item matching the active filter is shown. loadCorpus arms the corpus
   // fetch from a scroll (the filter/search path arms it via `active`).
-  const [visible, setVisible] = useState(data.items.length);
+  const [visible, setVisible] = useState(data.rows.length);
   const [loadCorpus, setLoadCorpus] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -1545,13 +1624,15 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   }, [active, loadCorpus, corpus]);
 
   // Base corpus to filter: the full set once loaded, else the page-1 slice.
-  const base = corpus ?? data.items;
+  // Base rows to filter: the full corpus once loaded, else the page-1 slice.
+  // Filters and search look at the row's item; an update row follows its item.
+  const base = useMemo(() => (corpus ? feedRows(corpus) : data.rows), [corpus, data.rows]);
   const shown = useMemo(() => {
     let list = base;
-    if (sel.cats.length > 0) list = list.filter((i) => sel.cats.includes(i.category));
-    if (sel.domains.length > 0) list = list.filter((i) => sel.domains.some((d) => i.tags.includes(d)));
-    if (sel.impacts.length > 0) list = list.filter((i) => sel.impacts.includes(i.impact));
-    return q === "" ? list : list.filter((i) => matchesQuery(i, q));
+    if (sel.cats.length > 0) list = list.filter((r) => sel.cats.includes(r.item.category));
+    if (sel.domains.length > 0) list = list.filter((r) => sel.domains.some((d) => r.item.tags.includes(d)));
+    if (sel.impacts.length > 0) list = list.filter((r) => sel.impacts.includes(r.item.impact));
+    return q === "" ? list : list.filter((r) => matchesQuery(r.item, q));
   }, [q, sel, base]);
 
   // The batch actually rendered, and whether more remain. Two ways to have
@@ -1561,13 +1642,13 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
   // (corpus null, visible = page size), so first client render matches.
   const visibleList = useMemo(() => shown.slice(0, visible), [shown, visible]);
   const canRenderMore = visibleList.length < shown.length;
-  const canFetchMore = corpus === null && !active && data.counts.total > data.items.length;
+  const canFetchMore = corpus === null && !active && data.rowCount > data.rows.length;
   const hasMore = canRenderMore || canFetchMore;
 
   // A new filter/search restarts batching from the first page.
   useEffect(() => {
-    setVisible(data.items.length);
-  }, [q, sel, data.items.length]);
+    setVisible(data.rows.length);
+  }, [q, sel, data.rows.length]);
 
   // Append the next batch as the sentinel nears the viewport; arm the corpus
   // fetch the first time we run out of already-loaded items. The observer is
@@ -1646,7 +1727,7 @@ export function HomePage({ data }: { data: DataFor<"home"> }) {
           onChange={(e) => setQuery(e.target.value)}
         />
         <span className="filter-tally mono">
-          {visibleList.length} / {active ? base.length : data.counts.total}
+          {visibleList.length} / {active ? base.length : data.rowCount}
         </span>
         {menuOpen && (
           <div className="cat-panel">
@@ -1697,7 +1778,7 @@ export function FeedPagePage({ data }: { data: DataFor<"feed-page"> }) {
   return (
     <Layout current="news">
       <h1 className="page-title sec-mark">feed · page {data.n}</h1>
-      <FeedList list={data.items} emptyNote="No items on this page." />
+      <FeedList list={data.rows} emptyNote="No items on this page." />
       <Pager current={data.n} pageCount={data.pageCount} />
     </Layout>
   );
@@ -1707,7 +1788,7 @@ export function CategoryPage({ data }: { data: DataFor<"category"> }) {
   return (
     <Layout current="news">
       <h1 className="page-title">news / {data.category}</h1>
-      <FeedList list={data.items} emptyNote={`No ${data.category} items tracked yet.`} />
+      <FeedList list={feedRows(data.items)} emptyNote={`No ${data.category} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1723,7 +1804,7 @@ export function KindPage({ data }: { data: DataFor<"kind"> }) {
         Takes and analysis from named voices, visibly tagged. The SNR scores the attribution
         (this person said this), never the opinion. Commentary never feeds the Registry.
       </p>
-      <FeedList list={data.items} emptyNote="No commentary tracked yet." />
+      <FeedList list={feedRows(data.items)} emptyNote="No commentary tracked yet." />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1735,7 +1816,7 @@ export function TagPage({ data }: { data: DataFor<"tag"> }) {
   return (
     <Layout current="news">
       <h1 className="page-title">#{data.tag}</h1>
-      <FeedList list={data.items} emptyNote={`No ${data.tag} items tracked yet.`} />
+      <FeedList list={feedRows(data.items)} emptyNote={`No ${data.tag} items tracked yet.`} />
       <p>
         <a href="/">All news</a>
       </p>
@@ -1794,6 +1875,7 @@ export function ItemPage({ item }: { item: Item }) {
             <SourceList item={item} />
           </div>
           <div className="item-main">
+            <UpdatesSection item={item} />
             <section className="panel">
               <h2>what happened</h2>
               <p className="prose">{item.explainer.what_happened}</p>
@@ -5905,11 +5987,9 @@ export function LogArchivePage({ data }: { data: DataFor<"log-archive"> }) {
     timestamps and share the dim date register; chips stay classification
     only). Bands read it inline with a separator; cards stack it. */
 function DateStamp({ item }: { item: Item }) {
-  const upd = freshnessChip(item);
   return (
     <span className="date">
       <span className="date-event">{item.date}</span>
-      {upd && <span className="date-upd">{upd}</span>}
     </span>
   );
 }
