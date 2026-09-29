@@ -137,7 +137,7 @@ export function computeStats(
   for (let w = weeks - 1; w >= 0; w--) {
     const end = new Date(now.getTime() - w * 7 * DAY_MS);
     const start = new Date(end.getTime() - 7 * DAY_MS);
-    const label = start.toISOString().slice(5, 10);
+    const label = start.toISOString().slice(0, 10);
     const n = real.filter((i) => {
       const t = new Date(i.date + "T00:00:00Z").getTime();
       return t > start.getTime() && t <= end.getTime();
@@ -155,7 +155,7 @@ export function computeStats(
     answer: velocityAnswer,
     rows: weekRows,
     method:
-      "Items per 7-day bucket by event date, most recent four buckets; bucket labels are the week start (MM-DD). Momentum versus the prior four weeks will appear once eight weeks of history exist.",
+      "Items per 7-day bucket by event date, most recent four buckets; bucket labels are the week start (YYYY-MM-DD). Momentum versus the prior four weeks will appear once eight weeks of history exist.",
     citation: cite(velocityAnswer, "velocity", asOf),
   });
 

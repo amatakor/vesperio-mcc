@@ -489,12 +489,12 @@ export function ViewCluster(p: ViewClusterProps) {
 
 // ------------------------------------------------------------- footer
 
-/** Freshness stamps carry the date, not just the time (Florian 2026-07-06). */
+/** Freshness stamps carry the full ISO date and the UTC time (Florian 2026-07-06; ISO 8601 sitewide 2026-09-29). */
 function zTime(iso: string | null): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return `${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
+  return `${d.getUTCFullYear()}-${pad2(d.getUTCMonth() + 1)}-${pad2(d.getUTCDate())} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}Z`;
 }
 
 export function FooterBar({

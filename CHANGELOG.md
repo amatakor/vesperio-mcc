@@ -447,3 +447,12 @@ composited graphic, now leads with Ars Technica carrying NASA's
 statement (score 1 to 4) and wears the NASA photograph of Canadarm2
 from that page; Ars Technica's media host joined the known source
 media buckets so the override tool recognizes its images.
+
+Labels and dates (2026-09-29): the human-spaceflight category and
+domain now read "human spaceflight" wherever the reader sees them
+(chips, the filter panel, feed titles); the slug and the URL are
+unchanged, and tags keep their hashtag form. Dates use ISO 8601
+(YYYY-MM-DD) everywhere: the last non-ISO forms, the update card's
+"original 29 Jun 2026", the MCC freshness stamps ("09-08 19:29Z"),
+and the /system weekly bucket labels ("09-08"), now read
+2026-06-29, 2026-09-08 19:29Z, and 2026-09-08.
