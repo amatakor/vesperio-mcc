@@ -93,211 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Normal-mode sweep, ~7h52m gap, unfiltered full source list (2026-08-30)
-
-- 2026-08-30-A: A vague Google-News queue headline ("Reports of space debris
-  breaking up over Montana," KPAX) traced on WebSearch to an unrelated,
-  genuinely new gap rather than the Montana sighting itself: a Long March 6C
-  upper stage (NORAD 100472) fragmented in orbit Aug. 27, tracked by LeoLabs,
-  the second documented CZ-6-family breakup this year. The Montana sighting
-  itself stayed undrafted (unconfirmed, speculative "perhaps an old Starlink"
-  framing, no named tracking source). SpaceNews was the only fetchable
-  account of the fragmentation; Space.com's own article page rendered
-  navigation chrome only (no body text, the standing space.com WebFetch
-  failure mode) despite appearing in search results, and airandspaceforces.com
-  turned out to be about the unrelated 2024 Long March 6A breakup (a new
-  stale-resurfacing trap: identical topic, wrong year). Landed a clean
-  single-source `crawl: "found_none"` (SNR 2) per the standing "WebSearch
-  snippets of an unfetched page never substitute for a direct fetch" rule.
-- 2026-08-30-B: A SpaceNews repost embedded in Jonathan McDowell's Bluesky
-  feed ("NASA and AeroVironment are moving ahead with...helicopters...on a
-  nuclear propulsion demonstration mission") surfaced a genuine gap: NASA/JPL
-  awarded AeroVironment's MacCready Works a contract to build three
-  autonomous Mars helicopters for the SkyFall mission (Aug. 27 announcement),
-  a distinct provider-selection event from the already-published July 23
-  SR-1 Freedom budget item (37 days prior, no shared source URL, a different
-  specific fact) rather than an update. AeroVironment has no registry
-  organization entity, so its own avinc.com press-release page could not
-  class `first_party`; found a BusinessWire-mirror page (offshoresource.com,
-  confirmed via its own "ARLINGTON, Va.--(BUSINESS WIRE)--" dateline) as a
-  `wire_pr` (tier 4) lead instead of falling back to `informal`, per the
-  standing 2026-08-25-K workaround. Worth a registry add for AeroVironment
-  at the next structural touch: this is now at least three items (SR-1
-  Freedom budget, SkyFall contract, plus its recurring role as a Mars-program
-  contractor) referencing a company with no profile.
-- 2026-08-30-C: The mandatory 10-source HTML pass and a 10-channel Bluesky
-  signals pass were both fully clean this run beyond the two finds above:
-  every ICEYE/Spire/SES/Telesat release traced to an already-published item,
-  and the CNES press page's "8th Ariane 6 commercial mission, first to GTO"
-  release confirmed it was the same MTG-I2 launch already upgraded to
-  completed status via the 2026-08-28-B rescore, not a second GTO mission.
-  A 10-query discovery matrix (launch, financial x2, regulatory, non-US x3,
-  constellation contract, incident, M&A) traced every hit to already-covered
-  ground (Muon Space Series C, SpaceSail $1B, FCC D2D NPRM, GalaxySpace
-  Thailand export, Rocket Lab/STR SB-AMTI $615M batch, ESA Launcher
-  Challenge, Astrum/Black Spade SPAC, Hughes/Dish bankruptcies) -- confirms
-  the two real finds this run both came from chasing thin/misleading leads
-  past their surface framing, not from the matrix itself.
-- 2026-08-30-D: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
-  check (501 items, up from 499) and a direct read of both new items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
-  signal.
-
-## Normal-mode sweep, ~7h gap, unfiltered full source list (2026-08-30, second)
-
-- 2026-08-30-E: NASA's own science.nasa.gov mission-blog subdomain (not
-  `www.nasa.gov`, the registry's exact `website` value) classed clean as
-  `first_party` for the Roman Space Telescope's own launch-day post,
-  confirming the standing subdomain-of-registered-apex rule
-  (2026-07-07-E/2026-08-27-F) extends to nasa.gov's science-blog
-  subdomain, not just esa.int. A flagship-observatory launch (NASA's next
-  "great observatory" after Hubble/Webb, $4.3B lifecycle cost, launched
-  nine months ahead of schedule) was scored `major` impact under the
-  science-category "exceptional firsts reach major" rule (2026-07-13)
-  rather than the more common `notable` every other science item in the
-  feed carries to date -- flag for Florian if that reading of "exceptional"
-  is too generous, since this is the first `major`-tier science item.
-- 2026-08-30-F: A same-day, same-company-plus-category dedup false
-  positive fired on BOTH new items this run (NASA/science against the
-  Aug 27 AeroVironment SkyFall item; SpaceX/partnership against the Aug 4
-  Nvidia/Starmind item), extending the standing SpaceX-volume pattern
-  (2026-08-01-C and many peers) to NASA for the first time -- NASA's own
-  high item-count across unrelated science-program stories makes it as
-  prone to this heuristic as SpaceX. Two `dedup_distinct` entries cleared
-  both.
-- 2026-08-30-G: An unofficial, unconfirmed-by-either-party trade report
-  (Royal Air Maroc/Starlink Aviation fleet Wi-Fi deal, sourced to Africa
-  Intelligence's Aug 18 scoop via Space in Africa and Le360, neither RAM
-  nor SpaceX having confirmed it) was chased and published anyway per the
-  standing "attributable weak sources publish at low SNR, only anonymous
-  sources don't" rule (CLAUDE.md) -- landed at trade+mainstream SNR 4,
-  dated to the reported Aug 4 signing date (19 days outside the sweep
-  window) under the standing notable-or-above predates-window chase rule,
-  with the copy explicitly flagging the lack of official confirmation
-  rather than asserting the deal as settled fact.
-- 2026-08-30-H: Two further stale-resurfacing traps this run: a SpaceNews
-  "China resumes launches for Thousand Sails constellation" piece that
-  reads current in search results actually mirrors to an October 2025
-  dateline (per a copernical.com mirror's own timestamp), and a
-  "European acquisition revives Space Perspective's space tourism
-  ambitions" (EOS-X Space) hit traces to a July 2025 acquisition, over a
-  year stale; also out of scope regardless (stratospheric balloon
-  tourism, not orbital). Neither drafted.
-- 2026-08-30-I: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
-  check (503 items, up from 501) and a direct read of both new items'
-  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
-
-## Narrow same-day re-check, ~4h49m gap, unfiltered full source list (2026-08-30, third)
-
-- 2026-08-30-J: A near-total-duplicate queue (43 candidates, ~90% Roman
-  Space Telescope launch-day pickup from 30+ outlets plus SpaceX stock/
-  IPO-lockup speculation and off-topic Futurism content) still surfaced a
-  genuine, never-covered gap via the discovery pass's financial leg:
-  Delta Air Lines picked Amazon Leo over Starlink for future in-flight
-  WiFi, announced March 31, 2026 (500 aircraft from 2028), with zero prior
-  draft under any id (grepped items.json for "amazon leo"/"delta air
-  lines", only tangential Amazon Leo hits, no Delta one) despite wide
-  contemporaneous coverage (CNBC, Amazon's own newsroom, Delta's own
-  newsroom, Airways Magazine). Chased per the standing predates-window
-  convention and dated to the actual March 31 announcement, 5 months
-  stale. Delta has no `src/data/registry` organization entity, so its own
-  news.delta.com release capped at `informal` (the standing
-  2026-08-05-O/2026-07-31-I no-registry-host workaround) even though it
-  is genuinely the customer speaking about itself; Amazon's own
-  aboutamazon.com page led clean at `first_party` (registry-matched
-  Kuiper/Amazon Leo website), landing the item at the SNR 5 ceiling.
-- 2026-08-30-K: The Launch Library candidate queue can carry a launch
-  entry ("Long March 8A | Unknown Payload") whose own `raw_excerpt`
-  ("Details TBD") gives no hint it is actually three weeks out: the
-  linked Launch Library record's own `status`/`net` fields showed "To Be
-  Confirmed" for a September 11 window, not a completed or even
-  near-term launch. Confirms the standing 2026-08-09-B/2026-08-25-B rule
-  (always check a Launch Library entry's own status/net fields, not just
-  its presence in the window-dated queue) extends to entries with no
-  payload identified yet, which read as maximally ambiguous rather than
-  obviously future-dated.
-- 2026-08-30-L: NASA's own Crew-13 delay announcement (an oxidizer leak
-  found on Dragon's propulsion system during routine prelaunch
-  processing, Aug 29) was a genuine same-day item the queue surfaced
-  directly (Google News), not a discovery-pass chase; scored `noise`
-  impact as a routine pre-launch schedule slip caught by ground
-  processing, consistent with the standing treatment of scheduled-launch
-  delays as non-market-moving unless the underlying cause itself is
-  seismic. NASA's science-agency blog domain (nasa.gov) matches the
-  registry's recorded website cleanly for `first_party`; a mainstream
-  local-TV pickup (FOX 35 Orlando) supplied `corroboration_2plus` even
-  though its text closely tracked NASA's own release, since it is an
-  independent outlet's own coverage, not a wire-service rewrite.
-- 2026-08-30-M: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq` parse
-  check (505 items, up from 503) and a direct read of both new items'
-  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
-
-## Narrow same-day re-check, ~4h11m gap, unfiltered full source list (2026-08-30, fourth)
-
-- 2026-08-30-N: **NEEDS FLORIAN: accidentally published an exact
-  duplicate item.** Andrew Parsonson's bluesky (signals pass) surfaced
-  "Highlands and Islands Enterprise bought Sutherland Spaceport Ltd's
-  assets" (HIE's own release + European Spaceflight, Aug 25) and it was
-  drafted and merged as `2026-08-25-hie-sutherland-spaceport-assets`
-  (category `launch`) -- only after finalize-sweep merged it did a
-  registry-candidates.json check reveal this is the SAME event as the
-  already-published `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`
-  (category `financial`, merged 2026-08-28, same two source URLs, same
-  facts). The finalize-sweep same-event dedup gate did NOT catch it
-  because the two items landed in different categories (`launch` vs
-  `financial`) despite sharing a company, date, and both source URLs --
-  confirms the gate's same-company+category+7-day match can be defeated
-  by an honest category-judgment difference between two independent
-  drafting passes on the identical story. No sweep-side tool can retract
-  a merged item (`scripts/review-queue.ts` only manages `held.json`
-  entries pre-publish; there is no delete/retract path in
-  `finalize-sweep.ts`), and hand-editing `items.json` is a hard rule
-  violation even to fix this -- left both items live and flagged here
-  for manual removal of the duplicate (recommend keeping
-  `2026-08-25-orbex-sutherland-spaceport-hie-acquisition`, the earlier
-  one, and deleting `2026-08-25-hie-sutherland-spaceport-assets`, plus
-  the resulting duplicate `sutherland.operator` entry it added to
-  `registry-candidates.json`). Lesson: before drafting ANY signals-pass
-  or discovery-pass find, grep `items.json` directly for the actor/place
-  name (here "sutherland" or "hie"), not just the `existing[]` sample
-  from sweep-context or trust in the dedup gate -- the gate is a
-  backstop, not a substitute for a direct grep, especially for a story
-  that could plausibly be filed under more than one category.
-- 2026-08-30-O: The Brownsville, TX city commission's Aug 29 vote to
-  disannex 444 acres near Starbase from city zoning in exchange for a
-  $220 million SpaceX water-infrastructure commitment (KRGV lead,
-  RGV Business Journal corroboration) published clean as a genuinely new
-  item at `launch`/`notable`/SNR 4, after two same-company+category
-  dedup false positives against the unrelated Aug 25 Starbase Louisiana
-  and B1067 Florida-Starlink items were cleared with `dedup_distinct`
-  (the standing SpaceX-volume pattern, 2026-08-01-C and many peers).
-  Confirmed via direct grep of `items.json` for "brownsville"/"disannex"
-  post-merge that this one is NOT a duplicate.
-- 2026-08-30-P: A stale (Aug 9) Elon Musk X reply -- "All cars will have
-  Starlink in the future... the only way to get super high bandwidth to
-  billions of vehicles" -- resurfaced today in Yahoo Autos/Jalopnik/
-  Benzinga reaction pieces piggybacking on Roman-launch-day traffic;
-  verified verbatim via the syndication endpoint but NOT drafted as
-  commentary: three weeks stale, speculative musing rather than a
-  concrete product decision, below the notable-or-above bar the
-  predates-window chase convention requires.
-- 2026-08-30-Q: `bun run build` and `bun scripts/check-feed.ts` were both
-  denied outright by this session's permission gate, continuing the
-  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
-  merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
-  parse check (507 items, up from 505) as the build-health signal --
-  the duplicate in 2026-08-30-N above is a content/dedup defect, not a
-  schema or build failure, so it passed this check cleanly.
-
 ## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-31)
 
 - 2026-08-31-A: A near-total-duplicate queue (55 post-filter candidates, ~90%
@@ -5497,6 +5292,60 @@ a newer entry if a lesson changes.
   procurement figure, or market-access change, per the standing
   institutional-disclosure exclusion.
 - 2026-09-29-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") and a direct read of
+  both new items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  as the build-health signal.
+
+## Narrow re-check, ~2h27m gap, unfiltered full source list (2026-09-30)
+
+- 2026-09-30-A: A near-total-junk 24-candidate queue (Starship Flight 14
+  reaction/UFO-sighting chatter, SpaceX stock/options-desk churn, Crew-13
+  pre-launch scheduling posts, one unrelated Times of India/BBC filler
+  wave) plus a fully clean mandatory 5-source HTML pass and a 17-channel
+  signals pass (2 targeted X-handle searches, none retrievable) all
+  traced to already-published ground; the two genuinely new items both
+  came from an 8-query discovery matrix. ESA's own Sept 22 contract
+  advancing ClearSpace's Phoenix GEO satellite-servicing mission
+  (Forbes Luxembourg lead, mainstream, since ClearSpace has no
+  `src/data/registry` organization entity to anti-spoof-match; ClearSpace's
+  own release and startupticker.ch as informal corroboration) fired the
+  standing ESA+category-"contract" dedup false positive against THREE
+  unrelated existing ESA contract items (EOGS/ARISE, IRIS2 LEO
+  consolidation, OVHcloud/CGI digital-EO) simultaneously; three
+  `dedup_distinct` entries cleared it in one pass. CNT's Starlink Mobile
+  direct-to-cell launch in Ecuador (SatPower branding, 82.4% initial
+  coverage, third LatAm country after Chile/Peru) led on Primicias
+  (mainstream, independently reported with a CNT exec quote and coverage
+  stats) over TeslaNorth, since developingtelecoms.com's search hit for
+  "Starlink Ecuador" turned out to be a stale March 2023 Galapagos
+  broadband article, not this direct-to-cell launch; fired the same
+  SpaceX+category-"product" dedup false positive against the unrelated
+  Sept 28 Beeline Kazakhstan Starlink Mobile item (a different country,
+  nothing else shared), cleared with one `dedup_distinct`.
+- 2026-09-30-B: An AWS/Arbol/University of Cambridge "TESSERA" geospatial-AI
+  foundation-model dataset going free on AWS Open Data (built on ESA
+  Sentinel-1/2 imagery, one named user citing it for climate-insurance
+  products) was judged too thin to draft: no contract, no customer
+  transaction, no stated commercial deployment, closer to a research-tool
+  release than a dateable industry event, similar in shape to the
+  standing Planet-thought-leadership-post exclusion (2026-09-29-J) even
+  though it does name one real downstream user. Left undrafted as a
+  restrained call rather than published at a floor SNR; flag if a future
+  sweep finds a contract or paid product built on it.
+- 2026-09-30-C: A Yahoo Finance/Seeking Alpha "Falcon 9 rideshare sales
+  paused as SpaceX winds down flagship vehicle" wave (WSJ-sourced, Sept 25)
+  read as a bigger escalation of the already-published June 25 rideshare-
+  freeze item (2026-06-25-spacex-rideshare-booking-freeze), but the exact
+  Musk quote and "past late 2028" framing it cites are the same ones
+  already in that item's `what_happened`; left unpatched rather than
+  guess a materially new fact from a paraphrase-only fetch. The same
+  wave's "Rocket Lab Steps In Where SpaceX Just Walked Away" angle traces
+  to the already-published Aug 10 Kepler/Neutron booking
+  (2026-08-10-kepler-rocket-lab-neutron-2028); grepping both company names
+  against items.json before drafting caught this without spending
+  corroboration budget on either.
+- 2026-09-30-D: `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 2 new, 0 updated, 0 held") and a direct read of
   both new items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields

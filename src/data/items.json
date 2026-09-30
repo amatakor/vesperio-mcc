@@ -49036,7 +49036,7 @@
       "source_url": "https://www.law360.com/corporate/articles/2525187",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -49048,10 +49048,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-30",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -49748,7 +49761,7 @@
       "source_url": "https://spacenews.com/space-force-gives-spacex-latitude-on-design-of-2-3-billion-satellite-network/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -49760,10 +49773,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-30",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -49874,16 +49900,30 @@
       "companies": [],
       "source_url": "https://www.youtube.com/watch?v=xEoJeZDRso0",
       "secondary_urls": [],
-      "snr": 1,
+      "snr": 2,
       "snr_trace": {
         "base": {
           "tier": 1,
           "source": "https://www.youtube.com/watch?v=xEoJeZDRso0",
           "reason": "base tier 1 from lead source class \"informal\" (Scott Manley (YouTube))"
         },
-        "modifiers": [],
-        "final": 1,
-        "scorer_version": 2
+        "modifiers": [
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-09-30",
+            "from": 1,
+            "to": 2,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -57766,6 +57806,157 @@
         "origin_url": "https://satnews.com/2026/09/29/momentus-demonstrates-ai-enabled-lidar-and-optical-suite-during-in-orbit-rpo-campaign-with-nasa-satellite/",
         "width": 932,
         "height": 640
+      }
+    },
+    {
+      "id": "2026-09-22-clearspace-esa-phoenix-geo-servicing",
+      "date": "2026-09-22",
+      "headline": "ClearSpace wins ESA contract to advance Phoenix satellite-servicing mission",
+      "explainer": {
+        "tagline": "ESA is funding the next phase of ClearSpace's Phoenix spacecraft, which would dock with aging GEO satellites and take over their propulsion.",
+        "what_happened": "ClearSpace signed a new ESA contract, funded through the agency's Industrial Competitiveness line within the ARTES programme, to advance its Phoenix GEO life-extension mission, per ClearSpace's own release and Forbes Luxembourg. The contract funds the next stage of maturing Phoenix's rendezvous, proximity-operations, docking and servicing technologies, moving the architecture toward Technology Readiness Level 5, per Forbes Luxembourg citing ESA's Director of Resilience, Navigation and Connectivity Laurent Jaffart. The wider Phoenix programme is estimated at about 100 million euros; ClearSpace's earlier development work was backed by the government of Luxembourg and the Luxembourg Space Agency, per startupticker.ch.",
+        "why_it_matters": "Phoenix targets a different niche than debris-removal missions like ClearSpace's own ClearSpace-1 or Astroscale's ADRAS-J: rather than deorbiting dead hardware, it would dock with a still-operating GEO satellite whose propellant is running low and take over station-keeping, extending revenue-generating life for the satellite's owner. A working commercial life-extension service would give GEO fleet operators an alternative to early retirement or a costly replacement launch, and adds another entrant to Europe's push to build a domestic in-orbit-servicing industry alongside institutional debris-removal programs."
+      },
+      "kind": "event",
+      "tags": [
+        "europe"
+      ],
+      "category": "contract",
+      "impact": "notable",
+      "companies": [
+        "ESA",
+        "ClearSpace"
+      ],
+      "source_url": "https://www.forbes.lu/clearspace-signs-esa-contract-to-advance-phoenix-geo-life-extension-mission/",
+      "secondary_urls": [
+        "https://www.clearspace.today/news",
+        "https://www.startupticker.ch/en/news/clearspace-versatile-new-docking-capability-lands-esa-contract"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.forbes.lu/clearspace-signs-esa-contract-to-advance-phoenix-geo-life-extension-mission/",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Forbes Luxembourg)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.forbes.lu/clearspace-signs-esa-contract-to-advance-phoenix-geo-life-extension-mission/",
+          "outlet": "Forbes Luxembourg",
+          "class": "mainstream",
+          "added": "2026-09-30",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.clearspace.today/news",
+          "outlet": "ClearSpace",
+          "class": "informal",
+          "added": "2026-09-30",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.startupticker.ch/en/news/clearspace-versatile-new-docking-capability-lands-esa-contract",
+          "outlet": "startupticker.ch",
+          "class": "informal",
+          "added": "2026-09-30",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-30T05:27:55.905Z",
+      "entities": [
+        {
+          "name": "ESA",
+          "ref": "organizations/esa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-22-clearspace-esa-phoenix-geo-servicing.webp",
+        "credit": "Image: forbes.lu",
+        "origin_url": "https://www.forbes.lu/clearspace-signs-esa-contract-to-advance-phoenix-geo-life-extension-mission/",
+        "width": 1024,
+        "height": 572
+      }
+    },
+    {
+      "id": "2026-09-29-starlink-mobile-ecuador-cnt",
+      "date": "2026-09-29",
+      "headline": "CNT launches Starlink Mobile direct-to-cell service across Ecuador",
+      "explainer": {
+        "tagline": "Ecuador's state carrier CNT switched on Starlink's direct-to-cell service, branded SatPower, reaching 82.4% of national territory at launch.",
+        "what_happened": "State telecom operator CNT partnered with Starlink to launch a direct-to-cell satellite service branded SatPower across Ecuador on September 29, per Primicias and TeslaNorth. CNT general manager Ronald Spina said the service addresses persistent connectivity gaps in the country; Primicias reported initial coverage of 82.4% of national territory, reaching up to 12 nautical miles offshore, the Andes mountains and the Amazon rainforest on compatible phones with no extra hardware. The service currently supports messaging and app access, with some apps, including WhatsApp and Google Maps, and SMS not yet supported, per Primicias. Ecuador is the third Latin American country to get the service, after Chile and Peru.",
+        "why_it_matters": "Ecuador extends Starlink's now-standard playbook of pairing with a national carrier for direct-to-cell rollouts across Latin America rather than selling the service on its own, giving CNT a connectivity offering in terrain historically unreachable by terrestrial towers. Each new market adds to Starlink's direct-to-cell subscriber base and sharpens the competitive pressure on regional mobile operators and rival direct-to-device players such as AST SpaceMobile and Lynk chasing the same underserved-coverage niche."
+      },
+      "kind": "event",
+      "tags": [
+        "connectivity",
+        "direct-to-device"
+      ],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "SpaceX",
+        "CNT"
+      ],
+      "source_url": "https://www.primicias.ec/economia/empresas/cnt-starlink-planes-internet-movil-satelital-ecuador-satpower-133761/",
+      "secondary_urls": [
+        "https://teslanorth.com/2026/09/29/starlink-mobile-ecuador-cnt/"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.primicias.ec/economia/empresas/cnt-starlink-planes-internet-movil-satelital-ecuador-satpower-133761/",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Primicias)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.primicias.ec/economia/empresas/cnt-starlink-planes-internet-movil-satelital-ecuador-satpower-133761/",
+          "outlet": "Primicias",
+          "class": "mainstream",
+          "added": "2026-09-30",
+          "via": "initial"
+        },
+        {
+          "url": "https://teslanorth.com/2026/09/29/starlink-mobile-ecuador-cnt/",
+          "outlet": "TeslaNorth",
+          "class": "informal",
+          "added": "2026-09-30",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-09-30T05:27:55.905Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-09-29-starlink-mobile-ecuador-cnt.webp",
+        "credit": "Image: primicias.ec",
+        "origin_url": "https://www.primicias.ec/economia/empresas/cnt-starlink-planes-internet-movil-satelital-ecuador-satpower-133761/",
+        "width": 1200,
+        "height": 675
       }
     }
   ]
