@@ -5426,3 +5426,53 @@ a newer entry if a lesson changes.
   eventual flight). Neither NorthStar nor Viking has a
   `src/data/registry` organization entity.
   fields as the build-health signal.
+
+## Narrow re-check, ~5h18m gap, unfiltered full source list (2026-09-30, fourth)
+
+- 2026-09-30-K: A near-total Crew-13-prelaunch/Starship-14-aftermath queue (65
+  candidates, almost all scheduled-not-yet-occurred Crew-13 coverage and
+  already-published Starship Flight 14 pickup) still yielded the actual
+  outcome of a process-not-yet-fact item flagged in this file on
+  2026-09-20-I/2026-09-22-J: the FCC's Sept. 30 Open Meeting vote adopted
+  both the satellite-NEPA exemption and the 12.7/42 GHz spectrum order, per
+  Via Satellite's same-day writeup (verbatim commissioner quotes) plus an
+  independently-worded TVTechnology piece (different commissioner quote) for
+  `corroboration_2plus`. `docs.fcc.gov/public/attachments/DOC-424841A1.txt`
+  (the .txt-extension trick, 2026-09-04-H/2026-09-29-H) fetched clean but is
+  the Sept. 9 pre-vote FACT SHEET describing the draft order, not proof of
+  adoption; fcc.gov itself 403'd on every attempt (`/September2026`,
+  `/news-events`), so the item led on Via Satellite (trade) rather than force
+  an official_record lead through an unreachable domain or a pre-vote
+  document. Landed a clean SNR 4.
+- 2026-09-30-L: A same-day Reuters wire story (Ukraine's Washington deputy
+  chief of mission urging US sanctions on Rassvet's component suppliers) had
+  zero independently-written pickup: every hit (US News, Yahoo, ThePrint,
+  KFGO, headtopics) was the identical wire text. The same interview also
+  included Ukraine asking to use Starlink over Russian territory to strike
+  missile launchers, the same operational-use ask the 2026-09-25-A Finland/
+  Stubb case excluded; wrote the item narrowly around the sanctions/
+  export-control request only and left the strike-enablement ask out
+  entirely, rather than drop the story or publish the operational claim.
+  Landed an honest single-wire-source SNR 2 (`crawl: "found_none"`).
+- 2026-09-30-M: Requesting a `corroboration_2plus` bump on an `updates[]`
+  item that already carries a `corroboration_none` modifier from its
+  original scoring does not replace that modifier, it adds to it: the
+  Meridian Space/SpinLaunch item's trace kept both `corroboration_none: -1`
+  and the new `corroboration_2plus: +1` side by side, netting zero delta
+  (2 -> 3, base 3 + 0) rather than the 2 -> 4 a naive "the new modifier wins"
+  read would predict. Worth expecting a smaller-than-expected bump whenever
+  an update adds corroboration to an item that was originally scored
+  `found_none`.
+- 2026-09-30-N: Reaffirmed the institutional-disclosure exclusion over the
+  weaker 2026-09-04-D CSO-succession precedent: a same-day White House
+  nomination of Lt. Gen. David Miller to lead US Space Command (well-sourced,
+  Via Satellite plus Aviation Week plus Marcia Smith's bluesky) was left
+  undrafted despite the existing precedent for publishing a well-telegraphed
+  military space-command succession at `noise`. A SPACECOM combatant-command
+  change tied to a base-relocation political fight reads as pure
+  institutional/military news with no stated commercial-space consequence,
+  a poorer fit for the CSO analogy (which at least oversees Space Force
+  acquisition) than the ULA-CEO-succession comparison that justified it;
+  treated the CSO case as an outlier rather than a rule to keep extending.
+  Flag for Florian if military space-command leadership changes should get
+  an explicit ruling either way.
