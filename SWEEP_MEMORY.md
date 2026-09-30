@@ -5382,4 +5382,47 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 8 new, 1 updated, 0 held") and a direct read of
   all eight new items' and the updated item's `snr`/`category`/`impact`
+
+## Narrow re-check, ~4h03m gap, unfiltered full source list (2026-09-30, third)
+
+- 2026-09-30-H: `finalize-sweep.ts` rejects a `signalsPass.checked` entry
+  that is a channel's `rss` URL rather than its listed `url`: for
+  Andrew Parsonson's substack leg, `signals-context.ts` lists
+  `url: "https://europeanspaceflight.substack.com"` with a separate
+  `rss` field pointing at `.../feed`; listing the `/feed` URL in
+  `checked` (even though that's the endpoint actually fetched) fails
+  the "is not a fetchable whitelisted signal channel" gate. List the
+  channel's base `url`, not its `rss` endpoint, even when you fetched
+  the feed URL directly.
+- 2026-09-30-I: A near-total-junk ~55-candidate queue (Starship Flight
+  14 post-flight reaction/stock churn, Crew-13 pre-launch hype, generic
+  Futurism/BBC filler) yielded zero drafts from the queue itself; both
+  new items came from the mandatory HTML/discovery legs. An "AST
+  SpaceMobile Jumps 5% on Takeover Speculation" piece traced to a
+  routine change-of-control severance-policy 8-K with no named
+  acquirer or source, explicitly "not confirm[ing]" any transaction --
+  pure anonymous stock-trader rumor, left undrafted per the standing
+  anonymous-rumor exclusion (same shape as 2026-09-29-B's severance-
+  policy case, just with speculation layered on top). A Textron/
+  AeroMech "Starlink now available on Hawker 700/800/900" piece traced
+  to a Sept. 11 press release with no new date peg, left undrafted as
+  stale. The Musk/Delta-CEO "will lose his job" in-flight-wifi spat
+  traced to unverifiable "reportedly said" remarks with no new
+  commercial fact beyond the already-published March 31 Delta/Amazon
+  Leo item, left undrafted as gossip rather than an industry event.
+  A SpaceX-donates-50-Starlink-kits-to-Malaysia courtesy-call story
+  was judged too thin (no stated figures, capacity, or market-access
+  change, a goodwill photo-op) per the standing minor-partnership-
+  without-stated-money exclusion.
+- 2026-09-30-J: NorthStar Earth & Space's SPAC merger with Viking
+  Acquisition (first announced/published April 17) closed today; led
+  on Viking's own SEC 8-K exhibit (sec.gov, `official_record`, ceiling
+  5 with no `found_none` penalty) rather than the GlobeNewswire/wire
+  mirrors (Manila Times, Yahoo UK, TradingView, Pulse2, Dealroom, all
+  republishing the same press release). Drafted as a NEW item rather
+  than an `updates[].patch` on the April item: five months apart, and
+  a deal's public announcement and its actual closing/listing are
+  distinct dateable events (same logic as a regulatory grant vs. the
+  eventual flight). Neither NorthStar nor Viking has a
+  `src/data/registry` organization entity.
   fields as the build-health signal.
