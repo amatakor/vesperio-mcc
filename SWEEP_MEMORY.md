@@ -5350,3 +5350,36 @@ a newer entry if a lesson changes.
   confirmation ("merged 2 new, 0 updated, 0 held") and a direct read of
   both new items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
   as the build-health signal.
+
+## Narrow re-check, ~7h35m gap, unfiltered full source list (2026-09-30, second)
+
+- 2026-09-30-E: A new WebFetch actor-mismatch shape on the mandatory
+  signals leg: fetching marco-langbroek's and andrew-jones's bluesky
+  `getAuthorFeed` API endpoints back to back returned 20 posts each of
+  entirely off-topic Dutch political content for BOTH handles, no space
+  content at all, despite both being genuine space-focused accounts in
+  every prior sweep. Not the usual stale-timestamp cache pattern
+  (2026-09-26-B/-O); this looked like a wrong-feed/cross-contaminated
+  response. Left both undrafted rather than risk misattributing Dutch
+  political commentary to either account; worth a from-scratch retry
+  (not just a smaller `limit`) next time either handle is checked.
+- 2026-09-30-F: A discovery-pass ESA/Airbus/OHB "European space station
+  studies" lead (surfaced via europeanspaceflight.com and corroborated
+  with SpaceNews and an Italian outlet) turned out to be the SAME event
+  already published same-day as `2026-09-29-esa-orbital-outpost-studies`
+  (ESA's own first-party release, already at the SNR 5 ceiling) --
+  caught only by finalize-sweep's dedup gate, not a pre-draft grep,
+  since the new sources used different company-order phrasing than the
+  existing headline. The new sources still carried a genuinely new fact
+  (SpaceNews's €1B-per-three-year-period development-spending cap, not
+  in ESA's own release) worth keeping: patched into
+  `explainer.why_it_matters` via `updates[].patch` plus `attach`, no
+  bump requested since the item was already at its first-party ceiling.
+  Worth grepping `items.json` by company pair (ESA + Airbus/OHB) before
+  drafting an ESA contract-award lead, not just by topic keywords, per
+  the standing 2026-09-27-E/2026-09-27-L pattern.
+- 2026-09-30-G: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 8 new, 1 updated, 0 held") and a direct read of
+  all eight new items' and the updated item's `snr`/`category`/`impact`
+  fields as the build-health signal.
