@@ -5360,3 +5360,51 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 4 new, 0 updated, 0 held") and the item count
   moving from 801 to 805 as the build-health signal.
+
+## Narrow re-check, ~3h13m gap, unfiltered full source list (2026-10-01, third)
+
+- 2026-10-01-K: WebFetch's own "detailed"/synthesized answer mode on a
+  Launch Library search query (asking it to "give me the launch status...
+  booster info" in prose) returned a fully plausible-reading but
+  unverifiable paragraph with a specific booster tail number (B1101) and
+  landing-zone detail that a follow-up raw-JSON-only fetch of the same
+  endpoint did not carry at all. Treat any WebFetch prompt that asks for
+  a prose "summary"/"detailed info" of an API endpoint as untrustworthy
+  for specific figures; always re-fetch asking verbatim for named JSON
+  fields, and get booster/crew/timing specifics from a directly fetched
+  news article or the actor's own page instead, never from the API
+  endpoint's own prose gloss.
+- 2026-10-01-L: A near-total Crew-13 launch-day queue (dozens of "watch
+  live"/liftoff reaction headlines) buried the one thing actually
+  undrafted: the launch itself. Two prior sweeps today had left Crew-13
+  as "still pre-launch" (2026-10-01-F); once it actually flew, no queue
+  candidate stated the plain fact "it launched" in a draftable way studied
+  on its own (Google News entries all required following a redirect that
+  WebFetch could not resolve). Went straight to nasa.gov/blogs/crew-13/
+  (first-party, passes the blanket `.gov` anti-spoof rule) instead,
+  landing a clean single-source SNR 5. Worth remembering: on a big
+  scheduled-crewed-launch day, check the actor's own blog/newsroom
+  directly rather than trying to resolve Google News redirects for the
+  core "did it launch" fact.
+- 2026-10-01-M: The Crew-13 item's same-company-plus-category dedup
+  heuristic fired against THREE existing human-spaceflight items in the
+  7-day window, not just the obvious transporter-fault one: also NASA's
+  Crew-14 roster-naming item and Boeing/NASA's unrelated Starliner
+  return-to-flight-schedule item (shared company NASA, category
+  human-spaceflight, no other overlap). Three `dedup_distinct` entries
+  cleared it in one pass; worth expecting the heuristic to walk every
+  same-category NASA item in-window, not just the most topically obvious
+  one.
+- 2026-10-01-N: A SpaceNews URL's own page can be labeled "Posted in
+  Press Release" with a company byline (here, Novaspace) rather than a
+  SpaceNews staff byline; checking for that label before classing a
+  SpaceNews piece as `trade` caught a would-be misclassification on the
+  LMT Group/Novaspace Latvia 5G/6G hub story. Classed `wire_pr` instead
+  (base tier 4, no independent pickup found beyond identical wire
+  mirrors on Baltic Times/TelecomTV/UFO Feed/etc., so `corroboration_none`
+  dropped it to a final SNR 3) rather than overclaim `trade`-tier
+  original reporting that was never done.
+- 2026-10-01-O: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 4 new, 0 updated, 0 held") and the item count
+  moving from 805 to 809 as the build-health signal.
