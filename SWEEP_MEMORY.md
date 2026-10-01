@@ -5408,3 +5408,58 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 4 new, 0 updated, 0 held") and the item count
   moving from 805 to 809 as the build-health signal.
+
+## Narrow re-check, ~5h25m gap, unfiltered full source list (2026-10-01, fourth)
+
+- 2026-10-01-P: Launch Library's `/launch/upcoming/?search=<name>` endpoint
+  returns an empty result set, not an error, once a mission has already
+  flown (confirmed on both "NROL-97" still upcoming and "Transporter-18"
+  already flown) -- an empty `upcoming` search is not proof a mission
+  hasn't happened, just proof it isn't in the upcoming queue anymore.
+  Switching to the unfiltered `/launch/?search=` endpoint, or a broader
+  name query ordered `-net` (e.g. "Transporter" across all 21 numbered
+  missions), surfaced the real `status.name: "Launch Successful"` and
+  `net` cleanly. Worth trying the broader/unfiltered query by default
+  whenever an `upcoming`-filtered search comes back suspiciously empty
+  for a mission that might already have flown.
+- 2026-10-01-Q: A scheduled-payload preview item that already published
+  (Google's Project Suncatcher "will launch" piece, Starfish Space's
+  Otter "scheduled to launch" piece, both drafted 2026-09-24) is the SAME
+  event continued once the rideshare mission actually flies, not a new
+  item, even though the originals were announcements rather than the
+  flight itself: patched both via `updates[]` once Transporter-18 launched
+  Oct. 1 (Suncatcher got a full `rescore` to Planet's own first-party
+  confirmation of initial contact, landing SNR 5; Starfish got a plain
+  `attach`+copy patch, no bump, since its trade lead was already at its
+  non-first-party ceiling of 4). Two OTHER payloads on the same
+  Transporter-18 mission (Cowboy Space's Reason-1, Star Catcher's
+  Protostar) had no prior item at all under any id and drafted clean as
+  new items instead -- worth checking per-payload, not per-mission,
+  whether a prior preview item exists before deciding new-item vs.
+  update.
+- 2026-10-01-R: The mandatory fetchable-signals pass again outperformed
+  the queue and a 10-query discovery matrix on a near-total Crew-13/
+  Transporter-18-repost queue: Jeff Foust's bluesky feed surfaced a
+  genuinely undrafted Pentagon OECIF contract for Overview Energy (a
+  third orbital power-beaming company, contract dated Sept. 30, one day
+  outside this run's narrow ~5.5h window) that neither the queue nor a
+  dedicated discovery query ("Overview Energy space-based solar power
+  agreement October 2026" only found it after the lead was already in
+  hand) surfaced independently. Chased per the predates-window
+  convention and dated on the actual Sept. 30 award date.
+- 2026-10-01-S: A RussianSpaceWeb homepage teaser ("Russian satellites
+  appear maneuver toward a commercial Western imager") traced via
+  WebSearch to an already-reported April-June 2026 ICEYE-X36/Kosmos
+  rendezvous-proximity-operations saga (Supercluster, Tom's Hardware,
+  dated as far back as June 16) with no fresh dateable escalation found
+  this run; left undrafted rather than risk restating 4-month-old
+  proximity-operations reporting as new, on top of the standing
+  conflict-analysis-adjacent caution for Russia/Ukraine-linked satellite
+  stories (the item would need to report the ICEYE safety fact, not
+  adjudicate Russian intent, and no fresh fact was found to hang that on).
+- 2026-10-01-T: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 2 updated, 0 held") plus a direct read of
+  all three new items' and both updated items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields, and the sweep log's
+  `snr_movements` entry, as the build-health signal.
