@@ -93,220 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~7.5h gap, unfiltered full source list (2026-08-31)
-
-- 2026-08-31-A: A near-total-duplicate queue (55 post-filter candidates, ~90%
-  Roman Space Telescope launch-day reaction across Google News and Bluesky
-  search, plus SpaceX/Tesla stock speculation) and a fully clean mandatory
-  10-source HTML pass yielded exactly one genuinely new item, surfaced by the
-  discovery pass, not the queue: Firefly CEO Jason Kim's on-record commentary
-  (Yahoo Finance exclusive interview, corroborated by an independently
-  worded SatNews piece) that rocket supply still trails satellite demand
-  despite SpaceX's dominance. Drafted as `kind: "commentary"` and left
-  `companies` as `["Firefly Aerospace"]` only (omitting SpaceX, which is
-  discussed but doesn't act in the item) specifically to avoid the standing
-  same-company-plus-category dedup false positive against the week's many
-  SpaceX `launch`-category items; worth this as a general tactic for
-  commentary/analysis items that merely reference a heavily-covered company
-  in passing.
-- 2026-08-31-B: "US forces strike 2 Iranian rocket launch sites" (a same-day
-  Google News queue entry, several outlets) traced via WebSearch to anti-ship
-  rocket LAUNCHERS with sea mines on Larak Island in the Strait of Hormuz,
-  not an orbital/space launch site -- a pure military-strike headline
-  collision on the word "rocket launch," not a space story at all. Discarded
-  silently rather than treated as a geopolitical/incident candidate.
-- 2026-08-31-C: The already-flagged Sutherland/HIE spaceport duplicate
-  (SWEEP_MEMORY 2026-08-30-N) resurfaced via Andrew Parsonson's Bluesky feed
-  again this run; recognized it as the known duplicate on sight and did not
-  redraft it. That NEEDS-FLORIAN flag is still open as of this sweep.
-- 2026-08-31-D: A signals-pass Bluesky post from Andrew Parsonson ("WTF is
-  going on with the Polish Space Agency?", re: POLSA president Marta Ewa
-  Wachowicz) traced to institutional agency-leadership turmoil with no
-  discrete new fact or stated commercial-space consequence in the post
-  itself -- left undrafted per the standing NASA-STRIDE/ASI-board
-  institutional-disclosure exclusion pattern, not chased further.
-  Separately, Andrew Jones' Galactic Energy Pallas-1 debut-launch post is for
-  a launch scheduled Sept 1 (not yet flown as of this sweep); left undrafted
-  per the standing don't-draft-scheduled-launches rule, revisit next sweep.
-- 2026-08-31-E: A discovery-pass "space company bankruptcy OR layoffs"
-  query surfaced True Anomaly workforce-cut coverage that read current in
-  search snippets but traced on inspection to April 2024 layoffs following
-  the Jackal spacecraft's failed debut, not a 2026 event (more recent
-  reporting says the company has since grown to ~300 employees) -- another
-  instance of the standing stale-resurfacing trap, this time from a
-  bankruptcy/layoffs-focused query rather than a headline-shaped one.
-- 2026-08-31-F: `bun run build` was denied outright by this session's
-  permission gate, continuing the standing pattern since 2026-07-11-B;
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
-  updated, 0 held") plus a `jq` parse check (508 items, up from 507) and a
-  direct read of the new item's `snr`/`snr_trace`/`category`/`impact`
-  fields as the build-health signal.
-
-## Narrow same-day re-check, ~9h gap, unfiltered full source list (2026-08-31, second)
-
-- 2026-08-31-G: A signals.json whitelisted person's own SITE (not just their
-  bluesky/X channel) can be classed `whitelist` directly: Andrew Parsonson's
-  europeanspaceflight.com article on SES awarding OHB a ~€1B IRIS2 MEO
-  satellite-manufacturing contract was led with `class: "whitelist"`,
-  `scoring.whitelist: "observer"` (he's reporting on SES/OHB, not himself),
-  base tier 3 per the "whitelisted account 3 (before floors)" rule, and
-  landed at SNR 4 via the ordinary 2-source corroboration bump rather than
-  the whitelist-floor modifier -- same final score, different code path,
-  worth noting both routes reach 4 on a 2-source whitelisted-lead item.
-  This is a distinct event from the already-published Aug 6 EU/SpaceRISE
-  IRIS2 implementation-agreement item and the Aug 7 SES MEO capital-
-  commitment item (SES's own capex vs. SES awarding a build contract to
-  OHB) despite sharing OHB/SES as companies and landing in a
-  procurement-adjacent category; no dedup false positive fired since the
-  nearest same-company item was 25 days prior.
-- 2026-08-31-H: A same-day PR Newswire release for a startup with no
-  `src/data/registry` entity (Diffraqtion, quantum-imaging cameras for
-  space/EO/SDA payloads) classed cleanly as `wire_pr` (base tier 4) without
-  needing the no-registry-host `informal` workaround (2026-08-05-O and
-  peers) -- `wire_pr` never required a registry match in the first place,
-  only `first_party` does; worth remembering the workaround is specific to
-  companies whose OWN domain needs anti-spoof matching, not to wire
-  distribution platforms.
-- 2026-08-31-I: Vivienne Machi's Aug 28 Aviation Week piece on Trump's
-  executive order creating a Presidential Commission to design a "United
-  States Space Academy" (NASA-led workforce/training academy) was left
-  undrafted: it names no commercial contractor, procurement dollar figure,
-  or market-access change, just a commission to advise on standing up a
-  federal academy -- squarely the standing institutional-disclosure
-  exclusion (NASA-STRIDE/ASI-board/Lok-Sabha precedent, most recently
-  2026-08-06-G) despite being genuinely on-the-record and dated.
-- 2026-08-31-J: Chased two speculative-looking queue leads to ground and
-  discarded both: "Musk clarifies that SpaceX bought APR Energy" is a
-  months-old (May 2026), already-reported acquisition of a mobile gas/
-  diesel-turbine power company for AI datacenters, entirely terrestrial
-  power generation with no orbital space product or service -- out of
-  scope regardless of SpaceX ownership, same logic as the DISH DBS/
-  Wireless terrestrial exclusion. Harvard's 13F disclosure of a $2.2B
-  SpaceX stake was also left undrafted: it's a passive third-party
-  portfolio disclosure, not a transaction by or affecting SpaceX itself
-  (no funding round, 8-K, M&A, or bankruptcy), so it doesn't fit the
-  financial-events scope even though the dollar figure is large and
-  widely reported.
-- 2026-08-31-K: A same-day Global Times/Xinhua story ("world's first
-  space-based computing cloud enters routine on-orbit service," BUPT-led
-  Tiansuan Constellation platform) was judged out of scope and left
-  undrafted rather than held: the Global Times piece's own commercial-angle
-  framing ("shifting from delivering hardware to delivering services") read
-  as an inference from the coverage, not a stated fact from either source,
-  and the underlying event is a research platform reaching steady-state
-  operation for academic/government experiments, not a capability offered
-  on commercial terms. Flag for Florian if in-space computing infrastructure
-  should get an explicit scope ruling either way, since this is the second
-  time this topic has come up (2026-08-05-K's ESPI commentary item was the
-  first) without a clear precedent for the underlying technical milestones.
-- 2026-08-31-L: `bun run build` was denied outright by this session's
-  permission gate, continuing the standing pattern since 2026-07-11-B;
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
-  updated, 0 held") plus a `jq` parse check (510 items, up from 508) and a
-  direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
-  `tags` fields as the build-health signal.
-
-## Narrow same-day re-check, ~2h40m gap, unfiltered full source list (2026-08-31, third)
-
-- 2026-08-31-M: `draft.signalsPass.checked` must list the exact channel URL
-  from `signals-context.ts`'s `fetchable[]` array (the `bsky.app/profile/...`
-  page URL), not the Bluesky public API endpoint actually used to fetch it
-  (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=...`);
-  finalize-sweep rejected all ten API-URL entries in one pass with "not a
-  fetchable whitelisted signal channel." Also, `draft.coverage` must be
-  valid `Category` enum values (e.g. `"product"`), not a tag like
-  `"connectivity"`. Both were mechanical draft-format mistakes, not
-  editorial ones; fixed and the draft passed clean on the second attempt.
-- 2026-08-31-N: A near-total SpaceX-stock/turbine-speculation and
-  Roman-telescope-followup queue (34 candidates, one collapsed) yielded
-  zero drafts from the queue itself; the sweep's only genuinely new item
-  came from chasing the queue's own stock-reaction fallout back to its
-  source. SpaceX's own gas-turbine-blade foundry for AI data centers
-  (Bastrop, TX; announced Aug 29, driving Howmet/GE Vernova stock moves
-  and most of this queue) is out of scope on the same terrestrial-power
-  logic as the 2026-08-31-J APR Energy call: no orbital space product
-  or service, regardless of SpaceX ownership or how much financial-press
-  churn it generates. A same-queue "FT: Musk willing to let Ukraine use
-  Starlink to strike Russia" headline traced, via WebSearch beyond the
-  single-outlet mirror, to conflicting unnamed-source reporting (Kyiv
-  Independent's own sourcing says Musk actually opposes it) with no
-  confirmed Starlink service change -- squarely the 2026-08-01-F
-  conflict-operational-use exclusion, now confirmed on a second, higher-
-  profile instance with a bigger outlet byline (FT) than the original
-  Trump "consider" case.
-- 2026-08-31-O: A Tech Times headline ("ISRO Launches First Geostationary
-  Imager as NavIC Falls Below Four-Satellite Floor") conflates two
-  separate things: ISRO's GISAT-1A/EOS-05 GSLV launch is still scheduled
-  (confirmed via the Launch Library entry, "Go for Launch," Sept 3-4
-  window, not yet flown) and NavIC's constellation dropping below its
-  four-satellite minimum PNT threshold is a stale fact from March 2026
-  (last atomic clock failure on IRNSS-1F) already reported to Parliament
-  in July -- neither is a fresh, dateable event for this sweep. Left both
-  undrafted; NavIC's degradation could be a legitimate predates-window
-  chase candidate later if a source states a concrete commercial/market-
-  access consequence (India mandates NavIC smartphone support), but this
-  run's trigger article was about the future launch, not that angle.
-- 2026-08-31-P: The mandatory HTML pass, an 11-channel signals pass
-  (10 Bluesky accounts via the public API plus Jonathan McDowell's site,
-  which is stale at Aug 1 with no separate bluesky/rss entry in the
-  fetchable list), and an 8-query discovery matrix all traced to already-
-  published ground (Diffraqtion funding, SES/OHB IRIS2, CesiumAstro/
-  1Aardvark, Quantum Space/Bridenstine, Kulasekarapattinam privatization,
-  Hughes Chapter 11, LandSpace booster landing) or were too stale to chase
-  (an Array Labs $20M Series A radar-payload round, actually dated Jan 6
-  2026 despite reading fresh in a "raised $20 million... announced
-  Monday" search snippet -- eight months stale, well past any reasonable
-  predates-window bar for a routine, non-notable funding round). Only
-  find: chasing a Google-News SpaceX-stock-reaction headline
-  ("SpaceX cuts Starlink prices by 50% for residents near Starbase
-  Louisiana") back through WebSearch to Yahoo Finance's direct fetch
-  (quoting both Musk's X post and SpaceX's own "neighbors on Louisiana's
-  Gulf Coast" statement) plus KADN (local Louisiana TV) and a smaller
-  informal blog, landing a clean 3-source SNR 4 `product`/`noise` item
-  dated to the actual Aug 27 announcement, 4 days before this sweep.
-  Neither `starlink.com`'s own support-article page (JS shell, no
-  content on WebFetch) nor `businesswire`-class wire mirrors were
-  needed once a mainstream outlet's direct fetch supplied the verbatim
-  Musk quote and exact per-tier dollar figures.
-- 2026-08-31-Q: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (511 items,
-  up from 510) and a direct read of the new item's `snr`/`snr_trace`/
-  `category`/`impact`/`tags` fields as the build-health signal.
-
-## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-08-31, fourth)
-
-- 2026-08-31-R: WebSearching a company's own domain for a specific story
-  (`site:northstar-data.com` plus the story's keywords) surfaced a
-  different, older press release on a superficially similar topic: a
-  search for NorthStar's own FALCON/reentry-forecasting consortium
-  announcement kept returning an Oct 21, 2025 release about a separate
-  ESA-funded atmospheric-drag-uncertainty consortium (different program,
-  different partners overlap only on "ESA" and "consortium"). Confirmed
-  by fetching the page directly and checking its stated publish date
-  before citing it; no current-dated NorthStar press release for the
-  Aug 31 FALCON story was found, so the item shipped on Via Satellite's
-  trade lead alone (crawl `found_none`, the only other hit being an
-  aggregator, UFO FEED, republishing Via Satellite's own headline
-  verbatim, a wire-rewrite, not independent corroboration). Extends the
-  standing stale-resurfacing trap pattern to same-domain company-site
-  searches, not just generic web search snippets.
-- 2026-08-31-S: Two more companies join the no-registry-entity list
-  (2026-08-04-B's Apex Space precedent): All.Space (owned by York Space
-  Systems, no `src/data/registry` entity for either) and NorthStar
-  Earth & Space (no entity despite recurring in a April SPAC item and an
-  Aug 27 Kepler-hosted-payload item). Both companies' own domains were
-  classed `informal` rather than forced `first_party`, per the standing
-  workaround.
-- 2026-08-31-T: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 3 new, 0 updated, 0 held") plus a `jq` parse check (514 items,
-  up from 511) and a direct read of all three new items' `snr`/
-  `snr_trace`/`category`/`impact`/`tags` fields as the build-health
-  signal.
-
 ## Narrow same-day re-check, ~6h gap, unfiltered full source list (2026-09-01)
 
 - 2026-09-01-A: A near-total-junk queue (31 candidates: Roman Space
@@ -5476,3 +5262,58 @@ a newer entry if a lesson changes.
   treated the CSO case as an outlier rather than a rule to keep extending.
   Flag for Florian if military space-command leadership changes should get
   an explicit ruling either way.
+
+## Narrow re-check, ~6h25m gap, unfiltered full source list (2026-10-01)
+
+- 2026-10-01-A: A near-total-junk ~60-candidate queue (Crew-13 pre-launch
+  coverage across dozens of outlets, SpaceX stock/options chatter, a
+  "rocket launch" headline collision that was actually an anti-ship
+  missile strike on Iranian launchers) yielded zero draftable candidates
+  from the queue itself; all three new items came from the mandatory
+  signals/HTML/discovery legs. `rocketlabcorp.com/updates/` listing page
+  still loads fine but individual `/updates/<slug>/` article pages still
+  403 behind Cloudflare (same gap as 2026-07-05-G, still unresolved);
+  GlobeNewswire carries the same press-release text at a fetchable URL
+  and was used as the `wire_pr` lead instead.
+- 2026-10-01-B: A regional/local outlet's own calculated estimate
+  (NZ Herald computing an approximate ~US$170M contract value from
+  Rocket Lab's published per-launch pricing, for a deal whose press
+  release explicitly left "remaining terms... undisclosed") is the
+  outlet's own inference, not a source-stated figure -- left out of the
+  item copy per the "numbers are copied, not paraphrased" rule even
+  though the outlet itself is a genuine, independently-written
+  corroboration source (confirmed via direct fetch, added Mahia-specific
+  launch-site detail and SpaceX-rideshare-freeze context the press
+  release didn't have). Worth remembering: an outlet being independent
+  enough to count as real corroboration doesn't make its own computed
+  figures citable; check whether a number is stated or derived before
+  copying it.
+- 2026-10-01-C: Blue Origin's CEO going on the record for the first time
+  (Dave Limp at the White House's "Hello, America" summit, Sept 30,
+  confirming the July-reported outside funding round is real,
+  oversubscribed, and still open, while declining to confirm final
+  figures) is a clean `updates[].patch` case layered on top of a
+  "reportedly" lead: patched `what_happened`/`why_it_matters` to add the
+  on-record confirmation and the WSJ's separately-reported $140B
+  valuation climb, attached two mainstream mirrors (AFP via Macau
+  Business, Yahoo Finance/Investing.com citing WSJ) since cnbc.com
+  itself 403'd on direct fetch, and requested no bump since the item's
+  mainstream-led trace was already at its corroboration_2plus ceiling of
+  4. The update's `note` led with the CEO's own on-record status rather
+  than the still-unconfirmed $140B figure, keeping the copy honestly
+  behind the sourcing.
+- 2026-10-01-D: A routine airline-Wi-Fi-rollout milestone (Alaska Air
+  Group, >40% of its combined fleet now Starlink-equipped per a Sept 29
+  investor day, two independently-written trade sources with no stated
+  dollar figure) cleared the inclusion bar at `noise`/`product` per the
+  standing "low impact and strong sourcing are independent axes" rule
+  (2026-09-04-S and peers); fired the same-company-plus-category dedup
+  heuristic against two unrelated Sept 28/29 Starlink Mobile D2C launch
+  items (Kazakhstan, Ecuador) purely on shared SpaceX + category
+  `product` + window, cleared with two `dedup_distinct` entries.
+- 2026-10-01-E: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 1 updated, 0 held") and a direct read of
+  all three new items' and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields, plus four unrelated persistence-bump
+  `snr_movements` in the sweep log entry, as the build-health signal.
