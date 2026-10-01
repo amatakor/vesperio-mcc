@@ -5317,3 +5317,46 @@ a newer entry if a lesson changes.
   all three new items' and the updated item's `snr`/`snr_trace`/
   `category`/`impact`/`tags` fields, plus four unrelated persistence-bump
   `snr_movements` in the sweep log entry, as the build-health signal.
+
+## Narrow re-check, ~8h27m gap, unfiltered full source list (2026-10-01, second)
+
+- 2026-10-01-F: A near-total-junk 104-candidate queue (Crew-13 pre-launch
+  live-coverage across dozens of outlets, SpaceX stock chatter) still
+  yielded three genuinely new seed/pre-seed funding items straight from
+  the queue's own Payload entries (Satlyt, Foundational, Charter Space),
+  none needing a live-page fetch beyond Payload's own `raw_excerpt`/page
+  content. Crew-13 (net 15:10Z), Transporter-18/the Google Suncatcher
+  orbital-test launch carrying it (net 18:18Z) and the NROL-97 Falcon
+  Heavy mission (net 2026-10-02T03:53Z) were all still "Go for Launch"/
+  pre-liftoff per a direct Launch Library fetch at this sweep's `now`
+  (13:56Z) despite dozens of "watch live today" queue headlines; left all
+  three uncovered as scheduled-not-yet-occurred rather than drafting from
+  preview coverage.
+- 2026-10-01-G: A Dealroom.co writeup of the same Charter Space raise
+  stated "US$3.24M seed round" where Payload, the company's own X post,
+  and five other outlets all agreed on $5M -- used Dealroom only as a
+  corroboration source (distinct wording, genuine independent write-up)
+  without citing its conflicting figure anywhere in the item copy, per
+  the standing 2026-09-04-N numeric-variance-trap handling (use the lead
+  source's own stated number, leave a conflicting secondary figure
+  uncited rather than imply agreement or dispute that wasn't stated).
+- 2026-10-01-H: A LiveEO/DLR "INSPECTEO" award surfaced only via a
+  SpaceWatch.Global interview-format piece (Mission-K 2026 podcast
+  writeup) with no stated date or figure; LiveEO's own newsroom listing
+  had no INSPECTEO press release at all (nearest match, "SurfaceFrame,"
+  a Sept 30 DLR-backed project with Universität der Bundeswehr München,
+  also had no fetchable article body, its direct URL 404'd and no
+  cached full text was findable). Left both undrafted per the standing
+  "don't stretch a single unconfirmed mention into an item" rule, same
+  shape as a paywalled trend piece with no verifiable body text.
+- 2026-10-01-I: The ICEYE/Nokia sovereign-LEO-satcom partnership (Oct 1,
+  first-party ICEYE press release, ceiling SNR 5) fired the standing
+  same-company-plus-category dedup false positive against the unrelated
+  Sept 29 ICEYE/Insurity/SpatialKey insurance-data item, purely on
+  shared company (ICEYE) + category (`partnership`) + within 7 days.
+  One `dedup_distinct` entry cleared it, extending the long-running
+  pattern to ICEYE specifically.
+- 2026-10-01-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 4 new, 0 updated, 0 held") and the item count
+  moving from 801 to 805 as the build-health signal.
