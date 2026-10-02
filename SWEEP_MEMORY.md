@@ -5264,3 +5264,47 @@ a newer entry if a lesson changes.
   all three new items' and both updated items' `snr`/`snr_trace`/
   `category`/`impact`/`sources` fields, and the sweep log's
   `snr_movements` entry, as the build-health signal.
+
+## Narrow re-check, ~7h34m gap, unfiltered full source list (2026-10-02)
+
+- 2026-10-02-A: `draft.coverage` must list `category` values, not tags
+  ("eo" was rejected outright with "is not a known category"); use the
+  categories actually touched (`constellation`, `launch`, `contract`,
+  etc.), not domain/modality tags, even though the field reads like a
+  topic summary.
+- 2026-10-02-B: `dedup_distinct` is a top-level field on the newItem
+  object, sibling to `crossfeed`, not nested inside `crossfeed`; nesting
+  it inside `crossfeed` is silently ignored by the dedup gate (the EU
+  Space Shield item still got flagged against the same-day STRA item
+  until the attestation was moved up a level).
+- 2026-10-02-C: Four separate taglines this run tripped the 140-char cap
+  by small margins (141-157 chars) despite reading as reasonably tight
+  one-sentence summaries; the cap is stricter than it looks when a
+  tagline names two actors, a figure and a date together. Worth drafting
+  taglines short on the first pass for any item with more than one named
+  party or a stated figure.
+- 2026-10-02-D: Five Transporter-18 rideshare payloads (Spire's first
+  Boulder-built satellites, IRIDE's Eaglet II completion, Satellogic's
+  first Merlin satellite, Rheinmetall/Argotec's first surveillance
+  satellite, plus the already-covered Suncatcher/Cowboy Space/Star
+  Catcher/Altair-1 payloads) all surfaced as separate first-party or
+  trade press releases dated Oct. 1-2 rather than from one aggregated
+  manifest; confirms the standing 2026-10-01-Q practice of checking
+  per-payload for a prior preview item rather than treating a rideshare
+  mission as one event. None of IRIDE, Rheinmetall or Argotec has a
+  registry entity, extending the no-registry-host workaround to a
+  national space-agency program and a defense-hardware prime entering
+  satellite manufacturing.
+- 2026-10-02-E: A specialist non-space trade outlet (PV Magazine USA)
+  was the only fetchable lead for a genuinely new space-based-solar PPA
+  (Virtus Solis/Brae Systems); SpaceNews covered the same contracts
+  same-day but was paywalled beyond headline/byline, still usable as a
+  confirmed corroboration source per the standing paywall-lede pattern.
+  Latitude Media's independently-reported skepticism (a 2009 PG&E/
+  Solaren space-solar PPA cancelled in 2015, ~4% prior wireless
+  power-transfer efficiency) was folded into `why_it_matters`,
+  attributed, rather than left out for being unflattering to the deal.
+- 2026-10-02-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 9 new, 1 updated, 0 held") and the item count
+  moving from 815 to 824 as the build-health signal.
