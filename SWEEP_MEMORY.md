@@ -5351,3 +5351,55 @@ a newer entry if a lesson changes.
   moving from 824 to 826, plus a direct read of both new items'
   `snr`/`snr_trace`/`category`/`impact` fields and the updated Starliner
   item's five-source `sources` array, as the build-health signal.
+
+## Narrow re-check, ~4h56m gap, unfiltered full source list (2026-10-02, third)
+
+- 2026-10-02-K: A Federal Register notice of intent (SpaceX's SLC-37
+  Supplemental EIS, up to 76 Starship-Super Heavy launches and 152
+  landings/year at Cape Canaveral) sat as a genuine 3-day-old
+  predates-window gap: SpaceNews 429'd and space.com rendered only nav
+  chrome, but `federalregister.gov/api/v1/documents/<doc-number>.json`
+  gave clean verbatim text (the standard .txt/.json-endpoint workaround,
+  2026-09-04-H/2026-09-29-H) and landed a clean single-source SNR 5
+  (official_record ceiling, no `found_none` penalty). Confirms the
+  standing same-company-plus-category dedup false positive extends to
+  SpaceX + `regulatory` matching an entirely unrelated Iran/Starlink
+  item on nothing but those two fields.
+- 2026-10-02-L: A foreign university's own announcement that one of its
+  professors is leaving for industry (ETH Zurich's page on Thomas
+  Zurbuchen, NASA's science chief 2016-2022, joining Blue Origin as SVP
+  of Advanced Concepts) is `informal`, not `first_party` for Blue Origin
+  (wrong actor's domain) -- but still landed a clean SNR 4 off the
+  whitelist-floor modifier alone, with a single whitelisted observer's
+  bluesky post (Marcia Smith, no original reporting beyond linking the
+  news) as the only "second" source. A Mirage News mirror of the
+  identical ETH release collapsed correctly as `wire_rewrite` despite
+  sitting on a completely unrelated domain and covering a third-party
+  company, not the institution itself -- confirms the title-collapse
+  logic isn't limited to a single company's own multi-domain PR network.
+- 2026-10-02-M: A new corroboration-honesty distinction: Space Intel
+  Report's own framing of a US ambassador's Sept. 30 Brussels speech
+  (warning the EU Space Act could burden US space providers) was the
+  ONLY source to mention the Space Act angle at all, even though two
+  other outlets (Yahoo News, ednews.net) independently covered the SAME
+  speech's broader "Buy European" defense-procurement remarks in detail.
+  Did not count the broader-remarks outlets as corroboration for the
+  space-specific claim they never stated, and re-fetched Space Intel
+  Report a second time asking for the exact verbatim sentence (not a
+  WebFetch synthesis) before trusting the specific attribution; landed
+  an honest single-source SNR 2 (`crawl: "found_none"`) rather than
+  stack unrelated-angle coverage as fake corroboration.
+- 2026-10-02-N: Another stale-resurfacing trap from a generic WebSearch:
+  a "Japan's H3 suffers second-stage anomaly, QZS-5 satellite lost"
+  SpaceNews headline read current but traced (via a second, more
+  specific search) to a December 22, 2025 failure, nine months stale
+  and well before this site's effective coverage. Left undrafted.
+- 2026-10-02-O: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  second attempt ("merged 5 new, 1 updated, 0 held") after the first
+  attempt was rejected for a missing top-level `dedup_distinct` on the
+  SLC-37 item (shared company SpaceX + category regulatory against the
+  unrelated Iran item, 2026-10-02-K above); confirmed via a direct read
+  of all five new items' `snr`/`snr_trace`/`category`/`impact` fields,
+  the updated NROL-97 item's four-source `sources` array and patched
+  `what_happened` text, and the sweep log's `corroboration_collapses`
+  entry (2026-10-02-L) as the build-health signal.
