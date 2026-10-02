@@ -7286,3 +7286,202 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `snr_trace`/`category`/`impact`/`tags` fields as the build-health
   signal.
 
+## Narrow same-day re-check, ~6h gap, unfiltered full source list (2026-09-01)
+
+- 2026-09-01-A: A near-total-junk queue (31 candidates: Roman Space
+  Telescope launch reaction, SpaceX/Tesla stock speculation, an
+  off-topic FBI story, weather/storm-name filler) still yielded a
+  seismic item via the queue's own Launch Library entry: Galactic
+  Energy's Pallas-1 (a new, partially-reusable kerolox rocket) flew its
+  debut flight successfully. Led with china-in-space.com (trade, richest
+  technical detail) over Xinhua, since 2026-08-03-F's ruling still holds
+  (english.news.cn is not on the gate's `official_record` allowlist;
+  cite it as `trade`). The extraordinary flag was forced by the gate's
+  own seismic-with-non-first-party-lead rule and landed the item at a
+  sober SNR 3 despite 3 independent sources (china-in-space, Xinhua,
+  TASS) -- a good example of "seismic AND honestly low-scored" per
+  CLAUDE.md's importance/SNR independence rule, not a bug to fight.
+- 2026-09-01-B: A same-day AST SpaceMobile/Rakuten Japan D2C story
+  (queue candidate was a stock-reaction piece rehashing a stale June 24
+  MIC spectrum recommendation) was chased via WebSearch to an Aug 4
+  "commences operations" claim (SatNews, Yahoo Finance, ForeignPolicy
+  Journal), but a same-day (Aug 5) Foreign Policy Journal piece on the
+  identical FCC filing described operations as only "imminent"/"in the
+  near term," not yet commenced -- a genuine tense discrepancy between
+  outlets describing the same underlying FCC notification, with no
+  fetchable first-party AST SpaceMobile or Rakuten press release to
+  settle it (ast-science.com's investor press-releases page and
+  corp.mobile.rakuten.co.jp's press listing both loaded but had no
+  August 2026 entries). Left undrafted rather than risk overclaiming a
+  "commenced" fact the sourcing doesn't cleanly support; flag for a
+  future sweep if a firmer source turns up.
+- 2026-09-01-C: The signals pass's fetchable legs (15 of 17 channels,
+  two skipped as same-person site/bluesky duplicates) outperformed the
+  queue and discovery pass combined this run: Vivienne Machi's
+  Aviation Week author page (whitelisted, `observer`) surfaced a
+  same-day Northwood Space factory-opening story the queue never
+  carried at all. Her articles are AWIN-paywalled per her signals.json
+  note, so only the author-page headline was usable as the whitelist
+  corroboration source; the actual facts were drafted from Northwood's
+  own blog post (classed `informal`, no registry entity to anti-spoof
+  match, per the standing 2026-08-04-B/2026-08-31-S workaround). The
+  whitelist-floor modifier alone took the item from a tier-1 informal
+  base to a final SNR 4.
+- 2026-09-01-D: Jeff Foust's and Andrew Parsonson's bluesky posts about
+  OHB's ~€1B SES IRIS2 MEO contract were both same-day rediscoveries of
+  the already-published `2026-08-31-ses-ohb-iris2-meo-contract` item
+  (merged earlier the same day per SWEEP_MEMORY 2026-08-31-G); confirmed
+  via grep before drafting anything, no update needed.
+- 2026-09-01-E: An 8-query discovery matrix (including a Chinese-language
+  query for the China/non-US leg) surfaced only already-published ground
+  (K2 Space Series D, NASA's June 23 CSDA On-Ramp 2, ESA's European
+  Launcher Challenge, India's Kulasekarapattinam spaceport privatization)
+  -- zero net-new items from this leg, consistent with the standing
+  pattern that discovery is a completeness backstop, not the primary
+  yield source, on narrow same-day re-checks.
+- 2026-09-01-F: `bun scripts/check-feed.ts` was denied outright by this
+  session's permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") plus a `jq` parse check (516 items,
+  up from 514) and a direct read of both new items' `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields as the build-health signal.
+
+## Narrow same-day re-check, ~6h38m gap, unfiltered full source list (2026-09-01, second)
+
+- 2026-09-01-G: The corroboration_2plus modifier needs at least 2 sources
+  tagged `"via": "corroboration"` beyond the lead, not just a total of 2
+  sources: a trade-lead item with exactly one corroboration source (Airbus/
+  Aeolus-2, lead + 1) landed at a flat base-tier SNR 3 with an empty
+  `modifiers` array, while a same-run item with lead + 2 corroboration
+  sources (Pallas-1 update, now 4 total) got the bump. CLAUDE.md's "a second
+  distinct source" wording reads like 2 sources total should count; the
+  deployed scorer apparently wants 2 *additional* ones. Not fudged or
+  worked around, since the math is code, but worth flagging for Florian if
+  that reading is unintended.
+- 2026-09-01-H: A registry organization's `website` field can be a
+  product-line subdomain that fails anti-spoof against the company's own
+  main corporate domain: the registry's Airbus Defence and Space entry
+  records `space-solutions.airbus.com`, and Airbus's own newsroom press
+  release for the Aeolus-2 contract lives on `www.airbus.com` (the actual
+  official corporate site) -- finalize-sweep's gate rejected `first_party`
+  on the apex-domain press release as "not an official first_party host."
+  Reclassed to `trade` and the draft passed. Same shape as the SpaceX
+  ir.spacex.com/s21.q4cdn.com and Redwire ir.rdw.com mismatches
+  (2026-08-05-B/2026-08-06-B), but this is the first case where the
+  registry-recorded domain is the narrower one and the company's actual
+  main site is the one that fails the match.
+- 2026-09-01-I: A discovery pass's rotating "Europe space agency contract
+  satellite" query surfaced two genuinely never-covered, well-documented
+  ESA contract awards sitting in plain sight for months: ESA/Thales Alenia
+  Space's €700M Sentinel-1 Next Generation contract (June 10) and ESA/
+  Airbus's Aeolus-2 wind-lidar contract (July 2), neither drafted under any
+  id despite wide contemporaneous trade coverage (SpaceNews, Aviation Week,
+  Thales/Airbus's own newsrooms). A generic WebSearch synthesis claimed
+  Aeolus-2's initial contract was worth "51 million euros ($58.3 million)";
+  direct fetches of euro-sd.com and defensetalks.com both confirmed no
+  dollar figure appears in either article, so the figure was dropped
+  entirely rather than published on an unverified WebSearch-summary number
+  a source page itself doesn't state (Aeolus-2 shipped as `notable` with no
+  stated value rather than the unverifiable `major`-shaped figure).
+- 2026-09-01-J: A "NIWC Pacific... India... maritime domain awareness"
+  corroboration search for a same-day Vantor Maritime Sentry contract
+  returned two seemingly on-point trade hits (Seapower Magazine, Baird
+  Maritime) that, on direct fetch, turned out to be about a different,
+  older (May 2025) $125M IPMDA initiative naming HawkEye 360, not Vantor,
+  as the contractor -- a new stale/wrong-contractor trap shape (same
+  program acronym, different year, different company) caught only by
+  actually reading the fetched content rather than trusting the search
+  snippet's apparent relevance. The item shipped as a clean single-source
+  first-party SNR 5 (`crawl: "found_none"`, no penalty per the direct-source
+  rule) once the only other hits found were confirmed Business Wire
+  syndication mirrors of Vantor's own release, not independent coverage.
+- 2026-09-01-K: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 6 new, 1 updated, 1 held") plus a `jq` parse check (522 items,
+  up from 516) as the build-health signal. The Sentinel-1 NG item's
+  crossfeed (`sats_planned: 2`, exactly matching the registry's existing
+  value) still auto-queued to `held.json` as a same-metric SNR tie for
+  Florian to adjudicate per SNR_SPEC 6, even though the two values agree;
+  the item published normally per the standing auto-queue-while-publishing
+  rule.
+
+## Narrow same-day re-check, ~6h38m gap, unfiltered full source list (2026-09-01, third)
+
+- 2026-09-01-L: A discovery-pass find can already be covered by the SAME-DAY
+  morning sweep even when the candidate queue re-surfaces it fresh: a
+  Telesat/Cailabs optical-connectivity queue result (via the mandatory
+  Telesat News HTML pass) read as a brand-new Sept 1 release, but grepping
+  `items.json` for "telesat-cailabs" found it already published as
+  `2026-09-01-telesat-cailabs-optical-connectivity` by the 12:16 UTC sweep
+  earlier the same day. Drafted the full item first, including scoring and
+  crossfeed, before the grep check; finalize-sweep's own same-event dedup
+  gate caught it anyway ("same-event match ... draft it as an updates[]
+  entry"), but the 2026-08-07-A lesson (always grep existing items before
+  drafting a signals/discovery find, not just trust the gate) held here too
+  and would have saved the redraft.
+- 2026-09-01-M: The MyRGV.com follow-up on the Brownsville/SpaceX water deal
+  (refund-if-milestones-missed provision) was left undrafted: MyRGV and
+  ValleyCentral (KVEO) both 403'd on every attempt, and the only other
+  direct fetch (KSAT) confirmed the escrow/payment structure already in the
+  published item but explicitly did NOT contain the refund-contingency
+  detail a WebSearch synthesis had surfaced. Per the standing rule (numbers
+  must come from a direct fetch or raw_excerpt, never a WebSearch summary
+  alone), there was no gate-safe way to add this genuinely new-sounding
+  detail this run; worth re-checking MyRGV directly in a future sweep in
+  case the 403 was transient.
+- 2026-09-01-N: Helogen (in-space biomanufacturing, HEL-IOS platform) joins
+  the no-`src/data/registry`-entity list (2026-08-04-B/2026-08-31-S
+  pattern); no first-party lead was needed here since Payload's own
+  "Exclusive" reporting was the only outlet with the October-specific
+  mission detail (a WebSearch corroboration crawl for the exact headline
+  and for the technical/product terms found only the older, distinct
+  May 2026 LambdaVision-partnership announcement, not this story) --
+  shipped clean as a single-source trade-tier item, crawl `found_none`,
+  landing at SNR 2.
+- 2026-09-01-O: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (523 items,
+  up from 522) and a direct read of the new item's `snr`/`snr_trace`/
+  `category`/`impact` fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h56m gap, unfiltered full source list (2026-09-01, fourth)
+
+- 2026-09-01-P: The mandatory fetchable-signals leg outran the queue and
+  discovery pass again: Jeff Foust's bluesky post ("NASA selects Blue
+  Origin to build the Mars Telecommunications Network spacecraft...
+  $700 million. Blue Origin and Rocket Lab competed fiercely") surfaced
+  a genuine, same-hour NASA contract award (nasa.gov's own release,
+  published minutes earlier, confirmed the exact figures) before any
+  trade outlet's write-up existed on the open web -- two WebSearch
+  passes for independent trade pickup came back empty beyond NASA's own
+  page and Blue Origin's older pre-award product pages. Led with
+  nasa.gov as `first_party` and used Foust's post as the sole
+  `whitelist`/`observer` corroboration source, landing a clean SNR 5 on
+  a single first-party lead per the direct-source-ceiling rule (no
+  `found_none` penalty needed since a first-party lead proves its own
+  statement).
+- 2026-09-01-Q: A new same-company-plus-category dedup false-positive
+  shape: Inmarsat Maritime's new Safety Data Hub product launch (company
+  list includes "Viasat" as parent) matched the existing Aug 31 ViaSat-3
+  F3 satellite-enters-service item purely on the shared Viasat corporate
+  family + category `product` + within 7 days, despite one being a
+  software analytics tool and the other a GEO satellite completing
+  in-orbit testing. One `dedup_distinct` cleared it -- extends the
+  standing SpaceX/Blue-Origin/Redwire pattern to a parent-subsidiary
+  company-name overlap, not just literal same-company matches.
+- 2026-09-01-R: All 9 unfiltered HTML sources (Planet Labs, ICEYE,
+  BlackSky, Spire, Gunter's, EUSPA procurement, CNES, Amazon/Kuiper,
+  Telesat) were current with nothing new in this run's ~4-hour window;
+  Amazon's `aboutamazon.com/news/tag/project-kuiper` listing rendered no
+  visible publish dates on this fetch (a new gap, not previously
+  logged), so its sourceHealth evidence had to rely on headline-text
+  matching against already-known Amazon Leo stories rather than a dated
+  freshness check -- worth trying a more specific Kuiper-tagged URL or
+  the RSS-equivalent if one exists, next time this page's dates matter.
+- 2026-09-01-S: `bun run build` was denied outright by this session's
+  permission gate; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 5 new, 0 updated, 0 held") plus a `jq` parse
+  check (528 items, up from 523) and a direct read of all five new
+  items' `snr`/`category`/`impact` fields as the build-health signal.
+

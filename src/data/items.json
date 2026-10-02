@@ -51513,7 +51513,7 @@
       "secondary_urls": [
         "https://www.ufofeed.com/297379/nasa-to-order-more-starliner-missions-and-help-certify-a-new-rocket-to-keep-it-flying/"
       ],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -51525,11 +51525,24 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "2 distinct sources (>=2)"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
-        "single_class_corroboration": "informal"
+        "single_class_corroboration": "informal",
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -51797,7 +51810,7 @@
       "source_url": "https://aviationweek.com/space/satellites/l3harris-builds-xoople-earth-observation-satellites-2028-launch",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -51809,10 +51822,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-02",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -59364,8 +59390,8 @@
       "date": "2026-10-01",
       "headline": "SpaceX launches NASA's Crew-13 on fastest-ever US crewed trip to ISS",
       "explainer": {
-        "tagline": "A Falcon 9 carrying NASA's Crew-13 launched at 11:10 a.m. EDT on what NASA and SpaceX call the fastest-ever US crewed trip to the ISS.",
-        "what_happened": "NASA said a SpaceX Falcon 9 launched the Crew Dragon spacecraft carrying Crew-13 commander Jessica Watkins, pilot Luke Delaney, CSA astronaut Joshua Kutryk and Roscosmos cosmonaut Sergey Teteryatnikov from Space Launch Complex 40 at 11:10 a.m. EDT on October 1, and that the Falcon 9's first stage landed at SpaceX's Landing Zone 40. NASA said the Dragon spacecraft is on an approximately 7-hour, 50-minute journey to the station, with docking at the Harmony module's forward port expected around 7 p.m. EDT, per CBS News.",
+        "tagline": "NASA confirms Crew-13's Dragon docked after a record 7-hour, 55-minute flight, the fastest ever for a US spacecraft to the ISS.",
+        "what_happened": "NASA said a SpaceX Falcon 9 launched the Crew Dragon spacecraft carrying Crew-13 commander Jessica Watkins, pilot Luke Delaney, CSA astronaut Joshua Kutryk and Roscosmos cosmonaut Sergey Teteryatnikov from Space Launch Complex 40 at 11:10 a.m. EDT on October 1, and that the Falcon 9's first stage landed at SpaceX's Landing Zone 40. The Dragon docked at the station's Harmony module forward port at 7:05 p.m. ET, about 7 hours and 55 minutes after liftoff, the fastest trip to the ISS yet for a SpaceX Dragon, per SpacePolicyOnline. The previous fastest Dragon docking was the uncrewed Cargo Dragon CRS-31 at 12 hours; Russia's Soyuz reaches the station faster, in about 3 hours, because of its launch site's more favorable latitude relative to the ISS orbit. Crew-12 is set to depart as soon as October 5 after a short handover.",
         "why_it_matters": "NASA and SpaceX say this is the fastest trip to the ISS yet for an American spacecraft. The flight is the 13th crewed Dragon mission under NASA's Commercial Crew Program and keeps SpaceX as NASA's only flying crew-rotation provider while Boeing's Starliner stays grounded until 2028; a clean launch clears the Dragon oxidizer-valve delay that pushed the mission past its original September target."
       },
       "tags": [
@@ -59381,7 +59407,8 @@
       "source_url": "https://www.nasa.gov/blogs/crew-13/",
       "secondary_urls": [
         "https://www.nasa.gov/blogs/crew-13/",
-        "https://www.cbsnews.com/news/spacex-launch-space-station-crew-6-month-mission/"
+        "https://www.cbsnews.com/news/spacex-launch-space-station-crew-6-month-mission/",
+        "https://spacepolicyonline.com/news/crew-13-arrives-at-iss-as-crew-12-prepares-to-depart/"
       ],
       "kind": "event",
       "snr": 5,
@@ -59409,6 +59436,13 @@
           "class": "mainstream",
           "added": "2026-10-01",
           "via": "corroboration"
+        },
+        {
+          "url": "https://spacepolicyonline.com/news/crew-13-arrives-at-iss-as-crew-12-prepares-to-depart/",
+          "outlet": "SpacePolicyOnline.com",
+          "class": "trade",
+          "added": "2026-10-02",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-01T17:32:25.973Z",
@@ -59428,7 +59462,14 @@
         "origin_url": "https://www.cbsnews.com/news/spacex-launch-space-station-crew-6-month-mission/",
         "width": 620,
         "height": 343
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-10-02",
+          "kind": "copy",
+          "note": "NASA confirms Crew-13 docked after a record 7-hour, 55-minute flight, the fastest ever for a US spacecraft to the ISS."
+        }
+      ]
     },
     {
       "id": "2026-10-01-canada-rocket-company-jeremy-hansen-test-facility",
@@ -59807,6 +59848,221 @@
         "origin_url": "https://pv-magazine-usa.com/2026/09/30/overview-energy-to-develop-homing-beacon-for-space-based-solar-transmission/",
         "width": 1200,
         "height": 664
+      }
+    },
+    {
+      "id": "2026-10-01-spacex-falcon-heavy-nrol-97",
+      "date": "2026-10-01",
+      "headline": "SpaceX flies Falcon Heavy's first mission for the NRO",
+      "explainer": {
+        "tagline": "A Falcon Heavy carrying the classified NROL-97 payload lifted off Oct. 1, the NRO's first flight on the rocket.",
+        "what_happened": "SpaceX launched a Falcon Heavy carrying the classified NROL-97 mission for the National Reconnaissance Office from Launch Complex 39A at Kennedy Space Center at 11:54 p.m. EDT on October 1, per Spaceflight Now. It was the NRO's first payload to fly on Falcon Heavy after 22 missions on Falcon 9. The two side boosters, B1104 and B1072, landed back at Cape Canaveral's Landing Zones 1 and 2, while the new core booster, B1106, was expended; the rocket departed on a north-easterly trajectory. The flight was Falcon Heavy's 14th overall and SpaceX's third launch of the day.",
+        "why_it_matters": "The NRO flying its first Falcon Heavy mission widens Falcon Heavy's government customer base beyond NASA and the Space Force's heaviest payloads, a sign that SpaceX's own heavy-lift capacity remains the default option for the intelligence community's larger spacecraft. For rival heavy-lift providers such as ULA and Blue Origin, it is one more national-security mission that did not go to them."
+      },
+      "tags": [
+        "launch",
+        "heavy-lift",
+        "us-gov"
+      ],
+      "category": "launch",
+      "impact": "notable",
+      "companies": [
+        "SpaceX",
+        "National Reconnaissance Office"
+      ],
+      "source_url": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+      "secondary_urls": [
+        "https://www.techtimes.com/articles/328337/20260930/falcon-heavy-launches-first-nro-spy-satellite-opening-nearly-14b-nssl-lane-2-contract.htm",
+        "https://x.com/NRO_gov/status/2104558518636265794"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+          "reason": "base tier 3 from lead source class \"trade\" (Spaceflight Now)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+          "outlet": "Spaceflight Now",
+          "class": "trade",
+          "added": "2026-10-02",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.techtimes.com/articles/328337/20260930/falcon-heavy-launches-first-nro-spy-satellite-opening-nearly-14b-nssl-lane-2-contract.htm",
+          "outlet": "Tech Times",
+          "class": "informal",
+          "added": "2026-10-02",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://x.com/NRO_gov/status/2104558518636265794",
+          "outlet": "NRO (@NRO_gov on X)",
+          "class": "informal",
+          "added": "2026-10-02",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-02T05:40:11.125Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-01-spacex-falcon-heavy-nrol-97.webp",
+        "credit": "Image: techtimes.com",
+        "origin_url": "https://www.techtimes.com/articles/328337/20260930/falcon-heavy-launches-first-nro-spy-satellite-opening-nearly-14b-nssl-lane-2-contract.htm",
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "2026-10-01-starlink-community-host-program",
+      "date": "2026-10-01",
+      "headline": "Starlink launches Community Host program for shared access",
+      "explainer": {
+        "tagline": "Starlink's new Community Host program lets one subscriber sell hour, day, week and month passes to nearby users.",
+        "what_happened": "Starlink opened a beta for a Community Host program that lets a single Starlink Kit serve nearby users through paid Hour, Day, Week and Month passes, per Starlink's own Community Host page as reported by TeslaNorth. An Hour Pass covers one hour on one device, a Day Pass covers 24 hours on one device, a Week Pass covers seven days on one device, and a Month Pass covers a month on up to four devices; Starlink handles payments, user access and connectivity, leaving the host responsible for installing and running the site. Per BASENOR, the beta opened October 1 to applicants in the US, Mexico and Canada through a Community Beta interest form, and pricing has not yet been published.",
+        "why_it_matters": "The program gives Starlink a way to extend coverage into areas where a full kit and subscription are not economical, using existing hosts as resellers rather than signing up every household directly. For regional ISPs and other community-Wi-Fi and direct-to-device providers, it is a new low-cost distribution channel competing for the same underserved, hard-to-reach customers."
+      },
+      "tags": [
+        "connectivity"
+      ],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "SpaceX",
+        "Starlink"
+      ],
+      "source_url": "https://teslanorth.com/2026/10/01/starlink-community-host-program-passes/",
+      "secondary_urls": [
+        "https://www.basenor.com/blogs/news/spacex-launches-starlink-for-communities-share-internet-earn-income"
+      ],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 1,
+          "source": "https://teslanorth.com/2026/10/01/starlink-community-host-program-passes/",
+          "reason": "base tier 1 from lead source class \"informal\" (TeslaNorth)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "single_class_corroboration": "informal"
+      },
+      "sources": [
+        {
+          "url": "https://teslanorth.com/2026/10/01/starlink-community-host-program-passes/",
+          "outlet": "TeslaNorth",
+          "class": "informal",
+          "added": "2026-10-02",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.basenor.com/blogs/news/spacex-launches-starlink-for-communities-share-internet-earn-income",
+          "outlet": "BASENOR",
+          "class": "informal",
+          "added": "2026-10-02",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-02T05:40:11.125Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        },
+        {
+          "name": "Starlink",
+          "ref": "constellations/starlink"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-01-starlink-community-host-program.webp",
+        "credit": "Image: teslanorth.com",
+        "origin_url": "https://teslanorth.com/2026/10/01/starlink-community-host-program-passes/",
+        "width": 1200,
+        "height": 601
+      }
+    },
+    {
+      "id": "2026-09-28-eu-council-space-threat-response-architecture",
+      "date": "2026-09-28",
+      "headline": "EU Council expands space threat response beyond EU satellites",
+      "explainer": {
+        "tagline": "The Council widened its Space Threat Response Architecture to cover threats against any member state's space assets.",
+        "what_happened": "The Council of the EU adopted Decision 2026/2195 on Sept. 28, revising the 2021 decision that created the EU's Space Threat Response Architecture (STRA), per the European External Action Service. The prior decision covered only threats to EU Space Programme assets such as Galileo and Copernicus; the revision extends STRA to threats against the security of the EU or any individual member state, including anti-satellite attacks, jamming, cyberattacks against space infrastructure, and supply-chain disruptions, and mandates yearly STRA-X exercises to test the mechanism.",
+        "why_it_matters": "STRA coordinates a collective EU response, including the High Representative's power to propose targeted restrictive measures, when a space asset is attacked or interfered with. Widening it from EU-flagged systems to any member state's satellites brings commercial operators headquartered in the EU, not just EU-program satellites, inside the same response framework for jamming, cyberattacks and anti-satellite threats."
+      },
+      "tags": [
+        "europe"
+      ],
+      "category": "regulatory",
+      "impact": "notable",
+      "companies": [
+        "European Union"
+      ],
+      "source_url": "https://www.eeas.europa.eu/eeas/new-eu-space-threat-response-architecture-explained_en",
+      "secondary_urls": [
+        "https://www.globalsecurity.org/space/library/news/2026/space-260928-ec01.htm"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.eeas.europa.eu/eeas/new-eu-space-threat-response-architecture-explained_en",
+          "reason": "base tier 5 from lead source class \"first_party\" (European External Action Service (EU))"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.eeas.europa.eu/eeas/new-eu-space-threat-response-architecture-explained_en",
+          "outlet": "European External Action Service (EU)",
+          "class": "first_party",
+          "added": "2026-10-02",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.globalsecurity.org/space/library/news/2026/space-260928-ec01.htm",
+          "outlet": "GlobalSecurity.org",
+          "class": "informal",
+          "added": "2026-10-02",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-02T05:40:11.125Z",
+      "image": {
+        "src": "/img/items/2026-09-28-eu-council-space-threat-response-architecture.webp",
+        "credit": "Image: eeas.europa.eu",
+        "origin_url": "https://www.eeas.europa.eu/eeas/new-eu-space-threat-response-architecture-explained_en",
+        "width": 1117,
+        "height": 674
       }
     }
   ]
