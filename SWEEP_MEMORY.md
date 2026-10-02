@@ -5308,3 +5308,46 @@ a newer entry if a lesson changes.
   CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
   confirmation ("merged 9 new, 1 updated, 0 held") and the item count
   moving from 815 to 824 as the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-10-02, second)
+
+- 2026-10-02-G: A Polish listed company's own stock-exchange (ESPI)
+  disclosure, republished on a financial-news site (parkiet.com's
+  `komunikaty-espi` section carrying Creotech Instruments' "Uzyskanie
+  łączności z satelitami Mikroglob-2, Mikroglob-3, Mikroglob-4"
+  announcement verbatim), is NOT `official_record` or `first_party`
+  despite functioning like an SEC 8-K exhibit: the anti-spoof domain
+  check needs either the company's own domain or a registered
+  official-regulator domain, and parkiet.com is neither. Classed
+  `trade` (a financial-press mirror of the statutory disclosure) rather
+  than force first-party/official_record through a non-matching domain;
+  worth the same treatment for any future Polish GPW-listed company's
+  ESPI/EBI announcement cited via a news aggregator.
+- 2026-10-02-H: Two independent stale-resurfacing traps in one
+  discovery-pass funding query: a WebSearch for "space company funding
+  round...October 2026" surfaced Stoke Space's Series D extension to
+  $860M and Observable Space's $90M Series A with search-engine framing
+  that read as current, but both traced on a dedicated follow-up search
+  to February and May/June 2026 respectively (Stoke's extension is
+  already superseded by its September 8 $1B Series E, already
+  published; Observable's round is from its original announcement
+  months ago) -- neither was a same-day rewrite, just old news a search
+  aggregator resurfaced with no date discipline. Worth always running a
+  second, narrower date-qualified search before drafting any funding
+  headline a broad discovery query turns up.
+- 2026-10-02-I: An Aviation Week piece ("ESA Boss Sees European Human
+  Spaceflight Taking Decade To Attain," Oct 1, Josef Aschbacher's
+  ~€10B/decade independent-human-spaceflight estimate) traced through
+  three other recycled write-ups (European Spaceflight May 19, SatNews
+  Sept 25, Agence Europe May 30) back to the same Sept 9-10 Paris Space
+  Summit remarks already a month old at this run's `now` -- left
+  undrafted as a resurfaced quote rather than a new Oct 1 statement; no
+  source found a new venue or occasion for Aschbacher to have repeated
+  the figure that day. Flag for a future sweep once ESA's December
+  Ministerial Council actually votes on the program.
+- 2026-10-02-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 1 updated, 0 held") and the item count
+  moving from 824 to 826, plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact` fields and the updated Starliner
+  item's five-source `sources` array, as the build-health signal.
