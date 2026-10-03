@@ -5256,3 +5256,54 @@ a newer entry if a lesson changes.
   fields (832 items, up from 831) and the sweep log's `snr_movements`
   entry (one unrelated persistence bump, Aer Lingus Starlink item 1 to 2)
   as the build-health signal.
+
+## Narrow re-check, ~6h38m gap, unfiltered full source list (2026-10-03, second)
+
+- 2026-10-03-E: A fully clean, zero-new-item sweep: the 54-candidate
+  post-filter queue was almost entirely routine Federal Register
+  aviation/fishery notices (none FCC/satellite-relevant), off-topic
+  CGTN/Futurism/BBC filler, and bot/stock-chatter Bluesky hits; all 5
+  mandatory HTML sources, 14 of 17 signals channels (rotated out two
+  site duplicates of already-checked bluesky accounts plus Parsonson's
+  substack feed) and 4 X-handle searches, and a 10-query discovery
+  matrix covering the full scope (launch, financial/M&A, incident,
+  China, India, Japan, EO contracts, FCC, D2D) all traced to
+  already-published items (Satlyt seed round, WISeSat SPAC close,
+  NorthStar SPAC listing, AT&T/Verizon/T-Mobile D2D JV, Rocket
+  Lab/Synspective 20-launch, ESA EOGS/ICEYE-Leonardo study contracts) or
+  out-of-scope/not-yet-occurred leads: SDA's 4th Tranche 1 mission
+  (confirmed via WebSearch as net Oct. 5, not yet flown, despite a
+  Google News headline reading as settled), CAS Space's Lihong-2
+  pharmaceutical-payload test (explicitly a 2027-planned *suborbital*
+  verification flight per the fetched article, out per the standing
+  orbital-only launch-vehicle scope), and the Space Force's DSP
+  missile-warning constellation retirement after 56 years (confirmed via
+  WebSearch: a pure institutional decommissioning exercise with no named
+  commercial contractor or market-access fact, same shape as the
+  standing SPACECOM-succession/NASA-STRIDE institutional-disclosure
+  exclusion).
+- 2026-10-03-F: A same-source enrichment that needed no new attach: the
+  Sept. 30 FCC NEPA/spectrum item's own already-cited lead (Via
+  Satellite) stated one more fact the original draft never extracted
+  into copy — the same Sept. 30 meeting also issued an FNPRM exploring
+  1,450 MHz more Ku/Ka-band and D-band spectrum, plus bands for
+  non-connectivity uses. Patched `what_happened` with no `attach`/bump
+  (the fact was already in the existing `source_url`, not a new source).
+  Worth re-reading an item's own already-cited source in full when a
+  later pickup (here, advanced-television.com) flags a detail that
+  sounds unfamiliar; it often turns out the original source said it all
+  along.
+- 2026-10-03-G: An Aviation Week author-page headline for a new piece
+  can itself be a WebFetch summarization artifact: a listed headline
+  ("Pentagon Space-Based Target Tracking Constellations Take Shape")
+  could not be found verbatim anywhere via WebSearch, including on
+  Aviation Week's own site (the guessed URL 404'd); left uncovered
+  rather than draft from a possibly-mistitled summary. Worth a direct
+  re-fetch of the author-page listing (not a single AI-summarized pass)
+  before trusting an unusual-sounding headline enough to chase it.
+- 2026-10-03-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") plus a direct `jq`
+  read of the updated item's patched `what_happened`/`snr`/`sources`
+  fields (unchanged SNR 4, no new source added) as the build-health
+  signal.
