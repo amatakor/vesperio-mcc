@@ -93,203 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow same-day re-check, ~9h43m gap, unfiltered full source list (2026-09-02)
-
-- 2026-09-02-A: `applyModifier` (scripts/snr/match.ts) silently no-ops a
-  requested bump that the direct-source ceiling would reduce to zero
-  delta, rather than erroring: requesting `bump: "corroboration_4plus"`
-  on the Bureau 1440 Rassvet item (whitelist-observer lead, base tier 3,
-  already at its ceiling of 4 via the existing `corroboration_2plus`
-  modifier) attached both new sources cleanly but left `snr_trace`
-  unchanged (still one modifier, final 4) -- confirmed correct per the
-  direct-source-ceiling rule (no amount of indirect corroboration from a
-  non-first-party lead reaches 5), not a rejection or a bug; the two new
-  sources still render on the card, the score just can't move further.
-  Worth expecting this same silent-no-op shape (not an error) whenever a
-  bump is requested against an item already sitting at its ceiling.
-- 2026-09-02-B: A Bluesky-queue "Institute for the Study of War" claim
-  (Rassvet second batch: none of 16 satellites reached the planned
-  altitude, ~37.5% fleet-wide operational rate) needed the actual
-  outlets (Euromaidan Press, Newsweek) fetched directly for exact
-  figures rather than trusted from the queue's raw_excerpt fragment
-  alone; both fetched cleanly and independently (different quote sets:
-  Euromaidan led with Beskrestnov/Progress-strike context, Newsweek had
-  the ISW quote and a named Foundation for Defense of Democracies
-  analyst), giving genuine 2-source corroboration beyond the item's
-  existing RussianSpaceWeb/TASS sources.
-- 2026-09-02-C: A "year in review"-style aggregator sentence
-  ("In September, EchoStar agreed to sell its AWS-4 and H-block spectrum
-  licenses... to SpaceX for $17 billion") surfaced by a discovery-pass
-  D2D/spectrum query read as fresh but traced to a September 8, **2025**
-  announcement (confirmed via the original EchoStar 8-K exhibit and
-  Fierce Network/DataCenterDynamics coverage), a full year stale --
-  another instance of the standing stale-resurfacing trap, this time
-  from a retrospective/analysis piece rather than a dated news article.
-- 2026-09-02-D: An MDA Space D2D product-line-expansion story (SatNews,
-  Sept 1) could not be corroborated on MDA's own newsroom listing
-  (`mda.space/news`), which showed no matching release among its most
-  recent items as of this run (last was Aug 27's LaunchPad Ventures
-  announcement) -- shipped anyway on SatNews's own fetched content alone
-  (verbatim CEO quote, specific technical detail) per the standing
-  "weak/thin corroboration is not a hold reason" rule, landing an honest
-  single-source SNR 2; worth a same-metric re-check of mda.space next
-  sweep in case the release was simply not yet indexed on the listing
-  page (the 2026-08-23-E CASC/cmse.gov.cn indexing-lag pattern).
-- 2026-09-02-E: `bun run build` was denied outright by this session's
-  permission gate; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 1 new, 2 updated, 0 held") plus a `jq` parse
-  check (`.items | length`, 529, up from 528 -- note `items.json`'s
-  top-level shape is `{ items: [...] }`, not a bare array, so a plain
-  `jq length` on the file itself returns 1) and a direct read of the
-  new item's and both updated items' `snr`/`snr_trace`/`sources` fields
-  as the build-health signal.
-
-## Narrow same-day re-check, ~6h18m gap, unfiltered full source list (2026-09-02, second)
-
-- 2026-09-02-F: `crossfeed.facts[].field` for a constellation entity is
-  `sats_active_claimed`, not `sats_active` -- finalize-sweep rejected the
-  Axelspace/GRUS crossfeed outright with the full allowed-fields list
-  (`operator, country, sensor_types, sats_launched_total,
-  sats_active_claimed, sats_planned, orbit, first_launch_date,
-  latest_launch_date, status`). Worth checking a registry entity's own
-  JSON keys before naming a crossfeed field rather than guessing from
-  the item's own wording.
-- 2026-09-02-G: A same-headline press release syndicated verbatim across
-  multiple unrelated small outlets (01net.it, a Delaware "Middletown
-  Life" lifestyle site, finanznachrichten.de) traced via WebSearch to a
-  Business Wire release (Axelspace Holdings Corporation's own Axelspace/
-  Airbus Defence and Space imagery-distribution partnership, Sept 1) --
-  neither company's own newsroom had indexed it yet (the standing
-  2026-08-23-E/2026-09-02-D indexing-lag pattern) and no independent
-  trade pickup (SpaceNews, Payload, Via Satellite) turned up on a
-  dedicated search. Classed the mirror site itself `wire_pr` (it is
-  literally the wire text, same logic as the 2026-08-07-L mynewsdesk.com
-  precedent) rather than `first_party` or `informal`, and scored
-  `crawl: "found_none"` honestly (searched, found only more mirrors of
-  the same wire text) rather than stacking the syndicated copies as
-  independent corroboration.
-- 2026-09-02-H: The documented MAGPIE upgrade-path (`patch.source_url` +
-  a full `rescore` block replacing the scoring basis) worked exactly as
-  prompts/update-items.md describes on a live item: ESA's own Sept 2
-  "signing ceremony" page for the already-published July 24 ispace-Europe
-  MAGPIE contract item was a genuinely better lead (first_party vs the
-  original Payload trade lead) with new instrument detail (drill,
-  volatile analyser, ground-penetrating radar, neutron detector) neither
-  original source stated; the item moved from SNR 4 (trade,
-  corroboration_2plus) to SNR 5 (first_party ceiling) cleanly on the
-  first attempt.
-- 2026-09-02-I: `presse.cnes.fr` now 301-redirects to `cnes.fr/presse`
-  (confirmed reachable, current press listing); worth using the new URL
-  directly in a future `fetch-list.ts` source-health check rather than
-  re-discovering the redirect each run.
-- 2026-09-02-J: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 4 new, 1 updated, 0 held") plus a `jq` parse check (533
-  items, up from 529) and a direct read of all four new items' and the
-  updated item's `snr`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
-## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-09-02, third)
-
-- 2026-09-02-K: The harvester queue (57 candidates, 1 collapsed) was almost
-  entirely SpaceX stock-speculation/analyst-price-target chatter and
-  off-topic Futurism/space.com entertainment pieces; every one of this
-  run's 10 new items came from the mandatory signals pass, the 8-source
-  HTML pass, or discovery, none from the queue itself. Confirms the
-  standing 2026-08-06-A/2026-08-09-G pattern continues a month post-IPO.
-- 2026-09-02-L: `.gov.ae` domains are not on the gate's `official_record`
-  allowlist, extending 2026-08-03-F's Xinhua finding to a different
-  country's regulator: citing `tdra.gov.ae` (UAE's telecom regulator) as
-  `official_record` for its own Starlink-license announcement was
-  rejected ("not an official official_record host"); reclassing to
-  `trade` was accepted. Worth assuming any non-US/non-EU government
-  regulator domain will need the same fallback until the allowlist is
-  extended.
-  Also confirms a new dedup false-positive shape: a UAE Starlink
-  regulatory-license item matched TWO unrelated existing Starlink/SpaceX
-  `regulatory`-category items (an Iran crackdown-on-unauthorized-terminals
-  story and an FCC filing about SpaceX's conduct in the Rocket Lab/Iridium
-  merger review) purely on shared company + category + <7-day window, in
-  spite of the item being dated Aug 28 (predates-window chase) rather than
-  same-day. Two `dedup_distinct` entries cleared it in one pass.
-- 2026-09-02-M: A rocket-engine-manufacturer fire (Proton-PM/Perm, Russia)
-  is a distinct scope shape from the 2026-08-05-tsniimash-fire-roscosmos
-  precedent (which hooked into ISS mission control): here the in-scope
-  hook is CLAUDE.md's explicit "manufacturers and bus providers" ecosystem
-  carve-out plus the plant's role building RD-191 engines for the active
-  Angara launch vehicle, not a human-spaceflight/ISS angle. Drafted as
-  `incident`/`notable` with tag `launch`, sourcing the fire fact itself to
-  Meduza and Militarnyi (both fetched directly) and deliberately leaving
-  out the Russian governor's "no drone attack" statement and any
-  strike-related speculation multiple outlets carried, per the standing
-  conflict-analysis exclusion; the commercial hook is production capacity,
-  not the war.
-  Also: two companies (Farcast, York Space Systems) had no
-  `src/data/registry` entity, extending the standing
-  2026-08-04-B/2026-08-31-S/2026-09-01-N no-registry-entity list; both
-  companies' own domains were classed `first_party`/none forced, per the
-  workaround (Farcast's site wasn't fetched directly as a lead since
-  Telesat's own first-party release covered the same facts; York's own
-  site wasn't checked, Payload's trade coverage was thorough enough to
-  lead with).
-- 2026-09-02-N: Two predates-window items (UAE's Aug 28 Starlink license,
-  the FAA's Aug 25 spaceport/launch-corridor RFI) had sat uncovered under
-  any id for 4-8 days despite wide contemporaneous trade pickup; both
-  were found via the mandatory discovery-pass matrix, not the queue or
-  signals pass. The UAE license cleanly hit the `major` impact tier's
-  explicit "regulatory grant... that changes what an operator may sell or
-  where" test, a useful confirming example beyond the FCC-license-mod
-  cases CLAUDE.md already names.
-- 2026-09-02-O: `bun run build` was denied outright by this session's
-  permission gate again, continuing the standing pattern since
-  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 10 new, 0 updated, 0 held") plus a `jq` parse check (543
-  items, up from 533), confirmation both crossfeed facts (Synspective
-  `sats_launched_total`, Electron `flights_total`) landed as
-  `flag_refresh` entries in `registry-candidates.json`, and a direct read
-  of all ten new items' `snr`/`category`/`impact`/`tags` fields as the
-  build-health signal.
-
-## Narrow same-day re-check, ~3h50m gap, unfiltered full source list (2026-09-02, fourth)
-
-- 2026-09-02-P: A NASASpaceflight "state of Rocket Lab" explainer citing
-  an "Aug. 27" completion of Neutron's Hungry Hippo fairing testing was a
-  likely stale-resurfacing trap: the only dated primary sources findable
-  for that exact claim were a Rocket Lab X post from Dec 2025
-  (qualification/acceptance testing complete, fairing en route to LC-3)
-  and a separate one from March 2026 (fluids/avionics integration
-  underway), neither matching "Aug. 27, 2026." Fetching both candidate
-  tweets via the syndication endpoint to check `created_at` was what
-  caught it; a WebSearch summary alone would have taken the article's
-  own claimed date at face value. Left undrafted rather than publish an
-  unverifiable "new" milestone date.
-- 2026-09-02-Q: A new same-company-plus-category dedup false-positive
-  shape: an Axiom Space/NASA Artemis IV "Sortie Suit" spacesuit-design
-  item (category `human-spaceflight`) matched the existing Aug 29
-  Crew-13/Dragon-leak delay item purely on shared company (NASA) +
-  category + within 7 days, despite one being an ISS crew-rotation
-  hardware issue and the other a lunar-lander spacesuit architecture
-  decision. One `dedup_distinct` entry cleared it, extending the
-  standing pattern to NASA itself (not just SpaceX/Blue Origin/Redwire)
-  as the shared-company anchor.
-- 2026-09-02-R: An Ars Technica "Ars has learned" / unnamed-sources
-  report (NASA's internal decision to simplify the Artemis IV spacesuit)
-  is exactly the CLAUDE.md rule-5 case, not the older SWEEP_MEMORY
-  2026-07-05-B tier-2-tracing lesson: CLAUDE.md's held.json section is
-  explicit that weak sourcing is never a hold reason, and an identifiable
-  named outlet standing behind its own unnamed-sources reporting is an
-  "attributable weak source," not an anonymous rumour. Published at an
-  honest single-source SNR (`crawl: "found_none"`, two searches for the
-  "Sortie Suit" name and the decision found nothing beyond recycled
-  Artemis III/AxEMU/Prada coverage) rather than held.
-- 2026-09-02-S: `bun scripts/check-feed.ts` was denied outright by this
-  session's permission gate; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 3 new, 0 updated, 0 held") plus a `jq` parse
-  check (546 items, up from 543) and a direct read of all three new
-  items' `snr`/`category`/`impact`/`tags` fields as the build-health
-  signal.
-
 ## Narrow same-day re-check, ~7h48m gap, unfiltered full source list (2026-09-03)
 
 - 2026-09-03-A: A Jeff Foust bluesky post linking a fresh, same-window
@@ -5403,3 +5206,53 @@ a newer entry if a lesson changes.
   the updated NROL-97 item's four-source `sources` array and patched
   `what_happened` text, and the sweep log's `corroboration_collapses`
   entry (2026-10-02-L) as the build-health signal.
+
+## Narrow re-check, ~6h26m gap, unfiltered full source list (2026-10-03)
+
+- 2026-10-03-A: A same-company-plus-category dedup false positive fired
+  FOUR ways at once on a new AT&T-CEO/Starlink-cellular commentary item
+  (category `product`): against Beeline Kazakhstan's and CNT Ecuador's
+  Starlink Mobile D2D launches, Alaska Air Group's Starlink aviation
+  fleet milestone, and SpaceX's residential Starlink Community Host
+  program, none of which share anything with an AT&T executive's opinion
+  piece beyond company SpaceX + category `product` + the window. Four
+  `dedup_distinct` entries cleared it in one pass; extends the
+  long-running list to commentary items specifically, not just hard-news
+  events.
+  Also confirms a 4-day predates-window chase is worth it for executive
+  commentary that moves a tracked company's stock: AT&T CEO Stankey's
+  Sept. 29 on-record dismissal of SpaceX's Starlink cellular strategy to
+  Axios (axios.com itself 403's) was fully recoverable via Yahoo
+  Finance's direct quotes (crediting the Axios interview) plus CircleID's
+  independently-written technical/regulatory analysis of the same
+  remarks, landing a clean SNR 4 (`mainstream` base + `corroboration_2plus`)
+  despite neither being a space-trade outlet.
+- 2026-10-03-B: A Google News "Starlink helped Jamaica get back online
+  after Hurricane Melissa" (PCMag-bylined) candidate traced via search to
+  wall-to-wall October 2025 coverage (Hurricane Melissa hit Jamaica
+  October 2025, not 2026) -- a one-year-anniversary retrospective
+  resurfacing, not fresh news, caught before any fetch of the actual
+  PCMag page. A Google News "Zelenskyy asked Trump to block Russia and
+  China's Starlink rival" (FT) candidate could not be independently
+  confirmed to add anything beyond the already-published Sept. 30
+  Ukraine/Rassvet-sanctions item: ft.com itself is unfetchable
+  ("unable to fetch", joining arstechnica.com/axios.com/realclearscience.com
+  on the standing always-blocked list), and no secondary source
+  confirmed a China-specific angle; left undrafted as a probable
+  trend-piece restatement rather than guess.
+- 2026-10-03-C: HyImpulse's new UK CAA launch operator licence (Oct 1,
+  SpaceWatch.Global/PA-wire-syndicated local papers, SaxaVord spring-2027
+  target) is genuinely new and distinct from the same-week Omnidea/Orbex
+  item, but the vehicle named throughout (SR75) is HyImpulse's suborbital
+  hybrid-propellant test rocket, not its future orbital SL1 -- left
+  undrafted per the standing orbital-only launch-vehicle scope
+  (2026-09-11-I Avio FD1 / 2026-09-25-I Pluto Aerospace precedent),
+  despite the regulatory/spaceport-milestone framing reading like a
+  stronger scope case than a bare vehicle-demo flight.
+- 2026-10-03-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 0 updated, 0 held") plus a direct `jq`
+  read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields (832 items, up from 831) and the sweep log's `snr_movements`
+  entry (one unrelated persistence bump, Aer Lingus Starlink item 1 to 2)
+  as the build-health signal.

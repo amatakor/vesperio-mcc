@@ -52176,16 +52176,30 @@
       ],
       "source_url": "https://travelupdate.com/aer-lingus-completes-rollout-a321/",
       "secondary_urls": [],
-      "snr": 1,
+      "snr": 2,
       "snr_trace": {
         "base": {
           "tier": 1,
           "source": "https://travelupdate.com/aer-lingus-completes-rollout-a321/",
           "reason": "base tier 1 from lead source class \"informal\" (TravelUpdate)"
         },
-        "modifiers": [],
-        "final": 1,
-        "scorer_version": 2
+        "modifiers": [
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-03",
+            "from": 1,
+            "to": 2,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -61168,6 +61182,78 @@
         "width": 1121,
         "height": 630
       }
+    },
+    {
+      "id": "2026-09-29-att-stankey-starlink-cellular-not-viable",
+      "date": "2026-09-29",
+      "headline": "AT&T CEO: SpaceX's Starlink cellular plan 'not a viable strategy'",
+      "explainer": {
+        "tagline": "Per Axios: AT&T CEO Stankey calls SpaceX's Starlink cellular plan \"not a viable strategy,\" citing cost and legal hurdles.",
+        "what_happened": "AT&T CEO John Stankey told Axios, in an interview published September 29, that SpaceX's plan to pair Starlink satellites with ground-based cellular equipment to compete with wireless carriers is \"not a viable strategy.\" Stankey said satellite service, \"at its best,\" would still not beat fiber's speed over the next decade, that installing cellular base stations alongside Starlink terminals would cost about as much as building a conventional mobile network, and questioned whether such a setup could legally \"radiate cellular signals from somebody's house without their permission.\"",
+        "why_it_matters": "The critique targets the economics and legality of SpaceX's Starlink Mobile direct-to-cell ambitions just as AT&T's own satellite partner, AST SpaceMobile, competes for the same direct-to-device market; AST shares rose as the remarks circulated. The comments also double as a defense of AT&T's own strategy, which leans on fiber and a joint satellite \"dead zone\" venture with T-Mobile and Verizon rather than a Starlink-style cellular buildout.",
+        "for_who": "Wireless carriers and satellite direct-to-device resellers"
+      },
+      "kind": "commentary",
+      "tags": [
+        "connectivity",
+        "direct-to-device"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "AT&T",
+        "SpaceX",
+        "AST SpaceMobile"
+      ],
+      "source_url": "https://finance.yahoo.com/technology/articles/t-ceo-challenges-elon-musk-163025661.html",
+      "secondary_urls": [
+        "https://circleid.com/posts/att-chief-challenges-economics-of-spacexs-mobile-network-strategy"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://finance.yahoo.com/technology/articles/t-ceo-challenges-elon-musk-163025661.html",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Yahoo Finance)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://finance.yahoo.com/technology/articles/t-ceo-challenges-elon-musk-163025661.html",
+          "outlet": "Yahoo Finance",
+          "class": "mainstream",
+          "added": "2026-10-03",
+          "via": "initial"
+        },
+        {
+          "url": "https://circleid.com/posts/att-chief-challenges-economics-of-spacexs-mobile-network-strategy",
+          "outlet": "CircleID",
+          "class": "informal",
+          "added": "2026-10-03",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-03T05:27:14.568Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        },
+        {
+          "name": "AST SpaceMobile",
+          "ref": "constellations/ast-spacemobile"
+        }
+      ],
+      "image": null
     }
   ]
 }
