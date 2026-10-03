@@ -5307,3 +5307,40 @@ a newer entry if a lesson changes.
   read of the updated item's patched `what_happened`/`snr`/`sources`
   fields (unchanged SNR 4, no new source added) as the build-health
   signal.
+
+## Narrow re-check, ~5h12m gap, unfiltered full source list (2026-10-03, third)
+
+- 2026-10-03-I: A same-event escalation within the 7-day window is an
+  `attach`+`bump` update, not a new item, even when the actor moves up a
+  level: Zelenskyy personally telling the FT (Oct. 3) that he has
+  repeatedly asked Trump to sanction Rassvet's backers is the same
+  underlying "Ukraine seeks US sanctions on Rassvet suppliers" event as
+  the Sept. 30 item sourced to Ukraine's Washington envoy, just a more
+  senior speaker with a new fact (China named as a collaborator) three
+  days later. `corroboration_2plus` stacked cleanly on top of the
+  original item's `corroboration_none` penalty (different modifier
+  types, not a saturation conflict), landing SNR 2 -> 3. The turkiyetoday.com
+  Google News candidate itself 404'd on direct fetch; the FT interview
+  (paywalled, standing unfetchable per 2026-10-03-B precedent) was only
+  usable via two independent Ukrainian outlets (Ukrainska Pravda, UNN)
+  that both quoted it directly, re-confirming the paywalled-lede pattern
+  works for a head-of-state interview too, not just corporate press.
+- 2026-10-03-J: A video-description claim ("SpaceX just filed the first
+  real construction permit for Starbase Louisiana, with a bridge, a
+  wharf, and five million cubic yards of dredging in it," Felix
+  Schlang's Oct. 3 upload) could not be pinned to one dateable, fetchable
+  filing: Starbase Louisiana's bridge/wharf/dredging permits are several
+  separate, weeks-old, still-pending items (LA 82 bridge replacements,
+  Army Corps Freshwater Bayou maintenance dredging, a pending Corps test-pit
+  permit) per direct search, not one new filing matching the "5 million
+  cubic yards" figure anywhere. Left undrafted rather than compress an
+  ongoing multi-permit process into a single invented event; the
+  video-description-as-source rule still requires the description's
+  claim to be independently pinnable to a real, dated fact.
+- 2026-10-03-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") plus a direct `jq`
+  read of the updated Rassvet item's patched `headline`/`tags`/`snr`/
+  `snr_trace`/`sources` fields (SNR 2 to 3, two new mainstream sources
+  attached) and the sweep log's `snr_movements` entry as the
+  build-health signal.
