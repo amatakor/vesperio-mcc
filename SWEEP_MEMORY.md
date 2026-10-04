@@ -5192,3 +5192,49 @@ a newer entry if a lesson changes.
   an Oct. 1, 2026 Google News timestamp, and a Fox35 "Space Octopus"
   clip was Kall Morris's (KMI Space) already-published July 29 REACCH
   ISS demo under a new local-TV headline.
+
+## Narrow re-check, ~7h22m gap, unfiltered full source list (2026-10-04, second)
+
+- 2026-10-04-C: Serco's own newsroom (serco.com) 403'd on every direct
+  WebFetch attempt for its new NadirEO Earth-observation-data platform
+  (both the `/eu/` and `/uk/` press pages); no second trade/mainstream
+  pickup was found on a targeted search either, so the item ran single-
+  sourced on a directly-fetched Il Sole 24 Ore piece (`mainstream`,
+  `crawl: found_none`), landing an honest SNR 2. Serco has no
+  `src/data/registry` organization entity, same no-registry-host
+  workaround as Arianespace/Astranis/Aerospacelab.
+- 2026-10-04-D: A direct author-page fetch (Vivienne Machi's Aviation
+  Week listing) confirmed "Pentagon Space-Based Target Tracking
+  Constellations Take Shape" (Oct 2) genuinely exists, resolving
+  2026-10-03-G's suspicion that the headline was a WebFetch
+  summarization artifact -- but a WebSearch synthesis of the piece
+  showed it is itself a recap of already-published AMTI contracts
+  (SpaceX's $4.16B award, the Rocket Lab/STR $615M total), so it was
+  still left undrafted for lack of a new fact, just for a different
+  reason than originally suspected. Worth checking an author-page
+  listing directly before assuming a headline is fabricated, but still
+  verifying the piece's actual content adds anything new.
+- 2026-10-04-E: A government official's own on-the-record threat is a
+  clean `updates[].patch`+`attach` layered onto an existing geopolitical
+  item, not a new item or a bump: Medvedev's Telegram warning that
+  blocking Russia's Rassvet satellites could trigger "full-scale space
+  war" is Russia's direct response to the already-published Ukraine/
+  Zelenskyy Rassvet-sanctions item, so it was folded in as a supplementary
+  fact (no bump requested, since it corroborates nothing about the
+  original sanctions-request claim). Classed the two outlets covering it
+  (A News, Bluewin) `informal` rather than `mainstream`, being general
+  regional portals rather than recognized national press.
+- 2026-10-04-F: A SPAC merger's "signed" announcement and its "closed,
+  began trading" milestone months later is the same `updates[].patch`
+  treatment as a funding round reaching its closing milestone
+  (2026-09-07-M/2026-09-08-L): NorthStar Earth & Space's April 17
+  SPAC-merger-signing item never got its Oct 1 close/Oct 2
+  NYSE-trading-start milestone attached at all until this run surfaced
+  it via the discovery pass; patched with no bump since the original
+  `wire_pr` lead was already at its tier-4 ceiling.
+- 2026-10-04-G: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 2 updated, 0 held") and the item count
+  moving from 832 to 833, plus a direct read of the new item's and both
+  updated items' `snr`/`snr_trace`/`sources` fields as the build-health
+  signal.
