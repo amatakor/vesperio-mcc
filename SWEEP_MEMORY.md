@@ -5276,3 +5276,58 @@ a newer entry if a lesson changes.
   confirmation ("merged 1 new, 0 updated, 0 held") and a direct `jq`
   read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
   fields (834 items, up from 833) as the build-health signal.
+
+## Narrow re-check, ~4h31m gap, unfiltered full source list (2026-10-04, fourth)
+
+- 2026-10-04-K: A satnews.com piece restating Elon Musk's per-satellite
+  Starmind specs (250kW solar power, 10Tbps bidirectional connectivity,
+  a path to 100+Tbps, Vera Rubin NVL72 compute) traced the actual specs
+  to two Musk X posts dated Sept 20 and Oct 1, both outside this run's
+  window and already recycled across teslanorth.com/benzinga/
+  nextbigfuture for two weeks. Rather than draft a stale "recycled
+  talking point" item, folded the verbatim figures into the existing
+  Aug 4 Nvidia-exclusivity item as an `updates[].patch`+`attach`
+  enrichment (no bump requested): that item already named the Vera
+  Rubin NVL72 architecture but had no per-satellite power/throughput
+  numbers, so this is a genuine new fact for the copy even though the
+  underlying tweets are stale and the item was already at its
+  non-first-party corroboration ceiling (adding a 4th/5th/6th source
+  past `corroboration_2plus` is a documented no-op per the climb
+  ceiling, confirmed again here).
+- 2026-10-04-L: SDA's Tranche 1 Transport Layer "A" (Northrop
+  Grumman-built, the program's third vendor after York/Lockheed) is
+  scheduled for Oct. 5, status "Go for Launch" per Launch Library;
+  SpaceflightNow's own "live coverage" page, several Bluesky
+  queue hits, and an Aviation Week author-page piece ("SDA Preps For
+  3rd Tranche 1 Vendor Launch Amid Sat Integration Woes") all cover
+  this same not-yet-flown mission. Left undrafted per the standing
+  don't-draft-scheduled-launches rule; worth checking next sweep for
+  the actual outcome. Note: WebFetch's summary of the SpaceflightNow
+  live-coverage page read as if the page were still accurate hours
+  after a stated past launch time, when the real net was actually a
+  day later — cross-checking Launch Library's own `net`/`status.name`
+  directly (2026-09-26-I's lesson) resolved the ambiguity cleanly.
+- 2026-10-04-M: A GomSpace GOMX-5 (8U CubeSat, Transporter-18,
+  ESA-supported) press release was judged too thin to draft despite
+  being genuinely undrafted and dateable (Oct 1): GomSpace's own
+  release names no customer, contract, or dollar figure, only generic
+  "validates technologies with potential for future customer
+  programs" language; left out per the standing thin-tech-demo
+  exclusion (Planet's GEOINT blog post, LiveEO/INSPECTEO precedents)
+  rather than published on a floor SNR for a non-fact. A Rio Grande
+  Guardian op-ed defending the already-published Aug 29 Brownsville/
+  SpaceX water disannexation deal and a SWISS Airlines Starlink-WiFi
+  launch (genuinely new per-airline milestone, but already a week
+  stale and `noise`-tier, so not chased) were both left unpatched/
+  undrafted for adding no new fact beyond what's already on their
+  respective cards. India's 5.56km QNu Labs/BISAG-N quantum-key-
+  distribution field trial was judged out of scope entirely: it is a
+  ground-to-ground free-space optical link between two terrestrial
+  institutions, no satellite or orbital component at all despite the
+  space-agency-adjacent participants.
+- 2026-10-04-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") and a direct `jq`
+  read of the updated item's patched `explainer.what_happened` and six-
+  source `sources` array (unchanged SNR 4, confirming the ceiling
+  no-op) as the build-health signal.
