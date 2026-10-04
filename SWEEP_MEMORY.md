@@ -5238,3 +5238,41 @@ a newer entry if a lesson changes.
   moving from 832 to 833, plus a direct read of the new item's and both
   updated items' `snr`/`snr_trace`/`sources` fields as the build-health
   signal.
+
+## Narrow re-check, ~4h12m gap, unfiltered full source list (2026-10-04, third)
+
+- 2026-10-04-H: A parody/mocking Bluesky account (quoting "Pravda_Gerashchenko",
+  asking "Is #Medvedev on a three vodka bottle binge today?") garbled the
+  already-published Oct. 4 Medvedev "full-scale space warfare" threat's
+  satellite-program name from Rassvet to "Razryad" -- a new shape of
+  stale-resurfacing trap distinct from the standing wrong-date/wrong-year
+  cases: here the event and date were both correct, only the proper noun
+  was wrong, introduced by an unreliable satirical account rather than a
+  content-mill rewrite. A quick WebSearch for "Medvedev Razryad" confirmed
+  no such program exists and that every real report names Rassvet; left
+  undrafted as the same already-covered item rather than a new Razryad
+  story.
+- 2026-10-04-I: A genuine gap on Kyrgyzstan's first national satellite
+  (Transporter-18 rideshare, Oct. 1) needed reconciling two source
+  families that each named a different "builder": the state-owned
+  program itself is Kyrgyz Asman (established 2026, renamed from
+  "Kyrgyz Sputnik", per the Times of Central Asia's pre-launch piece),
+  while the actual integrator is Kyrgyz Electronics, directed by Ilya
+  Cherny (per Tech Times' post-launch piece) -- not a contradiction,
+  just program-owner vs. contractor, resolved by attributing each name
+  to the source that stated it rather than picking one. Separately, a
+  UAE "cooperation" claim appeared in several wire-style regional
+  outlets with zero detail; Tech Times was the only source to flag
+  explicitly that "the specific nature of that partnership...has not
+  been detailed publicly," which settled the ambiguity (real but vague)
+  rather than treating conflicting silence elsewhere as grounds to drop
+  it. RFE/RL's and one Times of Central Asia article were both
+  pre-launch-dated (future tense, "scheduled to take place"); picked
+  TASS (post-launch, past tense) as the lead instead and used the
+  pre-launch pieces only for background facts that don't change
+  pre/post launch (team size, program history).
+- 2026-10-04-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 0 updated, 0 held") and a direct `jq`
+  read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields (834 items, up from 833) as the build-health signal.
