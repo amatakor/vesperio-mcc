@@ -7867,3 +7867,245 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   items', and the sweep log entry's `snr`/`snr_trace`/`category`/`impact`/
   `sources` fields as the build-health signal.
 
+## Narrow same-day re-check, ~7h43m gap, unfiltered full source list (2026-09-04)
+
+- 2026-09-04-A: The 2026-09-03-M "in-progress at sweep time" ambiguity
+  (ISRO's GSLV-F17/EOS-05 mission, Launch Library status "Launch in
+  Flight" exactly at the prior sweep's `now`) resolved cleanly this run:
+  a fresh Launch Library fetch confirmed `status: Launch Successful`,
+  net 2026-09-03T21:25Z (2:55 a.m. IST Sept 4). isro.gov.in's own mission
+  page confirmed success and the "first imaging satellite from
+  geosynchronous orbit" framing but had no mass/resolution figures; those
+  came from two independently fetched mainstream Indian outlets (Free
+  Press Journal, The Federal), both agreeing on 2,367 kg and 42 m
+  resolution. Deliberately dropped a "world's first geostationary
+  hyperspectral imager" superlative that appeared only in an unofficial
+  ISRO Spaceflight fan-account X post and one WebSearch synthesis, never
+  independently confirmed by a directly fetched page or ISRO's own
+  (unparseable PDF) mission brochure.
+- 2026-09-04-B: A signals-pass find (Payload's Isaacman/McAlister
+  commentary piece, queue-fed) named a specific X post URL
+  (@NASAAdmin/status/2095345993738850760) in its own body text; fetching
+  the syndication endpoint confirmed the post is genuinely from
+  @NASAAdmin (NASA's Administrator title-account) at the right timestamp,
+  but its visible text was a different portion of the same reply thread
+  than Payload's quoted sentences (a Starliner/LEO reply, not the
+  "force an economy out of every NASA endeavor" line Payload quoted).
+  Treated Payload's own verbatim-quoted reporting as the trade lead and
+  the verified X post as `informal` corroboration (confirming the person
+  posted, not itself carrying every quoted sentence) rather than either
+  discard the item or force the syndication text to match Payload's
+  quotes.
+- 2026-09-04-C: Jared Isaacman is a signals.json xSearch entry (handle
+  `rookisaacman`), but the actual post came from a different account
+  (`@NASAAdmin`) not matching that recorded handle -- per the standing
+  2026-08-26-E Kiko Dontchev precedent, classed the post `informal`, not
+  `whitelist`, since only the exact recorded channel earns the floor.
+- 2026-09-04-D: A Space Force Chief of Space Operations change-of-command
+  (Schiess succeeding Saltzman, Sept 3, well-telegraphed since an Aug 6
+  Senate confirmation) was drafted at `noise`/`launch`, matching the
+  standing "well-telegraphed non-scandal succession" precedent (ULA's
+  Peller, 2026-08-17-F) rather than the FCC Space Bureau chief precedent
+  (2026-08-08-H, `notable`): that case turned on the office directly
+  licensing every commercial operator, which CSO doesn't do as narrowly.
+  Led with SpacePolicyOnline (whitelist, observer) since Marcia Smith's
+  own site (also a harvester-fed source) carried the fullest body text;
+  SpaceNews's matching headline was paywalled beyond one paragraph.
+- 2026-09-04-E: Extends the standing "check items.json before drafting a
+  signals/discovery find" practice to a fully clean sweep: every single
+  substantive lead from the fetchable signals channels this run (PLD
+  Space, HyImpulse, Synspective, Boeing/O3b mPower, Axiom Sortie Suit,
+  Sierra Space Dream Chaser) had already been published by an earlier
+  same-day sweep, confirming 2026-09-01-L/2026-09-03-K's pattern that a
+  narrow re-check following an active prior sweep looks thin by design.
+  A NOAA RODB-2 $6.4M Spire+PlanetiQ radio-occultation award surfaced by
+  the discovery pass's EO-procurement leg was also already published
+  (same combined figure as the Aug 14 item's $3.7M+$2.7M split).
+- 2026-09-04-F: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 5 new, 0 updated, 0 held") plus a `jq`
+  parse check (559 items, up from 554) and a direct read of all five new
+  items' `snr`/`category`/`impact`/`tags`/`companies` fields as the
+  build-health signal.
+
+## Narrow same-day re-check, ~6h15m gap, unfiltered full source list (2026-09-04, second)
+
+- 2026-09-04-G: A "final" version of a federal regulatory filing can
+  supersede an already-published "draft" item under the SAME docket
+  months later without being a dedup match: the FAA's Sept 4 Federal
+  Register notice for the Final Tiered EA and FONSI/ROD (Docket
+  FAA-2026-6968) covers the identical Pacific reentry-zone scope as the
+  already-published July 14 draft-EA item. Treated as an `updates[]`
+  entry with `patch.source_url` + a full `rescore` (the MAGPIE upgrade
+  pattern, 2026-09-02-H) rather than a new item, keeping the July 14
+  notice as a secondary `rescore.sources[]` entry so it isn't dropped
+  from the card (a bare rescore with only the new URL would have
+  silently deleted the old one, since `rescore` fully replaces
+  `merged.sources`, unlike `attach` which only appends). Deliberately
+  did NOT bump impact to `major` even though a FONSI/ROD reads like a
+  regulatory decision: the fetched notice states SpaceX "must still
+  obtain a modification to their existing vehicle operator license" to
+  actually use the cleared zones, so the market-access grant itself
+  hasn't happened yet. Left impact at `notable` per the "when torn
+  between two levels, pick the lower one" rule.
+- 2026-09-04-H: federalregister.gov's own document pages 403/redirect-loop
+  WebFetch directly (`unblock.federalregister.gov`, a scraping-block
+  page), but its public JSON API
+  (`federalregister.gov/api/v1/documents/<doc-number>.json`) and its
+  full-text XML endpoint
+  (`federalregister.gov/documents/full_text/xml/<year>/<month>/<day>/<doc-number>.xml`)
+  both fetched cleanly with real body text (docket number, dates,
+  geographic scope, comment counts) -- worth trying these two endpoint
+  shapes first for any future federalregister.gov citation instead of
+  the blocked HTML document page.
+- 2026-09-04-I: An ASD Eurospace "GALAXY" report (15 anonymized European
+  space-industry CEO interviews on procurement/institutional-demand
+  complaints) had two independent trade-press writeups (Payload, named
+  author, on-record Marco Fuchs quote; Space Intel Report, different
+  byline, two days earlier, added the Jean-Marc Nasr/interview-window
+  detail neither other source stated) -- drafted as `kind: "commentary"`
+  (industry-association policy-recommendation piece, same shape as the
+  2026-08-05-K ESPI precedent) rather than a factual event, category
+  `procurement` since the core complaint is geo-return/institutional
+  demand. Landed `corroboration_2plus` at SNR 4 despite both sources
+  being `trade` class (no first-party GALAXY report page was found to
+  lead with).
+- 2026-09-04-J: The harvester queue (92 candidates) was almost entirely
+  EOS-05 launch reaction/commentary pieces (dozens of Indian outlets,
+  same launch already resolved in the prior sweep per 2026-09-04-A) and
+  SpaceX stock-speculation chatter; zero queue candidates survived past
+  the scope filter. Both of this run's items came from the HTML/signals
+  legs (europeanspaceflight.com surfacing the queue-independent
+  federalregister.gov Google News entry indirectly via the FR feed
+  itself, not the queue) and a discovery-pass-adjacent direct check of
+  the Federal Register feed. Confirms the standing EOS-05/SpaceX-stock
+  low-yield-queue pattern extends to single-story wire pileups, not
+  just ongoing background chatter.
+- 2026-09-04-K: A pre-launch ESA/EU-Space explainer ("Sentinel-3C: Europe
+  is launching its next Earth observation satellite," queue-fed) traced
+  via WebSearch to a launch scheduled for September 14, 2026, nine days
+  out -- left undrafted as a preview, not an event; the actual launch
+  will be a candidate on its own date. Isar Aerospace's second Spectrum
+  test flight ("Onward and Upward," europeanspaceflight.com Sept 3
+  piece) was also still pre-launch at this run's `now` (net 20:00 UTC
+  Sept 4, status "To Be Confirmed" on Launch Library), same treatment.
+- 2026-09-04-L: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 1 updated, 0 held") plus a `jq` parse check (560
+  items, up from 559) and a direct read of the new item's and updated
+  item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+
+## Narrow same-day re-check, ~5h24m gap, unfiltered full source list (2026-09-04, third)
+
+- 2026-09-04-M: A months-old, never-covered gap surfaced from the queue's
+  Nikkei Asia "Rakuten to debut satellite-to-cell service with Starlink
+  rival AST" entry, which itself traced (via WebFetch) to a Sept 5, 2026
+  JST-dated recap: fetching that recap alone would have been a stale-
+  resurfacing trap (the JV formation, $922-926M Japanese-government J-LEO
+  funding commitment, and 700MHz regulatory recommendation all date to
+  June-July 2026). The genuinely undrafted event underneath the recap was
+  AST SpaceMobile's Aug 4 commencement of active D2C operations in Japan
+  (SatNews), AST's first commercial market outside the US -- grepped
+  items.json for "rakuten"/"ast spacemobile" first and confirmed zero
+  coverage of the JV, the funding, or the Aug 4 launch under any id,
+  despite four AST BlueBird/earnings items already on the site. Chased
+  and dated to Aug 4 per the standing predates-window convention, landing
+  `category: product`, `impact: major` (first-of-kind capability on
+  commercial terms, per CLAUDE.md's major-tier test). ast-science.com's
+  blog/investor press-release pages were both JS shells with no visible
+  post list (same shape as the standing AST IR-subdomain thinness,
+  2026-08-11-D); Rakuten's own corp.mobile.rakuten.co.jp press listing
+  was checked directly and had no matching release either. Led with
+  SatNews (trade) and Light Reading (trade, the July 1 funding piece) for
+  `corroboration_2plus` (SNR 4) rather than force a first-party lead
+  through a dead-end domain.
+- 2026-09-04-N: Confirms a numeric-variance trap worth flagging: three
+  outlets covering the same $150 billion yen Japanese government
+  commitment stated three different rounded dollar figures on direct
+  fetch ($922M Light Reading, $912M Investing.com, $926M SatNews) despite
+  describing the same underlying 150bn yen figure -- almost certainly
+  different yen/dollar conversion snapshots at different publish dates,
+  not different facts. Used only the lead source's (SatNews) own stated
+  figure in the item copy rather than blend or average across outlets,
+  per the standing "numbers are copied, not paraphrased" rule; the
+  other outlets' slightly different figures were left uncited to avoid
+  implying disagreement where none was stated.
+- 2026-09-04-O: A signals-pass Aviation Week find (Vivienne Machi's Sept 4
+  "Orbital Cargo Firms Aim To Make Space Reentry Routine," on Outpost and
+  reentry-as-a-service startups) was left undrafted as a paywalled general
+  trend/analysis piece with no single dateable event, corroborating and
+  extending the standing 2026-09-03-A paywall-limits pattern to a
+  signals-channel find rather than a Bluesky-linked one.
+- 2026-09-04-P: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 0 held") plus a `jq` parse check (561 items,
+  up from 560) and a direct read of the new item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+
+## Narrow same-day re-check, ~3h38m gap, unfiltered full source list (2026-09-04, fourth)
+
+- 2026-09-04-Q: `idirect.net` (ST Engineering iDirect's own newsroom) has
+  no `src/data/registry` organization entity at all, so its own press
+  release failed the anti-spoof gate as `first_party`; classed `informal`
+  instead and led with Via Satellite's independent write-up (`trade`)
+  covering the same INT3000 5G NR-NTN modem pilot, per the standing
+  2026-08-05-O/2026-08-09-A no-registry-host pattern extended to a new
+  ground-segment vendor.
+- 2026-09-04-R: A company's own newsroom copy and its PR Newswire wire
+  mirror shared the EXACT SAME headline text
+  ("ST Engineering iDirect Demonstrates Multi-Waveform 5G NR-NTN User
+  Equipment Pilot") even though the two live on completely different
+  domains (idirect.net vs prnewswire.com); finalize's title-SimHash
+  correctly collapsed them into one `wire_rewrite` corroboration unit
+  (`state.json`'s `corroboration_collapses`), confirming the collapse
+  logic works across unrelated domains, not just same-domain URL variants
+  (extends 2026-08-10-D).
+- 2026-09-04-S: Two genuinely new, on-scope product-demo items (ST
+  Engineering iDirect's 5G NR-NTN modem pilot, Sparkle/Hellas Sat's
+  quantum-safe satellite link) both had wide, independently-written trade
+  coverage (Via Satellite, Mobile Europe, The Quantum Insider,
+  SatellitePro ME) despite neither ever reaching `major`/`notable`
+  impact -- routine ground-segment/GEO-operator technology
+  demonstrations with no stated commercial deployment or customer still
+  clear the inclusion bar at `noise`/`product` per the standing "nothing
+  on-scope is withheld for sourcing reasons" rule; low impact and strong
+  sourcing are independent axes just like low SNR and high impact are.
+- 2026-09-04-T: A trend/wrap-up piece bundling several already-published
+  facts (NASASpaceflight's "Blue Origin expands test and launch sites
+  across the Cape," covering the already-covered LC-36 rebuild and
+  Stennis B-2 test-stand stories) plus one new but explicitly
+  unconfirmed detail (a "MILA Stage 2" second-stage test site inferred
+  from lightning-tower/crane permit filings, with the outlet itself
+  saying "it is still not known exactly what kind of testing this
+  facility will support") was left undrafted as too speculative to
+  publish as its own fact, rather than force a thin permit-filing
+  inference into copy.
+- 2026-09-04-U: A repeated launch-attempt scrub (Isar Aerospace's Spectrum
+  second test flight, 5th scrubbed attempt as of Sept 4, no company
+  statement and only "weather may have played a role" from the outlet
+  itself) was left undrafted: CLAUDE.md's "launches are never discarded
+  as routine" ruling covers launches that occur, not non-events with an
+  unconfirmed cause; worth chasing once the flight actually occurs or a
+  scrub gets a company-confirmed technical cause.
+- 2026-09-04-V: An Aviation Week piece titled "Three Additional
+  Space-Based AMTI Vendors Revealed" (Sept 4, signals-pass find) traced
+  via WebSearch to the SAME $615M Rocket Lab/STR/unidentified-third-vendor
+  SB-AMTI award already published under
+  `2026-08-04-rocket-lab-str-amti-contracts` -- the third vendor is still
+  described as unidentified in every source checked, so nothing was
+  actually revealed beyond the existing item; left undrafted rather than
+  treated as an update, since no new fact was found to attach.
+- 2026-09-04-W: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 2 new, 0 updated, 0 held") plus a `jq`
+  parse check (563 items, up from 561) and a direct read of both new
+  items' `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/
+  `sources` fields and the sweep log entry's `corroboration_collapses`
+  as the build-health signal.
+

@@ -1,24 +1,24 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-10-04T21:57:42.953Z",
-  "window_start": "2026-10-02T17:28:07.584Z",
+  "generated_at": "2026-10-05T05:15:47.333Z",
+  "window_start": "2026-10-02T22:09:21.124Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-01T22:42:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "BlackSky IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-09-30T12:30:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Vantor (ex-Maxar Intelligence)",
@@ -27,6 +27,14 @@
       "entry_count": 20,
       "newest_entry": "2026-09-29T00:00:00.000Z",
       "detail": "20 entries"
+    },
+    {
+      "source_name": "Synspective",
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -65,7 +73,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-03T21:02:10.000Z",
+      "newest_entry": "2026-10-04T23:28:48.000Z",
       "detail": "10 entries"
     },
     {
@@ -241,16 +249,16 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-03T22:11:23.000Z",
+      "newest_entry": "2026-10-04T22:49:58.000Z",
       "detail": "10 entries"
     },
     {
       "source_name": "SpaceflightNow",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-04T20:33:26.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "Via Satellite",
@@ -263,10 +271,18 @@
     {
       "source_name": "SpacePolicyOnline",
       "ok": true,
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
+    },
+    {
+      "source_name": "Space.com",
+      "ok": false,
       "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-04T19:58:01.000Z",
-      "detail": "10 entries"
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "dead re-probe: 200 but no entries parsed"
     },
     {
       "source_name": "Ars Technica space",
@@ -361,7 +377,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-04T21:45:00.000Z",
+      "newest_entry": "2026-10-05T04:52:49.000Z",
       "detail": "100 entries"
     },
     {
@@ -385,7 +401,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-03T13:48:49.000Z",
+      "newest_entry": "2026-10-05T01:31:59.000Z",
       "detail": "100 entries"
     },
     {
@@ -393,7 +409,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-04T16:47:08.000Z",
+      "newest_entry": "2026-10-05T00:46:08.000Z",
       "detail": "100 entries"
     },
     {
@@ -408,16 +424,16 @@
       "source_name": "Futurism",
       "ok": true,
       "http_status": 200,
-      "entry_count": 91,
-      "newest_entry": "2026-10-04T20:03:00.000Z",
-      "detail": "91 entries"
+      "entry_count": 92,
+      "newest_entry": "2026-10-05T00:03:00.000Z",
+      "detail": "92 entries"
     },
     {
       "source_name": "Bluesky search: spacex launch",
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-10-04T21:19:20.566Z",
+      "newest_entry": "2026-10-05T04:21:23.168Z",
       "detail": "25 entries"
     },
     {
@@ -425,75 +441,245 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-10-04T20:40:34.558Z",
+      "newest_entry": "2026-10-05T03:03:04.857Z",
       "detail": "25 entries"
     },
     {
       "source_name": "Bluesky search: earth observation satellite",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 25,
+      "newest_entry": "2026-10-04T17:09:34.564Z",
+      "detail": "25 entries"
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 9,
-      "newest_entry": "2026-09-15T04:00:08.000Z",
-      "detail": "9 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-30T17:09:30.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T16:48:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-29T02:05:03.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-03T16:57:38.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     }
   ],
   "candidates": [
+    {
+      "id": "55007a0640d1c18c",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPbF85ZDZZOElNSTBPd1NaNFREVUQ5cW9sbTl2NWhpaWQxSk1OMnlzMHRGLTlDTmJXOUkxOWRQcmtYY1AwYWh4MjlVa3cxTU53OHVVZEplUEtXM21KQjlUT29pN2czMXJ0Z3psQm1zNnloa1pzMDBzMndsZmpkSjVsSHluU3lsTUlaZHNoNTVEdl9qVHhCd3JHYXU4N1hMMXJJSnFHWFAxdHRqXzRBYXRCTGVyTlFJVDgzOExwdVNGd1l6VjhOMVg0SFBOeVhvbDVhWld6ZkRadWxCeW5hZ2ttbDI0M3RtVDQtNkc2T0xDNzFHeXNUQzRZNVZ3?oc=5",
+      "title": "ASTS Stock Edges Up Overnight: Retail Traders Seize On T-Mobile Dropping Starlink Name From Satellite Page - TradingView",
+      "published_at": "2026-10-05T04:44:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi-gFBVV95cUxPbF85ZDZZOElNSTBPd1NaNFREVUQ5cW9sbTl2NWhpaWQxSk1OMnlzMHRGLTlDTmJXOUkxOWRQcmtYY1AwYWh4MjlVa3cxTU53OHVVZEplUEtXM21KQjlUT29pN2czMXJ0Z3psQm1zNnloa1pzMDBzMndsZmpkSjVsSHluU3lsTUlaZHNoNTVEdl9qVHhCd3JHYXU4N1hMMXJJSnFHWFAxdHRqXzRBYXRCTGVyTlFJVDgzOExwdVNGd1l6VjhOMVg0SFBOeVhvbDVhWld6ZkRadWxCeW5hZ2ttbDI0M3RtVDQtNkc2T0xDNzFHeXNUQzRZNVZ3?oc=5\" target=\"_blank\">ASTS Stock Edges Up Overnight: Retail Traders Seize On T-Mobile Dropping Starlink Name From Satellite Page</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TradingView</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "2b8f913d600aeaf6",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/tedichasse.bsky.social/post/3mx42vej65s22",
+      "title": "@tedichasse.bsky.social on Bluesky",
+      "published_at": "2026-10-05T04:21:23.168Z",
+      "raw_excerpt": "arstechnica.com/space/2026/1...",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "26570c25950ddd12",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1FUktsb3V0OVJ4T3RQSjR1TmltSldWMEtLcTQ5aGN3NHZKVG91UEIyTEs4WmwtOTl2TEVtYTBaTW1ucW1VRGo4WVZXbHNoVkNYcUZSWURqbmkwM1gweXlJV2VaNG9nWEN4TF9FN3p5NmJHaEx5YUpR?oc=5",
+      "title": "$SpaceX (SPCX.US)$ - Moomoo",
+      "published_at": "2026-10-05T03:49:08.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMid0FVX3lxTE1FUktsb3V0OVJ4T3RQSjR1TmltSldWMEtLcTQ5aGN3NHZKVG91UEIyTEs4WmwtOTl2TEVtYTBaTW1ucW1VRGo4WVZXbHNoVkNYcUZSWURqbmkwM1gweXlJV2VaNG9nWEN4TF9FN3p5NmJHaEx5YUpR?oc=5\" target=\"_blank\">$SpaceX (SPCX.US)$</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moomoo</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "a533429f538883e5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/mascarpone79.bsky.social/post/3mx3ynfulsd2j",
+      "title": "@mascarpone79.bsky.social on Bluesky",
+      "published_at": "2026-10-05T03:41:04.268Z",
+      "raw_excerpt": "Falcon 9 is vertical at pad 4E in California ahead of tomorrow’s launch of the Space Development Agency's fourth Tranche 1 data transport mission. Liftoff is targeted for 1:17 a.m. PT → spacex.com/launches/sda-t… Source: #SpaceX",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "6c7cfa302d755d56",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/nasa-images-bot.bsky.social/post/3mx3xwfu4d62q",
+      "title": "@nasa-images-bot.bsky.social on Bluesky",
+      "published_at": "2026-10-05T03:28:12.063Z",
+      "raw_excerpt": "NASA's SpaceX Crew-13 Isolated Launch and Landing Views https://images.nasa.gov/details/KSC-20261001-MH-AJN01-0001-SpaceX_Crew_13_Isolated_Launch_and_Landing_Views-M26153",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "2a728005fe90a04b",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/airpronews.bsky.social/post/3mx3xq6xrhq27",
+      "title": "@airpronews.bsky.social on Bluesky",
+      "published_at": "2026-10-05T03:24:43.459Z",
+      "raw_excerpt": "NASA has assigned four astronauts to SpaceX Crew-14, targeting a spring 2027 launch to the ISS. It will be the 14th commercial crew rotation flight SpaceX has conducted for NASA. #aerospace #SpaceX airpronews.com/2026/10/04/n...",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "13388a09a6339e90",
+      "source_name": "Bluesky search: satellite constellation",
+      "url": "https://bsky.app/profile/peotuqad.com/post/3mx3wjike2u22",
+      "title": "@peotuqad.com on Bluesky",
+      "published_at": "2026-10-05T03:03:04.857Z",
+      "raw_excerpt": "📆 FORECAST: Forecast: 7 days ahead (75%) • Space Program Development ↑ 80% Expect further announcements or details regarding Iran's satellite constellation program, potentially including launch timelines or technical specifications, following the stated shift from single satellites to",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "651960d83a881afb",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQQUlHRm5vcDZUSHk0UmFsbUhWaFpMMURnLUN3ek9iZUF6b1M0bHd4WWtVNHBiUWl3Z0o1X3BJVG5UMkJ3dWdfbllITElTQlRuMlJuZHA0WDRiRVFORzJSeVd6YWRPRGtScUQ0ODgxMjlWRDFHWnhTNEoyU1FCMnB4NFRsd1hNNlgzX2k1Q3pzVGRfd0EyOWNXMg?oc=5",
+      "title": "Could Investing $5,000 in SpaceX Help Make You a Millionaire? - The Motley Fool",
+      "published_at": "2026-10-05T02:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQQUlHRm5vcDZUSHk0UmFsbUhWaFpMMURnLUN3ek9iZUF6b1M0bHd4WWtVNHBiUWl3Z0o1X3BJVG5UMkJ3dWdfbllITElTQlRuMlJuZHA0WDRiRVFORzJSeVd6YWRPRGtScUQ0ODgxMjlWRDFHWnhTNEoyU1FCMnB4NFRsd1hNNlgzX2k1Q3pzVGRfd0EyOWNXMg?oc=5\" target=\"_blank\">Could Investing $5,000 in SpaceX Help Make You a Millionaire?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "9ac68828c0a90d63",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mx3t6a6eoq2d",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-05T02:03:06.186Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 05/0200 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z NASA CREW-12 REENTRY PRIMARY: 10/08/26 1515Z-1545Z BACKUP: 10/09/... More info in image. FAA Details.",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "94051aff05c44739",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/ownfeed.bsky.social/post/3mx3rqqsh5c2w",
+      "title": "@ownfeed.bsky.social on Bluesky",
+      "published_at": "2026-10-05T01:37:40.069Z",
+      "raw_excerpt": "🇺🇸 SpaceX just made getting to the International Space Station look almost like a commute. Crew-13’s Dragon went from launch to docking in just 7 hours and 55 minutes, setting a new U.S. record for the fastest trip from Earth to the ISS.",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "6019769244c55a0a",
+      "source_name": "Google News: incidents + regulation",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNOVNoVmdQd1VHaE1XSFlYQ0lTRDVnMkNRWVU1MDdLcXc5VGdhcEo5Wm1kVFBtaDJBZTgzanlCTkFxZHM3ZGhkS19NN1lFOUgxYnJIdHotbU9xT2M5dWFfeW9CejVwQVlJX1c0X05nYmxhTTlGR0p2eGhaZmFjNWZndkFR?oc=5",
+      "title": "Space Debris Is Becoming an Urban Infrastructure Risk - urbanacres.in",
+      "published_at": "2026-10-05T01:31:59.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiggFBVV95cUxNOVNoVmdQd1VHaE1XSFlYQ0lTRDVnMkNRWVU1MDdLcXc5VGdhcEo5Wm1kVFBtaDJBZTgzanlCTkFxZHM3ZGhkS19NN1lFOUgxYnJIdHotbU9xT2M5dWFfeW9CejVwQVlJX1c0X05nYmxhTTlGR0p2eGhaZmFjNWZndkFR?oc=5\" target=\"_blank\">Space Debris Is Becoming an Urban Infrastructure Risk</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">urbanacres.in</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "1416a100bb826f89",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNm9ZWUVZSGdXYkdPTWFKX2dLWTllLUpnTWlCWTJoOWFKTXRFamdtQklOdFpjV3JVNU5YVXdkVE9yNUpRZk1JRGozaEFsLU9YRDZ3UWlKTUFJYnVjQ0UzSkgzMlc0dzZpNXJ1NDkxXzViQ21zOGNOYWJOVDRuNWU5OFBCTlJtdjBSUG4zOGtBcF9vUGs0Ym03WGJCT1pvSW83c3VzTlo4Uy1TR195emVGdDlCc2V1TGN1WkdacVA2ekU?oc=5",
+      "title": "SpaceX to launch SDA's fourth Tranche 1 data transport mission early Monday morning - KSBY News",
+      "published_at": "2026-10-05T01:31:51.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNm9ZWUVZSGdXYkdPTWFKX2dLWTllLUpnTWlCWTJoOWFKTXRFamdtQklOdFpjV3JVNU5YVXdkVE9yNUpRZk1JRGozaEFsLU9YRDZ3UWlKTUFJYnVjQ0UzSkgzMlc0dzZpNXJ1NDkxXzViQ21zOGNOYWJOVDRuNWU5OFBCTlJtdjBSUG4zOGtBcF9vUGs0Ym03WGJCT1pvSW83c3VzTlo4Uy1TR195emVGdDlCc2V1TGN1WkdacVA2ekU?oc=5\" target=\"_blank\">SpaceX to launch SDA's fourth Tranche 1 data transport mission early Monday morning</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KSBY News</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "ecd6c7e44883e785",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQdU02ZVFLVmNwa0VyRmRmc2ltNVFpdkE2dS1GXzlDM2dpLU1SbGF6eDFHLUhkX0Y1RDRiR3BYUEl0dEV1elZlWHVCLTlhbnBaOEo3X0UxYkh2a2FGR1JPZm8zSnU3c3NkdUkyOF9ja0JiWnAwU0VOc3BTdFdhTFBxek5hR2hTWFBPenV4alhR?oc=5",
+      "title": "SWISS starts free Starlink Wi-Fi on select flights - insideflyer.com",
+      "published_at": "2026-10-05T01:29:56.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijgFBVV95cUxQdU02ZVFLVmNwa0VyRmRmc2ltNVFpdkE2dS1GXzlDM2dpLU1SbGF6eDFHLUhkX0Y1RDRiR3BYUEl0dEV1elZlWHVCLTlhbnBaOEo3X0UxYkh2a2FGR1JPZm8zSnU3c3NkdUkyOF9ja0JiWnAwU0VOc3BTdFdhTFBxek5hR2hTWFBPenV4alhR?oc=5\" target=\"_blank\">SWISS starts free Starlink Wi-Fi on select flights</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">insideflyer.com</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "0a3c77b3f42f2ae6",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mx3n6flkhb2q",
+      "title": "@astronomybot.bsky.social on Bluesky",
+      "published_at": "2026-10-05T00:15:49.057Z",
+      "raw_excerpt": "Rocket Launch Falcon 9 Block 5 | Starlink Group 15-25 On 2026-10-10 at 16:00:00 UTC | 5 days, 15 hours, 44 mins By SpaceX Status: Current T-0 confirmed by official or reliable sources. Rocket: Falcon 9 Block 5 Launch pad: Space Launch Complex 4E, located at Vandenberg SFB, CA, USA Orbit: Low Eart...",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "70c3c5841d1e2507",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mx3mhnadii2d",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-05T00:03:05.662Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 05/0000 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z NASA CREW-12 REENTRY PRIMARY: 10/08/26 1515Z-1545Z BACKUP: 10/09/... More info in image. FAA Details.",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "0b2cbbced49e8239",
+      "source_name": "Futurism",
+      "url": "https://futurism.com/artificial-intelligence/amazon-local-communities-stop-defying-ai-data-centers",
+      "title": "Amazon Warns Local Communities to Stop Defying Its Massive AI Data Centers",
+      "published_at": "2026-10-05T00:03:00.000Z",
+      "raw_excerpt": "The tech industry has largely failed to win over the public when it comes to AI. Data centers have become a hot-button topic, with the vast majority of Americans — in a still-growing bipartisan cohort — now openly opposing them. Meanwhile, panicking executives are desperately trying to pivot the messaging to shore up some support, in last-ditch efforts that aren’t proving fruitful. As such, Amazon Web Services CEO Matt Garman pleaded in a 3,000 word blog today with communities to embrace data centers, arguing that the United States “can’t afford to lose” the AI race, invoking the country’s post-World War II highway buildout as a parallel. “Just like the national highway system, our country’s economy, national security, and everyday lives stand to benefit immensely,” he wrote. The executive accused the media of spreading “misinformation and outright lies,” arguing that “in the age of social media and 24/7 news, myths take hold faster than ever before.” Garman even alleged that US adversaries were “intentionally seeding misinformation in the US about data centers to trick us into slowing down.” “Right now there are over 100 data center moratoriums being considered across the country,” Garman wrote. “If these measures are enacted, the US could be writing its own losing ticket to this race, and the consequences would last generations.” In his blog post, Garman tried to undermine concerns over data centers driving up electricity prices and producing huge amounts of pollution — despite existence of ample evidence to the contrary. Those attempts to dispel “myths” shouldn’t come as a surprise, considering the enormous backlash. But given the impossible-to-ignore vested interest in underplaying these concerns, we should take Garman’s efforts with an enormous grain of salt. Just last year, leaked internal Amazon documents showed that executives were exchanging notes about how to keep the public ignorant about the “true extent” of the massive amounts of water their data center",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "cf3d4affac487f0c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spacelaunch-bot.bsky.social/post/3mx3mgj5err2b",
+      "title": "@spacelaunch-bot.bsky.social on Bluesky",
+      "published_at": "2026-10-05T00:02:27.363Z",
+      "raw_excerpt": "SpaceX is launching a rocket! SDA Tranche 1 Transport Layer A is a government/top secret mission and will launch via a Falcon 9 rocket from 🇺🇸 Space Launch Complex 4E on 2026-10-05 at 08:17 UTC. For more information, visit the Go4Liftoff launch page. #rocketlaunch 🚀✨",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
     {
       "id": "25e1d6d7798821e9",
       "source_name": "Federal Register API: FAA",
@@ -665,6 +851,66 @@
       "consumed": true
     },
     {
+      "id": "39ac00b301f49862",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPc1h4bDZkS3lyaF9zUVQ5bWNDMXpBbUpGRndJaHZnVHhybk9aa2lIMnFxbE9pNDlnUjRaMi1QSzhwaURsWGF0YWNZbWs0dFV4N2U4NlR2SmctbUlmUnZ1SlRZTzBaYzJHOG5RV1l0enB1TWFtaFJDRDdPRTZKb0FBc2Q4T3F0OFdKaThJaG5LcTF0aS1XekZraU1mTVdJRlY5TDFScGItcUl2ZHFFSDlncUgxTUNwX0p1?oc=5",
+      "title": "As Starship Finally Reaches Orbit, Here’s How You Should Place SpaceX Stock - Barchart.com",
+      "published_at": "2026-10-04T23:25:20.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxPc1h4bDZkS3lyaF9zUVQ5bWNDMXpBbUpGRndJaHZnVHhybk9aa2lIMnFxbE9pNDlnUjRaMi1QSzhwaURsWGF0YWNZbWs0dFV4N2U4NlR2SmctbUlmUnZ1SlRZTzBaYzJHOG5RV1l0enB1TWFtaFJDRDdPRTZKb0FBc2Q4T3F0OFdKaThJaG5LcTF0aS1XekZraU1mTVdJRlY5TDFScGItcUl2ZHFFSDlncUgxTUNwX0p1?oc=5\" target=\"_blank\">As Starship Finally Reaches Orbit, Here’s How You Should Place SpaceX Stock</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barchart.com</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "3fc17638590f1e75",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbThuQ0Q4Sm1RNi1qMkQzd0pMak5yUmRnQ3dvVUh0YnZCYnNhZGxSdXE5RHhucjh3OEdHbUdZay1kbERKYmJ2WmlzUUJXSWRVajJmTWNkdHl3d1RmV0JUeTRqR2w3SElLTFFCc3htLWU1T1RIUXBBc0NlZm1KSkxEbGlJWFVGZzhq?oc=5",
+      "title": "Every Starlink Dish Available: How To Know Which Setup May Be Right For You - Engadget",
+      "published_at": "2026-10-04T23:15:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiAFBVV95cUxPbThuQ0Q4Sm1RNi1qMkQzd0pMak5yUmRnQ3dvVUh0YnZCYnNhZGxSdXE5RHhucjh3OEdHbUdZay1kbERKYmJ2WmlzUUJXSWRVajJmTWNkdHl3d1RmV0JUeTRqR2w3SElLTFFCc3htLWU1T1RIUXBBc0NlZm1KSkxEbGlJWFVGZzhq?oc=5\" target=\"_blank\">Every Starlink Dish Available: How To Know Which Setup May Be Right For You</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Engadget</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "c303b00637f32e9e",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/ricozig.bsky.social/post/3mx3jgetjos24",
+      "title": "@ricozig.bsky.social on Bluesky",
+      "published_at": "2026-10-04T23:08:42.269Z",
+      "raw_excerpt": "Yes, for example US government contracts to launch satellites and astronauts to space which before SpaceX, were awarded to the Russians. You’d rather have US stay dependent on Russian rockets instead of Elon’s rockets?",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "107e0af834ebeb42",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/brookster3d.bsky.social/post/3mx3iuopisc2f",
+      "title": "@brookster3d.bsky.social on Bluesky",
+      "published_at": "2026-10-04T22:58:51.159Z",
+      "raw_excerpt": "Just made myself laugh imagining what would happen is SpaceX bought out the organisation \"Thunderbirds\" from the TV show. I imagined the countdown but every time it zooms out, the rocket just immediately explodes XD.",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "8cceed7c1f5c5c82",
+      "source_name": "NASASpaceflight",
+      "url": "https://www.nasaspaceflight.com/2026/10/smile-uvi-sxi-commissioning/",
+      "title": "ESA, CAS release first images from SMILE; officially begin science operations",
+      "published_at": "2026-10-04T22:49:58.000Z",
+      "raw_excerpt": "Following its launch in May and a multi-month commissioning period, the joint European Space Agency and Chinese Academy of Sciences Solar Wind Magnetosphere Ionosphere Link Explorer (SMILE) mission has officially begun scientific operations. The spacecraft, which will investigate Earth’s magnetosphere in soft X-rays and ultraviolet light, arrived in its highly elliptical orbit on June 20 and has spent the last several months deploying instruments and ensuring electrical systems are functioning properly. Teams recently released the first ultraviolet observations from SMILE, highlighting a stunning view of a full ring of auroras near Earth’s north pole. “The SMILE mission is a testament to the trust built between our teams, their dedication to excellence, and their determination to find solutions, whatever the challenge. SMILE is now approved to begin science operations. This is a very important milestone – a true pleasure to announce – and I am sure our excellent collaboration will deliver ground-breaking data to scientists around the world,” said European Space Agency (ESA) Director of Science Professor Carole Mundell. Smile launches atop Vega C on May 19. (Credit: ESA/CNES/Avio/Optique Video du CSG–P. PIRON) SMILE launched atop a Vega-C rocket from Kourou, French Guiana, on May 19 at 03:52 UTC. Over the next month, SMILE conducted 11 apogee-raising maneuvers and one perigee-raising maneuver, putting the spacecraft into an orbit optimized for its instruments by June 20. See Also SMILE Updates ESA Forum Click here to Join L2 This orbit is inclined by 73 degrees, and has an apogee altitude of 120,920 km and a perigee altitude of 5,027 km. While orbiting, SMILE will spend about nine months of the year at high altitudes, enabling continuous observations of Earth’s poles and magnetic field. SMILE features four instruments: the Soft X-ray Imager (SXI), the UV Imager (UVI), the Light Ion Analyzer (LIA), and the Magnetometer (MAG). Besides ensuring that the spacecraft had s",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
+      "id": "c42a940ba6475e35",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mx3fr2yjym2p",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-04T22:03:06.089Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 04/2200 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z NASA CREW-12 REENTRY PRIMARY: 10/08/26 1515Z-1545Z BACKUP: 10/09/... More info in image. FAA Details.",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
       "id": "f89186f34591bdfb",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE80VjNTM3REaU9mOTZBVWhOWUozUTZyWmN6UGk3RVJ3dGM3amJjTXFYckZpamw0WFd1czhoVXdJVjFyUzZtdEUwUEkxVTBxcmc1dVVGWEpnYV91V0tLRzhqYVRPS1NFYWRfQlQtQWJZWQ?oc=5",
@@ -735,6 +981,16 @@
       "consumed": true
     },
     {
+      "id": "4761fb78a2134750",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOMWs2amQzUGhmcDdna2lfTjBlckl3alhCcExSN3oxZzJZbkxnUU9sZUJ4SG1uclZJQ3BRUVluc3JMaU1BZUx4enlaSXZod3RnTUp4bmlqNDVKZnpaVUdyelBJYzctQjdrRUxTVm5Zcm9xUjIxUTlDVm9EdUh4VW16WGdwbU0weTZOc2FDSVFGdXgzUFZ0b2Vr0gGcAUFVX3lxTFBrandJaTNtWW1rMU5KOHJXYzBiYlVTZ01BUjZTV1NiV3VvWXJLTnJxUm5kOGdOeHRVRG9zdlpXR3J2eTdJeU51RGtPa3NwYzZ5UUM4dWxyTzRDYTdERXU1TmgwYVZfSlg3elZBWVdyUk16cG9XYUdxZlBIeTJFRGZ4QmpVZEpqZUVtZEk3LV9wbFZvc1NUdGd5d2pUbA?oc=5",
+      "title": "Elon Musk rebrands SpaceXAI following Trump directive - foxbusiness.com",
+      "published_at": "2026-10-04T20:39:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxOMWs2amQzUGhmcDdna2lfTjBlckl3alhCcExSN3oxZzJZbkxnUU9sZUJ4SG1uclZJQ3BRUVluc3JMaU1BZUx4enlaSXZod3RnTUp4bmlqNDVKZnpaVUdyelBJYzctQjdrRUxTVm5Zcm9xUjIxUTlDVm9EdUh4VW16WGdwbU0weTZOc2FDSVFGdXgzUFZ0b2Vr0gGcAUFVX3lxTFBrandJaTNtWW1rMU5KOHJXYzBiYlVTZ01BUjZTV1NiV3VvWXJLTnJxUm5kOGdOeHRVRG9zdlpXR3J2eTdJeU51RGtPa3NwYzZ5UUM4dWxyTzRDYTdERXU1TmgwYVZfSlg3elZBWVdyUk16cG9XYUdxZlBIeTJFRGZ4QmpVZEpqZUVtZEk3LV9wbFZvc1NUdGd5d2pUbA?oc=5\" target=\"_blank\">Elon Musk rebrands SpaceXAI following Trump directive</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">foxbusiness.com</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
       "id": "37ce3885f6cdf0cd",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQaGJqQllvZnBYbnFDYXZicFJCS1pCZVd6S0xRZ1J5MkRKMWxlRWxPajQyRy1YX3dXOGx4WVFTZXdXWXQtU0VHSGptV0NyVURLcFVjajV1eXZtT1F2VFBkQTJLN3RIblJYUEZ3VTVwdGRpQmR0ZnNlOXN2aFBZYjZpMlBZekRzUXo2N3E3dWtQMHFrU2pDWEFSRDByRjN3QnJTX28tYUpmVTNBeU5lM21UcUh3cDlHNnN2MWVPdjVmdC1uZlpOUHJMdFdBOA?oc=5",
@@ -762,6 +1018,16 @@
       "published_at": "2026-10-04T20:25:17.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0AFBVV95cUxOZ0JEamRud2daVjZhVW9hMzhzWHlWWURrdm5KcFhSb1hKbEZoc3N4eF9JNnA5RTg1YVZ0ZDM5TFRJbE9LYXNzQ01rd3RNaHh0bUdjUzQxM2tFVTVaTUFkd3JGblVMMjBNNmxYbEIyanJzZ1Q2Z1JvTWV5VW5hOEw1TWc5QlF5RDJhZW96aV9VZ2RLOWRpYUdaUk8yZ2lCWXNOOXphc2tXSnloT21WQlB2OVRQY1lCTzcyODlPN1kxVUd3eHJDMVl3R3dDdWgtTDdt?oc=5\" target=\"_blank\">SpaceX Unveils 250 kW Starlink Gen3 AI Satellites Featuring 10 Tbps Throughput and Onboard Edge Compute</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">satnews.com</font>",
       "fetched_at": "2026-10-04T21:57:42.953Z",
+      "consumed": true
+    },
+    {
+      "id": "067a180ebbf563ca",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxObURhRFdwUzZiTXFoRWhoVmtZcTFCY1ItVDZuOUE2WGcxU1NTWU5ramNGVWJDbDJERDZHbEhHR3FPTUNaYlRFQkNBNzZGYURYUUh4OERUeXkwT1Z2T0NQWUpfX096RzRQeFhfWno3d2JpbmdUcklqV1RZd0hqQUZVOVBkNHBIb0U0SWUzUjEtc01iQUVkS3h3TWFlejE1SnlrNUNlRXJOazFlYk5qaDNoay1qcw?oc=5",
+      "title": "SPCX Stock Price Eyes Rally as Elon Musk Calls SpaceX a ‘Super Intelligence’ Firm - coingape.com",
+      "published_at": "2026-10-04T20:17:29.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxObURhRFdwUzZiTXFoRWhoVmtZcTFCY1ItVDZuOUE2WGcxU1NTWU5ramNGVWJDbDJERDZHbEhHR3FPTUNaYlRFQkNBNzZGYURYUUh4OERUeXkwT1Z2T0NQWUpfX096RzRQeFhfWno3d2JpbmdUcklqV1RZd0hqQUZVOVBkNHBIb0U0SWUzUjEtc01iQUVkS3h3TWFlejE1SnlrNUNlRXJOazFlYk5qaDNoay1qcw?oc=5\" target=\"_blank\">SPCX Stock Price Eyes Rally as Elon Musk Calls SpaceX a ‘Super Intelligence’ Firm</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">coingape.com</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
       "consumed": true
     },
     {
@@ -1855,6 +2121,16 @@
       "consumed": true
     },
     {
+      "id": "95022bd208e2365d",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQTktNaWdtX0lCWE02RC1aOERQZEpvMWcyUjdBVEktU1E1eTQ4aktoQmFqeGI3Q1VLdWRuR3lfT0xEUWgyZkhWRFItUk1fUW1zdl9ZT19DTDR3dngwUzZrSHE3UURIeHRBcU8tLUtKTDFZQzdQMG40RXdleFdMczdfaUxyNzRETjJPRkM1YjV1S3ZJa3JHQ3haZFVCeUw2NjhEUUxRbUd3WQ?oc=5",
+      "title": "Starlink launches Communities Program for passive income through internet sharing - Teslarati",
+      "published_at": "2026-10-03T18:07:11.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxQTktNaWdtX0lCWE02RC1aOERQZEpvMWcyUjdBVEktU1E1eTQ4aktoQmFqeGI3Q1VLdWRuR3lfT0xEUWgyZkhWRFItUk1fUW1zdl9ZT19DTDR3dngwUzZrSHE3UURIeHRBcU8tLUtKTDFZQzdQMG40RXdleFdMczdfaUxyNzRETjJPRkM1YjV1S3ZJa3JHQ3haZFVCeUw2NjhEUUxRbUd3WQ?oc=5\" target=\"_blank\">Starlink launches Communities Program for passive income through internet sharing</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Teslarati</font>",
+      "fetched_at": "2026-10-05T05:15:47.333Z",
+      "consumed": true
+    },
+    {
       "id": "4a439c14c2f18c37",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mwyhuxztkm2y",
@@ -2761,486 +3037,6 @@
       "title": "WVU research explores space-based lasers to reduce orbital debris - WV News",
       "published_at": "2026-10-02T22:14:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi7wFBVV95cUxOcVo1Qzhjd1BpRmlyNzNib1M3Z0lNSU55djFQTHpZeHA5WThGZVY0YXlrVEIyV2h5aUl6QnZ0RjhIUy1sc0N4cDl2d09KRTlMNkhHOWhpdlh4M25YangwRHUwbmtsNEMzYjEwRGo3UXFTTnd4aUJBVXBBVnJWVHBLbnk2Ni1ZekxBS2VpUUdaRzhCVEtYWmhIY2ZXMlUtMGxfUXhlWFhRUFRnanRSZWZqT2dKWllMNmJvSF9KSUZzLXVoX1JFbGhGdzd2WHJSbGVKenpCZVYwbGhpWnpUbkZIQWNRd0JIZ3VzMTBHNW90Zw?oc=5\" target=\"_blank\">WVU research explores space-based lasers to reduce orbital debris</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WV News</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "8975dc7dba969435",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mwwet7vipo2f",
-      "title": "@faabot.paxex.aero on Bluesky",
-      "published_at": "2026-10-02T22:03:06.068Z",
-      "raw_excerpt": "🚀 FAA Space Launch Plans - 02/2200 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z FAA Details.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "fc11f306543cf1df",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/english.pravda.ru.web.brid.gy/post/3mwwe3zbnm2x2",
-      "title": "@english.pravda.ru.web.brid.gy on Bluesky",
-      "published_at": "2026-10-02T21:50:10.170Z",
-      "raw_excerpt": "",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "bd8f20bac63cf1a8",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/robots-and-machines/california-government-officials-robot-cage-fight-cease",
-      "title": "Government Officials Order the Robot Cage Fights to Stop, Organizers Say",
-      "published_at": "2026-10-02T21:33:07.000Z",
-      "raw_excerpt": "In mid-September, a new company called Robot Entertainment Kombat hosted what it claimed was the first-ever human-on-robot cage fight in California. The whole thing was more WWE than “Real Steel”&nbsp;— behind the scenes, the robot was controlled by a human handler, and its strikes were sold wrastlin’-style by the dramatic human performer it “fought.” Regardless of the authenticity, the California State Athletic Commission have apparently sent the organizers a cease and desist order, addressed to “all persons holding, promoting, advertising or sponsoring unsanctioned human versus humanoid robot cage fight[s].” Using the letter to drum up some buzz on social media , Robot Entertainment Kombat founder Cix Liv seemed happy just to have the attention. “We made it boys,” he wrote. As per the letter he posted, the organizers were ordered to immediately stop hosting and promoting human-robot cage fights, or else face a misdemeanor charge. In its letter, the Athletic Commission didn’t appear to take issue with the human-robot bouts per se, but with the organizers’ failure to secure the required permits. That may be a distinction without a difference, however, as the Athletic Commission cited California business code which states that “no [full contact martial arts] event shall take place without the prior approval of the commission,” meaning the agency could simply withhold approval and veto a human-robot cage fight on a case-by-case basis —&nbsp;likely without ever having to explicitly declare such an event explicitly verboten. More on robots: Bizarre Glitch Causes Delivery Robots to Swarm Busy City Sidewalk The post Government Officials Order the Robot Cage Fights to Stop, Organizers Say appeared first on Futurism .",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "b4689c2881e903b7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxObm5QUVJyektJOTVNVTAxOWNyMHlFck0yYTVtbFNJWHYzUUZVU3dleHE2SzVySnVreF9oR01pSkRnY1QyTjVHSWlBYzBsVXNjVnpVdDdhQjBLcFhRLW9OYlVNM0NqMnllTUhKOWVBRUNaTEs1cDdhbVk3Q3Z2S0FVY1oxT1VhdVk?oc=5",
-      "title": "SpaceX’s midnight spy satellite launch quietly set a new record - Teslarati",
-      "published_at": "2026-10-02T21:29:49.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxObm5QUVJyektJOTVNVTAxOWNyMHlFck0yYTVtbFNJWHYzUUZVU3dleHE2SzVySnVreF9oR01pSkRnY1QyTjVHSWlBYzBsVXNjVnpVdDdhQjBLcFhRLW9OYlVNM0NqMnllTUhKOWVBRUNaTEs1cDdhbVk3Q3Z2S0FVY1oxT1VhdVk?oc=5\" target=\"_blank\">SpaceX’s midnight spy satellite launch quietly set a new record</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Teslarati</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "3c2a70a35584729d",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/chinarising.bsky.social/post/3mwwc7wds222n",
-      "title": "@chinarising.bsky.social on Bluesky",
-      "published_at": "2026-10-02T21:16:31.661Z",
-      "raw_excerpt": "Why? This is a waste of resources & causes pollution on earth for no reason. Putting the lives of humans in the hands of SpaceX is pure evil too. What happens if those rockets explode or if the capsule doesn't function right? People on the ground may die #DEFUNDSPACEX www.space.com/space-explor...",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "3c2801f4e0759d5c",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/chinarising.bsky.social/post/3mwwbyvilx22q",
-      "title": "@chinarising.bsky.social on Bluesky",
-      "published_at": "2026-10-02T21:12:35.858Z",
-      "raw_excerpt": "China continues to dominate space while the US (spaceX and NASA) continue have mission failure after mission failure. What has the US space program done in the last 26 year? I can't think of a single success from them. But China continues where the Soviet Union left off spacenews.com/china-launch...",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "0cf819f01e17dd05",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/chinarising.bsky.social/post/3mwwbuef45k2q",
-      "title": "@chinarising.bsky.social on Bluesky",
-      "published_at": "2026-10-02T21:10:04.267Z",
-      "raw_excerpt": "SpaceX should not be allowed to launch from anywhere. There is no place they can launch that won't destroy the land around it. It's time for the US to ban all space launches. There is no need to pollute our planet.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "562d9f435fba73a9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNSjI4SFBUcWhwcWNxRElhcUYxNWFORkpURThQNUtTUVI5Vko4ckE4UFp1ZG53YTdJaHhIU0dkM04tRXdJcHlWVENqRjE5REM3aV9ZVUxPQ2NZUnp0ZVBHb3pqRFdnYU9RUkZGaG9UazRsSk55VU5EdHk5YkdSX2NSTVkxTHZMUGlVb0xpbzdRcm9wQU1VZnhB?oc=5",
-      "title": "T-Mobile Quietly Drops Starlink Name From Its T-Satellite Website - PCMag",
-      "published_at": "2026-10-02T21:06:56.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNSjI4SFBUcWhwcWNxRElhcUYxNWFORkpURThQNUtTUVI5Vko4ckE4UFp1ZG53YTdJaHhIU0dkM04tRXdJcHlWVENqRjE5REM3aV9ZVUxPQ2NZUnp0ZVBHb3pqRFdnYU9RUkZGaG9UazRsSk55VU5EdHk5YkdSX2NSTVkxTHZMUGlVb0xpbzdRcm9wQU1VZnhB?oc=5\" target=\"_blank\">T-Mobile Quietly Drops Starlink Name From Its T-Satellite Website</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PCMag</font>",
-      "fetched_at": "2026-10-04T05:15:45.945Z",
-      "consumed": true
-    },
-    {
-      "id": "dfc1db0beb7c8e5a",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/bgrcom.bsky.social/post/3mwwbff7ck42f",
-      "title": "@bgrcom.bsky.social on Bluesky",
-      "published_at": "2026-10-02T21:01:40.556Z",
-      "raw_excerpt": "Both the Merlin and Raptor rocket engines are being used by SpaceX for launch missions, but there are key differences in the combustion cycle and reusability.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "d28902099042d3c4",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/crd6dy4xepgyo?at_medium=RSS&at_campaign=rss",
-      "title": "Hawaii's iconic 550-year-old Hōlei Sea Arch collapses",
-      "published_at": "2026-10-02T21:00:41.000Z",
-      "raw_excerpt": "The lava rock formation protruding from the rocky cliffs of Volcanoes National Park crumbled some time last weekend.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "c1f42ee9b41524e4",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNSTZPR29fdUNneGRXTS15aHpBbmRtTTRQYUwtTEsxbVB0VlZway01ZzFFRkoyUWt2elZtY3lJNkRKUkQzMHo4UFVjODB1NDk5a2wxTk5Yb1c2Qk5GU0RPN0hHb1NRdENmOWlTRFkzMDRzY0VhNmVRYTRsazgxVll3QmJlN3NBZWZ1S0xBRFhKaC0?oc=5",
-      "title": "SpaceX Stock Jumps 7% After 3 Launches in 13 Hours, Including Google's Orbital AI Experiment - Yahoo Finance",
-      "published_at": "2026-10-02T21:00:11.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxNSTZPR29fdUNneGRXTS15aHpBbmRtTTRQYUwtTEsxbVB0VlZway01ZzFFRkoyUWt2elZtY3lJNkRKUkQzMHo4UFVjODB1NDk5a2wxTk5Yb1c2Qk5GU0RPN0hHb1NRdENmOWlTRFkzMDRzY0VhNmVRYTRsazgxVll3QmJlN3NBZWZ1S0xBRFhKaC0?oc=5\" target=\"_blank\">SpaceX Stock Jumps 7% After 3 Launches in 13 Hours, Including Google's Orbital AI Experiment</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-04T12:52:14.452Z",
-      "consumed": true
-    },
-    {
-      "id": "e2aaf22a5a75b1b2",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQektnXzd6aGFQSkIyUjZvMnJRWTM5UER4NVFEd3pVdG9hT1Nkc3lEbzRDREhSaTQ0X3VfM3o2MnN4UV9WRXVCYmN2RmFsTWxyU1NLNDZDTGJPUUY3ZEczTEd2SnpsN0MtWDliZWVmNDcyWVBqSE9PZDZxUmNPWGhqZ3dn?oc=5",
-      "title": "SpaceX climbs 7% amid launch milestones (SPCX:NASDAQ) - Seeking Alpha",
-      "published_at": "2026-10-02T20:54:55.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiggFBVV95cUxQektnXzd6aGFQSkIyUjZvMnJRWTM5UER4NVFEd3pVdG9hT1Nkc3lEbzRDREhSaTQ0X3VfM3o2MnN4UV9WRXVCYmN2RmFsTWxyU1NLNDZDTGJPUUY3ZEczTEd2SnpsN0MtWDliZWVmNDcyWVBqSE9PZDZxUmNPWGhqZ3dn?oc=5\" target=\"_blank\">SpaceX climbs 7% amid launch milestones (SPCX:NASDAQ)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "92e31530056d2c46",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOaDdxeGRWRURiM1N3Uml0cUxyeU9UMU5mUUJoTXZWdF9VYVhsaTRqcEdKSTFBaFdMUThVeUZRckRvMWxUWEZ2dGJMU3VIbmNFVzhKemxnT0M2dTZtbmNKd0R0a3RCNVpXTHFfT3Foc0dBbHg5MWQ4T2dsajdDbWdFYg?oc=5",
-      "title": "Merlin Vs. Raptor: How Do These SpaceX Rocket Engines Compare? - bgr.com",
-      "published_at": "2026-10-02T20:47:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigAFBVV95cUxOaDdxeGRWRURiM1N3Uml0cUxyeU9UMU5mUUJoTXZWdF9VYVhsaTRqcEdKSTFBaFdMUThVeUZRckRvMWxUWEZ2dGJMU3VIbmNFVzhKemxnT0M2dTZtbmNKd0R0a3RCNVpXTHFfT3Foc0dBbHg5MWQ4T2dsajdDbWdFYg?oc=5\" target=\"_blank\">Merlin Vs. Raptor: How Do These SpaceX Rocket Engines Compare?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">bgr.com</font>",
-      "fetched_at": "2026-10-03T05:15:48.956Z",
-      "consumed": true
-    },
-    {
-      "id": "7906b62fa0336804",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQdmR4TEo3ck1aSjA1eDZ1eVVWTE1qT0tUX2xHOXgwUXhoLWV5NzFiU0pnUTcxb1dnZmE1T0p5Mk0xbXNSejc0UXJBc2lhM1M2Q29xZlhJUDNjZGItLXl0aHNvMFRCZVdLSDJkdE1kcVhIQ1haU3JMZ2xVNHZqeFMxcGdCS2FDa2I5Q3pGaU5QWmdkSzBOTV9RV0lYY0dNQnN3LXJ4Q3lVWEctd1A0cDhn?oc=5",
-      "title": "Musk, Huang Forecast AI-Powered GDP Gains; ARK Buys More Rocket Lab - Investor's Business Daily",
-      "published_at": "2026-10-02T20:41:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxQdmR4TEo3ck1aSjA1eDZ1eVVWTE1qT0tUX2xHOXgwUXhoLWV5NzFiU0pnUTcxb1dnZmE1T0p5Mk0xbXNSejc0UXJBc2lhM1M2Q29xZlhJUDNjZGItLXl0aHNvMFRCZVdLSDJkdE1kcVhIQ1haU3JMZ2xVNHZqeFMxcGdCS2FDa2I5Q3pGaU5QWmdkSzBOTV9RV0lYY0dNQnN3LXJ4Q3lVWEctd1A0cDhn?oc=5\" target=\"_blank\">Musk, Huang Forecast AI-Powered GDP Gains; ARK Buys More Rocket Lab</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investor's Business Daily</font>",
-      "fetched_at": "2026-10-04T17:15:46.132Z",
-      "consumed": true
-    },
-    {
-      "id": "18492a88fa70b015",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNTHB6dVJ4U01GYzdONXJYMmhuc1VndW40dVBHbHBQTE5HV2d2aUxJeXFNcTVYRVdKVkhIM0hyeWttQTMwVGtfN252RWpvd3RTTDBtc2thY1loS1NpcUdKR0F2VEJEaXh6MV9QQ2ZQRXlFcXNaR0xqa1NldVZINTYzT3lkY0hJT3FyUWtxd3pCeWdzRkZSUDg3Ug?oc=5",
-      "title": "Here's How SpaceX Saved $120 Million With (and Without) a Really Big Fishnet - The Motley Fool",
-      "published_at": "2026-10-02T20:34:28.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxNTHB6dVJ4U01GYzdONXJYMmhuc1VndW40dVBHbHBQTE5HV2d2aUxJeXFNcTVYRVdKVkhIM0hyeWttQTMwVGtfN252RWpvd3RTTDBtc2thY1loS1NpcUdKR0F2VEJEaXh6MV9QQ2ZQRXlFcXNaR0xqa1NldVZINTYzT3lkY0hJT3FyUWtxd3pCeWdzRkZSUDg3Ug?oc=5\" target=\"_blank\">Here's How SpaceX Saved $120 Million With (and Without) a Really Big Fishnet</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "ade58f41a5d215bc",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mww6swlahn2z",
-      "title": "@astronomybot.bsky.social on Bluesky",
-      "published_at": "2026-10-02T20:15:33.055Z",
-      "raw_excerpt": "Rocket Launch Falcon Heavy | NROL-97 On 2026-10-02 at 03:53:00 UTC | 0 days, 16 hours, 22 mins ago By SpaceX Status: Current T-0 confirmed by official or reliable sources. Rocket: Falcon Heavy Launch pad: Launch Complex 39A, located at Kennedy Space Center, FL, USA Orbit: Unknown Mission Classifi...",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "5bd19befe99fcb8d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNM0hUb2paUEtlMURHLWgweXZJWW9jLU5CR3RBYk14Yk5Xa2s1RVM5VGd5dFQwMklYOVhvWmQ2R1RCdkg0elhJbnR0Uk9uZ3l4RTdFTFhuUVE3WU1CVlJDVDNrQ2gtVk5sS1p2dVgyVklVeHZjZkJyTzhjaEFlV1hEVWh0RTl2QklJUlR2QldETlIxUWFYeHVyOWlPbVZXTmtwLW5CUFV3?oc=5",
-      "title": "SpaceX Has Saved Taxpayers Over $40B — And the Number Is Still Climbing - BASENOR",
-      "published_at": "2026-10-02T20:04:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxNM0hUb2paUEtlMURHLWgweXZJWW9jLU5CR3RBYk14Yk5Xa2s1RVM5VGd5dFQwMklYOVhvWmQ2R1RCdkg0elhJbnR0Uk9uZ3l4RTdFTFhuUVE3WU1CVlJDVDNrQ2gtVk5sS1p2dVgyVklVeHZjZkJyTzhjaEFlV1hEVWh0RTl2QklJUlR2QldETlIxUWFYeHVyOWlPbVZXTmtwLW5CUFV3?oc=5\" target=\"_blank\">SpaceX Has Saved Taxpayers Over $40B — And the Number Is Still Climbing</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BASENOR</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "11c33d39f3faaeec",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mww64n4tfq2l",
-      "title": "@faabot.paxex.aero on Bluesky",
-      "published_at": "2026-10-02T20:03:05.800Z",
-      "raw_excerpt": "🚀 FAA Space Launch Plans - 02/2000 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z FAA Details.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "a63b240adca7f23a",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/therealenzooo.bsky.social/post/3mww5r2pjis2i",
-      "title": "@therealenzooo.bsky.social on Bluesky",
-      "published_at": "2026-10-02T19:56:39.663Z",
-      "raw_excerpt": "#Falcon9 #Space #Economy #ISS launch for 7% of the cost !! #SpaceX",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "b3559d901203c3d4",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/google-accused-illegally-killing-forest-data-center",
-      "title": "Google Accused of Illegally Killing a Massive Forest for Its New Data Center Project",
-      "published_at": "2026-10-02T19:50:42.000Z",
-      "raw_excerpt": "As the AI race reaches white-hot temperatures, big tech companies are caught up in a heated race to build as many pollution-belching and power-sucking data centers as they can. And while the Trump administration is largely clearing their way by easing environmental rules for the polluting facilities , other governments are less inclined to give companies a pass. As Finnish newspaper Kaleva reported last month, Google is under fire for clearing over 300 hectares — the equivalent of almost 500 football fields — for two new data centers in the northern part of the European nation without concluding the necessary environmental assessments. Despite the assessments still being in progress, the tech giant’s contractors started clearing trees in the area months ago, raising the alarm bells at the Finnish Nature Conservation Association. “Either this is gross incompetence from Google’s Finnish project company, Tuike Finland Oy, or gross disregard for Finnish legislation, or at worst both,” said the association’s chair, Hanna Halmeenpää, in a statement, as translated by Wood Central . Satellite images show that four separate sites were bulldozed to make way for two new data centers. Google maintains that its felling of the trees met the requirements of the country’s Forestry Act and that it had completed extensive environmental evaluations. Nonetheless, the Finnish Nature Conservation Association has since asked Finnish regulators to suspend activities until the conclusion of the ongoing environmental assessments. Halmeenpää said she was worried that local bird species may have been impacted by the area being razed. The forest also serves as a critical ecological connection, allowing animals to spread from one habitat to another. The incident highlights the explosive growth in new AI data center projects across the globe, a major infrastructure undertaking that could have a significant impact on the local environment. Meanwhile, Google is hoping to appease the Finnish governm",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "07849c8ca19c49a0",
-      "source_name": "Bluesky search: satellite constellation",
-      "url": "https://bsky.app/profile/davidstevenson.bsky.social/post/3mww3zhog2k2i",
-      "title": "@davidstevenson.bsky.social on Bluesky",
-      "published_at": "2026-10-02T19:25:32.559Z",
-      "raw_excerpt": "gizmodo.com/how-a-new-sa...",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "fb93d86244c4549f",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/khuruuk.bsky.social/post/3mww3w3xwx32s",
-      "title": "@khuruuk.bsky.social on Bluesky",
-      "published_at": "2026-10-02T19:23:39.470Z",
-      "raw_excerpt": "And, as another option, my nieces both graduated as aerospace engineers. Here’s one of them addressing the astronauts before they boarded the recent SpaceX launch, literally yesterday:",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "00621c46c2755bcb",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPMmx5WFl1dnA0M3F1VmNEYUg3dGJqZFE4WURxV2V6QXhlOU15bVBzTlp5UFY0VU11eGdfWEpjQm1tTUJlV0VLSTVoa3NQWDZHU2Vqc1g2d1g0dlB1eVpkSGN0X3EtYk5ha21tRTltTWxLSUc5bWR3S2QwbUZKZ2Ezb1d6aUgzNkJONE51NFNwcWRKQ2ZsUFpLNm52OUFhbnY5SUNPa0ZuSlhlZ1FzaElieG9UdDhaUUZXdUloRER4LWFHWmp6Smp1U1FOVmtrNmxNT2l1UXdxaFdFOGdiUUNvZ0VWYjBaa2hrdDdDczc4TFBHaENIOUR2OVdBc05jc2RXRHfSAYoCQVVfeXFMTXhEZk9ZVjN4dTl3QTNUMXRlOVoyS2YybTNLdUlTZU1iU0JVMUxBQjk1VjRDRmJUN1MxOVR6ZWNLTnY3aVBCZXdOUm9UUGtsM1dqaEJFVjY1aUdVVjF3Z0xkckhiQXc2Rmo1dkVJZ083X1dwWmdYcml2OTlSZTVReGQ0MUppNVdOdGxOaHAzQzlRMERRR1FRN280TWZ0eVVLTi03SldlRks3dGFoUXp3RW40cDdvaFU4aDZESVpobkRWUS1zT0Y5Yy1uRUFVNUhjdXFMbHNSUzF0aGJOcElIRl9MRXR6aXB4WnJUQW9yd3BvVVFNV3ZNSVFTa29fanFxNG04WWRrSWhaMUE?oc=5",
-      "title": "NASA, SpaceX’s Crew-13 is onboard the ISS. After swapping places, Crew-12 could return Monday - Houston Public Media",
-      "published_at": "2026-10-02T19:13:32.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiggJBVV95cUxPMmx5WFl1dnA0M3F1VmNEYUg3dGJqZFE4WURxV2V6QXhlOU15bVBzTlp5UFY0VU11eGdfWEpjQm1tTUJlV0VLSTVoa3NQWDZHU2Vqc1g2d1g0dlB1eVpkSGN0X3EtYk5ha21tRTltTWxLSUc5bWR3S2QwbUZKZ2Ezb1d6aUgzNkJONE51NFNwcWRKQ2ZsUFpLNm52OUFhbnY5SUNPa0ZuSlhlZ1FzaElieG9UdDhaUUZXdUloRER4LWFHWmp6Smp1U1FOVmtrNmxNT2l1UXdxaFdFOGdiUUNvZ0VWYjBaa2hrdDdDczc4TFBHaENIOUR2OVdBc05jc2RXRHfSAYoCQVVfeXFMTXhEZk9ZVjN4dTl3QTNUMXRlOVoyS2YybTNLdUlTZU1iU0JVMUxBQjk1VjRDRmJUN1MxOVR6ZWNLTnY3aVBCZXdOUm9UUGtsM1dqaEJFVjY1aUdVVjF3Z0xkckhiQXc2Rmo1dkVJZ083X1dwWmdYcml2OTlSZTVReGQ0MUppNVdOdGxOaHAzQzlRMERRR1FRN280TWZ0eVVLTi03SldlRks3dGFoUXp3RW40cDdvaFU4aDZESVpobkRWUS1zT0Y5Yy1uRUFVNUhjdXFMbHNSUzF0aGJOcElIRl9MRXR6aXB4WnJUQW9yd3BvVVFNV3ZNSVFTa29fanFxNG04WWRrSWhaMUE?oc=5\" target=\"_blank\">NASA, SpaceX’s Crew-13 is onboard the ISS. After swapping places, Crew-12 could return Monday</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Houston Public Media</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "18a2b4a18520b017",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPR0xhakhhYUtLcUhydWQwR1l2aGdHVHVmLXNlVWh1U0hSSm9HYUZBZExZNlNtN0xMYjVsQW1nT3psQzdXQkVEUmVHb21meHdodXFTUE9EclQxRHRKTzNRekFKNnNtaXh1cTg2Q3Fnc0lZc1FkNnk2TWRwZG84bHRWRWRUNXZyNDFKMzE2dUxtaEFMekpDSHhSX9IBngFBVV95cUxNOVpYbkVpTmhhQU1CaGZFTVpSNzdZOXB2TjdRT083RnlsYUhMZkpvMkZCOGVtZlpxcXluQ0JBUGVKczFyQkx2MmJLZDZpX0hqaTRiZFhTVW9wSmIzWFUyOVNNV1lPcTlZSG92Q04zVzNUOXZGd3RBM2p1cGkwT00yaU5oNjM5bmptenVTdW5lOEVjLUJlejlSZV8yQWhGZw?oc=5",
-      "title": "Report: More details on the deal that brought SpaceX to Louisiana - KLFY.com",
-      "published_at": "2026-10-02T19:12:37.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxPR0xhakhhYUtLcUhydWQwR1l2aGdHVHVmLXNlVWh1U0hSSm9HYUZBZExZNlNtN0xMYjVsQW1nT3psQzdXQkVEUmVHb21meHdodXFTUE9EclQxRHRKTzNRekFKNnNtaXh1cTg2Q3Fnc0lZc1FkNnk2TWRwZG84bHRWRWRUNXZyNDFKMzE2dUxtaEFMekpDSHhSX9IBngFBVV95cUxNOVpYbkVpTmhhQU1CaGZFTVpSNzdZOXB2TjdRT083RnlsYUhMZkpvMkZCOGVtZlpxcXluQ0JBUGVKczFyQkx2MmJLZDZpX0hqaTRiZFhTVW9wSmIzWFUyOVNNV1lPcTlZSG92Q04zVzNUOXZGd3RBM2p1cGkwT00yaU5oNjM5bmptenVTdW5lOEVjLUJlejlSZV8yQWhGZw?oc=5\" target=\"_blank\">Report: More details on the deal that brought SpaceX to Louisiana</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KLFY.com</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "d3c449bd7797544b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNZnpwMzUzeGtvbVVuLTViaDNFalpMM1dkOF9rS08yZ2hFbEFxSGQ0dThvNTRjYzNFbE1vR2FOeXZZNU0yZkI4SlBoSHJQRlNwZ0hldm9EbTlzME5CblJZNXJpWDRjV0RicmlqR0REaXprVEw2WUMxNVZqNU8tWVpYOURnU0o0WktPTFYybm1TdndFVjdOR2tRR0pFVDIwNzFU?oc=5",
-      "title": "SpaceX's Growth Is Surging, but Its 2027 Profit Is Already Expensive - Yahoo Finance",
-      "published_at": "2026-10-02T19:10:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxNZnpwMzUzeGtvbVVuLTViaDNFalpMM1dkOF9rS08yZ2hFbEFxSGQ0dThvNTRjYzNFbE1vR2FOeXZZNU0yZkI4SlBoSHJQRlNwZ0hldm9EbTlzME5CblJZNXJpWDRjV0RicmlqR0REaXprVEw2WUMxNVZqNU8tWVpYOURnU0o0WktPTFYybm1TdndFVjdOR2tRR0pFVDIwNzFU?oc=5\" target=\"_blank\">SpaceX's Growth Is Surging, but Its 2027 Profit Is Already Expensive</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "5eeaa3db44873e8f",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/idlprocycling.bsky.social/post/3mww3577kbi2n",
-      "title": "@idlprocycling.bsky.social on Bluesky",
-      "published_at": "2026-10-02T19:09:43.558Z",
-      "raw_excerpt": "Swapping skinsuits for space suits: American cyclist is named as NASA astronaut #NASA #ChristinaBirch #SpaceX #Cycling #SpaceMission",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "4584429da4b008cd",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/bluraymc.bsky.social/post/3mww2yg5zi22z",
-      "title": "@bluraymc.bsky.social on Bluesky",
-      "published_at": "2026-10-02T19:07:03.771Z",
-      "raw_excerpt": "#SpaceX sets speed record in latest trip to space station. #Dragon #ISS The flight to the International Space Station was the quickest yet for any American entity, including #NASA. weather.com/2026/10/02/s...",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "9f32ee71a61567ab",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPSWZPLUtweDF0MkstaHdueUkxMnlIb3VlZjI1NENaTzh3cWJXR09KNDlVbHNiRjRUSHdxbzJwX2hGTm04akJ5SWp1NTloeElMbjhuT0lrLTE4WWtBWUNhWXlHa1dLZzhZcGFYMGpsS25Va0FtOHQtMnZuTW1rVFlRa3FyNVdJeHRPWjVBblNkbGRzVlhJZF9Oc0dTVXlFY2tRWVFHbDNUVjFPLXVvTENDSG15TThydXdXSnJVS3A1clNFTHFMM1VPVGVR?oc=5",
-      "title": "SpaceX Just Launched 3 Rockets in 13 Hours. Here’s What Investors Need to Know Right Now. - The Motley Fool",
-      "published_at": "2026-10-02T19:05:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiygFBVV95cUxPSWZPLUtweDF0MkstaHdueUkxMnlIb3VlZjI1NENaTzh3cWJXR09KNDlVbHNiRjRUSHdxbzJwX2hGTm04akJ5SWp1NTloeElMbjhuT0lrLTE4WWtBWUNhWXlHa1dLZzhZcGFYMGpsS25Va0FtOHQtMnZuTW1rVFlRa3FyNVdJeHRPWjVBblNkbGRzVlhJZF9Oc0dTVXlFY2tRWVFHbDNUVjFPLXVvTENDSG15TThydXdXSnJVS3A1clNFTHFMM1VPVGVR?oc=5\" target=\"_blank\">SpaceX Just Launched 3 Rockets in 13 Hours. Here’s What Investors Need to Know Right Now.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "743f9b963aa084ee",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mww2rdzhbu23",
-      "title": "@faabot.paxex.aero on Bluesky",
-      "published_at": "2026-10-02T19:03:05.706Z",
-      "raw_excerpt": "🚀 FAA Space Launch Plans - 02/1800 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/05/26 0806Z-0911Z BACKUP: 10/06/26 0759Z-0904Z FAA Details.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "69c8f830cddfeaf9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNMnZtaGtzcFJPY0NFY3piZndJYnd6ZnNXd0JtejlnSkF4RHYyaTI0ZEhmZl9lalh6a0hZVDI3MkJQTVVRaU9kMnZ1WFBtYndsYms3dTduVm5LeXlmZVJRSWIzeXJGQVhFOWhXYnJ5QWtsVFl5N0dOWEE3X2N0RFRmNk9ON0duOVZKZEJ2V3owQ05ZT2Z6TUZmem0wUkIwLThIMUVqakN0NUpDOWNxVGJZYTVDX1ludnY3WFBJa1pyV0FHWjNmYXdZ?oc=5",
-      "title": "Delta Is the Only Big Four Airline That Won’t Use Starlink—and Elon Musk Is Furious - WSJ",
-      "published_at": "2026-10-02T19:00:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxNMnZtaGtzcFJPY0NFY3piZndJYnd6ZnNXd0JtejlnSkF4RHYyaTI0ZEhmZl9lalh6a0hZVDI3MkJQTVVRaU9kMnZ1WFBtYndsYms3dTduVm5LeXlmZVJRSWIzeXJGQVhFOWhXYnJ5QWtsVFl5N0dOWEE3X2N0RFRmNk9ON0duOVZKZEJ2V3owQ05ZT2Z6TUZmem0wUkIwLThIMUVqakN0NUpDOWNxVGJZYTVDX1ludnY3WFBJa1pyV0FHWjNmYXdZ?oc=5\" target=\"_blank\">Delta Is the Only Big Four Airline That Won’t Use Starlink—and Elon Musk Is Furious</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WSJ</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "de0fb036e49ef396",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/science-energy/influencer-instagram-sea-turtle-nesting-eggs-oman",
-      "title": "In Case You Still Have Faith in Humanity, Here’s an Influencer “Riding” a Sea Turtle While It Tries to Lay Eggs",
-      "published_at": "2026-10-02T18:55:00.000Z",
-      "raw_excerpt": "Desperate for clicks in a sea of outrageous video content and AI slop, influencers are using increasingly shocking encounters with wildlife to push themselves to the top of the algorithm. For a case in point, consider a recent viral incident in the country of Oman, in which Ukrainian fitness influencer Vadym Oleynik and his wife Olena Kravchenko filmed themselves “riding” a large adult sea turtle as it tried to nest its eggs. While it isn’t known exactly what species of turtle the couple was messing with, the area they were in, the Ras al Hadd Turtle Reserve , is one of the most important nesting grounds for the once-endangered green turtle. In one portion of the reel, Oleynik is filmed handling a brand new hatchling between his fingers while trying to sit on top of the adult, which is struggling desperately to escape in the sand. The video quickly went viral across various social media apps, prompting outrage from conservation groups and viewers alike, and evidently pushing Oleynik to take his popular Instagram page private. “The desire for fame and viral views has pushed many to do evil and stupid acts,” one user commented under a copy of the clip shared on YouTube. “It also exposed one’s true character.” Responding to the incident, the Environment Authority of the Sultanate of Oman issued a statement noting that it was taking action to hold Oleynik accountable. “The Environment Authority has been closely following a video circulating on social media showing a tourist engaging in acts that disturb sea turtles in the Ras Al Hadd area, in violation of the laws and regulations governing wildlife protection in the Sultanate of Oman,” the statement declares. “The Authority confirms that it has taken the necessary legal action against the individual concerned,” it continues. In a response viewed by People , Oleynik said he hadn’t “seen the rules” prohibiting from sitting on the majestic creature. “I would like to send — first of all — my [apologies to] the Environmental",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "9b5a9ad48fef686a",
-      "source_name": "Bluesky search: satellite constellation",
-      "url": "https://bsky.app/profile/withoutai.bsky.social/post/3mww26fkipc2z",
-      "title": "@withoutai.bsky.social on Bluesky",
-      "published_at": "2026-10-02T18:52:30.358Z",
-      "raw_excerpt": "A new satellite constellation is being developed to spot wildfires earlier. That is the kind of technology I really like. It is not flashy for most people, but detecting a fire sooner could make a huge difference.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "0cc54e54c2e62c46",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/autopilot.extwitter.link/post/3mwvzxawte72r",
-      "title": "@autopilot.extwitter.link on Bluesky",
-      "published_at": "2026-10-02T18:48:29.868Z",
-      "raw_excerpt": "Breaking: SpaceX is surging after a NASA astronaut launch and a Google AI satellite mission this week 7 Congress members disclosed buying $SPCX this year $SPCX added ~$144,316,950,000 in market cap today",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "c1b2b88036640458",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/finance/2026/10/02/northstar-earth-space-goes-public-after-spac-merger/",
-      "title": "NorthStar Earth & Space Goes Public After SPAC Merger",
-      "published_at": "2026-10-02T18:39:55.000Z",
-      "raw_excerpt": "Canadian space domain awareness (SDA) company NorthStar Earth & Space began trading on the New York Stock Exchange on Friday morning after completing a SPAC merger this week. NorthStar completed its combination with special purpose acquisition company (SPAC) Viking Acquisition Corp. I in a deal that valued NorthStar at $300 million, with an additional $30 million in private investment. NorthStar integrates ground-based and space-based data to monitor activity and detect threats in orbit. The company is headquartered in Montreal with operations in Luxembourg and New York. The company expects to use the proceeds to deploy a constellation of space-based sensors to provide SDA and space-situational awareness services to defence and commercial operators, along with ground-based sensors. “Becoming a public company gives NorthStar the resources to accelerate what we set out to build: a space-based sensor constellation that delivers trusted intelligence on the orbital environment,” said Stewart Bain, Founder and CEO of NorthStar. “We’re focused on execution as we expand the constellation and serve a growing base of government and commercial customers.” The company announced the SPAC deal in mid-April. Since then, a number of other space companies announced plans to use SPACs to go public including Quantum Space, Astrum Space, and Astro Digital just this week . The post NorthStar Earth & Space Goes Public After SPAC Merger appeared first on Via Satellite .",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "df69803a9aaf85d7",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/finance/2026/10/02/satlyt-secures-8m-in-seed-financing/",
-      "title": "Satlyt Secures $8M in Seed Financing",
-      "published_at": "2026-10-02T18:39:48.000Z",
-      "raw_excerpt": "Satlyt has been boosted by securing $8 million in seed financing led by non sibi ventures . The funding will accelerate development of its virtual Al data centers in space, expand its engineering and customer delivery teams, and scale software deployments across spacecraft operated by other companies. The company announced the successful seed funding, Oct. 1. Satlyt moves more processing onto the spacecraft itself, reducing the need to send every raw image or system log to Earth for analysis. That can reduce communications demands and the wait for useful results. The company’s approach is to make computing hardware on existing spacecraft more useful through software. Operators can process data closer to where it is collected, while application developers gain a way to run their software in orbit. Over time, Satlyt aims to give spacecraft from different operators a shared software layer for coordinating computing resources. The next planned deployment is expected to support two applications on one spacecraft: research software and a commercial imagery-processing application. “Running applications on existing spacecraft gives operators a way to do more with the computing hardware they already have in orbit. Our job is to make those applications practical to deploy and operate. This financing lets us expand the engineering and delivery teams needed to support more spacecraft and customers, while building toward computing resources that can work together across missions,” Rama Afullo, founder and CEO of Satlyt, said in a statement. &nbsp; The post Satlyt Secures $8M in Seed Financing appeared first on Via Satellite .",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "fe7ba9f52c56cb89",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/southfloridamedia.bsky.social/post/3mwvzeqst7c2q",
-      "title": "@southfloridamedia.bsky.social on Bluesky",
-      "published_at": "2026-10-02T18:38:12.658Z",
-      "raw_excerpt": "🚨 Breaking News 🚨 📺 Google and SpaceX Launch AI Chips Into Space as Neil deGrasse Tyson Questions the Reality of Orbital Data Centers. South Florida Media – Florida’s Free News Leader Article Link: sfl.media/google-and-s... #Google #SpaceX #AI #SpaceTechnology #SouthFloridaMedia",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "7ec68ca55097ada7",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/connectivity/2026/10/02/verizon-att-and-t-mobile-formally-establish-joint-venture-for-d2d-services/",
-      "title": "Verizon, AT&T and T-Mobile Formally Establish Joint Venture for D2D Services",
-      "published_at": "2026-10-02T18:37:57.000Z",
-      "raw_excerpt": "AT&T , T-Mobile , and Verizon formally established the joint venture focused on direct-to-device services the telcos first announced in May of this year. Wireless industry exec Paul Roth will serve as interim CEO during a search for a permanent CEO. The three telcos are teaming up on D2D calling for competition among satellite providers, a standards-based approach to device compatibility, and efficient use of spectrum. This comes as SpaceX has set its sights on competing with the “big three” with its next-generation Starlink Mobile service. “More satellite service providers will gain opportunities to compete, invest, and grow and the JV will work with rural mobile network operators (MNO) to enable them to bring new products to market for their customers,” Friday’s announcement said. The companies said this will result in fewer coverage gaps, improved network performance, and more access to D2D services for their customers. The JV is not exclusive, the MNOs said their existing carrier-satellite agreements will remain in place and the JV partners can continue independent connectivity efforts. The three carriers currently take different approaches to working with satellite players for D2D. T-Mobile offers service with SpaceX; AT&T is set to offer service with AST SpaceMobile; Verizon offers service on some Android phones with Skylo and has a commercial agreement with AST SpaceMobile as well. After announcing plans for the JV, the MNO CEOs made it clear they want multiple satellite options in a wholesale market for D2D. “We’ll keep pricing in check, so there isn’t a bottleneck of any particular single provider that can dictate what that pricing is,” AT&T CEO John Stankey said in May. T-Mobile CEO Srinivasan Gopalan later told investors he expects “the vast majority [of satellite] will be sourced through the JV” in the future. More on the joint venture: Major US Carries Band Together in Joint Venture to Encourage D2D Competition AT&T, T-Mobile, and Verizon CEOs Want Mult",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "bcd10fbb28c1e2c6",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/manufacturing/2026/10/02/airbus-completes-32-oneweb-refresh-satellites-ahead-of-launch/",
-      "title": "Airbus Completes 32 OneWeb Refresh Satellites Ahead of Launch",
-      "published_at": "2026-10-02T18:33:33.000Z",
-      "raw_excerpt": "Eutelsat hit a milestone for its OneWeb refresh plan as Airbus Defence and Space completed the first 32 satellites in the refresh for launch. The satellites are set to be shipped for launch on a SpaceX mission; Eutelsat did not specify a timeframe. Eutelsat ordered these satellites in late 2024 as part of a 100-satellite extension . The operator has recently ordered more refresh satellites — ordering a total of 669 new OneWeb satellites for service continuity. These mark the first OneWeb satellites built in Toulouse, France. Airbus shifted manufacturing from the former joint venture Airbus OneWeb Satellites in Florida to France. The delivery is “a symbol of our industrial relocalization as well as the confirmation of our high volume, high cadence satellite delivery capability and credibility,” Alain Fauré, head of Space Systems at Airbus Defence and Space commented in a release. Eutelsat CEO Jean-François Fallacher commented that this delivery demonstrates Europe’s “ability to build and sustain a global LEO capability.” The OneWeb constellation was initially completed in 2023 , and the last OneWeb launch was an additional 20 satellites launched in October 2024 . The post Airbus Completes 32 OneWeb Refresh Satellites Ahead of Launch appeared first on Via Satellite .",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "41214fdd0fb51b17",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/space-economy/2026/10/02/from-mile-high-to-outer-space-denver-broncos-cco-details-teams-partnership-with-mda-space/",
-      "title": "From Mile High to Outer Space: Denver Broncos CCO Details Team’s Partnership With MDA Space",
-      "published_at": "2026-10-02T18:27:29.000Z",
-      "raw_excerpt": "For those who follow the National Football League (NFL), it has often been described as a copycat league. In other words, one team does something new, and a number of teams follow. Recently, the Denver Broncos announced its first-ever space partner, MDA Space . It now begs the question, will other sports franchises and teams look to strike space partnerships? Via Satellite spoke to Denver Broncos Chief Commercial Officer Dennis Moore about the deal and why he is excited about the link-up with MDA Space. Moore said it could be argued that the Broncos are the closest NFL franchise to space. “We led early in discussions with MDA Space that the Broncos are the closest NFL team to space. We are a ‘mile high,’ and we just love that. It is a very significant alignment for us. We believe the space industry stands for innovation, precision, education, and the next generation of scientists and manufacturing.” Colorado’s strong economic and workforce presence in the space industry led to the partnership. Moore notes that aerospace is roughly a $15 billion industry in Colorado, with nearly 55,000 employees. “It is really about the aerospace industry and its presence in Colorado,” Moore said. “We have five military bases in Colorado. Aerospace is really critically important to Colorado, and ultimately, we have been focused on a space partnership for the last couple of years.” Denver Broncos Chief Commercial Officer Dennis Moore While a potential space partnership was on the radar for a few years, MDA’s Space recent move to acquire Blue Canyon Technologies was the catalyst for the stars to align. MDA Space, which is based in Canada, is acquiring the Denver-based manufacturer, which has around 400 employees and two manufacturing facilities. “When we saw this news, we actually reached out directly to Mike Greenley [MDA Space CEO] to talk about synergies and possibly working together. We really just started with a conversation that ultimately culminated with what you saw in us launc",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "615415738667572e",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPSmZ0T2JzOFpGT0hlelNoU2l1cHdTbG5ldTdfUTdtemhDWFBYS00zbHlUZlMteW91MWl3a3JIaW40REtValdfWkh5UFEyangwT3RHTE13NUtDMFRueFBCeXZpT0ZiWndnOWNOQWJNOEEyYzVNSXA1Wl9hT2puUlBxS05vbWtQMFhTcjBJNlVIYXgxdGxaRFJfakZ0RQ?oc=5",
-      "title": "SpaceX Just Launched 3 Rockets in 13 Hours. Here’s What Investors Need to Know Right Now. - Yahoo Finance",
-      "published_at": "2026-10-02T18:25:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxPSmZ0T2JzOFpGT0hlelNoU2l1cHdTbG5ldTdfUTdtemhDWFBYS00zbHlUZlMteW91MWl3a3JIaW40REtValdfWkh5UFEyangwT3RHTE13NUtDMFRueFBCeXZpT0ZiWndnOWNOQWJNOEEyYzVNSXA1Wl9hT2puUlBxS05vbWtQMFhTcjBJNlVIYXgxdGxaRFJfakZ0RQ?oc=5\" target=\"_blank\">SpaceX Just Launched 3 Rockets in 13 Hours. Here’s What Investors Need to Know Right Now.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "2457b65a0eddbb58",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQdWJFckRKMG1nWEtFVHh5X2tjb2ZVemRqdXhURXAzdG10NUNweFMyaFE3VjBGbHBRaW9pMEpGTklZd0MwY19tV1g0UTZ3cHVUVkt3WlhTbEJOMkNsZHBKVW14Sml3c1l4dWNTa0tOeTYtd0JwY1VDWW1WbVBNWnZTajZMYno3UkZjcks0WmtaVXRIdHp6MVBJOXV6LVB0Zw?oc=5",
-      "title": "SpaceX Stock Surges: What's Going On? - Benzinga",
-      "published_at": "2026-10-02T18:17:08.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMingFBVV95cUxQdWJFckRKMG1nWEtFVHh5X2tjb2ZVemRqdXhURXAzdG10NUNweFMyaFE3VjBGbHBRaW9pMEpGTklZd0MwY19tV1g0UTZ3cHVUVkt3WlhTbEJOMkNsZHBKVW14Sml3c1l4dWNTa0tOeTYtd0JwY1VDWW1WbVBNWnZTajZMYno3UkZjcks0WmtaVXRIdHp6MVBJOXV6LVB0Zw?oc=5\" target=\"_blank\">SpaceX Stock Surges: What's Going On?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Benzinga</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "d56874f53385273b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNZlhDR3FPSnQxbndFLUFWZWdRTjI2bWFCd01FbXNEc0RCLWwyNmRJYkMwNHhYbV9nZmlBcGFtZ3hjT1k4aklRbjF4QmFIMFhSWmMzMVBVelo1b281ZWlMOTlMcWZ0TElTc3BZUVhJWDE0WDJGQ21QODZ1VTU0Zk5qUGFrYVp2VDN4VVZLdEpzYmlnOG9GMFl6S1pDeDVLS2FqdkRJal8tYmRoQVZSQjFQTWxLQ0NVQQ?oc=5",
-      "title": "Station Crew Expands as NASA’s SpaceX Crew-12 Prepares to Depart - NASA (.gov)",
-      "published_at": "2026-10-02T18:14:44.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitgFBVV95cUxNZlhDR3FPSnQxbndFLUFWZWdRTjI2bWFCd01FbXNEc0RCLWwyNmRJYkMwNHhYbV9nZmlBcGFtZ3hjT1k4aklRbjF4QmFIMFhSWmMzMVBVelo1b281ZWlMOTlMcWZ0TElTc3BZUVhJWDE0WDJGQ21QODZ1VTU0Zk5qUGFrYVp2VDN4VVZLdEpzYmlnOG9GMFl6S1pDeDVLS2FqdkRJal8tYmRoQVZSQjFQTWxLQ0NVQQ?oc=5\" target=\"_blank\">Station Crew Expands as NASA’s SpaceX Crew-12 Prepares to Depart</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NASA (.gov)</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "2d678060d471dca1",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPd21WM0s4OXMxZjUtMGIzeU9rTThHZHEtaVhXcGlhanBLbFNabkFfVzd3bm94VTRWUjdyeWFmVzhDUGZyVExlYWEzdGFKbWhQeXhydmVHVDhrMGJxQmtEbFZONEZpX040SGtOd191RTlqcjBHOTZ5UEdxTHRyZnlpbFNHTQ?oc=5",
-      "title": "SpaceX (SPCX) Faces FAA Review On 76 Cape Canaveral Starship Launches - Yahoo! Finance Canada",
-      "published_at": "2026-10-02T18:07:26.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigwFBVV95cUxPd21WM0s4OXMxZjUtMGIzeU9rTThHZHEtaVhXcGlhanBLbFNabkFfVzd3bm94VTRWUjdyeWFmVzhDUGZyVExlYWEzdGFKbWhQeXhydmVHVDhrMGJxQmtEbFZONEZpX040SGtOd191RTlqcjBHOTZ5UEdxTHRyZnlpbFNHTQ?oc=5\" target=\"_blank\">SpaceX (SPCX) Faces FAA Review On 76 Cape Canaveral Starship Launches</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo! Finance Canada</font>",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "a335801f577578a0",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/weathernetwork.bsky.social/post/3mwvxjzv3tu25",
-      "title": "@weathernetwork.bsky.social on Bluesky",
-      "published_at": "2026-10-02T18:05:18.859Z",
-      "raw_excerpt": "Canadian Joshua Kutryk is in space, heading to the International Space Station (ISS). The SpaceX Falcon 9 rocket blasted off at 11:10 a.m. https://ow.ly/owHo50ZU276",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "de1f844d44a31b96",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/cj.shearwood.games/post/3mwvxigivj22y",
-      "title": "@cj.shearwood.games on Bluesky",
-      "published_at": "2026-10-02T18:04:24.764Z",
-      "raw_excerpt": "In any sensible world, this would be the final straw that would cause the US government to nationalise SpaceX. Let them keep their R&D business, hell even pay them out some money from each launch for the use of their facilities or whatever, but the sole provider cannot be allowed to just stop.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "90149d2fae765ce8",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/trump-grok-venezuela",
-      "title": "Trump Was Reportedly Pushed Into Invading Venezuela by Conversation With Grok",
-      "published_at": "2026-10-02T18:00:58.000Z",
-      "raw_excerpt": "It’s hardly a secret that president Donald Trump is addicted to AI slop , but his proclivity for being wooed by the tech apparently doesn’t end there.&nbsp; Trump is also, according to new reporting from TIME magazine, absolutely enthralled by Elon Musk’s Grok chatbot. Whereas your average user might turn to the infamously foul-mouthed AI — which briefly identified itself as “MechaHitler” — to win an online argument or crank out gooning material, the commander in chief&nbsp;uses it for more productive activities such as consulting on his military and geopolitical schemes. An illustrative moment came in December 2025, when Elon Musk returned to the Oval Office for a secret meeting, according to TIME . Trump spent hours asking Grok questions about his presidency and legacy, an official present told the magazine. On the top of Trump’s mind was Venezuela and “narcoterrorism,” supposed threats to the nation that he was combatting by bombing random Venezuelan fishing boats . Trump asked Grok how Venezuelans would react if the US captured the country’s president Nicolas Maduro. And Grok, in classic AI sycophantic fashion, told him what he wanted to hear. The chatbot asserted that Maduro was a deeply unpopular dictator, so Venezuelans would celebrate his ousting. Trump, as you may well know, then went ahead and ordered the technically-not-an-invasion of Venezuela, in a series of military strikes that killed dozens of Venezuelan and Cuban military personnel and several civilians, and led to the capture of Maduro.&nbsp; When news footage showed celebrations in the streets, Trump, officials said, came away convinced that Grok was ingenious. Even setting aside his public love of AI slop, it’s not surprising to hear that Trump’s bewitched by a chatbot. He’s old, for one. And more importantly, he’s someone who surrounds himself with yes-men in real life. An AI chatbot will confirm what he already believes and entertain his whims without any of the friction that may arise with hum",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "1dfa4257e7548ee2",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/dee4ever.bsky.social/post/3mwvvu6d4z22t",
-      "title": "@dee4ever.bsky.social on Bluesky",
-      "published_at": "2026-10-02T17:35:20.158Z",
-      "raw_excerpt": "After watching SpaceX Falcon 9 launch yesterday, students were excited to build their own rockets.",
-      "fetched_at": "2026-10-02T22:34:19.542Z",
-      "consumed": true
-    },
-    {
-      "id": "24f2c6f2031ec2f9",
-      "source_name": "Ars Technica space",
-      "url": "https://arstechnica.com/space/2026/10/us-military-ends-long-running-program-to-spot-nuclear-missile-launches/",
-      "title": "US military ends long-running program to spot nuclear missile launches",
-      "published_at": "2026-10-02T17:32:14.000Z",
-      "raw_excerpt": "In late 1970, a Titan IIIC rocket launched from Space Launch Complex 40 at what was then called Cape Canaveral Air Force Station. It carried a top-secret payload for the US military. Much has changed in spaceflight since then. The Titan IIIC would bow out in 1982 after dozens of launches. Various Titans continued launching from Space Launch Complex 40 until 2005, at which point the US Air Force—in a competitive process hotly opposed by United Launch Alliance—turned the pad over to a small, largely unknown startup called SpaceX. And Cape Canaveral is now a \"Space Force\" station. But those unspecified payloads? Until last month, some of them were still flying operationally. Read full article Comments",
       "fetched_at": "2026-10-02T22:34:19.542Z",
       "consumed": true
     }
