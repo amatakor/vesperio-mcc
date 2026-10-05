@@ -5136,4 +5136,68 @@ a newer entry if a lesson changes.
   updated items' `snr`/`snr_trace`/`sources` fields, and the sweep log's
   two unrelated persistence-bump `snr_movements` entries, as the
   build-health signal.
+
+## Narrow re-check, ~9h30m gap, unfiltered full source list (2026-10-05, second)
+
+- 2026-10-05-F: Redwire's registry `website` field still records the
+  retired `redwirespace.com` domain, which now 301-redirects to `rdw.com`
+  (a rebrand, same pattern as `hubblenetwork.com`->`hubble.com` and
+  `aerospacelab.be`->`aerospacelab.com`); `ir.rdw.com`'s own press page for
+  a new Axiom Space ROSA follow-on contract therefore still fails the
+  anti-spoof `first_party` host check against the stale registry value.
+  Led instead with a StockTitan mirror explicitly credited "Business Wire"
+  (`wire_pr`, tier 4, better than the mainstream Investing.com pickup
+  would have given), and used `ir.rdw.com` itself only as `informal`
+  corroboration. Worth a registry update to `rdw.com` at a future
+  structural touch.
+- 2026-10-05-G: A new company-with-no-registry-entity pairing: Nebex (a
+  space-sector financial-exchange startup founded by two former Axiom
+  Space executives) and Thrusters Unlimited (a Mexican EO operator) have
+  neither one a `src/data/registry` organization entity, so their joint
+  $700M Mexico-sovereign-space financing announcement led on a WebWire
+  press-release mirror (`wire_pr`) rather than either company's own site,
+  extending the standing no-registry-host workaround to a financial-
+  services space startup for the first time.
+- 2026-10-05-H: A `pulse2.com`-style press-release-aggregator page (no
+  original reporting, just a close restatement of the underlying EXIM/
+  company release) still counts as a genuinely distinct second source for
+  `crawl: "found_some"` purposes, classed `informal`, same treatment as
+  the standing "weak sourcing still counts as a second source" rule
+  (2026-09-09-L) -- it does not need to add new facts to count, only to
+  exist as a separately-fetched page.
+- 2026-10-05-I: A discovery-pass National Geographic "space junk near-miss"
+  snippet claimed an October 15, 2026 close-approach event -- ten days
+  AFTER this sweep's own `now` (Oct 5). Treated as an unconfirmable/likely
+  mis-dated search artifact (not a source directly fetched) and left out
+  entirely rather than guess at a future-dated claim; worth a direct fetch
+  next time a search snippet's own stated date postdates the sweep's `now`,
+  since that is never possible for a real past event.
+- 2026-10-05-J: The standing Bluesky stale/cross-contaminated-cache pattern
+  (2026-09-26-B/-O, 2026-09-30-E) recurred on a THIRD consecutive sweep day:
+  Caleb Henry's and Tim Farrar's `getAuthorFeed` API responses were still
+  stuck on pre-August 2026 posts, and Marco Langbroek's feed, while
+  genuinely current (posts through Oct 5), was entirely off-topic Dutch
+  politics content with no space posts in the returned window at all.
+  Andrew Jones's feed was current only through Sept 30, five days stale.
+  Treated all four as checked-but-empty rather than re-querying repeatedly;
+  the channels that return cleanly (Josef Aschbacher, Jeff Foust, Marcia
+  Smith, Anatoly Zak, Andrew Parsonson) continue to be the reliable core of
+  this leg.
+- 2026-10-05-K: Iran's Starlink-threat thread escalated again within the
+  same item's 7-day+ window: a Sept 30 single-source `informal` warning
+  (SNR 1) grew a same-week diplomatic protest to Norway (formal note to
+  the ambassador) plus a cyber-council official's "legitimate military
+  target" threat, independently confirmed via Mehr News (Iranian state
+  media, `informal`) and Daily Times (Pakistani mainstream, `mainstream`)
+  -- landed `mainstream_pickup` (+1, SNR 1 to 2) via `updates[].patch`+
+  `attach`, with a full-field `explainer`/`headline` replacement rather
+  than an append, since the diplomatic escalation was the more newsworthy
+  framing than the original "undermines internet control" quote.
+- 2026-10-05-L: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 1 updated, 0 held") and the item count
+  moving from 835 to 838, plus a direct read of all three new items' and
+  the updated item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields, and the sweep log's `mainstream_pickup` `snr_movements` entry,
+  as the build-health signal.
   no-op) as the build-health signal.
