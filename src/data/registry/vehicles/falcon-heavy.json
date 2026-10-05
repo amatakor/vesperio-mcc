@@ -110,21 +110,21 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 12,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/161/",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": 14,
+    "source": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+    "as_of": "2026-10-05",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/161/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 3,
+        "source": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+        "reason": "trade press, monotonic counter refresh (SNR_SPEC 6.6): item states the NROL-97 Falcon Heavy 'made its 14th flight Thursday night'; item itself scored snr 4 in items.json (weekly registry maintenance 2026-10-05). Supersedes the stale aggregator-sourced value 12 (as_of 2026-07-05), already flagged stale in the 2026-09-03 note."
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "flights_successful": {
     "value": 12,
@@ -144,21 +144,21 @@
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2026-08-30",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%20Heavy&limit=3&mode=normal",
-    "as_of": "2026-09-03",
-    "snr": 4,
+    "value": "2026-10-01",
+    "source": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+    "as_of": "2026-10-05",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Falcon%20Heavy&limit=3&mode=normal",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-09-03; Nancy Grace Roman Space Telescope, net 2026-08-30, most recent Falcon Heavy entry, launch successful)"
+        "tier": 3,
+        "source": "https://spaceflightnow.com/2026/10/01/falcon-heavy-to-fly-its-first-mission-for-u-s-spy-satellite-agency/",
+        "reason": "trade press, single reference; NROL-97 (Falcon Heavy's first NRO mission) made its 14th flight, superseding the 2026-08-30 Roman Space Telescope flight as the most recent (weekly registry maintenance 2026-10-05)"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "next_flight_date": {
     "value": "2026-11-30",
@@ -211,7 +211,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Weekly maintenance 2026-09-03: last_flight_date/next_flight_date refreshed (Roman Space Telescope flew 2026-08-30; Griffin Mission One next, NET 2026-11-30 TBD). flights_total/flights_successful (12/12, as_of 2026-07-05) left unchanged: the Aug 30 flight is a real 13th flight not yet reflected, but the Launch Library config endpoint (the field's own source) rate-limited (429) this run before a fresh total could be fetched; not incrementing by arithmetic per house rule against summing/inferring counts.",
+  "notes": "Weekly maintenance 2026-09-03: last_flight_date/next_flight_date refreshed (Roman Space Telescope flew 2026-08-30; Griffin Mission One next, NET 2026-11-30 TBD). flights_total/flights_successful (12/12, as_of 2026-07-05) left unchanged: the Aug 30 flight is a real 13th flight not yet reflected, but the Launch Library config endpoint (the field's own source) rate-limited (429) this run before a fresh total could be fetched; not incrementing by arithmetic per house rule against summing/inferring counts. Weekly maintenance 2026-10-05: flights_total bumped 12->14 and last_flight_date to 2026-10-01, landing a crossfeed flag_refresh candidate from Spaceflight Now's NROL-97 report, which states the mission 'made its 14th flight' (monotonic counter refresh, SNR_SPEC 6.6; supersedes the stale 12, which had already missed the Aug 30 Roman flight). flights_successful left at 12 pending Florian's reconciliation: no source fetched this run states the Aug 30 or Oct 1 flights' individual success/failure outcomes, so the successful count is not incremented by inference.",
   "payload_gto_kg": {
     "value": 26700,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",
