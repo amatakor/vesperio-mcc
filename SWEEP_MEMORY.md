@@ -5201,3 +5201,70 @@ a newer entry if a lesson changes.
   fields, and the sweep log's `mainstream_pickup` `snr_movements` entry,
   as the build-health signal.
   no-op) as the build-health signal.
+
+## Narrow re-check, ~1h49m gap, unfiltered full source list (2026-10-05, third)
+
+- 2026-10-05-M: `dedup_distinct` on a new item belongs at the item's TOP
+  LEVEL (sibling of `scoring`/`crossfeed`), not nested inside
+  `scoring.dedup_distinct`; finalize-sweep's dedup gate reads `raw.dedup_distinct`
+  and silently ignores it in the wrong place, so a first attempt with it
+  nested under `scoring` still rejected with the exact same unattested-match
+  errors even though the acknowledgment was present in the draft.
+- 2026-10-05-N: A whitelisted signal's post found via a general bluesky-feed
+  check (not a targeted handle search) led to a genuine predates-window gap:
+  Jeff Foust's Oct 5 IAC2026 post flagged an ESA talk citing a "late 2027"
+  Artemis III date against NASA's still-public "mid-2027," which traced back
+  to NASA Administrator Isaacman's Sept 20 staff memo ("~90 days broken
+  against the Artemis III schedule," obtained by NASA Watch, reported by
+  Fox 35 Orlando Sept 24) -- never drafted by any prior sweep despite being
+  two weeks old. Worth the reminder that a single vague social post is
+  sometimes just the thread to pull, not the citable fact itself: the memo,
+  not the IAC2026 post, became the lead.
+- 2026-10-05-O: A discovery-pass hit (Andrew Parsonson's "ESA Selects Airbus
+  and OHB to Lead European Space Station Studies") read as a genuine gap
+  until a full draft hit finalize-sweep's dedup gate and surfaced
+  `2026-09-29-esa-orbital-outpost-studies`, already published same-day at
+  SNR 5 from ESA's own first-party release with the exact same Airbus/OHB
+  Pre-Phase A/`EUR1B`-per-period facts, just reached via a European
+  Spaceflight mirror rather than esa.int itself. Worth checking
+  `source_url`-adjacent first-party domains (here, esa.int) before trusting
+  a trade-press mirror's framing as the only account of an ESA decision.
+- 2026-10-05-P: Two more recycled-content traps, both left undrafted: (1) a
+  Euromaidan Press "Ukraine wants to aim Starlink at Russian targets and
+  build a version Musk can't switch off" (Oct 4/5) bundled Zelenskyy's
+  Aug 23 "we have started testing it" European-alternative remark and Fire
+  Point's June 7 "satellite constellation for Ukraine and Europe" quote
+  under a fresh conflict-framed headline, with no genuinely new fact
+  (confirmed via direct fetches of the Aug 23 and June 7 originals); (2) a
+  Morgan Stanley SpaceX "AI, Starship upside" wave (6+ outlets, Oct 5) was a
+  reiteration of the SAME $300 target Adam Jonas set July 7 and reiterated
+  Sept 15, just with a new AI-compute/broadband/launch/X-Grok component
+  breakdown -- consistent with the standing same-number-reiteration
+  skip rule (2026-09-06-A), even though the breakdown framing was new.
+- 2026-10-05-Q: An Iranian official's "disabled Starlink terminals during
+  the recent war" claim (WANA/Mehr News, Oct 5) and a "95% of initial
+  phase tests complete" Gaganyaan claim (Times of India, via Google News)
+  both turned out to be already-captured or unverifiable: the Iran claim
+  restates the same Aghamiri quote the existing
+  `2026-09-30-iran-official-starlink-internet-control-warning` item already
+  carries (just "January 2026 unrest" vs. this piece's vaguer "recent war"
+  wording); the Gaganyaan figure couldn't be confirmed since
+  timesofindia.indiatimes.com is unfetchable in this environment and every
+  other search hit cited a different percentage (80/90%) from months
+  earlier. Left both unpatched/undrafted.
+- 2026-10-05-R: Eric Berger's bluesky feed (`sciguyspace.bsky.social`, via
+  the `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint) is
+  stuck on posts through June 23, 2026 -- a new name on the standing
+  stale/cross-contaminated-cache list (2026-09-26-B/-O, 2026-09-30-E,
+  2026-10-05-J), now five bluesky accounts affected. The bare
+  `bsky.app/profile/<handle>/post/<id>` WebFetch route still only returns
+  the handle with no post text (confirms 2026-09-06-Q); the
+  `getAuthorFeed` endpoint works for named accounts but a plain
+  `searchPosts` call to the same API 403'd, so there is still no reliable
+  way to read content from generic (non-signals) bluesky search-queue hits.
+- 2026-10-05-S: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 0 updated, 0 held") and the item count
+  moving from 838 to 840, plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
