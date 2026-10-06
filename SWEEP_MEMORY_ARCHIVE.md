@@ -8109,3 +8109,178 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `sources` fields and the sweep log entry's `corroboration_collapses`
   as the build-health signal.
 
+## Normal-mode sweep, ~8h05m gap, unfiltered full source list (2026-09-05)
+
+- 2026-09-05-A: A signals-fetchable bluesky account's `getAuthorFeed`
+  summary can flatten a post's linked article into prose without
+  surfacing the URL; re-fetching the SAME endpoint with an explicit ask
+  for "the post about X" and its `embed.external.uri` recovered the
+  exact article link (SpaceNews's paywalled "New NASA office to
+  consolidate launch procurements", found only via Jeff Foust's Sept 2
+  bluesky post) when a direct site search and three WebSearch variants
+  all failed to surface it. Worth re-querying a signals account's feed
+  a second time, asking specifically for one post's embed URL, before
+  giving up on a thin lead traced only to a bluesky summary.
+- 2026-09-05-B: A SpaceNews article behind the paywall can still yield
+  a legitimately citable two-sentence fact: the fetched page rendered
+  headline + a one-paragraph teaser before the paywall gate, no
+  fabrication needed. Drafted the NASA launch-procurement-office story
+  from exactly that teaser text at `noise` impact (thin, no figures,
+  no named programs) and let `crawl: found_none` (three WebSearch
+  variants, all empty) land it at SNR 2 rather than holding it for
+  weak sourcing.
+- 2026-09-05-C: The same-company-plus-category dedup false positive
+  keeps finding new shapes: a NASA/Blue Origin Mars-telecom contract
+  award (Sept 1) blocked an unrelated NASA launch-procurement-office
+  reorg (Sept 2, category `procurement`) purely on shared company
+  "NASA"; separately, an SpaceX/FCC High-Cost Fund USF filing (category
+  `regulatory`) blocked against BOTH the Rocket Lab/Iridium
+  merger-conduct FCC review and a UAE Starlink license grant, purely on
+  shared company "SpaceX" plus "regulatory" category, despite being
+  three different regulators/dockets/countries with nothing else in
+  common. Three `dedup_distinct` entries cleared it in one pass.
+- 2026-09-05-D: ESA's BepiColombo Mercury Transfer Module separation
+  (Sept 3, confirmed via ESA's own mission page, esa.int, first_party)
+  was independently corroborated by Ars Technica but NOT by CNN
+  (HTTP 451, geo/legal block), Space.com (truncated to nav chrome, the
+  standing 2026-08-11-F pattern), or Gizmodo (403) despite all three
+  covering the same event per WebSearch snippets; only cited pages
+  with genuinely fetched content rather than force in blocked/truncated
+  fetches as scoring sources. CNES's own site (presse.cnes.fr/fr) also
+  covered the story via a "France's role in Roman telescope" angle
+  piece that turned out to be about the ALREADY-published Aug 30 Roman
+  launch, not BepiColombo; read past the headline before assuming a
+  same-day national-space-agency piece is a new event.
+- 2026-09-05-E: `presse.cnes.fr/fr` now 301-redirects permanently to
+  `cnes.fr/presse`; the redirect target fetches cleanly. Worth updating
+  the sources.json URL at a future structural touch.
+- 2026-09-05-F: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 0
+  updated, 0 held") and a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields as the build-health signal.
+
+## Narrow same-day re-check, ~5.5h gap, unfiltered full source list (2026-09-05, second)
+
+- 2026-09-05-G: A fully clean zero-item sweep: the harvester queue
+  (candidates-context) was almost entirely EOS-05 launch-reaction
+  pieces and SpaceX stock-speculation chatter (zero survivors), the
+  8-source HTML pass found nothing dated after the prior sweep, a
+  16-of-17-channel signals pass (europeanspaceflight.substack.com/feed
+  still 403's, per 2026-08-09-G) surfaced only leads already published
+  by the prior two same-day sweeps, and an 11-query discovery matrix
+  independently rediscovered the same five stories (PLD Space Series C
+  extension, Kepler Aerospace seed round, the European Launcher
+  Challenge contracts, OHB/SES IRIS2, Isar Aerospace's Spectrum
+  scrub) with none new. Confirms the standing pattern
+  (2026-08-08-F/2026-09-03-K/2026-09-04-E) that a narrow re-check
+  right after an active prior sweep looks thin by design, not from
+  under-coverage, once every leg is checked exhaustively.
+- 2026-09-05-H: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and a direct read of the appended `state.json`
+  sweep-log entry as the build-health signal.
+
+## Narrow same-day re-check, ~6h14m gap, unfiltered full source list (2026-09-05, third)
+
+- 2026-09-05-I: A signals-channel author-page find (Vivienne Machi's
+  Aviation Week "Three Additional Space-Based AMTI Vendors Revealed")
+  named three genuinely new SB-AMTI vendors (Blue Origin, Boeing, Umbra)
+  distinct from the already-published Aug 4 Rocket Lab/STR/unidentified-
+  third-vendor item (2026-09-04-V): that item's mystery vendor is still
+  unnamed anywhere; these three are a separate vendor-pool addition
+  entirely, with contracts stated as "signed June 2." Aviation Week's own
+  article page 404'd and ssc.spaceforce.mil (the likely primary source)
+  403'd per the standing .mil-block pattern; two content-scraper mirrors
+  (ufofeed.com, newsbeep.com) republishing the same paywalled teaser text
+  do not count as independent corroboration (same underlying source, not
+  separate reporting), so this landed a single-source trade lead with
+  `crawl: found_none` at SNR 2. Dated to June 2 (the stated contract-
+  signing date) rather than the Sept 4 reveal date per the standing
+  predates-window convention, even though the underlying detail (a thin,
+  cut-off paywall quote with no dollar figures) is much sparser than
+  most chased predates-window items.
+- 2026-09-05-J: A new scope-question shape for the institutional-
+  disclosure precedent (NASA-STRIDE, ASI board dissolution, Singapore-
+  JAXA): 9 ISRO employee associations (~5,000 staff) sent ISRO's Chairman
+  a letter seeking clarity on the agency's shrinking role as launch-
+  vehicle manufacturing shifts to private industry (HAL's SSLV transfer,
+  LVM3/PSLV bidding, the already-published Kulasekarapattinam spaceport
+  handover). Unlike the STRIDE/ASI cases, this letter DOES name concrete
+  commercial-space actions (HAL, LVM3, PSLV, the spaceport), but the
+  event itself is a staff-association letter about job security, not a
+  procurement action, contract, or market-access change in its own
+  right -- queued to held.json as a scope question rather than published
+  or discarded. Single-sourced to WION (Sidharth MP); Times of India and
+  Inshorts carried the same story same-day but neither was directly
+  fetchable, and a corroboration search found only secondary aggregator
+  restatements of the same underlying reporting.
+- 2026-09-05-K: `presse.cnes.fr/fr`'s 301-redirect to `cnes.fr/presse`
+  (noted 2026-09-05-E) fetches cleanly and is a good direct substitute;
+  worth updating the `sources.json` URL at a future structural touch
+  rather than continuing to rely on the redirect resolving.
+- 2026-09-05-L: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 1 new, 0 updated, 1 held") plus a `jq` parse check (567 items,
+  up from 566) and a direct read of the new item's and the new held
+  entry's fields as the build-health signal.
+
+## Narrow same-day re-check, ~3h18m gap, unfiltered full source list (2026-09-05, fourth)
+
+- 2026-09-05-M: The mandatory signals pass caught a seismic event before
+  any trade outlet, the queue, or the HTML pass did: Isar Aerospace's
+  Spectrum reached orbit on its second flight (Andoya, Norway), the first
+  orbital-class launch from Western Europe and the first orbital flight
+  by a privately developed European launch vehicle (the March 2025 debut
+  failed 30 seconds after liftoff; five subsequent 2026 attempts
+  scrubbed). Jeff Foust's and Andrew Parsonson's bluesky posts both
+  landed within minutes of the 20:00 UTC liftoff, well ahead of any
+  fetchable trade-press writeup; isaraerospace.com's own newsroom and
+  mission-updates pages were both still serving pre-launch/stale cached
+  content over an hour after the result was public (the standing
+  2026-08-16-F "top-of-listing page with no visible date is not a
+  freshness signal" trap, here extending to a first-party page not
+  updating at all yet), so first_party could not be used as the lead.
+  Two independent Norwegian mainstream outlets (NRK, Aftenposten) fetched
+  cleanly with full post-launch detail (exact times, government-minister
+  quote, orbit-achieved confirmation) and became the lead instead; ESA's
+  own esa.int page on the mission was checked but was a stale March 2026
+  pre-launch preview for the same "second flight" framing, not usable for
+  today's result (read past the "kvalifiserende andre oppskytning"
+  headline before citing an ESA page on a recurring mission name).
+- 2026-09-05-N: finalize-sweep's corroboration-collapse logic treats ALL
+  bsky.app URLs as one domain regardless of profile: Jeff Foust's and
+  Andrew Parsonson's distinct bluesky posts (different people, different
+  posts, both genuinely independent) were collapsed into one
+  corroboration unit (`rule: "same_domain"`, Foust's post kept) even
+  though the "multiple pages on one domain" collapse rule was written for
+  a company's own multi-page site, not a shared social platform across
+  unrelated authors. The item still landed a defensible final SNR 4 via
+  NRK+Aftenposten+the-kept-bluesky-post+NASASpaceflight's X post (4
+  units), but worth flagging for Florian: two distinct whitelisted
+  people's own posts probably shouldn't collapse together just because
+  bsky.app is one hostname.
+- 2026-09-05-O: A Google-News "launch" queue candidate on ISRO's Sept 5
+  semi-cryogenic engine test (Deccan Chronicle, India Today) read
+  superficially similar to a June 27, 2026 "near-full-thrust" (88%,
+  175-tonne) test several other outlets had already covered as
+  "near-full thrust" -- confirmed via isro.gov.in's own dated release
+  that today's was a distinct, later (9th in series) test reaching TRUE
+  100% (200-tonne) thrust for the first time, not a resurfacing of the
+  June milestone. Worth the reminder that a recurring test-series
+  headline shape ("X% thrust", "near-full thrust") needs the exact
+  percentage/tonnage checked against the primary source before assuming
+  two same-topic articles months apart describe the same event.
+- 2026-09-05-P: `bun run build` was denied outright by this session's
+  permission gate again, continuing the standing pattern since
+  2026-07-11-B; relied on `finalize-sweep.ts`'s own merge confirmation
+  ("merged 2 new, 0 updated, 0 held") plus a `jq` parse check (569
+  items, up from 567) and a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
+  build-health signal.
+
