@@ -5182,3 +5182,45 @@ a newer entry if a lesson changes.
   it at 4 regardless of the two trade corroborations) and the
   `registry-candidates.json` `flag_refresh` entry for
   `unseenlabs.sats_launched_total` (23 to 25).
+
+## Narrow re-check, ~6h gap, unfiltered full source list (2026-10-06, third)
+
+- 2026-10-06-M: A same-program follow-up 29 days after the original item,
+  outside both the 7-day same-event and 30-day reinforcement windows, is
+  still a clean `updates[].patch`+`attach` case rather than a new item
+  when it is genuinely the same ongoing government program restated with
+  new figures: Kazakhstan's Oct. 6 government meeting (deputy PM Madiyev,
+  per Kazakhstan Today) gave a concrete breakdown of the Sept. 7 nine-
+  satellite EO constellation item's "six Kazakh satellites" (three high-
+  resolution, three medium-resolution), a new five-year economic-impact
+  figure, and a $70M value for the partner-country export projects.
+  Treated as an enrichment patch (same lead class, no bump) rather than a
+  new item, consistent with the standing ESA-ERS-EO/Starbase-ruling
+  enrichment pattern even though the literal dedup windows had elapsed.
+  A WebSearch synthesis for this story also conflated in a South
+  Korea/CONTEC manufacturing detail from a different Kazakhstan Today
+  article; the directly fetched page did not state it, so it was left out
+  per rule 2 rather than trusted from the search summary alone.
+- 2026-10-06-N: A Payload exclusive (HawkEye 360's AFRL-funded whitepaper
+  on using its RF sensors to characterize OTHER satellites' behavior in
+  LEO/MEO/GEO) found zero independent pickup on two separate searches;
+  published honestly at `crawl: "found_none"` (trade base 3, final SNR 2)
+  rather than held for being single-sourced, per the standing weak-
+  sourcing-is-not-a-hold-reason rule.
+- 2026-10-06-O: A months-stale KBR/USGS $350M Earth-observation IDIQ
+  contract (actual company release dated January 5, 2026) recirculated
+  today via stock-reaction aggregators (Investing.com, GuruFocus, Simply
+  Wall St, framed around a same-day stock move) with no new fact --
+  caught only by fetching KBR's own press release directly and reading
+  its stated date, since every WebSearch snippet read as current. Left
+  undrafted; extends the standing stale-resurfacing-via-stock-reaction-
+  piece pattern (2026-09-06-A and peers) to a government-services IDIQ
+  rather than an analyst price target.
+- 2026-10-06-P: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (851 items, up from 847), the Kazakhstan update's patched
+  `explainer.what_happened` and five-source `sources` array, and the
+  sweep log's `corroboration_collapses` entry (Global Invacom's own blog
+  post vs. a Satellite Evolution Group republish, correctly collapsed as
+  a wire rewrite) as the build-health signal.
