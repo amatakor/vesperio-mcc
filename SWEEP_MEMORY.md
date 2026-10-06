@@ -5268,3 +5268,50 @@ a newer entry if a lesson changes.
   `category`/`impact` fields (855 items, up from 851) and the sweep
   log's `corroboration_collapses` entry (McGregor item, Waco
   Bridge/KEDT wire rewrite).
+
+## Narrow re-check, ~4.6h gap, unfiltered full source list (2026-10-06, fifth)
+
+- 2026-10-06-V: Two paywalled-at-source financial stories (a Reuters "SpaceX
+  seeks $40B Apollo-led financing for Nvidia chips" brief and a Reuters
+  "Anthropic IPO prospectus shows $84.5B SpaceX compute deal" report, both
+  inaccessible directly via WebFetch on reuters.com/ft.com, which return hard
+  "unable to fetch" errors rather than 403/timeout) were each confirmed via
+  two independently-fetched secondary mirrors (ChainCatcher + Crypto Briefing
+  for the Nvidia financing; Seeking Alpha + Crypto Briefing for the Anthropic
+  deal) that both named Reuters/FT as the original reporter and gave matching
+  figures -- drafted at `informal`/`trade` base per the standing
+  paywalled-original-via-mirrors precedent (2026-10-06-T) rather than held.
+  The Anthropic figure traced back to a Sept 29 original disclosure recycled
+  today via a Musk-"evil"-quote framing (TheStreet); chased and dated
+  2026-09-29 per the predates-window convention rather than drafted on
+  today's recirculation date.
+- 2026-10-06-W: Company-own-domain press-release pages (sealsq.com investor
+  news release; thinkom.com's news page, which despite its URL slug
+  referencing an unrelated Safran story actually rendered the Northrop
+  Grumman/TACAMO announcement content when fetched) both got the exact same
+  gate rejection: "host ... is not an official first_party host; reclassify"
+  -- neither SEALSQ, WISeSat, nor ThinKom has a registry organization
+  profile, so `first_party` can never pass the anti-spoof domain check for
+  them regardless of how official the page is. Reclassified both as
+  `wire_pr` and the draft passed; `first_party` is effectively reserved for
+  entities with a registry profile to validate the domain against.
+- 2026-10-06-X: A same-company-plus-category dedup false positive fired
+  again (SpaceX + category `product`), this time against FOUR unrelated
+  existing items at once (Ecuador Starlink Mobile, Alaska Air fleet
+  connectivity, the community-host program, and an AT&T exec's Starlink
+  comments) for a new item about SpaceX's own space-safety data platform
+  launch -- same pattern as 2026-10-06-S, just wider (4 matches instead of
+  3). All four cleared in one pass with `dedup_distinct` at the item's top
+  level using the real matched ids.
+- 2026-10-06-Y: A new WISeSat-related item (SEALSQ's $10M related-party PIPE
+  investment, announced Oct 6) tripped the same-company dedup gate against
+  the Oct 1 WISeSat SPAC-merger-close item despite being a genuinely
+  different transaction (equity PIPE investment vs. SPAC listing); cleared
+  with a one-line `dedup_distinct` reason rather than folded into an
+  `updates[]` attach, since it is new news, not corroboration of the old
+  story.
+- 2026-10-06-Z: `finalize-sweep.ts` rejected twice on `explainer.tagline`
+  exceeding 140 chars (ICEYE/California at 146, Iran EO claim at 160) before
+  merging cleanly on the third attempt ("merged 8 new, 0 updated, 0 held");
+  confirmed via a direct read of all eight new items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields (863 items, up from 855).
