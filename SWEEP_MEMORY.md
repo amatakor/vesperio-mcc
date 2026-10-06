@@ -5140,3 +5140,45 @@ a newer entry if a lesson changes.
   entry (KSAT's own release vs. a PR Newswire mirror, correctly collapsed
   as a wire rewrite), and four unrelated persistence-bump `snr_movements`
   entries in the sweep log.
+
+## Narrow re-check, ~4.6h gap, unfiltered full source list (2026-10-06, second run)
+
+- 2026-10-06-G: Caleb Henry's bluesky feed (`chenryspace.bsky.social`) is
+  now also stuck on a stale cache (newest post Sept 30, with the rest of
+  the visible feed dated back to June), joining the standing stale/cached
+  bluesky list (2026-09-26-B/-O, 2026-09-30-E, 2026-10-05-J/-R) -- six
+  accounts affected now. Tim Farrar's (`tmfassociates.bsky.social`) is
+  stuck even further back, on July 26. The `getAuthorFeed` endpoint still
+  returns content for all of them, just old content; there is no error to
+  catch, only a date check against `lastSweep` to catch it.
+- 2026-10-06-H: For `signalsPass.checked`, use the exact `url` field
+  candidates-context/signals-context prints for each fetchable entry, not
+  the `rss` field when both exist: Andrew Parsonson's substack entry has
+  `url: "https://europeanspaceflight.substack.com"` and a separate `rss`
+  pointing at `/feed`; passing the `/feed` URL made finalize-sweep reject
+  the draft ("not a fetchable whitelisted signal channel"). Fetching via
+  the `rss` URL is fine; just report the channel's own `url` back.
+- 2026-10-06-I: `draft.coverage` takes `Category` values (the
+  CLAUDE.md/schema category enum: launch, constellation, contract, ...),
+  not domain tags like `eo`; `"eo"` in coverage is a hard rejection, not a
+  warning.
+- 2026-10-06-J: A Google News "launch" query feed on a quiet day can be
+  almost entirely SpaceX stock-price churn (Musk's trillionaire-again
+  cycle, 10+ near-duplicate outlets same afternoon) with zero on-scope
+  signal; that is a legitimate zero-add outcome for that leg, not a sign
+  the queue needs a wider net.
+- 2026-10-06-K: Unseenlabs' BRO-23/BRO-32 joint Gen1+Gen2 launch (Oct 1,
+  PR Newswire) was still undrafted five days later: it had surfaced only
+  via a sponsor-spam-laden Bluesky repost in the queue, easy to dismiss on
+  sight, but the underlying claim (two generations flown together, fleet
+  to 25) checked out cleanly against the operator's own release plus two
+  independent trade pickups (Military Aerospace, Via Satellite). Worth
+  reading past a spammy-looking Bluesky wrapper to the fact underneath
+  before discarding it.
+- 2026-10-06-L: `finalize-sweep.ts` merged cleanly on the second attempt
+  after fixing -H and -I above ("merged 1 new, 0 updated, 0 held");
+  confirmed via a direct read of the new item's `snr`/`snr_trace`
+  (wire_pr base tier 4, no modifiers applied since the wire-pr cap holds
+  it at 4 regardless of the two trade corroborations) and the
+  `registry-candidates.json` `flag_refresh` entry for
+  `unseenlabs.sats_launched_total` (23 to 25).
