@@ -5224,3 +5224,47 @@ a newer entry if a lesson changes.
   sweep log's `corroboration_collapses` entry (Global Invacom's own blog
   post vs. a Satellite Evolution Group republish, correctly collapsed as
   a wire rewrite) as the build-health signal.
+
+## Narrow re-check, ~3.5h gap, unfiltered full source list (2026-10-06, fourth)
+
+- 2026-10-06-Q: A predates-window local-news story (McGregor, Texas city
+  council settling a $175,000 groundwater-overpumping penalty tied to
+  SpaceX's rocket-test site, first reported Sept 30) led on a small
+  nonprofit newsroom (Waco Bridge) with a second NPR-affiliate pickup
+  (KEDT) that turned out to carry the exact same headline and text (a
+  Texas Newsroom collaborative piece); finalize's title-collapse
+  correctly caught it as a `wire_rewrite`, so the item landed an honest
+  single-source-equivalent SNR 1 (informal base, no corroboration
+  credit) rather than the SNR 2 a naive two-source count would predict.
+  Worth expecting near-identical-headline local-public-radio pickups to
+  collapse even when they're hosted on genuinely different nonprofit
+  domains.
+- 2026-10-06-R: A literal Musk exclamation mark in a direct quote
+  ("...it will have no chance of accessing the Internet!") tripped the
+  gate's blanket "exclamation marks never publish" rule even inside a
+  quoted/attributed sentence; rewrote the sentence to drop the mark
+  while keeping the quoted clause intact rather than omit the fact.
+  The rule applies to the rendered copy, not just unquoted agent prose.
+- 2026-10-06-S: A same-company-plus-category dedup false positive fired
+  three ways on a new SpaceX/McGregor groundwater item (category
+  `regulatory`): against an unrelated Iran/Starlink item, an FAA
+  Starship SLC-37 EIS item, and a Florida gas-pipeline item, sharing
+  nothing but company SpaceX + category + window. Three
+  `dedup_distinct` entries (using the REAL matched item ids, not an
+  invented placeholder id — the gate rejects a mismatched id) cleared it
+  in one pass.
+- 2026-10-06-T: A Bloomberg-exclusive story (NASA eyeing bulk multi-rocket
+  purchases for its Moon Base, naming program manager Carlos
+  Garcia-Galan) was fully paywalled/403'd at the source, but two
+  independently-fetched stock-reaction mirrors (TradingView/Benzinga,
+  MoneyCheck) carried the same direct quote verbatim; drafted at an
+  honest `informal`-base SNR 2 via `corroboration_2plus` rather than
+  held for weak sourcing. The older, already-published "SpaceX stops
+  booking Falcon 9 past 2028" fact was treated as background context,
+  not the news peg, since only NASA's bulk-buy response was new.
+- 2026-10-06-U: `finalize-sweep.ts` merged cleanly on the third attempt
+  after fixing -S and -R above ("merged 4 new, 0 updated, 0 held");
+  confirmed via a direct read of all four new items' `snr`/`snr_trace`/
+  `category`/`impact` fields (855 items, up from 851) and the sweep
+  log's `corroboration_collapses` entry (McGregor item, Waco
+  Bridge/KEDT wire rewrite).
