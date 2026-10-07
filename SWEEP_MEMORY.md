@@ -5266,3 +5266,55 @@ a newer entry if a lesson changes.
   0 held"); confirmed via a direct `jq` read of all three new items'
   `snr`/`impact`/`category` fields (868 items, up from 865) and both updated
   items' patched `sources`/`snr` fields.
+
+## Narrow re-check, ~3h gap, unfiltered full source list (2026-10-07, third)
+
+- 2026-10-07-O: `updates[].attach` alone does NOT recompute an item's SNR,
+  confirmed by direct inspection: attaching a genuinely new second source
+  (The Next Web, mainstream) to the single-sourced SpaceX/AFTRCC spectrum
+  item left `snr`/`snr_trace` byte-for-byte unchanged at the old value
+  after the merge ("merged 3 new, 2 updated, 0 held"), even though the
+  `sources` array correctly grew to two entries. A second
+  `updates[]` entry on the same id with an explicit
+  `"bump": "corroboration_2plus"` (one of the valid bump types:
+  reinforcement, corroboration_2plus, corroboration_4plus,
+  mainstream_pickup) was required to actually move the score (1 to 2,
+  logged in `snr_movements`). The Royal Air Maroc update in the same
+  merge looked fine without a bump only because its base+corroboration_2plus
+  was already at the trade-lead ceiling (4), so no visible change was
+  expected either way; do not take a same-sweep plain `attach` producing
+  no score movement as proof the math is wired up when the lead is at a
+  ceiling. Rule of thumb going forward: whenever an `attach` is meant to
+  move the score (not just add a citation), pair it with the matching
+  `bump` (or a full `rescore` block for a lead upgrade) in the SAME
+  update entry, and verify by reading `snr_trace.modifiers`/`history`
+  after merge, not just the `sources` array length.
+- 2026-10-07-P: Three new items (EU SST/TraCSS SSA data-exchange study,
+  first-party sourced from space.commerce.gov; an ESA-Vast post-ISS MoU
+  on using Vast's Haven station, first-party sourced from esa.int; and a
+  Sateliot Draconis five-satellite IoT launch, dated on the actual Oct 2
+  launch date per the predates-window convention) all merged on the
+  second attempt, after (1) trimming the TraCSS tagline from 157 to under
+  140 chars and (2) adding a `dedup_distinct` entry for the ESA-Vast item
+  against the existing Sept 29 ESA/Airbus/OHB sovereign-outpost-studies
+  item -- another instance of the standing shared-company-plus-category
+  false-positive pattern, this time on "ESA" specifically rather than
+  SpaceX/NASA/Blue-Origin/Hanwha, confirming the heuristic fires on any
+  frequently-tracked institutional actor, not just companies.
+- 2026-10-07-Q: A near-total-junk candidate queue (79 candidates after
+  filtering, almost entirely SpaceX stock-reaction churn on the
+  Apollo/Nvidia $40B financing story, Crew-12 ISS-return coverage, and a
+  dozen Via Satellite evergreen analysis/opinion pieces with no dated
+  news hook) still yielded two genuine finds via the open-web discovery
+  pass that were NOT in the harvested queue at all: the EU SST/TraCSS
+  study and the ESA-Vast MoU. Several queue entries that looked like new
+  stories resolved to recycled olds ones on direct fetch: a BASENOR
+  "Starlink Mobile V2 100x bandwidth" piece recycled a March 2026
+  announcement; a Tech Review Africa "STAR.VISION/Oman Lens two new
+  satellites" piece recycled a Sept 2025 TechAfrica News story; and a
+  BASENOR "Royal Air Maroc, Africa's First LEO In-Flight Wi-Fi" piece
+  turned out to be the first OFFICIAL confirmation of an Aug. 4 deal
+  previously reported only as unconfirmed trade sourcing (Royal Air
+  Maroc CEO Hamid Addou and Starlink's Lauren Dreyer both quoted on
+  record), landing as a content-upgrade `updates[]` patch rather than a
+  new item or a skip.
