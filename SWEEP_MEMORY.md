@@ -5318,3 +5318,45 @@ a newer entry if a lesson changes.
   Maroc CEO Hamid Addou and Starlink's Lauren Dreyer both quoted on
   record), landing as a content-upgrade `updates[]` patch rather than a
   new item or a skip.
+
+## Narrow re-check, ~5h45m gap, unfiltered full source list (2026-10-07, fourth)
+
+- 2026-10-07-R: The standing same-company-plus-category dedup false
+  positive fired a record SIX ways at once on a new Musk "oligarchs
+  blocking Starlink in India" commentary item (category `regulatory`):
+  against the Iran-Starlink item, the Florida gas-pipeline permit, the
+  McGregor groundwater settlement, the FAA Part 450 rulemaking, the FCC
+  15,000-satellite approval, and the AFTRCC spectrum fight, none of
+  which share anything with Musk's India market-access commentary
+  beyond company SpaceX + category regulatory + window. Six
+  `dedup_distinct` entries at the item's top level cleared it in one
+  pass; worth expecting this heuristic to walk literally every
+  same-category SpaceX item in the 7-day window, not a handful, once
+  SpaceX has had several regulatory items in one week.
+- 2026-10-07-S: A trade piece covering an FCC order the agency itself
+  issued (Via Satellite's deep read of the Oct. 6 15,000-satellite D2D
+  grant) carried materially more regulatory detail than the two outlets
+  that broke the story first (ISPreview UK, Notebookcheck): the 15-year
+  license term, the 2032/2035 50%/100% build-out deadlines, the
+  condition tying SpaceX's EchoStar spectrum rights to closing that
+  deal's second step, and the specific bands the FCC deferred
+  (2020-2025MHz Earth-to-space; 20.2-21.2/30.0-31.0GHz, citing heavy
+  federal use). Folded in as an `updates[].patch`+`attach` enrichment
+  with no bump requested, since the item's trade-led lead was already
+  at its non-first-party ceiling of 4 — a same-event dedup match on an
+  already-published regulatory order is still worth a deeper read of
+  the agency's own order, not just the outlets that first reported it.
+- 2026-10-07-T: Vivienne Machi's Aviation Week author-page listing
+  carried a same-day "Debrief: When Will U.S. Space Force Get Its
+  Optical Mesh Network?" piece that read as a potential undrafted SDA
+  gap; a WebSearch of the piece's own preview text showed it is a
+  historical status explainer (recapping Starlink's 2019 RF debut and
+  2021 optical-crosslink addition) rather than a dateable new event or
+  award — left undrafted per the standing trend/explainer-piece
+  exclusion, distinct from the several SDA Tranche-vendor award items
+  that DO belong on the feed.
+- 2026-10-07-U: `finalize-sweep.ts` merged cleanly on the second attempt
+  after adding the six `dedup_distinct` entries above ("merged 4 new, 2
+  updated, 0 held"); confirmed via a direct `jq` read of all four new
+  items' `snr`/`impact`/`kind` fields (875 items, up from 871) and both
+  updated items' patched `explainer`/`sources` fields.
