@@ -8284,3 +8284,189 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `snr`/`snr_trace`/`category`/`impact`/`tags`/`sources` fields as the
   build-health signal.
 
+## Narrow same-day re-check, ~8h24m gap, unfiltered full source list (2026-09-06)
+
+- 2026-09-06-A: A recycled-old-price-target trap in a new shape: a
+  247wallst.com/AOL piece dated Sept 4, 2026 ("One Analyst Sees 450%
+  Upside From Here") restates the exact same Raymond James/Brian
+  Gesuale $800 SpaceX price target that Motley Fool and MSN had already
+  covered on 2026-07-14 (fetched fool.com's July 14 article directly to
+  confirm: same analyst, same firm, same $800 figure, same ~452%
+  upside math off a near-identical stock price) -- personal-finance
+  content mills appear to recirculate the same standing analyst call as
+  "new" filler every few weeks. Left undrafted. By contrast, the same
+  day's Oppenheimer (Timothy Horan) target raise to $280 from $250 was
+  independently confirmed as genuinely new (Sept 2 dated, corroborated
+  across StreetInsider/GuruFocus/TipRanks/Yahoo Finance/multiple
+  financial-news sites with consistent $250->$280/Outperform detail)
+  and was drafted as commentary. Always check a recycled-sounding
+  analyst-note headline's own underlying call date/figure against a
+  directly fetched primary article before drafting or discarding it.
+- 2026-09-06-B: A WebFetch summary of a Yahoo Finance article
+  (Oppenheimer/Horan note) surfaced specific claims (a "Cursor
+  acquisition," Grok integration, exact AI-revenue/capex/net-loss
+  dollar figures) that read as suspiciously precise for what should be
+  a rocket-and-satellite company; re-fetching a second, independent
+  source (TipRanks) on the same note independently surfaced the same
+  "Cursor acquisition" and Grok details (though not the specific
+  revenue/capex/loss figures), which resolved the suspicion in favor of
+  the fact being real rather than a WebFetch hallucination -- SpaceX in
+  this feed's timeline has an AI/Grok business line, so a same-day
+  analyst note reasoning from that is plausible on its own terms. Left
+  the unconfirmed-by-a-second-source dollar figures (AI revenue/capex/
+  net loss) out of the drafted copy entirely rather than risk a
+  single-fetch fabrication, per rule 2. Separately, TipRanks reported a
+  different Deutsche Bank/Edison Yu price target ($325) than a plain
+  WebSearch synthesis across multiple outlets did ($235, with a July
+  $255 target lowered) for the same analyst on the same stock --
+  treated the WebFetch's $325 figure as unreliable and omitted the
+  Deutsche Bank angle from the draft entirely rather than use either
+  number.
+- 2026-09-06-C: The White House/Paris-space-summit story (queued to
+  held.json 2026-09-03) and the ISRO staff-associations privatisation
+  letter (queued 2026-09-05) both kept resurfacing in the harvester
+  queue as syndicated Google News variants (a Defense Express
+  Ukraine-conflict-angle piece, several India-outlet mirrors) with no
+  Florian ruling yet; correctly left both out of this draft rather than
+  re-queuing duplicate held entries or guessing a verdict, per the
+  standing "check the queue for a decision block before touching an
+  open held entry" rule.
+- 2026-09-06-D: A Jeff Foust bluesky post (Cowboy Space's 291,035-sq-ft
+  Kent, Wash. facility lease for orbital-data-center hardware, via a
+  GeekWire piece that itself 403'd on direct WebFetch) was drafted as a
+  whitelist/observer-class lead once an independent secondary outlet
+  (Engineers and Architects of America, e-a-a.com) fetched cleanly and
+  independently confirmed the same square footage, job count, and
+  $275M Series B/2028-launch context -- Cowboy Space has no
+  src/data/registry organization entry, so the crossfeed block was
+  `facts: []` with a no-registry-host note, same shape as the
+  standing MDA Space/Voyager precedents.
+- 2026-09-06-E: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (571 items, up from 569)
+  and a direct read of both new items' `snr`/`category`/`impact`/
+  `tags`/`companies`/`sources` fields as the build-health signal.
+
+## Narrow same-day re-check, ~5h56m gap, unfiltered full source list (2026-09-06, second)
+
+- 2026-09-06-F: A fully clean, near-zero-item sweep resolved to exactly
+  one genuine procedural update: the FAA's July 28 environmental-waiver
+  proposal item (already SNR 5, official_record lead) got Earthjustice's
+  September 1 opposition-comments release attached as a fourth,
+  `informal`-class source once a same-day NBC News Google-News queue
+  candidate (redirect never resolved via WebFetch, per the standing
+  2026-08-06-F/2026-08-07-K pattern) led back to the underlying comment-
+  period-closure news. SNR stayed at 5 (direct-source ceiling, no bump
+  claimed) since this was a new procedural fact, not corroboration of
+  the original claim. A Morgan Lewis law-firm alert (Sept 2) surfaced
+  while chasing this turned out to be a pure recap of two already-
+  published items (the FAA rule itself and the July 9 Reflect Orbital
+  FCC approval) and added nothing.
+- 2026-09-06-G: The NASA Deep Space Network Goldstone DSS-23 antenna
+  story (Space.com "queue" candidate, direct URL 404'd, found via
+  WebSearch) turned out to be a month-stale event (antenna went
+  operational August 3) with no stated commercial-space consequence
+  (DSN serves NASA's own deep-space missions, not a commercial
+  operator or reseller) -- judged out of scope on the same institutional-
+  disclosure logic as the NASA-STRIDE/ASI-board precedents, not chased
+  as a predates-window item despite being dateable and fetchable.
+- 2026-09-06-H: Two more shapes of the recurring "trend/wrap-up piece
+  bundling old facts" trap (2026-09-04-T precedent): a KeepTrack/Yahoo
+  Finance recap of SpaceX's Florida-to-Starship Starlink-launch shift
+  restated the already-published Aug 25 B1067/37th-flight item with no
+  new fact; a paywalled Aviation Week piece by Vivienne Machi
+  ("Orbital Cargo Firms Aim To Make Space Reentry Routine," Sept 4) read
+  as a multi-company industry survey (Varda/Inversion/ATMOS-shaped) with
+  no single dateable new contract or milestone extractable from the
+  visible teaser -- left undrafted rather than drafted from a thin
+  survey-piece summary.
+- 2026-09-06-I: The recurring ISRO-privatization story (9 staff
+  associations' letter, already queued to held.json 2026-09-05 with no
+  Florian ruling) kept generating fresh Google News angles this run too
+  (an IN-SPACe chairman "50 launches a year by 2030" quote defending the
+  same privatization push) -- correctly treated as the same open scope
+  question rather than a new candidate, extending 2026-09-06-C's
+  same-day finding to a fourth sweep in the sequence.
+- 2026-09-06-J: `bun run build` and `bun scripts/check-feed.ts` were
+  both denied outright by this session's permission gate, continuing
+  the standing pattern since 2026-07-11-B; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
+  updated, 0 held") plus a direct read of the updated item's
+  `snr`/`sources` fields and the appended `state.json` sweep-log entry
+
+## Narrow same-day re-check, ~5h57m gap, unfiltered full source list (2026-09-06, third)
+
+- 2026-09-06-K: A same-day Isar Aerospace expansion follow-up (Investing.com's
+  Reuters-sourced piece on five more rockets in production, a ~40-launches/year
+  long-term target, and a Nova Scotia second site targeted 2028) had its own
+  "Published 06-09-2026, 05:46 pm" timestamp misread on first WebFetch as
+  "June 9, 2026" (the tool silently flipped DD-MM to MM-DD); a second, more
+  specific prompt asking to quote the on-page timestamp exactly resolved it
+  correctly as September 6. Worth re-querying a WebFetch date claim that looks
+  impossibly stale relative to the article's own content (here, expansion
+  plans following a launch that happened the day before) before discarding it
+  as a resurfacing trap.
+- 2026-09-06-L: The queue's 62 candidates were ~90% a single Google-News wave
+  (dozens of outlets covering IN-SPACe chairman Pawan Goenka's rebuttal to the
+  ISRO-privatisation letter already queued to held.json 2026-09-05, no new
+  Florian ruling) plus SpaceX stock/IPO chatter and Futurism off-topic junk;
+  the only genuinely new item (a routine Starlink batch launch) came straight
+  from the queue's own `raw_excerpt` (Space.com), which for once carried the
+  full article body rather than truncating at the membership gate.
+- 2026-09-06-M: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the standing
+  pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 2 updated, 0 held") plus a `jq` parse check
+  (572 items, up from 571) and a direct read of the new item's and both
+  updated items' `snr`/`sources`/`explainer` fields and the appended
+  `state.json` sweep-log entry as the build-health signal.
+
+## Narrow same-day re-check, ~3h25m gap, unfiltered full source list (2026-09-06, fourth)
+
+- 2026-09-06-N: A fully clean zero-item sweep: the queue (20 candidates) was
+  almost entirely the recurring ISRO-privatization Google News wave (still
+  no Florian ruling, extending 2026-09-06-C/I to a fifth sweep in the
+  sequence), SpaceX stock-speculation/analyst-recap content-mill pieces, and
+  an already-published Starlink batch launch (Yahoo's "27 Starlink
+  satellites... lands on ship at sea" matched 2026-09-06-spacex-starlink-15-24-vandenberg
+  exactly). The 8-source HTML pass, a rotated 15-of-17-channel signals pass,
+  and an 8-query discovery matrix all independently converged on the same
+  small set of already-published stories (Isar Aerospace's orbital flight,
+  PLD Space's Series C extension, EOS-05, Galactic Energy's Pallas-1 debut).
+- 2026-09-06-O: A new recycled-content-mill shape distinct from
+  2026-09-06-A's repriced-analyst-target pattern: a Yahoo Finance UK piece
+  titled "Musk Moves Up SpaceX's Orbital Data Center Timeline, Again"
+  (Sept 6) turned out to be a bare rehash of an Aug 25 247wallst.com/Yahoo
+  Finance story (fetched directly to confirm: same Q4 2027 first-launch
+  date, same JPMorgan $240 target) published alongside the already-covered
+  Starbase Louisiana announcement -- the "Again" in the headline is the
+  content mill's own tell. The underlying Aug 25 fact (SpaceX's first
+  orbital-data-center satellite targeted for Q4 2027, pulled forward from
+  2028) was never itself drafted as its own item (only the Starbase
+  Louisiana spaceport deal was), but chasing a 12-day-old stock-clickbait
+  rehash for a minor timeline-pull-forward detail with no stated customer
+  or market-access change didn't clear the bar for a predates-window chase;
+  left undrafted rather than spend corroboration budget on it.
+- 2026-09-06-P: A 24/7 Wall St. piece ("Forget Starlink? Japan's $1 Billion
+  BlueBird Play Makes ASTS the National Satellite OS") bundling the
+  already-published Aug 4 AST SpaceMobile/Rakuten Japan D2C item with a
+  WebSearch-synthesized "136-satellite J-BLUEBIRD-NGSO ITU filing" detail
+  that could NOT be confirmed by any directly fetched page (a payloadspace.com
+  article that seemed likely to confirm it turned out to be a stale June 25
+  piece with no such figure) -- left the ITU-filing detail out entirely per
+  rule 2 rather than draft from an unconfirmed WebSearch synthesis, and left
+  the whole piece undrafted as a stock-hype recap of already-known facts.
+- 2026-09-06-Q: Google's bsky.app profile pages fail to render any post
+  content via a plain WebFetch summary (returns only the bare handle); the
+  public API endpoint `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`
+  reliably returns real posts with `createdAt` timestamps and embedded
+  external URIs instead. Worth using the API endpoint directly for every
+  bluesky signals-channel fetch rather than the bsky.app profile URL.
+- 2026-09-06-R: `bun run build` and `bun scripts/check-feed.ts` were both
+  denied outright by this session's permission gate, continuing the
+  standing pattern since 2026-07-11-B; relied on `finalize-sweep.ts`'s own
+  merge confirmation ("merged 0 new, 0 updated, 0 held") plus a `jq`-based
+  parse check of all four touched data files as the build-health signal.
+
