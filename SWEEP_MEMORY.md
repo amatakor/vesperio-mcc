@@ -5194,3 +5194,75 @@ a newer entry if a lesson changes.
   `snr_movements` entries (one from this run's Nvidia-financing bump, three
   unrelated persistence bumps) and `flag_refresh` entries for
   `nuri-kslv-2.flights_total`/`flights_successful` (4->5, 3->4).
+
+## Narrow re-check, ~8h26m gap, unfiltered full source list (2026-10-07, second)
+
+- 2026-10-07-H: A near-total-junk queue (99 candidates, almost entirely SpaceX
+  stock-reaction churn on the Apollo/Nvidia $40B financing story and routine
+  Crew-12 ISS-return coverage) still yielded two genuinely new FCC stories via
+  the discovery pass: a granted Starlink Mobile buildout (15,000 satellites
+  plus a spectrum-leasing waiver, Oct. 6, sourced to ISPreview UK + a French
+  Notebookcheck.biz mirror since the English notebookcheck.net page 403'd
+  directly) and a still-pending SpaceX petition to drop AFTRCC's third-party
+  launch-spectrum coordination (single-sourced TipRanks, `crawl: found_none`,
+  honest SNR 1; LA Times and Bloomberg's own versions of this AP-shaped story
+  both proved unfetchable). Neither was in the harvested queue at all; both
+  came from targeted WebSearch once the queue's generic SpaceX-financing noise
+  was cleared.
+- 2026-10-07-I: A same-company-plus-category dedup false positive fired on
+  BOTH new FCC items against `2026-09-29-faa-starship-slc37-seis` (a wholly
+  different agency/docket, FAA environmental review vs. FCC spectrum/
+  satellite-count actions), extending the standing shared-company-alone
+  pattern to cases where even the REGULATING AGENCY differs, not just the
+  underlying fact. Also: the Themis second-wet-dress-rehearsal item (below)
+  matched `2026-10-06-eu-salto-themis-deadline-extension` on shared company +
+  category + window despite being a genuinely different kind of event (an EU
+  administrative deadline extension vs. an actual test milestone) even though
+  both belong to the same SALTO/Themis program; worth remembering
+  `dedup_distinct` can legitimately apply to two items about the identical
+  program when the EVENT KIND differs (a bureaucratic decision vs. a hardware
+  test), not only when the underlying facts are wholly unrelated.
+- 2026-10-07-J: SSC Space's own newsroom (`sscspace.com`) passes the
+  anti-spoof `first_party` host check for facts about Esrange specifically,
+  because the Esrange spaceport registry entity's `website` field is
+  `sscspace.com` (SSC operates Esrange) -- used for a second Themis wet dress
+  rehearsal (Sept. 29, announced Oct. 7 by ESA/SSC), landing a clean SNR 5
+  even though neither ArianeGroup's nor SSC's domain is first-party for
+  ArianeGroup facts generally. Dated the item on the actual test date (Sept.
+  29) rather than the Oct. 7 announcement date, chasing the predates-window
+  convention for a routine item, not just notable/seismic ones.
+- 2026-10-07-K: Two same-day enrichment patches avoided drafting stale
+  "new" items: Korea Times' own post-launch "cover story" on the Nuri/NEONSAT
+  flight (already published same-day) added KASA's two-way-comms confirmation,
+  one CubeSat (Quaternion's PERSAT02) failing to separate, and the 10-satellite
+  constellation's planned revisit cadence; and the Sept. 17 SpaceX/Dragon-
+  retirement item picked up NASA Administrator Isaacman's on-record
+  acknowledgment plus a $3.1B NASA investment figure and SpaceX's notice to
+  private station developers (Axiom, Voyager, Vast) that Dragon service ends
+  after 2030, both fetched directly (Tech Times, Digital Today) rather than
+  taken from a WebSearch synthesis. A third candidate enrichment (a Benzinga
+  "FAA targets 1,000 launches by 2030" figure) turned out to already be fully
+  present in the existing FAA Part 450 item's `why_it_matters`; checking the
+  existing item's full text before treating a new figure as novel saved a
+  wasted no-op patch.
+- 2026-10-07-L: A whitelisted signal's bluesky post surfaced a real scoop
+  (Andrew Parsonson: a FOIA'd Polish State Labour Inspectorate report on
+  POLSA, four improper Article-52 dismissals) judged out of scope: it is an
+  internal labor-law/governance story about a space agency's HR practices
+  with no stated commercial-space angle (no contract, market access, or
+  operator effect), the same institutional-disclosure exclusion applied to
+  NASA-STRIDE/ASI-board/Space-Command-succession stories. Flag if a future
+  installment of this series ties the findings to a commercial consequence
+  (e.g., a contractor dispute or lost tender).
+- 2026-10-07-M: A WebSearch result ("Long March 6A... October 17, 2026,
+  Thousand Sails Polar Group 18") postdated this sweep's own `now` (Oct. 7) by
+  ten days -- a future-dated search artifact, not a real retrievable fact,
+  consistent with the standing 2026-10-05-I pattern; left unconfirmed rather
+  than treated as a real launch.
+- 2026-10-07-N: `finalize-sweep.ts` merged cleanly on the third attempt, after
+  (1) adding `dedup_distinct` entries for the three same-company-plus-category
+  false positives above and (2) trimming two `explainer.tagline` fields that
+  initially ran 142-145 chars over the 140-char cap ("merged 3 new, 2 updated,
+  0 held"); confirmed via a direct `jq` read of all three new items'
+  `snr`/`impact`/`category` fields (868 items, up from 865) and both updated
+  items' patched `sources`/`snr` fields.
