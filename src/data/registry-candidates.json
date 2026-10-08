@@ -1,51 +1,5 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": [
-    {
-      "id": "2026-10-01-unseenlabs-bro23-bro32-launch:unseenlabs.sats_launched_total",
-      "item_id": "2026-10-01-unseenlabs-bro23-bro32-launch",
-      "entity_slug": "unseenlabs",
-      "entity_type": "constellation",
-      "field": "sats_launched_total",
-      "value": 25,
-      "metric": "cumulative Unseenlabs BRO satellites launched, as stated by the operator",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://www.prnewswire.com/news-releases/unseenlabs-announces-the-successful-launch-of-bro-23-and-bro-32-bringing-two-generations-of-satellites-together-on-a-single-mission-302897136.html",
-      "action": "flag_refresh",
-      "proposed_on": "2026-10-06",
-      "status": "pending"
-    },
-    {
-      "id": "2026-10-07-korea-neonsat-nuri-launch:nuri-kslv-2.flights_total",
-      "item_id": "2026-10-07-korea-neonsat-nuri-launch",
-      "entity_slug": "nuri-kslv-2",
-      "entity_type": "vehicle",
-      "field": "flights_total",
-      "value": 5,
-      "metric": "cumulative Nuri rocket launches, as stated by Korea Times/Korea JoongAng Daily",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://www.koreatimes.co.kr/business/tech-science/20261007/nuri-rocket-set-for-5th-launch-to-place-15-satellites-into-orbit",
-      "action": "flag_refresh",
-      "proposed_on": "2026-10-07",
-      "status": "pending"
-    },
-    {
-      "id": "2026-10-07-korea-neonsat-nuri-launch:nuri-kslv-2.flights_successful",
-      "item_id": "2026-10-07-korea-neonsat-nuri-launch",
-      "entity_slug": "nuri-kslv-2",
-      "entity_type": "vehicle",
-      "field": "flights_successful",
-      "value": 4,
-      "metric": "cumulative successful Nuri rocket launches, as stated by Korea Times/Korea JoongAng Daily",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://www.koreatimes.co.kr/business/tech-science/20261007/nuri-rocket-set-for-5th-launch-to-place-15-satellites-into-orbit",
-      "action": "flag_refresh",
-      "proposed_on": "2026-10-07",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }

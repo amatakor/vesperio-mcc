@@ -86,15 +86,15 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 4,
+    "value": 5,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/117/",
-    "as_of": "2026-07-08",
+    "as_of": "2026-10-08",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/117/",
-        "reason": "established aggregator, single reference (audit Phase 3 backfill, 2026-07-08)"
+        "reason": "Launch Library 2 record, now 5 total launches; cross-confirmed by Korea Times' 2026-10-07 report that Nuri \"successfully completes 5th flight\" (registry crossfeed flag_refresh, item snr 4)"
       },
       "modifiers": [],
       "final": 4,
@@ -103,15 +103,15 @@
     "tier": "canonical"
   },
   "flights_successful": {
-    "value": 3,
+    "value": 4,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/117/",
-    "as_of": "2026-07-08",
+    "as_of": "2026-10-08",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/117/",
-        "reason": "established aggregator, single reference (audit Phase 3 backfill, 2026-07-08)"
+        "reason": "Launch Library 2 record, now 4 successful of 5 total; cross-confirmed by Korea Times' report that the fifth launch succeeded, raising Nuri's cumulative success rate from 75% to 80% (3/4 to 4/5) (registry crossfeed flag_refresh, item snr 4)"
       },
       "modifiers": [],
       "final": 4,
@@ -120,20 +120,20 @@
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2025-11-26",
-    "source": "https://en.wikipedia.org/wiki/KSLV-II",
-    "as_of": "2026-07-08"
+    "value": "2026-10-07",
+    "source": "https://www.koreatimes.co.kr/business/tech-science/20261007/cover-story-nuri-rocket-successfully-completes-5th-flight",
+    "as_of": "2026-10-08"
   },
   "next_flight_date": {
-    "value": "2026-09-30",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-07-09",
+    "value": "2027-12-31",
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=Nuri&limit=10",
+    "as_of": "2026-10-08",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=Nuri&limit=10",
+        "reason": "Launch Library 2 record for \"Nuri | NEONSAT-7 to 11\", status To Be Determined, year-only precision (NET placeholder 2027-12-31 means sometime in 2027, not a firm date); weekly maintenance refresh, prior NET (2026-09-30) was superseded by the fifth flight that already occurred on 2026-10-07"
       },
       "modifiers": [],
       "final": 4,
@@ -163,7 +163,7 @@
     },
     "tier": "provisional"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/kslv-2.htm) independently confirms 4 total launches, 3 successful, last flight 2025-11-26, matching the on-file figures; it states a fifth mission is planned 'sometime in 2026' without a firm date, which does not contradict the on-file next_flight_date of 2026-09-30 (LL-sourced) but also does not confirm it precisely. No field changes.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/kslv-2.htm) independently confirms 4 total launches, 3 successful, last flight 2025-11-26, matching the on-file figures; it states a fifth mission is planned 'sometime in 2026' without a firm date, which does not contradict the on-file next_flight_date of 2026-09-30 (LL-sourced) but also does not confirm it precisely. No field changes. Weekly maintenance 2026-10-08: landed crossfeed queue entries for the 2026-10-07 fifth flight (NEONSAT 2-6 plus 10 CubeSats) from Korea Times/Korea JoongAng Daily, cross-confirmed by Launch Library 2 (same 5 total / 4 successful figures); flights_total 4->5, flights_successful 3->4, last_flight_date refreshed. next_flight_date refreshed from LL2's upcoming-launches search: next listed Nuri mission is NEONSAT-7 to 11, year-only TBD precision for 2027.",
   "height_m": {
     "value": 47.2,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=300",
@@ -248,6 +248,12 @@
       "headline": "Nuri completes fourth consecutive successful launch",
       "source": "https://www.kasa.go.kr/prog/bbsArticle/BBSMSTR_000000000041/view.do?bbsId=BBSMSTR_000000000041&nttId=B000000002451Qi6kR4",
       "as_of": "2026-07-12"
+    },
+    {
+      "date": "2026-10-07",
+      "headline": "Nuri's fifth flight launches first NEONSAT Earth-observation satellites, success rate rises to 80%",
+      "source": "https://www.koreatimes.co.kr/business/tech-science/20261007/cover-story-nuri-rocket-successfully-completes-5th-flight",
+      "as_of": "2026-10-08"
     }
   ]
 }
