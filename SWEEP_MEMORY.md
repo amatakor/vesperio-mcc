@@ -5199,3 +5199,47 @@ a newer entry if a lesson changes.
   of the updated Blue Origin item's patched `explainer`/`sources`/
   `updates` fields (SNR held at 4, as expected) and the sweep log's two
   unrelated persistence-bump `snr_movements` entries.
+
+## Narrow re-check, ~8.6h gap, unfiltered full source list (2026-10-08, second)
+
+- 2026-10-08-F: The same-company-plus-category dedup false positive extended
+  to ESA/`constellation` specifically: a new Sentinel-3C first-light item
+  (ESA's own release, two weeks after the Sept 15 launch) false-matched
+  `2026-10-01-iride-eaglet-ii-constellation-complete` on nothing but shared
+  company ESA + category `constellation` + window; the two programs
+  (Copernicus EO vs. Italy's IRIDE SAR constellation) share no actual
+  connection. One `dedup_distinct` cleared it.
+- 2026-10-08-G: A genuinely new-looking "Norway proposes second Andoya
+  launch pad" story, surfaced fresh via European Spaceflight's own site
+  listing (the whitelisted signals-pass channel, not the harvested queue),
+  turned out to already be published as `2026-09-30-norway-andoya-second-
+  launch-pad` from the exact same source URL -- the finalize gate caught it
+  as a same-source-URL dedup match even though the on-site listing read as
+  today's top story. A second independent source (Behind the Black) was
+  found on the corroboration crawl but added no reader-facing fact and the
+  existing item was already at its whitelist-observer SNR ceiling (4), so
+  it was left unpatched rather than filed as a content-free `updates[]`
+  attach. Lesson: a whitelisted outlet's own homepage/listing page can
+  resurface an old story as if new; always check `existing[]` by source URL
+  before drafting, not just by headline similarity.
+- 2026-10-08-H: Self-correction, not a new finding: initially ran the
+  signals pass on five bluesky people (Aschbacher, Langbroek, Henry, Foust,
+  A. Jones) using the bare `bsky.app/profile/<handle>` WebFetch route, which
+  (per the standing 2026-09-06-Q/2026-10-05-R finding) returns only the
+  handle header with no post body; re-ran all five afterward via
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`,
+  which worked cleanly and surfaced real post text/dates. Nothing new came
+  of the retry (Aschbacher's latest post was about the already-drafted
+  Sentinel-3C item; Foust's Sept 30 Rocket Lab/Synspective repost and
+  space-based-solar-power repost were both already published). Worth
+  defaulting to the `getAuthorFeed` endpoint FIRST for any named signals
+  bluesky check, never the bare profile URL, to avoid burning fetch budget
+  on empty responses.
+- 2026-10-08-I: `finalize-sweep.ts` rejected once on a JSON structural typo
+  (a stray array-closing bracket introduced mid-edit) and once on the two
+  dedup false positives above before merging cleanly on the third attempt
+  ("merged 6 new, 1 updated, 0 held"); confirmed via a direct read of all
+  six new items' `snr`/`category`/`impact` fields (881 items, up from 875)
+  and the updated Musk/India commentary item's patched `explainer`/
+  `sources`/`updates` fields. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
