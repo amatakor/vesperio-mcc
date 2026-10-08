@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-10-08-amazon-leo-1000-satellites-built:kuiper.sats_launched_total",
+      "item_id": "2026-10-08-amazon-leo-1000-satellites-built",
+      "entity_slug": "kuiper",
+      "entity_type": "constellation",
+      "field": "sats_launched_total",
+      "value": 396,
+      "metric": "cumulative Amazon Leo satellites deployed in orbit, as stated by Amazon via Via Satellite",
+      "same_metric": true,
+      "item_snr": 4,
+      "source_url": "https://www.satellitetoday.com/manufacturing/2026/10/08/amazon-hits-1000-sat-milestone-blue-origin-bolsters-sat-manufacturing/",
+      "action": "flag_refresh",
+      "proposed_on": "2026-10-08",
+      "status": "pending"
+    }
+  ]
 }
