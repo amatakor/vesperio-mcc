@@ -5163,3 +5163,42 @@ a newer entry if a lesson changes.
   items, up from 893) and the sweep log's `signals`/`discovery` blocks.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~5h46m gap, unfiltered full source list (2026-10-09, fourth)
+
+- 2026-10-09-M: A near-total-junk ~87-candidate queue (almost entirely stock-
+  reaction churn on the Oct 8 SpaceX/Grain 800 MHz spectrum deal) still
+  yielded 7 new items, five from the queue's own Via Satellite/Ars
+  Technica/SEC entries and two from the signals pass (SpacePolicyOnline's
+  bluesky post on NASA's final CLD RFP; European Spaceflight's piece on
+  ASI's artificial-gravity platform consultation). A search for trade
+  corroboration on the L3Harris/NASA LISA telescope contract (Oct 8) led to
+  a satnews.com redirect that resolved to a STALE March 2020 article about
+  an earlier, much narrower L3Harris LISA contract (engineering-development
+  telescope units, $20M) -- a genuinely distinct, later contract phase
+  (flight-hardware telescopes, full-scale prototype already built), not a
+  duplicate, but worth checking the redirect target's date before citing a
+  "LISA contract" headline as corroboration for a fresh award.
+- 2026-10-09-N: ASI (Italy's space agency) has no `src/data/registry`
+  organization entity, so even its own `asi.it` first-party release capped
+  at `informal` (no-registry-host workaround, extending the standing
+  Arianespace/Astranis/Serco/LeoLabs list to a national space agency); led
+  instead with Andrew Parsonson's europeanspaceflight.com writeup at
+  `class: "whitelist"`/`"observer"` (bare-domain match, same shape as the
+  2026-09-10-H precedent), landing a clean SNR 4 with ASI's own page
+  attached as informal corroboration.
+- 2026-10-09-O: A scheduled SDA Tranche 1 Transport Layer A relaunch
+  attempt (Spaceflight Now, Oct 9: "another attempt... five days after a
+  last-minute abort") was confirmed via Launch Library as net 2026-10-10
+  0739Z, status "Go for Launch" -- left undrafted per the standing
+  don't-draft-scheduled-launches rule; check next sweep for the outcome.
+  A Congress-delegation-in-Kyiv "backs expanded Starlink access" story
+  (Oct 9) was left undrafted as the same operational-use-request shape as
+  the standing Finland/Stubb exclusion (2026-09-25-A): political support
+  for persuading Musk to enable strikes, no SpaceX statement on record.
+- 2026-10-09-P: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 7 new, 0 updated, 0 held"); confirmed via a direct `jq`
+  read of all seven new items' `snr`/`category`/`impact`/`sources` fields
+  (901 items, up from 894) and the sweep log's `signals`/`discovery`
+  blocks. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
