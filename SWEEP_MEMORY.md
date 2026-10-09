@@ -5077,3 +5077,57 @@ a newer entry if a lesson changes.
   plus the sweep log's three unrelated persistence-bump `snr_movements`
   entries. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h13m gap, unfiltered full source list (2026-10-09, second)
+
+- 2026-10-09-F: An ESA Φ-lab "EVE" AI-for-Earth-observation tool, pitched
+  by SpaceWatch.GLOBAL's October headline as "ESA Releases AI-Powered
+  Earth Virtual Expert," turned out to be a stale resurfacing on direct
+  fetch of ESA's own Φ-lab page (dated April 16, 2026, "undergoing final
+  stages of development, will be available soon") and the project's
+  HuggingFace page (model updates through August, chat platform still
+  "under closed access," public release still only "targeted" for early
+  2026 with no October launch event). Left undrafted per the standing
+  stale-recirculation pattern (2026-10-06-O, 2026-10-08-G); the
+  SpaceWatch.GLOBAL piece itself 403'd on direct fetch, so its framing
+  was never independently confirmable anyway.
+- 2026-10-09-G: SCMP's own "Chinese researchers make Arctic-to-Antarctic
+  call using rival to Musk's Starlink" 403'd on every direct-fetch
+  attempt, but the same Guowang polar video-call story was independently
+  confirmed via two directly-fetched Chinese portals (Sina Finance,
+  163.com, both carrying identical CCTV-sourced text and headline, so
+  title-collapsed into one unit at finalize) plus a genuinely distinct
+  write-up (china-in-space.com, different headline, no collapse),
+  landing a clean `corroboration_2plus` at base mainstream tier 3. The
+  Chinese-language originals gave a MORE PRECISE planned-satellite figure
+  (12,992 across two sub-constellations) than the registry's existing
+  Wikipedia-sourced 13,000 round number; attesting this as a crossfeed
+  fact with `same_metric: true` triggered a genuine `downgrade_incoming`
+  dispute (12,992 != 13,000 is a real mismatch, not agreement, even
+  though both are "about 13,000") and cost the item one SNR level
+  (4 -> 3, `disputed: true`) rather than silently refreshing the stored
+  value. Worth remembering: a more-precise exact figure that merely
+  rounds to an already-stored approximate figure still reads as a
+  same-metric contradiction to the gate, not an agreement: the dispute
+  downgrade on the news item is the correct, intended outcome (queued
+  for Florian), not a bug to route around next time.
+- 2026-10-09-H: A single Reuters wire story (German Space Command chief
+  Maj. Gen. Michael Traut warning that Russia's May shadowing of
+  ICEYE's satellite demonstrates tactics that could threaten Starlink)
+  was syndicated near-verbatim across a dozen-plus outlets (Investing.com,
+  ThePrint, Yahoo Finance, WHTC, Devdiscourse, GlobalBankingAndFinance,
+  Boursorama in French, Notebookcheck in German); confirms the standing
+  Reuters-wire-via-any-mirror precedent (2026-07-08 WHBL/SatSure case)
+  scores base mainstream tier 3 regardless of which mirror carries it,
+  and that a dozen syndicated copies of ONE interview is `found_none` for
+  corroboration purposes (no second independently-reported source), not
+  `found_some` just because many domains carry it.
+- 2026-10-09-I: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 3 new, 2 updated, 0 held"); confirmed via a
+  direct read of all three new items' `snr`/`snr_trace`/`category`/
+  `impact` fields (893 items, up from 890), both updated items' patched
+  `explainer`/`sources` fields, the sweep log's two `corroboration_collapses`
+  entries (German Space Command Investing.com/ThePrint wire rewrite;
+  Guowang Sina/163.com wire rewrite), and the registry crossfeed queue's
+  `downgrade_incoming` entry for `guowang.sats_planned`. `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
