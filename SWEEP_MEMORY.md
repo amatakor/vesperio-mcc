@@ -5131,3 +5131,35 @@ a newer entry if a lesson changes.
   Guowang Sina/163.com wire rewrite), and the registry crossfeed queue's
   `downgrade_incoming` entry for `guowang.sats_planned`. `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h18m gap, unfiltered full source list (2026-10-09, third)
+
+- 2026-10-09-J: The Meteor 2-7 gap flagged unsourceable in 2026-10-08-B
+  (LeoLabs' own detection, only spacewatch.global found and it 403'd)
+  resolved cleanly four days later once independent popular-science/general
+  outlets caught up: EarthSky, Starlust, and UA.News all fetched directly
+  and all independently worded (not wire rewrites of each other), landing
+  an honest `informal`-base SNR 2 via `corroboration_2plus`. LeoLabs itself
+  has no `src/data/registry` organization entity, so even a fetchable
+  LeoLabs blog post would still cap at `informal`, same as Arianespace/
+  Astranis/Serco; worth remembering a "never-covered gap" held for lack of
+  a fetchable source is worth a same-topic re-search days later rather than
+  dropped for good.
+- 2026-10-09-K: A near-total-junk ~60-candidate queue, almost entirely
+  stock-reaction churn on the already-published Oct 8 SpaceX/Grain 800 MHz
+  spectrum deal (telecom-stock-crash framing) plus Musk-trillionaire and
+  Bezos-IPO-hint restatements of already-published facts, needed only a
+  grep-before-drafting pass; an RFE/RL "Starlink test in Italy worries
+  Iran's censors" piece read as fresh but was a bundle-old-facts analysis
+  piece (the Italy embassy test is a stale March 2026 fact, the Iran
+  warning already published Sept 30/Oct 5) and ESA's own Fluid Science
+  Laboratory ISS-facility retirement, while a real dateable fact (Oct 9),
+  was left out as a routine station-operations decommissioning with no
+  commercial contract or market angle, not a dated science-mission program
+  event per the science-category scope.
+- 2026-10-09-L: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 1 new, 0 updated, 0 held"); confirmed via a direct `jq`
+  read of the new Meteor 2-7 item's `snr`/`snr_trace`/`sources` fields (894
+  items, up from 893) and the sweep log's `signals`/`discovery` blocks.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
