@@ -5114,3 +5114,36 @@ a newer entry if a lesson changes.
   updated items' `updates`/`sources` arrays (Crew-12: 4 sources; Grain
   spectrum: 5 sources). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-10-10, third)
+
+- 2026-10-10-K: A diversified VC firm's own capital-raise milestone
+  (Balerion Space Ventures oversubscribing its $200M Fund II) was judged
+  out of scope despite CLAUDE.md's "space-focused investment funds"
+  ecosystem inclusion: the fund backs "space, defense, and deep
+  technology" broadly (portfolio includes Commonwealth Fusion, Valar
+  Atomics, a bank) rather than being a dedicated space fund, and the
+  event is the investor's own routine fundraising milestone, not a
+  financial event of a tracked operator. Left undrafted; flag if a
+  future instance is a pure-play space fund (e.g. Seraphim-shaped) for a
+  cleaner precedent either way.
+- 2026-10-10-L: Two same-shaped stale-resurfacing traps resolved cleanly
+  via direct fetch: a "China resumes Thousand Sails" SpaceNews headline
+  from a generic search carried its own October 19, **2025** byline
+  (same-topic, different year); and a same-day "China's 27th group of
+  low-orbit internet satellites" (Long March 12, Hainan, 3:27 a.m.
+  Beijing time Oct 10) traced via timezone conversion (3:27 p.m. EDT Oct
+  9) to the SAME GuoWang 27th-group launch already published the same
+  morning under `2026-10-09-satnet-27th-group-hainan`, just re-reported
+  under a vaguer "satellite internet" framing with no constellation name
+  stated. Also: the Sept 30 FCC NEPA/spectrum order (1,050 MHz,
+  12.7-13.25/42-42.5 GHz) resurfaced Oct 1 under an unrelated-looking
+  "Satellite Spectrum Abundance Order" branding on advanced-television.com;
+  matching band figures confirmed it as the same order, not a new one.
+- 2026-10-10-M: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 0 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of the updated ICEYE/California item's `snr`/
+  `snr_trace`/`sources`/`updates` fields (SNR held at 5, as expected for
+  an attach on an already-ceilinged official_record lead) and the sweep
+  log's `signals`/`discovery` blocks. `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
