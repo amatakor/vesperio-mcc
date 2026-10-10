@@ -8891,3 +8891,204 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   of both new items' and the updated item's `snr`/`snr_trace`/
   `category`/`impact`/`sources` fields as the build-health signal.
 
+## Narrow re-check, ~7h40m gap, unfiltered full source list (2026-09-09)
+
+- 2026-09-09-A: A `class: "whitelist"` source must be the RECORDED CHANNEL
+  URL itself, not just any article on the same site by that whitelisted
+  person: `scoring.sources[0]` set to Vivienne Machi's actual Aviation Week
+  article URL (`aviationweek.com/space/satellites/...`) with `class:
+  "whitelist"` was rejected outright ("not under any whitelisted
+  verified-active signals.json channel"), because her recorded channel is
+  the narrower `aviationweek.com/author/vivienne-machi` listing page, not
+  the article path. Fixed by leading with the article as `class: "trade"`
+  (Aviation Week is a trade outlet) and adding the author-page URL itself
+  as a second, `via: "corroboration"` source with `class: "whitelist"`,
+  `scoring.whitelist: "observer"` -- the gate then applied the
+  `whitelist_floor` modifier cleanly (tier 3 trade, corroboration_none -1,
+  whitelist_floor +2, final SNR 4). Confirms 2026-09-01-C's workaround
+  (author-page as the whitelist source, facts drafted from elsewhere) is
+  not just a paywall workaround but the ONLY gate-safe way to claim the
+  whitelist floor when the person's own article IS the fact source.
+  Also: finalize's same-domain corroboration-collapse rule (2026-09-05-N)
+  fired again here, collapsing the article and the author-page URL into
+  one unit (`rule: "same_domain"`) since both are aviationweek.com --
+  harmless (the item still landed the intended SNR 4) but worth expecting
+  whenever a whitelist-floor source and its lead share a domain.
+- 2026-09-09-B: A never-covered gap surfaced only via the mandatory
+  signals pass: BAE Systems' critical design review for the Space Force's
+  10-satellite Epoch 2 MEO missile-warning constellation (Sept 8), six
+  months after its March PDR, which was itself never drafted under any id.
+  DefenseScoop's March PDR article was directly fetched and used only for
+  `why_it_matters` background (the $1.2B contract value, 10-satellite
+  count), not as a scoring source, since it reports a different, earlier
+  milestone than today's CDR.
+- 2026-09-09-C: Two same-day recap pieces (Jeff Foust's bluesky, a fresh
+  SpaceNews article) restated The Exploration Company's $450M Series C
+  with no new investor or figure -- confirmed via the existing item's
+  `snr_trace.history` that it was rescored from "in talks" to "closed"
+  only the PREVIOUS day (2026-09-08), so today's pickups are late
+  coverage of yesterday's already-current close, not a new development;
+  left untouched rather than patched or redrafted.
+- 2026-09-09-D: A Google-News "Kazakhstan plans to expand Starlink
+  internet to 124 passenger trains" headline (Qazinform, dated today) and
+  a June 25 Qazinform piece on a single private-carrier train
+  (Aray Trans KZ, one route) are two different, both-stale stories: the
+  124-trains/1,235-carriages/50-routes figure traces to an August 20
+  Transtelecom (TTC) announcement already three weeks old with no new
+  news peg today. Left undrafted as a recurring, no-dollar-figure
+  connectivity-rollout update, same treatment as the standing Textron
+  Aviation STC-recap precedent (2026-09-08-S).
+- 2026-09-09-E: `bun run build` was denied outright by this session's
+  permission gate, continuing the standing pattern since 2026-07-11-B;
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
+  0 updated, 0 held") plus a `jq empty` parse check across all four
+  touched data files (588 items, up from 587) and a direct read of the
+  new item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
+  the build-health signal.
+
+## Narrow re-check, ~6h39m gap, unfiltered full source list (2026-09-09, second)
+
+- 2026-09-09-F: A Bloomberg "UAE-Based Group Leads $1 Billion Satellite
+  Constellation Project" headline (Sept 9, discovery pass) is a stale
+  resurfacing, not new: Khaleej Times's own writeup of the identical
+  Orbitworks/Marlan Space/Loft Orbital $1B/40-satellite/French-space-agency
+  figures, fetched directly, carries a "Mon 4 May 2026" publish date --
+  extends the standing stale-resurfacing pattern to a fourth-month-old
+  Bloomberg pickup with no new figure or peg. Left undrafted.
+- 2026-09-09-G: A paywalled SpaceNews article (Andrew Parsonson's ESA
+  radioisotope-heater-plant tender piece) still yields a gate-safe,
+  attributable lead when a direct WebFetch confirms only the headline,
+  byline, and publish date plus the lede sentence: drafted from that one
+  confirmed sentence (base tier 3, `trade`) and corroborated with an
+  independently-written Italian outlet (AstroSpace.it) that had the fuller
+  figures (deadline, euro amount, per-year watt/gram targets) the
+  paywalled lede didn't state. Don't discard a paywalled trade lead just
+  because the body text is inaccessible; the confirmed lede plus an
+  independent second source with the depth is still a clean draft.
+- 2026-09-09-H: `bun run build` was NOT attempted this run, per the
+  2026-09-09 CLAUDE.md procedure update: the workflow now runs the build
+  itself after the agent finishes, and the agent is instructed not to run
+  it or log the denial. Relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") plus a `jq` parse check
+  (591 items, up from 588) and a direct read of all three new items'
+  `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields as the
+  build-health signal.
+
+## Narrow re-check, ~5h14m gap, unfiltered full source list (2026-09-09, third)
+
+- 2026-09-09-I: The Paris International Space Summit produced multiple
+  independent, genuinely new commercial announcements the same day the
+  Eutelsat/Infinite Orbits item from an earlier same-day sweep was
+  published: BlackSky's own release naming it exclusive electro-optical
+  provider for a $1B, 50-satellite "Altair-Next Gen" AI-infrastructure
+  constellation (Marlan Space/Loft Orbital/Mistral AI-led, UAE/France
+  backed) landed a clean single-source first_party SNR 5
+  (`crawl: "found_none"`, no penalty per the direct-source-ceiling rule;
+  only derivative wire-aggregator mirrors, e.g. securities.io, turned up
+  on a search, correctly left uncited as non-independent). ICEYE and
+  Arianespace's same-day MoU to explore Ariane 6 launches for European
+  government SAR missions landed SNR 5 the same way, ICEYE's own release
+  leading; Arianespace has no `src/data/registry` organization entity, so
+  its own newsroom.arianespace.com release capped at `informal` (not
+  `first_party`) per the standing no-registry-host workaround, confirmed
+  by finalize-sweep's rejection on the first attempt.
+- 2026-09-09-J: A same-company-plus-category dedup false positive fired on
+  the new ICEYE/Arianespace MoU (category `partnership`) against the
+  existing Sept 7 ICEYE/Sompo Japan flood-insights item (also
+  `partnership`, within 7 days), despite the two sharing nothing but the
+  company name -- extends the standing SpaceX/NASA/Blue-Origin/Redwire/
+  Viasat/SES pattern to ICEYE. One `dedup_distinct` entry cleared it.
+- 2026-09-09-K: A same-underlying-document follow-up is a clean
+  `updates[].patch`+`rescore`/`attach` case, not a new item, when it adds
+  genuinely new facts to a story published hours or weeks earlier: Firefly's
+  own release confirming a SIGNED two-Alpha-launch contract with SSC Space
+  (vs. the June 30 item's "targeting 2028" language) upgraded the item from
+  a persistence-capped SNR 4 (trade lead) to SNR 5 (first_party) via the
+  documented `rescore` upgrade path (patch `source_url` first, then
+  `rescore.sources[0].url` must match); European Spaceflight's deeper read
+  of the SAME UK Space Strategy document already sourcing the Sept 8
+  SaxaVord £30m item (ESA European Launcher Challenge €144M commitment,
+  £226M total assured-access spending, RFA's exclusive SaxaVord pad, the
+  "leaving launch to Germany and allies" framing shift) was folded in via
+  plain `attach` with no bump requested, since only 3 total additional
+  sources existed, short of the `corroboration_4plus` threshold.
+- 2026-09-09-L: A scoring-block mismatch produced an unintentionally low
+  score: for the OECD's "Space Economy at a Glance 2026" report (no trade
+  pickup found, two `informal`-class outlets used, Mirage News + Bytes
+  Europe), `crawl: "found_none"` was attested even though 2 sources were
+  already listed -- the gate applied BOTH `corroboration_2plus` (+1) and a
+  `corroboration_none` (-1, via a `single_class_corroboration: "informal"`
+  flag) since it read "found_none" as "the crawl found nothing beyond the
+  lead," landing base-tier-1 informal flat at SNR 1 instead of SNR 2.
+  `crawl` should be attested `"found_some"` whenever ANY second source is
+  actually listed in `scoring.sources`, regardless of how weak the
+  outlets are or whether a stronger (trade/mainstream) source was found;
+  `found_none` means literally no other source exists, not merely "no
+  strong source exists." The item still published honestly (weak sourcing
+  is not a hold reason), just one level lower than the sourcing actually
+  supported.
+- 2026-09-09-M: Two same-day queue/discovery leads were resolved as
+  already-published without drafting: Samtel Avionics/BULL's debris-MoU
+  (queue re-surfaced from Sept 8 via multiple outlets) matched
+  `2026-09-08-samtel-avionics-bull-debris-mou` on a straight company-name
+  grep before drafting -- confirms the standing grep-before-drafting
+  practice caught a same-day queue rehash that would otherwise have looked
+  like a fresh Sept 9 find.
+- 2026-09-09-N: Two discovery-pass leads were correctly left undrafted as
+  out of scope or too stale: Intel's Terafab foundry deal with SpaceX/
+  Tesla/xAI (a $55-120B Texas chip-fab consolidation) is entirely
+  terrestrial chip manufacturing, no orbital product or service, same
+  logic as the standing SpaceX/APR-Energy and Bastrop-turbine-foundry
+  exclusions regardless of SpaceX's involvement; Orano/Perpetual Atomics'
+  americium-241 supply agreement, resurfaced via a whitelisted signal's
+  same-day post, traced to a December 19, 2025 signing, nine months
+  stale with no new peg today.
+- 2026-09-09-O: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow now runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 2
+  updated, 0 held") plus a direct read of all five new items' and both
+  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
+  the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-09-09, fourth)
+
+- 2026-09-09-P: Marcia Smith's bluesky post citing "According to NASAWatch"
+  led to a genuinely new, never-covered item the queue and discovery pass
+  both missed: NASA Administrator Jared Isaacman named Henry Helgeson (new
+  Associate Administrator for Communications) as NASA's first-ever Chief
+  Commercial Officer. The only fetchable confirmation was NASAWatch's own
+  repost of Isaacman's `@NASAAdmin` X statement (verified verbatim via the
+  syndication endpoint); nasa.gov's own staff bio page for Helgeson does not
+  yet mention the CCO title at all. Led `informal` (NASAWatch, base tier 1)
+  with Marcia Smith's bluesky as `whitelist`/`observer` corroboration,
+  landing SNR 4 via the whitelist-floor modifier (same shape as the
+  2026-09-01-C Northwood Space precedent) -- confirms `crawl: "found_some"`
+  is correct here per the 2026-09-09-L lesson (2 sources listed) even though
+  a dedicated trade-press search for the CCO title specifically came back
+  empty both times.
+- 2026-09-09-Q: The standing same-company-plus-category dedup false positive
+  fired on the new NASA CCO item (category `procurement`) against the Sept 2
+  NASA launch-procurement-office-reorg item, despite sharing nothing but
+  company + category -- extends the long-running NASA/SpaceX/Blue-Origin/
+  Redwire/Viasat/SES/ICEYE pattern. One `dedup_distinct` cleared it.
+- 2026-09-09-R: The queue's own Via Satellite entries for the Paris space
+  summit (Loft Orbital/Marlan Space AI-constellation piece, Amazon Leo/
+  Arianespace launch-order piece, UK Space Strategy defense piece) were each
+  worth checking individually even though the summit's biggest story
+  (BlackSky/Altair) was already published earlier the same day: two of the
+  three were genuine same-event follow-ons with new detail (MaiaSpace as
+  Altair's launch provider, Orbitworks' Abu Dhabi manufacturing site; the UK
+  strategy's overall £8B/defense-spending breakdown neither original
+  SaxaVord source stated) folded in as `updates[].attach`+patch, and the
+  third (Amazon Leo ordering 6 more Ariane 64 launches, 18->24 total) was a
+  clean standalone new item with no first-party lead available (Arianespace
+  has no registry organization entity, per the standing 2026-09-09-I
+  no-registry-host workaround) -- led on Reuters via a Yahoo Finance mirror
+  instead, `corroboration_2plus` at SNR 4.
+- 2026-09-09-S: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 2 updated, 0
+  held") plus a `jq` parse check (598 items, up from 596) and a direct read
+  of both new items' and both updated items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
+
