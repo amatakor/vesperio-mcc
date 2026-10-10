@@ -5066,3 +5066,51 @@ a newer entry if a lesson changes.
   `sources` fields (903 items, up from 901) and the updated Musk/Ambani
   item's `sources`/`updates` arrays (7 sources, 4 updates). `bun run
   build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h37m gap, unfiltered full source list (2026-10-10, second)
+
+- 2026-10-10-G: The scheduled SDA Tranche 1 Transport Layer A relaunch
+  flagged pending in 2026-10-09-O finally flew this sweep (liftoff 07:39
+  UTC after the Oct 5 auto-abort): genuinely new, drafted as a `launch`
+  item at `notable` (Northrop Grumman's first Tranche 1 launch, the
+  program's third manufacturer after York and Lockheed). SpaceNews led
+  (direct-fetched despite its own paywall truncating most of the body;
+  the fetched fragment still carried the "third manufacturer" fact
+  verbatim) with Spaceflight Now's pre-launch deep-dive and Launch
+  Library 2 as corroboration; space.com and spacex.com/launches both
+  truncated to nav-only on direct fetch (standing spacex.com dead-source
+  pattern extends to the new per-mission `/launches/<slug>` URL shape,
+  worth a one-off re-check later but not a reason to keep retrying it).
+- 2026-10-10-H: A near-total-junk ~82-candidate queue (FAA/NOAA Federal
+  Register fishery/airworthiness noise, Futurism AI-bubble pieces, a wall
+  of SpaceX-launch Bluesky bot/fan accounts reacting to the T1TL-A
+  liftoff) yielded exactly one queue-sourced gap (the T1TL-A launch
+  itself, via a Google News SpaceNews redirect) plus two enrichment
+  patches surfaced by discovery, not the queue: ESA's own Sophie Adenot
+  return page (first-party, already-published Crew-12 item at its SNR 5
+  ceiling) stated a genuinely new record fact — longest single ESA
+  spaceflight ever, 35+ days past Parmitano's mark, also the longest
+  Dragon mission to date — folded in as a no-bump attach+patch. A Reuters/
+  Globe and Mail wire piece reported, citing a WSJ account of unnamed
+  sources, an $8B valuation for the already-published SpaceX/Grain 800MHz
+  deal (whose item explicitly said "financial terms were not disclosed");
+  attributed the figure to Reuters/WSJ rather than stating it as fact,
+  folded in as a no-bump attach+patch on the existing item (already at
+  its non-first-party ceiling of 4).
+- 2026-10-10-I: Two IAC 2026 CGTN pieces (Azerbaijan-China space ties,
+  "Chinese companies aim for bigger market share") and a JAXA-Saudi Space
+  Agency MOC (Oct 8, confirmed via WebSearch of JAXA's own announcement)
+  were all left undrafted as the same vague-diplomatic-MOU shape: no
+  named satellite program, contract, or dollar figure in any of the
+  three, just general "deepening cooperation" language. A KeepTrack
+  algorithmic reentry prediction for ISRO's SDX02 (SpaDeX docking
+  demonstrator, ~180kg, nominal reentry Oct 13 but a 45-day/1,080-hour
+  uncertainty window) was left undrafted as a predicted-not-yet-occurred
+  event, same standing rule as scheduled launches.
+- 2026-10-10-J: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 1 new, 2 updated, 0 held"); confirmed via a
+  direct `jq` read of the new T1TL-A item's `snr`/`snr_trace`/`category`/
+  `impact`/`tags`/`sources` fields (904 items, up from 903) and both
+  updated items' `updates`/`sources` arrays (Crew-12: 4 sources; Grain
+  spectrum: 5 sources). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
