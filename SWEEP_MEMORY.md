@@ -5147,3 +5147,40 @@ a newer entry if a lesson changes.
   an attach on an already-ceilinged official_record lead) and the sweep
   log's `signals`/`discovery` blocks. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h37m gap, unfiltered full source list (2026-10-10, fourth)
+
+- 2026-10-10-N: A near-total-junk 24-candidate queue (SpaceX/Grain
+  800MHz spectrum stock-reaction churn, scheduled-not-yet-flown FAA/SDA
+  launch bot previews, off-topic Bluesky trivia) yielded nothing; the
+  signalsPass draft field requires the fetchable-channel URL exactly as
+  listed by `signals-context`, not the `rss` variant: listing
+  `europeanspaceflight.substack.com/feed` (the RSS URL) instead of
+  `europeanspaceflight.substack.com` (the channel URL) got the draft
+  rejected on the first attempt; finalize accepted it once corrected to
+  the bare substack URL.
+- 2026-10-10-O: Two suborbital-vehicle stories surfaced by discovery
+  (HyImpulse's new UK CAA launch-operator licence for its SR75 rocket
+  at SaxaVord, announced Oct 1 and confirmed via direct fetch of
+  advanced-television.com and shetlandtimes.co.uk; OculloSpace's 10km
+  AZAD test flight from Oman's Etlaq Spaceport) were both left
+  undrafted under the CLAUDE.md "launch vehicles and launch providers,
+  orbital only" scope line: the story's entire substance in both cases
+  is the suborbital vehicle itself, not an orbital-site infrastructure
+  milestone, even though SaxaVord and Etlaq are themselves in-scope
+  spaceports. Worth a cleaner precedent either way if Florian disagrees
+  (the SaxaVord license grant is a genuine regulatory "may now sell
+  launch services from UK soil" fact, just for a suborbital vehicle).
+- 2026-10-10-P: A WebSearch-surfaced "Stoke Space extends Series D to
+  $860M" result read as fresh but direct-fetched to a stale February
+  10, 2026 announcement (the original $510M Series D was October
+  2025); search snippets for funding-round headlines need their
+  publish date confirmed by direct fetch before drafting, same lesson
+  as the stale-resurfacing pattern for news articles, now confirmed for
+  funding-round PR too.
+- 2026-10-10-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  second attempt after the signalsPass URL fix ("merged 0 new, 0
+  updated, 0 held"); confirmed via the sweep log's `signals`/
+  `discovery` blocks recording full 17-channel coverage and the
+  10-query discovery matrix. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
