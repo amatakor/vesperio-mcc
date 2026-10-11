@@ -9092,3 +9092,204 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   of both new items' and both updated items' `snr`/`snr_trace`/`category`/
   `impact`/`sources` fields as the build-health signal.
 
+## Narrow re-check, ~7h49m gap, unfiltered full source list (2026-09-10)
+
+- 2026-09-10-A: The Google News "launch" query feed was almost entirely
+  investment-clickbait about "SpaceX stock" (price targets, analyst
+  downgrades, an "AI stock pick" ranking) despite SpaceX being privately
+  held with no real public ticker -- only one such entry was caught by the
+  deterministic junk prefilter (`investment-clickbait: 1`); the rest had to
+  be discarded by hand as out of scope. Worth flagging if this volume
+  recurs: the prefilter pattern may need widening rather than relying on
+  per-sweep manual triage.
+- 2026-09-10-B: A White House-pressures-SpaceX/Blue-Origin-to-skip-Paris-
+  summit story was genuinely new and worth drafting even though the
+  summit's commercial deals (BlackSky Altair, ICEYE/Arianespace, Amazon
+  Leo/Ariane) were already published from the prior sweep: the political
+  friction (Politico via Fortune: White House urged US firms not to
+  attend; a second, independently-written Pakistani outlet naming
+  Stoke Space and Starcloud among the withdrawals and citing the EU Space
+  Act as the specific friction point) is a distinct geopolitical fact from
+  the deals themselves. Categorized `geopolitical`/`notable` (no stated
+  contract value or market-access change, so not `major`).
+- 2026-09-10-C: A `class: "whitelist"` source on the SAME domain as the
+  lead (Vivienne Machi's Aviation Week author page vs. her own Aviation
+  Week article) triggered the `same_domain` corroboration-collapse rule
+  exactly as predicted by 2026-09-09-A, but the whitelist-floor modifier
+  still applied cleanly (final SNR 4) -- confirms the collapse is
+  cosmetic to the sources array, not a scoring loss, when the intent is
+  the whitelist floor rather than an independent corroboration unit.
+- 2026-09-10-D: Two FCC "weird space stuff" spectrum stories resurfaced
+  the same week: an SDxCentral piece genuinely published Sept 9 turned out
+  to be analysis of a Sept 30 SCHEDULED VOTE on an NPRM the FCC actually
+  adopted back on March 26, 2026 -- a process-not-yet-fact story, left
+  undrafted per the standing T-Mobile/Sateliot precedent (2026-08-21-D).
+  Worth a follow-up check around Sept 30 once the vote itself happens.
+- 2026-09-10-E: The recurring ISRO-privatization/talent-drain Google News
+  wave resurfaced again, this time as "120 scientists exit ISRO" framed
+  as breaking news by a small outlet (Whispers in the Corridors, vague
+  "reports of roughly 100-120" sourcing, no dates); traced via search to
+  a Department of Space memo dated July 14, 2026 -- two months stale, and
+  the underlying claim's vague/anonymous sourcing style would fail the
+  personnel-gossip exclusion even if it were fresh. Left undrafted,
+  tenth-plus consecutive sweep with no Florian ruling on this wave.
+- 2026-09-10-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a `jq` parse check (600 items, up from 598) and a
+  direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
+  `sources` fields as the build-health signal.
+
+## Narrow re-check, ~6h24m gap, unfiltered full source list (2026-09-10, second)
+
+- 2026-09-10-G: A same-company-plus-category dedup false positive fired
+  TWICE on one new ISRO CE20 engine ground-test item (category `launch`)
+  against BOTH the completed Sept 4 GSLV-F17/EOS-05 launch and the Sept 5
+  semi-cryogenic engine full-thrust test, despite sharing nothing with
+  either beyond company ISRO + category + within 7 days (a different
+  engine, a ground test vs. a flown launch). Two `dedup_distinct` entries
+  cleared it in one pass; extends the standing pattern (now well beyond
+  SpaceX/NASA/Blue Origin) to ISRO's own recurring high cadence of
+  engine-test items specifically, not just launches.
+- 2026-09-10-H: A whitelisted person's OWN bare-domain site extends the
+  whitelist channel to every article on it, not just a narrower listing
+  page: Andrew Parsonson's europeanspaceflight.com article on The
+  Exploration Company's Ariane 6/Nyx/ALADDIN booking (found via the
+  candidates queue, then independently confirmed via his mandatory
+  bluesky leg) led cleanly at `class: "whitelist"` since the article URL
+  sits directly under his recorded channel (bare `europeanspaceflight.com`),
+  unlike Vivienne Machi's narrower `aviationweek.com/author/vivienne-machi`
+  channel, which only the author-listing page itself satisfies
+  (2026-09-09-A). Confirms the gate's whitelist-channel check is
+  path-prefix-based against the recorded URL, not an exact match.
+- 2026-09-10-I: A Reuters "Exclusive" story (UK Ministry of Defence FOIA
+  disclosure of ~$40M Starlink/Starshield spending) landed an honest SNR 2
+  (`mainstream` base tier 3, `crawl: "found_none"` -1) despite being
+  substantial and newsworthy (first public UK acknowledgment of Starshield
+  adoption): exclusives by definition have no independent pickup yet, and
+  every other hit found on search was a same-text mirror of the same
+  Reuters wire, not separate reporting. Left single-sourced rather than
+  stacked with wire mirrors, per the standing wire-collapse rule; a
+  genuine June 2026 "UK adopts Starshield" Reuters report (sources say, no
+  figures) was never itself drafted under any id, so this FOIA-figures
+  story published as a new item rather than an update.
+- 2026-09-10-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
+  updated, 0 held") plus a `jq` parse check (603 items, up from 599) and a
+  direct read of all four new items' `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields as the build-health signal.
+
+## Normal-mode sweep, ~5h15m gap, unfiltered full source list (2026-09-10, third: Paris summit day)
+
+- 2026-09-10-K: Bluesky's `bsky.app/profile/...` HTML pages still render
+  nothing via WebFetch (confirms the standing pattern); the public
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  JSON endpoint works cleanly for every signals-pass account this run and
+  is the only reliable way to check a fetchable Bluesky channel.
+- 2026-09-10-L: A same-day European Spaceflight follow-up article that
+  formally confirms an event the SAME outlet's prior-day article had only
+  inferred from a leaked government document (ESA's own €760M ALADDIN
+  Phase 2 announcement for Exploration Company, following yesterday's
+  "French Presidency document reveals..." item) is a clean
+  `updates[].patch`+`attach`+`bump: "corroboration_2plus"` case, not a new
+  item, even though the new article adds a full financial breakdown and a
+  named ESA quote the original never had.
+- 2026-09-10-M: Two independent Google News headline-shaped queue entries
+  ("Eutelsat Communications Engages Airbus Unit, Thales Alenia Space...",
+  "Starlink rival Eutelsat plans OneWeb expansion after €1 billion
+  satellite order") both traced to the SAME underlying story (Eutelsat's
+  IRIS2 LEO manufacturing awards to Aerospacelab/Airbus/Thales Alenia
+  Space) that European Spaceflight and Reuters covered directly with the
+  real €5.4B figure; neither Google News redirect resolved via WebFetch,
+  but a plain WebSearch on the company+figure terms found the
+  europeanspaceflight.com original and a Reuters-via-Yahoo-Finance mirror
+  directly. A stale-title trap nearly followed: Telecompaper's own
+  "Aerospacelab, Thales Alenia Space confirm major Iris2 awards" headline
+  (found via WebSearch) turned out, once fetched, to carry a December 12,
+  2024 publish date describing the ORIGINAL 2024 SpaceRISE manufacturing
+  split, not today's contract-value announcement -- left uncited.
+  Aerospacelab has no `src/data/registry` organization entry, so even
+  though Eutelsat (the awarding party) does, the no-registry-host
+  workaround still applied to the reported figures since the award is to
+  Aerospacelab/Thales/Airbus, not a fact about Eutelsat itself.
+  Aviation24.be, an otherwise-useful Belgian aviation trade outlet, 403'd
+  on this story.
+- 2026-09-10-N: `aerospacelab.be` 301-redirects to `aerospacelab.com`
+  (confirmed via a `/news/` fetch); worth updating any stored source URL
+  at a future structural touch, same pattern as prior rebrand-domain
+  cases.
+- 2026-09-10-O: A same-calendar-date, year-old stale trap on a Kazakhstan
+  headline: "Kazakhstan Ready to Build Satellites for Neighboring
+  Countries" (DKNews.kz, dated today via Google News) traced via
+  WebSearch to Kazakhstan's September 2025 Nigeria/DRC satellite-
+  manufacturing agreement (Space in Africa, dated 2025-09-10 exactly one
+  year earlier) -- extends the standing same-calendar-date-different-year
+  trap (2026-08-13-A and many peers) to a case where the DAY AND MONTH
+  match exactly, one year apart.
+- 2026-09-10-P: Confirms 2026-09-09-A/2026-09-10-C's whitelist-channel
+  pattern a third time on a new person: Vivienne Machi's own article
+  (Aviation Week, Sierra Space Ghost drop-test story) led at `class:
+  "trade"` with her narrower `aviationweek.com/author/vivienne-machi`
+  channel page attached separately at `class: "whitelist"` for the floor;
+  finalize's same-domain collapse rule fired again (logged to
+  `corroboration_collapses`), cosmetic only, final SNR unaffected.
+- 2026-09-10-Q: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 8 new, 1
+  updated, 0 held") plus a `jq empty` parse check across all five touched
+  data files (items 611, up from 603) and a direct read of all eight new
+  items' and the one updated item's `snr`/`snr_trace`/`category`/
+  `impact`/`tags`/`companies`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-09-10, fourth: Paris summit day, second)
+
+- 2026-09-10-R: The same-company-plus-category dedup false positive now
+  confirmed on the `science` category specifically: a new ESA/NASA item
+  (NASA withdrawing its VenSAR radar instrument from ESA's EnVision Venus
+  orbiter) false-matched the existing Sept 3 BepiColombo Mercury
+  transfer-module-separation item purely on shared company ESA + category
+  `science` + within 7 days, despite covering unrelated missions (Mercury
+  vs. Venus). One `dedup_distinct` cleared it; extends the long list
+  (NASA/SpaceX/Blue-Origin/Redwire/Viasat/SES/ICEYE) to ESA and to a
+  category beyond contract/regulatory/procurement.
+- 2026-09-10-S: A wire-distributed press release (BusinessWire) that
+  403's at its own domain is still usable as `wire_pr` via a StockTitan
+  mirror carrying the exact same release text verbatim (dateline,
+  quotes, disclosure language) -- same pattern as the 2026-08-25-K
+  Redwire/Yahoo-Finance-dateline workaround, now confirmed for
+  StockTitan specifically. The mirror explicitly stating "previously
+  disclosed [a figure] in March" is exactly the kind of self-reported
+  staleness marker worth trusting over the fresh-looking wrapper
+  headline: York Space's $187M Tomorrow.io contract was the SAME figure
+  York disclosed without a customer name in March, not a new dollar
+  amount; scored/impacted as notable rather than major for exactly this
+  reason (money was not new today, only the customer's name was).
+- 2026-09-10-T: A signals-pass whitelist channel (Vivienne Machi's
+  Aviation Week author page) surfaced two same-day product/contract
+  finds (MDA Aurora Black, York/Tomorrow.io) the queue and discovery
+  pass both also caught independently -- but also one unverifiable
+  headline (a "France Plans First Deorbiting Demo In 2030" Exotrail/
+  Astroscale France piece) where AW's paywall left only a headline visible
+  and a background WebSearch found only a January 2026 "still in
+  selection, hopes to know by summer" item with no September resolution
+  independently confirmed -- left undrafted per the standing
+  genuinely-fetched-content rule rather than assume the AW headline means
+  selection was confirmed.
+- 2026-09-10-U: A crewed-mission update three months after the original
+  item (Vast-PAM-1's Czech Republic/Ales Svoboda booking, June 8) adding
+  a fourth crew member for a different, newsworthy-in-its-own-right
+  national angle (Greece's first-ever astronaut, Adrianos Golemis) was
+  drafted as a NEW standalone item rather than an `updates[].patch` on
+  the 94-day-old original, cross-referenced only in prose (no unfetched
+  URL added) -- the national-first framing carries its own news value
+  independent of the underlying mission's continuity, similar to how
+  country-by-country Starlink market-entry items each get their own id
+  despite sharing the same company and program.
+- 2026-09-10-V: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 3
+  updated, 0 held") and a direct read of all five new items' and all
+  three updated items' `snr`/`category`/`impact`/`tags`/`companies`/
+  `sources` fields as the build-health signal.
+
