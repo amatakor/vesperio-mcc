@@ -5030,3 +5030,41 @@ a newer entry if a lesson changes.
   13-person coverage, 8 X-handle searches, and the 12-query discovery
   matrix. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~3h33m gap, unfiltered full source list (2026-10-11, second)
+
+- 2026-10-11-F: A near-total-junk 25-candidate queue (Bluesky spacex-launch
+  bot/opinion accounts, stock-reaction Yahoo/Barron's/Seeking Alpha pieces
+  on the Oct 8 Grain spectrum deal, Futurism/BBC off-topic filler) yielded
+  nothing itself; the one genuine new item came from the discovery pass,
+  not the queue: a Sept 30 NASA/Glenn Research Center $38M firm-fixed-price
+  contract to Modulate Space Corporation for a lunar-surface 5G/Wi-Fi 6
+  network, confirmed via NASA's own press release (first_party, SNR 5,
+  `dedup_distinct` against the unrelated Oct 6 NASA bulk-rocket-buy item on
+  shared-company/category grounds) and missed entirely by the prior four
+  sweeps that day. Worth remembering: a plain WebSearch discovery query can
+  surface a real NASA contract award that several SEO-mirror sites
+  (memesita, dijitalmasallar, streamlinefeed, ufofeed, time.news,
+  miragenews) picked up days before any sweep drafted it; none of those
+  mirrors counted as corroboration (pure rewrites of the NASA release, no
+  independent reporting), so the crawl recorded `found_none` with no SNR
+  penalty since the lead is first-party.
+- 2026-10-11-G: WebFetch cannot render `bsky.app/profile/<handle>` pages at
+  all (they return only the bare handle, no post content, regardless of
+  account); the public API endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  works reliably and returns real post text + `createdAt` timestamps for
+  every handle tried this run (Aschbacher, Langbroek, Henry, Farrar,
+  Berger, Foust, Jones). Use the API endpoint directly for the signals
+  pass rather than the profile page URL (still record the bare profile
+  URL in `signalsPass.checked` per the 2026-10-10-N lesson; the API URL is
+  just the fetch mechanism).
+- 2026-10-11-H: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on the dedup gate (shared company NASA + category "procurement"
+  within 7 days against the unrelated Oct 6 bulk-rocket-buy item), then on
+  a tagline length overage (144 vs 140 char max) after the dedup_distinct
+  fix; merged cleanly on the third attempt ("merged 1 new, 0 updated, 0
+  held"), confirmed via a direct `grep` read of the new item's `snr`
+  (5)/`impact` (notable)/`category` (procurement) fields (905 items, up
+  from 904). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
