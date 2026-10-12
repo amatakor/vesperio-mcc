@@ -4957,3 +4957,38 @@ a newer entry if a lesson changes.
   `kuiper.sats_launched_total`, and the sweep log's two unrelated
   persistence-bump `snr_movements` entries. `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~10h45m gap, unfiltered full source list (2026-10-12, second)
+
+- 2026-10-12-C: A same-looking Brazil/Venezuela Starlink regulatory headline
+  bundled two genuinely different facts: a BNamericas-style roundup framed both
+  as one "Starlink flies higher" story, but Venezuela's Oct. 9 Conatel license
+  was already published three days earlier while Brazil's ANATEL S-band vote,
+  also Oct. 9, was a genuine gap. Worth checking a bundled dual-country
+  headline for which half is actually new before discarding the whole thing as
+  already covered.
+- 2026-10-12-D: Starlink's own quoted self-description of a regulatory grant
+  can overclaim relative to the actual grant: the company told TELETIME News
+  it won ANATEL's vote for "full access to the 2 GHz spectrum," but the
+  regulator's own order gave 15+15 MHz, half of the ~25+25 MHz requested
+  (confirmed independently via a second, Brazilian-language search once the
+  English-language TeslaNorth mirror repeated the "full access" framing
+  uncritically). Led on TELETIME (trade, independently reported the actual
+  MHz figures) rather than the company's own superlative; cited Starlink's
+  quote in copy but did not treat it as the fact, per the standing
+  first-party-superlative-is-attributed-not-scored rule now confirmed for a
+  grant amount, not just a product claim.
+- 2026-10-12-E: A same-day press release that reads as a completed launch
+  event can still describe a launch that hasn't happened yet: Redwire's own
+  Oct. 12 "Final Pair of Redwire ROSA Wings Launch to the ISS" release uses
+  present/future-continuous phrasing ("will be launching... onboard... SpaceX
+  CRS-35") for a Dragon cargo mission Launch Library confirmed was still
+  "Go for Launch," net Oct. 13 -- left undrafted per the standing
+  don't-draft-scheduled-launches rule despite the headline's completed-event
+  shape; worth a same-topic re-check once CRS-35 actually flies.
+- 2026-10-12-F: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct `jq`
+  read of the new Brazil/ANATEL item's `snr`/`snr_trace`/`category`/`impact`/
+  `sources` fields (907 items, up from 906) and the updated Musk/India
+  item's `sources`/`updates` arrays (10 sources, 6 updates). `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
