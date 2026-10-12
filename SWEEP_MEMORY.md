@@ -4992,3 +4992,28 @@ a newer entry if a lesson changes.
   `sources` fields (907 items, up from 906) and the updated Musk/India
   item's `sources`/`updates` arrays (10 sources, 6 updates). `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~53min gap, unfiltered full source list (2026-10-12, third)
+
+- 2026-10-12-G: A genuine zero-item sweep on a very narrow gap: the
+  8-candidate post-filter queue was SpaceX stock chatter, a "Carolinas can
+  see the rocket" visibility piece, off-topic storm coverage, and a
+  SatNews Google-News re-report of the already-published Oct 10 T1TL-A
+  launch (`2026-10-10-spacex-sda-tranche1-transport-layer-a`, same 21
+  Northrop Grumman satellites). The 14-channel signals pass, 4 X-handle
+  searches, and an 8-query discovery matrix all traced to already-
+  published items or two fresh out-of-scope exclusions: Poland's
+  SpaceForest PERUN ("fourth PERUN launch, fifth pushed to 2027" per
+  Andrew Parsonson's bluesky) is a suborbital test rocket, joining the
+  standing HyImpulse SR75/Avio FD1/Pluto Aerospace orbital-only
+  exclusion list; and Vivienne Machi's Oct 12 Aviation Week piece headlined
+  around "Fourth SDA Data Relay Launch" turned out on closer check to be
+  about an unarmed Mk21A ICBM reentry-vehicle test (a Minotaur I flight
+  for the Sentinel/W87-1 warhead program) that merely caused the range
+  conflict behind the already-published T1TL-A launch's one scrub -- a
+  military nuclear-weapons test with zero commercial-space angle, the
+  same institutional-disclosure shape as the Air Force Secretary Meink
+  space-weapons-admission precedent (2026-09-18-D), not a new SDA launch.
+  `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt
+  ("merged 0 new, 0 updated, 0 held"); `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
