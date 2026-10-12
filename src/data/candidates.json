@@ -1,16 +1,16 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-10-11T22:29:05.560Z",
-  "window_start": "2026-10-09T17:24:32.654Z",
+  "generated_at": "2026-10-12T05:15:49.290Z",
+  "window_start": "2026-10-09T22:37:14.698Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-01T22:42:00.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "BlackSky IR",
@@ -27,6 +27,14 @@
       "entry_count": 20,
       "newest_entry": "2026-09-29T00:00:00.000Z",
       "detail": "20 entries"
+    },
+    {
+      "source_name": "Synspective",
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -65,7 +73,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-11T15:55:40.000Z",
+      "newest_entry": "2026-10-12T02:29:08.000Z",
       "detail": "10 entries"
     },
     {
@@ -215,10 +223,10 @@
     {
       "source_name": "SpaceNews",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 14,
+      "newest_entry": "2026-10-08T13:57:38.000Z",
+      "detail": "14 entries"
     },
     {
       "source_name": "Payload",
@@ -239,10 +247,10 @@
     {
       "source_name": "NASASpaceflight",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-11T21:47:31.000Z",
-      "detail": "10 entries"
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
     },
     {
       "source_name": "SpaceflightNow",
@@ -263,10 +271,18 @@
     {
       "source_name": "SpacePolicyOnline",
       "ok": true,
+      "http_status": 304,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "304 not modified"
+    },
+    {
+      "source_name": "Space.com",
+      "ok": false,
       "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-11T19:37:35.000Z",
-      "detail": "10 entries"
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "dead re-probe: 200 but no entries parsed"
     },
     {
       "source_name": "Ars Technica space",
@@ -361,7 +377,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-11T21:17:00.000Z",
+      "newest_entry": "2026-10-12T04:27:20.000Z",
       "detail": "100 entries"
     },
     {
@@ -369,7 +385,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-08T15:07:48.000Z",
+      "newest_entry": "2026-10-09T17:15:49.000Z",
       "detail": "100 entries"
     },
     {
@@ -377,7 +393,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 77,
-      "newest_entry": "2026-10-08T12:33:16.000Z",
+      "newest_entry": "2026-10-08T03:35:00.000Z",
       "detail": "77 entries"
     },
     {
@@ -393,7 +409,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-11T15:55:29.000Z",
+      "newest_entry": "2026-10-12T03:30:05.000Z",
       "detail": "100 entries"
     },
     {
@@ -401,7 +417,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 41,
-      "newest_entry": "2026-10-11T20:51:30.000Z",
+      "newest_entry": "2026-10-11T23:48:25.000Z",
       "detail": "41 entries"
     },
     {
@@ -416,16 +432,16 @@
       "source_name": "Bluesky search: spacex launch",
       "ok": true,
       "http_status": 200,
-      "entry_count": 25,
-      "newest_entry": "2026-10-11T22:16:24.167Z",
-      "detail": "25 entries"
+      "entry_count": 24,
+      "newest_entry": "2026-10-12T04:53:52.363Z",
+      "detail": "24 entries"
     },
     {
       "source_name": "Bluesky search: satellite constellation",
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-10-11T20:17:50.857Z",
+      "newest_entry": "2026-10-11T23:13:19.955Z",
       "detail": "25 entries"
     },
     {
@@ -438,59 +454,59 @@
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-10T17:32:25.000Z",
-      "detail": "10 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-10T15:59:19.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T16:48:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-10T11:03:11.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-06T14:04:55.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     }
   ],
   "candidates": [
@@ -725,6 +741,316 @@
       "consumed": true
     },
     {
+      "id": "9077c3244adfa578",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/davidciani.com/post/3mxnpy2alnk2e",
+      "title": "@davidciani.com on Bluesky",
+      "published_at": "2026-10-12T04:53:52.363Z",
+      "raw_excerpt": "That could look like spinning off the government business into a seperate company with independent management. Either way, Elon can’t remain in charge of the space launch and telecommunications business that SpaceX does for the government.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "02e1b30316071442",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQNkZpcXAybnNjSHJoQXZ0XzU5V0ZUWWhuLVk4X2NadG5Zc0FKLUkxV1EtSldQQ0dSanpFMTBPVFZyRUtrLURmRUxBbXI4RUd2T3RMUm0zeENJdzVMZVNIU0xMaWlDTUNUODB6U2VDX3VHekNabGhocU1jc1M2XzZBWEhpM1VYLTVuTG1oVGhLbmxrZ3NMaVVkakJtYXBYTWo2Yjk4YTVKMGtnQXNaVkRoQ0ZVampXYXdEdW5Qd0xoeGowbXRsM2E1cA?oc=5",
+      "title": "SpaceX Becomes a Mobile Carrier in 2027? Crypto Punters Weigh Odds as Elon Musk Calls Spectrum Deal the - Benzinga",
+      "published_at": "2026-10-12T04:27:20.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiyAFBVV95cUxQNkZpcXAybnNjSHJoQXZ0XzU5V0ZUWWhuLVk4X2NadG5Zc0FKLUkxV1EtSldQQ0dSanpFMTBPVFZyRUtrLURmRUxBbXI4RUd2T3RMUm0zeENJdzVMZVNIU0xMaWlDTUNUODB6U2VDX3VHekNabGhocU1jc1M2XzZBWEhpM1VYLTVuTG1oVGhLbmxrZ3NMaVVkakJtYXBYTWo2Yjk4YTVKMGtnQXNaVkRoQ0ZVampXYXdEdW5Qd0xoeGowbXRsM2E1cA?oc=5\" target=\"_blank\">SpaceX Becomes a Mobile Carrier in 2027? Crypto Punters Weigh Odds as Elon Musk Calls Spectrum Deal the</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Benzinga</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "c52ba301ba1a4de5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mxnntn2qhg2a",
+      "title": "@astronomybot.bsky.social on Bluesky",
+      "published_at": "2026-10-12T04:15:37.358Z",
+      "raw_excerpt": "Rocket Launch Falcon 9 Block 5 | Bandwagon 5 (Dedicated Mid-Inclination Rideshare) On 2026-10-31 at 00:00:00 UTC | 18 days, 19 hours, 44 mins By SpaceX Status: Current date is a placeholder or rough estimation based on unreliable or interpreted sources. Rocket: Falcon 9 Block 5 Launch pad: Space ...",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "a3ccf6769b1a4978",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/colesci.bsky.social/post/3mxnmb6r24k2a",
+      "title": "@colesci.bsky.social on Bluesky",
+      "published_at": "2026-10-12T03:47:27.558Z",
+      "raw_excerpt": "Couple of important data points, here: 1) SpaceX is retiring the Falcon 9 and the deployment mechanism for Starship appears designed primarily for Starlink. This is creating a launch bottleneck for all other space companies, while Starship is designed to primarily launch Starlink satellites.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "ecf6e6adbc124a96",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOMy12UDZ4S3ZsZXd2WUhhVW5VcVN1NDNST2RsUGtaQ1JqX01DZzJ2VE41dmtYVUwzZlNuNGVwR2lBOHFleUNvOW52eEs5b09sNWM0WDFzdl9iQW9WX2tmY002YTRPNnRJb2VMV0wtVml4WWQwYl9zRnVnZGhTcnQtNXF1WndPakJHaV9feHczdkVXTXZGRGpEdEFOT0FVZ0V20gGgAUFVX3lxTE4zLXZQNnhLdmxld3ZZSGFVblVxU3U0M1JPZGxQa1pDUmpfTUNnMnZUTjV2a1hVTDNmU240ZXBHaUE4cWV5Q285bnZ4SzlvT2w1YzRYMXN2X2JBb1Zfa2ZjTTZhNE82dElvZUxXTC1WaXhZZDBiX3NGdWdkaFNydC01cXVad09qQkdpX194dzN2RVdNdkZEakR0QU5PQVVnRXY?oc=5",
+      "title": "As the US-China space race heats up, watch out for patent law - South China Morning Post",
+      "published_at": "2026-10-12T03:30:05.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOMy12UDZ4S3ZsZXd2WUhhVW5VcVN1NDNST2RsUGtaQ1JqX01DZzJ2VE41dmtYVUwzZlNuNGVwR2lBOHFleUNvOW52eEs5b09sNWM0WDFzdl9iQW9WX2tmY002YTRPNnRJb2VMV0wtVml4WWQwYl9zRnVnZGhTcnQtNXF1WndPakJHaV9feHczdkVXTXZGRGpEdEFOT0FVZ0V20gGgAUFVX3lxTE4zLXZQNnhLdmxld3ZZSGFVblVxU3U0M1JPZGxQa1pDUmpfTUNnMnZUTjV2a1hVTDNmU240ZXBHaUE4cWV5Q285bnZ4SzlvT2w1YzRYMXN2X2JBb1Zfa2ZjTTZhNE82dElvZUxXTC1WaXhZZDBiX3NGdWdkaFNydC01cXVad09qQkdpX194dzN2RVdNdkZEakR0QU5PQVVnRXY?oc=5\" target=\"_blank\">As the US-China space race heats up, watch out for patent law</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">South China Morning Post</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "14877c473f27a08e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxORk9Ob1pDYnNBYzdVUnlzWXRqNUd1M1BUT3hHWTNXT0FxVlc2QmZycXM1R24wdU91Y1Z4NVIzQ3FYQzhCX0M5YV8wT2ozTDF2dU1nY1pvcW5ZS3dDXzIyOEVZNmtXczFYZzdGYk5VanZ4MS00RzJ4eHhrWUFLTWRuRVlIVXVaMHFWVDI3cHBBbTY?oc=5",
+      "title": "Jim Cramer Calls Elon Musk Acquiring Lower Frequency Spectrum 'HUGE' for SpaceX; Chamath Palihapitiya Says It's A 'Very Big Deal' - Yahoo Finance",
+      "published_at": "2026-10-12T03:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxORk9Ob1pDYnNBYzdVUnlzWXRqNUd1M1BUT3hHWTNXT0FxVlc2QmZycXM1R24wdU91Y1Z4NVIzQ3FYQzhCX0M5YV8wT2ozTDF2dU1nY1pvcW5ZS3dDXzIyOEVZNmtXczFYZzdGYk5VanZ4MS00RzJ4eHhrWUFLTWRuRVlIVXVaMHFWVDI3cHBBbTY?oc=5\" target=\"_blank\">Jim Cramer Calls Elon Musk Acquiring Lower Frequency Spectrum 'HUGE' for SpaceX; Chamath Palihapitiya Says It's A 'Very Big Deal'</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "a7b3aab98b5ab55c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/capopp.bsky.social/post/3mxnkjnoims2y",
+      "title": "@capopp.bsky.social on Bluesky",
+      "published_at": "2026-10-12T03:16:21.064Z",
+      "raw_excerpt": "Ferrying astronauts to ISS is going to end in 2030, which is around the same time folks should expect blue origin to emerge as something like a full spectrum space launch competitor for SpaceX.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "aa8df77c4fa1d1b1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNaDM2RTF0cVdLYVlvVWJ6YlY5VXNrdHZ6c3g3alNGX3lNUHE5TFZWeXJzQWlSSXBWbl9pdHdZMUNLVFlCRFU1N2JmbTJTOG1HYmhORjFPUmY0UzRzSHdtSmpabWpRenQ4UU14ejNJVVZYY25kUi04YVQxNVRQSHdqdENZZGI2UXZ1UVZXLV9xNHBubjNzcm4zTnpnaw?oc=5",
+      "title": "Elon Musk Takes Swipe at Billionaire Mukesh Ambani's 'De Facto' Monopoly in India: 'Absurd Hypocrisy and - Benzinga",
+      "published_at": "2026-10-12T03:12:39.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxNaDM2RTF0cVdLYVlvVWJ6YlY5VXNrdHZ6c3g3alNGX3lNUHE5TFZWeXJzQWlSSXBWbl9pdHdZMUNLVFlCRFU1N2JmbTJTOG1HYmhORjFPUmY0UzRzSHdtSmpabWpRenQ4UU14ejNJVVZYY25kUi04YVQxNVRQSHdqdENZZGI2UXZ1UVZXLV9xNHBubjNzcm4zTnpnaw?oc=5\" target=\"_blank\">Elon Musk Takes Swipe at Billionaire Mukesh Ambani's 'De Facto' Monopoly in India: 'Absurd Hypocrisy and</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Benzinga</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "6a043b88529d82ee",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxnggnww4m2d",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-12T02:03:05.870Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 12/0200 🚀 PLANNED LAUNCH/REENTRY: SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-0343Z BACKUP: 10/13/26 2300Z-0343Z SPACEX CRS-35, CAPE CANAVERAL SFS, FL PRIMARY: 10/13/26 102... More info in image. FAA Details.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "4da39266a7edcc9d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/jayreding.bsky.social/post/3mxngc3lepk2s",
+      "title": "@jayreding.bsky.social on Bluesky",
+      "published_at": "2026-10-12T02:00:32.564Z",
+      "raw_excerpt": "SpaceX was profitable prior to Starlink, but at a much, much smaller capex rate. The launch market just isn’t big enough for launch to be viable on its own without NASA/DOD money. Nationalizing SpaceX may be a necessity to keep space access. Or no licenses for launches unless Elon’s gone.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "0e34a2c26745d33c",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPLThVWDc4V0IwN1FtYnBsdU85b1Zia3MtS2FicEEyTzRadmVVUi1vYjMxMFdaZ1h6QThzeWNrV0ZBVF83alpDUXAyTFdVZG9tUll0cGtyeWh4UFpPc1ZWZkRSM0Z5WktRSkpuU1hnVmhVa09BQjN1ZDlESGoyUTFLTWFzNnhhSGJFQnQyV2JBdWdNSy1aWHJpTFJUQmRRejJ6V0ZRR1gtSEZVZ2UtV3RrTFNKLXRwOUZwcWJqcXlJSHlWcjhtNTc0M2VYd21YSUFlSkxoWFFFaVpIOWdwUmVzdVAzaDFZZnE2blBGUlYzeFM?oc=5",
+      "title": "Rural Iowa 4-H clubs are bridging technology gaps with Starlink broadband - Ottumwa Courier",
+      "published_at": "2026-10-12T01:51:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi8AFBVV95cUxPLThVWDc4V0IwN1FtYnBsdU85b1Zia3MtS2FicEEyTzRadmVVUi1vYjMxMFdaZ1h6QThzeWNrV0ZBVF83alpDUXAyTFdVZG9tUll0cGtyeWh4UFpPc1ZWZkRSM0Z5WktRSkpuU1hnVmhVa09BQjN1ZDlESGoyUTFLTWFzNnhhSGJFQnQyV2JBdWdNSy1aWHJpTFJUQmRRejJ6V0ZRR1gtSEZVZ2UtV3RrTFNKLXRwOUZwcWJqcXlJSHlWcjhtNTc0M2VYd21YSUFlSkxoWFFFaVpIOWdwUmVzdVAzaDFZZnE2blBGUlYzeFM?oc=5\" target=\"_blank\">Rural Iowa 4-H clubs are bridging technology gaps with Starlink broadband</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Ottumwa Courier</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "c26d99982e391b60",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOY2NhaEdxb0RzZEZFM0otZVZWVmdNenhhdGJPMEotaEJIUm80R0FLNHhyYkpRUXRSdGRBY19HTGcxVGZSZVp2R1N1NVZWOEtzSVliOTZCVkw0WVRIaFAzUU9Bbzk3V1dCQXRyTklfN29icF93ejBDVUU0QVFqWjJWRXMyQnRsc3BBYy1rRDlTMVY?oc=5",
+      "title": "Why SpaceX Wants To Catch Starship Instead Of Giving It Landing Legs - BGR",
+      "published_at": "2026-10-12T01:47:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxOY2NhaEdxb0RzZEZFM0otZVZWVmdNenhhdGJPMEotaEJIUm80R0FLNHhyYkpRUXRSdGRBY19HTGcxVGZSZVp2R1N1NVZWOEtzSVliOTZCVkw0WVRIaFAzUU9Bbzk3V1dCQXRyTklfN29icF93ejBDVUU0QVFqWjJWRXMyQnRsc3BBYy1rRDlTMVY?oc=5\" target=\"_blank\">Why SpaceX Wants To Catch Starship Instead Of Giving It Landing Legs</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BGR</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "e54d7a27b378fb41",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/97c6f5e1-299e-4652-b72d-9618ac047076/",
+      "title": "Falcon 9 Block 5 | Starlink Group 15-25",
+      "published_at": "2026-10-12T01:21:05.000Z",
+      "raw_excerpt": "A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for space-based Internet communication system.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "50bc12f95f6eae00",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/atldivarrl.bsky.social/post/3mxne35biss2r",
+      "title": "@atldivarrl.bsky.social on Bluesky",
+      "published_at": "2026-10-12T01:20:53.954Z",
+      "raw_excerpt": "SpaceX and NASA Re-supply Mission CRS-35 Falcon 9 from Cape Canaveral, Florida, on Tue. Oct. 13th at 6:33 AM EDT + 3½ Mins after launch rocket will be in Sunlight. Listen for \"Rocket Prop\" via BBC 7305, 9440, 9915 kHz from Ascension Island. www.spacex.com/launches",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "d068b1150010baf7",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQOUFPWlN4YUl0dEJDQzlLUnpseVlBcHgyU1p5X0ZBbEhQYk94S0RQOE1TSkxaOEFWTTQxYllfU2l4bWdUeWRuN2U2ZVBrOGNfSnpaWVNtanRNRzBfYjdiS2RvMF9UZjk4ZXQyVnk2OFBpYlVVVmt2M1BsLXhobHpjUXJrRWp6YTB0SDVDZHRwSjMza1ZaeUVqR2lFX3FyUkU?oc=5",
+      "title": "Bank Earnings Hinge on Anthropic IPO as SpaceX Windfall Fades - Yahoo Finance",
+      "published_at": "2026-10-12T01:01:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxQOUFPWlN4YUl0dEJDQzlLUnpseVlBcHgyU1p5X0ZBbEhQYk94S0RQOE1TSkxaOEFWTTQxYllfU2l4bWdUeWRuN2U2ZVBrOGNfSnpaWVNtanRNRzBfYjdiS2RvMF9UZjk4ZXQyVnk2OFBpYlVVVmt2M1BsLXhobHpjUXJrRWp6YTB0SDVDZHRwSjMza1ZaeUVqR2lFX3FyUkU?oc=5\" target=\"_blank\">Bank Earnings Hinge on Anthropic IPO as SpaceX Windfall Fades</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "6a5430aa1a175aac",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQUHkxUExqbi1NREFudms4cnZocDI1aTJ3OXZhdDhPam83b3VTNFphbFBCaUNJN3o1aWtwdHNOQWRrR3FPMkZ3cTFaZDBFM0Fxb3lCNkZiU3RzczdrbVZrM0JxZGM4cGdhSWpyY3Nyd0FJTVNRdHV4UE4wa2E0bDFJOVZzS29JbGRkcGF2QWJiTHp5dm5UZVJjSllUYjFUeXNGQXZ0NW51QWhKZGEtRzBvM0IzYlU5TE1lS0E?oc=5",
+      "title": "Falcon 9 launch from Vandenberg Space Force Base scheduled for Monday evening - KSBY News",
+      "published_at": "2026-10-12T01:00:20.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxQUHkxUExqbi1NREFudms4cnZocDI1aTJ3OXZhdDhPam83b3VTNFphbFBCaUNJN3o1aWtwdHNOQWRrR3FPMkZ3cTFaZDBFM0Fxb3lCNkZiU3RzczdrbVZrM0JxZGM4cGdhSWpyY3Nyd0FJTVNRdHV4UE4wa2E0bDFJOVZzS29JbGRkcGF2QWJiTHp5dm5UZVJjSllUYjFUeXNGQXZ0NW51QWhKZGEtRzBvM0IzYlU5TE1lS0E?oc=5\" target=\"_blank\">Falcon 9 launch from Vandenberg Space Force Base scheduled for Monday evening</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KSBY News</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "4c9c247c30200644",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/orbitalradar.bsky.social/post/3mxncwee65q2u",
+      "title": "@orbitalradar.bsky.social on Bluesky",
+      "published_at": "2026-10-12T01:00:17.254Z",
+      "raw_excerpt": "31,500 tracked objects orbit Earth now. In ~23h, Falcon 9 Block 5 will add 21 more Starlink satellites. Watch live as this orbital ballet unfolds and see how every object finds its place in the sky. Follow the countdown at orbitalradar.com/launch-sch… #Starlink #SpaceX #Falcon9",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "bfadd09d6acf748f",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/historysock.bsky.social/post/3mxncuwx3ok2r",
+      "title": "@historysock.bsky.social on Bluesky",
+      "published_at": "2026-10-12T00:59:30.066Z",
+      "raw_excerpt": "Stop letting SpaceX launch until he steps down from all positions of power in his companies.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "591e551063412296",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/dmnd.me/post/3mxncht6mss2w",
+      "title": "@dmnd.me on Bluesky",
+      "published_at": "2026-10-12T00:52:10.356Z",
+      "raw_excerpt": "The main thing the US gov needs to disentangle from Elon is to break up SpaceX such that the launch business is separate from the Starlink business This will cause an extreme reaction because, if you ask someone like @esghound.com, he’ll tell you they are likely not viable without one another",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "62dbcac81d63a090",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPVzlnUUlDdDgwRVFKRTd2VmhlWXNJUWxEYTJkU0EwUkk3emVEaWVMb2cyLWZuSDNqWXFRT3dwdk9xUTZXMU1VOVd1ZUt2VE50c0MyUHJaNDBqRER5WTlNckZuTTBPbUt5SHBhLTMxelU5VjJEVUpBaHUwODVHWDZfckw4WTBpQU15NnpVT2FsX3Ywd0FPMWI1WmlmTlJwWjhqMnBNV3hfSEtQS1ZWNUd2Zjk4bDFiSWczQVV2dER2ZmRiLUVRM2lEVk45blRrRUJ0TDFUcFZ0VdIB3AFBVV95cUxPSXdhaGdFQUM1OUxSd2VOOS1yc2dkMXFXRENlSkl1RExYMmhBZTFxdkJGb1FFRFloRzd1bDJPMmVUUzZ2QTdtenR6RDJCZV9MMHZhNllQTGNLYlRlNTRJcWJJRGZoaFBDNmI5ZVUtTXZkLUZaWG9icmdTTjd3NnJTem9NdXBDaXdSMmgyaG9PS0RqUkphNlpNdGhkdElBSG9yT0FSWWZUQWxwZDUtVEtsbkNXR1M2X3RfOWlxM25mN0FwU3psS1U5a293OVoyODE0TkVUYkNYbjV4OHla?oc=5",
+      "title": "BT BIG STORY: How India’s space startups are building on Isro’s blueprint - Business Today",
+      "published_at": "2026-10-12T00:30:07.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxPVzlnUUlDdDgwRVFKRTd2VmhlWXNJUWxEYTJkU0EwUkk3emVEaWVMb2cyLWZuSDNqWXFRT3dwdk9xUTZXMU1VOVd1ZUt2VE50c0MyUHJaNDBqRER5WTlNckZuTTBPbUt5SHBhLTMxelU5VjJEVUpBaHUwODVHWDZfckw4WTBpQU15NnpVT2FsX3Ywd0FPMWI1WmlmTlJwWjhqMnBNV3hfSEtQS1ZWNUd2Zjk4bDFiSWczQVV2dER2ZmRiLUVRM2lEVk45blRrRUJ0TDFUcFZ0VdIB3AFBVV95cUxPSXdhaGdFQUM1OUxSd2VOOS1yc2dkMXFXRENlSkl1RExYMmhBZTFxdkJGb1FFRFloRzd1bDJPMmVUUzZ2QTdtenR6RDJCZV9MMHZhNllQTGNLYlRlNTRJcWJJRGZoaFBDNmI5ZVUtTXZkLUZaWG9icmdTTjd3NnJTem9NdXBDaXdSMmgyaG9PS0RqUkphNlpNdGhkdElBSG9yT0FSWWZUQWxwZDUtVEtsbkNXR1M2X3RfOWlxM25mN0FwU3psS1U5a293OVoyODE0TkVUYkNYbjV4OHla?oc=5\" target=\"_blank\">BT BIG STORY: How India’s space startups are building on Isro’s blueprint</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Business Today</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "20094157f2a97630",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNWENldW5RRzNkdmxvVHVRX2hYRkVNb1BIM1hzZjdOSVlfZl9Qc210cmMyelRtSFhTbEd3SFdnT3Y4OGhGazNYYk1kdmh3MGZ1S2Q5clBwUzd3VHI4VllCVEQ1UXo2dW03c2ZOSVBNN1NDeGdsRkpZNW5oNHZ1RHZzSHlxSWJwLURDSUt5R2k3ZjBJOHd3Qmdz?oc=5",
+      "title": "Elon Musk Will ‘Eventually’ Make a Phone, Says Gene Munster: Starlink Device Will Be a ‘Bigger Problem’ for Apple, Samsung - Yahoo Finance",
+      "published_at": "2026-10-12T00:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNWENldW5RRzNkdmxvVHVRX2hYRkVNb1BIM1hzZjdOSVlfZl9Qc210cmMyelRtSFhTbEd3SFdnT3Y4OGhGazNYYk1kdmh3MGZ1S2Q5clBwUzd3VHI4VllCVEQ1UXo2dW03c2ZOSVBNN1NDeGdsRkpZNW5oNHZ1RHZzSHlxSWJwLURDSUt5R2k3ZjBJOHd3Qmdz?oc=5\" target=\"_blank\">Elon Musk Will ‘Eventually’ Make a Phone, Says Gene Munster: Starlink Device Will Be a ‘Bigger Problem’ for Apple, Samsung</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "c051b396c45d8245",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxn7q3d24x2d",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-12T00:03:05.056Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 12/0000 🚀 PLANNED LAUNCH/REENTRY: SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-0343Z BACKUP: 10/13/26 2300Z-0343Z SPACEX CRS-35, CAPE CANAVERAL SFS, FL PRIMARY: 10/13/26 102... More info in image. FAA Details.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "2e8d4d5f63959701",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spacelaunch-bot.bsky.social/post/3mxn7ppm6r52u",
+      "title": "@spacelaunch-bot.bsky.social on Bluesky",
+      "published_at": "2026-10-12T00:02:52.759Z",
+      "raw_excerpt": "SpaceX is launching a rocket! Starlink Group 15-25 is a communications mission and will launch via a Falcon 9 rocket from 🇺🇸 Space Launch Complex 4E on 2026-10-12 at 23:00 UTC. For more information, visit the Go4Liftoff launch page. #rocketlaunch #communications 🚀✨",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "f5e4d089702b76b0",
+      "source_name": "BBC science and environment",
+      "url": "https://www.bbc.co.uk/news/videos/c6073z5rvrk3o?at_medium=RSS&at_campaign=rss",
+      "title": "Watch: Endangered orangutans released back into the wild after Borneo fires",
+      "published_at": "2026-10-11T23:48:25.000Z",
+      "raw_excerpt": "The critically endangered apes were rescued from intense wildfires that destroyed their habitat in August and September.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "c1f2ce0f3643115a",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/cubanx.bsky.social/post/3mxn6chahg32l",
+      "title": "@cubanx.bsky.social on Bluesky",
+      "published_at": "2026-10-11T23:37:34.659Z",
+      "raw_excerpt": "Hmm, I wonder if they killed ALL the birds at its launch site in Texas, or just some of them. The Current: Published: September 25 12:14 pm SpaceX reps meet with Pecan Island residents \"...SpaceX announcement ... #democracy #usa #gop #fascists #fascism 👉 Vote 'em Out!",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "54e50eb440358e90",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOOGhsaFNOSURYZHNjWlE4OTJSSTNyOEN0dktuTFhpRFg4d0dMSXAxTkRqZUlOVkVpN2NVVjA3Y3E2Z0Ridm13czRjUzg1UGJ4anNBTkgxb1Q0czhSc3VoaU1nTEtfb093ZFAyc3VLREh3RC04MzNBV0dKWHhRNl9BajBveWFkblQzNnRseDlDUEx5U3cwQkdUV3VpSDhScXhWa2wzRHNudVdkME1JdGExd2NmNXhrS2FTNTVpcGFjZjN2YVBheTNhTVpzVDlwR0NZSUJB?oc=5",
+      "title": "Amazon Leo Plans Prime Subscription Bundling to Challenge Starlink in Consumer Satellite Broadband Market - SatNews Publishers",
+      "published_at": "2026-10-11T23:21:45.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0wFBVV95cUxOOGhsaFNOSURYZHNjWlE4OTJSSTNyOEN0dktuTFhpRFg4d0dMSXAxTkRqZUlOVkVpN2NVVjA3Y3E2Z0Ridm13czRjUzg1UGJ4anNBTkgxb1Q0czhSc3VoaU1nTEtfb093ZFAyc3VLREh3RC04MzNBV0dKWHhRNl9BajBveWFkblQzNnRseDlDUEx5U3cwQkdUV3VpSDhScXhWa2wzRHNudVdkME1JdGExd2NmNXhrS2FTNTVpcGFjZjN2YVBheTNhTVpzVDlwR0NZSUJB?oc=5\" target=\"_blank\">Amazon Leo Plans Prime Subscription Bundling to Challenge Starlink in Consumer Satellite Broadband Market</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SatNews Publishers</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "9dc169f6750d750a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOWUx6RGR5bjdTcXBDTVlFX1dpSmdWSlVlNllkM3ltdnpOdWMtWjFwZGM3LTZhV0tvSHhwUElKemJET19WV1JWWWZESTdVSzRZb3A1Uk5pMW9ZaEdkZC1PbHQza3JvdHBzcmVmV05mZDVTRkRad0UxLXNEMVNhdW5tOXJlbExFc3g4QjU4OU1GMmtOVUpyanQ0emRSWV9rSGd6aGdsUDd6bkFreGd6VG54T2lfLVJYNW9SY2g4?oc=5",
+      "title": "American Airlines expands Starlink Wi-Fi to more than 1,000 jets - New Hampshire Union Leader",
+      "published_at": "2026-10-11T23:16:54.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxOWUx6RGR5bjdTcXBDTVlFX1dpSmdWSlVlNllkM3ltdnpOdWMtWjFwZGM3LTZhV0tvSHhwUElKemJET19WV1JWWWZESTdVSzRZb3A1Uk5pMW9ZaEdkZC1PbHQza3JvdHBzcmVmV05mZDVTRkRad0UxLXNEMVNhdW5tOXJlbExFc3g4QjU4OU1GMmtOVUpyanQ0emRSWV9rSGd6aGdsUDd6bkFreGd6VG54T2lfLVJYNW9SY2g4?oc=5\" target=\"_blank\">American Airlines expands Starlink Wi-Fi to more than 1,000 jets</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">New Hampshire Union Leader</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "f5ca60d0b423ffe4",
+      "source_name": "BBC science and environment",
+      "url": "https://www.bbc.co.uk/news/articles/c6d7q5z17gp5o?at_medium=RSS&at_campaign=rss",
+      "title": "American ranchers wrestle with soaring costs - and their loyalty to Trump",
+      "published_at": "2026-10-11T23:13:51.000Z",
+      "raw_excerpt": "Many farmers in states that backed the president say they are being hit from all sides, with the crucial midterm elections just weeks away.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "b980a636631825d4",
+      "source_name": "Bluesky search: satellite constellation",
+      "url": "https://bsky.app/profile/aichina.news/post/3mxn4x42uj72o",
+      "title": "@aichina.news on Bluesky",
+      "published_at": "2026-10-11T23:13:19.955Z",
+      "raw_excerpt": "Huawei, Cambricon and Biren in one consortium, pooling ~50,000 domestic cards – rivals sharing a rack, for once. But card counts aren't throughput, and there's no timeline. Hard to see mixed-vendor stacks hitting decent MFU until one framework schedules across all of them.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "1e9d4128908f51ea",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/launchalertsbot.bsky.social/post/3mxn4ut7ok32d",
+      "title": "@launchalertsbot.bsky.social on Bluesky",
+      "published_at": "2026-10-11T23:12:03.965Z",
+      "raw_excerpt": "🚀 Within 24 hours: SpaceX Falcon 9 Block 5 | Starlink Group 15-25 NET Mon Oct 12, 7:00 PM EDT from Space Launch Complex 4E, Vandenberg, California. Status: Go for Launch. #SpaceX #Starlink #space",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
+      "id": "55a6b8cfb1cca5ac",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bgrcom.bsky.social/post/3mxn4npezvo2a",
+      "title": "@bgrcom.bsky.social on Bluesky",
+      "published_at": "2026-10-11T23:08:04.258Z",
+      "raw_excerpt": "SpaceX built an entirely new base in Texas for Starship, even with Florida launch sites already up and running. That choice came with trade-offs.",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
       "id": "0dcf65137bfaa4be",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/bluraymc.bsky.social/post/3mxmzrbjrpk2w",
@@ -815,6 +1141,16 @@
       "consumed": true
     },
     {
+      "id": "1409d4a05161137d",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPR05ZbndFZkdzM3owcWF6eGNPVXQyMHlDaEdBTi0xaHRIa1V5OTA1NU5jRjNKa2lLTUVZc2RqUjh1SzRLNXBrbkUydXItR2FaaFR4LXpaRTlOeG5sZzJFeFFwejZpVHVmMXFlZmg2LVhzNlNPS2J4Yzd4dmlCajR6LUZIRmlTUGFQY0JjNllnTGNqel9YdzNaMzhHVTFWWndZdDdrRlNWOUg4TUtfcmpoSVBOZHdGTTh0TE1SVUN6UG9hRmViY1d5N19mc1luWDQ?oc=5",
+      "title": "Investors are likely to focus on SpaceX’s Starship tech milestones, not results By Investing.com - Investing.com",
+      "published_at": "2026-10-11T20:32:20.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizwFBVV95cUxPR05ZbndFZkdzM3owcWF6eGNPVXQyMHlDaEdBTi0xaHRIa1V5OTA1NU5jRjNKa2lLTUVZc2RqUjh1SzRLNXBrbkUydXItR2FaaFR4LXpaRTlOeG5sZzJFeFFwejZpVHVmMXFlZmg2LVhzNlNPS2J4Yzd4dmlCajR6LUZIRmlTUGFQY0JjNllnTGNqel9YdzNaMzhHVTFWWndZdDdrRlNWOUg4TUtfcmpoSVBOZHdGTTh0TE1SVUN6UG9hRmViY1d5N19mc1luWDQ?oc=5\" target=\"_blank\">Investors are likely to focus on SpaceX’s Starship tech milestones, not results By Investing.com</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investing.com</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
       "id": "4ed550c1e144d8c8",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE5Xa2tBSW9LbDU2Szh0M0o5b1Jvcjl1ZmpzZjhqakFMcFBGUnBOcjhuaWVyTElhUlRyNWMybFhia25NVUxsYTVsNW52eVl6NzN2SFN4V3dXSnUzUFFoMm5VQXdlblVIZElleWpXcENZQVdHbGFHdmpv?oc=5",
@@ -852,6 +1188,16 @@
       "published_at": "2026-10-11T20:03:01.556Z",
       "raw_excerpt": "No, I was irritated by the banality of your response. Why the fuck are you telling me not to use SpaceX? They launch satellites, am I likely to be launching a satellite?",
       "fetched_at": "2026-10-11T22:29:05.560Z",
+      "consumed": true
+    },
+    {
+      "id": "03d635182a05fdf9",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE9jN3NIc2xkcnZTYzQ2czlrWE1KZGxpZmFyLU1ySldDOVFKcmlFYkJQVWlwbHVzVlN2QVd3cjdzX2pBMjJRV2djVVFabmpzb1p2X1Z6MWQ0ejFjejd0eXpFR2xoLUJITzRTNjJ4OVVHVUtQQWxvdE9rN0d4NEk?oc=5",
+      "title": "SpaceX Seeks $40B to Buy NVIDIA Chips for Orbit AI [2026] - https://tech-insider.org/",
+      "published_at": "2026-10-11T19:49:38.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifEFVX3lxTE9jN3NIc2xkcnZTYzQ2czlrWE1KZGxpZmFyLU1ySldDOVFKcmlFYkJQVWlwbHVzVlN2QVd3cjdzX2pBMjJRV2djVVFabmpzb1p2X1Z6MWQ0ejFjejd0eXpFR2xoLUJITzRTNjJ4OVVHVUtQQWxvdE9rN0d4NEk?oc=5\" target=\"_blank\">SpaceX Seeks $40B to Buy NVIDIA Chips for Orbit AI [2026]</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">https://tech-insider.org/</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
       "consumed": true
     },
     {
@@ -2805,6 +3151,16 @@
       "consumed": true
     },
     {
+      "id": "ebabeb200cfa41d4",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOcTNwSkFjSE1zZHBUT05GcTRKd3FkaHNySnZJblhYMEp4bUpQSXFfanpvXzVJUW9LSHk3OVF3ZVAtTE5BWktiZXU5S3pQZTRmaWI1TnFmOWlrMjBQeTBxdFdNdE5YQ3NRUTg5cVJxSzBOM3J5SUxqS2p1U1RnVkc3TjFDVGJOTXJ1dkFNNW1sNVVjdTR2RGQtQ2hKbXFXdGJDeFFRTUQ0dDEzanRxcURxNi0zbUtUeTJ5M0ZCODZEdElsSlFFTXc?oc=5",
+      "title": "SpaceX launches 21 data satellites for the Space Development Agency - Spaceflight Now",
+      "published_at": "2026-10-10T08:26:33.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixgFBVV95cUxOcTNwSkFjSE1zZHBUT05GcTRKd3FkaHNySnZJblhYMEp4bUpQSXFfanpvXzVJUW9LSHk3OVF3ZVAtTE5BWktiZXU5S3pQZTRmaWI1TnFmOWlrMjBQeTBxdFdNdE5YQ3NRUTg5cVJxSzBOM3J5SUxqS2p1U1RnVkc3TjFDVGJOTXJ1dkFNNW1sNVVjdTR2RGQtQ2hKbXFXdGJDeFFRTUQ0dDEzanRxcURxNi0zbUtUeTJ5M0ZCODZEdElsSlFFTXc?oc=5\" target=\"_blank\">SpaceX launches 21 data satellites for the Space Development Agency</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spaceflight Now</font>",
+      "fetched_at": "2026-10-12T05:15:49.290Z",
+      "consumed": true
+    },
+    {
       "id": "5daca743141a0a63",
       "source_name": "Bluesky search: satellite constellation",
       "url": "https://bsky.app/profile/sparklehundred.bsky.social/post/3mxj2g6oia22e",
@@ -3382,896 +3738,6 @@
       "published_at": "2026-10-09T22:55:18.666Z",
       "raw_excerpt": "✨ Catch this: spaceX launch schedule for 2026 don't miss the next liftoff See the stars in amazing detail with this telescope - https://amzn.to/3RPOyv2 #TelescopeAdvisor #Astronomy #Stargazing #Space #Telescope #NightSky #Science #Paidlink #ad #amazonaffiliate",
       "fetched_at": "2026-10-10T05:15:48.690Z",
-      "consumed": true
-    },
-    {
-      "id": "347b631603754d54",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQanQ3bndLQ3VIQ2FDR3NyN0hfTGZFSHRlVVVsbXY2QkhQbVhpV3hmOEduaUhCaGZUYnJFNkx6MDRFYldTcG9WMXY3Y0pjQzlFSGZ2eVNqUVVwZjBCSWFLMzlUVXRBSlpzWXp2c01BWDc1ZGJkcUdRMjRiY3gtdmQxekJ3Tkd2VkU?oc=5",
-      "title": "T-Mobile CTO welcomes competition from SpaceX - Fierce Network",
-      "published_at": "2026-10-09T22:34:58.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxQanQ3bndLQ3VIQ2FDR3NyN0hfTGZFSHRlVVVsbXY2QkhQbVhpV3hmOEduaUhCaGZUYnJFNkx6MDRFYldTcG9WMXY3Y0pjQzlFSGZ2eVNqUVVwZjBCSWFLMzlUVXRBSlpzWXp2c01BWDc1ZGJkcUdRMjRiY3gtdmQxekJ3Tkd2VkU?oc=5\" target=\"_blank\">T-Mobile CTO welcomes competition from SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fierce Network</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "413f8fe0098c643b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQVWt0MGRsNHBmRWx0YlcyMUhPMW83S2x4WE5pR2Y1X1BYSWdKWGdoa0xtSnRVaFNfdVRhVjNnbXBIOFhoTWRTdnZJRkdVQTBxNjJJdUhZckZZYk1yNVpXZXU0eFVuQ0VNZ3pTMzBxOURuR3dpNUpadDRscGYxTVBHNGxFc1R6N2c?oc=5",
-      "title": "T-Mobile CTO welcomes competition from SpaceX - Fierce Network",
-      "published_at": "2026-10-09T22:34:58.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihwFBVV95cUxQVWt0MGRsNHBmRWx0YlcyMUhPMW83S2x4WE5pR2Y1X1BYSWdKWGdoa0xtSnRVaFNfdVRhVjNnbXBIOFhoTWRTdnZJRkdVQTBxNjJJdUhZckZZYk1yNVpXZXU0eFVuQ0VNZ3pTMzBxOURuR3dpNUpadDRscGYxTVBHNGxFc1R6N2c?oc=5\" target=\"_blank\">T-Mobile CTO welcomes competition from SpaceX</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fierce Network</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "2c29b69f528ee207",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/everythingspace.bsky.social/post/3mxhzmydc3w24",
-      "title": "@everythingspace.bsky.social on Bluesky",
-      "published_at": "2026-10-09T22:30:40.758Z",
-      "raw_excerpt": "SpaceX to make another attempt to launch 21 data satellites for Space Development Agency https://everythingspace.online/news/40338?utm_source=bluesky&utm_campaign=news #SpaceX #spaceflight",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "992cd87961fd88f4",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/electricbluesfan.bsky.social/post/3mxhz65khk22y",
-      "title": "@electricbluesfan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T22:22:24.156Z",
-      "raw_excerpt": "7/7 It took SpaceX years to reach orbit, and Canada's rocket pioneers face the same gruelling timeline. But with private and public funds finally flowing, the foundation for a truly sovereign launch future is being laid. Source: Abby Hughes, CBC News www.cbc.ca/news/busines...",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "52692f90ca820725",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/electricbluesfan.bsky.social/post/3mxhz4qjtwk2y",
-      "title": "@electricbluesfan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T22:21:36.363Z",
-      "raw_excerpt": "6/7 The newest player, Canada Rocket Company, is aiming bigger. Backed by $22 MILLION in private funds, they're poaching talent from SpaceX and Blue Origin. They are building a $30-million test facility in London, Ontario, targeting a methalox-fuelled launch by 2032.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "3b51f83df9feab5f",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/electricbluesfan.bsky.social/post/3mxhywgzs222y",
-      "title": "@electricbluesfan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T22:18:05.058Z",
-      "raw_excerpt": "2/7 Currently, Canadian satellites rely entirely on foreign vessels—mostly SpaceX. These assets power critical infrastructure: • Telecommunications • Wildfire tracking • Military threat detection Without homegrown rockets, foreign entities could refuse to launch Canadian technology.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "230575d78d8584bd",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/electricbluesfan.bsky.social/post/3mxhyvhzj4c2y",
-      "title": "@electricbluesfan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T22:17:31.857Z",
-      "raw_excerpt": "1/7 🇨🇦 CANADA RACES FOR HOMEGROWN SPACE SOVEREIGNTY 🇨🇦 As the only G7 nation without launch capabilities, Canada faces a ticking clock. With SpaceX phasing out the Falcon 9, the race to reach orbit is on. Source: CBC News #SpaceSky #CdnPoli #NatSecSky #Launch #Orbit",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "e4a94dd49c61da72",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFB1aFhrWF9wU3FPUjliQ0lDaTBMODZEbEx2dTBBRHVBNE5KRlBTMktTNUNUdThLclNYWnpyamx5Mmhudlk2UWhxU0lGMlVqVWtUeFZCajVZdHRtcGc?oc=5",
-      "title": "SpaceX’s Next Fight: Grush on the Spectrum Deal, Starship’s Burden, and the Launch Bottleneck Ahead - BigGo Finance",
-      "published_at": "2026-10-09T22:08:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiW0FVX3lxTFB1aFhrWF9wU3FPUjliQ0lDaTBMODZEbEx2dTBBRHVBNE5KRlBTMktTNUNUdThLclNYWnpyamx5Mmhudlk2UWhxU0lGMlVqVWtUeFZCajVZdHRtcGc?oc=5\" target=\"_blank\">SpaceX’s Next Fight: Grush on the Spectrum Deal, Starship’s Burden, and the Launch Bottleneck Ahead</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BigGo Finance</font>",
-      "fetched_at": "2026-10-10T05:15:48.690Z",
-      "consumed": true
-    },
-    {
-      "id": "866d9016d3a4c39f",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxhy3o2qpc2m",
-      "title": "@faabot.paxex.aero on Bluesky",
-      "published_at": "2026-10-09T22:03:05.760Z",
-      "raw_excerpt": "🚀 FAA Space Launch Plans - 09/2200 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/10/26 0729Z-0834Z BACKUP: 10/11/26 0721Z-0826Z SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-... More info in image. FAA Details.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "ed7be8ffd48a4912",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/puretech.news/post/3mxhxxtrytn2o",
-      "title": "@puretech.news on Bluesky",
-      "published_at": "2026-10-09T22:00:57.667Z",
-      "raw_excerpt": "Why SpaceX Chose Texas For Starship When Florida Was Already Its Home Base #Technology #Robotics #RoboticResearch #spacex #starship #texaslaunch #floridabase #aerospaceindustry https://www.bgr.com/2277416/why-spacex-chose-texas-for-starship/",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "61fe8a89064246a4",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/ktla.com/post/3mxhxwcwqpt2n",
-      "title": "@ktla.com on Bluesky",
-      "published_at": "2026-10-09T22:00:06.556Z",
-      "raw_excerpt": "Midnight SpaceX launch could bring loud sonic booms to Southern California",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "b994be086ebedff9",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/market-ocean-en.bsky.social/post/3mxhxfchvop2s",
-      "title": "@market-ocean-en.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:50:35.365Z",
-      "raw_excerpt": "That leaves an open question: can a company known for cutting launch costs bring the same disruption to something as earthbound as a phone signal, and will Washington give it the chance? #SpaceX #Spectrum #Telecoms",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "9027eb23c75ab4c9",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/market-ocean-en.bsky.social/post/3mxhxewkrey2h",
-      "title": "@market-ocean-en.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:50:22.356Z",
-      "raw_excerpt": "SpaceX starts from the other end, with orbital coverage and its own launch capacity to put more satellites into space. The trade-off is that a terrestrial network is expensive and slow to build.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "48af0dfdd39137e5",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/bgrcom.bsky.social/post/3mxhxcbqyhb2e",
-      "title": "@bgrcom.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:48:53.854Z",
-      "raw_excerpt": "SpaceX built an entirely new base in Texas for Starship, even with Florida launch sites already up and running. That choice came with trade-offs.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "ebabeb200cfa41d4",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOcTNwSkFjSE1zZHBUT05GcTRKd3FkaHNySnZJblhYMEp4bUpQSXFfanpvXzVJUW9LSHk3OVF3ZVAtTE5BWktiZXU5S3pQZTRmaWI1TnFmOWlrMjBQeTBxdFdNdE5YQ3NRUTg5cVJxSzBOM3J5SUxqS2p1U1RnVkc3TjFDVGJOTXJ1dkFNNW1sNVVjdTR2RGQtQ2hKbXFXdGJDeFFRTUQ0dDEzanRxcURxNi0zbUtUeTJ5M0ZCODZEdElsSlFFTXc?oc=5",
-      "title": "SpaceX to make another attempt to launch 21 data satellites for Space Development Agency - Spaceflight Now",
-      "published_at": "2026-10-09T21:43:14.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixgFBVV95cUxOcTNwSkFjSE1zZHBUT05GcTRKd3FkaHNySnZJblhYMEp4bUpQSXFfanpvXzVJUW9LSHk3OVF3ZVAtTE5BWktiZXU5S3pQZTRmaWI1TnFmOWlrMjBQeTBxdFdNdE5YQ3NRUTg5cVJxSzBOM3J5SUxqS2p1U1RnVkc3TjFDVGJOTXJ1dkFNNW1sNVVjdTR2RGQtQ2hKbXFXdGJDeFFRTUQ0dDEzanRxcURxNi0zbUtUeTJ5M0ZCODZEdElsSlFFTXc?oc=5\" target=\"_blank\">SpaceX to make another attempt to launch 21 data satellites for Space Development Agency</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spaceflight Now</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "56328ebbb9aa9766",
-      "source_name": "SpaceflightNow",
-      "url": "https://spaceflightnow.com/2026/10/09/spacex-to-make-another-attempt-to-launch-21-data-satellites-for-space-development-agency/",
-      "title": "SpaceX to make another attempt to launch 21 data satellites for the Space Development Agency",
-      "published_at": "2026-10-09T21:41:30.000Z",
-      "raw_excerpt": "The Falcon 9 for the SDA’S Fourth Tranche 1 Mission during a launch attempt on Oct. 5, 2026. Image: SpaceX. SpaceX early Saturday will try again to launch a Falcon 9 rocket carrying a batch of data satellites for the U.S. military’s Space Development Agency (SDA), five days after a last-minute abort scrubbed the first attempt. Liftoff from Vandenberg Space Force Base in California is scheduled for 12:39 a.m. PDT (3:39 EDT / 0739 UTC). The Falcon 9 will take a southerly trajectory on departure from Space Launch Complex 4E, currently SpaceX’s only launch facility on the West Coast. Spaceflight Now will have live coverage starting about 30 minutes prior to launch. Monday’s launch attempt was halted by an auto-abort with 58 seconds remaining on the clock. The halt was triggered moments after the rocket’s onboard computers took control of the countdown. SpaceX did not disclose the cause of the abort but in a social media post said: “Vehicle and payload are in good health, and teams are resetting for a launch attempt no earlier than tomorrow, October 6.” However, the vehicle was lowered to a horizontal position at the pad, usually a sign of troubleshooting a hardware issue, and the launch was repeatedly pushed back a day at a time. A missile test from Vandenberg using the Western Test Range on Friday might have contributed to the launch finally settling on Saturday. The mission, dubbed Tranche 1 Transport Layer A (T1TL-A), is the fourth mission sending production satellites into orbit for the SDA. This is one piece of a broad constellation — called the Proliferated Warfighter Space Architecture (PWSA) — designed to support the U.S. military and its allies through space-based capabilities, like missile tracking and secure communications. The mission will use Falcon 9 first stage booster B1103. This will be its sixth flight following the launches of the SDA’s T1TL-E, NROL-179, and three batches of Starlink satellites. Less than 7.5 minutes after liftoff, SpaceX plans to lan",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "b112d27185a12eb7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQWkxGMnpGelB3dkVRQlVkTHdTRVFvSmFXWkNYbnI4OGhZM0V5N2tpTnl2Z1dNdzluRkVrWmYyNFBxdWpNc0x3X0VWUkNnOGFtUVpLN013a1dSWFNhR0UzR2tQZ29LM0xzQ01VTG9ob3Z5MkhGOXdqUDF2U3lyY1FrU3ZCOEVLZzItUXNEcVlpN2p5bHpWN1k2LTMwOTNJd0N5TDc2N2VVUy1CdUxBR1M5Zm55N1FkdGp6VzRsM2NZQ2NBbnJGeDRxeEVXdHZvcEdJZUVoZGpScUVvSlFhYnlrdnhMOWY?oc=5",
-      "title": "Stock Market Today, Oct. 9: Verizon Slides on SpaceX Spectrum Deal and Scotiabank Target Cut - The Motley Fool",
-      "published_at": "2026-10-09T21:41:23.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5AFBVV95cUxQWkxGMnpGelB3dkVRQlVkTHdTRVFvSmFXWkNYbnI4OGhZM0V5N2tpTnl2Z1dNdzluRkVrWmYyNFBxdWpNc0x3X0VWUkNnOGFtUVpLN013a1dSWFNhR0UzR2tQZ29LM0xzQ01VTG9ob3Z5MkhGOXdqUDF2U3lyY1FrU3ZCOEVLZzItUXNEcVlpN2p5bHpWN1k2LTMwOTNJd0N5TDc2N2VVUy1CdUxBR1M5Zm55N1FkdGp6VzRsM2NZQ2NBbnJGeDRxeEVXdHZvcEdJZUVoZGpScUVvSlFhYnlrdnhMOWY?oc=5\" target=\"_blank\">Stock Market Today, Oct. 9: Verizon Slides on SpaceX Spectrum Deal and Scotiabank Target Cut</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "8a4ff7208216d9c5",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/some-other-guy.bsky.social/post/3mxhwroybfs25",
-      "title": "@some-other-guy.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:39:37.755Z",
-      "raw_excerpt": "Oh god just like the SpaceX launch livestreams lmao",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "6936b3241d283149",
-      "source_name": "Ars Technica space",
-      "url": "https://arstechnica.com/space/2026/10/nasa-issues-long-awaited-call-to-industry-for-private-space-stations/",
-      "title": "NASA issues long-awaited call to industry for private space stations",
-      "published_at": "2026-10-09T21:34:09.000Z",
-      "raw_excerpt": "NASA on Friday released a much-anticipated \"request\" to the US commercial space industry to develop private space stations that, as early as 2030, will succeed the International Space Station as a place for astronauts to live in low-Earth orbit. In a cover letter accompanying the 360-page \"request for proposals,\" NASA stated its plan: \"This will ensure NASA has a sustained human presence in LEO for crew members to perform science and exploration.\" Several private companies that have worked for years on designing and developing such stations have been keen to learn exactly what capabilities NASA is seeking. These new documents finally provide some answers. NASA's solicitation can be found here . Industry responses are due back to NASA on December 8. NASA said it plans to select \"two or more\" contractors in this phase of the competition, and intends to make a final decision in April. Read full article Comments",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4cbbbf989d854de1",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/visitstarbase.bsky.social/post/3mxhweqpbrk2q",
-      "title": "@visitstarbase.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:32:25.364Z",
-      "raw_excerpt": "A second test site is reportedly taking shape at Massey's! Aerial photos from RGV Aerial Photography show land clearing next to the current site, where Ship 42 is back on cryo this week. More test room could mean less waiting between flights.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "a6b7c5b662f753ff",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxPSlhHT01ObWsxMHlwQ21HUFJwRi1TUy1tMmprcG1JRjc5WmRlMGp4QUtod1E0ZkhPcGprajNIRTFiOGdDR3Jwc05tbkNmVExzR2FhSHFrT0g0ekRUTmNtUlhxVjhKZUxPTG5qSEdfcnY5WEVuZmFwSkJWdHdPOE96YzY4WTl2Y0RXei04QmpfM3UtaW1lbFdRX2FRTlpEVlVnZ0UtWk1UQQ?oc=5",
-      "title": "Watch SpaceX’s Wireless Threat Rises With Spectrum Deal - Bloomberg.com",
-      "published_at": "2026-10-09T21:32:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxPSlhHT01ObWsxMHlwQ21HUFJwRi1TUy1tMmprcG1JRjc5WmRlMGp4QUtod1E0ZkhPcGprajNIRTFiOGdDR3Jwc05tbkNmVExzR2FhSHFrT0g0ekRUTmNtUlhxVjhKZUxPTG5qSEdfcnY5WEVuZmFwSkJWdHdPOE96YzY4WTl2Y0RXei04QmpfM3UtaW1lbFdRX2FRTlpEVlVnZ0UtWk1UQQ?oc=5\" target=\"_blank\">Watch SpaceX’s Wireless Threat Rises With Spectrum Deal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bloomberg.com</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "08c6d0e119600fd5",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/abdohassan.bsky.social/post/3mxhwc4geyk2w",
-      "title": "@abdohassan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:30:55.958Z",
-      "raw_excerpt": "Based on the fact that Elon Musk's last 2 rockets exploded in a spectacular fashion - this would be the only SpaceX launch we ALL want to see.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0e5828eeafe5f03c",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOS1c2LUUtbE1ScW5abXEwbFVTbHd2Rm9IaG5KUkI4cVIxSkxaMUI0RXVvTkpjRHJoekFiNTZCUzg1b3JTMjNKdmFRVzY3LVZDejZTZEI4NG9OSW9TN1IzQ3AwZjJGYVllY3ZKX2E0MXdjUEJILVNNakhtN3duS3pIai1ZemNzdnNNSzJpRk55cXhSekt1bWJr?oc=5",
-      "title": "Trump bought up to $5M in debt issued by SpaceX just days before the White House announced a new space-travel policy - Yahoo Finance",
-      "published_at": "2026-10-09T21:30:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxOS1c2LUUtbE1ScW5abXEwbFVTbHd2Rm9IaG5KUkI4cVIxSkxaMUI0RXVvTkpjRHJoekFiNTZCUzg1b3JTMjNKdmFRVzY3LVZDejZTZEI4NG9OSW9TN1IzQ3AwZjJGYVllY3ZKX2E0MXdjUEJILVNNakhtN3duS3pIai1ZemNzdnNNSzJpRk55cXhSekt1bWJr?oc=5\" target=\"_blank\">Trump bought up to $5M in debt issued by SpaceX just days before the White House announced a new space-travel policy</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-10T05:15:48.690Z",
-      "consumed": true
-    },
-    {
-      "id": "a674d321757de049",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPTXN2NnFYY1VfQlVMbEtjWnhiMUlyaHNxR0VpU3RzZ0FDb2k2QUxjWjFUMXh6MEZzTTdzX2oxZThnQXFOZ1F4XzNOOGZwTG1EM2t3SDRNQkRlcEpYYkZ1cFcwX01YUElYeF9yd3FxdXF2UDgxUXQ3NHpNNGc2Nm41MlRVc3RuTmJWa1d1UlJMaE9Jd1BLc1RIenVMdUpxSjJYMWVvemF6cV84c2xnR0Z4V3B2SDBnMFR4bGtSdjBLZFhlcnhzelRMdTF1dlI?oc=5",
-      "title": "Stock Market Today, Oct. 9: AT&T Slides on SpaceX Spectrum Deal Threat - The Motley Fool",
-      "published_at": "2026-10-09T21:26:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxPTXN2NnFYY1VfQlVMbEtjWnhiMUlyaHNxR0VpU3RzZ0FDb2k2QUxjWjFUMXh6MEZzTTdzX2oxZThnQXFOZ1F4XzNOOGZwTG1EM2t3SDRNQkRlcEpYYkZ1cFcwX01YUElYeF9yd3FxdXF2UDgxUXQ3NHpNNGc2Nm41MlRVc3RuTmJWa1d1UlJMaE9Jd1BLc1RIenVMdUpxSjJYMWVvemF6cV84c2xnR0Z4V3B2SDBnMFR4bGtSdjBLZFhlcnhzelRMdTF1dlI?oc=5\" target=\"_blank\">Stock Market Today, Oct. 9: AT&T Slides on SpaceX Spectrum Deal Threat</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "254b4ca6946520e6",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1tQU1iMWhLWXVJVXE3dXNDUFFHQmhaT0tKelVNRm02VmNBREw5VnZUc0VJb0tPbWdHRG1yOVpiVUtSTi1INXdWWG5PcXZ6dl9JMVJLLWxLSnZZTHg4RFZ1VUlxQ2YxTVNjZGc?oc=5",
-      "title": "SpaceX spectrum acquisition ripples through telecom stocks - Axios",
-      "published_at": "2026-10-09T21:25:36.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiakFVX3lxTE1tQU1iMWhLWXVJVXE3dXNDUFFHQmhaT0tKelVNRm02VmNBREw5VnZUc0VJb0tPbWdHRG1yOVpiVUtSTi1INXdWWG5PcXZ6dl9JMVJLLWxLSnZZTHg4RFZ1VUlxQ2YxTVNjZGc?oc=5\" target=\"_blank\">SpaceX spectrum acquisition ripples through telecom stocks</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Axios</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "344c3d8a0e4a6457",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOUTN2N3JTS3UtWERFMFpDdTlsREF4RDVsOTFVdkp6eHlxc2FLSjBJVjVCYUZPTmc1SlFkeHZoTWxVT1Iycl82VmNKMGpMcFNPR2RpRnNQNnZFUFl4Wm9rakhPS21uZElkeWJVakh0YUpoMjY4TUdCUlprcFowa1VFLWdwTllyNnJZLVZfSzBlMVVWYXdpakdQVDBVUi1VMlVHYTJDS2J4aUpUZw?oc=5",
-      "title": "Amazon Leo Aiming to Sway Consumers From Starlink With Prime, Other Bundles - Broadband Breakfast",
-      "published_at": "2026-10-09T21:25:20.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxOUTN2N3JTS3UtWERFMFpDdTlsREF4RDVsOTFVdkp6eHlxc2FLSjBJVjVCYUZPTmc1SlFkeHZoTWxVT1Iycl82VmNKMGpMcFNPR2RpRnNQNnZFUFl4Wm9rakhPS21uZElkeWJVakh0YUpoMjY4TUdCUlprcFowa1VFLWdwTllyNnJZLVZfSzBlMVVWYXdpakdQVDBVUi1VMlVHYTJDS2J4aUpUZw?oc=5\" target=\"_blank\">Amazon Leo Aiming to Sway Consumers From Starlink With Prime, Other Bundles</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Broadband Breakfast</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "2f3742b0ca9f7629",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/barbinan.bsky.social/post/3mxhvrfxwoc2b",
-      "title": "@barbinan.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:21:35.160Z",
-      "raw_excerpt": "www.threads.com/share/BAAhke...",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "16c3815fc4950760",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/anthropic-ai-bogus-tip-unsolved-murder",
-      "title": "Police Furious After an Anthropic AI Model Submitted a Bogus Tip About an Unsolved Murder, Posing as a Person Who Might Have Information About the Case",
-      "published_at": "2026-10-09T21:21:09.000Z",
-      "raw_excerpt": "An Anthropic AI model submitted a bogus tip about an unsolved murder to the Philadelphia police, in a blunder the department called “unacceptable.” The unspecified model, not unlike an unscrupulous prankster, submitted the fake info about the cold case through PhillyUnsolvedMurders.com on July 18. Anthropic, however, didn’t find out about it until September 28 — and further waited until October 8 to inform police about what happened. The police didn’t act on the information because it was automatically marked as spam. But the sham AI tip alarmed police officials all the same. “The company must strengthen its safeguards to prevent similar incidents from impacting city systems without the city’s knowledge,” the department said in a statement, per ABC6 News . “The two-month delay in detecting and reporting the incident to the City is unacceptable.” Anthropic hasn’t publicly responded to the news. But the company reportedly told police that it plans to publish a report about the incident, and other instances of its unintended behavior, later today. According to Anthropic, via the police statement, its model was conducting a test involving interactions with randomly selected websites when it chanced upon PhillyUnsolvedMurders.com. In the bogus tip it submitted, the AI posed as someone who might have information about the case. Though the department stressed that tips are treated as potential leads, not facts, and that it has procedures in place to vet them, it was alarmed&nbsp;at the advent of automated tools clogging up its backlog. “Those PPD safeguards limited the impact of this incident. They do not diminish the seriousness of an AI system presenting fabricated information as though it came from a person with knowledge of a homicide,” it said. “Unsolved cases involve real victims, grieving families and investigators working to secure answers.” It’s the latest example of the collateral damage from how frontier AI labs have tested their models, which have broken contai",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0a02e8175e552d3c",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/randyvolz.bsky.social/post/3mxhvpillcc2i",
-      "title": "@randyvolz.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:20:22.257Z",
-      "raw_excerpt": "Blatant corruption out in the open. Two days before the president signed a policy encouraging U.S. investment in space transport, he invested millions in SpaceX.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4482f61f6896ac81",
-      "source_name": "Bluesky search: satellite constellation",
-      "url": "https://bsky.app/profile/novamaind.bsky.social/post/3mxhvmzeqs62o",
-      "title": "@novamaind.bsky.social on Bluesky",
-      "published_at": "2026-10-09T21:19:07.061Z",
-      "raw_excerpt": "Xona's Pulsar satellites launch this month to take on GPS. The six-satellite constellation uses low-Earth-orbit timing and works with existing GPS receivers via software updates. Built for precision agriculture and autonomous vehicles that need… 📖 nova-maind.com/articles/106...",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "8ce6f8222bf5fd15",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE8wamVBdktHZ2tCNy12bVdVa1Y1VFFwWUFrR24zVG5oUS1pM21kRFQyb3laV2ptdFJqTHFQakljaHFWU3YxOGtBOUJmb1I2TTFpSkNKT0NBNktYa0gzcmdJXzJxeVBMNTFyMzFNcHJEZ0E2QQ?oc=5",
-      "title": "Why SpaceX Chose Texas For Starship When Florida Was Already Its Home Base - BGR",
-      "published_at": "2026-10-09T21:17:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTE8wamVBdktHZ2tCNy12bVdVa1Y1VFFwWUFrR24zVG5oUS1pM21kRFQyb3laV2ptdFJqTHFQakljaHFWU3YxOGtBOUJmb1I2TTFpSkNKT0NBNktYa0gzcmdJXzJxeVBMNTFyMzFNcHJEZ0E2QQ?oc=5\" target=\"_blank\">Why SpaceX Chose Texas For Starship When Florida Was Already Its Home Base</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BGR</font>",
-      "fetched_at": "2026-10-10T05:15:48.690Z",
-      "consumed": true
-    },
-    {
-      "id": "45fe989bd2f6bf61",
-      "source_name": "Launch Library 2 (TheSpaceDevs)",
-      "url": "https://ll.thespacedevs.com/2.2.0/launch/a1bb0984-19d4-4b47-9bba-706d225573e2/",
-      "title": "Long March 12 | SatNet LEO Group 27",
-      "published_at": "2026-10-09T21:14:37.000Z",
-      "raw_excerpt": "A batch of 9 Low Earth Orbit communication satellites for the Chinese state owned SatNet constellation operated by the China Satellite Network Group. The constellation will eventually consists of 13000 satellites.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "91ec19f548869197",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOaTA1ZnBHZlFSMGZRT09ZelFkSVo2YWZ1MV9vZndBcDMtZjljakpMRFoybjlZajgwSXFFcUdoTDNMbFo1VWRZaDV0VXo4N2xucWxLZ2VQVklJU1QySEtjMmFjbi1aZVE0TGJtUnZVT1A3Vk9CbmhrZWd4dkNWempMbXdBU0hsY2J5UFZmeTgxQy1Kc2RnQ0JvalExRjNIYk9nVXNFWXhaMkE5NEdOc0FfOExkeExXWTUyeUV3VzM3WERsQTFMTjJRelExWk11cEFTMjNz?oc=5",
-      "title": "SpaceX Acquires Grain Management’s 800 MHz Spectrum Portfolio to Launch Standalone Starlink Mobile Carrier - SatNews Publishers",
-      "published_at": "2026-10-09T21:08:20.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0wFBVV95cUxOaTA1ZnBHZlFSMGZRT09ZelFkSVo2YWZ1MV9vZndBcDMtZjljakpMRFoybjlZajgwSXFFcUdoTDNMbFo1VWRZaDV0VXo4N2xucWxLZ2VQVklJU1QySEtjMmFjbi1aZVE0TGJtUnZVT1A3Vk9CbmhrZWd4dkNWempMbXdBU0hsY2J5UFZmeTgxQy1Kc2RnQ0JvalExRjNIYk9nVXNFWXhaMkE5NEdOc0FfOExkeExXWTUyeUV3VzM3WERsQTFMTjJRelExWk11cEFTMjNz?oc=5\" target=\"_blank\">SpaceX Acquires Grain Management’s 800 MHz Spectrum Portfolio to Launch Standalone Starlink Mobile Carrier</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SatNews Publishers</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "76eed1014f3f6a00",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNcjNfSUVIMFM5OFdzcGJVSUd6V1VCZTA3MTBObm1heW1uOUtmanc0dDlwRVM4Z1F6M2lmcGlQVFVhbmNiMmJrdVIxR3d1TnFzbWZ0UFdfVXlSTklUS3FQUzN4Tm1YZkl4ZlkxWmpIWVktU3lXMGNMR2tiMmtKcXZ5R0NlZ3BYcUtqOEpOTnFhdU5wVEpSd0hNeDZRWk9uN3Bqc1NhZllrRXJma3NNeUxheVZRYnFqc0kxaGxvR083bEs3NDhmbzVNRXI2S24?oc=5",
-      "title": "Stock Market Today, Oct. 9: AST SpaceMobile Slides on SpaceX Spectrum Move - The Motley Fool",
-      "published_at": "2026-10-09T21:00:58.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxNcjNfSUVIMFM5OFdzcGJVSUd6V1VCZTA3MTBObm1heW1uOUtmanc0dDlwRVM4Z1F6M2lmcGlQVFVhbmNiMmJrdVIxR3d1TnFzbWZ0UFdfVXlSTklUS3FQUzN4Tm1YZkl4ZlkxWmpIWVktU3lXMGNMR2tiMmtKcXZ5R0NlZ3BYcUtqOEpOTnFhdU5wVEpSd0hNeDZRWk9uN3Bqc1NhZllrRXJma3NNeUxheVZRYnFqc0kxaGxvR083bEs3NDhmbzVNRXI2S24?oc=5\" target=\"_blank\">Stock Market Today, Oct. 9: AST SpaceMobile Slides on SpaceX Spectrum Move</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "a91e850ada7498d5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQOWtXSUJSUzBicDZ2RUg5NEszeXRvWWVyLU5CTkhmTl9kNWZHV05qU1M5VVNrRS1Ba2lLalVtX3lsVVFaZXFkdG1qWk5fQm1wLXpDdHRCV0NxQmxmNV8yWGFKOFlPRnRacnQ5ZGpxNTZBVWtQREJaTVZkakdJS1RlaG1FQVNJTFBDWEJDMG9ZYWtEc0Vibzh6ZmtR?oc=5",
-      "title": "SpaceX snaps up the 800 MHz spectrum T-Mobile dumped for $2.9 billion — and T-Mobile, Verizon, AT&T stocks are sliding - Yahoo Finance",
-      "published_at": "2026-10-09T21:00:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxQOWtXSUJSUzBicDZ2RUg5NEszeXRvWWVyLU5CTkhmTl9kNWZHV05qU1M5VVNrRS1Ba2lLalVtX3lsVVFaZXFkdG1qWk5fQm1wLXpDdHRCV0NxQmxmNV8yWGFKOFlPRnRacnQ5ZGpxNTZBVWtQREJaTVZkakdJS1RlaG1FQVNJTFBDWEJDMG9ZYWtEc0Vibzh6ZmtR?oc=5\" target=\"_blank\">SpaceX snaps up the 800 MHz spectrum T-Mobile dumped for $2.9 billion — and T-Mobile, Verizon, AT&T stocks are sliding</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "9877c04ef0306450",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/orcafin.bsky.social/post/3mxhtpd4s6k2u",
-      "title": "@orcafin.bsky.social on Bluesky",
-      "published_at": "2026-10-09T20:44:38.160Z",
-      "raw_excerpt": "1. US-to-China oil tanker shipping cost = $80 million 2. Cost to launch a SpaceX Falcon 9 = $74 million 3. Cost to buy the same tanker outright last year <= $80 million",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "41d66b83796a8ed7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE9NeVhrSlV6Ukd3VFdLSkE0YXhRUEdLdWRobEd5Y3VTOE0yQzljMXpyNUJLMER4aENJUlprNE44RWFIMkJSb3lCdjVVT2NqbDNFdlFUTjdwN3JDVTg?oc=5",
-      "title": "SpaceX buying nationwide low-band spectrum - Fox Business",
-      "published_at": "2026-10-09T20:41:10.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiW0FVX3lxTE9NeVhrSlV6Ukd3VFdLSkE0YXhRUEdLdWRobEd5Y3VTOE0yQzljMXpyNUJLMER4aENJUlprNE44RWFIMkJSb3lCdjVVT2NqbDNFdlFUTjdwN3JDVTg?oc=5\" target=\"_blank\">SpaceX buying nationwide low-band spectrum</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fox Business</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4ed0b6fb19f893b5",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQd1JGNG1Fb0g3TmZUVVdPbmgxajRJemZDbkhVTXBWTWNhZ084MUlrSE5ZVVI0MVFkbFZTS2ZWY1FkdEVfT2Qxb0E3WlhZMTV1MGoxal9JTk55dXBQWVZxeVpWNFdJT0NhR3JmMG5uemxCeEdnZkhxWDRDZDRiSGlCd19RYnBjckxDVmNB?oc=5",
-      "title": "SpaceX’s Wireless Move Trips Up Telecoms - WSJ",
-      "published_at": "2026-10-09T20:35:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiiwFBVV95cUxQd1JGNG1Fb0g3TmZUVVdPbmgxajRJemZDbkhVTXBWTWNhZ084MUlrSE5ZVVI0MVFkbFZTS2ZWY1FkdEVfT2Qxb0E3WlhZMTV1MGoxal9JTk55dXBQWVZxeVpWNFdJT0NhR3JmMG5uemxCeEdnZkhxWDRDZDRiSGlCd19RYnBjckxDVmNB?oc=5\" target=\"_blank\">SpaceX’s Wireless Move Trips Up Telecoms</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WSJ</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "9ab3b0353500efca",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/adamkinzinger.substack.com/post/3mxhsybidfs22",
-      "title": "@adamkinzinger.substack.com on Bluesky",
-      "published_at": "2026-10-09T20:31:45.553Z",
-      "raw_excerpt": "Trump bought millions in bonds of Elon Musk's SpaceX. Two days later, he signed a national space launch policy. Then, after handing out science medals to his tech buddies, Trump announced America was in a new \"golden age\" of innovation while slashing science budgets. Link to the full show below ⬇️",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "c4d4f62b6179dc6a",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOSEhiSldDcWZDOHI3cklzamtUN3NxYmtoRDk0MUc2dTlTb2xXT2xQTmpBNnZhM21tQXhyN2E1SEdBOEh0MjFHWEs1UWYzb1V1Qm8wNl9NbmV0MXQ0YWQ4bjVGaHYwblY5Q3lkTDlocXhia3BCalhJRmM0cU11M3I4TmhONmdWdXM0MS0yUkpFZGowQQ?oc=5",
-      "title": "Elon Musk’s SpaceX Gets Green Light from Trump's FCC for 15,000 Starlink Satellites: Here’s What Comes Next - Yahoo Finance",
-      "published_at": "2026-10-09T20:30:06.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxOSEhiSldDcWZDOHI3cklzamtUN3NxYmtoRDk0MUc2dTlTb2xXT2xQTmpBNnZhM21tQXhyN2E1SEdBOEh0MjFHWEs1UWYzb1V1Qm8wNl9NbmV0MXQ0YWQ4bjVGaHYwblY5Q3lkTDlocXhia3BCalhJRmM0cU11M3I4TmhONmdWdXM0MS0yUkpFZGowQQ?oc=5\" target=\"_blank\">Elon Musk’s SpaceX Gets Green Light from Trump's FCC for 15,000 Starlink Satellites: Here’s What Comes Next</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "e7bb0480d0f7b5ff",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPcUxVaTVFMktlOXgyVER3Z1VpRXlzU2c2TzFnWUhPVE9seDVIUk0xSVpTUmVIclAtVGt4OTFSaVE4UThfeVYwRExrdjdsLWdPaDlqQlBCZi1uYVlLeXdZdVlMU1VLcFFuajg1TkRQZkVJaHhuQlZnZjkyc2Z0X1U2QWJGQnRoT3laSG1uN1FOekFOb3NRaVN6c2dWbDJCSTg0R21zWWhPQnlUbHUyV3c3UXl6d2l0YmMtZlow?oc=5",
-      "title": "Rural Iowa 4-H Clubs Are Bridging Technology Gaps With Starlink Broadband - Successful Farming",
-      "published_at": "2026-10-09T20:26:21.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxPcUxVaTVFMktlOXgyVER3Z1VpRXlzU2c2TzFnWUhPVE9seDVIUk0xSVpTUmVIclAtVGt4OTFSaVE4UThfeVYwRExrdjdsLWdPaDlqQlBCZi1uYVlLeXdZdVlMU1VLcFFuajg1TkRQZkVJaHhuQlZnZjkyc2Z0X1U2QWJGQnRoT3laSG1uN1FOekFOb3NRaVN6c2dWbDJCSTg0R21zWWhPQnlUbHUyV3c3UXl6d2l0YmMtZlow?oc=5\" target=\"_blank\">Rural Iowa 4-H Clubs Are Bridging Technology Gaps With Starlink Broadband</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Successful Farming</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "ad110b136355be17",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQN1lkSVZ0Z3Z3Zl85SXJZM2FCLXJpTXRiWUhhdGFQZWRyNmtEemNpdHMwWm8tWmtGdXYwRHhFM3N0a2FXdGh0U3FyeW1ZcHJFSWN1X0RFZnZORGR2OWNXVVpqZlg5UXpqOG9OeWEyZkp2bF9sR09MNnRGZWtsQXdmMHlFekZqdGpuSHFHamVydWVpRTZENUJidQ?oc=5",
-      "title": "Elon Musk’s growing SpaceX empire sends AT&T, Verizon and T-Mobile shares plunging - NBC News",
-      "published_at": "2026-10-09T20:26:10.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQN1lkSVZ0Z3Z3Zl85SXJZM2FCLXJpTXRiWUhhdGFQZWRyNmtEemNpdHMwWm8tWmtGdXYwRHhFM3N0a2FXdGh0U3FyeW1ZcHJFSWN1X0RFZnZORGR2OWNXVVpqZlg5UXpqOG9OeWEyZkp2bF9sR09MNnRGZWtsQXdmMHlFekZqdGpuSHFHamVydWVpRTZENUJidQ?oc=5\" target=\"_blank\">Elon Musk’s growing SpaceX empire sends AT&T, Verizon and T-Mobile shares plunging</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NBC News</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "bf20b5730efe04f4",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNa1pKQk00R0txMlVMQ0cxdHkybkdIUU1yb3RaRlJFQUVJamREaXVQMVo2RkRmaWZCUGpLMHVvRUVzODF5NUV1UWwwaDBvekR5b2t2MmJuRFRsN0JYeTJObmpudWt0eng4NlFkWWxJMU5HbDNCUWpUZjZrOXVhTklaSDF4NHFmdzVXRlI5d3FnWWtFTjdyN0R1Qk5oak5KWExqeVk5cmQxalhoZU9WN2Y2STJEVlJOV1dodXRkRFdVQzFBSE1MQ2pGYW9CZjk?oc=5",
-      "title": "Telecom CEOs have been 'downplaying' the competitive risk of SpaceX's Starlink for years - Yahoo Finance",
-      "published_at": "2026-10-09T20:24:28.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxNa1pKQk00R0txMlVMQ0cxdHkybkdIUU1yb3RaRlJFQUVJamREaXVQMVo2RkRmaWZCUGpLMHVvRUVzODF5NUV1UWwwaDBvekR5b2t2MmJuRFRsN0JYeTJObmpudWt0eng4NlFkWWxJMU5HbDNCUWpUZjZrOXVhTklaSDF4NHFmdzVXRlI5d3FnWWtFTjdyN0R1Qk5oak5KWExqeVk5cmQxalhoZU9WN2Y2STJEVlJOV1dodXRkRFdVQzFBSE1MQ2pGYW9CZjk?oc=5\" target=\"_blank\">Telecom CEOs have been 'downplaying' the competitive risk of SpaceX's Starlink for years</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "cc8ee74e0b6c501f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPVjNNRzRHMHNBaExIaDE3UDFfeGlXYXlGSTRmM3JGajhvbXlLSkZnTzI3MXROQ0tUNGJuV3dzR0xNeWhiaHBnN1BMU2Z1aVlzY2JCbTRLNTd3eThxSUNLaWNPeHpsZEo1WGhmOXkzWW9oX1pVVFV0ZE9mR25aM1BveUw4RndnUHlZbkUybGtQQXZqdGNrdGc?oc=5",
-      "title": "AT&T, Verizon, and T-Mobile Are Dropping on Starlink Fears. Analysts Say Buy. - Barron's",
-      "published_at": "2026-10-09T20:18:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxPVjNNRzRHMHNBaExIaDE3UDFfeGlXYXlGSTRmM3JGajhvbXlLSkZnTzI3MXROQ0tUNGJuV3dzR0xNeWhiaHBnN1BMU2Z1aVlzY2JCbTRLNTd3eThxSUNLaWNPeHpsZEo1WGhmOXkzWW9oX1pVVFV0ZE9mR25aM1BveUw4RndnUHlZbkUybGtQQXZqdGNrdGc?oc=5\" target=\"_blank\">AT&T, Verizon, and T-Mobile Are Dropping on Starlink Fears. Analysts Say Buy.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barron's</font>",
-      "fetched_at": "2026-10-11T17:15:47.376Z",
-      "consumed": true
-    },
-    {
-      "id": "396a63fdf50f4afa",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBObFZIakNpSzZOR1NJaTYtODlWOHZ0Tzd3MlUzbFBhX0lwQXFwdXFnVlczRHp3VmdaV3JuMWZrUHk2dmRKOHZObE1obE44cGI0cWUySlVQU3o4dmdSUnZVbkJrXzMwM01fYzFIOUJ4c0ZnZw?oc=5",
-      "title": "SpaceX's Mobile Plans Trigger Towering Gains For These Stocks - Investor's Business Daily",
-      "published_at": "2026-10-09T20:17:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTFBObFZIakNpSzZOR1NJaTYtODlWOHZ0Tzd3MlUzbFBhX0lwQXFwdXFnVlczRHp3VmdaV3JuMWZrUHk2dmRKOHZObE1obE44cGI0cWUySlVQU3o4dmdSUnZVbkJrXzMwM01fYzFIOUJ4c0ZnZw?oc=5\" target=\"_blank\">SpaceX's Mobile Plans Trigger Towering Gains For These Stocks</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investor's Business Daily</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "3f9038dd09e7b0f1",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPUHlyS0ZPUEprM2lLLTRZb2VaeG9faGVoZWZkcmdXZENNeC1FM0F5MnNKcTN0Mks5Ykh4TE1BTFpvSlVPWHJkX0VGTWtzZkxHZUxiZEhkeFNZakhuM0toaGJvUWtjUWhLWmc3RGd6N05pbmFpOVhRc0NJOWtzUklyZXZSX01CY0Yzc3FpeDdBcVdvV3NsRkpDRWE3b3dWWjIxVUZsRjRuQW1tSE500gGyAUFVX3lxTE5NMHpzTjdHVUVIWml1UHVOaWFvWU9mVzd4V3piazhkNU1UbmNORHBDOGotMHNWY3pVUnJZVW5WaWV3VGJDRFZVWGtkUDN0RC1wQzRVOG5ndFhoekdSMVM3ZDA3QTB3OTVSWGk0R0hFU2hnQVU0VmdSQU5QSHh0bHA1VDZUanBxLWFQLXJzZ0dpRm9WOU01N3pxZmJrWFJEZ0dYT2locWk0MVpESEg4QVlyNHc?oc=5",
-      "title": "Midnight SpaceX launch could bring loud sonic booms to Southern California - KTLA",
-      "published_at": "2026-10-09T20:16:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPUHlyS0ZPUEprM2lLLTRZb2VaeG9faGVoZWZkcmdXZENNeC1FM0F5MnNKcTN0Mks5Ykh4TE1BTFpvSlVPWHJkX0VGTWtzZkxHZUxiZEhkeFNZakhuM0toaGJvUWtjUWhLWmc3RGd6N05pbmFpOVhRc0NJOWtzUklyZXZSX01CY0Yzc3FpeDdBcVdvV3NsRkpDRWE3b3dWWjIxVUZsRjRuQW1tSE500gGyAUFVX3lxTE5NMHpzTjdHVUVIWml1UHVOaWFvWU9mVzd4V3piazhkNU1UbmNORHBDOGotMHNWY3pVUnJZVW5WaWV3VGJDRFZVWGtkUDN0RC1wQzRVOG5ndFhoekdSMVM3ZDA3QTB3OTVSWGk0R0hFU2hnQVU0VmdSQU5QSHh0bHA1VDZUanBxLWFQLXJzZ0dpRm9WOU01N3pxZmJrWFJEZ0dYT2locWk0MVpESEg4QVlyNHc?oc=5\" target=\"_blank\">Midnight SpaceX launch could bring loud sonic booms to Southern California</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">KTLA</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "9190b220a5677fbc",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQV2JNVWh5bFBobXRGLTBpNHdwLV9pdHlpTXdSZ3pWYTd6ZUU0WDVMMDRZS0NDOHNnMlh2UDRhYTMxdDJwYS1fT3lkYTFEWXM4WHg4ZVVtTHc1UVVFWnpKLU9kREZFQndWUEtmLVItSkJCU1RPbTU2ZlNrLTVLUV9PLTF6RF81Nk1GZ3JYZl9TMzFiZw?oc=5",
-      "title": "AST SpaceMobile Stock Is Down on SpaceX News—and It Shouldn’t Be - Barron's",
-      "published_at": "2026-10-09T20:16:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikgFBVV95cUxQV2JNVWh5bFBobXRGLTBpNHdwLV9pdHlpTXdSZ3pWYTd6ZUU0WDVMMDRZS0NDOHNnMlh2UDRhYTMxdDJwYS1fT3lkYTFEWXM4WHg4ZVVtTHc1UVVFWnpKLU9kREZFQndWUEtmLVItSkJCU1RPbTU2ZlNrLTVLUV9PLTF6RF81Nk1GZ3JYZl9TMzFiZw?oc=5\" target=\"_blank\">AST SpaceMobile Stock Is Down on SpaceX News—and It Shouldn’t Be</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barron's</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "ed6d845e500ee926",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mxhs3kz4762t",
-      "title": "@astronomybot.bsky.social on Bluesky",
-      "published_at": "2026-10-09T20:15:39.559Z",
-      "raw_excerpt": "Rocket Launch Falcon 9 Block 5 | Dragon CRS-2 SpX-35 On 2026-10-13 at 10:33:44 UTC | 3 days, 14 hours, 18 mins By SpaceX Status: Current T-0 confirmed by official or reliable sources. Rocket: Falcon 9 Block 5 Launch pad: Space Launch Complex 40, located at Cape Canaveral SFS, FL, USA Orbit: Low E...",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0009a1cc7b6d5a3b",
-      "source_name": "SEC EDGAR 8-K feed: SATL",
-      "url": "https://www.sec.gov/Archives/edgar/data/1874315/000187431526000050/0001874315-26-000050-index.htm",
-      "title": "8-K/A [Amend] - Current report",
-      "published_at": "2026-10-09T20:06:58.000Z",
-      "raw_excerpt": "<b>Filed:</b> 2026-10-09 <b>AccNo:</b> 0001874315-26-000050 <b>Size:</b> 198 KB<br>Item 5.02: Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "a67242ccbff34c7f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOUF82LWk4N01qQmo5MEF2eEZhN3M4MXMyRU1sRFdHeFRmRk14WWhGajE0U2VKZHRqNzFIa1VlellCMjJwRjFfMmVYTUxDZFdVY18yT2ppdjNIWTNaYm5CTGRUX3dXMUdvV0ZsWFhFR0c2UThlaVN4OTNmb3dqZ2VTTFJ1NU55NlQ5OXlkeWRwZDhnenhBOU94dFpKNWQ?oc=5",
-      "title": "A SpaceX Stock Split Could Be Closer Than Investors Think - Yahoo Finance",
-      "published_at": "2026-10-09T20:06:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxOUF82LWk4N01qQmo5MEF2eEZhN3M4MXMyRU1sRFdHeFRmRk14WWhGajE0U2VKZHRqNzFIa1VlellCMjJwRjFfMmVYTUxDZFdVY18yT2ppdjNIWTNaYm5CTGRUX3dXMUdvV0ZsWFhFR0c2UThlaVN4OTNmb3dqZ2VTTFJ1NU55NlQ5OXlkeWRwZDhnenhBOU94dFpKNWQ?oc=5\" target=\"_blank\">A SpaceX Stock Split Could Be Closer Than Investors Think</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "96fda02031357be7",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxhrf3v5zv2l",
-      "title": "@faabot.paxex.aero on Bluesky",
-      "published_at": "2026-10-09T20:03:06.276Z",
-      "raw_excerpt": "🚀 FAA Space Launch Plans - 09/2000 🚀 PLANNED LAUNCH/REENTRY: SPACEX SDA-T1A, VANDENBERG SFB, CA PRIMARY: 10/10/26 0729Z-0834Z BACKUP: 10/11/26 0721Z-0826Z SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-... More info in image. FAA Details.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4dcb7e499c42c8cf",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/free-2-choose.bsky.social/post/3mxhrdw5scc2h",
-      "title": "@free-2-choose.bsky.social on Bluesky",
-      "published_at": "2026-10-09T20:02:29.257Z",
-      "raw_excerpt": "Source: CNBC share.google/Cz8hZuJp8LKQ...",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "e7eefeb3849949c1",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPRE43VmpZdG9vajVfRDVoR1ZfVWVGbFFyVE91OFVteF9JX2k3VDIwejFOVlRveTRka011bVJTLVFHejBlbjRwdXQ2RmU3MDVCMFE4WFNmUjNQRkc5OE1MZGJfVzBtNGdBWEdUY1BIeDd4QjBmMVRpWVk0M1F0V2Z6VjB3MnpyMVBTNG51Qk0xblNuSEp1VmZGX2Vjc0pvSVNRYlhvZkp5RnFiV2VI?oc=5",
-      "title": "SpaceX Buys Wireless Spectrum For Starlink; Verizon, AT&T, T-Mobile Tumble - Investor's Business Daily",
-      "published_at": "2026-10-09T20:02:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirAFBVV95cUxPRE43VmpZdG9vajVfRDVoR1ZfVWVGbFFyVE91OFVteF9JX2k3VDIwejFOVlRveTRka011bVJTLVFHejBlbjRwdXQ2RmU3MDVCMFE4WFNmUjNQRkc5OE1MZGJfVzBtNGdBWEdUY1BIeDd4QjBmMVRpWVk0M1F0V2Z6VjB3MnpyMVBTNG51Qk0xblNuSEp1VmZGX2Vjc0pvSVNRYlhvZkp5RnFiV2VI?oc=5\" target=\"_blank\">SpaceX Buys Wireless Spectrum For Starlink; Verizon, AT&T, T-Mobile Tumble</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investor's Business Daily</font>",
-      "fetched_at": "2026-10-11T13:33:02.019Z",
-      "consumed": true
-    },
-    {
-      "id": "608b67bd7a818e31",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/advanced-transport/tesla-basically-admitted-misleading-customers-fsd",
-      "title": "Tesla Basically Just Admitted It Was Misleading Customers, Renames Full Self-Driving to “Tesla Assisted Driving” In Europe",
-      "published_at": "2026-10-09T19:57:44.000Z",
-      "raw_excerpt": "Tesla has admitted a major defeat in its branding. No longer will its notorious driving software be called “Full Self-Driving (Supervised)” in Europe. After negotiations with Germany’s transportation ministry, it’s agreed to rename it “Tesla Assisted Driving,” in a more accurate representation of the software’s capabilities — and a symbolically humiliating submission by Elon Musk’s automaker. The concession, however, will pave the way for Tesla to finally release FSD in European markets, so it’s a tradeoff that Musk will happily accept after years of campaigning to make it happen. The rename has quickly taken effect. Across its European websites in countries including Germany, Spain, and even outside the European Union in the UK, all mentions of FSD now refer to “Tesla Assisted Driving,” Reuters reports . European users report that the new name is being shown in Tesla apps. The rebranding came after German transport minister Steffen Bilger announced Tuesday that he would back approval of FSD across Europe, after a lengthy discussion process with the automaker. “My goal is ​for Tesla drivers to be ⁠able to enjoy the benefits of ‘assisted driving’ throughout the EU without delay,” said Bilger. The change of heart didn’t come out of nowhere. A previous Reuters investigation detailed a heavy-handed social media campaign orchestrated by Tesla to smear European regulators as blocking life-saving technology, while also pressuring them to lighten their safety reviews and accept Tesla’s own research on the safety of its systems. Musk himself, meanwhile, has repeatedly made catastrophizing statements on X to his hundreds of millions of followers, claiming that delaying the approval of FSD “will cost lives.” That’s despite the numerous lawsuits and federal investigations his automaker is facing over the safety of FSD, including over fatal incidents. The National Highway Traffic Safety Administration launched an investigation into nearly three million Teslas equipped with FSD a",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "6fd8f2efc2483025",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNZWN2WE9lTGRZdjZVNVlKUkdYc0tlSmtPdURkem9OVmlDWFRNcFFPYm1mV0M4aGwwZVBTM0dpdXRQMEN0dEV0YUt6NUtxSURkOU4zWUpsMnRTcWxnVnJiMlliRk1rUXJ3ZWo1YlJ3Y0hsVkxtQ1ppdHJoZlVPeWt4WU4xUzlpTEN2UzJWbDJvSGRTMERlR0NJUQ?oc=5",
-      "title": "SpaceX could seek more spectrum to feed terrestrial wireless ambitions - SpaceNews",
-      "published_at": "2026-10-09T19:55:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxNZWN2WE9lTGRZdjZVNVlKUkdYc0tlSmtPdURkem9OVmlDWFRNcFFPYm1mV0M4aGwwZVBTM0dpdXRQMEN0dEV0YUt6NUtxSURkOU4zWUpsMnRTcWxnVnJiMlliRk1rUXJ3ZWo1YlJ3Y0hsVkxtQ1ppdHJoZlVPeWt4WU4xUzlpTEN2UzJWbDJvSGRTMERlR0NJUQ?oc=5\" target=\"_blank\">SpaceX could seek more spectrum to feed terrestrial wireless ambitions</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SpaceNews</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4b35cc1d6ea8f7ad",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/nasa-images-bot.bsky.social/post/3mxhpgtnrym2m",
-      "title": "@nasa-images-bot.bsky.social on Bluesky",
-      "published_at": "2026-10-09T19:28:17.164Z",
-      "raw_excerpt": "Transporter-18 Launch https://images.nasa.gov/details/KSC-20261001-PH-SPX01_0003",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "5d0fa4d3106f69f6",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/bgrcom.bsky.social/post/3mxhp2nu65u2g",
-      "title": "@bgrcom.bsky.social on Bluesky",
-      "published_at": "2026-10-09T19:21:27.860Z",
-      "raw_excerpt": "SpaceX was the first company to make reusable rocket boosters a reality, and one of their recent boosters just completed a record 37th launch.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "bdbe2305720ce600",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBhN3ZlemcwVjFsSk9zdHFTdGFScFdSWVZPaExUMVBFOGxLWFRkamp0XzBSU2FjbkpLTXlLTDQ4aXM5WGtpVkxHYThrc1djcGhqdHY0Q0puMkM5Yk90?oc=5",
-      "title": "【Pair Eyewear】 The Rocket Launch Eyewear Accessories - Decode39",
-      "published_at": "2026-10-09T19:19:26.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiXEFVX3lxTFBhN3ZlemcwVjFsSk9zdHFTdGFScFdSWVZPaExUMVBFOGxLWFRkamp0XzBSU2FjbkpLTXlLTDQ4aXM5WGtpVkxHYThrc1djcGhqdHY0Q0puMkM5Yk90?oc=5\" target=\"_blank\">【Pair Eyewear】 The Rocket Launch Eyewear Accessories</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Decode39</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4e26fa90b2b5ffbc",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOTDA1dEItZm9sYjhhb0VTb2ZTM3I0cFE4bk9LQ3ZoVzBLZkVDeWloc2l5WmZzQ0J6SDBXblY0S2FYOGFVMlBPNGNNVzBYSHMwSC0xQ0JRLXlhWTh5ZS0tc1RIekkxRHZBN05ReUR3V1lmX19KMmFFY1Y1RVBCWi1LVFB2ckZOajB4RjdFQ05aZGpQUkpU?oc=5",
-      "title": "ASTS Slides 13% On SpaceX 800 MHz Deal, But CEO Says Carriers Already Hold 1,000 MHz For Its Satellites - Yahoo Finance",
-      "published_at": "2026-10-09T19:16:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxOTDA1dEItZm9sYjhhb0VTb2ZTM3I0cFE4bk9LQ3ZoVzBLZkVDeWloc2l5WmZzQ0J6SDBXblY0S2FYOGFVMlBPNGNNVzBYSHMwSC0xQ0JRLXlhWTh5ZS0tc1RIekkxRHZBN05ReUR3V1lmX19KMmFFY1Y1RVBCWi1LVFB2ckZOajB4RjdFQ05aZGpQUkpU?oc=5\" target=\"_blank\">ASTS Slides 13% On SpaceX 800 MHz Deal, But CEO Says Carriers Already Hold 1,000 MHz For Its Satellites</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "eda451f1983ca314",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOZWprRjQ4cFJKREp0Q2RqYnR3X3Ryc0FMcC1vdGVFZTY1d0JUem5la0ZjckZvdjdwTWxwakQybURjTlpJaFB4VGFLU3RwODBJRnZyc2g2M3pETXNrdThXYnRtdExEbG43bUZvbUxpYkhJZVR6bFN0RDVGU0ZMV3RxTU1KbjItbXpaOVVwMUx5UXlkT2ZBT25mQXZ2Zzd0Q2NHNXc0?oc=5",
-      "title": "T-Mobile CTO Gives SpaceX a Reality Check on Its Starlink Mobile Ambitions - PCMag",
-      "published_at": "2026-10-09T19:13:34.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxOZWprRjQ4cFJKREp0Q2RqYnR3X3Ryc0FMcC1vdGVFZTY1d0JUem5la0ZjckZvdjdwTWxwakQybURjTlpJaFB4VGFLU3RwODBJRnZyc2g2M3pETXNrdThXYnRtdExEbG43bUZvbUxpYkhJZVR6bFN0RDVGU0ZMV3RxTU1KbjItbXpaOVVwMUx5UXlkT2ZBT25mQXZ2Zzd0Q2NHNXc0?oc=5\" target=\"_blank\">T-Mobile CTO Gives SpaceX a Reality Check on Its Starlink Mobile Ambitions</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PCMag</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0d9715e4ccde2527",
-      "source_name": "BBC science and environment",
-      "url": "https://www.bbc.co.uk/news/articles/cqe8rn65yj2ko?at_medium=RSS&at_campaign=rss",
-      "title": "'People don't think recycling at work is part of their job description'",
-      "published_at": "2026-10-09T19:11:27.000Z",
-      "raw_excerpt": "Unclear labelling as well as a lack of recycling facilities at work or in public-facing businesses is an issue.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "8c27c49260627b76",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNTTBhLW1FTnZhVHpZZG9UcWRSNkpTdHRzMzlCbk1RV2xkNzRmc21aOXJ5THF2TFhRdy02NzY1NC1SMWpOczduRkZLMDlYbXBJN0pXZWJYaHlrY0RYdXo0b1BNRXc5LXVvZ1hTWU45c3JkRlR2Y0FEbXRkcG1PdGhaT3c4UFpjZFJZNWxabTBvSnA1MWpMdXpuT1NUZFZtdnRyb01kNUlvU2tfMUZmTVkyTWFDM0tUQ0JoTTdBNkNyM1JyUdIBxwFBVV95cUxQdXg5Tk8ySy01eW1wNTRBcGZ5QUpvNEZZajdyUVFCQVRJZnQ0WUhTUUZWZHRxdWtnV0xiZGVXSHRhR3dmc2R5a3JORjhMQjQzalN4aW1xaGtTTkNPbGxwblpHSXdqV3hfYVVwbFFaNkVZdDU1S29NNnkwQ3drRldpUGp1OXdUam5HSU9UVDl0eDJETFJ4Mm9OZ1hNNWVOZlpSNWlOT0RWclliY2IzZlQ5OHE2Smh5QW9lNU1CdDluUWZOZkxKcUdr?oc=5",
-      "title": "Gut check: PGI, ISRO explore astronaut nutrition - The Times of India",
-      "published_at": "2026-10-09T19:11:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwgFBVV95cUxNTTBhLW1FTnZhVHpZZG9UcWRSNkpTdHRzMzlCbk1RV2xkNzRmc21aOXJ5THF2TFhRdy02NzY1NC1SMWpOczduRkZLMDlYbXBJN0pXZWJYaHlrY0RYdXo0b1BNRXc5LXVvZ1hTWU45c3JkRlR2Y0FEbXRkcG1PdGhaT3c4UFpjZFJZNWxabTBvSnA1MWpMdXpuT1NUZFZtdnRyb01kNUlvU2tfMUZmTVkyTWFDM0tUQ0JoTTdBNkNyM1JyUdIBxwFBVV95cUxQdXg5Tk8ySy01eW1wNTRBcGZ5QUpvNEZZajdyUVFCQVRJZnQ0WUhTUUZWZHRxdWtnV0xiZGVXSHRhR3dmc2R5a3JORjhMQjQzalN4aW1xaGtTTkNPbGxwblpHSXdqV3hfYVVwbFFaNkVZdDU1S29NNnkwQ3drRldpUGp1OXdUam5HSU9UVDl0eDJETFJ4Mm9OZ1hNNWVOZlpSNWlOT0RWclliY2IzZlQ5OHE2Smh5QW9lNU1CdDluUWZOZkxKcUdr?oc=5\" target=\"_blank\">Gut check: PGI, ISRO explore astronaut nutrition</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Times of India</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "8a4b8e687b9309dd",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/tebaile.bsky.social/post/3mxhnwhmnmk2v",
-      "title": "@tebaile.bsky.social on Bluesky",
-      "published_at": "2026-10-09T19:01:14.761Z",
-      "raw_excerpt": "www.cnbc.com/amp/2026/10/... Grifter getting grifted.",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "114901adae49d1b9",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/openai-wargaming-public-revolt-ai-catastrophe",
-      "title": "OpenAI Wargaming Response in Case of Public Revolt After Catastrophic AI Disaster",
-      "published_at": "2026-10-09T19:00:32.000Z",
-      "raw_excerpt": "In the United States, public sentiment against the rising power of AI labs and their CEOs is overwhelmingly negative. As Wall Street Journal polling from late September found, 63 percent of US adults support an immediate pause on AI development, while a Politico survey found about two-thirds of Americans have at least “moderate” anxieties over AI destroying humanity. When the scope of that public backlash first came into focus, tech billionaires like Mark Zuckerberg responded with some tone-deaf media stunts , hoping to win back hearts and minds by the millions. Now that this strategy has clearly failed, executives at top AI labs are starting to workshop standard operating procedures in the event of a massive revolt against them. This includes leaders at Anthropic and OpenAI, according to Axios , which broke the story. These amount to Pentagon-style “war games,” essentially, with AI labs hammering out responses to hypothetical scenarios like massive cyberattacks enabled by their products, or a political revolt in reaction to some sort of catastrophic event triggered by their models. Approached by Axios for comment, OpenAI was nonchalant about the whole affair, replying that “OpenAI conducts preparedness exercises where teams discuss and work through a range of potential scenarios.” “These scenarios are not treated as inevitable, but are meant to help us prepare for a variety of circumstances,” the spokesperson continued. Anthropic declined to comment, though anxiety about social unrest isn’t out of character for the company’s executives. In September, it was reported that Anthropic was building out a surveillance apparatus to keep tabs on anti-AI protest movements, which included taking a “pre-crime” approach to intelligence gathering. How serious a threat any of this actually is remains hard to say. Nonetheless, the fact that top tech execs are even considering the possibility is notable — a sign that if nothing else, the anti-AI backlash has them squirming in thei",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "3d6b192749cc35f0",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOLWY4VGF1V0tyczRNM1NlaXZDUTRSYjAxdnUwUHR5SGstaF96TF9BRl9kRmY5WnQwdGROM2JkQ1lFQ3lQaktBc1htM0pnOTVlR3B5dmlXNE5pdHdkRWoxbEJ2b1JveGJnUzByMm8zQjlfZkxrajZETldJY1FhQ2VWZUJya1RnNVZJNUo2NU9qWlNNVzRNREl1dk1kNm5kTGxuVDduSGUwRFJ0ek1uME82bnhfWXQwNy1wWWdIRjdGa1lWVW9GWHpxQmpQOA?oc=5",
-      "title": "California rocket launch planned this weekend. Track SpaceX mission - Ventura County Star",
-      "published_at": "2026-10-09T19:00:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxOLWY4VGF1V0tyczRNM1NlaXZDUTRSYjAxdnUwUHR5SGstaF96TF9BRl9kRmY5WnQwdGROM2JkQ1lFQ3lQaktBc1htM0pnOTVlR3B5dmlXNE5pdHdkRWoxbEJ2b1JveGJnUzByMm8zQjlfZkxrajZETldJY1FhQ2VWZUJya1RnNVZJNUo2NU9qWlNNVzRNREl1dk1kNm5kTGxuVDduSGUwRFJ0ek1uME82bnhfWXQwNy1wWWdIRjdGa1lWVW9GWHpxQmpQOA?oc=5\" target=\"_blank\">California rocket launch planned this weekend. Track SpaceX mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Ventura County Star</font>",
-      "fetched_at": "2026-10-10T05:15:48.690Z",
-      "consumed": true
-    },
-    {
-      "id": "34e74d06fc271634",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQUGxqbkdYZGZOZUF6ckUyazRqMHFoRjZ0VjFicmQzMjFTS3ZPZGt0VFVBakhXNnFLWXdlSHFiSGYwMkZCX1FidlB2Tkx0WE1MbEpZQWZrWElRMU44YzVtb0dob0VocXRKSzlMYWhGTVF4Wi1RWUUySXR2T2laY1o0TEF5TmttOUdqZlozbEtwZWE3NUU?oc=5",
-      "title": "SpaceX's Secret Weapon Is Hiding in Plain Sight - The Motley Fool",
-      "published_at": "2026-10-09T18:56:26.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxQUGxqbkdYZGZOZUF6ckUyazRqMHFoRjZ0VjFicmQzMjFTS3ZPZGt0VFVBakhXNnFLWXdlSHFiSGYwMkZCX1FidlB2Tkx0WE1MbEpZQWZrWElRMU44YzVtb0dob0VocXRKSzlMYWhGTVF4Wi1RWUUySXR2T2laY1o0TEF5TmttOUdqZlozbEtwZWE3NUU?oc=5\" target=\"_blank\">SpaceX's Secret Weapon Is Hiding in Plain Sight</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "3742406717b610c7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNcUh4UHZDYzR4NzM1N0JGXzkyMWRneFliRmU1cTlSbnNUNU9pdnFEaWNZN2FXTXZFeU1feXl2LTBFOF9VXzJ3VVNjakZzQ2tzQVJDSmI2cmRWVVhPTl9KRDI5MkNtMFRDeG5qSWxXbmdWdDJDWUVOaUdiYjhHakR5TlpfNEhEZTJMS0EwZmRRSGlBOHdBV0l6cmF0dw?oc=5",
-      "title": "SpaceX Buys Spectrum to Make Starlink a U.S. Phone Carrier - Not a Tesla App",
-      "published_at": "2026-10-09T18:54:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxNcUh4UHZDYzR4NzM1N0JGXzkyMWRneFliRmU1cTlSbnNUNU9pdnFEaWNZN2FXTXZFeU1feXl2LTBFOF9VXzJ3VVNjakZzQ2tzQVJDSmI2cmRWVVhPTl9KRDI5MkNtMFRDeG5qSWxXbmdWdDJDWUVOaUdiYjhHakR5TlpfNEhEZTJMS0EwZmRRSGlBOHdBV0l6cmF0dw?oc=5\" target=\"_blank\">SpaceX Buys Spectrum to Make Starlink a U.S. Phone Carrier</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Not a Tesla App</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "68d3934fe1e6e330",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPd1dxWmo3aTZ0VmZJYmZWUlREdnFnLTZPT05QaDVYQ1JxS2dSclBjZXd0allHU0dUd094Zm9lQ2JzUkFsaWNvTGdMTC03SURtQy1vaFBlbnhLZURxZjkySnY0YW5iNWF3N0trbXVxTjdUUlc1aGQyemNlT2trLTlCaVFNUVoxSVo5VXo3dEp6RUo1VzJDaVNoVllBY0FyTy1oYTFYaVFTZy05MUNDeXZZSzR5LV9tbTZ2a1U4?oc=5",
-      "title": "Musk: Starlink Mobile V2 Brings “100 Times the Bandwidth,” Raising the Stakes for Verizon and AT&T - TIKR.com",
-      "published_at": "2026-10-09T18:52:42.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxPd1dxWmo3aTZ0VmZJYmZWUlREdnFnLTZPT05QaDVYQ1JxS2dSclBjZXd0allHU0dUd094Zm9lQ2JzUkFsaWNvTGdMTC03SURtQy1vaFBlbnhLZURxZjkySnY0YW5iNWF3N0trbXVxTjdUUlc1aGQyemNlT2trLTlCaVFNUVoxSVo5VXo3dEp6RUo1VzJDaVNoVllBY0FyTy1oYTFYaVFTZy05MUNDeXZZSzR5LV9tbTZ2a1U4?oc=5\" target=\"_blank\">Musk: Starlink Mobile V2 Brings “100 Times the Bandwidth,” Raising the Stakes for Verizon and AT&T</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TIKR.com</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "ed190a5009ebfb98",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/technology/2026/10/09/astrolight-delivers-space-to-ground-laser-communications-links/",
-      "title": "Astrolight Delivers Space-to-Ground Laser Communications Links",
-      "published_at": "2026-10-09T18:38:07.000Z",
-      "raw_excerpt": "Astrolight has reached a key technology milestone as it looks to bring laser communications more into the satellite mainstream. For the first time, it established end-to-end optical communication links from its ATLAS-1 laser communication terminal in orbit to its OGS-2.5 optical ground station in Greece. Astrolight announced the demonstration on Oct. 8, in which the link moved from first light to routine operations at 1 Gbps within a week. The company developed the terminal working with the European Space Agency and worked with the Department of Aerospace of the University of Athens, and the Department of Physics of the Aristotle University of Thessaloniki on this project. In the demonstration, Astrolight’s ATLAS-1 laser communication terminal on the ERMIS-3 a nanosatellite connected with the with HolOGS-1 optical ground station in Holomondas, Greece. Astrolight upgraded the ground station to its OGS-2.5 model for the PeakSat mission. Astrolight’s team in Lithuania has operated both systems remotely. The company reports that ATLAS-1 is currently transmitting data at 1 Gbps, while link budget margins indicate that the system could support rates of up to 10 Gbps. Both ATLAS-1 and OGS-2.5 achieved first light during the satellite’s first active pass over the ground station. The systems operated autonomously on a pre-scheduled basis at both ends of the link by the third pass. “The next step for laser communications is making them routine for satellite operators, with high-capacity links that can be deployed and operated remotely with minimal operational oversight. Proving that our space and ground systems have this capability brings us closer to making optical connectivity practical for commercial missions at scale,” Dalius Petrulionis, CTO and co-founder of Astrolight, said in a statement. The post Astrolight Delivers Space-to-Ground Laser Communications Links appeared first on Via Satellite .",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "70376f8aa7e06d0b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQUUZieTcxbFhhWUl2eXZ1SklacFVIU1BlYmk0YnR4b3J0NVFWVUZ4X3ZCR2d0akRWaHpWNVFydURPM3JSeE9LNGpjN3NISXhaNEtvWjVjZlVmUEI4Ul9UU0NUZjcwSzYyQ0RCX1RxSmdzMkhyekNaVmlYLXF0UXBsa2ZMUWM3VU10aHVXb1owem5yUmNMTk1lREZ3T0oyYTB2NEk5SEtOMmdIelhrZzQ3MkNfNGV1RThtam9URVI1MnRjYmQ4d3VqbDE1MVZqR0JBTzZmeVc3UzFkZERD?oc=5",
-      "title": "Elon Musk Just Delivered Great News to SpaceX Investors and Bad News to Traditional Telecom Investors - The Motley Fool",
-      "published_at": "2026-10-09T18:37:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3AFBVV95cUxQUUZieTcxbFhhWUl2eXZ1SklacFVIU1BlYmk0YnR4b3J0NVFWVUZ4X3ZCR2d0akRWaHpWNVFydURPM3JSeE9LNGpjN3NISXhaNEtvWjVjZlVmUEI4Ul9UU0NUZjcwSzYyQ0RCX1RxSmdzMkhyekNaVmlYLXF0UXBsa2ZMUWM3VU10aHVXb1owem5yUmNMTk1lREZ3T0oyYTB2NEk5SEtOMmdIelhrZzQ3MkNfNGV1RThtam9URVI1MnRjYmQ4d3VqbDE1MVZqR0JBTzZmeVc3UzFkZERD?oc=5\" target=\"_blank\">Elon Musk Just Delivered Great News to SpaceX Investors and Bad News to Traditional Telecom Investors</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "955a14067e3bd4e9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQWkpVTGlrc0RIa3kza2lfU1RCYkRXTUcwTmxkN1R6T3FLS2VjLTBSWmhjRi1XNXhTRjY0UDI0bnRVWUk0Y3VmUTg3NGYtcEZKYzFKSTREWk82aVhPY2k4MnBNaDktVXFlMWRnbmVHUk5GMzNQWmJGZHI4Nlpoc2VkXzNGaXZNSVI2VjNnb3VtWVptMFozMGpKSG5oLW5rYkRIV3pSY01taDJxZ3BIZ29ZaFpJZ2pHeFB2?oc=5",
-      "title": "Starlink spectrum deal boosts Musk plan to beat AT&T, T-Mobile, and Verizon - Ars Technica",
-      "published_at": "2026-10-09T18:24:39.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxQWkpVTGlrc0RIa3kza2lfU1RCYkRXTUcwTmxkN1R6T3FLS2VjLTBSWmhjRi1XNXhTRjY0UDI0bnRVWUk0Y3VmUTg3NGYtcEZKYzFKSTREWk82aVhPY2k4MnBNaDktVXFlMWRnbmVHUk5GMzNQWmJGZHI4Nlpoc2VkXzNGaXZNSVI2VjNnb3VtWVptMFozMGpKSG5oLW5rYkRIV3pSY01taDJxZ3BIZ29ZaFpJZ2pHeFB2?oc=5\" target=\"_blank\">Starlink spectrum deal boosts Musk plan to beat AT&T, T-Mobile, and Verizon</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Ars Technica</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0f99ddd109b2e4d9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOTGxIT2NFaThiNk5GN3F3SmxNem54RExJS2ZxdDF0WjlnRE9NeWExb0w3eWgtUXpHNTRlOURhYTJlMU9WUy16M1psbVB6U3p6TUViM3c0YVp1Wkp2Y00zSVNPRUlXeVpMdDlrVUMzUUR3M0lzMFAyNHYtNnREbmNjQlBXaklKczdxX2NtbzZJUkwybzB3TnRONzk2RVZWSUExVnRPSDhOX2dPckM4d1lQTTE5WTB6RURKd1VIT05HaC1FZmxBU3AwR3BIOHlpMG9QV0JMdTBZWQ?oc=5",
-      "title": "Next year will be test case for if Starlink is an airline advantage, says TD Cowen's Tom Fitzgerald - CNBC",
-      "published_at": "2026-10-09T18:22:30.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxOTGxIT2NFaThiNk5GN3F3SmxNem54RExJS2ZxdDF0WjlnRE9NeWExb0w3eWgtUXpHNTRlOURhYTJlMU9WUy16M1psbVB6U3p6TUViM3c0YVp1Wkp2Y00zSVNPRUlXeVpMdDlrVUMzUUR3M0lzMFAyNHYtNnREbmNjQlBXaklKczdxX2NtbzZJUkwybzB3TnRONzk2RVZWSUExVnRPSDhOX2dPckM4d1lQTTE5WTB6RURKd1VIT05HaC1FZmxBU3AwR3BIOHlpMG9QV0JMdTBZWQ?oc=5\" target=\"_blank\">Next year will be test case for if Starlink is an airline advantage, says TD Cowen's Tom Fitzgerald</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNBC</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "f8414f1c71c15d48",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/trumpactiontracker.bsky.social/post/3mxhlmgel3w2e",
-      "title": "@trumpactiontracker.bsky.social on Bluesky",
-      "published_at": "2026-10-09T18:19:49.457Z",
-      "raw_excerpt": "Donald Trump’s financial disclosure shows he purchased between $1 million and $5 million in SpaceX bonds just two days before signing a memorandum setting out a new US space policy intended to expand the country’s launch capacity. SpaceX, led by Trump ally Elon Musk, is a major... TAT: [Corruption]",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "45c0665d9890d474",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNUVhOSVVXcVhNV21OMWl6cDZvU2xuNDJTREdJdDZicFpYSDA5bkhscWtnRUtKUE5kWDZjaE1ZZUktcHdKbFFEVmdySnZvTEpkeGZSUmF6V0I3SnV1RVo4WHhBdm9KSmlEZjczWGI4THVGRWlDRkpnWHQ0NWhtbTBOLVoxZXhPU0FjakxSZ01GVnNJV2ZFQUN5eWg1NnJGSlMtaGgtNUd2OA?oc=5",
-      "title": "Trump Bought Millions in SpaceX Bonds, Then Eased Space Travel Regulations - Truthout",
-      "published_at": "2026-10-09T18:18:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxNUVhOSVVXcVhNV21OMWl6cDZvU2xuNDJTREdJdDZicFpYSDA5bkhscWtnRUtKUE5kWDZjaE1ZZUktcHdKbFFEVmdySnZvTEpkeGZSUmF6V0I3SnV1RVo4WHhBdm9KSmlEZjczWGI4THVGRWlDRkpnWHQ0NWhtbTBOLVoxZXhPU0FjakxSZ01GVnNJV2ZFQUN5eWg1NnJGSlMtaGgtNUd2OA?oc=5\" target=\"_blank\">Trump Bought Millions in SpaceX Bonds, Then Eased Space Travel Regulations</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Truthout</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "952d3aa677390870",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPUnYyWW9qeGx5M2NnQ3M5blN3WFlHbmFYX1BSbXFubEIzRlRXY0sxUzl1OVNLb0pEYVhNV2t5OFdRLUluYy1xbTUyNmFWN3lvSVdNM0lJdU9VRlEyZlg3aDZXWHFZY1BZc2h1cmdrVm9WV09EVXpzNXpPNkxOMzU4RWRwYnZ2ZnQ2Snp3dEZydnM3a0paR25DeFQxTmtxWXc?oc=5",
-      "title": "SpaceX Puts a Satellite Shadow Over Deutsche Telekom - Yahoo Finance",
-      "published_at": "2026-10-09T18:16:42.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwFBVV95cUxPUnYyWW9qeGx5M2NnQ3M5blN3WFlHbmFYX1BSbXFubEIzRlRXY0sxUzl1OVNLb0pEYVhNV2t5OFdRLUluYy1xbTUyNmFWN3lvSVdNM0lJdU9VRlEyZlg3aDZXWHFZY1BZc2h1cmdrVm9WV09EVXpzNXpPNkxOMzU4RWRwYnZ2ZnQ2Snp3dEZydnM3a0paR25DeFQxTmtxWXc?oc=5\" target=\"_blank\">SpaceX Puts a Satellite Shadow Over Deutsche Telekom</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0fa32e4d9d4ded54",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/future-society/sacked-openai-insiders-say-company-is-firing-anyone-who-speaks-out",
-      "title": "Sacked OpenAI Insiders Say the Company Is Firing Anyone Who Warns What’s Really Going On",
-      "published_at": "2026-10-09T18:13:22.000Z",
-      "raw_excerpt": "Last week, OpenAI fired three safety researchers because they allegedly mishandled confidential information and shared it outside of the company’s approved channels. Now, the fired employees have published an open letter denying OpenAI’s claims — and warning that the company’s actions are scaring workers into staying silent. “We have become concerned that internal and external communications around our firing have made our former colleagues afraid to speak and operate in ways that, until last week, were an integral part of working at OpenAI,” the sacked employees — Jasmine Wang, Tomek Korbak, and Mikita Balesni — wrote in the letter . The trio also denied being the source of the leak when The Information reported about OpenAI’s latest models being built with “opaque recurrence” architectures that make it hard for humans to monitor their underlying reasoning. OpenAI maintains that the researchers shared confidential information with a third-party AI safety organization. In a statement to the Wall Street Journal , which first reported the firings, the firm asserted that they had violated “policies on accessing and handling sensitive company information,” and spoke of “breaking the trust essential to our work.” The firings come amid heightened safety concerns over the past few months as frontier AI labs including OpenAI, Anthropic, and Meta have disclosed incidents in which their powerful AI agents went rogue and conducted cyberattacks on other companies under the nose of their human overseers. These incidents, in addition to a former Anthropic employee claiming that the AI industry was “gambling with our lives,” have culminated in the major labs signing an agreement to “pace” AI development. Yet this avowed focus on safety is ringing hollow, the former employees argue, if OpenAI is firing employees who work with outside safety experts. “The freedom to do so without fear, and to have well-defined internal procedures that enable this work, is itself an essential safety ",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "4ff43214b8f81722",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOUDM3ZnJKYjBHZnd2YmNOQXZYWk9QRUc3NmJlZm44Z1N3Tm01R1NkSl9qNzJKYWVYeEJndncydW5vZUI4TXhrOXZaME1XSTZaVXJyLTM1UWYtSjNWNFFfRFZOU3UxY0pSUk9INVF2S3Y1dTVZRHFZZHh2SHVKVmtRZklONDhqRlN5SGlZaHZfeWpwZkVGZUZ2bGFZVVB3VWZubHBnNTdTQ3E1clRrS2dlTEtkTC1FZWhvSkE?oc=5",
-      "title": "SpaceX eyes 'major mobile carrier' status via Grain spectrum deal - Light Reading",
-      "published_at": "2026-10-09T18:04:02.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxOUDM3ZnJKYjBHZnd2YmNOQXZYWk9QRUc3NmJlZm44Z1N3Tm01R1NkSl9qNzJKYWVYeEJndncydW5vZUI4TXhrOXZaME1XSTZaVXJyLTM1UWYtSjNWNFFfRFZOU3UxY0pSUk9INVF2S3Y1dTVZRHFZZHh2SHVKVmtRZklONDhqRlN5SGlZaHZfeWpwZkVGZUZ2bGFZVVB3VWZubHBnNTdTQ3E1clRrS2dlTEtkTC1FZWhvSkE?oc=5\" target=\"_blank\">SpaceX eyes 'major mobile carrier' status via Grain spectrum deal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Light Reading</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "1b236b29c7c87031",
-      "source_name": "NOAA CRSRA (US remote sensing licenses)",
-      "url": "https://space.commerce.gov/osc-seeks-proposals-for-u-s-space-economy-measurement-metrics-study/",
-      "title": "OSC Seeks Proposals for “U.S. Space Economy Measurement Metrics” Study (UPDATED)",
-      "published_at": "2026-10-09T18:03:46.000Z",
-      "raw_excerpt": "To foster growth and resilience in the U.S. commercial space ecosystem, the Office of Space Commerce (OSC) requires a deeper, evidence-based understanding of the ecosystem and the economic activity it generates. This includes the accuracy, … OSC Seeks Proposals for “U.S. Space Economy Measurement Metrics” Study (UPDATED) Read more →",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "df93456013f4f921",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOUDlncWxWWnhCRk5qNEd4eWxsdkNVX3RkcDNVQklieDE3OGhMalREckIyQldJNHBWVWRtQlR2Zkljc281Vms4OE45N3BGZmxUZWxzSTUzUGg4dC1lZjNvZ0E3N0c2RmNKeTRzQ1lnWld4bmFiTVRBWkpGUkxacmx0TEM4RWNmTTVWOXNCQnhkdE9RcDExWlN0WWJrV09MZUd2cUZMaXlWYXhTRFZwNlI1WUdvM19Cc1V6RGNibU1zaE9KVXVBRVE?oc=5",
-      "title": "MoffettNathanson’s Craig Moffett: The market is overreacting to SpaceX's spectrum deal - CNBC",
-      "published_at": "2026-10-09T18:03:36.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixgFBVV95cUxOUDlncWxWWnhCRk5qNEd4eWxsdkNVX3RkcDNVQklieDE3OGhMalREckIyQldJNHBWVWRtQlR2Zkljc281Vms4OE45N3BGZmxUZWxzSTUzUGg4dC1lZjNvZ0E3N0c2RmNKeTRzQ1lnWld4bmFiTVRBWkpGUkxacmx0TEM4RWNmTTVWOXNCQnhkdE9RcDExWlN0WWJrV09MZUd2cUZMaXlWYXhTRFZwNlI1WUdvM19Cc1V6RGNibU1zaE9KVXVBRVE?oc=5\" target=\"_blank\">MoffettNathanson’s Craig Moffett: The market is overreacting to SpaceX's spectrum deal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNBC</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "6c370131cf3ccb1a",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNeElXb3hvYmF6a0dtU1VvSV9MSjREek51dkVKenRncVZVVmVIZXpPVUlEZlhEYWNING1YS2NvY28tT2NaWnFOS29OaWxzOVFIMXlLaDFSQ0VxVmdSU1hWM2JKUFJIcldKbVk3UE5JSzlySmVFSEh6R1lBeDRRcFZaM3BJMkt2ZVNhNUR5UloxUjgtdE9Jcmdsd01EX0R2S1pGWEZoWW1RMFRCZTVkRi1xWlNmeGRmSVBEdS1veW9mTE13QkRnazZIb0RpRS1ZMk90R19yWGNvaw?oc=5",
-      "title": "Elon Musk Sees SpaceX Stock Rising to Crazy Levels. He Once Made Similar Predictions for TSLA Too - Barchart.com",
-      "published_at": "2026-10-09T18:00:46.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxNeElXb3hvYmF6a0dtU1VvSV9MSjREek51dkVKenRncVZVVmVIZXpPVUlEZlhEYWNING1YS2NvY28tT2NaWnFOS29OaWxzOVFIMXlLaDFSQ0VxVmdSU1hWM2JKUFJIcldKbVk3UE5JSzlySmVFSEh6R1lBeDRRcFZaM3BJMkt2ZVNhNUR5UloxUjgtdE9Jcmdsd01EX0R2S1pGWEZoWW1RMFRCZTVkRi1xWlNmeGRmSVBEdS1veW9mTE13QkRnazZIb0RpRS1ZMk90R19yWGNvaw?oc=5\" target=\"_blank\">Elon Musk Sees SpaceX Stock Rising to Crazy Levels. He Once Made Similar Predictions for TSLA Too</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barchart.com</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "293f364d449f65f6",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPa1h1Z1h1R1lZOF83TnNWZmk1SVdxcUZlYWV5OEVkeG9IT0NWYk1pR0ZhNnZ1LVFGNjJValNqNjJBNkZVNmE0SGVwV3pmYkw4UUZOdk1VRWJRekxQLUVJc2xMS3pyMUFtdC1PRWRvX0JvQ0ZHS3puWmhVU3JUQ1F2VktIdEtjT0FIU0ZPMFZra2RJdjhHNDRlUmlicw?oc=5",
-      "title": "Elon Musk Just Delivered Great News to SpaceX Investors and Bad News to Traditional Telecom Investors - Yahoo Finance",
-      "published_at": "2026-10-09T17:57:01.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxPa1h1Z1h1R1lZOF83TnNWZmk1SVdxcUZlYWV5OEVkeG9IT0NWYk1pR0ZhNnZ1LVFGNjJValNqNjJBNkZVNmE0SGVwV3pmYkw4UUZOdk1VRWJRekxQLUVJc2xMS3pyMUFtdC1PRWRvX0JvQ0ZHS3puWmhVU3JUQ1F2VktIdEtjT0FIU0ZPMFZra2RJdjhHNDRlUmlicw?oc=5\" target=\"_blank\">Elon Musk Just Delivered Great News to SpaceX Investors and Bad News to Traditional Telecom Investors</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "fe74dfbf40776dd0",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTFBDUnVDUkFZaHFLVklSN1poWUctZ1ktQmVMZ0ZHUVV1bHpxNnd2NEctNkRLU0txZnpSN3hJMlRyejBCNmpzSnNCekVLTQ?oc=5",
-      "title": "US Congress Delegation Backs Expanded Starlink Access for Ukraine - Kyiv Post",
-      "published_at": "2026-10-09T17:56:06.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiS0FVX3lxTFBDUnVDUkFZaHFLVklSN1poWUctZ1ktQmVMZ0ZHUVV1bHpxNnd2NEctNkRLU0txZnpSN3hJMlRyejBCNmpzSnNCekVLTQ?oc=5\" target=\"_blank\">US Congress Delegation Backs Expanded Starlink Access for Ukraine</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Kyiv Post</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "c8ca1635746c600c",
-      "source_name": "Signals YouTube: Scott Manley",
-      "url": "https://www.youtube.com/shorts/TrQRYYd2NEU",
-      "title": "Could Ancient Rivers Have Flowed on The Moon?",
-      "published_at": "2026-10-09T17:54:24.000Z",
-      "raw_excerpt": "Sponsored by SSAI https://www.ssaihq.com/scientific-research Follow me on Twitter for more updates: https://twitter.com/DJSnM I have a discord server where I regularly turn up: https://discord.gg/zStmKbM If you really like what I do you can support me directly through Patreon https://www.patreon.com/scottmanley",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "21b42625486a47ab",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNVFZFSVRKeGtQZEZsTjF4R2JYU19SY3FqWmlsWUtqeG9jdGM5bFFHUnVsT0tBU2RyVGhzbFJJSDA4cndldUxWRVoyNGl0R3dDaHFyT2g2OUd6WE9aaUFiU1llX2hwbk9ITmtTY3lsSEJ3UVB4VXFtQjZzMEV1T3NXWVRXVzdhWWZRYTVQMQ?oc=5",
-      "title": "SpaceX Spectrum Deal Puts Starlink in Carrier Territory - Gadget Review",
-      "published_at": "2026-10-09T17:47:06.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxNVFZFSVRKeGtQZEZsTjF4R2JYU19SY3FqWmlsWUtqeG9jdGM5bFFHUnVsT0tBU2RyVGhzbFJJSDA4cndldUxWRVoyNGl0R3dDaHFyT2g2OUd6WE9aaUFiU1llX2hwbk9ITmtTY3lsSEJ3UVB4VXFtQjZzMEV1T3NXWVRXVzdhWWZRYTVQMQ?oc=5\" target=\"_blank\">SpaceX Spectrum Deal Puts Starlink in Carrier Territory</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Gadget Review</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "429035fd3d9923cc",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNaGlSRzhoVklHakFqNE0tb2VaTWhUM0ZWa3FUS3VhcjZQcDZRSEpNV19TYnhBMXBwb191UGtQTzJuamkycGcwTWtnNExvQ1ZNcE5zTi1yOTBHOFhYeVE3bXdwa0VGajVaUTJRc2E3MWE4WFM5SmtGNFJsZF8zX0g1ZnVydmNWTnVSQXQyWmo2X2tWLWFjRmpGR291SQ?oc=5",
-      "title": "SpaceX Spectrum Deal Puts Starlink in Carrier Territory - Yahoo Finance",
-      "published_at": "2026-10-09T17:47:06.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxNaGlSRzhoVklHakFqNE0tb2VaTWhUM0ZWa3FUS3VhcjZQcDZRSEpNV19TYnhBMXBwb191UGtQTzJuamkycGcwTWtnNExvQ1ZNcE5zTi1yOTBHOFhYeVE3bXdwa0VGajVaUTJRc2E3MWE4WFM5SmtGNFJsZF8zX0g1ZnVydmNWTnVSQXQyWmo2X2tWLWFjRmpGR291SQ?oc=5\" target=\"_blank\">SpaceX Spectrum Deal Puts Starlink in Carrier Territory</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "0bfdbc87ab1b9068",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNU180d0lCOHhCdVdoS3ZHSVdGVHRuUmVfdFZuQlQ5ekJBZWxFbmZDVDR1R2JGdkM5a09abjFjX3M5RUJXT2pKMXB2X25rX2RaTHVJbXY4R1J6WnZaSHJkMWtWb21jdmdGbjBxd21URDQ3V1VWaDRvbld4MWVPZXdya21CTXBsZzhLSGE4WFRhbGlOaHZYVVZjekJhTVhfOWgtSGswdmg5RUdVVmRNcmJKaVpnVTZ0U0UwN2x3Q3pDbnJhQ1hZRnhfekgyOU8ySkU?oc=5",
-      "title": "Bernstein's Madison Rezaei: SpaceX plan to buy spectrum portfolio is good for tower operators - CNBC",
-      "published_at": "2026-10-09T17:46:43.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizwFBVV95cUxNU180d0lCOHhCdVdoS3ZHSVdGVHRuUmVfdFZuQlQ5ekJBZWxFbmZDVDR1R2JGdkM5a09abjFjX3M5RUJXT2pKMXB2X25rX2RaTHVJbXY4R1J6WnZaSHJkMWtWb21jdmdGbjBxd21URDQ3V1VWaDRvbld4MWVPZXdya21CTXBsZzhLSGE4WFRhbGlOaHZYVVZjekJhTVhfOWgtSGswdmg5RUdVVmRNcmJKaVpnVTZ0U0UwN2x3Q3pDbnJhQ1hZRnhfekgyOU8ySkU?oc=5\" target=\"_blank\">Bernstein's Madison Rezaei: SpaceX plan to buy spectrum portfolio is good for tower operators</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNBC</font>",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "d9c606b88a504638",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/connectivity/2026/10/09/veons-banglalink-to-launch-starlink-mobile-in-bangladesh/",
-      "title": "Veon’s Banglalink to Launch Starlink Mobile in Bangladesh",
-      "published_at": "2026-10-09T17:42:21.000Z",
-      "raw_excerpt": "Veon -owned operator Banglalink will bring SpaceX ‘s Starlink Mobile service to its customers under a new agreement announced Friday. Bangladesh will be the first country in South Asia to introduce the service. Banglalink said the service will provide connectivity for essential apps and location services through the company’s app MyBL. It is intended for use during emergencies, natural disasters, and prolonged power outages for customers with a 4G phone and Bangalink SIM. The release does not mention enabling SMS service. “Millions of Bangladeshis count on their network most when conditions are at their hardest, whether that is a storm or a long power outage. Adding satellite-to-mobile extends Banglalink’s reach beyond what towers alone can cover and makes our network more resilient,” commented Bangalink CEO Johan Buse. Bangalink is the third-largest mobile network operator (MNO) in Bangladesh with a reported 37.8 million subscribers . Dubai-based Veon has been rolling out Starlink Mobile in various capacities across its subsidiaries. Kyivstar in Ukraine was the first to launch and Beeline in Kazakhstan is also launching the service. The post Veon’s Banglalink to Launch Starlink Mobile in Bangladesh appeared first on Via Satellite .",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "713710d6e9d7304d",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/technology/2026/10/09/astrogate-labs-teams-with-spacebeam-on-optical-links-and-ground-service/",
-      "title": "Astrogate Labs Teams with Spacebeam on Optical Links and Ground Service",
-      "published_at": "2026-10-09T17:36:08.000Z",
-      "raw_excerpt": "India’s Astrogate Labs is teaming with South Korea-based Spacebeam to demonstrate laser communications, including optical ground stations. Under the MoU, they plan to bring together the companies’ respective tech in optical communications. Astrogate has developed AstroLink, an optical communication terminals (OCTs) for satellites and Spacebeam has developed the Osong optical ground station (OGS) infrastructure. They plan to demonstrate laser communications starting with terrestrial/air-to-ground testing and moving to space-to-ground demonstrations with a satellite equipped with an Astrogate terminal. They also plan to explore an end-to-end service for customers incorporating both the terminal and the downlink technology. “The value of optical communications is ultimately realized when the space and ground segments work together as one end-to-end link. This partnership brings Astrogate’s optical communication terminals together with Spacebeam’s optical ground infrastructure to work toward that objective,” commented Nitish K. Singh, founder and CEO of Astrogate Labs. The companies announced the agreement this week during International Astronautical Congress (IAC) 2026 in Antalya, Turkey. The post Astrogate Labs Teams with Spacebeam on Optical Links and Ground Service appeared first on Via Satellite .",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
-      "consumed": true
-    },
-    {
-      "id": "b9e0afb20fb647a3",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/technology/2026/10/09/l3harris-to-build-telescope-for-esas-lisa-mission/",
-      "title": "L3Harris to Build Telescope for ESA’s LISA Mission",
-      "published_at": "2026-10-09T17:33:59.000Z",
-      "raw_excerpt": "L3Harris will build an all-glass telescope for the Laser Interferometer Space Antenna (LISA) mission expected to launch in the mid-2030s. The European Space Agency (ESA) is leading the mission, with NASA as a collaborative partner. NASA awarded L3Harris the contract this week. NASA is contributing the telescopes and other critical hardware as well as engineering and scientific support. LISA will be the first gravitational wave detector in space. It is designed to detect gravitational waves in space by measuring distance changes between satellites using laser beams. This will inform the study of black holes, colliding stars, and space-time. It is designed as a constellation of three spacecraft. L3Harris said that each satellite will include two L3Harris telescopes capable of transmitting and receiving precision laser beams with the support of ceramic glass. The company has manufactured a full-scale prototype for the mission. “LISA will open a new window into the universe that ground-based observatories cannot access,” said Jeff Hanke, president of Space Systems, Space & Mission Systems for L3Harris. “By listening to the low-frequency ripples in space-time across millions of kilometers, LISA allows the study of massive, distant and rare cosmic events that are otherwise invisible.” ESA recently selected Germany’s OHB, together with Thales Alenia Space to build the three-spacecraft mission. The post L3Harris to Build Telescope for ESA’s LISA Mission appeared first on Via Satellite .",
-      "fetched_at": "2026-10-09T22:54:39.332Z",
       "consumed": true
     }
   ]

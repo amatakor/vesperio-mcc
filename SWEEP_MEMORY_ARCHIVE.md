@@ -9293,3 +9293,146 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   three updated items' `snr`/`category`/`impact`/`tags`/`companies`/
   `sources` fields as the build-health signal.
 
+## Narrow re-check, ~7h48m gap, unfiltered full source list (2026-09-11)
+
+- 2026-09-11-A: A large, widely-mirrored "SpaceX signs $1 billion-a-month
+  AI hosting deal" / Nvidia-alliance / "$100B ARR by year-end" cluster
+  (Seeking Alpha, Stocktwits, Moomoo, TeslaNorth, allweatherfinance.com,
+  from SpaceX CFO Bret Johnsen's remarks at the Goldman Sachs
+  Communacopia conference) traced, once one underlying CNBC headline was
+  read closely ("Google to pay SpaceX $920 million a month for compute
+  capacity **at xAI data centers**"), to SpaceX's terrestrial AI/GPU
+  hosting business (the Colossus-style data centers it operates for
+  Google/Anthropic/xAI), not its orbital Starmind compute-satellite
+  product (already separately covered under
+  `2026-06-24-spacex-starmind-name` and
+  `2026-08-04-spacex-nvidia-starmind-exclusive`). Left the whole
+  financial cluster undrafted as out of scope, extending the standing
+  Intel Terafab/APR-Energy/turbine-foundry precedent (2026-09-09-N) to a
+  new shape: a huge, SpaceX-branded, multi-billion-dollar financial
+  disclosure that is still terrestrial infrastructure business, not a
+  launch/satellite/spacecraft product, regardless of dollar value or
+  how "space company signs deal" the headlines read.
+- 2026-09-11-B: A one-year-stale trap on an Indian government-relations
+  headline shape distinct from the standing India-EO-PPP trap: an
+  Akashvani/newsonair.gov.in "NSIL-ISRO-HAL ink pact for SSLV technology
+  transfer" story, surfaced fresh via WebSearch, carries its own stated
+  publish date of September 11, **2025**, exactly one year before this
+  sweep -- same-calendar-date-different-year pattern (2026-08-13-A and
+  many peers), this time on an official .gov.in press page rather than a
+  trade aggregator or Google News wave.
+- 2026-09-11-C: BlackSky's own confidentially-launched Gen-3 satellites
+  (this run's 5th, on Rocket Lab's "Happily Ever Faster" Electron
+  mission) are hard to corroborate same-day: SpaceNews 429'd on every
+  attempt (three tries) and the Google News redirect for a Quiver
+  Quantitative pickup wouldn't resolve, leaving only Launch Library 2
+  (aggregator, tier 4) as a fetchable source; landed a clean, honest
+  SNR 3 via `crawl: "found_none"` rather than force an uncited claim of
+  corroboration that technically exists on the web per search snippets.
+- 2026-09-11-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3
+  new, 1 updated, 0 held") plus a direct `jq` read of all three new
+  items' and the one updated item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields, and the registry-candidates.json crossfeed
+  entry it produced, as the build-health signal.
+
+## Narrow re-check, ~5h14m gap, unfiltered full source list (2026-09-11, second)
+
+- 2026-09-11-E: A company's own press release re-hosted on a PR-wire
+  syndication mirror (Business Wire content republished verbatim on
+  `lifestyle.middletownlifemagazine.com`, a local-news content-syndication
+  site) scores higher (`wire_pr`, base tier 4) than an independent trade
+  outlet's own reporting of the same fact (Payload, base tier 3, despite
+  Payload having an exclusive quote "via email" from the company) -- led
+  Antares' $161M DoD nuclear-reactor award with the wire mirror and used
+  Payload as `trade` corroboration, per the standing base-tier-by-class
+  rule rather than by which source reads as more authoritative.
+- 2026-09-11-F: Confirms the `hostMatches()` hostname-suffix check treats
+  a bare-apex company domain (`impulsespace.com/updates/...`) as
+  `first_party` cleanly when the registry `website` value is the same
+  bare apex (no subdomain), landing SNR 5 on a company's own technical
+  milestone post (Impulse Space's LEO-2/LEO-3 200m proximity flyby) with
+  zero `found_none` penalty risk since it's a direct source regardless of
+  corroboration strength.
+- 2026-09-11-G: A same-company-plus-category dedup false positive fired
+  TWICE on a new Poland/PGZ/ICEYE sovereign-satellite letter-of-intent
+  item (category `partnership`) against both the Sept 7 ICEYE/Sompo Japan
+  insurance item and the Sept 9 ICEYE/Arianespace launch-services MoU,
+  none of which share anything with a Polish state-defense LOI beyond the
+  company name ICEYE -- two `dedup_distinct` entries cleared it in one
+  pass, extending the long-running list to a case where all three ICEYE
+  items in one week are mutually unrelated.
+- 2026-09-11-H: Two same-day "big number" headlines both traced to stale
+  restatements once fetched/searched directly: (1) "Britain...Contracts
+  Already Top $6 Billion" (Yahoo Finance/247wallst) wraps the already-
+  published Sept 10 Reuters FOIA story (UK MoD's own ~$40M Starlink/
+  Starshield spend) in unrelated context about total US Space Force
+  Starshield contract value nationally, adding no new UK-specific fact;
+  (2) Le Monde's "France and EU rescue Iris²" Paris-summit coverage and
+  von der Leyen's own summit remarks both restate the already-published
+  Aug 7 SpaceRISE acceleration decision and the Sept 10 Aerospacelab/
+  Thales €5.4B contract awards, not a new figure or decision. Both left
+  undrafted/unpatched rather than treated as fresh.
+- 2026-09-11-I: A signals-pass Bluesky find (Andrew Parsonson: Avio's FD1
+  reusability-demonstrator rocket completed integration ahead of ground
+  testing and a planned SUBORBITAL flight from Sardinia) was left
+  undrafted on two independent grounds: it is a pre-flight milestone (no
+  launch yet, standing "scheduled-but-not-flown" exclusion), and the
+  planned flight itself is suborbital, which CLAUDE.md's launch-vehicle
+  scope excludes regardless of whether the vehicle is a reusability tech
+  demonstrator rather than a tourism vehicle -- first time the
+  suborbital-demonstrator shape (distinct from the 2026-08-14-B
+  suborbital-manufacturer-insolvency case) has come up.
+- 2026-09-11-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new,
+  0 updated, 0 held") plus a direct `jq` read of all four new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields (items 622 to
+  626, sweep log 237 to 238) as the build-health signal.
+
+## Narrow re-check, ~4h06m gap, unfiltered full source list (2026-09-11, third)
+
+- 2026-09-11-K: Vivienne Machi's Aviation Week author page carried "France
+  Plans First Deorbiting Demo In 2030 With Industry Trio" (Sept 10) a
+  second sweep running (first flagged 2026-09-10-T): a WebSearch synthesis
+  can now describe it in full (Astroscale France signed a stated EUR13.2M
+  Sept 9 subcontract to Exotrail's CNES/France 2030 prime contract,
+  targeting a Eutelsat OneWeb satellite, 2029-2030 window), but both
+  non-mirror write-ups found (Tokyo Brief, Space & Defense) 403'd on every
+  direct WebFetch attempt, and Astroscale's own site's most specific page
+  on the partnership is a stale April 2 framework announcement with no
+  euro figure or Sept 9 date. Left undrafted again rather than cite the
+  figures from an unfetched page's WebSearch summary; worth treating this
+  specific headline as a standing dead lead (like the 2026-08-24-H NRO/SAR
+  case) unless a directly-fetchable page turns up.
+- 2026-09-11-L: A CFO's forward-looking conference remarks about an
+  already-drafted, not-yet-flown launch are fair game as an
+  `updates[].patch`, not a "don't draft a scheduled launch" violation:
+  SpaceX CFO Bret Johnsen telling investors (Goldman Sachs Communacopia,
+  Sept 10) that Starship Flight 14 will be the company's first
+  revenue-generating mission is new, attributed, dateable information
+  layered onto the existing Sept 1 FCC-filing item, not a claim that the
+  flight itself already happened; folded in via explainer patch with two
+  `informal`-class attaches (BigGo Finance, TeslaNorth) and no rescore
+  requested (item already at its trade-lead ceiling of 4).
+- 2026-09-11-M: A whitelisted tracker's own blog post directly disputing
+  an already-published claim (Marco Langbroek's SatTrackCam post arguing
+  ISW's "Rassvet second batch failed to reach altitude" read is wrong,
+  based on a side-by-side altitude-raising comparison against the first
+  batch) is a legitimate `updates[].patch` attaching both reads, not a
+  dispute-downgrade case: this is an editorial disagreement about
+  interpreting public tracking data, not a same-metric registry-fact
+  conflict, so no `dispute_resolved`/`rescore` machinery applies; his
+  bluesky post (the recorded signals.json channel) supplied the specific
+  post permalink as the `whitelist`/`observer` source, with the blog's own
+  fuller analysis drafted as attributed background per the standing
+  Northwood Space/2026-09-01-C workaround for a non-recorded companion
+  page.
+- 2026-09-11-N: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 2
+  updated, 0 held") plus a direct grep read of the new item's and both
+  updated items' `snr`/`category`/`impact`/`sources` fields (item 627, up
+  from 626; sweep log 238 to 239) as the build-health signal.
+

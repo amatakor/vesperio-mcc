@@ -57167,7 +57167,7 @@
         "https://fodnews.com/usa-32-spy-satellite-breakup-leo-debris/",
         "https://www.futura-sciences.com/en/shocking-satellite-explosion-why-400-devices-in-space-face-disaster-right-now_900202/"
       ],
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -57185,10 +57185,23 @@
             "delta": 1,
             "reason": "picked up by a mainstream (non-trade) outlet",
             "source": "https://www.futura-sciences.com/en/shocking-satellite-explosion-why-400-devices-in-space-face-disaster-right-now_900202/"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-12",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -57442,7 +57455,7 @@
         "https://www.satellitetoday.com/finance/2026/09/30/meridian-space-to-separate-spinlaunch-business-ahead-of-first-satellite-launch/"
       ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -57460,9 +57473,14 @@
             "delta": 1,
             "reason": "Meridian says SpinLaunch is not for sale, and named its Kongsberg NanoAvionics-built demo satellite and France and Miami ground-test sites ahead of Thursday's Transporter-18 launch.",
             "source": "https://www.satellitetoday.com/finance/2026/09/30/meridian-space-to-separate-spinlaunch-business-ahead-of-first-satellite-launch/"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
+        "final": 4,
         "scorer_version": 2,
         "history": [
           {
@@ -57470,6 +57488,12 @@
             "from": 2,
             "to": 3,
             "reason": "Meridian says SpinLaunch is not for sale, and named its Kongsberg NanoAvionics-built demo satellite and France and Miami ground-test sites ahead of Thursday's Transporter-18 launch."
+          },
+          {
+            "date": "2026-10-12",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ]
       },
@@ -66898,6 +66922,79 @@
         }
       ],
       "image": null
+    },
+    {
+      "id": "2026-10-09-amazon-leo-prime-bundling-speed-claims",
+      "date": "2026-10-09",
+      "headline": "Amazon Leo VP claims 3x Starlink speeds, plans Prime subscription bundling",
+      "explainer": {
+        "tagline": "Amazon Leo's VP of business told Ars Technica the service beats Starlink on speed and will bundle with Prime, Eero, Fire TV and Ring.",
+        "what_happened": "Amazon Leo vice president of business Chris Weber told Ars Technica the service has roughly a 3x download and 8-to-10x upload performance advantage over Starlink, per HowToGeek's account of the interview. Weber said Amazon has 396 satellites in orbit and plans to launch initial commercial service in 2026, and that Amazon will try to win consumers over by bundling Leo with other Amazon products including Prime, Eero routers, Fire TV and Ring.",
+        "why_it_matters": "Pairing broadband with Amazon's Prime subscriber base and device ecosystem is a different go-to-market than Starlink's standalone pricing, and a stated speed edge, if it holds once service actually launches, gives resellers and consumers a concrete claim to test. It is also the most specific head-to-head performance comparison either company has put on the record against Starlink."
+      },
+      "tags": [
+        "connectivity"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "Amazon"
+      ],
+      "source_url": "https://www.howtogeek.com/amazon-leo-is-on-track-to-launch-its-satellite-internet-service-later-this-year/",
+      "secondary_urls": [
+        "https://broadbandbreakfast.com/amazon-leo-aiming-to-sway-consumers-from-starlink-with-prime-other-bundles/",
+        "https://www.telecompaper.com/news/amazon-leo-says-on-track-for-services-launch-before-year-end--1585195"
+      ],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 1,
+          "source": "https://www.howtogeek.com/amazon-leo-is-on-track-to-launch-its-satellite-internet-service-later-this-year/",
+          "reason": "base tier 1 from lead source class \"informal\" (HowToGeek)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "single_class_corroboration": "informal"
+      },
+      "sources": [
+        {
+          "url": "https://www.howtogeek.com/amazon-leo-is-on-track-to-launch-its-satellite-internet-service-later-this-year/",
+          "outlet": "HowToGeek",
+          "class": "informal",
+          "added": "2026-10-12",
+          "via": "initial"
+        },
+        {
+          "url": "https://broadbandbreakfast.com/amazon-leo-aiming-to-sway-consumers-from-starlink-with-prime-other-bundles/",
+          "outlet": "Broadband Breakfast",
+          "class": "informal",
+          "added": "2026-10-12",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.telecompaper.com/news/amazon-leo-says-on-track-for-services-launch-before-year-end--1585195",
+          "outlet": "Telecompaper",
+          "class": "informal",
+          "added": "2026-10-12",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-12T05:26:11.393Z",
+      "image": {
+        "src": "/img/items/2026-10-09-amazon-leo-prime-bundling-speed-claims.webp",
+        "credit": "Image: howtogeek.com",
+        "origin_url": "https://www.howtogeek.com/amazon-leo-is-on-track-to-launch-its-satellite-internet-service-later-this-year/",
+        "width": 1200,
+        "height": 675
+      }
     }
   ]
 }
