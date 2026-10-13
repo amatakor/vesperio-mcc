@@ -4936,3 +4936,49 @@ a newer entry if a lesson changes.
   items, up from 915) and the updated Varda item's patched `explainer`
   and three-source `sources` array. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h43m gap, unfiltered full source list (2026-10-13, third)
+
+- 2026-10-13-E: A deal-value conflict across directly-fetched sources
+  resolved by fetching a third: two independently-written trade pieces
+  on CSG's MDA Space stake (defence-industry.eu, globalbankingandfinance.com,
+  the latter a Reuters wire pickup) stated no dollar figure at all, while
+  a WebSearch synthesis of Space Intel Report claimed a precise "C$618.5
+  million ($434 million)" figure -- rather than trust either the omission
+  or the unfetched synthesis, re-fetched Space Intel Report directly
+  asking only "does this article state a dollar figure, quote it
+  verbatim" and got the exact sentence back, then found a second
+  directly-fetched source (SatNews, whose own headline states "for $434
+  Million") independently carrying the same number. Two sources omitting
+  a figure a third, more detailed source states is not a contradiction
+  worth holding over; it just means the shorter wires ran before or
+  without the number. Worth the reminder that a WebSearch synthesis
+  claiming a specific figure still needs its own direct re-fetch with a
+  narrow, verbatim-quote-only prompt before it is trusted, even when the
+  figure sounds plausible and nothing else contradicts it outright.
+- 2026-10-13-F: The stated-value test moved a routine-sounding "European
+  group buys minority stake" story to `major`: CSG's $434 million
+  payment for 9.5% of MDA Space is nine figures and a clear "largest
+  shareholder" trajectory change for a already-profiled registry
+  organization, even though the transaction itself never touches a
+  crossfeed-eligible field (not a capital raise into MDA Space, no
+  change of control) -- impact and crossfeed are independent judgments,
+  and a minority-stake purchase can still clear the stated-value bar the
+  same way a funding round does.
+- 2026-10-13-G: An ~80% queue composed of "SpaceX Falcon 9 jellyfish
+  effect visible over the Carolinas/Florida/etc." sighting posts and
+  Google News pickups was all noise around a single already-published
+  launch (today's CRS-35/Dragon resupply mission); the sky-glow
+  spectacle generated dozens of local-TV and Bluesky posts but zero new
+  facts about the mission itself. Three genuinely new items (Gogo/Duncan
+  Aviation, SES/Lyntris, Viasat/All.Space) all came from the same Via
+  Satellite harvester entries published the same morning, confirming
+  trade-press feed entries are worth reading individually even on a
+  queue otherwise dominated by one viral visual-sighting story.
+- 2026-10-13-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (920 items, up from 916) and both updated items' grown
+  `sources`/`updates` arrays (Rassvet: 8 sources/6 updates; Musk/Ambani:
+  11 sources/7 updates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
