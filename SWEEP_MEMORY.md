@@ -4905,3 +4905,34 @@ a newer entry if a lesson changes.
   907) and the sweep log's `signals`/`discovery` blocks. `bun run
   build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~2h27m gap, unfiltered full source list (2026-10-13, second)
+
+- 2026-10-13-D: A still-`public-inspection` (not yet officially published)
+  Federal Register document has its own API shape: `federalregister.gov/
+  api/v1/documents/<doc-number>.json` 404's until the document's real
+  publication date arrives, but `federalregister.gov/api/v1/
+  public-inspection-documents/<doc-number>.json` works immediately and
+  returns title/agency/filing-date/publication-date metadata (no body
+  text) even the day before formal publication; the PDF at
+  `public-inspection.federalregister.gov/<doc-number>.pdf` fetched as
+  unreadable binary (no `pdftotext`/`poppler-utils` available in this
+  environment, and the Read tool's PDF support needs `pdftoppm`, also
+  absent). Used the metadata purely to confirm the document existed and
+  matched the story (title, agency, filing date), while sourcing the
+  actual figures (456 launches/912 landings, two phases) to a directly-
+  fetched mainstream wire mirror (Insurance Journal's Bloomberg pickup)
+  rather than force an `official_record` lead off unread body text;
+  landed an honest mainstream-base SNR 4 via `corroboration_2plus`
+  rather than an unverifiable SNR 5. A second IAC-2026-day-two lead
+  (Baykar/Fergani's 100-satellite GNSS plan, Turkey's Somalia spaceport)
+  traced to a years-old plan and a January 2026 construction-start
+  announcement both still being restated without any new figure or
+  timeline actually confirmed across sources; left undrafted per the
+  standing vague-conference-restatement pattern. `bun scripts/
+  finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new,
+  1 updated, 0 held"); confirmed via a direct `jq` read of the new FAA/
+  Starbase item's `snr`/`snr_trace`/`category`/`impact` fields (916
+  items, up from 915) and the updated Varda item's patched `explainer`
+  and three-source `sources` array. `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
