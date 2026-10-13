@@ -1,16 +1,16 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-10-12T17:15:51.666Z",
-  "window_start": "2026-10-10T16:24:52.643Z",
+  "generated_at": "2026-10-13T00:58:51.716Z",
+  "window_start": "2026-10-10T17:22:59.983Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-10-01T22:42:00.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "BlackSky IR",
@@ -27,14 +27,6 @@
       "entry_count": 20,
       "newest_entry": "2026-09-29T00:00:00.000Z",
       "detail": "20 entries"
-    },
-    {
-      "source_name": "Synspective",
-      "ok": false,
-      "http_status": 404,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -62,18 +54,18 @@
     },
     {
       "source_name": "JAXA / MHI",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 20,
-      "newest_entry": "2026-10-01T05:00:00.000Z",
-      "detail": "20 entries"
+      "ok": false,
+      "http_status": 403,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 403"
     },
     {
       "source_name": "Launch Library 2 (TheSpaceDevs)",
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-12T15:16:05.000Z",
+      "newest_entry": "2026-10-13T00:53:20.000Z",
       "detail": "10 entries"
     },
     {
@@ -223,10 +215,10 @@
     {
       "source_name": "SpaceNews",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 15,
+      "newest_entry": "2026-10-12T13:00:00.000Z",
+      "detail": "15 entries"
     },
     {
       "source_name": "Payload",
@@ -249,39 +241,39 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-11T21:47:31.000Z",
+      "newest_entry": "2026-10-12T21:08:32.000Z",
       "detail": "10 entries"
     },
     {
       "source_name": "SpaceflightNow",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-10-12T22:21:40.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Via Satellite",
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-09T18:38:07.000Z",
+      "newest_entry": "2026-10-12T21:37:10.000Z",
       "detail": "10 entries"
     },
     {
       "source_name": "SpacePolicyOnline",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-10-11T19:37:35.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Space.com",
       "ok": true,
       "http_status": 200,
       "entry_count": 50,
-      "newest_entry": "2026-10-12T16:00:00.000Z",
+      "newest_entry": "2026-10-12T21:00:00.000Z",
       "detail": "50 entries"
     },
     {
@@ -377,7 +369,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-10-12T17:03:45.000Z",
+      "newest_entry": "2026-10-13T00:30:30.000Z",
       "detail": "100 entries"
     },
     {
@@ -417,23 +409,23 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 41,
-      "newest_entry": "2026-10-12T16:12:57.000Z",
+      "newest_entry": "2026-10-12T22:01:43.000Z",
       "detail": "41 entries"
     },
     {
       "source_name": "Futurism",
       "ok": true,
       "http_status": 200,
-      "entry_count": 88,
+      "entry_count": 84,
       "newest_entry": "2026-10-12T14:01:00.000Z",
-      "detail": "88 entries"
+      "detail": "84 entries"
     },
     {
       "source_name": "Bluesky search: spacex launch",
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-10-12T17:16:22.262Z",
+      "newest_entry": "2026-10-13T00:58:21.860Z",
       "detail": "25 entries"
     },
     {
@@ -447,69 +439,229 @@
     {
       "source_name": "Bluesky search: earth observation satellite",
       "ok": true,
-      "http_status": 304,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "304 not modified"
+      "http_status": 200,
+      "entry_count": 25,
+      "newest_entry": "2026-10-12T22:22:31.157Z",
+      "detail": "25 entries"
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-10T17:32:25.000Z",
-      "detail": "10 entries"
+      "ok": false,
+      "http_status": 500,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 500"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-10T15:59:19.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 500,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 500"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T16:48:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-10T11:03:11.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-06T14:04:55.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 500,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 500"
     }
   ],
   "candidates": [
+    {
+      "id": "e120ef85fb152cb5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/pmnbuzz.bsky.social/post/3mxptbtgyni2w",
+      "title": "@pmnbuzz.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:58:21.860Z",
+      "raw_excerpt": "SpaceX launching 6,300 pounds of cargo to the ISS on Oct. 13: Watch it live NASA's SpaceX 35th Commercial Resupply Services Launch-YouTube[ Enjoy On SpaceX will introduce its most current freight objective to the International Space Station on Tuesday early morning(Oct. 13 ), and you can enjoy the…",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "205565fa875c3857",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mxpt3wdddb24",
+      "title": "@bigearthdata.ai on Bluesky",
+      "published_at": "2026-10-13T00:55:03.665Z",
+      "raw_excerpt": "'Things are going super well at 39A': SpaceX gearing up to launch Starship from Florida for 1st time ->Space | More on \"Spacex Starship Florida launch preparations\" at BigEarthData.ai | #SpaceX",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "fbeff52545720f64",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/allenz-4.bsky.social/post/3mxpt2nmgk22p",
+      "title": "@allenz-4.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:54:21.255Z",
+      "raw_excerpt": "MISSION REPLAY HIGHLIGHTS: Starlink group 15-25 : VSFB SLC-4E : 12/13 October 2026 (00:28:11 UTC). SpaceX Starlink 423 launch and Falcon 9 first stage landing, 13 October 2026.. 10/12/2026 youtu.be/JJ06bHr3_o8?...",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "0774fb555bfaeff3",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/3b430f81-0ff1-4d85-8a1a-cef0de326198/",
+      "title": "Falcon 9 Block 5 | Bandwagon 5 (Dedicated Mid-Inclination Rideshare)",
+      "published_at": "2026-10-13T00:46:29.000Z",
+      "raw_excerpt": "Dedicated rideshare flight to a mid-inclination orbit with dozens of small microsatellites and nanosatellites for commercial and government customers.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "b5ce73726170719c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/scinewsro.bsky.social/post/3mxpsjihenk2p",
+      "title": "@scinewsro.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:44:45.956Z",
+      "raw_excerpt": "SpaceX Starlink 423 launch and Falcon 9 first stage landing, 13 October 2026 www.youtube.com/watch?v=JJ06...",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "8bdd36c4493e8302",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bug-luvs.bsky.social/post/3mxps4yajcs2h",
+      "title": "@bug-luvs.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:37:45.263Z",
+      "raw_excerpt": "Fu*king spacex rocket launch has rattled my house twice in the last few days. Literally my window casings are cracking. They don’t care about people or the environment. Why are they allowed to even exist. 🤬🤬🤬",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "ff902414795fff54",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE5fTENGUV9nS2lPMGZUWEJ2aXI4MnNGVlZSRklDdHUtWEY0Skd0cnZhOHJXbVB1REZRMjlyS0pEOE5zRU1wRThvTHdtZFg5aWdnTXFOMnFyZkEtZW54eEFZaW16dk9aTDY3dzdEUFJUemtaVjZH?oc=5",
+      "title": "Starlink Is Getting A Key Upgrade To Start Competing With T-Mobile And AT&T - BGR",
+      "published_at": "2026-10-13T00:30:30.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMidEFVX3lxTE5fTENGUV9nS2lPMGZUWEJ2aXI4MnNGVlZSRklDdHUtWEY0Skd0cnZhOHJXbVB1REZRMjlyS0pEOE5zRU1wRThvTHdtZFg5aWdnTXFOMnFyZkEtZW54eEFZaW16dk9aTDY3dzdEUFJUemtaVjZH?oc=5\" target=\"_blank\">Starlink Is Getting A Key Upgrade To Start Competing With T-Mobile And AT&T</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BGR</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "97077752806c3a08",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/starbase.bsky.social/post/3mxprcdxymc2j",
+      "title": "@starbase.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:22:54.262Z",
+      "raw_excerpt": "Launch of SpaceX #Falcon9 Block 5 rocket with #Starlink Group 15-25 satellites & 1st stage droneship landing imminent. Watch live!",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "b13dd059f4913550",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOQjJZRXlSYWplc1haeUFqX1poOXZFUWxCR081eGNBN0xSZzJjZ3poVmNwVVpxUUJTclVNWHo1NXB2NmRGbXFJb0VkUmhWUFliRW9hUnBFWUVqc29FZ0J1cTZQU1RVNGtmRjlKd0lZdG5KVmpNOUFNMEJtVVVDNG1TbVhQVkhhZXQzMTRydjZyMlQzaXFsei0wbWYtZ1AzOFNwX3BCRld6UUc0Tk1UNzRzblJMVndLZ2xLQ01ESWh1NWloNVoyZ2tiYQ?oc=5",
+      "title": "The SpaceX threat could loom over AT&T’s stock for a prolonged stretch, analyst cautions - MarketWatch",
+      "published_at": "2026-10-13T00:18:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiyAFBVV95cUxOQjJZRXlSYWplc1haeUFqX1poOXZFUWxCR081eGNBN0xSZzJjZ3poVmNwVVpxUUJTclVNWHo1NXB2NmRGbXFJb0VkUmhWUFliRW9hUnBFWUVqc29FZ0J1cTZQU1RVNGtmRjlKd0lZdG5KVmpNOUFNMEJtVVVDNG1TbVhQVkhhZXQzMTRydjZyMlQzaXFsei0wbWYtZ1AzOFNwX3BCRld6UUc0Tk1UNzRzblJMVndLZ2xLQ01ESWh1NWloNVoyZ2tiYQ?oc=5\" target=\"_blank\">The SpaceX threat could loom over AT&T’s stock for a prolonged stretch, analyst cautions</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">MarketWatch</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "a3ffbac1bd1e34d5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mxpqvbztwh2f",
+      "title": "@astronomybot.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:15:33.056Z",
+      "raw_excerpt": "Rocket Launch Falcon 9 Block 5 | Starlink Group 15-25 On 2026-10-12 at 23:00:00 UTC | 0 days, 1 hours, 15 mins ago By SpaceX Status: Current T-0 confirmed by official or reliable sources. Rocket: Falcon 9 Block 5 Launch pad: Space Launch Complex 4E, located at Vandenberg SFB, CA, USA Orbit: Low E...",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "6ffed786f74e6f0f",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNMFRGN1NBRWJzc2U1UzlNZE1BZ19aalhZNUtfUElpYWlHT0dDYVBDY0JrcFJzNkgycnlpbjdzdExqT3VZRk5yVzlGN3B2dml6Z0VaTHB5MjJIMUFWaUNmMzhIaThyakdoWXRhNWhjVDRMMWFBaUdVNm41Rmo3bWxiTjZLbjVEekNNSUptNFdZSW91Wjc3amVn?oc=5",
+      "title": "SpaceX Bundles Grok, X, And Cursor Into New Subscription Tiers - Yahoo Finance",
+      "published_at": "2026-10-13T00:05:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNMFRGN1NBRWJzc2U1UzlNZE1BZ19aalhZNUtfUElpYWlHT0dDYVBDY0JrcFJzNkgycnlpbjdzdExqT3VZRk5yVzlGN3B2dml6Z0VaTHB5MjJIMUFWaUNmMzhIaThyakdoWXRhNWhjVDRMMWFBaUdVNm41Rmo3bWxiTjZLbjVEekNNSUptNFdZSW91Wjc3amVn?oc=5\" target=\"_blank\">SpaceX Bundles Grok, X, And Cursor Into New Subscription Tiers</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "e0b676245715be0e",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spacelaunch-bot.bsky.social/post/3mxpqagtmvh2f",
+      "title": "@spacelaunch-bot.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:03:53.664Z",
+      "raw_excerpt": "SpaceX is launching a rocket! Dragon CRS-2 SpX-35 is a resupply mission and will launch via a Falcon 9 rocket from 🇺🇸 Space Launch Complex 40 on 2026-10-13 at 10:33 UTC. For more information, visit the Go4Liftoff launch page. #rocketlaunch #resupply 🚀✨",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "98c0eb1d68ee2ea7",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxpq6ypks52y",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-13T00:03:05.558Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 13/0000 🚀 PLANNED LAUNCH/REENTRY: SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-0343Z BACKUP: 10/13/26 2300Z-0343Z SPACEX CRS-35, CAPE CANAVERAL SFS, FL PRIMARY: 10/13/26 102... More info in image. FAA Details.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "1a927e8c9e1af04a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTFBEQkJyX1hRdGh4Qno4VmJMQ3h1TTFmUkp2ejU0X3ZnRjBjZk1oZ3pJNFJ0cWNVY3YwWVJ2QjBQSU9fYUtNWnhVdjhzRDNfSHFxSDdzdXRn?oc=5",
+      "title": "WATCH LIVE: SpaceX's Falcon 9 rocket launches 27 Starlink satellites - Fox News",
+      "published_at": "2026-10-13T00:02:19.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiVkFVX3lxTFBEQkJyX1hRdGh4Qno4VmJMQ3h1TTFmUkp2ejU0X3ZnRjBjZk1oZ3pJNFJ0cWNVY3YwWVJ2QjBQSU9fYUtNWnhVdjhzRDNfSHFxSDdzdXRn?oc=5\" target=\"_blank\">WATCH LIVE: SpaceX's Falcon 9 rocket launches 27 Starlink satellites</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fox News</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "c1879a5ef56e8f25",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/everythingspace.bsky.social/post/3mxpq2p2b5v2y",
+      "title": "@everythingspace.bsky.social on Bluesky",
+      "published_at": "2026-10-13T00:00:40.657Z",
+      "raw_excerpt": "Live now — Starlink Group 15-25 is off the pad from Vandenberg SFB. A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for… https://everythingspace.online/launches/97c6f5e1-299e-4652-b72d-9618ac047076?utm_source=bluesky&utm_campaign=liftoff #SpaceX #spaceflight",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "6509b9b846026e1c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/thebaltimorebanner.com/post/3mxpq24dfxa2m",
+      "title": "@thebaltimorebanner.com on Bluesky",
+      "published_at": "2026-10-13T00:00:21.859Z",
+      "raw_excerpt": "SpaceX ‘jellyfish cloud’ expected to light up Maryland skies Tuesday morning",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
     {
       "id": "05984017052a3a3f",
       "source_name": "Federal Register API: NOAA",
@@ -741,6 +893,566 @@
       "consumed": true
     },
     {
+      "id": "9f77c6358efb1d7d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spacenew-hoshiyomi.bsky.social/post/3mxpopd6cwr2r",
+      "title": "@spacenew-hoshiyomi.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:36:26.261Z",
+      "raw_excerpt": "https://www.space.com/space-exploration/international-space-station/spacex-crs-35-cargo-launch-international-space-station",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "c67e46cf18e188a0",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/7766f3bb-674c-4c71-b986-963bd633fcfe/",
+      "title": "Electron | We're Not Hawking Around (3x HawkEye 360)",
+      "published_at": "2026-10-12T23:33:06.000Z",
+      "raw_excerpt": "HawkEye 360 is a a space-based civil global intelligence satellite network using radio frequency (RF) technology to help monitor transportation across air, land and sea and assist with emergencies, and to provide civil SIGINT (Signal Intelligence) mission. The constellation of small satellites (named Hawk ) will collect information on specific radio signals worldwide to provide high-precision radio frequency mapping and analytics from Low Earth orbit (LEO).",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "0f89380035737f6c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/allenz-4.bsky.social/post/3mxpo3boog22y",
+      "title": "@allenz-4.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:25:14.664Z",
+      "raw_excerpt": "Vandenberg Space Force Base @SLDelta30: Starlink group 15-25 : VSFB SLC-4E : 12/13 October 2026 (00:28:11 UTC). The U.S. Space Force has approved the launch of a SpaceX Falcon 9 rocket carrying the Starlink 15-25 mission to low-Earth orbit.. 10/12/2026",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "26683666b29dc02d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/launchalertsbot.bsky.social/post/3mxpnp2qti62y",
+      "title": "@launchalertsbot.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:18:22.763Z",
+      "raw_excerpt": "🚀 T-minus ~1 hour: SpaceX Falcon 9 Block 5 | Starlink Group 15-25 is GO for 8:28 PM EDT from Space Launch Complex 4E, Vandenberg, California. #SpaceX #Starlink #space",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "109ca06134537b51",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5qdHdRMG52TDhoUVNxOGRfQVZYMGk0cXlXRGdRb1FGUVV1dlF1U2xEWEtmYnhoWXdBNVR2YUFJYjhtOGllOVpnU0NiczYwM1BmYUJSUk8xdi1VOGRPakFKaHpRaUdVY2huNVJNUmdYM25KOUE2Vmc?oc=5",
+      "title": "Poland accuses Russian intelligence of sabotaging Elon Musk's Starlink - Macon Telegraph",
+      "published_at": "2026-10-12T23:05:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMidkFVX3lxTE5qdHdRMG52TDhoUVNxOGRfQVZYMGk0cXlXRGdRb1FGUVV1dlF1U2xEWEtmYnhoWXdBNVR2YUFJYjhtOGllOVpnU0NiczYwM1BmYUJSUk8xdi1VOGRPakFKaHpRaUdVY2huNVJNUmdYM25KOUE2Vmc?oc=5\" target=\"_blank\">Poland accuses Russian intelligence of sabotaging Elon Musk's Starlink</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Macon Telegraph</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "1d604f3c5acf8d0f",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/danielsuguwa.bsky.social/post/3mxpmq3zj4u2i",
+      "title": "@danielsuguwa.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:01:04.554Z",
+      "raw_excerpt": "Everything is subject to change, so please be patient in case of stream or launch delays. See you there, and enjoy the flight! 😊 #spacex #falcon9 #starlink #starlinkgroup15 #starlinkgroup15-25 #danielsuguwa #indievtuber #spacevtuber #sarawakvtuber #borneovtuber #bqp",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "cf3e2c6e45fa38d9",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/everythingspace.bsky.social/post/3mxpmpjg6me2y",
+      "title": "@everythingspace.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:00:44.855Z",
+      "raw_excerpt": "SpaceX Falcon 9 rocket to launch 27 Starlink satellites into orbit from California Liftoff off of the Starlink 15-25 mission from Space Launch Complex 4 East is scheduled for 5:28 p.m. PDT (8:28… https://everythingspace.online/news/40357?utm_source=bluesky&utm_campaign=news #SpaceX #spaceflight",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "7d2d14f8085e837d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/everythingspace.bsky.social/post/3mxpmpgbt7l2i",
+      "title": "@everythingspace.bsky.social on Bluesky",
+      "published_at": "2026-10-12T23:00:41.266Z",
+      "raw_excerpt": "Starlink Group 15-25 launches within the hour from Vandenberg SFB. A batch of 27 satellites for the Starlink mega-constellation - SpaceX's project for… https://everythingspace.online/launches/97c6f5e1-299e-4652-b72d-9618ac047076?utm_source=bluesky&utm_campaign=t_minus_1h #SpaceX #spaceflight",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "386fe1bf2ac746b6",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOMkFFYmxKZVp5a3Z4UXF2UUNRZWp2MzF3U3dDMXpFZm5FcTZJbl9QVE1obVQ4MkhNNTMwOHNheGhwcUc1RlZUczBlbHRURmd6LTV5YXQ2VEFkYVM5YnFtU0RDRDU3c0lfNzZuUUtGOXl6Um16dmhUT19ocG40RUNZeVBpVU9JR195VEpOcXhrUGNfLUJ5SFM5WWZmcElSdm5nTE9lb1M5d3pDTG9pWGo2czJlc9IBuAFBVV95cUxQbktZMmVaUDNfRTgxYm5iY1FUOWhSU3V3RmFkZGlkd0VZRHFKdm9MLVNVZUtZQVk0SG9DR0g3Zmk4UkxFLXc3OXNYUHFxdzU1dGt1WHN5eHBQMkZIUmc1c21RNW0tdURsRVlSUFVKOFgzSHNNa1d5RkZEV0JOWHFzUmxOTi1uVUNGWFNEenBxU18wQ1JSejhydDV6TF9jaGFpREpFUXFiUXp6SmdFRWJCbWhGeWtnZUYx?oc=5",
+      "title": "Poland says two Turks arrested over Russia-linked Starlink station fire - Al Jazeera",
+      "published_at": "2026-10-12T22:55:26.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxOMkFFYmxKZVp5a3Z4UXF2UUNRZWp2MzF3U3dDMXpFZm5FcTZJbl9QVE1obVQ4MkhNNTMwOHNheGhwcUc1RlZUczBlbHRURmd6LTV5YXQ2VEFkYVM5YnFtU0RDRDU3c0lfNzZuUUtGOXl6Um16dmhUT19ocG40RUNZeVBpVU9JR195VEpOcXhrUGNfLUJ5SFM5WWZmcElSdm5nTE9lb1M5d3pDTG9pWGo2czJlc9IBuAFBVV95cUxQbktZMmVaUDNfRTgxYm5iY1FUOWhSU3V3RmFkZGlkd0VZRHFKdm9MLVNVZUtZQVk0SG9DR0g3Zmk4UkxFLXc3OXNYUHFxdzU1dGt1WHN5eHBQMkZIUmc1c21RNW0tdURsRVlSUFVKOFgzSHNNa1d5RkZEV0JOWHFzUmxOTi1uVUNGWFNEenBxU18wQ1JSejhydDV6TF9jaGFpREpFUXFiUXp6SmdFRWJCbWhGeWtnZUYx?oc=5\" target=\"_blank\">Poland says two Turks arrested over Russia-linked Starlink station fire</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Al Jazeera</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "40c353f2b203571c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mxplqgl5kc2t",
+      "title": "@bigearthdata.ai on Bluesky",
+      "published_at": "2026-10-12T22:43:21.865Z",
+      "raw_excerpt": "SpaceX launching 6,300 pounds of cargo to the ISS on Oct. 13: Watch it live ->Space | More on \"SpaceX Dragon cargo mission ISS\" at BigEarthData.ai | #SpaceX",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "709b13ddf5aed54d",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/no-privacy.bsky.social/post/3mxpkzqmeus2a",
+      "title": "@no-privacy.bsky.social on Bluesky",
+      "published_at": "2026-10-12T22:30:40.269Z",
+      "raw_excerpt": "SpaceX has been reliable but I would much prefer to use other suppliers for obvious reasons. The Blue Origin setbacks this year really sucked in terms of reducing our launch cadence however AST is clearly still working through scaling issues to get to 6/month. I think they are heading to 12/month.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "45ce046791d1b5a3",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPQ0hvNUo2djRjcEY5SGZTOW9JY09FSGVoblg1Ym1Nakc5OUtPcl90VjdmbjN5UGh6NDc5R2NjSjFTU2x0bzJOSlNnV2xmYTRjdTNaQmZnZktVTXFucDV1NDg0NW03N2VXLUNpbExDUlVuVFNxbHdNNlVyaWRLUklENTlJVGFvSXBhWlRJTlY3b2xEU3BlNFpLV3dPbjR5RGluQXdHSUtfaG44SUJsRU1YVUNaYWV5cXQ2d3YxTnhB?oc=5",
+      "title": "SpaceX Falcon 9 rocket to launch 27 Starlink satellites into orbit from California - Spaceflight Now",
+      "published_at": "2026-10-12T22:26:27.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivgFBVV95cUxPQ0hvNUo2djRjcEY5SGZTOW9JY09FSGVoblg1Ym1Nakc5OUtPcl90VjdmbjN5UGh6NDc5R2NjSjFTU2x0bzJOSlNnV2xmYTRjdTNaQmZnZktVTXFucDV1NDg0NW03N2VXLUNpbExDUlVuVFNxbHdNNlVyaWRLUklENTlJVGFvSXBhWlRJTlY3b2xEU3BlNFpLV3dPbjR5RGluQXdHSUtfaG44SUJsRU1YVUNaYWV5cXQ2d3YxTnhB?oc=5\" target=\"_blank\">SpaceX Falcon 9 rocket to launch 27 Starlink satellites into orbit from California</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Spaceflight Now</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "6ca7ffc23e2add49",
+      "source_name": "Bluesky search: earth observation satellite",
+      "url": "https://bsky.app/profile/space.blog.gov.uk.web.brid.gy/post/3mxpkl2g3pgc2",
+      "title": "@space.blog.gov.uk.web.brid.gy on Bluesky",
+      "published_at": "2026-10-12T22:22:31.157Z",
+      "raw_excerpt": "",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "c56c7a435cd8616a",
+      "source_name": "SpaceflightNow",
+      "url": "https://spaceflightnow.com/2026/10/12/spacex-falcon-9-rocket-to-launch-27-starlink-satellites-into-orbit-from-california/",
+      "title": "SpaceX Falcon 9 rocket to launch 27 Starlink satellites into orbit from California",
+      "published_at": "2026-10-12T22:21:40.000Z",
+      "raw_excerpt": "A Falcon 9 rocket stands ready for launch from Vandenberg in this file photo. Image: SpaceX. SpaceX will launch a Falcon 9 rocket Monday from Vandenberg Space Force Base, California, carrying another batch of Starlink satellites. Liftoff off of the Starlink 15-25 mission from Space Launch Complex 4 East is scheduled for 5:28 p.m. PDT (8:28 p.m. EDT / 0028 UTC). The rocket will head on a southerly trajectory along the California coast as it targets an orbit inclined 70 degrees to the Equator. Spaceflight Now will have live coverage starting about 30 minutes prior to launch. The first-stage booster, serial number B1088, launching for a 20th time, will land on the drone ship ‘Of Course I Still Love You’ nearly 8.5 minutes into the flight. The booster previously flew the NROL-126, Transporter-12, SPHEREx, NROL-57 and USSF-366 mission, plus 14 previous Starlink delivery runs. If all goes according to plan the 27 Starlink V2 Mini Optimized satellites will be deployed into a 266 kilometer high orbit a little more than an hour after liftoff.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "be7aa5e357d39924",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOLVcxNE5IenpCT3VjeEVkQlZyd1FJT2NJeGd0Tlg3dGw5N3YtRENGMFdET1Q0UzJhN0pNMFFjcXc0ZnpJZi1IQmI4TVBKaWp2U3FQOEhPREhRRS1nM2o2QXd4THNYOUdvVlBKRlc0TmZNQ3NzUzJ2VElsWi05bGxIWTBNZkRoNF84bEJUYW1aYzlzRmpydlNZ?oc=5",
+      "title": "Cathie Wood Calls SpaceX a \"Deep-Value Opportunity\" at Its IPO Price. Here's the Math She's Using. - The Motley Fool",
+      "published_at": "2026-10-12T22:11:38.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxOLVcxNE5IenpCT3VjeEVkQlZyd1FJT2NJeGd0Tlg3dGw5N3YtRENGMFdET1Q0UzJhN0pNMFFjcXc0ZnpJZi1IQmI4TVBKaWp2U3FQOEhPREhRRS1nM2o2QXd4THNYOUdvVlBKRlc0TmZNQ3NzUzJ2VElsWi05bGxIWTBNZkRoNF84bEJUYW1aYzlzRmpydlNZ?oc=5\" target=\"_blank\">Cathie Wood Calls SpaceX a \"Deep-Value Opportunity\" at Its IPO Price. Here's the Math She's Using.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "931cabba743027a9",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mxpjigylta2h",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-10-12T22:03:06.272Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 12/2200 🚀 PLANNED LAUNCH/REENTRY: SPACEX STARLINK 15-25, VANDENBERG SFB, CA PRIMARY: 10/12/26 2300Z-0343Z BACKUP: 10/13/26 2300Z-0343Z SPACEX CRS-35, CAPE CANAVERAL SFS, FL PRIMARY: 10/13/26 102... More info in image. FAA Details.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "8b2bd1f584582575",
+      "source_name": "BBC science and environment",
+      "url": "https://www.bbc.co.uk/news/articles/c6pvgryp8yv0o?at_medium=RSS&at_campaign=rss",
+      "title": "Crew searching for Amelia Earhart arrives at crab-infested island",
+      "published_at": "2026-10-12T22:01:43.000Z",
+      "raw_excerpt": "Researchers will sleep on their ship to avoid giant crabs that can lift heavy weights, split open coconuts, and may have played a role in Earhart's demise.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "a236bb378625141c",
+      "source_name": "Via Satellite",
+      "url": "https://www.satellitetoday.com/space-economy/2026/10/12/ispace-and-altec-combine-for-new-lunar-testing/",
+      "title": "ispace and ALTEC Partner for New Lunar Testing",
+      "published_at": "2026-10-12T21:37:10.000Z",
+      "raw_excerpt": "ispace-Europe and Aerospace Logistics Technology Engineering Company (ALTEC) are set to collaborate on lunar rover testing, mission simulations, and operations training in a new pan-European partnership. ispace-Europe and ALTEC will assess opportunities for ispace-Europe to use ALTEC facilities to simulate rover platform operations in lunar analog environments. The two companies announced the MoU, Oct. 12. ALTEC is a public-private company owned by Thales Alenia Space and the Italian Space Agency (ASI). It operates the Rover Operations Control Center (ROCC), the mission control facility for ESA’s ExoMars Rosalind Franklin rover, which is currently used for ground testing of rover systems. ALTEC is also developing a new Lunar Simulation Center, funded by the Italian Space Agency (ASI), dedicated to the simulation and testing of robotic lunar exploration missions and related operational activities. ispace-Europe is the European subsidiary of Japanese lunar lander company. The agreement will also explore broader cooperation potentially related to lunar exploration technologies, lunar mobility, and space resource utilization. The new facility will aim to provide analog environments and capabilities to support the testing and validation of technologies, systems and operational concepts for future lunar missions, further strengthening Italy’s role in planetary exploration. “Testing, simulation and operator training in analog lunar environments are essential to successful lunar surface operations. Through this collaboration with ALTEC, we have the opportunity to bring together ispace-Europe’s expertise in lunar rover development and operations with ALTEC’s advanced lunar analog facilities, as well as their expertise testing for planetary mission operations. This agreement reflects the growing strength of Europe’s lunar exploration ecosystem,” Julien-Alexandre Lamamy, CEO of ispace-Europe, said in a statement. The post ispace and ALTEC Partner for New Lunar Testing appeared",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "e5996b3ee49d4638",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mxphhtzux52u",
+      "title": "@bigearthdata.ai on Bluesky",
+      "published_at": "2026-10-12T21:26:59.366Z",
+      "raw_excerpt": "SpaceX CRS-35 launch could bring sonic booms, 'space jellyfish' to Central Florida ->FOX 35 Orlando | More on \"SpaceX cargo mission to space station\" at BigEarthData.ai | #SpaceX",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "a21073d6217f5c8f",
+      "source_name": "NASASpaceflight",
+      "url": "https://www.nasaspaceflight.com/2026/10/crs-35-launch/",
+      "title": "CRS-35 set to launch to ISS with final iROSA arrays, experiments, and other items",
+      "published_at": "2026-10-12T21:08:32.000Z",
+      "raw_excerpt": "The International Space Station, fresh off a crew handover and the return of Crew-12 to Earth, is about to receive a new cargo ship. SpaceX Cargo Dragon C211, making its fourth flight, is scheduled to launch on Tuesday, Oct. 13, at 6:33 AM EDT (10:33 UTC) from Space Launch Complex 40 (SLC-40) at the Cape Canaveral Space Force Station in Florida on the CRS-35 mission. The weather forecast for the launch shows less than a five percent chance of violation on Tuesday, a five percent chance on Wednesday, and a 10% chance on Thursday, with the cumulus cloud rule being the only concern. CRS-35 will take a northeast trajectory after liftoff, placing the Cargo Dragon in an orbit inclined 51.6 degrees to the equator, the same inclination used by the Station. Booster B1096, flying for the eighth time, will conduct a return-to-launch-site recovery at Landing Zone 40 (LZ-40), next to the launch pad. The booster began its career with the Amazon Leo KF-01 mission and has previously flown the IMAP, Starlink 6-87, NROL-77, GPS III SV09, CRS-34, and NROL-95 missions. All of B1096’s missions have flown from Florida to date. In addition, Cargo Dragon C211 began its career with the CRS-26 launch and has also flown CRS-29 and CRS-33. See Also CRS-35 Updates ISS Section Click here to Join L2 Once CRS-35 reaches orbit, Dragon will take just over 52 hours to rendezvous and dock with the Station’s Harmony module. Docking is currently set for Thursday, Oct. 15, at 15:00 UTC to Harmony ‘s zenith docking port, and astronauts Anil Menon and Joshua Kutryk will monitor the arrival. The zenith port is the same port that was just vacated by Crew-12 aboard the Crew Dragon Freedom . CRS-35 will carry 2,867 kg of cargo to the Station, including 593 kg of science experiments, 383 kg of crew supplies, 362 kg of vehicle hardware, 189 kg of spacewalk equipment, and 36 kg of computer resources. In addition, the Cargo Dragon is carrying 1,195 kg of cargo in its unpressurized trunk. The unpressurized cargo in",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "6072a31ee7ea920c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/fox35orlando.bsky.social/post/3mxpfyf3jrm2i",
+      "title": "@fox35orlando.bsky.social on Bluesky",
+      "published_at": "2026-10-12T21:00:26.460Z",
+      "raw_excerpt": "NASA and SpaceX are targeting Tuesday morning for the launch of a cargo mission carrying more than 6,300 pounds of science experiments, supplies and equipment to the International Space Station.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "1ed336dad3044e49",
+      "source_name": "Space.com",
+      "url": "https://www.space.com/space-exploration/international-space-station/spacex-crs-35-cargo-launch-international-space-station",
+      "title": "SpaceX launching 6,300 pounds of cargo to the ISS on Oct. 13: Watch it live",
+      "published_at": "2026-10-12T21:00:00.000Z",
+      "raw_excerpt": "SpaceX will launch its latest cargo mission to the International Space Station on Tuesday morning (Oct. 13), and you can watch the action live. A Falcon 9 rocket is scheduled to launch a robotic Dragon capsule to the orbiting lab from Florida's Cape Canaveral Space Force Station on Tuesday at 6:33 a.m. EDT (1033 GMT). You can watch the action live here at Space.com, courtesy of NASA, starting at 6:15 a.m. EDT (1015 GMT). A SpaceX Falcon 9 rocket launches the company's Dragon spacecraft on the CRS-34 cargo mission to the ISS from Cape Canaveral Space Force Station on May 15, 2026. (Image credit: SpaceX) The launch will kick off the CRS-35 mission, so named because it will be the 35th that SpaceX flies under a Commercial Resupply Services contract with NASA. If all goes according to plan, Dragon will reach the International Space Station (ISS) on Thursday (Oct. 15), docking autonomously to the space-facing port of its Harmony module at around 11 a.m. EDT (1500 GMT). You can watch the arrival here at Space.com as well; coverage will start at 9:15 a.m. EDT (1315 GMT). CRS-35 will deliver 6,300 pounds (2,860 kilograms) of supplies to the astronauts aboard the orbiting lab, including the final set of International Space Station Roll-Out Solar Arrays (iROSAs), which will boost the orbiting lab's energy budget. There's also quite a bit of scientific gear heading up on the flight. Dragon \"will deliver hardware to manufacture artificial retinas in microgravity to help restore vision on Earth and 3D heart tissue models to advance large‑scale drug testing on future missions,\" NASA officials wrote in a CRS-35 launch preview on Oct. 7. \"The spacecraft will carry materials to study how a new type of glass forms in microgravity and brain organoids that could reveal treatment targets for neurodegenerative diseases, such as Alzheimer's, Parkinson's and multiple sclerosis,\" they added. Dragon will stay attached to the ISS for about a month, then head back down to Earth with scientific",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "7a5e5e89a0cd869c",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQTGRwbngwOEpaMkhoUUQzTmxQcGRncVdzeHhlWkVQNWQ1WjVzS3lVaFVCcHl2em5jZjlHMWxJaTQxWGhTNkREMl9FT3ZBT2JFSEdlY0NScnlFUl81dDBZUVRNb0tINllkc3lVVDlZWVZXdXBubDNnLTd0YXNWUHNXbEUyMXB0cXVVY3NmV0JEMHN6Y0Jlc2xVMWNlMXo2d1U3TU1GWTBnRnNCeTF4RHBzckd3cVdaMFBiWGpYRi1GbVZVc0F3YnkwbHU2OS1zUQ?oc=5",
+      "title": "Conveyor belt sushi restaurant opens in Mount Pleasant. Plus, how you can watch the SpaceX launch. - Post and Courier",
+      "published_at": "2026-10-12T21:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizgFBVV95cUxQTGRwbngwOEpaMkhoUUQzTmxQcGRncVdzeHhlWkVQNWQ1WjVzS3lVaFVCcHl2em5jZjlHMWxJaTQxWGhTNkREMl9FT3ZBT2JFSEdlY0NScnlFUl81dDBZUVRNb0tINllkc3lVVDlZWVZXdXBubDNnLTd0YXNWUHNXbEUyMXB0cXVVY3NmV0JEMHN6Y0Jlc2xVMWNlMXo2d1U3TU1GWTBnRnNCeTF4RHBzckd3cVdaMFBiWGpYRi1GbVZVc0F3YnkwbHU2OS1zUQ?oc=5\" target=\"_blank\">Conveyor belt sushi restaurant opens in Mount Pleasant. Plus, how you can watch the SpaceX launch.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Post and Courier</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "893c489028cec1b1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPdm5vdi1aTDlGSXJCT25IR2hJdWJpcWFUcEJGdy1FY2VkWHlFLVlIYy1zaVpKZlZXN3VUNUpIdTFZbXhrS1VkaTU2OG1xR3F2eXNPTjEwMnhYeHpTeHk3VHpKdnNldUhhWVpOcUpieENTS1cxdEhFSWxKaWMta3hSUm04bldxQkh4cFYtb2NIZHRPNm5LT0l3c3d1NkpCOFJEV2pJYXlsblZaYUgwTEVYMEdYN3U2ZDh3bGRtRENDSQ?oc=5",
+      "title": "SpaceX launching 6,300 pounds of cargo to the ISS on Oct. 13: Watch it live - Space",
+      "published_at": "2026-10-12T21:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivwFBVV95cUxPdm5vdi1aTDlGSXJCT25IR2hJdWJpcWFUcEJGdy1FY2VkWHlFLVlIYy1zaVpKZlZXN3VUNUpIdTFZbXhrS1VkaTU2OG1xR3F2eXNPTjEwMnhYeHpTeHk3VHpKdnNldUhhWVpOcUpieENTS1cxdEhFSWxKaWMta3hSUm04bldxQkh4cFYtb2NIZHRPNm5LT0l3c3d1NkpCOFJEV2pJYXlsblZaYUgwTEVYMEdYN3U2ZDh3bGRtRENDSQ?oc=5\" target=\"_blank\">SpaceX launching 6,300 pounds of cargo to the ISS on Oct. 13: Watch it live</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Space</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "935f127030795186",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/andrewpb.bsky.social/post/3mxpf6ei4tk23",
+      "title": "@andrewpb.bsky.social on Bluesky",
+      "published_at": "2026-10-12T20:45:54.455Z",
+      "raw_excerpt": "Next up: SpaceX is targeting October 12, 5:11 p.m. (October 13, 0011 UTC, 02:11 CEST) a Falcon 9 launch with the Starlink 15-25 payload SLC-4E at Vandenberg SFB in California with a Falcon 9. The launch window is open until 8:00 p.m. PDT. Cu in the stream, Spacers! www.youtube.com/watch?v=tnX-...",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "118ae1e1efb77c32",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNaGV4blRHVGRMNlNteEpnZlN3NmZoVGhFcDJSVnlNWUFOdzFJYy1fVlhab3FZa0dxU3k5a1hHT3BvR3VpV2o2dG1fcElqVElONGZNdUdTVVJkMjJyc1hGNDRMOWdreVoyMUhFMERBS240V29mU2pkUHZUdkFiaEp0TE1ZRUpDMERSSkRKX2FINA?oc=5",
+      "title": "Starlink Mobile deemed an existential threat to Verizon - PhoneArena",
+      "published_at": "2026-10-12T20:43:33.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxNaGV4blRHVGRMNlNteEpnZlN3NmZoVGhFcDJSVnlNWUFOdzFJYy1fVlhab3FZa0dxU3k5a1hHT3BvR3VpV2o2dG1fcElqVElONGZNdUdTVVJkMjJyc1hGNDRMOWdreVoyMUhFMERBS240V29mU2pkUHZUdkFiaEp0TE1ZRUpDMERSSkRKX2FINA?oc=5\" target=\"_blank\">Starlink Mobile deemed an existential threat to Verizon</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PhoneArena</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "0034b07826aa788e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxPV2FwTDZaRGRFdDh3Qkx1Zk1PaHpFYW4wYUFVWTZNdDVxUk95eDJ0d1RHYkpKTklvN1ZXU0VmbDJ5YXJfNVNDVHd0ZV93SG9fT2VZblhQMnZYYVZoZHd2aXhkcXROYzRsUllCUkc0U180VTlDVXhQa1hSNkhRem1XZGxKVHh2Ql9XdmMwejdyajBZSUJKWVQtZ2llYnAzNU9VS1hqVHZkNTFHLXU4SnZLRVpmZWdZSHdDdmZEYVQyYzdfM2JiMEJXTkhZRGRoYTFhSUFjZ08xbVRTYWN6allqd0xsenJFMlNKUjdHUUxIeU90S2JodVZvUVk1RXRmRGZxdmtNcjRyaVJpQQ?oc=5",
+      "title": "A-B Tech student's oil experiment to launch on SpaceX mission - WLOS",
+      "published_at": "2026-10-12T20:42:13.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigJBVV95cUxPV2FwTDZaRGRFdDh3Qkx1Zk1PaHpFYW4wYUFVWTZNdDVxUk95eDJ0d1RHYkpKTklvN1ZXU0VmbDJ5YXJfNVNDVHd0ZV93SG9fT2VZblhQMnZYYVZoZHd2aXhkcXROYzRsUllCUkc0U180VTlDVXhQa1hSNkhRem1XZGxKVHh2Ql9XdmMwejdyajBZSUJKWVQtZ2llYnAzNU9VS1hqVHZkNTFHLXU4SnZLRVpmZWdZSHdDdmZEYVQyYzdfM2JiMEJXTkhZRGRoYTFhSUFjZ08xbVRTYWN6allqd0xsenJFMlNKUjdHUUxIeU90S2JodVZvUVk1RXRmRGZxdmtNcjRyaVJpQQ?oc=5\" target=\"_blank\">A-B Tech student's oil experiment to launch on SpaceX mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WLOS</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "db232928cd015aa9",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/novicul.bsky.social/post/3mxpevesgop2r",
+      "title": "@novicul.bsky.social on Bluesky",
+      "published_at": "2026-10-12T20:40:51.465Z",
+      "raw_excerpt": "【Morning Edition】スペースXのCRS-35補給便、ISSへ健康研究の実験を搭載 CRS-35便は人体・植物の健康と薬剤耐性菌を対象にした実験をISSへ届け、長期宇宙滞在を支える基礎研究に新たなデータをもたらす。 https://novicul.com/ja/articles/nasas-spacex-crs-35-mission-launch-health-research/",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "8f1fed71c4039359",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE5jOXlsaWJUc19tZHFNVFdkN1pVMnZiTUJlOUdFQUV2M0s0VGdrSUtqZ3Uwc2FEYktyUU0yMkxra1hMTHM4RF9IdWtBMUNXNEJ6b2Zxc0NKT1RMaER1Z0NvZGt5NllNYnpkVlNZ?oc=5",
+      "title": "SpaceX CRS-35 launch could bring sonic booms, 'space jellyfish' to Central Florida - FOX 35 Orlando",
+      "published_at": "2026-10-12T20:40:26.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMia0FVX3lxTE5jOXlsaWJUc19tZHFNVFdkN1pVMnZiTUJlOUdFQUV2M0s0VGdrSUtqZ3Uwc2FEYktyUU0yMkxra1hMTHM4RF9IdWtBMUNXNEJ6b2Zxc0NKT1RMaER1Z0NvZGt5NllNYnpkVlNZ?oc=5\" target=\"_blank\">SpaceX CRS-35 launch could bring sonic booms, 'space jellyfish' to Central Florida</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">FOX 35 Orlando</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "dd14ab0d5c53576e",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/fox5atlanta.bsky.social/post/3mxpecnmc7e2f",
+      "title": "@fox5atlanta.bsky.social on Bluesky",
+      "published_at": "2026-10-12T20:30:23.064Z",
+      "raw_excerpt": "A SpaceX launch is scheduled for 6:33 a.m. Tuesday from Cape Canaveral.",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "37b51f35d9758290",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQNFJhQ05yVWxmUS1zNTJOaER2MGRud2wyNFpiS1JmR0tjd1dPLTJqeUxCZGRfanJRRW5BM2k3UVczMkhRM3FaaGd2MVlMMkFic2c5enJzM1hIZFRLdWtTWW1MT1h2WXhRREozejQ3VDloVThzNWhZUUtHUHBaekVOLWVnQ09fLW56aWozdEpxSXZpYktEdWZJLXRDNENybmNpcjE2UWt6UTBCV1ZZMTRRbWZKX1h6c3dnOFZMOWlyRFZGVlFsejR0ZjZtNGg0VHJwcGEzbnZ6YV82WTNuSjBDam1HSlI0cVdFaEoxS2h4NE4xTWxRaVgtcWQ4aU96eXVu?oc=5",
+      "title": "United Airlines is rapidly deploying Elon Musk's Starlink, giving it a 'head start' over other airlines: Analyst - Yahoo Finance",
+      "published_at": "2026-10-12T20:23:53.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMigAJBVV95cUxQNFJhQ05yVWxmUS1zNTJOaER2MGRud2wyNFpiS1JmR0tjd1dPLTJqeUxCZGRfanJRRW5BM2k3UVczMkhRM3FaaGd2MVlMMkFic2c5enJzM1hIZFRLdWtTWW1MT1h2WXhRREozejQ3VDloVThzNWhZUUtHUHBaekVOLWVnQ09fLW56aWozdEpxSXZpYktEdWZJLXRDNENybmNpcjE2UWt6UTBCV1ZZMTRRbWZKX1h6c3dnOFZMOWlyRFZGVlFsejR0ZjZtNGg0VHJwcGEzbnZ6YV82WTNuSjBDam1HSlI0cVdFaEoxS2h4NE4xTWxRaVgtcWQ4aU96eXVu?oc=5\" target=\"_blank\">United Airlines is rapidly deploying Elon Musk's Starlink, giving it a 'head start' over other airlines: Analyst</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "0937d424734f4d79",
+      "source_name": "Space.com",
+      "url": "https://www.space.com/astronomy/black-holes/nasa-spacecraft-sees-supermassive-black-hole-gorge-on-a-cosmic-meal-before-burping-radio-jets-300-days-later",
+      "title": "Astronomers witness supermassive black hole gorge on a cosmic meal before 'burping' radio jets 300 days later",
+      "published_at": "2026-10-12T20:00:00.000Z",
+      "raw_excerpt": "Using the NASA X-ray spacecraft Swift combined with radio observations, astronomers have observed a supermassive black hole burping radio jets 300 days after a heavy cosmic meal. The team was also able to roughly estimate the mass of this feeding cosmic titan, which sits at the heart of the Perseus Cluster, a massive collection of thousands of galaxies. The black hole sits at the center of the galaxy NGC 1275, located around 225 light-years away, and is the brightest galaxy of the Perseus Cluster . The supermassive black hole first flared in X-rays, which indicated an increase in the rate at which it was accreting matter. Actively feeding supermassive black holes sit in regions called active galactic nuclei (AGNs), with their immense gravity heating surrounding matter, causing them to glow brightly. These emissions are boosted by material channeled to the poles of the central black hole, from where it is blasted out as powerful twin jets that shine across the electromagnetic spectrum , particularly in radio waves. The observation of the following radio jet from the AGN at the heart of NGC 1275 via flaring in radio waves is crucial for understanding the relationship between the disk of matter that surrounds and feeds the black hole, called an accretion disk, and the jets it launches. This so-called disk-jet coupling is key to developing a better picture of how black holes influence star formation in the galaxies in which they sit, and thus the growth of those galaxies. Making these observations is no mean feat. The ideal spacecraft for observing X-ray emissions is Chandra , but it doesn't observe NGC 1275 frequently enough to observe its long-term behaviour. NASA's Neil Gehrels Swift Observatory may lack the power of Chandra, but having launched in 2004, it has collected a vast amount of data regarding NGC 1275 and its central supermassive black hole. \"It is fairly difficult to see the inner region of this AGN because NGC 1275 is at the center of the massive Perseus ",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "21e648348be0759d",
+      "source_name": "Via Satellite",
+      "url": "https://www.satellitetoday.com/government-military/2026/10/12/york-space-systems-to-support-interoperability-demonstration-for-space-data-network/",
+      "title": "York Space Systems to Support Interoperability Demonstration for Space Data Network",
+      "published_at": "2026-10-12T19:52:16.000Z",
+      "raw_excerpt": "York Space Systems will support a multi-vendor interoperability demonstration as part of a recent U.S. Space Force award for the Space Data Network (SDN). York Space was one of five companies selected in August for demonstrations for the SDN. York has received two task orders. As part of the first task order Delivery Order 2 (DO2), York will support a multi-vendor interoperability demonstration with the SDN-Backbone (SDN-B) constellation, which will look at approaches connecting spacecraft and ground elements through multiple data-exchange paths. The second task order, Delivery Order 3 (DO3), York will support part of an in-orbit demonstration. The first phase of which will define the bus-to-payload interfaces and payload-integration planning associated with the Space Exchange Point (SEP demonstration. This will also include planning toward a later on-orbit prototype. York shared more information on the two task orders in a Monday release. “These efforts are intended to help inform approaches for integrating payload capabilities through common interfaces,” said Melanie Preisser, executive vice president and general manager of York. “Common interfaces and adaptable spacecraft platforms can help facilitate integration of payload capabilities from across industry. York has experience integrating payload capabilities onto its spacecraft platforms.” The Space Force has described the overall Space Data Network as a network that integrates Department of Defense and commercial networks across various orbits to deliver private transport, tactical data links, and public internet services to users. In May of this year, SpaceX won a $2.29 billion contract to deliver the SDN Backbone, a proliferated Low-Earth Orbit (LEO) constellation, to function as an integrated network, providing and provide resilient, high-capacity, and low-latency data transport for the Joint Force. &nbsp; The post York Space Systems to Support Interoperability Demonstration for Space Data Network appeared ",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "8dbede3d63cb11ab",
+      "source_name": "Via Satellite",
+      "url": "https://www.satellitetoday.com/technology/2026/10/12/kratos-openspace-used-for-kt-sat-5g-nr-ntn-demonstration/",
+      "title": "Kratos OpenSpace Used for KT SAT 5G NR NTN Demonstration",
+      "published_at": "2026-10-12T19:49:46.000Z",
+      "raw_excerpt": "Kratos ’ OpenSpace ground system platform was used in a recent KT SAT demonstration that showed end-to-end connectivity across a native, multi-vendor 5G New Radio (5G NR) non-terrestrial network (NTN). Kratos shared on Oct. 8 that the demonstration proved connectivity across a native 5G NR NTNT that consisted of an OpenSpace radio access network (RAN), Druid Software’s Raemis 5G Core and GCT Semiconductor Holding’s GDM7275X-based 5G user equipment. The integrated system was able to register with the Druid Raemis core to establish two-way communication and validate multi-vendor interoperability. Kratos called the demonstration a step toward open, multi‑vendor 5G NTN deployment and intends for OpenSpace to give satellite operators flexibility. “KT SAT is committed to advancing 5G NTN solutions in the satellite industry,” commented Sungho Choi, KT SAT CTO. “By bringing partners together and supporting this demonstration, we’re accelerating the ecosystem and proving that interoperable, multi‑vendor 5G systems are not just theoretical, they are happening now.” Last year, Korean satellite operator KT SAT completed a NR-NTN multi-orbit handover between a commercial GEO satellite and an emulated LEO link in a lab trial, as part of its development on 5G NTN technologies. The post Kratos OpenSpace Used for KT SAT 5G NR NTN Demonstration appeared first on Via Satellite .",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "618178a591c11ff9",
+      "source_name": "Via Satellite",
+      "url": "https://www.satellitetoday.com/earth-observation/2026/10/12/planet-introduces-map-of-worlds-population-with-microsoft-and-ihme/",
+      "title": "Planet Introduces Map of World’s Population With Microsoft and IHME",
+      "published_at": "2026-10-12T19:41:46.000Z",
+      "raw_excerpt": "Planet has debuted a new, continuously updated map of the world’s population built through a collaboration with the Institute for Health Metrics and Evaluation (IHME) at the University of Washington and Microsoft ‘s AI for Good Lab. The map, called Populace, brings together satellite imagery, machine learning models, and outside data to provide population density at a gridded resolution of 40 meters around the entire world that is updated quarterly. Planet called it the most up-to-date, highest resolution, and most accurate population data. Planet announced the new map on Oct. 12. Populace came about from a collaboration between Planet, IMHE, and the AI for Good Lab that began in 2024. Planet explained the map uses Planet’s satellite imagery basemaps of the Planet, analyzed by AI for Good machine learning models to detect human structures. IMHE then compares that data against census, survey, and administrative data for reliable population estimates. The goal of the project was to use up-to-date satellite information to fill in the gaps where census information is out of date or not available when populations are growing quickly. Planet said this data can be used for planning purposes like public health and civil infrastructure, as well as humanitarian responses and emergency warning. “Climate change, rapid urbanization, migration and emerging infectious diseases are reshaping who is at risk, and where. We cannot address risks we cannot see. Populace gives the global health community a far more timely and granular foundation for understanding those risks – and that kind of data is exactly what we need to protect lives in the decades ahead,” commented Christopher Murray, Professor at the University of Washington and Director of IHME. The product is free of charge for nonprofit organizations and academic researchers, while governments and private-sector organizations will be able to access Populace under commercial-use terms. The post Planet Introduces Map of World’s P",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "b917bd8a6da01dd1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQY1V5cHpFNmNKMm5kOHp5cG9HXzlFaS1YWUstWDVsZGVSYVdIMGNVOGE5cko2TFFSc29TYWtqbkM5OVRGOHZLQU9jamhvM1ZNdEtoMzBIbE91cnpqMGFzbmhXMjgzWHdXUlR6bWhRNGVtWVE2ajhoZk9VREdDaUYxb083WjNyU0xPdTZod0hwRXdRbk1hRFRIQVZ2a1htU29yYVFGU2c3QzhRZ1QwU0FaVmhMWQ?oc=5",
+      "title": "Predawn sonic booms possible as SpaceX ready for launch early Tuesday - Orlando Sentinel",
+      "published_at": "2026-10-12T19:21:57.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxQY1V5cHpFNmNKMm5kOHp5cG9HXzlFaS1YWUstWDVsZGVSYVdIMGNVOGE5cko2TFFSc29TYWtqbkM5OVRGOHZLQU9jamhvM1ZNdEtoMzBIbE91cnpqMGFzbmhXMjgzWHdXUlR6bWhRNGVtWVE2ajhoZk9VREdDaUYxb083WjNyU0xPdTZod0hwRXdRbk1hRFRIQVZ2a1htU29yYVFGU2c3QzhRZ1QwU0FaVmhMWQ?oc=5\" target=\"_blank\">Predawn sonic booms possible as SpaceX ready for launch early Tuesday</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Orlando Sentinel</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "0e1879caf833182e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPTUMxTkRMSklRMHRvMEc0N2ZlTkhOejkxTFdPWFVlNWxUelR2RmszM3VYb3ZCRHIxSkxSVnNhTE1vcHZXMmdzN3BMV0ZMcnRPaVQtMUZzcUdOX1oxLXJPYkVPajlWUjg3YjY1R01rdl9mY2hkdVBJUGNLUmtMX1c3Z3JsQUNrem1jV00zZGJHQQ?oc=5",
+      "title": "SpaceX CRS-35: Falcon 9 on the Pad for ISS Cargo Run - BASENOR - Tesla Accessories",
+      "published_at": "2026-10-12T19:10:59.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxPTUMxTkRMSklRMHRvMEc0N2ZlTkhOejkxTFdPWFVlNWxUelR2RmszM3VYb3ZCRHIxSkxSVnNhTE1vcHZXMmdzN3BMV0ZMcnRPaVQtMUZzcUdOX1oxLXJPYkVPajlWUjg3YjY1R01rdl9mY2hkdVBJUGNLUmtMX1c3Z3JsQUNrem1jV00zZGJHQQ?oc=5\" target=\"_blank\">SpaceX CRS-35: Falcon 9 on the Pad for ISS Cargo Run</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BASENOR - Tesla Accessories</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "4e2bf122d9947f4a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQN1FyanVnSlNGZldZcGZaZWdPc0ZOZEIwNm1FYWRaTFZoZGxMSzR3dlh2WGlteEZaeHRtWlVDSVlYRWRINE5UVVp6aWMxX0lmMV9nZjZldGZDYWpSVWs1Q1l5bXpkR2lNMDRsN2lCb1NHckZ3NFhRZ19BMy1zS1p1eFBRQzRGakhZRGxVcEkxbFg?oc=5",
+      "title": "SpaceX Unlikely To Make Even A Dent In Verizon's Armour (NASDAQ:SPCX) - Seeking Alpha",
+      "published_at": "2026-10-12T19:10:32.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxQN1FyanVnSlNGZldZcGZaZWdPc0ZOZEIwNm1FYWRaTFZoZGxMSzR3dlh2WGlteEZaeHRtWlVDSVlYRWRINE5UVVp6aWMxX0lmMV9nZjZldGZDYWpSVWs1Q1l5bXpkR2lNMDRsN2lCb1NHckZ3NFhRZ19BMy1zS1p1eFBRQzRGakhZRGxVcEkxbFg?oc=5\" target=\"_blank\">SpaceX Unlikely To Make Even A Dent In Verizon's Armour (NASDAQ:SPCX)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "462d43e0be17c5ad",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNVGllVGg2bE85LXlRclVFblRtZ2JSbzBMM3dNQ0lORW9yank2elFSS3EtYkRKMEZIbU5YTU4wSFBmQUwwLUpPVndCbjJpMC1yY0F2eVJVX1BCUXZneGtJR2dpSEtvYWpyMUcyNFdOT2hMOUhQaGxwSE5LMEpsLUxrUVJvQXkyaHpveTVndExVc05VMW1ndmVIbElsYTRVczR1R1hWUG5jdWctZkxCTVhIX2ZjUzZScVlQTTlfVVRXWDMtMWxrbkVreDYxVGcyRkZuY01GZ3dHSGtkdkQwTllr?oc=5",
+      "title": "American Airlines will add Starlink to an expanded fleet of its airplanes starting in early 2027, the company has said. See link below ⬇️ 📸 Kylie Cooper, Reuters - Facebook",
+      "published_at": "2026-10-12T19:00:43.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxNVGllVGg2bE85LXlRclVFblRtZ2JSbzBMM3dNQ0lORW9yank2elFSS3EtYkRKMEZIbU5YTU4wSFBmQUwwLUpPVndCbjJpMC1yY0F2eVJVX1BCUXZneGtJR2dpSEtvYWpyMUcyNFdOT2hMOUhQaGxwSE5LMEpsLUxrUVJvQXkyaHpveTVndExVc05VMW1ndmVIbElsYTRVczR1R1hWUG5jdWctZkxCTVhIX2ZjUzZScVlQTTlfVVRXWDMtMWxrbkVreDYxVGcyRkZuY01GZ3dHSGtkdkQwTllr?oc=5\" target=\"_blank\">American Airlines will add Starlink to an expanded fleet of its airplanes starting in early 2027, the company has said. See link below ⬇️ 📸 Kylie Cooper, Reuters</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Facebook</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "526f20d37af1b459",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE44N2pfZzVQalV5d3NDbEtaOS1iUzByY0dHbm5lRkxESWhXaW8xN3VWVXlwamdIOEg5Wk5Ga2ZDblVIOXVCeFJkVnpZaldabXFFYnRtSU5BaDBiYnhVa05uQlo2VzFhbGp3WTlRdFJqdER0QQ?oc=5",
+      "title": "Elon Musk drops a Thanksgiving hint about Starship’s biggest test yet - Teslarati",
+      "published_at": "2026-10-12T18:54:04.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTE44N2pfZzVQalV5d3NDbEtaOS1iUzByY0dHbm5lRkxESWhXaW8xN3VWVXlwamdIOEg5Wk5Ga2ZDblVIOXVCeFJkVnpZaldabXFFYnRtSU5BaDBiYnhVa05uQlo2VzFhbGp3WTlRdFJqdER0QQ?oc=5\" target=\"_blank\">Elon Musk drops a Thanksgiving hint about Starship’s biggest test yet</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Teslarati</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "de0d4ce900f0aee6",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNazhLVWlOQ3JYV0NEakZ0cnVGeDV6S0tHaFpMSmhMTXYtdjlia20yVVBWOTh5d0RGRHluUkc2RExPSks3NXl5RURqZl9UYjVIdXR4dDgtRGZ1TWtJRkpoQ1ZpbG9UUkhzRVEtOEtmcFotcHBEeFp3eTBUTEgtV0FlZXBCQnd6ZldaSFZxU0JCbElXTkppQjJlaF9ad21XVkxBTnlNR3ZoNVFnYVFHWkJ0dmZUREIxbnpxaW1oU1BVa3hJOVNhQ3Fn?oc=5",
+      "title": "International Space Station, SpaceX rocket may be visible over NJ - Bergen Record",
+      "published_at": "2026-10-12T18:52:43.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixwFBVV95cUxNazhLVWlOQ3JYV0NEakZ0cnVGeDV6S0tHaFpMSmhMTXYtdjlia20yVVBWOTh5d0RGRHluUkc2RExPSks3NXl5RURqZl9UYjVIdXR4dDgtRGZ1TWtJRkpoQ1ZpbG9UUkhzRVEtOEtmcFotcHBEeFp3eTBUTEgtV0FlZXBCQnd6ZldaSFZxU0JCbElXTkppQjJlaF9ad21XVkxBTnlNR3ZoNVFnYVFHWkJ0dmZUREIxbnpxaW1oU1BVa3hJOVNhQ3Fn?oc=5\" target=\"_blank\">International Space Station, SpaceX rocket may be visible over NJ</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bergen Record</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "cd9fd35318b81abb",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPLUNzUzZyQjN6T09SQmZjQlZ2NEd6ZlZNR3VIcVZaejAzOGZTUnd6RXlMQk45dUE2cDY5WmszOVJ1aGs5TUZFY2xpcV9pWFBLMTZUdDFrc3F5RGRfdXVxSjFmVVNhZTVpSmRZNWxpWFRNWlRJSEpQRVJRVkt3dkR5N21YeS1pWmt5VlpCYlMyMzlHczhLWHJTeVdHczM1SUpDa1lWNFhaLV8xUQ?oc=5",
+      "title": "American Airlines expands Starlink Wi-Fi to more than 1,000 jets - Chicago Tribune",
+      "published_at": "2026-10-12T18:39:08.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxPLUNzUzZyQjN6T09SQmZjQlZ2NEd6ZlZNR3VIcVZaejAzOGZTUnd6RXlMQk45dUE2cDY5WmszOVJ1aGs5TUZFY2xpcV9pWFBLMTZUdDFrc3F5RGRfdXVxSjFmVVNhZTVpSmRZNWxpWFRNWlRJSEpQRVJRVkt3dkR5N21YeS1pWmt5VlpCYlMyMzlHczhLWHJTeVdHczM1SUpDa1lWNFhaLV8xUQ?oc=5\" target=\"_blank\">American Airlines expands Starlink Wi-Fi to more than 1,000 jets</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Chicago Tribune</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "57e490ec99595e83",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPZDRFV1o2ODVxSGRDZnlZcFY2MmNxNXpqYWJkU3F6MGNMUWhyZUZ5MmdFUm5sbUZvUTMxTC0ybWxlaldsWVU3MVlQLUY4UGhqWW9oZjE4TkZPYkVFVE55NnhPZk9lV0N2NzhBLVZuQUtlQXloQ1hYREFKZEFrVnBIci1fQkEwTlEwOGRLVXRaNnE2Sm5fSVhENElXa1VhbUUtUXF2UlFuVERDdDJ6ekxBQnhPUnpqUkxtTXlFbjhn?oc=5",
+      "title": "SpaceX set to launch Dragon resupply mission to ISS from Florida - WKMG",
+      "published_at": "2026-10-12T18:28:41.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivgFBVV95cUxPZDRFV1o2ODVxSGRDZnlZcFY2MmNxNXpqYWJkU3F6MGNMUWhyZUZ5MmdFUm5sbUZvUTMxTC0ybWxlaldsWVU3MVlQLUY4UGhqWW9oZjE4TkZPYkVFVE55NnhPZk9lV0N2NzhBLVZuQUtlQXloQ1hYREFKZEFrVnBIci1fQkEwTlEwOGRLVXRaNnE2Sm5fSVhENElXa1VhbUUtUXF2UlFuVERDdDJ6ekxBQnhPUnpqUkxtTXlFbjhn?oc=5\" target=\"_blank\">SpaceX set to launch Dragon resupply mission to ISS from Florida</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WKMG</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "2ed5269ea02ed866",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNZnpMRUNtYl9ET1dPTC1MT1B0RDdkeEI5bW5ETzc1S28tMTRQQWtxN25WaTJKajhqRUdNQ2pHWk9JWHRIRXB2R3p1NnM0YmlTUVBMbGlZSUlYcE9tYzdDQmVPemRCdDVYVy1xaUN0dzBVWUFQSGhvTXd3RVhfbDNiQ0o4NTNta1lvaUdSakxoWUM3alkwY0IyaFNhX0o5bnByU1MzNF9HX1JWWndiNkFya0ZiQXk3SnpleHNfS1Q0TnNRdWV1T0p1eVRRd2Q1bVJ5aWhUdmxROGQ0OG5WcXZKUDFHNA?oc=5",
+      "title": "International Space Station, rocket may be visible over NJ this week - Bergen Record",
+      "published_at": "2026-10-12T18:26:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4wFBVV95cUxNZnpMRUNtYl9ET1dPTC1MT1B0RDdkeEI5bW5ETzc1S28tMTRQQWtxN25WaTJKajhqRUdNQ2pHWk9JWHRIRXB2R3p1NnM0YmlTUVBMbGlZSUlYcE9tYzdDQmVPemRCdDVYVy1xaUN0dzBVWUFQSGhvTXd3RVhfbDNiQ0o4NTNta1lvaUdSakxoWUM3alkwY0IyaFNhX0o5bnByU1MzNF9HX1JWWndiNkFya0ZiQXk3SnpleHNfS1Q0TnNRdWV1T0p1eVRRd2Q1bVJ5aWhUdmxROGQ0OG5WcXZKUDFHNA?oc=5\" target=\"_blank\">International Space Station, rocket may be visible over NJ this week</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bergen Record</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "4b5013545bad92bf",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOakRaX0JQVnhQSEN0ODhDS014ejNpSk9jblVsWVNOdXB5OUtCU3FWdi1MbWFPbE9zOXZIVXYxSGw3Ums1d19SaWlIYW1ZQVJhWjA3UXhybzFPTGVnc0JWbzNPNWZLWC1Xek1WZHBpUXlRaU9lbjAwWk5tSVRpNndqUG9FbTZWNTFwLXRxaGFBeWFJdnFMRllNNnRIbk5sTmdJZkhBaUVPSkZRQl9uZjRRekNVVzlmNTVDb1dEcmtKMFdhMmJVSXV3T3ZlbU84Ym1RQzAzbVRrZ9IB1wFBVV95cUxOandfWG1ab3VpdjBFdVNObDNvOTFTV29fbF9LVFpIeldaeEFvdGdyYU1qZ29fTTB2RVpEUU1uR2RtOGdJSjg1eVFSZGxFQ2xqV3p2Unhna2NpUHFUS253Qy1nZXlDMzR6ZElLVFVQWDZiRWhacUZjcGwwZ0t0Tm5kUTVLMFBrZFpvVG91VjZvRTVxaEsxYkVqbzJMaVlvOUVtVWhNNXBYR2tUR1hib1MyMy1NVVhzQUE5MjVleVg2eG52c2g3d1FuV043NnRHcjE1NHJISVpBNA?oc=5",
+      "title": "Poland: Germany detains 2 in connection with Starlink fire - DW.com",
+      "published_at": "2026-10-12T18:09:34.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1wFBVV95cUxOakRaX0JQVnhQSEN0ODhDS014ejNpSk9jblVsWVNOdXB5OUtCU3FWdi1MbWFPbE9zOXZIVXYxSGw3Ums1d19SaWlIYW1ZQVJhWjA3UXhybzFPTGVnc0JWbzNPNWZLWC1Xek1WZHBpUXlRaU9lbjAwWk5tSVRpNndqUG9FbTZWNTFwLXRxaGFBeWFJdnFMRllNNnRIbk5sTmdJZkhBaUVPSkZRQl9uZjRRekNVVzlmNTVDb1dEcmtKMFdhMmJVSXV3T3ZlbU84Ym1RQzAzbVRrZ9IB1wFBVV95cUxOandfWG1ab3VpdjBFdVNObDNvOTFTV29fbF9LVFpIeldaeEFvdGdyYU1qZ29fTTB2RVpEUU1uR2RtOGdJSjg1eVFSZGxFQ2xqV3p2Unhna2NpUHFUS253Qy1nZXlDMzR6ZElLVFVQWDZiRWhacUZjcGwwZ0t0Tm5kUTVLMFBrZFpvVG91VjZvRTVxaEsxYkVqbzJMaVlvOUVtVWhNNXBYR2tUR1hib1MyMy1NVVhzQUE5MjVleVg2eG52c2g3d1FuV043NnRHcjE1NHJISVpBNA?oc=5\" target=\"_blank\">Poland: Germany detains 2 in connection with Starlink fire</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">DW.com</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "45fdaaf5dfa64cd9",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOTVpWaGU5ZDhWWms5MDZ2YmR1Wi1BNjMzeFg3Ym1UTTZRLVlQT2hrLXU4MmY2S25RX0J0aFRVUi1XdEMwTW15enpEU1BpSXBXRy1ydFJxSldhT1BDaktNdWlzUUdTQnZjZDVIem5wemdRTzJIUXBSZjBQc2FZYnA0RkxB?oc=5",
+      "title": "Why Apple May Have a SpaceX Problem - Barron's",
+      "published_at": "2026-10-12T18:09:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiggFBVV95cUxOTVpWaGU5ZDhWWms5MDZ2YmR1Wi1BNjMzeFg3Ym1UTTZRLVlQT2hrLXU4MmY2S25RX0J0aFRVUi1XdEMwTW15enpEU1BpSXBXRy1ydFJxSldhT1BDaktNdWlzUUdTQnZjZDVIem5wemdRTzJIUXBSZjBQc2FZYnA0RkxB?oc=5\" target=\"_blank\">Why Apple May Have a SpaceX Problem</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barron's</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "1d44713f5e8c746d",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOUDl1TUFSVTFJckJJbkpQbGJHSE1pWEY5N3Q4RllJWkQwNnJybjV3UmZ4V1VuZHppdzlzcjc4aWk2UXhDOWtJdG53WFptc2t1aDRuc2I3XzNnRjFCZmxscTRzT1A2Vm5rNVlObDlKWXo4dkllMDVnYlN3V2FQRHJXdmhiSFh2MlF2V3RzNlowVTZQX2FqeVhlbTRFb1JLTk5DX3c?oc=5",
+      "title": "SpaceX rocket and ISS could appear over Connecticut at the same time Tuesday. Here's when to see it - CT Insider",
+      "published_at": "2026-10-12T18:07:08.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxOUDl1TUFSVTFJckJJbkpQbGJHSE1pWEY5N3Q4RllJWkQwNnJybjV3UmZ4V1VuZHppdzlzcjc4aWk2UXhDOWtJdG53WFptc2t1aDRuc2I3XzNnRjFCZmxscTRzT1A2Vm5rNVlObDlKWXo4dkllMDVnYlN3V2FQRHJXdmhiSFh2MlF2V3RzNlowVTZQX2FqeVhlbTRFb1JLTk5DX3c?oc=5\" target=\"_blank\">SpaceX rocket and ISS could appear over Connecticut at the same time Tuesday. Here's when to see it</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CT Insider</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "be9dfe887b68f847",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOaDZndlZrcW1TczUxNWQxYVI1aG5VVjZrSXJ4YnVhSEcwelhJcV9LYzlzNUJRRDhNWVhJQzctYUZ3REE1TmFybkFhd0JMVFY1MzZoblVQVHhJRDZHS0RGUzZGN08zSjhiTDM0Y0w0V1N2a2NVaHlGR0ZtcGpTRVFLdXQ5SHRYWHFyRmJZTHJCX2tOZE5pWjFTMVlNVHNfRzNB?oc=5",
+      "title": "Trump Bought SpaceX Debt. What That Means for SPCX Stock. - Barchart.com",
+      "published_at": "2026-10-12T18:03:54.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMioAFBVV95cUxOaDZndlZrcW1TczUxNWQxYVI1aG5VVjZrSXJ4YnVhSEcwelhJcV9LYzlzNUJRRDhNWVhJQzctYUZ3REE1TmFybkFhd0JMVFY1MzZoblVQVHhJRDZHS0RGUzZGN08zSjhiTDM0Y0w0V1N2a2NVaHlGR0ZtcGpTRVFLdXQ5SHRYWHFyRmJZTHJCX2tOZE5pWjFTMVlNVHNfRzNB?oc=5\" target=\"_blank\">Trump Bought SpaceX Debt. What That Means for SPCX Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barchart.com</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "f6199091f844ba34",
+      "source_name": "Space.com",
+      "url": "https://www.space.com/astronomy/moon/the-moon-could-turn-astronauts-into-walking-high-voltage-capacitors-that-accidentally-zap-spacecraft",
+      "title": "The moon could turn astronauts into 'walking, high voltage capacitors' that accidentally zap spacecraft",
+      "published_at": "2026-10-12T18:00:00.000Z",
+      "raw_excerpt": "NASA is asking for ideas to stop static electricity from zapping astronauts or critical hardware during moon missions. The agency opened a \"Lunar Grounding Challenge\" to avoid situations where an astronaut on the moon could become \"a walking, high voltage capacitor.\" Submissions for the $150,000 competition are due Jan. 15 and you can see the requirements here . NASA is hoping to put astronaut boots at the lunar south pole in 2028 during the Artemis 4 or 5 missions, on the first landing mission since NASA's Apollo 17 in 1972. But simulations suggest that both \"tribocharging\" (electric-charge transfer between two objects) and plasma charging (from ambient gas in the region) could build up electric charge on spacesuits. \"This problem is severely compounded when entering lunar shadows and permanently shadowed regions,\" the agency wrote, referring to deeply cratered areas where the sun does not touch the lunar surface. The concern is that astronauts' spacesuits could become electrically charged, as there would be an excess of electrons (negatively charged particles) compared with ions (positively charged) in these areas. \"The risk occurs when an astronaut returns to the spacecraft,\" the agency added. The lander would have a slight positive charge, producing an issue once the \"highly negatively-charged astronaut approaches the vehicle.\" NASA has asked industry partners for ideas that can help an astronaut avoid \"becoming a walking, high voltage capacitor\", including issues such as an electrical arc that could damage spacesuits, spark fires in the oxygen atmosphere of a spacecraft, or create electrical shocks. (A Mars simulation in 2018 was reportedly derailed due to a crew experiencing electrical issues, so this problem is not unprecedented.) The challenge aims to create designs that would safely discharge the astronaut and their spacesuit before an astronaut touches the lander. Among the technical requirements, NASA is looking for something small (in terms of mass, volu",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "c01f13ec44310166",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQaWtvN3EtbTBJUy1ETkZBbG53Ym1JVHZiNXQ5WEdORTlCZnc5ZGVFcTBIVkZJcnhEMzZfRUU2Q21vblRjQmFPU1JCX2FNa1JYVC1ydi1kOENHdmh6Qng0dFZvZHZqd09tODRfSkg0RUpsZEJLYkJQNlFqR20waWthY0RlUTh5MUxsaFJldVNOSnE1T2ZhSGc4ZTFxS0c2Vm9DM01FU0R4c3BqZkVxclNEREVaM3RzMUkxcGI0?oc=5",
+      "title": "SpaceX's Starlink could pose 3 big risks to Apple, BofA warns - Yahoo Finance",
+      "published_at": "2026-10-12T17:55:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiuwFBVV95cUxQaWtvN3EtbTBJUy1ETkZBbG53Ym1JVHZiNXQ5WEdORTlCZnc5ZGVFcTBIVkZJcnhEMzZfRUU2Q21vblRjQmFPU1JCX2FNa1JYVC1ydi1kOENHdmh6Qng0dFZvZHZqd09tODRfSkg0RUpsZEJLYkJQNlFqR20waWthY0RlUTh5MUxsaFJldVNOSnE1T2ZhSGc4ZTFxS0c2Vm9DM01FU0R4c3BqZkVxclNEREVaM3RzMUkxcGI0?oc=5\" target=\"_blank\">SpaceX's Starlink could pose 3 big risks to Apple, BofA warns</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "e7d91ed8f3d38e74",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQdEZ1ZmVLWHYtZkdGSjRmUF9HWlJ3LVhNN0tJdDFjRldxNi0tVHV1QXh5RGtDOVAzMFlNcC0yOS1nYzc4Y0tRX2cydTJLQVprR2VLMXZOWnAydV9PVDFXNWs0UXlhVzFmVy1lQi16TWlVX3o5NjdtaVFpTGc0STk3dTQ2dEhKRE0xVmh6d2JCajlTbnZueGRmMU5GYXphVWgxQzk4aEg2MA?oc=5",
+      "title": "SpaceX phone could challenge Samsung more than Apple, investor Gene Munster says - The American Bazaar",
+      "published_at": "2026-10-12T17:54:15.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwFBVV95cUxQdEZ1ZmVLWHYtZkdGSjRmUF9HWlJ3LVhNN0tJdDFjRldxNi0tVHV1QXh5RGtDOVAzMFlNcC0yOS1nYzc4Y0tRX2cydTJLQVprR2VLMXZOWnAydV9PVDFXNWs0UXlhVzFmVy1lQi16TWlVX3o5NjdtaVFpTGc0STk3dTQ2dEhKRE0xVmh6d2JCajlTbnZueGRmMU5GYXphVWgxQzk4aEg2MA?oc=5\" target=\"_blank\">SpaceX phone could challenge Samsung more than Apple, investor Gene Munster says</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The American Bazaar</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "9c10c90927e636b5",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxNaDJHX0k5MXc2RDZNRlgwaUp5Z2ZsSEx5UmdxUjlLcmYyb0c1M3ZPUjFyb3Q5bUtRaVdHbjE2cWI4UnVydWJxMGI5OGpWaUdWYlRUOGt0XzZoNnU2VXprVTVzblE5UEtqMEJsMDdXdnN5VkJ5M3VLdnFLQ3ZGdExweVVncTVLYXU4VUZQUGNwYnBhaE5tU1JsVzZaY1cxUDlLNW9Hd2FmNnIzQzgtZ1VOd0F2amQ2OVVzaWdWU1doY0pkM0NGQVJ4MU5vVXBJejFFdTVIVV9JQmtZaXlM?oc=5",
+      "title": "T-Mobile Rebounds 3% After Record Drop on Starlink Spectrum Move; SpaceX Ticks Up, Verizon Edges Higher - 24/7 Wall St.",
+      "published_at": "2026-10-12T17:51:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3AFBVV95cUxNaDJHX0k5MXc2RDZNRlgwaUp5Z2ZsSEx5UmdxUjlLcmYyb0c1M3ZPUjFyb3Q5bUtRaVdHbjE2cWI4UnVydWJxMGI5OGpWaUdWYlRUOGt0XzZoNnU2VXprVTVzblE5UEtqMEJsMDdXdnN5VkJ5M3VLdnFLQ3ZGdExweVVncTVLYXU4VUZQUGNwYnBhaE5tU1JsVzZaY1cxUDlLNW9Hd2FmNnIzQzgtZ1VOd0F2amQ2OVVzaWdWU1doY0pkM0NGQVJ4MU5vVXBJejFFdTVIVV9JQmtZaXlM?oc=5\" target=\"_blank\">T-Mobile Rebounds 3% After Record Drop on Starlink Spectrum Move; SpaceX Ticks Up, Verizon Edges Higher</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">24/7 Wall St.</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "99216355cac65f3a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNRlpJbG1jcmJoM3FxN3JmaGRpdlhVYWQxN3V3ME5mS0ZGVkZlMG4xbGtaMVBHRTlrclVTRmVSUjZXNlZfdVltcjdxZ2tsa1I0cTh4YVFQOEc2TUtnMG4yR2tvd1UyUGttWHBZMmk2RkpVekY5dUhQdnBIdFBlQ1I1SkMweVZ5aHU4VFQ0QWV0OHY3clBCOFJXS0VZY0E?oc=5",
+      "title": "NASA’s SpaceX CRS-35 Mission to Launch Health Research - NASA Science (.gov)",
+      "published_at": "2026-10-12T17:45:27.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxNRlpJbG1jcmJoM3FxN3JmaGRpdlhVYWQxN3V3ME5mS0ZGVkZlMG4xbGtaMVBHRTlrclVTRmVSUjZXNlZfdVltcjdxZ2tsa1I0cTh4YVFQOEc2TUtnMG4yR2tvd1UyUGttWHBZMmk2RkpVekY5dUhQdnBIdFBlQ1I1SkMweVZ5aHU4VFQ0QWV0OHY3clBCOFJXS0VZY0E?oc=5\" target=\"_blank\">NASA’s SpaceX CRS-35 Mission to Launch Health Research</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NASA Science (.gov)</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "1df47e83e5a7ebab",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxQb3A2TEJjN2pvUHF0el9QNjV2aV9TZHdrd1pwOTBuNlV3YTdTUzN0aThUYmVESUp3cHB3TDFGZWhpdTRWSFhqaHVEeTFwV09RSVlOYVJZM0RYMzBHRDhOYW5jZVZCNU52SncxSVlYbXY2SWJNSWU3THAtejc2T0pBR0VfaUZiTEJhZV9RdVdZOUlrcFJ0YjNvWkZxMFJleXN3OFlfMzRjMVM0MmNzT2pxUXBDaHE2OXFzNDJIRXBPNFBHMUdvcEVLNmxmUnU0MC1SOHZCdlVvUEM1Q1M0cm11Mk5IYmdlZ2s1NHVCc3JR?oc=5",
+      "title": "Starlink mission set to launch today from Vandenberg SFB - Santa Ynez Valley News",
+      "published_at": "2026-10-12T17:45:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi7gFBVV95cUxQb3A2TEJjN2pvUHF0el9QNjV2aV9TZHdrd1pwOTBuNlV3YTdTUzN0aThUYmVESUp3cHB3TDFGZWhpdTRWSFhqaHVEeTFwV09RSVlOYVJZM0RYMzBHRDhOYW5jZVZCNU52SncxSVlYbXY2SWJNSWU3THAtejc2T0pBR0VfaUZiTEJhZV9RdVdZOUlrcFJ0YjNvWkZxMFJleXN3OFlfMzRjMVM0MmNzT2pxUXBDaHE2OXFzNDJIRXBPNFBHMUdvcEVLNmxmUnU0MC1SOHZCdlVvUEM1Q1M0cm11Mk5IYmdlZ2s1NHVCc3JR?oc=5\" target=\"_blank\">Starlink mission set to launch today from Vandenberg SFB</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Santa Ynez Valley News</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "d231e44dcadafdf5",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxNRGFQWlAydGI1NElNZjRRTFdBUWlPb0MxLVRtM2RrcUN1aFhkdkdiS2RrYUl5Qy1YZmtmTTJObVM3WHFsdm9YY2VVZVNqbHlHT3VhZWtmY0V3OVYxRVc4NW9RdFlEelFCSnVJSmRwcEkyc0RKNnlrUW1vdjRTU1ByWm52SnY1ZG5WQ1E?oc=5",
+      "title": "SpaceX Changed My Mind On AST SpaceMobile (NASDAQ:SPCX) - Seeking Alpha",
+      "published_at": "2026-10-12T17:44:29.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxNRGFQWlAydGI1NElNZjRRTFdBUWlPb0MxLVRtM2RrcUN1aFhkdkdiS2RrYUl5Qy1YZmtmTTJObVM3WHFsdm9YY2VVZVNqbHlHT3VhZWtmY0V3OVYxRVc4NW9RdFlEelFCSnVJSmRwcEkyc0RKNnlrUW1vdjRTU1ByWm52SnY1ZG5WQ1E?oc=5\" target=\"_blank\">SpaceX Changed My Mind On AST SpaceMobile (NASDAQ:SPCX)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
+      "id": "2a467d08944b17b3",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxPcWdET0dvdU4xbUthWGo0UDIzRXBKb2FzZ1lxbkZVbTNzbDFPTkNVRjJVbDNPNy10TWF1dUdYSGRxQW0yb1dHX0trWmZIaS12SHFZeEs0MHRfQnhCM19yRnhjaTZSLV85czlzSDdLejB5WnBmTkRyU1YtN0gwMkhkYm1za3FOXzRhZFlaTzI3b0ZtcnVVazZIVGtVQlVHV1oxY1RUZjJ5dWQ5LVUwb0QySFZDUXJPYlZzT1RCVTJFYlRIM0haT0hXMzZaa1NiMHl6U0NmeTRNYy04bEMtcWRqTTdtbw?oc=5",
+      "title": "‘Jellyfish’ alert: Rocket launch, space station could share Tuesday morning’s skies over eastern N.C. - Island Free Press",
+      "published_at": "2026-10-12T17:28:17.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4wFBVV95cUxPcWdET0dvdU4xbUthWGo0UDIzRXBKb2FzZ1lxbkZVbTNzbDFPTkNVRjJVbDNPNy10TWF1dUdYSGRxQW0yb1dHX0trWmZIaS12SHFZeEs0MHRfQnhCM19yRnhjaTZSLV85czlzSDdLejB5WnBmTkRyU1YtN0gwMkhkYm1za3FOXzRhZFlaTzI3b0ZtcnVVazZIVGtVQlVHV1oxY1RUZjJ5dWQ5LVUwb0QySFZDUXJPYlZzT1RCVTJFYlRIM0haT0hXMzZaa1NiMHl6U0NmeTRNYy04bEMtcWRqTTdtbw?oc=5\" target=\"_blank\">‘Jellyfish’ alert: Rocket launch, space station could share Tuesday morning’s skies over eastern N.C.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Island Free Press</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
+      "consumed": true
+    },
+    {
       "id": "bc310cf7af62844e",
       "source_name": "Bluesky search: spacex launch",
       "url": "https://bsky.app/profile/instapundit.com.web.brid.gy/post/3mxozf4piwyv2",
@@ -748,6 +1460,16 @@
       "published_at": "2026-10-12T17:16:22.262Z",
       "raw_excerpt": "",
       "fetched_at": "2026-10-12T17:15:51.666Z",
+      "consumed": true
+    },
+    {
+      "id": "633e50ee7293c59d",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTHBVaTdKWXVMZS1yNWVyaS1OeFR4WWF4Q3Nneml5VEpCMHFrM0pTamtFQWtlWWhuWDFRRGN3OVNkdVFDdFF0dkRORUhjM1BZQVlMLXVSWHphaWJCbTJNMjQ1bG51dFdKUlM1dzRPSzA1VnQ1dUllVlAwZlhON0cwY3ROOElnRzQ1eWFLWTVFU1hMZUZtSURGbE1VbVdyUzhhT3AtV1R1Q1ZyRm01dGxaUy03bUU5bnVaRVFjSmZvSUttR25qX0gtb0VpODZRWjU5WWhhTmI0SUFLcGlyenZz?oc=5",
+      "title": "Banglalink Partners with SpaceX to Launch South Asia’s First Direct-to-Device Starlink Mobile Service in Bangladesh - SatNews Publishers",
+      "published_at": "2026-10-12T16:56:57.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxNTHBVaTdKWXVMZS1yNWVyaS1OeFR4WWF4Q3Nneml5VEpCMHFrM0pTamtFQWtlWWhuWDFRRGN3OVNkdVFDdFF0dkRORUhjM1BZQVlMLXVSWHphaWJCbTJNMjQ1bG51dFdKUlM1dzRPSzA1VnQ1dUllVlAwZlhON0cwY3ROOElnRzQ1eWFLWTVFU1hMZUZtSURGbE1VbVdyUzhhT3AtV1R1Q1ZyRm01dGxaUy03bUU5bnVaRVFjSmZvSUttR25qX0gtb0VpODZRWjU5WWhhTmI0SUFLcGlyenZz?oc=5\" target=\"_blank\">Banglalink Partners with SpaceX to Launch South Asia’s First Direct-to-Device Starlink Mobile Service in Bangladesh</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">SatNews Publishers</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
       "consumed": true
     },
     {
@@ -1428,6 +2150,16 @@
       "published_at": "2026-10-12T12:15:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxOMC0tcWI4ZjJQS2NJaWlzUmEyckIzc0k1dkpOQkJHM3hKbVpjb05SRDFfeUpjc1h6SDNnanNONXNnX2t1UzJHYndmRmlJRnE4ZVRDWXFVejBPUTkyemRMa2pWQWxpS095bi1oaDI0XzNLNTdDWnpKaGpMUVEwN0h5a0N1NVRLU1ZJVnpqT05xTlJfRG1tTFRsTg?oc=5\" target=\"_blank\">SpaceX: The $8B Spectrum Deal Hides A Failing AI Story (NASDAQ:SPCX)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
       "fetched_at": "2026-10-12T16:09:00.658Z",
+      "consumed": true
+    },
+    {
+      "id": "04033c932081d978",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQdG9FV3kxVEFjMXFqQVV2bmloQXYyMnJ3dzhDalktVGtCcnVSbU5pLXFrbmgwNUs3MzB0OUNZaG9scnR1VEJ3RzBJWnljTy11SmlQaWhEQzFJalBpdlpDTEtkQURkVldCQzhkM0NZam9LNEFRT0lzb0xTaFhXLUJjVW1iNXc?oc=5",
+      "title": "Here are Monday's biggest analyst calls: SpaceX, Nvidia, Apple, Salesforce, Robinhood, First Solar & more - CNBC",
+      "published_at": "2026-10-12T12:12:35.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxQdG9FV3kxVEFjMXFqQVV2bmloQXYyMnJ3dzhDalktVGtCcnVSbU5pLXFrbmgwNUs3MzB0OUNZaG9scnR1VEJ3RzBJWnljTy11SmlQaWhEQzFJalBpdlpDTEtkQURkVldCQzhkM0NZam9LNEFRT0lzb0xTaFhXLUJjVW1iNXc?oc=5\" target=\"_blank\">Here are Monday's biggest analyst calls: SpaceX, Nvidia, Apple, Salesforce, Robinhood, First Solar & more</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNBC</font>",
+      "fetched_at": "2026-10-13T00:58:51.716Z",
       "consumed": true
     },
     {
@@ -3608,76 +4340,6 @@
       "published_at": "2026-10-10T17:25:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxPZkk1Rk5Sd3NYOGJKNmVQZWhtTlJoa0ptVmF5U1lJR1JyUFJUUmFzQzFtMnVRajd6QzdZbWFKbHo1YmlCbTRGUWxDanNidTZmXy1FMi1PTlVTMkl6SGZzLW9taUxhNDkxSjVlSElRbWFaMUpENjBVcFFrSVBZT2NlZXd0RnZza1A5V3lxZEVxZw?oc=5\" target=\"_blank\">Here's the 1 Thing I'd Wait to See Before Buying SpaceX Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
       "fetched_at": "2026-10-10T22:00:22.853Z",
-      "consumed": true
-    },
-    {
-      "id": "1f6a13b61e1bda26",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/chejholloway.bsky.social/post/3mxjyfhgczk2b",
-      "title": "@chejholloway.bsky.social on Bluesky",
-      "published_at": "2026-10-10T17:20:11.860Z",
-      "raw_excerpt": "www.cnbc.com/2026/10/08/t...",
-      "fetched_at": "2026-10-10T22:00:22.853Z",
-      "consumed": true
-    },
-    {
-      "id": "b8d71b2d816b1375",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPOTROY2pURlhhX29neUlValM0QWlEMEpxQkdpbDFtM0h4dkxPTkVKMUtxLUVVYTVRanFwVGc0QmFQSF9odGF6aXlyOWN2YklMR0VpY1VSaTdEekhpU1dwVjZTUDhBUm1namtwNzBIQVcwdlRiZG1NZDcxT085RV9qNVoyOGhYd1R4QVlDY01heVhBSHhCbkhWNmNxYmllQmlOYm1SUnFtakVSN2xMTFR0cXVVMENOMXJGalVBclIxX0psS3FsR2o2ZW5UNTA1TXdHMmo3QWxwNHl2Zw?oc=5",
-      "title": "SpaceX’s Terafab Probably Won’t Deliver Very High Profits, Despite Taiwan Semiconductor’s Limited Role - Barchart.com",
-      "published_at": "2026-10-10T17:19:23.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2gFBVV95cUxPOTROY2pURlhhX29neUlValM0QWlEMEpxQkdpbDFtM0h4dkxPTkVKMUtxLUVVYTVRanFwVGc0QmFQSF9odGF6aXlyOWN2YklMR0VpY1VSaTdEekhpU1dwVjZTUDhBUm1namtwNzBIQVcwdlRiZG1NZDcxT085RV9qNVoyOGhYd1R4QVlDY01heVhBSHhCbkhWNmNxYmllQmlOYm1SUnFtakVSN2xMTFR0cXVVMENOMXJGalVBclIxX0psS3FsR2o2ZW5UNTA1TXdHMmo3QWxwNHl2Zw?oc=5\" target=\"_blank\">SpaceX’s Terafab Probably Won’t Deliver Very High Profits, Despite Taiwan Semiconductor’s Limited Role</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barchart.com</font>",
-      "fetched_at": "2026-10-10T22:00:22.853Z",
-      "consumed": true
-    },
-    {
-      "id": "97ec2c21c872bc20",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQMFZsMWpoSXpna3FzVTFqc3UyTmxjVlFDUXFxOHMybnZCVC12SElJbTdaWW9uWE52bVF3X2dVM3J3WkhDMFk1M0FYSWVDM1NGRjJBQWgxQUdlQTZENW9Pb3RBS2NOSkdlRTFhQTNOMVNaZUxHS1M2TmNVRG1nLVBpeDR5eXVwTkR0QjRtTlZVa2NPWVRjZHpqcQ?oc=5",
-      "title": "Here's the 1 Thing I'd Wait to See Before Buying SpaceX Stock. - The Motley Fool",
-      "published_at": "2026-10-10T17:10:46.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQMFZsMWpoSXpna3FzVTFqc3UyTmxjVlFDUXFxOHMybnZCVC12SElJbTdaWW9uWE52bVF3X2dVM3J3WkhDMFk1M0FYSWVDM1NGRjJBQWgxQUdlQTZENW9Pb3RBS2NOSkdlRTFhQTNOMVNaZUxHS1M2TmNVRG1nLVBpeDR5eXVwTkR0QjRtTlZVa2NPWVRjZHpqcQ?oc=5\" target=\"_blank\">Here's the 1 Thing I'd Wait to See Before Buying SpaceX Stock.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-10T17:15:49.117Z",
-      "consumed": true
-    },
-    {
-      "id": "8f7d775d4325e5ed",
-      "source_name": "Google News: incidents + regulation",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOVXJYQkF2X1lCWmRqeXhyTElXTUFOY3ZRd3dfWTVQM1pfckhOVTltNVpkN2FlRWdxbnBleFEySzBIb3pwa3dZU1Z0Zk1LZ09DSFZmdUhUamZ6dW8wYW9qQzVRaHhGWDMzdEhKZUNreDVaM05wV211b04wYnQ5VmxnSkQ3RFlBYTBvUm5kUmljRTRTeGNyRnJmZ3J3?oc=5",
-      "title": "Scientists turn eggshells into a new defense against space debris - Earth.com",
-      "published_at": "2026-10-10T17:02:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimgFBVV95cUxOVXJYQkF2X1lCWmRqeXhyTElXTUFOY3ZRd3dfWTVQM1pfckhOVTltNVpkN2FlRWdxbnBleFEySzBIb3pwa3dZU1Z0Zk1LZ09DSFZmdUhUamZ6dW8wYW9qQzVRaHhGWDMzdEhKZUNreDVaM05wV211b04wYnQ5VmxnSkQ3RFlBYTBvUm5kUmljRTRTeGNyRnJmZ3J3?oc=5\" target=\"_blank\">Scientists turn eggshells into a new defense against space debris</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Earth.com</font>",
-      "fetched_at": "2026-10-11T05:15:48.699Z",
-      "consumed": true
-    },
-    {
-      "id": "cc2bc6d744522f1b",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/chestnut-grove-last-remaining-anthropic-ai-data-center",
-      "title": "One of America’s Last Remaining Chestnut Groves Could Soon Be Wiped Out to Make Room for an AI Data Center",
-      "published_at": "2026-10-10T17:01:00.000Z",
-      "raw_excerpt": "Over a century ago, in 1904, a&nbsp;necrotrophic&nbsp;fungus known as chestnut blight swept across North America, brought across the Pacific on the back of chestnut trees from Japan and China. With no natural resistance to the fungal scourge, the once-plentiful chestnut trees of North America were ravaged, killing an estimated 4 billion across the United States alone. Today, all that remains of naturally occurring American chestnut trees are stumps, whose sproutlings never reach maturity. While horticulturists have developed some blight-resistant hybrids to keep the species technically alive, fully mature groves remain incredibly rare — with fewer than 4,300 acres of fruit-producing chestnut trees across the continental US as of 2023. Yet there could soon be one fewer chestnut grove if one data center developer gets its way. As explained by a blistering call to action in From the Front Lines: Struggles for Justice , a publication of the New York-based Global Justice Ecology Project, a grove of 200 blight-resistant chestnut trees are at risk of being bulldozed to make way for a hyperscale data center in West Virginia. Called the “Monarch Compute Campus,” the data center constellation is being developed by the company Nscale, “in collaboration with Nvidia and Caterpillar,” per a company blog post . Based on its current development plans, the fully constructed Monarch facility will span over 2,250 acres, supplying 8 gigawatts worth of computing capacity to AI companies like Anthropic. Given the sheer volume of capital being thrown at the project — over $20 billion all-told — stopping the data center may be easier said than done. As Nscale’s website proudly declares, the Monarch facility is “one of the largest single AI infrastructure investments in US history, anchoring America’s compute foundation.” Yet as Front Lines notes, chestnut trees of this kind are “irreplaceable,” serving as a crucial lifeline for future generations of new chestnut growth. “Planted in the 197",
-      "fetched_at": "2026-10-10T17:15:49.117Z",
-      "consumed": true
-    },
-    {
-      "id": "f56df7768d57c4b6",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/4taxfairness.bsky.social/post/3mxjwv5aymc2q",
-      "title": "@4taxfairness.bsky.social on Bluesky",
-      "published_at": "2026-10-10T16:46:52.255Z",
-      "raw_excerpt": "Trump bought up $5 MILLION in SpaceX debt. Two days later, he signed a new space policy that aims for 1,000+ launches a year by 2030. The biggest launch company is SpaceX. This is what happens when billionaires buy elections. They rig the system to work for them, not us.",
-      "fetched_at": "2026-10-10T17:15:49.117Z",
-      "consumed": true
-    },
-    {
-      "id": "b657fd9bc337048d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNV1ZaYzRQdFZUNVFiUDRYR21UNm8xZE0ta2Z0RWhnU3NfYy1vdkNLWVprUDQ4WjB1bUxNWXQ0NG1jazhkckFmeUFaZDJOenpwSmtFVmhuWm5scVJjMDJGb1RXVEstYnVPQmF6UHNsTmY1cUlTZHpaQXZYTk05UkpWX1lUX2RwLUZpUGU3SW92aTFPUXhCM3p6YUVGZDcxMWcyUjdUckJB?oc=5",
-      "title": "elon-musk-spacex-starlink-india - Teslarati",
-      "published_at": "2026-10-10T16:42:21.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxNV1ZaYzRQdFZUNVFiUDRYR21UNm8xZE0ta2Z0RWhnU3NfYy1vdkNLWVprUDQ4WjB1bUxNWXQ0NG1jazhkckFmeUFaZDJOenpwSmtFVmhuWm5scVJjMDJGb1RXVEstYnVPQmF6UHNsTmY1cUlTZHpaQXZYTk05UkpWX1lUX2RwLUZpUGU3SW92aTFPUXhCM3p6YUVGZDcxMWcyUjdUckJB?oc=5\" target=\"_blank\">elon-musk-spacex-starlink-india</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Teslarati</font>",
-      "fetched_at": "2026-10-10T17:15:49.117Z",
       "consumed": true
     }
   ]

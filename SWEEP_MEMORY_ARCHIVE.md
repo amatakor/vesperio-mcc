@@ -9436,3 +9436,152 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   updated items' `snr`/`category`/`impact`/`sources` fields (item 627, up
   from 626; sweep log 238 to 239) as the build-health signal.
 
+## Narrow re-check, ~7h44m gap, unfiltered full source list (2026-09-12)
+
+- 2026-09-12-A: A WebSearch open-web find (Loft Orbital/Marlan Space's $1B
+  Orbitworks constellation expansion from 10 to 50 satellites, announced
+  at the Paris summit) turned out to already be published, just under a
+  different lead company: the existing item led with BlackSky as the
+  exclusive imaging-sensor supplier
+  (`2026-09-09-blacksky-altair-next-gen-ai-constellation`), while every
+  independent outlet this run's search surfaced (Via Satellite, SatNews,
+  a Satellite Evolution Group wire mirror) framed the same announcement
+  around Loft Orbital/Marlan Space as the deal principals. finalize-sweep's
+  dedup gate still caught it correctly on shared companies + category +
+  date; worth remembering that the same multi-company announcement can
+  read as a completely different "lead actor" story depending on which
+  outlet's framing you find first.
+- 2026-09-12-B: Two Arianespace launch-services bookings from the same
+  Sept. 10 Paris-summit order-intake wave (Eutelsat/OneWeb renewal,
+  KT SAT/KOREASAT 9) both false-matched the *already-published* Amazon
+  Leo/Arianespace six-launch item purely on shared company (Arianespace)
+  + category (launch) + date proximity, and the Eutelsat item separately
+  false-matched the unrelated Eutelsat/Skynopy ground-network item on
+  shared company + a shared Payload recap-article URL cited as
+  background in both. Three `dedup_distinct` entries cleared all of it in
+  one pass -- extends the standing multi-deal-single-summit-day dedup
+  false-positive pattern to launch-services bookings specifically.
+- 2026-09-12-C: Arianespace's own newsroom (`newsroom.arianespace.com`)
+  fetches clean and gives full press-release text, but Arianespace has no
+  `src/data/registry` organization entry of its own -- only ArianeGroup
+  does, registered at `ariane.group`, a different domain -- so
+  Arianespace's own-domain press releases still fail anti-spoof and must
+  be classed `informal` (standing no-registry-host workaround, first
+  applied to Arianespace 2026-07-something per earlier entries). A
+  same-day EuropaWire wire-service republish of the identical release
+  classed `wire_pr` (tier 4) outscores the informal-capped original and
+  is the better lead every time this pattern recurs.
+- 2026-09-12-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
+  updated, 0 held") plus a direct `jq` read of all four new items'
+  `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields (items
+  628-631, sweep log 239 to 240) as the build-health signal.
+
+## Narrow re-check, ~5h44m gap, unfiltered full source list (2026-09-12, second)
+
+- 2026-09-12-E: A T-Mobile CFO (Peter Osvaldik) quote dismissing Starlink
+  Mobile's competitive threat ("can't even get through a Tesla
+  windshield"), widely picked up from Citi's 2026 Global TMT Conference
+  (Sept 9-10), traced via search to the SAME physics-of-D2D talking
+  points he had already made publicly in August conference/earnings
+  appearances (AndroidHeadlines, late August) -- left undrafted as a
+  recycled corporate talking point with no new stated fact, figure, or
+  contract, rather than a fresh commentary item. Worth flagging if a
+  future instance of this quote carries a genuinely new data point (e.g.
+  a stated traffic-share percentage) not present in the August coverage.
+- 2026-09-12-F: The Exotrail/Astroscale-France/Eutelsat France 2030
+  sovereign deorbiting-demonstration contract (first flagged as an
+  unfetchable Aviation Week headline in 2026-09-10-T/2026-09-11-K) was
+  finally sourced cleanly this sweep via Astroscale's OWN newsroom
+  (`astroscale.com/en/news/...`), a first-party page the prior two
+  sweeps never tried fetching directly -- landed a clean SNR 5 with zero
+  `found_none` penalty (direct-source lead) even though the €13.2M figure
+  cited by Tokyo Brief/Space & Defense (both still 403 on direct fetch)
+  never appeared in Astroscale's own release and was correctly omitted
+  rather than borrowed from an unfetched page. Lesson: when a trade
+  outlet covering a company announcement is paywalled or blocked, check
+  the NAMED companies' own newsrooms before giving up on a lead a second
+  time.
+- 2026-09-12-G: The same-company-plus-category dedup false positive fired
+  again on Eutelsat + `procurement` within 7 days, this time against the
+  Sept 8 Tusass/Greenland ground-network expansion item, despite sharing
+  nothing else with the Exotrail deorbiting-demo item -- extends the long
+  list to a case where Eutelsat is only the THIRD-named company (behind
+  Exotrail and Astroscale) on the new item. One `dedup_distinct` cleared
+  it.
+- 2026-09-12-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct `jq` read of the new item's
+  `snr`/`snr_trace`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields (item 632, sweep log 240 to 241) as the build-health signal.
+
+## Narrow re-check, ~5h55m gap, unfiltered full source list (2026-09-12, third)
+
+- 2026-09-12-I: A company's own blog/newsroom post is rejected as
+  `first_party` by the anti-spoof gate whenever the actor has no
+  `src/data/registry` organization entry at all (not just a mismatched
+  domain): Astranis' own `astranis.com/blog/...` post about the stc
+  group/Saudi Arabia deal 403'd the first_party classification with "not
+  an official first_party host" since Astranis has no registry profile to
+  verify the domain against. Reclassified it `informal` and led with Via
+  Satellite (`trade`) instead, per the standing no-registry-host
+  workaround (2026-09-10-N/2026-09-12-C, previously only seen on
+  Arianespace) now confirmed for a second, entirely different company.
+  Landed a clean SNR 4 off two independent trade sources (Via Satellite,
+  Developing Telecoms) rather than force an unverifiable SNR 5.
+- 2026-09-12-J: Bluesky profile pages (`bsky.app/profile/...`) render as
+  an empty JS shell via WebFetch as expected, but
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N`
+  returns full post text and `createdAt` timestamps cleanly for every
+  handle tried this run (Josef Aschbacher, Marco Langbroek, Caleb Henry,
+  Tim Farrar, Eric Berger, Jeff Foust's SpaceNews account, Andrew Jones,
+  SpacePolicyOnline) with no auth needed; worth using this endpoint
+  directly instead of the profile URL on future sweeps to cut the
+  fetchable-channel budget roughly in half. Two caveats found: some feeds
+  return posts far out of chronological order / very stale (Caleb Henry
+  and Eric Berger's most recent returned posts were from July 2026 and
+  2025 respectively despite presumably posting more recently, and Tim
+  Farrar's feed likewise topped out at July), so a stale-looking API
+  result is not proof the account has nothing new; and the
+  `marcolangbroek.bsky.social` feed came back dominated by unrelated Dutch
+  political posts mixed with his real space content (RASSVET blog
+  repost), so the account is a personal, not space-only, feed and needs
+  filtering by content, not by assuming every post is on-topic.
+- 2026-09-12-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
+  updated, 0 held") plus a direct `jq` read of the new item's
+  `snr`/`category`/`impact`/`tags`/`companies`/`sources` fields (item 633,
+  sweep log 241 to 242) as the build-health signal.
+
+## Narrow re-check, ~3h38m gap, unfiltered full source list (2026-09-12, fourth)
+
+- 2026-09-12-L: A rocket-propulsion manufacturer's own going-public event
+  (Ursa Major Technologies' $2.3B SPAC merger with Bleichroeder
+  Acquisition Corp. III, announced Aug 25, surfaced via discovery search
+  and never previously drafted) left undrafted as out of scope despite
+  Ursa Major being a real registry-adjacent "manufacturer" (its Hadley
+  and Draper engines fly on orbital and in-space vehicles, and SpaceNews/
+  Payload both cover the company): the company's own press release calls
+  itself a "Hypersonics and Critical Munitions Company," and every use-
+  of-proceeds line (HAVOC Missile System, munitions production capacity,
+  hypersonic engine manufacturing) is defense/munitions, with "space
+  mobility systems" mentioned only as one minor line item. Same
+  terrestrial/adjacent-industry-substance-over-space-branding shape as
+  the 2026-09-09-N Intel Terafab precedent, now confirmed for a company
+  that DOES have a genuine, otherwise-in-scope space product line: the
+  test is the substance of the specific event (what the money funds, how
+  the company frames its own release), not whether the company also does
+  space work elsewhere. Worth revisiting if a future Ursa Major event is
+  framed around its space-launch engine business specifically.
+- 2026-09-12-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and a `jq empty` parse check across all four touched
+  data files (candidates, source_ledger, sources, state) as the
+  build-health signal. Zero-item sweep: queue, 7 HTML sources, 15/17
+  signals channels, and 8 discovery queries all came up empty or already-
+  published.
+
