@@ -5045,3 +5045,87 @@ a newer entry if a lesson changes.
   items, up from 930) and the updated Starshield item's grown `sources`/
   `secondary_urls` arrays (5 sources). `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h31m gap, unfiltered full source list (2026-10-14, fourth)
+
+- 2026-10-14-N: `boe.es` (Spain's official state gazette, Boletin Oficial
+  del Estado) fails the anti-spoof `official_record` host check even for a
+  genuine government legal order (Orden ITU/920/2026 on Hisdesat's PAZ 2
+  loan): `isOfficialHost` only passes `*.gov`, the small FIXED_OFFICIAL_HOSTS
+  list (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
+  itu.int, unoosa.org, europa.eu), and registry website hosts. Spain's `.es`
+  government domains (no `.gob.es`/`.gov` pattern here) are not on that list.
+  Reclassified `boe.es` to `trade` per the gate's own hint; the item still
+  landed a clean SNR 4 since a `whitelist`/`observer` corroboration source
+  (European Spaceflight) was also attached. Worth remembering for any future
+  EU-member-state official-gazette citation (BOE, France's Legifrance,
+  Italy's Gazzetta Ufficiale, etc.): none of these pass the official_record
+  gate unless a dev adds them to FIXED_OFFICIAL_HOSTS; class them `trade` by
+  default rather than resubmitting against the rejection.
+- 2026-10-14-O: A quarter's largest individual funding round cited inside an
+  aggregate industry report (Seraphim's Q3 Space Index naming Hadrian's
+  $1.37B Series D as the period's biggest raise) does not itself qualify as
+  a fresh gap to chase standalone once it is two-plus months stale (Hadrian's
+  round closed Aug. 6): the report's own release date is the dateable event,
+  not the underlying figures it recaps. Confirmed Hadrian's round had never
+  been drafted as its own item and left it that way deliberately, consistent
+  with the predates-window chase-it exception being reserved for notable/
+  seismic gaps, not routine funding recaps embedded in someone else's report.
+- 2026-10-14-P: The already-published Seraphim Q3 report item
+  (`2026-10-14-seraphim-q3-2026-space-funding-report`, led on an Investing.com/
+  Reuters wire pickup at SNR 4) had a same-day first-party upgrade sitting in
+  plain sight: `seraphim.vc/seraphim-space-index/` is Seraphim's own registry-
+  recorded website and states the identical headline figures directly, plus
+  genuinely new detail the wire pickup omitted (trailing-twelve-month totals,
+  the Hadrian/Stoke Space/K2 Space round breakdown, a VP quote). A same-sweep
+  `rescore` via the MAGPIE upgrade path (patch `source_url` first, then
+  `rescore.sources[0].url` matching it) moved the item from 4 to 5. Worth
+  checking a firm's own site for its underlying report/index page whenever a
+  wire-sourced industry-report item is still open the same day, not just
+  treating the wire version as the ceiling.
+- 2026-10-14-Q: A months-old "may slip to 2027" item
+  (`2026-08-11-rocket-lab-neutron-slip-2027`, 65 days outside both the 7-day
+  same-event and 30-day reinforcement windows) still took a same-program
+  `rescore`+`patch` rather than a new item once Rocket Lab's own SEC 8-K
+  (Ex. 99.1) firmed the guidance into a confirmed 2027 debut with a named
+  cause (voids in a carbon-composite propellant dome): the MAGPIE upgrade
+  path (official_record lead via the SEC exhibit) isn't restricted to
+  continuations found within the ordinary dedup windows when it is
+  unambiguously the same ongoing story being resolved, consistent with the
+  2026-10-06-M "same-program follow-up outside both windows" precedent.
+- 2026-10-14-R: A single evolving geopolitical story (SpaceX's Starshield
+  speed restriction for Ukraine) generated a second, institutionally
+  distinct in-scope item the same day rather than folding into the existing
+  item: the European Commission's own Oct. 14 press briefing (Thomas Regnier
+  on GOVSATCOM/IRIS2, Paula Pinho on intelligence-sharing) is a different
+  actor taking a different action, not a development of SpaceX's story, so
+  it drafted as its own `geopolitical` item with an empty `companies` array
+  (no company's registry profile is a party to a talks-underway policy
+  statement) rather than an `updates[].attach` on the SpaceX item. Only the
+  commercial-space-relevant half of that briefing (GOVSATCOM/IRIS2) went in
+  the copy; the intelligence-sharing half was left out entirely as having no
+  stated commercial-space angle, per the standing conflict/operational-use
+  exclusion.
+- 2026-10-14-S: Two superficially similar October-dated pieces reporting the
+  same EU spokesperson's Starlink-alternative framing were NOT both current:
+  `militarnyi.com`'s "Europe to Help Ukraine Switch from Starlink..." page
+  displayed a March 3, 2025 byline underneath a same-day page-load header
+  (checked directly, not assumed), making it a stale recycled page from a
+  year-old funding-pause crisis despite surfacing in an October-2026-dated
+  search; `euperspectives.eu` and `eurointegration.com.ua`, by contrast, both
+  carried genuine `14.10.2026`/`2026/10/14`-dated URLs and content. A WebFetch
+  summarization pass that reports "Publish Date: October 14, 2026" for a page
+  can be reading the page's load/copyright timestamp, not the article's own
+  byline; always ask explicitly for the byline date shown under the headline
+  before trusting a "fresh" read on a story this shaped (a recurring EU/
+  Starlink-alternative debate that genuinely recurred across more than one
+  crisis).
+- 2026-10-14-T: `bun scripts/finalize-sweep.ts` merged cleanly on the second
+  attempt, after reclassifying the BOE lead source from `official_record` to
+  `trade` per -N above ("merged 2 new, 3 updated, 0 held"); confirmed via a
+  direct `jq` read of both new items' and all three updated items' `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields (933 items, up from 931),
+  the two `snr_movements` entries (Neutron 4→5, Seraphim 4→5) logged in the
+  sweep entry, and an empty `registry-candidates.json` delta (both new
+  items' crossfeed blocks carried no facts). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
