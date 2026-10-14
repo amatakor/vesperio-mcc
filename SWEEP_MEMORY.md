@@ -4936,3 +4936,52 @@ a newer entry if a lesson changes.
   13 item's grown `sources`/`updates` arrays (13 sources, 6 updates). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-10-14, second)
+
+- 2026-10-14-E: Ukraine's government adviser statement that SpaceX imposed
+  an unannounced 100 mph speed cap on Starshield terminals (per Serhii
+  "Flash" Beskrestnov, confirmed independently by Ukrinform and a Yahoo
+  Finance mirror crediting WSJ) qualifies under CLAUDE.md's geopolitical
+  carve-out via the "government statement directly concerning commercial
+  space services in a conflict" leg, not the "operator confirms" leg:
+  SpaceX/Musk never commented on the record (confirmed via a dedicated
+  WebSearch), and the item was drafted and scored on the Ukrainian
+  officials' attributed statements alone. Landed `major` impact (not
+  `seismic`) on the judgment that any government/enterprise Starlink or
+  Starshield customer would treat an operator's unilateral, unannounced
+  service change for a major client as a same-day reliability/political-
+  risk briefing item, distinct from CLAUDE.md's stated-value/regulatory-
+  grant major examples but matching the underlying "director acts or
+  briefs the team today" test.
+- 2026-10-14-F: The standing same-company-plus-category dedup false
+  positive fired on two unrelated items this run: the Starlink/Ukraine
+  geopolitical item against the unrelated Sept 9 German Space Command
+  Russia-shadowing-tactics item (shared company SpaceX + category
+  geopolitical only), and a Deutsche Telekom CEO commentary item
+  (category `product`) against both the VEON/Banglalink Starlink Mobile
+  Bangladesh launch and the Amtrak Starlink Cascades trial (shared
+  company SpaceX + category product only). Three `dedup_distinct`
+  entries at each item's top level cleared both in one pass.
+- 2026-10-14-G: `finalize-sweep.ts` also rejected a first draft for
+  marking 6 of 7 new items' corroboration crawl `not_attempted` while the
+  sweep had only 7 new items total, well under the 8-event budget
+  threshold that makes `not_attempted` legal; had to actually run the
+  2-search-minimum crawl per event before resubmitting. One of the six
+  (In Orbit Aerospace's autonomy pivot, a Payload Exclusive) and one
+  (Genrobotics' ISRO boom-arm contract, whose only other hit,
+  uniindia.com, 403'd on fetch) came back honest `found_none`; the other
+  four picked up genuine second sources (Reflect Orbital's own PR
+  Newswire release for the Skyroot item; SiliconIndia for OXG Space;
+  Finimize already in hand for the Seraphim report; Advanced Television
+  already in hand for the Deutsche Telekom item) once actually searched.
+  Worth remembering: with only a handful of new items in a draft,
+  `not_attempted` is essentially never legal and the crawl has to
+  actually run for every one before submitting, not just for items that
+  look under-sourced.
+- 2026-10-14-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  second attempt ("merged 7 new, 0 updated, 0 held"); confirmed via a
+  direct `jq` read of all seven new items' `snr`/`category`/`impact`/
+  `kind` fields (930 items, up from 923) and the sweep log's `signals`/
+  `discovery` blocks. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
