@@ -9585,3 +9585,117 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   signals channels, and 8 discovery queries all came up empty or already-
   published.
 
+## Narrow re-check, ~8h11m gap, unfiltered full source list (2026-09-13)
+
+- 2026-09-13-A: A CZ-8A/Wenchang commercial-LC-1 launch previewed for
+  Sept 11 (NASASpaceflight launch-preview roundup, "TBC" status) never
+  resolved to a confirmed payload or outcome in any source checked
+  (English or Chinese search); left undrafted per the standing
+  "don't state a fact not in a source" rule rather than assume a routine
+  Guowang-style success. Worth a follow-up grep next sweep once
+  independent reporting catches up.
+- 2026-09-13-B: A "secretive backer builds $40bn SpaceX stake" FT
+  headline and a fresh "$1.11 billion-per-month AI compute deal" wave
+  both traced cleanly to already-known shapes: the former is coverage of
+  an existing, long-held shareholder now that SpaceX trades publicly
+  (pure stock-market content, the standing 2026-09-10-A investment-
+  clickbait exclusion), and the latter is another tranche of SpaceX's
+  terrestrial Colossus AI/GPU hosting business (confirmed via a direct
+  search on the deal specifics: Mississippi/Tennessee data centers), the
+  same out-of-scope shape as the 2026-09-11-A Google/xAI compute deal.
+- 2026-09-13-C: Two independent stale-resurfacing traps in one discovery
+  pass: a New Space Economy op-ed (Sept 11) discussing "US sanctions on
+  Chinese satellite firms" over Iran-imagery support (Chang Guang,
+  MizarVision, The Earth Eye) reads as fresh but the underlying OFAC
+  action is dated May 9, 2026, four months stale; and a SpaceNews
+  "NASA releases details on revised next phase of commercial space
+  station development" piece, which surfaces readily for a "September
+  2026" query, carries its own stated publish date of September 6,
+  **2025** once fetched directly, over a year stale.
+- 2026-09-13-D: Two more "process not yet fact" exclusions: NASA's
+  NextSTEP-3 BAA Appendix A (Sept 8 lunar-surface-tech proposal call,
+  five capability areas including oxygen extraction and vertical solar
+  arrays) is a call for proposals with no award; a same-day scheduled
+  SpaceX Falcon 9 launch of the final three O3b mPOWER satellites for
+  SES (window opening hours after this sweep ran) was correctly left
+  undrafted as not-yet-flown.
+- 2026-09-13-E: A recycled-talking-point exclusion on a new person:
+  Rocket Lab CEO Peter Beck's "piping hot" AI/space valuation warning
+  (widely mirrored via UFO Feed and peers, dated Sept 11-12) traces to a
+  Newstalk ZB radio interview restating his own June "completely
+  untethered to reality" remarks, not a fresh fact or a retrievable X
+  post — same shape as the 2026-09-12-E T-Mobile CFO precedent, now
+  confirmed for an xSearch-only whitelisted person rather than a
+  non-whitelisted executive.
+- 2026-09-13-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") and the sweep log entry it wrote (one persistence
+  SNR bump on an existing item, `2026-08-27-casc-long-march-6c-
+  fragmentation` 2 to 3) as the build-health signal. Zero-item sweep:
+  the 20-candidate queue, all 7 HTML sources, 13/17 signals channels
+  (rotation), and a 10-query discovery matrix all came up empty,
+  already-published, stale, or out of scope.
+
+## Deep sweep (mode "deep", triggered after two zero-add sweeps), ~7h gap, unfiltered full source list (2026-09-13, fourth)
+
+- 2026-09-13-G: A deep-mode 583-candidate queue re-triaged after three
+  same-day narrow sweeps already ran means most title-scan "looks new"
+  hits are stale re-presentations, not fresh finds: WebSearch corroboration
+  for four promising trade-press headlines (Sirius Space STAR-1 engine
+  hot-fire, NOAA's 14-vendor SBEM IDIQ, MaiaSpace/iQPS Asia SAR deal,
+  TrustPoint/EnduroSat 40-satellite PNT contract) found real, on-scope
+  events, but grepping `items.json` by company/keyword before drafting
+  would have caught that three of the four (all but Sirius Space) were
+  already published earlier the same day under different-looking item
+  IDs; finalize-sweep's dedup gate caught all three anyway, but only
+  after a wasted full drafting pass. Lesson: in deep mode specifically,
+  grep `items.json` for each candidate's exact company names BEFORE
+  spending a corroboration-search budget on it, not just against the
+  `existing[]` summary list, which does not surface every recent title.
+- 2026-09-13-H: One of the three redundant hits was a genuine enrichment
+  case rather than a pure duplicate: Via Satellite's write-up of the NOAA
+  SBEM IDIQ item named all 14 vendors across seven data categories, while
+  the already-published item (led by NOAA's own official_record release,
+  SNR 5) had compressed the roster to "including Spire Global, Tomorrow.io,
+  PlanetiQ and Muon Space," dropping 10 named companies (BAE Systems,
+  Ethereal Space, Precursor SPC, Weather Stream, Hydrosat, Tropical Weather
+  Analytics, SpaceX, Iceye US, Umbra Lab, Care Weather Technologies).
+  Patched via `updates[].patch` to the fuller breakdown with Via Satellite
+  attached as corroboration, leaving the $8B figure and official lead
+  source untouched — a same-event dedup match doesn't mean the newer
+  source has nothing left to add.
+- 2026-09-13-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a direct `jq` read of the new item's and the
+  updated item's `snr`/`category`/`impact`/`tags`/`companies`/`sources`
+  fields as the build-health signal.
+
+## Narrow re-check, ~4h50m gap, unfiltered full source list (2026-09-13, fifth)
+
+- 2026-09-13-J: A WebSearch result summary for a plain "rocket launch
+  failure anomaly satellite September 12 13 2026" query confidently
+  restated a January 12, 2026 PSLV-C62 third-stage failure (spaceflightnow.com,
+  URL path literally `/2026/01/12/...`) as having happened "on September
+  13, 2026," inventing a fresh date the source page does not state.
+  Fetching the article directly confirmed both publish date and launch
+  date were January 12, 2026, eight months stale. Extends the standing
+  WebSearch-summary-fabricates-currency pattern to a case where the
+  summary didn't just resurface an old story, it actively relabeled its
+  date to match the query's requested window; always verify a
+  search-summary's claimed date against the source URL/page directly
+  before treating it as inside the sweep window.
+- 2026-09-13-K: The Loft Orbital/Marlan Space/BlackSky/Mistral AI $1B
+  50-satellite constellation (already published 2026-09-09) resurfaced a
+  third time via a SatNews restatement dated Sept 13; company-name grep
+  against items.json (not just the `existing[]` summary list) again
+  caught it before any drafting time was spent, per the 2026-09-13-G
+  lesson now paying off on a narrow (non-deep) sweep too.
+- 2026-09-13-L: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
+  updated, 0 held") as the build-health signal. Zero-item sweep: the
+  20-candidate queue, 7 HTML sources, 15/17 signals channels, and a
+  10-query discovery matrix all came up empty, already-published, or
+
