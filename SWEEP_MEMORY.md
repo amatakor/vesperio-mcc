@@ -4985,3 +4985,63 @@ a newer entry if a lesson changes.
   `kind` fields (930 items, up from 923) and the sweep log's `signals`/
   `discovery` blocks. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h34m gap, unfiltered full source list (2026-10-14, third)
+
+- 2026-10-14-I: The Starshield speed-restriction story drafted two sweeps
+  ago blew up into the widest mainstream pickup of any item this month
+  (NYT, LA Times, NBC, Politico, The Verge, CNN, Bloomberg, Gizmodo,
+  Tom's Hardware, dozens more) within about 4.5 hours, plus two genuinely
+  new on-the-record facts: Polish Foreign Minister Sikorski publicly
+  challenging Musk on X ("are you playing politics with your products
+  again? As your European customers, we are watching you," confirmed via
+  a direct Euromaidan Press fetch, which also carried the terminal-supply
+  figures: Poland supplies ~29,500 of Ukraine's terminals, about half,
+  for ~$50M/year) and Musk's own on-record X post ("Zelensky has gone too
+  far," confirmed via a direct Newsweek fetch) -- the first time SpaceX/
+  Musk commented at all on this story, reversing the prior sweep's note
+  that neither had. A same-day Euromaidan Press follow-up also confirmed
+  the restriction tightened further during the day (160 km/h down to
+  60-70 km/h). All of this folded into the existing item as an `update`
+  (same event, same day) rather than a new item, per the standing 7-day
+  dedup rule; a WebSearch synthesis is not enough to source a quote like
+  this, each one needed its own direct fetch per the 2026-10-13-E lesson,
+  and Google News redirect URLs would not resolve via WebFetch at all this
+  run (bare "Google News" header, no content) -- had to re-find each
+  publisher URL via a dedicated WebSearch instead of following the
+  redirect directly.
+- 2026-10-14-J: A separate, unrelated same-day Starlink story (Musk
+  accusing Indian "oligarchs" Ambani/Mittal of blocking Starlink's India
+  launch) resurfaced via Google News/Bloomberg with an Oct 14 timestamp
+  but traced entirely to the Oct 8-9 dispute already covered by the
+  existing Musk/Ambani item; left alone as a non-update, confirming the
+  standing practice of checking a same-actor headline's actual date
+  before treating it as new.
+- 2026-10-14-K: An Al Jazeera "Iran targets Starlink as a tool of war"
+  piece read as fresh but restated the same Aghamiri "tool of war"/
+  "legitimate military target" quote already published 2026-09-30 and
+  2026-10-05, just with added background on criminal penalties; left
+  undrafted as a non-event rehash, not a new government statement.
+- 2026-10-14-L: A ZhuQue-2E launch found via the discovery pass's
+  launch-matrix query had no coverage at all in English trade press
+  (SpaceNews 429'd both direct-fetch attempts); the only usable coverage
+  was a niche English-language China-watch blog (China in Space, classed
+  `informal` per the standing 2026-07-12 precedent for that outlet) plus
+  a Global Times account's X post, verbatim-confirmed via the
+  `cdn.syndication.twimg.com` endpoint. Honest SNR 2 (informal base +
+  corroboration) on a routine `noise`-tier batch item is the model
+  working as intended for a genuinely under-covered non-US story; a
+  WebSearch-only "fact" about a third Group-03 batch planned for Q4 2026
+  was dropped from the draft since it was never confirmed via a direct
+  fetch.
+- 2026-10-14-M: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice in a row on tagline-length overages (145 and then 153
+  chars against the 140 max) introduced while folding in the day's new
+  facts, and once on a signals-pass channel URL mismatch (listed the
+  substack `/feed` RSS endpoint instead of the bare channel URL
+  `signals-context` actually lists); merged cleanly on the fourth
+  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct
+  read of the new ADA Space item's `snr`/`category`/`impact` fields (931
+  items, up from 930) and the updated Starshield item's grown `sources`/
+  `secondary_urls` arrays (5 sources). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
