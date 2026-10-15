@@ -5040,3 +5040,44 @@ a newer entry if a lesson changes.
   from 937) and the Starlink/Ukraine item's grown `sources`/`updates`
   arrays (18 sources, 4 updates). `bun run build` was not attempted, per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-10-15, third)
+
+- 2026-10-15-J: Pre-empting the standing same-company-plus-category dedup
+  false positive paid off: three of four new items this run shared
+  company SpaceX + category partnership with the Oct 8 American
+  Airlines/KLM Starlink items (an Alaska Communications ground-ISP
+  reseller deal and a United Starlink-tracker/half-fleet milestone, both
+  genuinely distinct programs), and writing `dedup_distinct` entries for
+  both existing ids into the first draft got a clean first-attempt merge
+  with zero rejections, versus the usual one-or-two retry cycle. Worth
+  defaulting to this when a new item shares SpaceX + a common category
+  (partnership, contract, geopolitical) with ANY existing item from the
+  last 7 days, not just waiting for the gate to name the collision.
+- 2026-10-15-K: A discovery-pass query ("India ISRO satellite launch
+  contract announcement") surfaced a genuine same-day gap the queue never
+  carried at all: India's Ministry of Defence signed a Rs 2,563 crore
+  contract with NewSpace India Limited for GSAT-7C, the IAF's first
+  dedicated comms satellite. tribunindia.com and theprint.in both fetched
+  cleanly (mainstream, SNR 4); business-standard.com and indiatvnews.com
+  403'd on direct fetch. NSIL has no `src/data/registry` entity (only
+  ISRO does), so no crossfeed field applied despite the nine-figure-scale
+  value; impact landed `major` on the stated-value test alone.
+- 2026-10-15-L: A same-day Andrew Parsonson find (Arianespace targeting
+  Nov. 23 for Ariane 6's return to flight, reportedly after fixing the
+  turbopump anomaly first reported 2026-09-18) folded cleanly into that
+  26-day-old item via `attach`+`patch`, no bump needed. Separately,
+  CGTN's own direct coverage of the Oct 14 ADA Space Three-Body Group-02
+  launch (already published same-day off an informal lead) was fetched
+  independently and used as a `rescore` upgrade: state-media CGTN classes
+  `mainstream` for a fact of record (launch occurred, satellite count),
+  moving the item from SNR 2 to 4 in one pass. Confirms CGTN is usable as
+  a same-day upgrade path for Chinese launch stories first caught only by
+  informal aggregators.
+- 2026-10-15-M: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 3 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (943 items, up from 939), all three updated items' grown
+  `sources`/`updates` arrays, and the `snr_movements` entry for the ADA
+  Space rescore (2→4). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
