@@ -59780,7 +59780,7 @@
         "https://dailytimes.com.pk/1562703/iran-summons-norway-envoy-over-starlink-operations/",
         "https://www.iranintl.com/en/202610052548"
       ],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -59793,9 +59793,14 @@
             "delta": 1,
             "reason": "Iran escalated from warning about Starlink to formally protesting to Norway and threatening to treat its satellite infrastructure as a military target.",
             "source": "https://en.mehrnews.com/news/248317/Tehran-summons-Norwegian-envoy-over-Starlink"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
         "history": [
           {
@@ -59803,6 +59808,12 @@
             "from": 1,
             "to": 2,
             "reason": "Iran escalated from warning about Starlink to formally protesting to Norway and threatening to treat its satellite infrastructure as a military target."
+          },
+          {
+            "date": "2026-10-15",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ]
       },
@@ -60398,7 +60409,7 @@
         "https://spacenews.com/lmt-group-and-novaspace-partner-to-develop-strategy-for-5g-6g-satellite-communications-hub-in-latvia/"
       ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
@@ -60410,10 +60421,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-15",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -64102,7 +64126,7 @@
       "headline": "South Korea launches first NEONSAT Earth-observation satellites on Nuri",
       "explainer": {
         "tagline": "Nuri's fifth flight placed five NEONSAT satellites and 10 CubeSats in orbit, starting Korea's first homegrown EO microsat constellation.",
-        "what_happened": "South Korea's Nuri rocket lifted off from Naro Space Center on Oct. 7 at 12:25 p.m. local time carrying five NEONSAT Earth-observation microsatellites, numbered 2 through 6, plus 10 CubeSats, per the Korea Times. The rocket reached its roughly 570-kilometer target orbit about 12 minutes after liftoff and released the five NEONSATs one at a time at 35-to-40-second intervals, then released the CubeSats two at a time every 10 seconds, per Korea JoongAng Daily. Each NEONSAT weighs under 100 kilograms and carries an electro-optical camera resolving objects as small as 1 meter in black-and-white and 4 meters in color, per the Korea Times. Korea's space agency KASA confirmed all five NEONSATs had established first communication by 5:52 p.m., with NEONSAT No. 6 reaching Antarctica's King Sejong Station around 1:08 p.m.; nine of the 10 CubeSats responded, with one, Quaternion's PERSAT02, failing to separate from the rocket, per the Korea Times. The mission also performed collision-avoidance maneuvers between satellite separations, and Korea's cumulative launch success rate rose to 80%, per the Korea Times.",
+        "what_happened": "South Korea's space agency KASA launched the first five satellites of its NEONSAT microsatellite constellation aboard the country's Nuri rocket on October 7 from the Naro Space Center, the rocket's fifth flight. KASA and the Korea Advanced Institute of Science and Technology (KAIST), which built the satellites, said NEONSAT-2 through NEONSAT-6 transmitted their first Earth-observation images 14 hours and 29 minutes after liftoff, confirming normal operation of the satellites and their optical payloads; satellite No. 4 photographed Cleveland, Ohio on October 8 and No. 6 photographed Montgomery, Alabama on October 12, per Korea Times and Korea Herald. The constellation will eventually comprise 10 satellites, with five more planned for Nuri's sixth flight next year, and is intended for national security and disaster-response imaging.",
         "why_it_matters": "NEONSAT is Korea's first mass-produced Earth-observation constellation, built with commercial off-the-shelf parts to cut cost and cycle time, and a second five-satellite batch is planned for 2027 to complete the 10-satellite system. TechTimes reported ahead of today's flight that Hanwha Aerospace was set to hold full operational command of the Nuri launch for the first time, with KASA shifting to a supervisory role, a privatization step for Korea's state launch program that bears watching as other Korean suppliers look to compete for government and commercial EO work. Once complete, the 10-satellite constellation is designed to image the Korean Peninsula at least three times daily and revisit any location within 24 hours during emergencies, per the Korea Times.",
         "for_who": "Korean EO manufacturers and allied government customers"
       },
@@ -64119,7 +64143,9 @@
       "secondary_urls": [
         "https://www.koreajoongangdaily.com/business/nuri-rocket-successfully-launches-with-15-satellites/12908968",
         "https://www.techtimes.com/articles/327581/20260915/nuri-rocket-gives-hanwha-aerospace-full-command-koreas-first-constellation-deploy.htm",
-        "https://www.koreatimes.co.kr/business/tech-science/20261007/cover-story-nuri-rocket-successfully-completes-5th-flight"
+        "https://www.koreatimes.co.kr/business/tech-science/20261007/cover-story-nuri-rocket-successfully-completes-5th-flight",
+        "https://www.koreatimes.co.kr/business/tech-science/20261015/korean-microsatellite-constellation-captures-first-images-within-a-day-of-launch",
+        "https://www.koreaherald.com/article/10903690"
       ],
       "kind": "event",
       "snr": 4,
@@ -64167,6 +64193,20 @@
           "class": "trade",
           "added": "2026-10-07",
           "via": "corroboration"
+        },
+        {
+          "url": "https://www.koreatimes.co.kr/business/tech-science/20261015/korean-microsatellite-constellation-captures-first-images-within-a-day-of-launch",
+          "outlet": "Korea Times (Yonhap)",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.koreaherald.com/article/10903690",
+          "outlet": "Korea Herald (Yonhap)",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-07T05:33:38.596Z",
@@ -64182,6 +64222,11 @@
           "date": "2026-10-07",
           "kind": "copy",
           "note": "KASA confirms two-way contact with all five NEONSATs and notes one of 10 CubeSats failed to separate; adds the constellation's planned revisit cadence."
+        },
+        {
+          "date": "2026-10-15",
+          "kind": "copy",
+          "note": "KASA and KAIST confirm the five NEONSAT satellites transmitted their first Earth-observation images within a day of launch."
         }
       ]
     },
@@ -68313,8 +68358,8 @@
       "headline": "SpaceX imposes 100 mph speed limit on Ukraine's military Starlink terminals",
       "explainer": {
         "tagline": "SpaceX capped Starshield speeds at 100 mph with no warning, then tightened it further as Poland publicly challenged Musk over the cap.",
-        "what_happened": "SpaceX imposed a 100 mph (160 km/h) speed restriction on Starlink terminals in motion under Ukraine's military Starshield package overnight on October 13-14, per presidential technology adviser Serhii \"Flash\" Beskrestnov, who said the limit was not announced in advance. Ukrainian activist Serhii Sternenko said the restriction tightened further during the day, with connections dropping at 60-70 km/h. Polish Foreign Minister Radoslaw Sikorski publicly challenged Musk on X; Musk replied that \"Zelensky has gone too far,\" then separately wrote that \"Starshield systems are owned and controlled by the U.S. government\" and that \"any limits on speed or usage are decided by the US military and ultimately POTUS,\" per Via Satellite and Fox News. Sen. Thom Tillis (R-N.C.) publicly pressed Musk on X, saying \"intentionally degrading Ukraine's ability to defend itself might be construed as aiding and abetting a mass murderer.\" President Zelensky, in a televised interview with Piers Morgan, called the restriction \"a big mistake\" that \"will lead to a great loss of human life,\" and asked for it to be switched off \"as it should be between partners,\" per Censor.net and NBC News. By the evening of October 14, Ukrainian official Mykhailo Fedorov said Starlink service was being restored for speeds up to 160 km/h, while the push continues to remove the Starshield limit altogether.",
-        "why_it_matters": "Starshield is the military-grade Starlink package Ukraine depends on for drone operations and frontline communications, and SpaceX changed its performance unilaterally and without notice, then pointed to the U.S. government rather than its own policy when explaining why. For any government or enterprise customer weighing reliance on Starlink or Starshield for mission-critical connectivity, an operator whose service terms can shift overnight for a major client, and that draws public rebukes from a paying government customer and a sitting U.S. senator in the same news cycle, is a reliability and political-risk signal worth briefing leadership on immediately. The fallout is already moving capital: Eutelsat shares jumped 23%, their biggest one-day gain in 16 months, and SES rose nearly 3%, with Bernstein analyst Aleksander Peterc attributing the move to investors pricing in reduced confidence in U.S.-owned satellite services and repositioning European operators as alternatives, per Reuters."
+        "what_happened": "SpaceX imposed a 100 mph (160 km/h) speed restriction on Starlink terminals in motion under Ukraine's military Starshield package overnight on October 13-14, per presidential technology adviser Serhii \"Flash\" Beskrestnov, who said the limit was not announced in advance. Ukrainian activist Serhii Sternenko said the restriction tightened further during the day, with connections dropping at 60-70 km/h. Polish Foreign Minister Radoslaw Sikorski publicly challenged Musk on X; Musk replied that \"Zelensky has gone too far,\" then separately wrote that \"Starshield systems are owned and controlled by the U.S. government\" and that \"any limits on speed or usage are decided by the US military and ultimately POTUS,\" per Via Satellite and Fox News. Sen. Thom Tillis (R-N.C.) publicly pressed Musk on X, saying \"intentionally degrading Ukraine's ability to defend itself might be construed as aiding and abetting a mass murderer.\" President Zelensky, in a televised interview with Piers Morgan, called the restriction \"a big mistake\" that \"will lead to a great loss of human life,\" and asked for it to be switched off \"as it should be between partners,\" per Censor.net and NBC News. By the evening of October 14, Ukrainian official Mykhailo Fedorov said Starlink service was being restored for speeds up to 160 km/h, while the push continues to remove the Starshield limit altogether. The bipartisan Congressional Ukraine Caucus, co-chaired by Reps. Marcy Kaptur, Brian Fitzpatrick, Mike Quigley and Joe Wilson, said restrictions \"that put civilians in harm's way are unconscionable and will not be accepted by Congress,\" per Interfax-Ukraine. Rep. Don Bacon (R-Neb.) said reducing intelligence sharing and Starlink access to Ukraine \"equates to aiding the invader & the war criminal who bombs cities,\" per the Washington Sun.",
+        "why_it_matters": "Starshield is the military-grade Starlink package Ukraine depends on for drone operations and frontline communications, and SpaceX changed its performance unilaterally and without notice, then pointed to the U.S. government rather than its own policy when explaining why. For any government or enterprise customer weighing reliance on Starlink or Starshield for mission-critical connectivity, an operator whose service terms can shift overnight for a major client, and that draws public rebukes from a paying government customer, a sitting U.S. senator and a bipartisan congressional caucus in the same news cycle, is a reliability and political-risk signal worth briefing leadership on immediately. The fallout is already moving capital: Eutelsat shares jumped 23%, their biggest one-day gain in 16 months, and SES rose nearly 3%, with Bernstein analyst Aleksander Peterc attributing the move to investors pricing in reduced confidence in U.S.-owned satellite services and repositioning European operators as alternatives, per Reuters."
       },
       "tags": [
         "connectivity"
@@ -68336,7 +68381,9 @@
         "https://www.aol.com/articles/eutelsat-shares-jump-ukraine-flags-105512000.html",
         "https://censor.net/en/news/4028468/zelenskyy-urges-musk-to-lift-starlink-restrictions-for-ukraine",
         "https://censor.net/en/news/4028475/fedorov-starlink-service-restored-with-160-km-h-speed-limit",
-        "https://meduza.io/en/news/2026/10/14/starshield-systems-are-owned-and-controlled-by-the-u-s-government-musk-responds-to-ukraine-s-complaints-about-restrictions-on-the-military-version-of-starlink"
+        "https://meduza.io/en/news/2026/10/14/starshield-systems-are-owned-and-controlled-by-the-u-s-government-musk-responds-to-ukraine-s-complaints-about-restrictions-on-the-military-version-of-starlink",
+        "https://en.interfax.com.ua/news/general/1220318.html",
+        "https://www.washingtonsun.com/foreign-policy/lawmakers-fume-breakdown-us-intelligence-sharing-ukraine-russia-starlink-starshield"
       ],
       "kind": "event",
       "snr": 4,
@@ -68441,6 +68488,20 @@
           "class": "mainstream",
           "added": "2026-10-14",
           "via": "corroboration"
+        },
+        {
+          "url": "https://en.interfax.com.ua/news/general/1220318.html",
+          "outlet": "Interfax-Ukraine",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.washingtonsun.com/foreign-policy/lawmakers-fume-breakdown-us-intelligence-sharing-ukraine-russia-starlink-starshield",
+          "outlet": "Washington Sun",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-14T12:43:21.385Z",
@@ -68467,6 +68528,11 @@
           "date": "2026-10-14",
           "kind": "copy",
           "note": "Musk says the US military and president set Starshield's limits, not SpaceX, as Tillis and Zelensky press him publicly and Ukraine reports partial restoration to 160 km/h."
+        },
+        {
+          "date": "2026-10-15",
+          "kind": "copy",
+          "note": "The bipartisan Congressional Ukraine Caucus and Rep. Don Bacon publicly warn of consequences, including possible funding holds, over the restriction."
         }
       ]
     },
@@ -69089,6 +69155,259 @@
       ],
       "publishDate": "2026-10-14T22:20:14.265Z",
       "image": null
+    },
+    {
+      "id": "2026-10-15-barclays-tesla-spacex-merger-speculation",
+      "date": "2026-10-14",
+      "headline": "Barclays says Tesla-SpaceX merger could be announced before December",
+      "explainer": {
+        "tagline": "Per Barclays: Tesla and SpaceX could merge before Tesla's Dec. 6 meeting, in an all-stock deal led by SpaceX.",
+        "what_happened": "Barclays analyst Dan Levy said in an October 14 research note that a Tesla-SpaceX merger announcement is possible before Tesla's annual shareholder meeting, which corporate law requires to be held no later than December 6, per Seeking Alpha and StockTwits. Barclays said SpaceX acquiring Tesla in an all-stock deal, at roughly 0.7 SpaceX shares per Tesla share, is the most likely structure, which it estimated would leave Musk holding about 37% ownership and 56% of the voting power in the combined company. Neither Tesla nor SpaceX has confirmed any merger plans.",
+        "why_it_matters": "A combination would fold SpaceX's satellite and launch business into a public company for the first time, ahead of SpaceX's own long-rumored IPO, and would change how investors and competitors track and value the company. Barclays frames the case as vertical integration across AI, robotics and energy rather than space-specific synergy, but a confirmed deal would reset how analysts model SpaceX's valuation and control structure industry-wide."
+      },
+      "kind": "commentary",
+      "tags": [
+        "m-and-a"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "SpaceX",
+        "Tesla"
+      ],
+      "source_url": "https://seekingalpha.com/news/4653167-tesla-and-spacex-could-merge-before-december-6---barclays",
+      "secondary_urls": [
+        "https://stocktwits.com/news-articles/markets/equity/tesla-space-x-merger-could-be-announced-as-early-as-before-december-agm-says-barclays/cZxQdGeRBqr"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://seekingalpha.com/news/4653167-tesla-and-spacex-could-merge-before-december-6---barclays",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Seeking Alpha)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://seekingalpha.com/news/4653167-tesla-and-spacex-could-merge-before-december-6---barclays",
+          "outlet": "Seeking Alpha",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "initial"
+        },
+        {
+          "url": "https://stocktwits.com/news-articles/markets/equity/tesla-space-x-merger-could-be-announced-as-early-as-before-december-agm-says-barclays/cZxQdGeRBqr",
+          "outlet": "StockTwits",
+          "class": "informal",
+          "added": "2026-10-15",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-15T05:33:43.037Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-15-barclays-tesla-spacex-merger-speculation.webp",
+        "credit": "Image: seekingalpha.com",
+        "origin_url": "https://seekingalpha.com/news/4653167-tesla-and-spacex-could-merge-before-december-6---barclays",
+        "width": 630,
+        "height": 420
+      }
+    },
+    {
+      "id": "2026-10-14-bagdad-beach-starship-debris",
+      "date": "2026-10-14",
+      "headline": "More than 200 suspected Starship fragments wash up on Mexico's Bagdad Beach",
+      "explainer": {
+        "tagline": "Conibio Global collected 200+ suspected SpaceX Starship fragments on a Tamaulipas beach and handed them to Mexico's environmental agency.",
+        "what_happened": "The Mexican conservation nonprofit Conibio Global said it collected more than 200 fragments in the first 400 meters of a cleanup at Playa Bagdad in Tamaulipas, suspecting they came from SpaceX's 14th Starship flight, launched September 28 from Boca Chica, Texas, per Mexico News Daily. Conibio Global said it delivered the material, which includes insulation and coating, to Mexico's federal environmental agency, Profepa. The origin of individual pieces has not been officially confirmed.",
+        "why_it_matters": "Debris from Starship test flights has repeatedly washed up on Mexican beaches bordering Boca Chica, and this is the largest single reported collection yet. For SpaceX, recurring cross-border debris raises the odds of a binational regulatory or liability response as Starbase pushes toward a far higher launch cadence; Conibio Global is asking authorities to identify the fragments and require repairs for any confirmed environmental harm."
+      },
+      "kind": "event",
+      "tags": [
+        "launch"
+      ],
+      "category": "incident",
+      "impact": "noise",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://mexiconewsdaily.com/news/space-debris-mexicos-bagdad-beach-launch-by-musks-spacex/",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://mexiconewsdaily.com/news/space-debris-mexicos-bagdad-beach-launch-by-musks-spacex/",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Mexico News Daily)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://mexiconewsdaily.com/news/space-debris-mexicos-bagdad-beach-launch-by-musks-spacex/",
+          "outlet": "Mexico News Daily",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-10-15T05:33:43.037Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-14-bagdad-beach-starship-debris.webp",
+        "credit": "Image: mexiconewsdaily.com",
+        "origin_url": "https://mexiconewsdaily.com/news/space-debris-mexicos-bagdad-beach-launch-by-musks-spacex/",
+        "width": 850,
+        "height": 566
+      }
+    },
+    {
+      "id": "2026-10-13-nasa-artemis-iii-booster-stacking-complete",
+      "date": "2026-10-13",
+      "headline": "NASA completes Artemis III SLS booster stacking at Kennedy Space Center",
+      "explainer": {
+        "tagline": "NASA finished stacking Artemis III's twin SLS boosters, the next step before a pad tanking test ahead of a June 2027 target.",
+        "what_happened": "NASA's Exploration Ground Systems team finished integrating aerodynamic nose cones onto Artemis III's twin SLS solid rocket boosters on September 30, completing booster stacking in the Vehicle Assembly Building at Kennedy Space Center, NASA said. All four RS-25 engines are now installed on the core stage; teams will next install the core stage's systems tunnel before mating it to the boosters to form a \"short stack\" that will roll to Launch Pad 39B for a tanking test and the crew's first full launch-day rehearsal, ahead of the mission's no-earlier-than June 2027 target.",
+        "why_it_matters": "Artemis III is already running about 90 days behind schedule by NASA's own account, and SLS integration progress is the clearest public marker of whether the lunar landing mission, which carries HLS contracts for SpaceX and Blue Origin and crew seats for international partners, holds its new timeline or slips further."
+      },
+      "kind": "event",
+      "tags": [
+        "human-spaceflight"
+      ],
+      "category": "human-spaceflight",
+      "impact": "noise",
+      "companies": [
+        "NASA"
+      ],
+      "source_url": "https://www.nasa.gov/blogs/missions/2026/10/13/nasa-completes-artemis-iii-booster-stacking-shares-status-update/",
+      "secondary_urls": [],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.nasa.gov/blogs/missions/2026/10/13/nasa-completes-artemis-iii-booster-stacking-shares-status-update/",
+          "reason": "base tier 5 from lead source class \"first_party\" (NASA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.nasa.gov/blogs/missions/2026/10/13/nasa-completes-artemis-iii-booster-stacking-shares-status-update/",
+          "outlet": "NASA",
+          "class": "first_party",
+          "added": "2026-10-15",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-10-15T05:33:43.037Z",
+      "entities": [
+        {
+          "name": "NASA",
+          "ref": "organizations/nasa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-13-nasa-artemis-iii-booster-stacking-complete.webp",
+        "credit": "Image: nasa.gov",
+        "origin_url": "https://www.nasa.gov/blogs/missions/2026/10/13/nasa-completes-artemis-iii-booster-stacking-shares-status-update/",
+        "width": 1200,
+        "height": 1800
+      }
+    },
+    {
+      "id": "2026-10-15-solafune-tohoku-university-ai-satellite",
+      "date": "2026-10-15",
+      "headline": "Solafune and Tohoku University to develop AI-powered Earth observation satellite",
+      "explainer": {
+        "tagline": "Solafune and Tohoku University opened a joint research center to build an Earth observation satellite that analyzes imagery onboard.",
+        "what_happened": "Japanese data-analytics startup Solafune and Tohoku University's Space Cross-Tech Research Center signed a partnership agreement in September and opened the \"Solafune x Tohoku University Space Integrated Intelligence Co-Creation Research Center\" on October 1, combining the university's space-system development and operations expertise with Solafune's AI analytics, per Solafune and Nikkei Asia. The partners aim to develop and launch an AI-powered Earth observation satellite that analyzes imagery onboard and feeds the results back into its own observation planning, targeting environmental conservation, resource management and disaster-prevention applications in Asia.",
+        "why_it_matters": "Onboard processing shortens the time between image capture and a usable result, letting an EO operator sell faster-turnaround products without a full ground-based pipeline; if Solafune's satellite flies, it tests that approach commercially rather than as a research demo, a capability EO resellers and disaster-response agencies in Asia will be watching."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "japan"
+      ],
+      "category": "partnership",
+      "impact": "notable",
+      "companies": [
+        "Solafune",
+        "Tohoku University"
+      ],
+      "source_url": "https://asia.nikkei.com/business/aerospace-defense-industries/japanese-data-analytics-startup-solafune-to-launch-ai-satellite",
+      "secondary_urls": [
+        "https://solafune.com/news/tohokuuniv-ai-powered-satellite"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://asia.nikkei.com/business/aerospace-defense-industries/japanese-data-analytics-startup-solafune-to-launch-ai-satellite",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Nikkei Asia)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://asia.nikkei.com/business/aerospace-defense-industries/japanese-data-analytics-startup-solafune-to-launch-ai-satellite",
+          "outlet": "Nikkei Asia",
+          "class": "mainstream",
+          "added": "2026-10-15",
+          "via": "initial"
+        },
+        {
+          "url": "https://solafune.com/news/tohokuuniv-ai-powered-satellite",
+          "outlet": "Solafune",
+          "class": "informal",
+          "added": "2026-10-15",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-15T05:33:43.037Z",
+      "image": {
+        "src": "/img/items/2026-10-15-solafune-tohoku-university-ai-satellite.webp",
+        "credit": "Image: asia.nikkei.com",
+        "origin_url": "https://asia.nikkei.com/business/aerospace-defense-industries/japanese-data-analytics-startup-solafune-to-launch-ai-satellite",
+        "width": 1200,
+        "height": 600
+      }
     }
   ]
 }
