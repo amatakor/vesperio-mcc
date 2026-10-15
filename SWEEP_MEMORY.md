@@ -5081,3 +5081,40 @@ a newer entry if a lesson changes.
   `sources`/`updates` arrays, and the `snr_movements` entry for the ADA
   Space rescore (2→4). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-10-15, fourth)
+
+- 2026-10-15-N: An Aviation Week headline found via WebSearch ("Software
+  Readiness Issue Pushes Next SDA Launch To 2026") read as live but was
+  dated December 5, 2025, nine months stale; its own internal "Sept 10"/
+  "Oct 15" date references are to 2025, not the current year, a trap a
+  WebSearch synthesis alone did not flag until the article was fetched
+  directly and the byline/publish date checked. Worth treating any
+  recurring SDA/launch-delay headline shape the same as the standing
+  stale-resurfacing pattern: fetch and check the actual publish date
+  before trusting a plausible-sounding date mentioned in the body text.
+- 2026-10-15-O: Two Gray Television-owned local affiliates (Dakota News
+  Now, Valley News Live) ran near-identical text on a Stevens County,
+  Minnesota debris find with different bylines (Avery Arens vs. Erick
+  George) -- treated as a same-network wire-rewrite pair (one
+  corroboration unit, `crawl: "found_none"`), the same shape as the
+  2026-10-06-Q Texas Newsroom/NPR-affiliate case, now confirmed for a
+  commercial local-TV group rather than a public-radio collaborative.
+- 2026-10-15-P: A genuine predates-window gap surfaced only via a same-
+  day Comtech earnings-call reaffirmation (Via Satellite, "expects
+  divestiture to Gilat to close this year"): the underlying $157.5M sale
+  of Comtech's Satellite and Space Communications segment to Gilat's
+  Wavestream unit was announced June 15 and never drafted by any prior
+  sweep. Comtech's own SEC 8-K exhibit (official_record via the fixed
+  sec.gov host, no registry entity needed) gave a clean primary lead;
+  dated on the actual June 15 announcement per the standing chase-it
+  convention. Worth remembering a routine same-day earnings-call
+  reaffirmation of an old deal's timeline can be the thread that surfaces
+  a real, never-published gap, not just a stale non-event itself.
+- 2026-10-15-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (947 items, up from 943) and both updated items' grown
+  `sources`/`updates` arrays (Starlink/Ukraine: 23 sources, 6 updates;
+  SDA T1TL-A: 4 sources, 1 update). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
