@@ -4993,3 +4993,50 @@ a newer entry if a lesson changes.
   arrays (Starlink/Ukraine: 14 sources, 3 updates; NEONSAT: 6 sources). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~6h37m gap, unfiltered full source list (2026-10-15, second)
+
+- 2026-10-15-E: `.gov.uk` fails the `official_record` anti-spoof host check
+  the same way Spain's `boe.es` did on 2026-10-14 (not on the fixed
+  official-hosts list): reclassified the UK Space Agency's own
+  `space.blog.gov.uk` announcement to `trade` rather than resubmitting
+  against the rejection, for a ClearSpace UK Active Debris Removal mission
+  contract item (`£61.3M, five-year, prime contractor, beating Astroscale
+  and Starfish Space, SaxaVord 2029 launch). ClearSpace's own newsroom
+  confirmed the same award but, like Solafune on 2026-10-15 (first entry),
+  has no `src/data/registry` entity, so it capped at `informal` rather than
+  `first_party` per the standing no-registry-host workaround.
+- 2026-10-15-F: A single-source Payload exclusive (JAXA awarding ArkEdge
+  Space two lunar-navigation study contracts, no stated value) returned a
+  genuinely honest `found_none` after a real two-search crawl turned up only
+  older, unrelated ArkEdge/JAXA stories (a 2024 feasibility study, a
+  different Space Strategy Fund LNSS award) rather than anything about
+  today's specific MoonQuest/LANS-receiver and signal-reception-demo
+  contracts; published at single-source SNR 2 rather than force a
+  tangentially-related older article into the sources list as false
+  corroboration.
+- 2026-10-15-G: The Starlink/Ukraine saga's "restored" claim needed care:
+  Kyiv Independent's own follow-up explicitly says the source "did not say
+  if all restrictions had been lifted," while a Moscow Times headline the
+  same morning flatly claimed "Functionality Restored Fully" for the same
+  underlying ministry quote: Moscow Times's framing. Kept the item's copy to
+  the more precise Kyiv Independent/Kyiv Post phrasing (resumed but
+  ambiguous cap, Kyiv separately requesting 450 km/h) rather than the
+  overstated "fully restored" framing, consistent with the model's "never
+  claim more certainty than sources support" rule even when a reputable
+  outlet's own headline overclaims.
+- 2026-10-15-H: Google News redirect URLs continued to not resolve via
+  WebFetch this run (bare "Google News" header, no content, same as
+  2026-10-14-I); every lead in this sweep was re-found via a dedicated
+  WebSearch for the publisher's own URL instead of following the redirect.
+  Separately, `thehill.com` 403'd on direct WebFetch (new addition to the
+  standing paywalled/bot-blocked list alongside wsj.com/ft.com/axios.com/
+  arstechnica.com/pcmag.com/milenio.com); a Senate GOP/Trump-friction fact
+  surfaced only via WebSearch synthesis was left out of the update's copy
+  entirely rather than cited without a direct fetch.
+- 2026-10-15-I: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 2 new, 1 updated, 0 held"); confirmed via a direct `jq`
+  read of both new items' `snr`/`category`/`impact` fields (939 items, up
+  from 937) and the Starlink/Ukraine item's grown `sources`/`updates`
+  arrays (18 sources, 4 updates). `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
