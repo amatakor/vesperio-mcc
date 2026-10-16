@@ -9878,3 +9878,153 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   signals channels (3 X handles), and an 8-query discovery matrix
   surfaced nothing on-scope that wasn't already published.
 
+## Narrow re-check, ~6h43m gap, unfiltered full source list (2026-09-15)
+
+- 2026-09-15-A: An `updates[].attach` with no matching `patch` silently adds
+  a source to the card without changing any visible copy: attached
+  TechNode Global to the Sept 13 O3b mPOWER item with a note claiming it
+  "adds the operational timeline," but left `patch: {}`, so the new fact
+  (mid-2027 service entry, SES's multi-orbit strategy framing) never
+  actually appeared in `what_happened`/`why_it_matters` on the first
+  finalize-sweep run. Caught by re-reading the merged item's explainer
+  text after merge; fixed with a second, same-sweep finalize-sweep pass
+  carrying the actual `patch.explainer` fields. When a draft's `note`
+  describes new copy, the `patch` block must carry that copy; `attach`
+  alone only adds a citation, it never edits prose.
+- 2026-09-15-B: A same-day Axios headline ("How SpaceX bought 125,000
+  acres of Louisiana's coast") read as a fresh detail on top of the
+  already-published Aug 25 Starbase Louisiana item, but axios.com 403'd
+  on every direct-fetch attempt and the one new-sounding fact a WebSearch
+  surfaced (a ~$100M land-purchase price SpaceX paid) could not be
+  confirmed on any other directly-fetchable page; left the existing item
+  unpatched per the standing "only cite pages with genuinely fetched
+  content" rule rather than add an unverified WebSearch-summary figure.
+- 2026-09-15-C: A Google-News "Starlink inches closer to India
+  availability" (Advanced Television) headline 403'd on direct fetch;
+  WebSearch traced the underlying fact to India's DCC approving most of
+  TRAI's satellite-spectrum recommendations on September 2-3, still
+  pending Union Cabinet sign-off before commercial launch -- a
+  process-not-yet-fact exclusion (same standard as the T-Mobile/Sateliot
+  and Grain Management precedents) compounded by being 12-13 days stale
+  with no confirmed final market-access grant; left undrafted.
+- 2026-09-15-D: A SpaceNews profile piece on ICEYE's growth strategy
+  (€1.5B+ backlog, 2-satellites-per-week production target by end of
+  2027, a "Constellation Europe" 1,000+-satellite federated-network
+  concept floated by the CEO) bundled genuinely new figures with already-
+  published facts (the Arianespace MoU) and a speculative, unfunded
+  concept rather than a concrete announcement -- left undrafted as a
+  trend/strategy piece per the standing "bundles old facts, no single
+  dateable new event" pattern (2026-09-04-T and peers), though the
+  backlog figure and Constellation Europe concept may be worth a second
+  look if ICEYE later attaches a contract or funding commitment to it.
+- 2026-09-15-E: The standing same-company-plus-category dedup false
+  positive fired on a new KDDI/SpaceX Starlink Mobile V2 carrier contract
+  (category `contract`) against the already-published SpaceX Starfall/
+  Space Cargo item, sharing only company SpaceX + category + same-day
+  window -- one `dedup_distinct` entry cleared it, extending the
+  long-running list to a case where SpaceX is only the second-named
+  company (KDDI is first) on the new item.
+- 2026-09-15-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1
+  updated, 0 held", then a same-sweep follow-up "merged 0 new, 1 updated,
+  0 held") plus a `jq` parse check (649 items, up from 644) and a direct
+  read of all five new items' `snr`/`category`/`impact` fields and the
+  corrected O3b mPOWER explainer text as the build-health signal.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-15, second)
+
+- 2026-09-15-G: `dedup_distinct` must sit at the TOP LEVEL of a `newItems[]`
+  entry, not nested inside its `scoring` block: nesting it under `scoring`
+  produced the exact same "same-event match... unattested" rejection as
+  omitting it entirely, because the gate reads `raw.dedup_distinct` off the
+  item object itself. Confirmed by reading `finalize-sweep.ts`'s gate code
+  directly after a first rejected draft; the prompt's own example (`on the
+  item`) already says this, but it is easy to slot it next to `whitelist`/
+  `crawl` inside `scoring` by analogy with the `sources` array. Two genuine
+  same-company-plus-category false positives this run (a Senegal Starlink
+  regulatory item against two unrelated US FCC items; a new SES/Elveo Sept
+  15 partnership-expansion item against both the Aug 17 SES/Elveo
+  investment item and the unrelated Sept 14 Elveo/Apex US-factory item)
+  both cleared once moved to the item's top level.
+- 2026-09-15-H: A Google News-sourced Morningstar mirror headline
+  ("Arcfield's Orion Space Solutions to provide upgraded Spectre EO/IR
+  payload and RF sensor suite for Tomorrow.io's DeepSky") could not be
+  resolved to a live source this run: the news.google.com redirect page
+  would not resolve via WebFetch (no meta-refresh/canonical text visible to
+  the fetcher, consistent with the standing Google News JS-shell pattern),
+  and targeted WebSearch queries for the exact wire-copy text and for
+  Arcfield/Orion + Spectre + Tomorrow.io together surfaced only older,
+  unrelated Orion Space Solutions press releases (a March 2026 $24M
+  proprietary-customer award, an EWS/RROCI product-launch piece) and the
+  already-published York Space/DeepSky contract, never this specific
+  payload deal. Left undrafted per the "never state a fact not in a
+  fetched source" rule rather than guess it's the same as the March award.
+  Worth a second look if a future sweep's queue carries the underlying
+  PRNewswire/BusinessWire/GlobeNewswire URL directly instead of a
+  Morningstar/Google-News mirror.
+- 2026-09-15-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 3
+  updated, 0 held") and a direct read of both new items' `snr`/`category`/
+  `impact`/`sources` fields and all three patched items' `what_happened`
+  text (confirming the `patch.explainer` prose, not just `attach`, landed)
+  as the build-health signal; `node -e`/`python3 -c` JSON-validity checks
+  were blocked by the sandbox's command-approval gate this run.
+
+## Narrow re-check, ~4h20m gap, unfiltered full source list (2026-09-15, third)
+
+- 2026-09-15-J: **`finalize-sweep.ts` bug, worth a dev fix**: on an
+  `updates[]` entry that patches `source_url` to a NEW lead (the upgrade
+  path) while also attaching more sources, the merge code computes
+  `secondary_urls` from `base.secondary_urls` (the item's PRE-patch list)
+  plus each `attach` entry checked only against `base.source_url` (the
+  OLD pre-patch lead), then that computed list unconditionally overwrites
+  whatever `patch.secondary_urls` the draft supplied (object-spread order
+  in `finalize-sweep.ts` puts the computed `secondary_urls` after
+  `...patch`). Net effect on the Starship Flight-14 update this run:
+  switching lead from Teslarati to Ars Technica left Ars Technica
+  duplicated (once as `source_url`, once in `secondary_urls`) and dropped
+  Teslarati out of `secondary_urls` entirely, even though the draft's
+  patch explicitly listed Teslarati in `secondary_urls` and omitted Ars
+  Technica. Teslarati is still fully credited in the `sources` array
+  (correct SNR/trace/citation), so this is a cosmetic quick-links miss,
+  not a sourcing-integrity bug, and it can't be corrected from a sweep
+  draft (patch.secondary_urls is always discarded, and the merge code only
+  ever pushes to secondary_urls, never removes). Left as-is rather than
+  compounding it with a further patch; flagging here since scheduled/
+  interactive sweep agents must not edit `scripts/finalize-sweep.ts`
+  themselves.
+- 2026-09-15-K: A `$1.11 billion/month` SpaceX AI-computing-hosting deal,
+  disclosed by CFO Bret Johnsen at the Sept. 10 Goldman Sachs
+  Communacopia conference, was a genuine five-day-old gap: never drafted
+  by any prior sweep despite being wall-to-wall covered by finance media
+  (Yahoo Finance, Benzinga, TeslaNorth, Seeking Alpha) and clearly on
+  scope as a stated-value (nine-figure-plus) financial event of a
+  tracked company, consistent with the standing precedent that SpaceX's
+  AI-compute-hosting business (Pentagon talks, Starmind, Nvidia GPU
+  commitment) is treated as in-scope even when the specific deal is
+  terrestrial, not orbital. Benzinga, Neowin, and Qz.com all 403'd on
+  direct fetch; Yahoo Finance and TeslaNorth were the only two sources
+  that actually rendered fetchable content, which was enough for a clean
+  SNR 4 (mainstream base 3 + corroboration_2plus). Chased per the
+  predates-window rule and dated on the actual Sept. 10 disclosure date.
+- 2026-09-15-L: Google News queue entries can carry a publisher's exact
+  press-release URL as their visible title even though the link itself is
+  a `news.google.com` redirect (e.g. "Starship Flight 14 - SpaceX",
+  "Telesat and SatPort Infrastructure sign global build-to-suit
+  agreement..." style titles that read like a headline, not an outlet
+  byline). Asking WebFetch to read the source page's own listing (e.g.
+  `telesat.com/press/`) and extract the matching press release's link/URL
+  worked directly, faster than trying to resolve the Google News redirect
+  itself (which frequently fails per the standing JS-shell pattern) --
+  worth trying "find the link on the source's own listing page" before
+  giving up on a Google-News-only lead.
+- 2026-09-15-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1
+  updated, 0 held") plus a direct read of all four new items' `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields and the updated
+  Starship item's patched explainer/source_url/sources fields as the
+  build-health signal.
+
