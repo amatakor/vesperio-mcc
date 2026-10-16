@@ -5141,4 +5141,73 @@ a newer entry if a lesson changes.
   `impact`/`kind` fields (954 items, up from 950) and both updated items'
   grown `sources`/`updates` arrays (Starlink/Ukraine: 28 sources, 9
   updates; Neutron slip: 4 sources, 2 updates). `bun run build` was not
-  attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h12m gap, unfiltered full source list (2026-10-16, fourth)
+
+- 2026-10-16-Q: A near-total-junk queue (Tesla Roadster "flying car"
+  stunt pickups, SpaceX-Tesla merger stock speculation, and dozens of
+  repeat Trump/Musk-Starlink-Ukraine denial headlines) still needed a
+  genuine same-story continuation check rather than a blanket discard: a
+  same-day Telegraph exclusive (via Kyiv Independent's republication)
+  reporting that Musk himself proposed the Starshield speed cap to Trump,
+  who agreed, directly contradicts both men's earlier public denials, and
+  Trump's own on-record quote the same day ("I don't know if it was
+  anybody, because it wasn't me. And I don't think it was Elon") is the
+  first PERSONAL (not just "a senior US official") denial on record. Both
+  facts folded into the existing item via `attach`+`patch`, no bump
+  requested (mainstream-led item already at its corroboration_2plus
+  ceiling of 4). Confirmed Trump's exact quote independently via two
+  directly-fetched outlets (United24 Media, Meduza) before using it, per
+  the standing re-fetch-for-verbatim discipline; a WebSearch synthesis
+  alone is not enough for a quote this consequential.
+- 2026-10-16-R: A "Europe must tackle dependency on Starlink" EU-leaders
+  summit lead (Kallas/Kulbergs quotes, Courthouse News) read as a genuine
+  new EU-institutional development but was already fully attached to the
+  existing GOVSATCOM item by an earlier same-day sweep before this run's
+  draft was written -- caught only by re-reading that item's `updates`
+  array directly, not by a title/company grep alone (the update's `note`
+  used the same Kallas quote verbatim). Worth re-reading a candidate
+  update's existing `updates[]` history, not just checking whether an id
+  exists, before fetching and drafting a seemingly-new institutional
+  statement on a saga already receiving same-day updates.
+- 2026-10-16-S: Four genuinely new ground-segment/contract gaps cleared
+  entirely from the Via Satellite harvester-queue leg, not discovery: BAE
+  Systems' own PR Newswire release (wire_pr, tier 4, no contract value
+  disclosed) for a Space Force RF-terminal development contract; a
+  CesiumAstro Melbourne, Florida facility, where Via Satellite's own
+  writeup omitted the dollar figure but the Economic Development
+  Commission of Florida's Space Coast's own release named it exactly
+  ($25M, 100 jobs) -- neither CesiumAstro nor the EDC has a
+  `src/data/registry` entity, so the EDC page capped at `informal` per
+  the standing no-registry-host workaround despite reading like an
+  official announcement; Arqiva's three-year Gulfsat Ku-band uplink deal
+  (noise-tier, no stated value); and an ESPI "Borrowed Bandwidth? D2D"
+  policy brief (Oct. 14) on the EU's 2 GHz MSS spectrum proposal, drafted
+  as `kind: commentary` per the standing 2026-08-05 ESPI-commentary
+  precedent and dated on the brief's own publish date rather than Via
+  Satellite's Oct. 16 pickup date.
+- 2026-10-16-T: A Marcia Smith bluesky lead citing "GAO says NOAA's
+  GeoXO... cut from $19.6B to $13B" could not be pinned to an actual
+  fetchable GAO report page despite several targeted searches (gao.gov's
+  own site search surfaced only an unrelated bid-protest case and a 2009
+  GOES-R report); left undrafted per the standing never-cite-an-unfetched-
+  page rule rather than draft from the post's own paraphrase. The post's
+  own timestamp (16:47 UTC) also predated this run's `lastSweep` (17:32
+  UTC), meaning it technically belonged to the prior sweep's window, not
+  this one's.
+- 2026-10-16-U: A Vivienne Machi Aviation Week piece on new Space RCO
+  ground-based satellite jammers reaching full-scale production (named
+  contractor Northstrat/GRVTY, a 2022-era $22M prototype contract, no new
+  award or dollar figure) was left undrafted as a counter-space weapons
+  production story with no commercial-space transaction, same shape as
+  the standing Meink space-weapons-disclosure/DSP-retirement institutional
+  exclusion, distinct from a fresh contract award like the same-run BAE
+  item.
+- 2026-10-16-V: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on one `updates[0].explainer.tagline` overage (149 vs 140 max
+  chars); merged cleanly on the second attempt ("merged 4 new, 1 updated,
+  0 held"); confirmed via a direct `jq` read of all four new items'
+  `snr`/`category`/`impact`/`kind` fields (958 items, up from 954) and
+  the updated Starlink/Ukraine item's grown `sources`/`updates` arrays
+  (32 sources, 10 updates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
