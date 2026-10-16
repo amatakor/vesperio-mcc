@@ -5034,3 +5034,66 @@ a newer entry if a lesson changes.
   four automatic persistence-bump `snr_movements` entries logged in the
   sweep entry. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h30m gap, unfiltered full source list (2026-10-16, second)
+
+- 2026-10-16-G: Jonathan McDowell's registered signals channel is his site
+  (planet4589.org / Jonathan's Space Report), not a bluesky handle; his
+  personal bluesky account posted a genuinely new attribution (Minnesota
+  cornfield debris close to the Zhuque-2E upper-stage reentry path) that
+  his registered site hadn't picked up yet. Per the standing 2026-09-16-P
+  strict-channel-match precedent, attached it `class: "informal"` rather
+  than `whitelist`/`observer`, since the whitelist floor only applies to
+  the exact registered channel URL.
+  - Ars Technica (arstechnica.com) is still unfetchable directly; a
+  rewrite site that explicitly credits Ars Technica by name
+  (ultimatepocket.com) worked as a citable informal corroboration source
+  for a Blue Origin Florida-buildout story, same pattern as 2026-09-18-A
+  and 2026-10-12-A. Reuters (reuters.com) is also still unfetchable
+  directly; a wire pickup (investing.com) carrying the byline and dateline
+  verbatim was used as the mainstream lead instead, consistent with
+  2026-10-16-B's Kyiv Independent-via-Reuters precedent.
+- 2026-10-16-H: A UK London Stock Exchange RNS regulatory announcement
+  (hosted on investegate.co.uk, not a `.gov`/fixed-official-host domain)
+  is not `official_record` per the anti-spoof gate; classed it `wire_pr`
+  as the closest analogue (a company's own regulatory disclosure,
+  functionally identical to a wire-distributed press release) rather than
+  resubmit against a rejection. Worth remembering for any future UK-listed
+  company's RNS-hosted results (LSE, Investegate, TradingView's RNS
+  mirror, etc.).
+- 2026-10-16-I: A same-day India Today "Isro gears up for maiden Gaganyaan
+  launch, completes big crew module test" queue/discovery hit, and a
+  same-day "What Does NASA's Invitation for ISRO to Join the Moon Base
+  Program Signal?" piece, both traced via direct fetch/search to a July 12
+  ISRO press release and an August 12 NASA/ISRO CSJWG announcement
+  respectively, being recirculated today with no new fact; both left
+  undrafted as stale resurfacings, extending the 2026-09-25-B pattern to
+  analysis-angle headlines ("gears up for", "signal?") that don't
+  themselves carry a dateable past-tense fact.
+- 2026-10-16-J: An Ars Technica "Rocket Report" (unfetchable directly)
+  mention of "India's Skyroot snares US customer" and a separate Ars
+  Technica Blue Origin feature both required a WebSearch to confirm they
+  were, respectively, a restatement of the already-published Oct. 14
+  Reflect Orbital/Skyroot deal and a genuinely new infrastructure story
+  (see -G above); a Bloomberg Opinion column ("A Bruising Battle Awaits
+  Musk and SpaceX in Mobile Services") bundled only already-published
+  facts ($17B EchoStar spectrum deal, AST SpaceMobile competition) under
+  a bigger-sounding headline and was left undrafted per the standing
+  trend-piece-bundles-old-facts pattern.
+- 2026-10-16-K: An xAI "Grok Voice 3.0" launch (Oct. 14) was traced via
+  search to a genuine, dateable AI-model release (new benchmark scores,
+  unchanged $0.08/min pricing) that happens to cite Starlink customer-
+  service call volume as one of several use cases (alongside Tesla cars
+  and Grok Bot); left undrafted as an AI-industry product story with an
+  incidental space-company mention, not a space-economy event itself.
+  Worth a cleaner precedent if a future xAI/Grok announcement changes
+  Starlink's own service, pricing, or market position rather than merely
+  citing it as a usage example.
+- 2026-10-16-L: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 2 new, 3 updated, 0 held"); confirmed via a
+  direct `jq` read of both new items' `snr`/`category`/`impact`/`sources`
+  fields (950 items, up from 948) and all three updated items' grown
+  `sources`/`updates` arrays (Starlink/Ukraine: 26 sources, 8 updates;
+  GOVSATCOM: 3 sources, 1 update; Minnesota debris: 5 sources, 2 updates).
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
