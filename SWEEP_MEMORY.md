@@ -5097,3 +5097,48 @@ a newer entry if a lesson changes.
   GOVSATCOM: 3 sources, 1 update; Minnesota debris: 5 sources, 2 updates).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~5h07m gap, unfiltered full source list (2026-10-16, third)
+
+- 2026-10-16-M: A near-total-junk 97-candidate queue (dozens of Tesla
+  Roadster "flying car with SpaceX thrusters" pickups and stock-reaction/
+  merger-speculation chatter, plus continued Starlink/Ukraine saga churn)
+  still yielded a genuine YC-stage launch-startup gap: RATLOG, a Dresden-
+  founded Y Combinator Fall 2026 company building a turbopump-free rocket
+  engine. The company's own Y Combinator profile claims "$400M in signed
+  launch reservation agreements," confirmed verbatim via a YC partner's
+  X post (syndication endpoint) and the YC company page itself, but
+  Payload's independently-reported piece and a TU Dresden university
+  article both describe the same customer relationships only as "letters
+  of intent." Left the $400M figure out of the draft entirely rather than
+  risk amplifying a founder-stage superlative two independent fetched
+  sources declined to repeat; a first-party claim un-echoed by any
+  independent source the discovery crawl actually found is a sharper
+  version of the standing "first-party superlative is attributed, never
+  scored as fact" rule, not just an omission call.
+- 2026-10-16-N: A Samtel Avionics/Japan's BULL "new space debris solution
+  for global customers" WION interview (Oct 15-16) read as a fresh
+  India-Japan partnership story but traced via items.json grep to the
+  identical Sept. 8 MoU already published
+  (`2026-09-08-samtel-avionics-bull-debris-mou`); the CEO interview added
+  marketing framing, not a new fact. A Muks Robotics/ISRO "SPACEO Prime"
+  humanoid-space-worker story (Pune-based, "world's first" framing, no
+  stated contract value or award date, no ISRO-sourced confirmation found)
+  was left undrafted as unverified company-driven PR, the same shape as
+  the standing thin-marketing exclusion family.
+- 2026-10-16-O: A Vivienne Machi Aviation Week piece on the SDA Transport
+  Layer's integration lag (84 satellites in orbit, named root causes:
+  divergent vendor command-and-control systems, a Lockheed optical-
+  terminal supply shortfall) read as a potential new item on the
+  mandatory signals pass, but turned out already fully folded into the
+  existing Oct. 10 T1TL-A launch item's `what_happened` by an earlier
+  sweep the same day; worth checking an existing recent item's full copy,
+  not just its headline, before assuming a detailed follow-up analysis
+  piece is undrafted.
+- 2026-10-16-P: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`snr_trace`/`category`/
+  `impact`/`kind` fields (954 items, up from 950) and both updated items'
+  grown `sources`/`updates` arrays (Starlink/Ukraine: 28 sources, 9
+  updates; Neutron slip: 4 sources, 2 updates). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
