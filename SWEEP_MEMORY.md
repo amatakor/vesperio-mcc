@@ -5150,3 +5150,54 @@ a newer entry if a lesson changes.
   arrays, and the sweep-log summary in `state.json`. `bun run build` was
   not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h37m gap, unfiltered full source list (2026-10-17, fourth)
+
+- 2026-10-17-L: A near-total-junk 27-candidate queue (SpaceX-launch-reaction
+  Bluesky chatter, more Starlink/Ukraine saga rehash, an off-topic Futurism
+  pair) and five quiet mandatory HTML sources yielded nothing, but the
+  signals pass's fetchable-channel leg surfaced a genuine, fast-moving
+  incident: Marco Langbroek (bluesky post linking his own SatTrackCam blog)
+  and Anatoly Zak (bluesky post linking his own RussianSpaceWeb site)
+  independently reported that Russia's Cosmos 2612 had closed to within 1-2
+  km of ICEYE's US-registered, Ukraine-linked SAR satellite ICEYE-X36, with
+  Langbroek warning of a possible approach to within meters within hours.
+  CSIS's Aerospace Security Project (Oct 15 report, fetched directly,
+  class `informal`) and Poland's space24.pl (`trade`, citing tracking firm
+  Integrity ISR) independently corroborated the broader pattern (a May
+  2.5-22 km approach by sister satellites, today's escalation). Axios's own
+  piece on the story 403'd on direct WebFetch and was not used for any
+  quote; a Washington Times piece also 403'd. Dropped a "bumper-to-bumper"
+  Swope quote and a specific CSIS "no one should assume..." line that only
+  appeared in WebSearch-synthesis text, not in my own direct CSIS fetch,
+  per the standing never-quote-from-a-WebFetch/WebSearch-summary rule;
+  re-fetched CSIS with a targeted prompt and got the real verbatim quote
+  ("policymakers should assume Cosmos 2612 could take an action that
+  threatens the commercial satellite") instead. Classed `incident`
+  (orbital-safety/proximity-operations angle) rather than `geopolitical`
+  since no government has stated anything on the record yet; impact
+  `major` (a director at ICEYE or its insurers would act today; not yet
+  `seismic` since no satellite has actually been harmed).
+- 2026-10-17-M: Confirms 2026-10-16-G's strict-channel-match rule from the
+  gate side, not just precedent: `finalize-sweep` REJECTED a draft that (a)
+  listed Langbroek's blog URL in `signalsPass.checked` (it is not in
+  `signals-context`'s fetchable list; only his bluesky is, since the blog's
+  own signals.json channel status is `exists_activity_unverified`, not
+  `verified_active`) and (b) classed that same blog URL `whitelist` in
+  `scoring.sources` (same reason: the gate checks class against
+  verified-active channels, not just channel presence in signals.json).
+  Reclassifying the blog as `informal` and dropping it from `checked`
+  (keeping only his bluesky post, which IS verified_active) merged clean
+  on the next attempt. Zak's `russianspaceweb.com` was fine as `whitelist`
+  because that exact site IS listed `verified_active` in signals.json,
+  unlike Langbroek's blog. Worth checking a person's per-channel `status`
+  field, not just whether a URL belongs to them, before classing anything
+  `whitelist`.
+- 2026-10-17-N: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice (once for the `checked` list, once for the source class),
+  merged clean on the third attempt ("merged 1 new, 0 updated, 0 held");
+  confirmed via a direct `jq` read of the new item's `snr`/`snr_trace`
+  (base tier 3 from the whitelist lead, +1 corroboration_2plus = final 4)/
+  `category`/`impact` fields (962 items, up from 961) and the sweep-log
+  entry in `state.json`. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
