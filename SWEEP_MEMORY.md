@@ -5050,3 +5050,58 @@ a newer entry if a lesson changes.
   direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
   `sources` fields (960 items, up from 958). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h45m gap, unfiltered full source list (2026-10-17, second)
+
+- 2026-10-17-E: ISRO's own LOX-methane engine page
+  (isro.gov.in/LOX_Methane_engine.html, dated Oct 16, reporting an Oct 9
+  gas-generator ignition test for the LME1100 engine) surfaced only via
+  a Google News "non-US space" Swarajya pickup; the Swarajya article's
+  own URL never resolved (Google News redirect dead-ended, a direct
+  WebSearch for its exact headline returned only the ISRO page, an old
+  X post, and Wikipedia pages, and the one fetchable-looking mirror,
+  indiandefensenews.in, hit a Google anti-bot captcha wall on direct
+  WebFetch). Drafted single-source off the first-party ISRO page alone
+  (`crawl: "found_none"`, no penalty since first-party is already at the
+  tier-5 ceiling) rather than force an unfetched mirror into the sources
+  list. Dated the item on the actual Oct 9 test date per the standing
+  chase-it convention, even though first coverage only surfaced a week
+  later.
+- 2026-10-17-F: Starlink's own X statement responding to Reliance's Oct
+  16 "never feared competition" post ("Starlink is ready to connect
+  India with high-speed internet... all with the requisite government
+  approvals") was findable only via WebSearch synthesis (Benzinga 403'd
+  on direct WebFetch) but confirmed verbatim via a direct fetch of
+  tribuneindia.com's republication, including Musk's one-word reply
+  "Much appreciated." Folded into the existing Oct 7 Musk/Ambani
+  commentary item as an `attach`+`patch`, since it's the same ongoing
+  feud, not a new event; no bump needed (item already at its
+  corroboration ceiling of 4).
+- 2026-10-17-G: A near-total-junk 85-candidate queue (Federal Register
+  airworthiness-directive/privacy-act/fishery-meeting filler, Tesla
+  Roadster "flying car" stunt pickups, a dozen stale Gaganyaan
+  crew-module-separation reruns already published 2026-10-16, and
+  Starlink/Ukraine saga rehashes with no fact beyond what the existing
+  item already carries) needed per-candidate triage rather than a
+  blanket discard, but yielded only the two items above. Two Federal
+  Register documents that looked promising on title alone (an "Upper
+  C-Band" order and "Modernizing the Commission's NEPA Rules," both
+  future-dated 2026-10-19) turned out to be the formal Federal Register
+  publication of already-covered FCC orders (the Jul 22 C-band auction
+  and the Sep 30 NEPA exemption); both 302-redirected to
+  unblock.federalregister.gov on direct WebFetch and were left unfetched
+  rather than chased further, consistent with federalregister.gov's
+  standing bot-block. SpaceX's NYC Council AI-safety testimony and
+  OpenAI's third SpaceX-sales-exec poach were treated as out of scope
+  (AI-industry/corporate-personnel stories with no commercial-space
+  transaction), and Evercore ISI's "buy ahead of earnings" CNBC piece
+  and a Washington Post Starlink/Rassvet feature were left undrafted as
+  rehashes of already-published material (the Oct 16 price-target item;
+  the standing Rassvet/China-assistance narrative).
+- 2026-10-17-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of the new ISRO item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields (961 items, up from 960) and the updated
+  Musk/Ambani item's grown `sources`/`updates` arrays (14 sources, 9
+  updates). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
