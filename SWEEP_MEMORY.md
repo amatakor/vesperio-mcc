@@ -5104,4 +5104,49 @@ a newer entry if a lesson changes.
   `impact`/`sources` fields (961 items, up from 960) and the updated
   Musk/Ambani item's grown `sources`/`updates` arrays (14 sources, 9
   updates). `bun run build` was not attempted, per the 2026-09-09
+
+## Narrow re-check, ~6h gap, unfiltered full source list (2026-10-17, third)
+
+- 2026-10-17-I: The queue (85+ candidates) was almost entirely Starlink/
+  Ukraine saga rehash (dozens of Google News/Bluesky hits on Zelensky's
+  Oct 17 comments) and off-topic Tesla Roadster "flying car" stunt
+  chatter; all five mandatory HTML sources and all 17 signals channels
+  were stale (newest posts predated `lastSweep` or were already
+  published) and a 10-query discovery pass covering the full matrix
+  surfaced only already-published leads (GSAT-7C, Kapta Space, WISeSat
+  SPAC close, IRIS2 contracts, GuoWang/Zhuque-2E launches, NASA CLD final
+  RFP) or non-events (a minister's reiterated India space-economy
+  figures; ETH Zurich's new Earth Observation Lab, an academic research
+  facility consuming EO data rather than a commercial operator or
+  constellation, left out of scope; a 3-week-stale, no-dollar-value NASA/
+  Blue Origin NLS II on-ramp, too small and stale to chase under the
+  predates-window exception). The one genuine new fact, Zelensky calling
+  the 161 km/h Starlink cap a "planned operation" that an EU vehicle test
+  proved was geography-specific, not technical, needed the same re-fetch-
+  for-verbatim discipline as every other beat in this saga: the Google
+  News redirect for the Kyiv Independent piece didn't resolve, but a
+  direct WebSearch for the exact headline found the real
+  kyivindependent.com URL, and United24 Media's and Ukrainska Pravda's
+  own pages independently confirmed the same 161 km/h figure and
+  "planned operation" quote before it was folded in via `attach`+`patch`
+  (no bump: item already at its mainstream corroboration_2plus ceiling of
+  4, 10 updates deep already).
+- 2026-10-17-J: Confirms the 2026-10-17-C pattern of counting a
+  signals-pass channel as checked via the harvester's own RSS results
+  rather than a direct re-fetch when nothing in that feed is newer than
+  `lastSweep` (here, SpacePolicyOnline's site and European Spaceflight's
+  site, both already in the candidates-context health block); still
+  fetched the channel's OTHER registered surfaces (bluesky accounts,
+  substack) separately since those are distinct feeds the harvester
+  doesn't cover. `europeanspaceflight.substack.com/feed` 403'd again,
+  extending the 2026-09-20-K/2026-09-22-G intermittent-failure pattern.
+- 2026-10-17-K: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt for a `draft.coverage` entry of `"connectivity"` (a tag, not a
+  category); the gate only accepts the fixed category list. Resubmitting
+  with `"geopolitical"` (the actual patched item's category) merged
+  cleanly on the second attempt ("merged 0 new, 1 updated, 0 held");
+  confirmed via a direct `jq` read of the updated item's `snr` (unchanged
+  at 4), `sources` (35, up from 32) and `updates` (11, up from 10)
+  arrays, and the sweep-log summary in `state.json`. `bun run build` was
+  not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
