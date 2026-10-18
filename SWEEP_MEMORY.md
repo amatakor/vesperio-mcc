@@ -5129,3 +5129,49 @@ a newer entry if a lesson changes.
   `snr_movements` entry (one unrelated persistence bump, Serco NadirEO 2→3).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~6h17m gap, unfiltered full source list (2026-10-18, second)
+
+- 2026-10-18-E: Marco Langbroek's bluesky `getAuthorFeed` is a thread of
+  personal/political replies to unrelated accounts (French politics, a
+  "vvdonline" dig, a Tesla "Super Happy Fun Car" taunt) with his genuinely
+  on-topic posts interleaved; worth reading the whole feed per sweep rather
+  than skimming for space keywords, since the useful post ("Last clear
+  manoever of Kosmos 2612 was 16 Oct ~6:35 UTC") was a one-line reply with no
+  space-specific keyword in isolation, only legible via `getPostThread` on its
+  parent post. The same feed surfaced a non-whitelisted account ("s2a
+  systems") reposting a fresh time-lapse of ICEYE-X36/Cosmos 2612's Oct 18
+  pass over South America; classed `informal` and attached as a second
+  corroboration source for the existing incident item, extending the standing
+  per-channel `verified_active` precedent (2026-10-16-G/2026-10-17-M/
+  2026-10-18-B) to a repost-within-a-whitelisted-feed case, not just a
+  different-channel-same-person case.
+- 2026-10-18-F: Three same-day discovery-pass leads that read as fresh
+  (Guoxing Aerospace/"Xing Suan" Zhuque-2E launch via a Chinese-language
+  search, Aalyria's $100M Series B, Stoke Space's "$860M Series D extension")
+  all turned out to be stale on a direct check: the Zhuque-2E/Xing Suan launch
+  was the already-published Oct 14 ADA Space Three-Body Group-02 item under a
+  different company label (CGTN itself calls the same program "Xing Suan";
+  worth remembering a Chinese-language source can attribute the same
+  constellation to a different named company than the English trade press
+  does), Aalyria's Series B closed in February 2026, and no evidence of an
+  "$860M Stoke Space Series D extension" exists beyond the already-published
+  Sept 8 $1B Series E (likely a WebSearch-synthesis conflation of unrelated
+  figures). None were drafted.
+- 2026-10-18-G: A Kyiv Post piece citing Ukraine's presidential defense-tech
+  adviser Serhii Beskrestnov on Rassvet's "real-time strike control" timeline
+  (six months, 292 satellites by 2027, 924 by 2035) is a genuinely new,
+  dateable angle on the long-running Rassvet saga (deployment tracking and
+  ITU/sanctions items already published), not a rehash: drafted as its own
+  new item rather than an update, since the most recent Rassvet item was 18
+  days old and this is a distinct threat-capability assessment, not a
+  continuation of the sanctions-request story. NV.ua (`english.nv.ua`) 403'd
+  on direct WebFetch (new addition to the paywalled/bot-blocked list);
+  RBC-Ukraine (`newsukraine.rbc.ua`) fetched cleanly and independently
+  confirmed the core quote and timeline, used as corroboration instead.
+- 2026-10-18-H: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct `jq`
+  read of the new Rassvet item's `snr`/`category`/`impact`/`sources` fields
+  (963 items, up from 962) and the updated Cosmos 2612/ICEYE-X36 item's grown
+  `sources`/`updates` arrays (9 sources, 2 updates). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
