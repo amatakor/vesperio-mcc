@@ -5233,3 +5233,24 @@ a newer entry if a lesson changes.
   `updates` arrays (Starlink/Ukraine: 41 sources, 13 updates; Cosmos
   2612/ICEYE-X36: 10 sources, 3 updates). `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h39m gap, unfiltered full source list (2026-10-18, fifth)
+
+- 2026-10-18-O: A thin ~20-candidate queue (near-total Starlink/Ukraine saga
+  rehash of the Bessent/Rubio/Zelenskyy exchange already captured by earlier
+  same-day sweeps, plus scheduled-not-yet-flown Bandwagon-5/MMX H3 launches)
+  and all five mandatory HTML sources, all 16 directly-fetched signals
+  channels (europeanspaceflight.substack.com skipped, budget), and an
+  8-query discovery pass covering the full matrix (launch, financial,
+  incident/regulatory, China, India, Europe, EO contracts, M&A) yielded
+  only one genuinely new fact: Zelensky's direct Kyiv Independent quote
+  confirming US intelligence sharing on Russian ballistic missile launches
+  has been restored ("We are very thankful for this. Now it works") after
+  a three-day block, while the Starlink/Starshield speed cap itself stays
+  in place. Folded into the existing saga item via `attach`+empty `patch`,
+  no bump (mainstream-led item already at its corroboration_2plus ceiling
+  of 4, 14 updates deep). `bun scripts/finalize-sweep.ts` merged cleanly on
+  the first attempt ("merged 0 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of the updated item's grown `sources`/`updates` arrays
+  (42 sources, 14 updates; 964 items, unchanged). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
