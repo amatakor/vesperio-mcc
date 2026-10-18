@@ -10229,3 +10229,107 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `snr_trace`/`category`/`impact`/`kind`/`companies` fields as the
   build-health signal.
 
+## Narrow re-check, ~7h24m gap, unfiltered full source list (2026-09-17)
+
+- 2026-09-17-A: Refines the standing 2026-09-01-G finding on
+  `corroboration_2plus`: a `trade`-class lead with exactly ONE
+  `trade`-class corroboration source DID trigger the +1 modifier this run
+  (China in Space lead + Guangming Online corroboration on the GuoWang
+  25th-group item, "2 distinct sources (>=2)"), while the same-run
+  Kuaizhou-11/SpaceTY item (aggregator lead + one `informal`-class
+  corroboration) got NO modifier at all despite also having 2 total
+  sources. The distinguishing factor looks like the corroboration
+  source's own class, not the raw source count: a same-or-higher-tier
+  additional source earns the bump with just one attach, but a single
+  weaker (`informal`) addition doesn't. Worth confirming on a future
+  mixed-class case before treating this as settled.
+- 2026-09-17-B: Two Chinese state-media outlets that write independent
+  prose around the same Xinhua wire fact (china-in-space.com's own
+  technical writeup vs. Guangming Online's bare wire rewrite) still count
+  as 2 distinct sources for corroboration purposes; finalize-sweep's
+  title-collapse logic did not merge them, unlike ifeng.com's and
+  fx168news.com's near-identical verbatim Xinhua quote (same brief,
+  correctly treated as one source, only one attached here).
+- 2026-09-17-C: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 0
+  updated, 0 held") plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields, the
+  `registry-candidates.json` flag_refresh entries for `guowang`, and the
+  three automatic persistence bumps logged in the sweep entry as the
+  build-health signal.
+
+## Narrow re-check, ~6h38m gap, unfiltered full source list (2026-09-17, second)
+
+- 2026-09-17-D: The anti-spoof `first_party` host check (2026-09-16-B) runs
+  against ALL registry entity types, not just organizations: Vantor's own
+  blog (vantor.com) passed as `first_party` because a `vantor.json`
+  CONSTELLATION profile exists with that domain, even though no Vantor
+  ORGANIZATION profile does. EnduroSat and Kymeta have no registry entity
+  at all (no organization, constellation, vehicle, or spaceport profile),
+  so their own-domain press pages were rejected and reclassified
+  `informal` per the standing precedent. Worth checking all four registry
+  subdirectories (not just organizations/) before assuming a company's own
+  domain will fail the gate.
+- 2026-09-17-E: Two same-day EnduroSat announcements (a $205M funding round
+  and Vantor's Pulse constellation contract) are genuinely distinct events
+  but share the company and land in adjacent categories; the same-event
+  gate matched the Pulse item against the OLDER, unrelated
+  `2026-09-10-trustpoint-endurosat-gnss-constellation` contract (shared
+  company EnduroSat, category `contract`, within 7 days) rather than
+  against the same-sweep funding item. `dedup_distinct` needs to name the
+  actual existing item the gate flags, not just whichever other new draft
+  item seems like the obvious collision; when in doubt, add entries for
+  every plausible match.
+- 2026-09-17-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 0
+  updated, 0 held") plus a direct read of all five new items'
+  `snr`/`category`/`impact`/`sources` fields as the build-health signal.
+
+## Narrow re-check, ~4h20m gap, unfiltered full source list (2026-09-17, third)
+
+- 2026-09-17-G: A near-total-junk queue (32 candidates, almost entirely
+  SpaceX stock/Starship-delay financial-press churn and Futurism off-topic
+  content) still yielded two genuinely new items via the discovery pass's
+  own confirmation follow-through: a same-day Breaking Defense/DefenseScoop
+  briefing naming the Space Force's Ground Moving Target Indicator program
+  "Resilient Radar System-Ground (RRS-G)" with Northrop Grumman confirmed
+  as prime (no dollar figure disclosed), and a same-day GlobeNewswire/TV
+  Technology United Airlines/DISH live-football-on-Starlink rollout. Both
+  were genuinely undrafted (grepped items.json for "RRS-G"/"GMTI"/
+  "Northrop" and "United"/"Dish" first).
+- 2026-09-17-H: A Google News "Nuri rocket launch...South Korea's first
+  microsatellite constellation" headline (TechRadar, dated in-window) traced
+  via WebSearch to a launch actually scheduled for Oct. 7, not yet flown;
+  left undrafted per the standing don't-draft-a-scheduled-launch rule. A
+  same-day CZ-12 Wenchang commercial-pad launch (confirmed via PhilSA's own
+  debris-advisory) had no named payload or confirmed outcome in any source
+  found; left undrafted as too thin per rule 2 rather than assume success.
+  Confirms the standing pattern that a scheduled/outcome-unconfirmed launch
+  stays out even when the launch itself is real and dateable.
+  Caixin Global (English edition of a mainstream Chinese financial daily)
+  had no prior classification precedent in this file; treated as
+  `mainstream` (same tier as SCMP), used as the sole fetchable lead for a
+  Space Epoch reusable-rocket funding round after SpaceNews's own writeup
+  429'd on every attempt (two tries) -- landed an honest single-source SNR 2
+  (`crawl: "found_none"`) per the standing rule that a WebSearch-confirmed-
+  to-exist-but-unfetchable page is never citable, even when other
+  independent coverage (SpaceNews, china-in-space.com) clearly exists.
+- 2026-09-17-I: Two signals-pass leads were recognized as already-published
+  same-day rehashes before drafting: Andrew Parsonson's Sept. 16 Avio-CEO
+  "customers turned away by SpaceX" bluesky post is the same earnings-call
+  quote already published as `2026-09-10-avio-ceo-spacex-capacity-
+  commentary`, and his Sept. 17 grid-fins/MR10-reignition post is just more
+  technical detail on the already-published `2026-09-10-avio-fd1-
+  integration-complete` (itself a suborbital demonstrator, per the standing
+  2026-09-11-I exclusion for the vehicle's eventual flight, not the
+  integration-milestone item). Both grepped against items.json before any
+  drafting time was spent.
+- 2026-09-17-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
+  updated, 0 held") plus a direct read of all three new items' and both
+  updated items' `snr`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+

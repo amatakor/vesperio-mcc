@@ -26288,8 +26288,8 @@
       "headline": "SpaceX commits exclusively to Nvidia GPUs for Starmind orbital AI satellites",
       "explainer": {
         "tagline": "On its first earnings call as a public company, SpaceX said it will use only Nvidia GPUs for its Starmind AI1 orbital compute satellites.",
-        "what_happened": "On SpaceX's first earnings call as a public company, held August 4, Elon Musk said the company is \"exclusive to Nvidia\" for its orbital AI compute hardware, per Forbes and Teslarati. Each satellite in the planned Starmind AI1 constellation will carry Nvidia Rubin GPUs and Vera CPUs, using Nvidia's Vera Rubin NVL72 rackscale architecture, codenamed Kyber, both on the ground and in orbit. SpaceX said it is targeting 2 gigawatts of compute capacity online by the end of 2026 and about 10 gigawatts by the end of 2027. The company's existing AI business, which leases Colossus compute capacity to customers including Anthropic and Google, generated $2.6 billion in revenue in the second quarter, up roughly 250% year over year, per Teslarati. Musk later gave per-satellite figures on X: each Starmind spacecraft will carry over 250kW of solar power, about 20% more than the International Space Station, with 10 terabits per second of bidirectional connectivity and \"a path to 100+Tb,\" per posts on September 20 and October 1.",
-        "why_it_matters": "This is SpaceX's first public commitment to a single GPU supplier for orbital compute, tying Starmind's buildout directly to Nvidia's Rubin roadmap rather than a mixed-vendor approach. The already-commercial Colossus leasing business, with named customers and a stated growth rate, is the first hard revenue evidence that space-based AI compute is more than a roadmap slide, a data point every satellite operator eyeing in-orbit compute will now have to answer to.",
+        "what_happened": "On SpaceX's first earnings call as a public company, held August 4, Elon Musk said the company is \"exclusive to Nvidia\" for its orbital AI compute hardware, per Forbes and Teslarati. Each satellite in the planned Starmind AI1 constellation will carry Nvidia Rubin GPUs and Vera CPUs, using Nvidia's Vera Rubin NVL72 rackscale architecture, codenamed Kyber, both on the ground and in orbit. SpaceX said it is targeting 2 gigawatts of compute capacity online by the end of 2026 and about 10 gigawatts by the end of 2027. The company's existing AI business, which leases Colossus compute capacity to customers including Anthropic and Google, generated $2.6 billion in revenue in the second quarter, up roughly 250% year over year, per Teslarati. Musk later gave per-satellite figures on X: each Starmind spacecraft will carry over 250kW of solar power, about 20% more than the International Space Station, with 10 terabits per second of bidirectional connectivity and \"a path to 100+Tb,\" per posts on September 20 and October 1. On October 15, after Nvidia CEO Jensen Huang discussed the partnership on the BG2 Pod, Musk wrote on X that \"the Star Mind computer being co-engineered by SpaceX and Nvidia is far better than almost anyone expects and will reach volume production next year,\" calling Huang's engineering team \"incredibly talented\"; Huang said space-based data centers are \"one particular new market\" the companies are exploring together, per Yahoo Finance.",
+        "why_it_matters": "On SpaceX's first earnings call as a public company, Musk gave investors concrete, binding figures for the first time: exclusivity with one GPU supplier, a named architecture, and a compute-capacity ramp that ties Starmind's build-out directly to Nvidia's hardware roadmap rather than a vaguer \"AI in space\" ambition. For data center operators, cloud providers, and satellite manufacturers watching the orbital-compute market emerge, this sets the technical and timeline benchmark competitors (Google, AWS, and other proposed space-data-center efforts) will be measured against, and the 2 GW/10 GW targets give suppliers of launch, power, and thermal-management hardware for space-based AI a demand signal to plan against. Musk's October 15 production-timeline update, tying volume production to 2027, sharpens that demand signal for suppliers further up the Starmind chain.",
         "for_who": "Cloud/AI compute buyers and satellite operators evaluating orbital data centers"
       },
       "tags": [
@@ -26307,7 +26307,8 @@
         "https://www.tomshardware.com/tech-industry/artificial-intelligence/elon-musk-says-spacex-will-exclusively-use-nvidia-gpus-because-they-are-the-best-says-optimized-vera-rubin-nvl72-will-be-launched-into-space-next-year",
         "https://x.com/elonmusk/status/2101466638939832365",
         "https://x.com/elonmusk/status/2105718806769512812",
-        "https://satnews.com/2026/10/04/spacex-unveils-250-kw-starlink-gen3-ai-satellites-featuring-10-tbps-throughput-and-onboard-edge-compute/"
+        "https://satnews.com/2026/10/04/spacex-unveils-250-kw-starlink-gen3-ai-satellites-featuring-10-tbps-throughput-and-onboard-edge-compute/",
+        "https://finance.yahoo.com/technology/ai/articles/elon-musk-says-jensen-huang-003013948.html"
       ],
       "kind": "event",
       "snr": 4,
@@ -26369,6 +26370,13 @@
           "class": "trade",
           "added": "2026-10-04",
           "via": "corroboration"
+        },
+        {
+          "url": "https://finance.yahoo.com/technology/ai/articles/elon-musk-says-jensen-huang-003013948.html",
+          "outlet": "Yahoo Finance",
+          "class": "mainstream",
+          "added": "2026-10-18",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-08-07T17:35:45.115Z",
@@ -26390,6 +26398,11 @@
           "date": "2026-10-04",
           "kind": "copy",
           "note": "Musk later specified per-satellite power (250kW) and connectivity (10Tbps, with a path to 100+Tbps) figures for Starmind on X."
+        },
+        {
+          "date": "2026-10-18",
+          "kind": "copy",
+          "note": "Musk says the Starmind computer will reach volume production in 2027, after Nvidia's Jensen Huang detailed the space-data-center partnership publicly."
         }
       ]
     },
@@ -62107,7 +62120,7 @@
       ],
       "source_url": "https://en.ilsole24ore.com/art/serco-launches-a-platform-for-processing-satellite-data-for-public-authorities-and-businesses-AJAI2GXB",
       "secondary_urls": [],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -62119,10 +62132,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-18",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -68502,8 +68528,8 @@
       "headline": "SpaceX imposes 100 mph speed limit on Ukraine's military Starlink terminals",
       "explainer": {
         "tagline": "Zelensky says a 161 km/h Starlink speed cap applies only in Ukraine, calling it a \"planned operation\" SpaceX won't address.",
-        "what_happened": "SpaceX imposed a 100 mph (160 km/h) speed restriction on Starlink terminals in motion under Ukraine's military Starshield package overnight on October 13-14, per presidential technology adviser Serhii \"Flash\" Beskrestnov, who said the limit was not announced in advance. Ukrainian activist Serhii Sternenko said the restriction tightened further during the day, with connections dropping at 60-70 km/h. Polish Foreign Minister Radoslaw Sikorski publicly challenged Musk on X; Musk replied that \"Zelensky has gone too far,\" then separately wrote that \"Starshield systems are owned and controlled by the U.S. government\" and that \"any limits on speed or usage are decided by the US military and ultimately POTUS,\" per Via Satellite and Fox News. Sen. Thom Tillis (R-N.C.) publicly pressed Musk on X, saying \"intentionally degrading Ukraine's ability to defend itself might be construed as aiding and abetting a mass murderer.\" President Zelensky, in a televised interview with Piers Morgan, called the restriction \"a big mistake\" that \"will lead to a great loss of human life,\" and asked for it to be switched off \"as it should be between partners,\" per Censor.net and NBC News. By the evening of October 14, Ukrainian official Mykhailo Fedorov said Starlink service was being restored for speeds up to 160 km/h, while the push continues to remove the Starshield limit altogether. The bipartisan Congressional Ukraine Caucus, co-chaired by Reps. Marcy Kaptur, Brian Fitzpatrick, Mike Quigley and Joe Wilson, said restrictions \"that put civilians in harm's way are unconscionable and will not be accepted by Congress,\" per Interfax-Ukraine. Rep. Don Bacon (R-Neb.) said reducing intelligence sharing and Starlink access to Ukraine \"equates to aiding the invader & the war criminal who bombs cities,\" per the Washington Sun. Sen. Richard Blumenthal (D-Conn.) wrote on X that reports of Starlink failing in Ukraine are \"deeply alarming,\" warning it is \"potentially crippling air defense against Russia's murderous missiles & drones,\" and that \"Trump & Musk must be held accountable,\" per Euromaidan Press. Musk also drew a formal distinction between the two services on X: alongside his statement on Starshield being government-controlled, he separately wrote that \"Starlink is a commercial service owned and controlled by SpaceX. Usage of Starlink is limited to civilian or defensive activities and cannot be used for offensive military action, as doing so would be inappropriate for a commercial company,\" per Teslarati. By October 15, a Ukrainian Defense Ministry source told Ukrinform that \"Starshield's work in motion has resumed and continues,\" though the source did not say whether all speed restrictions had been lifted, per Kyiv Independent. Defense ministry sources told Business Insider the restriction had complicated mid-range strikes, air defense intercepts and front-line logistics; a National Guard officer identified as Yuriy said speeds were back above 100 mph as of the morning of October 15, and Yehor Cherniev, deputy chairman of the Ukrainian parliament's national security, defense and intelligence committee, also confirmed partial restoration. Ukrainian officials are separately seeking a higher cap of at least 450 km/h to counter jet-powered Shahed drones, saying the Starshield service, funded by Germany under a contract running through April 2027, previously operated without speed limits, per Kyiv Post. Musk said SpaceX \"had no control\" over the restriction and reiterated that Starshield's limits are \"owned and controlled by the U.S. Government,\" while Ukrainian adviser Serhii Sternenko said SpaceX acted at the request of the Trump administration, per UPI. Zelensky told the Financial Times the outage \"was not a technical problem, it was the will,\" tying it to strained US-Ukraine relations, per the Moscow Times. A senior US administration official told Axios on Oct. 15 that the White House had no role in the restriction and said the administration planned to contact SpaceX to determine what caused it. UK Defence Secretary Wes Streeting said that after meeting US Defense Secretary Pete Hegseth, \"we didn't really get into why the service interruption had happened,\" but that both men \"reflect[ed] briefly on the fact that it had been restored and welcome that,\" per Reuters. On October 16, Reuters reported that two US officials and a Western official briefed on the matter said the order to slow Starshield came from inside the White House, though they did not identify who made the decision; Pentagon officials were told the service \"needed to be slowed down.\" A senior US official denied the order came from Trump personally. Reuters tied the timing to the administration's pressure on Kyiv to halt strikes on Russian oil refineries, which Trump has blamed for rising fuel prices, after which Washington struck a deal allowing Russia to export diesel to the US, per Kyiv Independent's republication of the Reuters report. Separately, eight senators led by Sen. Jeanne Shaheen (D-N.H.) and Sen. Thom Tillis (R-N.C.), including Republicans Susan Collins, Lisa Murkowski and John Cornyn and Democrats Dick Durbin, Richard Blumenthal, Chris Coons and Jack Reed, sent a letter on October 15 asking the Pentagon's inspector general to investigate \"whether actions or decisions by the Department of Defense or its contractors contributed to these dangerous circumstances,\" citing Ukrainian military reports of restrictions on craft \"flying faster than 63 mph\" on October 14 and SpaceX's own acknowledgment of a 100 mph restriction, and asked for a status update by November 1. At a Brussels press conference on October 16, Zelensky said speeds have not returned to their prior level: \"Have they returned to the previous speed? No. But has the speed increased? Yes,\" he said, calling the restriction \"a very unpleasant and dangerous surprise,\" per United24 Media and Naharnet (AFP). Zelensky said Russian Shahed drones travel faster than 400 km/h while Ukraine's Starlink-equipped interceptors were capped around 78 km/h during the restriction, preventing some intercepts, and that mid-range strikes on Russian military positions in occupied territory that relied on Starlink connectivity \"we can no longer do,\" per United24 Media. Also on October 16, The Telegraph reported, citing four sources including two Ukrainian officials and a high-ranking European official, that it was Musk who proposed the Starshield speed cap to Trump and that Trump agreed, directly contradicting Musk's own public account that the restriction was entirely the US government's decision; one senior source told the Telegraph \"the reality is that they were both in it,\" per Kyiv Independent's republication. Asked about the restriction the same day, Trump said \"I don't know if it was anybody, because it wasn't me. And I don't think it was Elon,\" adding he had checked that morning and \"everything was working as usual,\" per United24 Media and Meduza. On October 17, Zelensky said the speed cap remains at 161 km/h (100 mph) and applies only in Ukraine, not in EU countries: Ukrainian officials tested Starlink-equipped vehicles in EU territory at speeds exceeding 180 km/h with no loss of connection, which he said proves the restriction is deliberate rather than technical. He called it \"a planned operation\" and said Ukrainian military officials and diplomats have been unable to get SpaceX to respond through Defense Ministry channels, with explanations offered through other channels blaming technical problems that, he said, do not explain why only Ukraine is affected, per Kyiv Independent, United24 Media and Ukrainska Pravda.",
-        "why_it_matters": "Starshield is the military-grade Starlink package Ukraine depends on for drone operations and frontline communications, and SpaceX changed its performance unilaterally and without notice, then pointed to the U.S. government rather than its own policy when explaining why. For any government or enterprise customer weighing reliance on Starlink or Starshield for mission-critical connectivity, an operator whose service terms can shift overnight for a major client, and that draws public rebukes from a paying government customer, a sitting U.S. senator and a bipartisan congressional caucus in the same news cycle, is a reliability and political-risk signal worth briefing leadership on immediately. The fallout is already moving capital: Eutelsat shares jumped 23%, their biggest one-day gain in 16 months, and SES rose nearly 3%, with Bernstein analyst Aleksander Peterc attributing the move to investors pricing in reduced confidence in U.S.-owned satellite services and repositioning European operators as alternatives, per Reuters. Reuters' sourcing of the order to the White House, denied as a Trump-personal decision but tied by officials to pressure on Kyiv over refinery strikes, now gives the dispute a concrete political motive beyond Musk's own account, and a bipartisan 8-senator letter demanding a Pentagon IG probe raises the chance of a formal account of who ordered it and why. Zelensky's own account on October 17, that an EU test of the same terminals cleared the restriction's stated speed threshold with no issue, is the first concrete evidence Ukraine itself has offered that the cap is geographically targeted rather than a technical fault, further undercutting both Musk's and the White House's public denials four days into the dispute and strengthening the case for the Pentagon IG inquiry Congress has already requested."
+        "what_happened": "SpaceX imposed a 100 mph (160 km/h) speed restriction on Starlink terminals in motion under Ukraine's military Starshield package overnight on October 13-14, per presidential technology adviser Serhii \"Flash\" Beskrestnov, who said the limit was not announced in advance. Ukrainian activist Serhii Sternenko said the restriction tightened further during the day, with connections dropping at 60-70 km/h. Polish Foreign Minister Radoslaw Sikorski publicly challenged Musk on X; Musk replied that \"Zelensky has gone too far,\" then separately wrote that \"Starshield systems are owned and controlled by the U.S. government\" and that \"any limits on speed or usage are decided by the US military and ultimately POTUS,\" per Via Satellite and Fox News. Sen. Thom Tillis (R-N.C.) publicly pressed Musk on X, saying \"intentionally degrading Ukraine's ability to defend itself might be construed as aiding and abetting a mass murderer.\" President Zelensky, in a televised interview with Piers Morgan, called the restriction \"a big mistake\" that \"will lead to a great loss of human life,\" and asked for it to be switched off \"as it should be between partners,\" per Censor.net and NBC News. By the evening of October 14, Ukrainian official Mykhailo Fedorov said Starlink service was being restored for speeds up to 160 km/h, while the push continues to remove the Starshield limit altogether. The bipartisan Congressional Ukraine Caucus, co-chaired by Reps. Marcy Kaptur, Brian Fitzpatrick, Mike Quigley and Joe Wilson, said restrictions \"that put civilians in harm's way are unconscionable and will not be accepted by Congress,\" per Interfax-Ukraine. Rep. Don Bacon (R-Neb.) said reducing intelligence sharing and Starlink access to Ukraine \"equates to aiding the invader & the war criminal who bombs cities,\" per the Washington Sun. Sen. Richard Blumenthal (D-Conn.) wrote on X that reports of Starlink failing in Ukraine are \"deeply alarming,\" warning it is \"potentially crippling air defense against Russia's murderous missiles & drones,\" and that \"Trump & Musk must be held accountable,\" per Euromaidan Press. Musk also drew a formal distinction between the two services on X: alongside his statement on Starshield being government-controlled, he separately wrote that \"Starlink is a commercial service owned and controlled by SpaceX. Usage of Starlink is limited to civilian or defensive activities and cannot be used for offensive military action, as doing so would be inappropriate for a commercial company,\" per Teslarati. By October 15, a Ukrainian Defense Ministry source told Ukrinform that \"Starshield's work in motion has resumed and continues,\" though the source did not say whether all speed restrictions had been lifted, per Kyiv Independent. Defense ministry sources told Business Insider the restriction had complicated mid-range strikes, air defense intercepts and front-line logistics; a National Guard officer identified as Yuriy said speeds were back above 100 mph as of the morning of October 15, and Yehor Cherniev, deputy chairman of the Ukrainian parliament's national security, defense and intelligence committee, also confirmed partial restoration. Ukrainian officials are separately seeking a higher cap of at least 450 km/h to counter jet-powered Shahed drones, saying the Starshield service, funded by Germany under a contract running through April 2027, previously operated without speed limits, per Kyiv Post. Musk said SpaceX \"had no control\" over the restriction and reiterated that Starshield's limits are \"owned and controlled by the U.S. Government,\" while Ukrainian adviser Serhii Sternenko said SpaceX acted at the request of the Trump administration, per UPI. Zelensky told the Financial Times the outage \"was not a technical problem, it was the will,\" tying it to strained US-Ukraine relations, per the Moscow Times. A senior US administration official told Axios on Oct. 15 that the White House had no role in the restriction and said the administration planned to contact SpaceX to determine what caused it. UK Defence Secretary Wes Streeting said that after meeting US Defense Secretary Pete Hegseth, \"we didn't really get into why the service interruption had happened,\" but that both men \"reflect[ed] briefly on the fact that it had been restored and welcome that,\" per Reuters. On October 16, Reuters reported that two US officials and a Western official briefed on the matter said the order to slow Starshield came from inside the White House, though they did not identify who made the decision; Pentagon officials were told the service \"needed to be slowed down.\" A senior US official denied the order came from Trump personally. Reuters tied the timing to the administration's pressure on Kyiv to halt strikes on Russian oil refineries, which Trump has blamed for rising fuel prices, after which Washington struck a deal allowing Russia to export diesel to the US, per Kyiv Independent's republication of the Reuters report. Separately, eight senators led by Sen. Jeanne Shaheen (D-N.H.) and Sen. Thom Tillis (R-N.C.), including Republicans Susan Collins, Lisa Murkowski and John Cornyn and Democrats Dick Durbin, Richard Blumenthal, Chris Coons and Jack Reed, sent a letter on October 15 asking the Pentagon's inspector general to investigate \"whether actions or decisions by the Department of Defense or its contractors contributed to these dangerous circumstances,\" citing Ukrainian military reports of restrictions on craft \"flying faster than 63 mph\" on October 14 and SpaceX's own acknowledgment of a 100 mph restriction, and asked for a status update by November 1. At a Brussels press conference on October 16, Zelensky said speeds have not returned to their prior level: \"Have they returned to the previous speed? No. But has the speed increased? Yes,\" he said, calling the restriction \"a very unpleasant and dangerous surprise,\" per United24 Media and Naharnet (AFP). Zelensky said Russian Shahed drones travel faster than 400 km/h while Ukraine's Starlink-equipped interceptors were capped around 78 km/h during the restriction, preventing some intercepts, and that mid-range strikes on Russian military positions in occupied territory that relied on Starlink connectivity \"we can no longer do,\" per United24 Media. Also on October 16, The Telegraph reported, citing four sources including two Ukrainian officials and a high-ranking European official, that it was Musk who proposed the Starshield speed cap to Trump and that Trump agreed, directly contradicting Musk's own public account that the restriction was entirely the US government's decision; one senior source told the Telegraph \"the reality is that they were both in it,\" per Kyiv Independent's republication. Asked about the restriction the same day, Trump said \"I don't know if it was anybody, because it wasn't me. And I don't think it was Elon,\" adding he had checked that morning and \"everything was working as usual,\" per United24 Media and Meduza. On October 17, Zelensky said the speed cap remains at 161 km/h (100 mph) and applies only in Ukraine, not in EU countries: Ukrainian officials tested Starlink-equipped vehicles in EU territory at speeds exceeding 180 km/h with no loss of connection, which he said proves the restriction is deliberate rather than technical. He called it \"a planned operation\" and said Ukrainian military officials and diplomats have been unable to get SpaceX to respond through Defense Ministry channels, with explanations offered through other channels blaming technical problems that, he said, do not explain why only Ukraine is affected, per Kyiv Independent, United24 Media and Ukrainska Pravda. On October 17-18, Secretary of State Marco Rubio told reporters \"No one at the White House ordered anyone to slow down internet or slow down speeds so that certain drones couldn't use it,\" calling reports of White House involvement \"categorically false\" and saying the restriction \"sort of happened, but my understanding is it's been restored,\" per Newsweek and Kyiv Independent. Rubio separately said Ukraine does not currently have access to Starshield to conduct deep strikes inside Russia, which it has requested: \"It's not at this moment available to Ukraine, and that's under conversation,\" he said, distinguishing Starshield as a separate US military contract from the commercial Starlink service, per Anadolu Agency.",
+        "why_it_matters": "Starshield is the military-grade Starlink package Ukraine depends on for drone operations and frontline communications, and SpaceX changed its performance unilaterally and without notice, then pointed to the U.S. government rather than its own policy when explaining why. For any government or enterprise customer weighing reliance on Starlink or Starshield for mission-critical connectivity, an operator whose service terms can shift overnight for a major client, and that draws public rebukes from a paying government customer, a sitting U.S. senator and a bipartisan congressional caucus in the same news cycle, is a reliability and political-risk signal worth briefing leadership on immediately. The fallout is already moving capital: Eutelsat shares jumped 23%, their biggest one-day gain in 16 months, and SES rose nearly 3%, with Bernstein analyst Aleksander Peterc attributing the move to investors pricing in reduced confidence in U.S.-owned satellite services and repositioning European operators as alternatives, per Reuters. Reuters' sourcing of the order to the White House, denied as a Trump-personal decision but tied by officials to pressure on Kyiv over refinery strikes, now gives the dispute a concrete political motive beyond Musk's own account, and a bipartisan 8-senator letter demanding a Pentagon IG probe raises the chance of a formal account of who ordered it and why. Zelensky's own account on October 17, that an EU test of the same terminals cleared the restriction's stated speed threshold with no issue, is the first concrete evidence Ukraine itself has offered that the cap is geographically targeted rather than a technical fault, further undercutting both Musk's and the White House's public denials four days into the dispute and strengthening the case for the Pentagon IG inquiry Congress has already requested. Rubio's on-record denial is the most senior administration figure yet to publicly contest Zelensky's account, and his disclosure that Ukraine's separate request for Starshield deep-strike access remains unresolved adds a second, previously unstated point of friction between Washington and Kyiv over the service."
       },
       "tags": [
         "connectivity"
@@ -68548,7 +68574,10 @@
         "https://meduza.io/en/news/2026/10/16/trump-denies-ordering-restrictions-on-ukraine-s-military-starlink-service-and-says-he-doesn-t-think-elon-musk-did-either",
         "https://kyivindependent.com/planned-operation-zelensky-confirms-ukraines-starlink-access-not-fully-restored/",
         "https://united24media.com/war-in-ukraine/zelenskyy-says-starlink-restrictions-apply-only-in-ukraine-while-spacex-ignores-kyivs-inquiries-23549",
-        "https://www.pravda.com.ua/eng/news/2026/10/17/8058503/"
+        "https://www.pravda.com.ua/eng/news/2026/10/17/8058503/",
+        "https://www.newsweek.com/marco-rubio-denies-white-house-ordered-ukraine-starlink-slowdown-12584771",
+        "https://kyivindependent.com/marco-rubio-says-trumps-russian-oil-sanctions-waiver-is-a-60-day-pause-denies-restricting-starlink-access/",
+        "https://www.anews.com.tr/world/2026/10/18/ukraines-request-for-access-to-starshield-under-discussion-rubio-says"
       ],
       "kind": "event",
       "snr": 4,
@@ -68814,6 +68843,27 @@
           "class": "mainstream",
           "added": "2026-10-17",
           "via": "corroboration"
+        },
+        {
+          "url": "https://www.newsweek.com/marco-rubio-denies-white-house-ordered-ukraine-starlink-slowdown-12584771",
+          "outlet": "Newsweek",
+          "class": "mainstream",
+          "added": "2026-10-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://kyivindependent.com/marco-rubio-says-trumps-russian-oil-sanctions-waiver-is-a-60-day-pause-denies-restricting-starlink-access/",
+          "outlet": "Kyiv Independent",
+          "class": "mainstream",
+          "added": "2026-10-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.anews.com.tr/world/2026/10/18/ukraines-request-for-access-to-starshield-under-discussion-rubio-says",
+          "outlet": "Anadolu Agency (A News)",
+          "class": "mainstream",
+          "added": "2026-10-18",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-14T12:43:21.385Z",
@@ -68885,6 +68935,11 @@
           "date": "2026-10-17",
           "kind": "copy",
           "note": "Zelensky says the 161 km/h Starlink speed cap applies only in Ukraine, citing an EU test of the same terminals as proof the restriction is a deliberate \"planned operation,\" not a technical fault, and that SpaceX still isn't responding to Kyiv."
+        },
+        {
+          "date": "2026-10-18",
+          "kind": "copy",
+          "note": "Secretary of State Rubio denies the White House ordered the Starlink slowdown and says Ukraine's separate request for Starshield access to strike inside Russia remains unresolved."
         }
       ]
     },
@@ -71413,9 +71468,9 @@
       "date": "2026-10-17",
       "headline": "Russia's Cosmos 2612 maneuvers within 1-2 km of ICEYE-X36 satellite",
       "explainer": {
-        "tagline": "Trackers say Russia's Cosmos 2612 has closed to within 1-2 km of ICEYE's Ukraine-linked radar satellite ICEYE-X36.",
-        "what_happened": "RussianSpaceWeb's Anatoly Zak reported that Russia's Cosmos 2612, launched April 17, 2026, has maneuvered to synchronize its orbital period, altitude and eccentricity with ICEYE's US-Finnish ICEYE-X36 radar satellite, closing to within one to two kilometers by October 17 after four sister satellites came within 0.5 to 22 kilometers of ICEYE-X36 in May. Delft lecturer Marco Langbroek wrote on his SatTrackCam blog that the latest maneuvers began September 30 and that Cosmos 2612 could pass within meters of ICEYE-X36 in the early hours of October 18. CSIS's Aerospace Security Project, noting a sister satellite, Cosmos 2609, came within 2.5 kilometers of ICEYE-X36 in May, wrote on October 15 that \"policymakers should assume Cosmos 2612 could take an action that threatens the commercial satellite\"; RussianSpaceWeb describes ICEYE-X36 as providing imagery for Ukraine.",
-        "why_it_matters": "If Cosmos 2612 disables or damages ICEYE-X36, it would be the first confirmed on-orbit attack on a commercial satellite supporting an active conflict, raising the stakes for any EO operator selling government and defense tasking. ICEYE and its insurers face an immediate question of whether to maneuver the satellite clear, and other SAR and optical operators serving Ukraine or NATO militaries may face the same orbital exposure.",
+        "tagline": "Trackers say Cosmos 2612 has held within 2 km of ICEYE-X36 for over a day, as questions grow over who now operates the satellite.",
+        "what_happened": "RussianSpaceWeb's Anatoly Zak reported that Russia's Cosmos 2612, launched April 17, 2026, has maneuvered to synchronize its orbital period, altitude and eccentricity with ICEYE's US-Finnish ICEYE-X36 radar satellite, closing to within one to two kilometers by October 17 after four sister satellites came within 0.5 to 22 kilometers of ICEYE-X36 in May. Delft lecturer Marco Langbroek wrote on his SatTrackCam blog that the latest maneuvers began September 30 and that Cosmos 2612 could pass within meters of ICEYE-X36 in the early hours of October 18. CSIS's Aerospace Security Project, noting a sister satellite, Cosmos 2609, came within 2.5 kilometers of ICEYE-X36 in May, wrote on October 15 that \"policymakers should assume Cosmos 2612 could take an action that threatens the commercial satellite\"; RussianSpaceWeb describes ICEYE-X36 as providing imagery for Ukraine. Jonathan McDowell of Jonathan's Space Report wrote on Bluesky that \"to my knowledge this is the first LEO rendezvous of two active sats where the owner of one of the sats did not give approval.\" Langbroek wrote on Bluesky on October 17 that the two satellites had already spent more than a day within roughly 2 kilometers of each other, with tracking data projecting the pattern continuing through October 19, and cautioned that the underlying tracking data (TLEs) carry enough intrinsic inaccuracy that a computed \"10 meters\" could as easily be a kilometer. Langbroek also wrote that ICEYE-X36, while built in Finland, is \"like other ICEYE sats whose ownership transferred, no longer Finnish\": it is registered in the US but may now be Ukrainian owned or leased.",
+        "why_it_matters": "If Cosmos 2612 disables or damages ICEYE-X36, it would be the first confirmed on-orbit attack on a commercial satellite supporting an active conflict, raising the stakes for any EO operator selling government and defense tasking. ICEYE and its insurers face an immediate question of whether to maneuver the satellite clear, and other SAR and optical operators serving Ukraine or NATO militaries may face the same orbital exposure. McDowell's characterization, that this may be the first non-consensual close rendezvous between two active satellites, underscores why trackers are treating the pattern as a potential precedent-setting event rather than routine proximity; the uncertainty over ICEYE-X36's current ownership (Finnish-built, US-registered, possibly Ukrainian-operated) also complicates any attribution of commercial versus military liability once it is resolved.",
         "for_who": "SAR/EO operators with government and defense customers; satellite insurers"
       },
       "tags": [
@@ -71431,7 +71486,10 @@
       "secondary_urls": [
         "https://sattrackcam.blogspot.com/",
         "https://www.csis.org/analysis/could-russia-be-poised-use-orbit-weapon-against-commercial-satellite",
-        "https://space24.pl/bezpieczenstwo/technologie-wojskowe/rosyjski-satelita-coraz-blizej-satelity-iceye"
+        "https://space24.pl/bezpieczenstwo/technologie-wojskowe/rosyjski-satelita-coraz-blizej-satelity-iceye",
+        "https://bsky.app/profile/planet4589.bsky.social/post/3my3l2nayis2d",
+        "https://bsky.app/profile/marcolangbroek.bsky.social/post/3my4653ub4k2m",
+        "https://bsky.app/profile/marcolangbroek.bsky.social/post/3my43rza6422j"
       ],
       "kind": "event",
       "snr": 4,
@@ -71479,6 +71537,27 @@
           "class": "trade",
           "added": "2026-10-17",
           "via": "corroboration"
+        },
+        {
+          "url": "https://bsky.app/profile/planet4589.bsky.social/post/3my3l2nayis2d",
+          "outlet": "Jonathan McDowell (Bluesky)",
+          "class": "informal",
+          "added": "2026-10-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://bsky.app/profile/marcolangbroek.bsky.social/post/3my4653ub4k2m",
+          "outlet": "Marco Langbroek (Bluesky)",
+          "class": "whitelist",
+          "added": "2026-10-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://bsky.app/profile/marcolangbroek.bsky.social/post/3my43rza6422j",
+          "outlet": "Marco Langbroek (Bluesky)",
+          "class": "whitelist",
+          "added": "2026-10-18",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-17T21:11:19.404Z",
@@ -71494,7 +71573,14 @@
         "origin_url": "https://space24.pl/bezpieczenstwo/technologie-wojskowe/rosyjski-satelita-coraz-blizej-satelity-iceye",
         "width": 1024,
         "height": 576
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-10-18",
+          "kind": "copy",
+          "note": "Trackers say the two satellites have held within about 2 km of each other for over a day, and Langbroek says ICEYE-X36 may now be Ukrainian-operated rather than Finnish."
+        }
+      ]
     }
   ]
 }
