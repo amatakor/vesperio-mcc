@@ -5175,3 +5175,61 @@ a newer entry if a lesson changes.
   (963 items, up from 962) and the updated Cosmos 2612/ICEYE-X36 item's grown
   `sources`/`updates` arrays (9 sources, 2 updates). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h31m gap, unfiltered full source list (2026-10-18, third)
+
+- 2026-10-18-I: A near-total-junk 49-candidate queue (dozens of Google News
+  Starlink/Ukraine-saga rehash hits on the Bessent/Zelenskyy/Rubio exchange,
+  SpaceX-launch-reaction Bluesky spam, off-topic Futurism filler) still
+  needed a genuine same-company (SpaceX) + same-category (geopolitical)
+  dedup_distinct: a same-day Lithuania Starlink-equipment arson attempt
+  (Kyiv Independent lead, corroborated by Kyiv Post/United24 Media/
+  Euromaidan Press, all independently worded, not wire rewrites) is the
+  third such suspected-Russian sabotage attempt on European Starlink ground
+  infrastructure since September (after Poland and Bulgaria) but a wholly
+  distinct event from the ongoing US speed-restriction/intelligence-sharing
+  saga; one `dedup_distinct` entry cleared the gate's same-company+category
+  heuristic on the first attempt.
+- 2026-10-18-J: Zelenskyy's own NBC "Meet the Press" transcript, fetched
+  directly rather than quoted from a WebSearch synthesis, gave a more direct
+  on-record claim than any prior update in the saga ("the message came from
+  American government to limit this speed, and technically SpaceX did it,"
+  intelligence blocked "for some period of time," no intel "during ballistic
+  attacks during three days"); paired with Bessent's on-record "very
+  reckless" pushback (NBC) and Rep. Mike Turner's on-record call for a
+  congressional investigation (CBS "Face the Nation" transcript, fetched
+  directly), folded into the existing item via `attach`+empty `patch` with no
+  bump (mainstream-led item already at its corroboration_2plus ceiling of 4,
+  now 13 updates deep).
+- 2026-10-18-K: `updates[].patch` must still be present as an object (`{}`
+  is fine) even when an update is a pure `attach`+`note` with no copy
+  change; omitting it entirely produced a hard rejection
+  ("updates[N].patch: required object") on both of this run's updates. The
+  worked example in prompts/update-items.md shows a non-empty patch, which
+  reads like patch is optional for attach-only updates; it is not.
+- 2026-10-18-L: Marco Langbroek's bluesky feed (fetched via
+  `getAuthorFeed`, the only one of 15 checked fetchable channels with
+  anything inside this run's window) gave a genuine de-escalation data
+  point on the open Cosmos 2612/ICEYE-X36 incident (a small orbit raise
+  around Oct 18 ~1:52 UTC, ~5 km apart six hours after closest approach) --
+  folded in via `attach`+empty `patch`, no bump (whitelist-led item already
+  at its non-first-party ceiling of 4).
+- 2026-10-18-M: An 8-query discovery pass covering the full matrix (launch,
+  financial, incident/debris, China, India, EO contracts, FCC/regulatory,
+  Europe) surfaced nothing new; every hit traced to an already-published
+  item (Voyager/DoW dispenser contract, GuoWang 27th batch, ADA Space,
+  Meteor 2-7 breakup, Minnesota cornfield debris, Rocket Lab Neutron slip,
+  Stoke/Hadrian Q3 funding). Both of this run's genuinely new threads
+  (Lithuania arson, the Bessent/Zelenskyy/Turner escalation) were found via
+  targeted follow-up searches on queue leads instead, consistent with the
+  2026-09-21-C deep-mode norm extending to normal-mode sweeps too: the
+  matrix pass is a floor, not the only path to a real find.
+- 2026-10-18-N: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on two counts (the Lithuania item's missing `dedup_distinct` and
+  both updates' missing `patch`); merged cleanly on the second attempt
+  ("merged 1 new, 2 updated, 0 held"); confirmed via a direct `jq` read of
+  the new Lithuania item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields (964 items, up from 963) and both updated items' grown `sources`/
+  `updates` arrays (Starlink/Ukraine: 41 sources, 13 updates; Cosmos
+  2612/ICEYE-X36: 10 sources, 3 updates). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
