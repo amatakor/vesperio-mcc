@@ -5248,3 +5248,64 @@ a newer entry if a lesson changes.
   grown `sources`/`updates` arrays (43 sources, 15 updates, the new
   four-senator-to-SpaceX letter). `bun run build` was not attempted, per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h14m gap, unfiltered full source list (2026-10-19, fourth)
+
+- 2026-10-19-N: A near-total-junk 83-candidate queue (dozens of Google News/
+  Bluesky hits on Musk's pledge to gift one SpaceX share to every US child,
+  plus SpaceX-launch-reaction spam) was left out of scope entirely: it is
+  Musk's personal philanthropy framing of his own equity, not a funding
+  round, M&A, 8-K, or other corporate financial event of SpaceX itself,
+  the same distinction as the standing 2026-08-31-J passive-stock-
+  disclosure exclusion. The queue's only two real gaps were a same-day
+  Via Satellite "OHB Wins ESA Study Deal for Lunar Infrastructure" hit
+  (OHB's own ohb.de release was fetchable and registry-matched, landing
+  SNR 5 first-party) and a Via Satellite FCC/Globalstar C-3 authorization
+  story; a third, the Bulgaria Starlink-antenna arson now at the EU-
+  arrest-warrant stage, required chasing a queue-adjacent Google News hit
+  past the headline to BTA (Bulgaria's national news agency) and Kyiv
+  Post, then dating the item on the actual Oct. 9 arson per the standing
+  predates-window chase-it convention rather than today's court-filing
+  date; it is the first dedicated item for Bulgaria's incident, which the
+  Oct. 18 Lithuania item had previously only referenced as background
+  ("following incidents in Poland and Bulgaria").
+- 2026-10-19-O: JAXA's own site (global.jaxa.jp, mmx.jaxa.jp) would not
+  surface post-launch confirmation of the MMX/H3 liftoff (one straight
+  404, one page apparently cached pre-launch despite the event having
+  occurred hours earlier), and spaceflightnow.com/nasaspaceflight.com/
+  japantimes.co.jp all 403'd or paywalled on direct fetch. Marcia Smith's
+  and Anatoly Zak's Bluesky posts (both signals.json whitelisted,
+  verified_active channels) ended up the most reliable confirmation of
+  liftoff and second-stage separation, with astronomy.com (mainstream)
+  and Launch Library (aggregator) as further corroboration; worth
+  defaulting to the whitelisted trackers' own channels over chasing
+  paywalled outlets when a launch result needs same-day confirmation.
+- 2026-10-19-P: `finalize-sweep`'s same-domain corroboration-collapse rule
+  merged two DIFFERENT whitelisted people's Bluesky posts
+  (`bsky.app/profile/spacepolicyonline.bsky.social` and
+  `bsky.app/profile/anatolyzak.bsky.social`) into one corroboration unit
+  purely because both URLs share the `bsky.app` host, logging it in
+  `corroboration_collapses` as `same_domain`. Both source entries still
+  appear in the item's `sources` array and the final trace text still
+  read "4 distinct sources," so the bump math wasn't affected here (two
+  other distinct-domain sources covered the threshold), but on a thinner
+  item where two different bluesky posts were the ONLY corroboration,
+  this collapse could wrongly suppress a `corroboration_2plus` bump.
+  Worth flagging if a sparsely-sourced bluesky-led item scores lower than
+  expected despite two posts from two different whitelisted people.
+- 2026-10-19-Q: Globalstar's registry `sats_planned` field (17, Wikipedia,
+  2026-07-08) reads as stale against the FCC's newly authorized 48-LEO-
+  satellite C-3 generation; rather than attest `same_metric: true` and
+  risk the gate reconciling a non-monotonic field incorrectly, the
+  crossfeed block left `facts: []` with a note flagging the mismatch for
+  the weekly registry run instead of auto-merging it. `bun scripts/
+  finalize-sweep.ts` rejected the first draft attempt on the standing
+  same-company-plus-category dedup heuristic (the Bulgaria item against
+  the unrelated Oct. 9 German Space Command item and the Starlink/Ukraine
+  saga, both sharing company SpaceX); two `dedup_distinct` entries cleared
+  it on the second attempt ("merged 4 new, 1 updated, 0 held"). Confirmed
+  via a direct `jq` read of all four new items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields (977 items, up from 973) and the
+  updated Cosmos 2612/ICEYE-X36 item's grown `sources` (12, up from 11)
+  and `updates` (5, up from 4) arrays. `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
