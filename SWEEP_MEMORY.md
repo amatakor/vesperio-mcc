@@ -5193,3 +5193,58 @@ a newer entry if a lesson changes.
   item's grown `sources`/`updates` arrays (11 sources, 4 updates). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~3h gap, unfiltered full source list (2026-10-19, third)
+
+- 2026-10-19-I: A near-total-junk 72-candidate queue (Musk "SpaceX share
+  to every kid in America" giveaway pickups, Tesla/SpaceX merger
+  speculation, off-topic Futurism/BBC filler) and five quiet mandatory
+  HTML sources still yielded four new items, all via the signals pass
+  and one queue-adjacent SpaceNews hit: Uzbekistan's Artemis Accords
+  signing (77th nation, Samarkand), a Polish deputy minister's Oct 13
+  parliamentary remarks on US budget uncertainty complicating Artemis
+  commitments (Andrew Parsonson/European Spaceflight bluesky post,
+  created minutes after `lastSweep`), UARX Space's disclosed-and-resolved
+  OSSIE-D ground-station anomaly on its maiden OTV flight, and an
+  EarthDaily wildfire-product deployment to an unnamed Australian
+  insurer. Confirms 2026-10-17-C/J's pattern once more: SpacePolicyOnline
+  and European Spaceflight's own feeds surfaced the Uzbekistan and
+  Poland leads respectively via their bluesky accounts' `getAuthorFeed`,
+  not the harvester queue.
+- 2026-10-19-J: `state.gov`'s own Uzbekistan-Artemis-Accords press
+  release 403'd on every WebFetch attempt (same failure mode as past
+  `.gov` blocks); NASA's own site had no matching release yet (a guessed
+  URL pattern 404'd, and a `site:nasa.gov` search confirmed nothing),
+  consistent with a Behind The Black aside that "NASA has not yet made
+  an announcement." Led instead with two independent Uzbek/Central-Asian
+  outlets (Gazeta.uz, carrying a direct Saidov quote; Times of Central
+  Asia, independently confirming the same quote) as `mainstream`, with
+  UzDaily and Behind The Black as further corroboration -- a same-day
+  Artemis Accords signing is still fully sourceable and worth drafting
+  even when the usual NASA/State first-party lead hasn't posted yet.
+- 2026-10-19-K: The Poland/Artemis item's single-source whitelist lead
+  (European Spaceflight) scored SNR 4 despite an honest `found_none`
+  corroboration crawl: the gate applies `corroboration_none` (-1) before
+  `whitelist_floor` (+2 to reach the floor of 4), so a whitelisted
+  observer's on-topic factual claim still lands at its floor even after
+  the found_none penalty, not at floor-minus-one. Worth remembering the
+  whitelist floor is a hard floor applied after other modifiers, not
+  just an alternate base tier.
+- 2026-10-19-L: `crawl: "not_attempted"` on a draft with only 4 new items
+  (well under the 8-event corroboration budget) is illegal regardless of
+  how thin the search prospects look; the first finalize attempt would
+  have been rejected for this had it been submitted (caught before
+  submission by re-reading the budget rule). Ran an actual search for
+  the EarthDaily Australia item, found nothing independent, and used
+  `crawl: "found_none"` instead -- costless anyway since
+  `corroboration_none` doesn't apply to an already-ceiling first-party
+  lead (SCORER_VERSION 2).
+- 2026-10-19-M: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice, both on tagline overages (164 and then 141 chars vs. 140
+  max, on two different items in sequence); merged cleanly on the third
+  attempt ("merged 4 new, 1 updated, 0 held"). Confirmed via a direct
+  `jq` read of all four new items' `snr`/`snr_trace`/`category`/`impact`
+  fields (973 items, up from 969) and the updated Starlink/Ukraine item's
+  grown `sources`/`updates` arrays (43 sources, 15 updates, the new
+  four-senator-to-SpaceX letter). `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
