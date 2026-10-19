@@ -93,161 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h24m gap, unfiltered full source list (2026-09-18)
-
-- 2026-09-18-A: A "reported, not yet officially announced" story (SpaceX
-  President Shotwell's on-record All-In Podcast comments declining to commit
-  to Crew Dragon flying past 2030, plus Ars Technica's multi-source
-  reporting that NASA plans to order two more Starliner missions "as early
-  as next week") could not be fetched from Ars Technica directly
-  (arstechnica.com is outright unfetchable via WebFetch in this
-  environment, "Claude Code is unable to fetch from arstechnica.com",
-  distinct from a 403/paywall). Traced the exact Ars URL via a secondary
-  aggregator (Aroged) that credited and linked it, then used two
-  independently-worded aggregator pieces (Aroged, UFO Feed) as the
-  informal-class lead and corroboration since neither is a verbatim copy of
-  the other. Landed an honest SNR 2 rather than hold for weak sourcing; the
-  NASA-order half of the story was written as reported/attributed, not
-  asserted as fact, since neither NASA nor Boeing had confirmed it.
-- 2026-09-18-B: `docs.fcc.gov/public/attachments/<DA-number>A1.txt` (not
-  just `.pdf`) fetches as real, readable text via WebFetch for FCC public
-  notices -- confirmed on a fresh case (a Sept 17 international Section 214
-  grant to SpaceX/Starlink Mobile, DA 26-998): the `.pdf` URL itself
-  returned undecodable binary, but swapping the extension to `.txt` on the
-  same attachment path returned clean prose including the exact grant
-  language, docket numbers, and release date. Cited the `.pdf` as the
-  canonical `source_url` (the real document) while using the `.txt` fetch
-  to extract the verbatim text. Worth trying this extension swap by default
-  for any future docs.fcc.gov attachment that returns binary.
-- 2026-09-18-C: Guessed FCC DA-number URLs from a generic web search
-  (DA-26-421A1, DA-26-471A1) resolved to completely unrelated orders (a
-  routine three-company Section 214 notice from April; an EchoStar/SpaceX
-  spectrum-assignment order from May) before the correct one (DA-26-998)
-  was found via a secondary source's own citation -- a plausible-looking
-  FCC docket number from search is not evidence it is the right order; only
-  a source that actually names or links the specific DA number, or the
-  fetched document's own content naming the right party/date, confirms it.
-- 2026-09-18-D: A government-official on-the-record capability disclosure
-  with no stated commercial-space consequence (Air Force Secretary Meink
-  confirming the US has orbiting space-control weapons, an Aviation Week
-  Sept 18 piece) was left undrafted per the standing institutional-
-  disclosure exclusion (NASA-STRIDE/ASI-board/Singapore-JAXA precedent): no
-  contract, operator, or market-access fact is stated, only a general
-  capability acknowledgment.
-- 2026-09-18-E: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
-  updated, 0 held") plus a direct read of all three new items' and both
-  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields as
-  the build-health signal.
-
-## Narrow re-check, ~5h10m gap, unfiltered full source list (2026-09-18, second)
-
-- 2026-09-18-F: A "NASA gives SpaceX almost $1B for 3 Crew missions" wave
-  (Breakingthenews.net, TradingView, Pluang, CoinGape, 24/7 Wall St, Yahoo
-  Finance, all via Google News) turned out to have TWO plausible NASA.gov
-  targets with the same generic search phrasing: `nasa.gov/humans-in-space/
-  nasa-awards-spacex-more-crew-flights-to-space-station/` is a stale Aug
-  31, 2022 page (Crew-10 through 14, $1.436B), while the genuinely fresh
-  Sept 18, 2026 announcement (Crew-15/16/17, $946M, CCtCap total now
-  $5.92B) lives at the differently-slugged `nasa.gov/missions/station/
-  commercial-crew/nasa-awards-spacex-three-crew-flights-to-space-station/`.
-  A generic WebSearch for the headline surfaced the stale URL first; only
-  searching the specific dollar figure ($946 million) surfaced the correct
-  page. Confirmed fresh via Marcia Smith's same-day bluesky post citing the
-  identical $946M/through-2030 figures. Worth remembering: when a NASA
-  contract-modification headline could plausibly be a resurfacing (SpaceX
-  Crew Dragon awards recur every 1-2 years with similar headlines), search
-  the stated dollar figure, not just the headline shape, before concluding
-  either way.
-- 2026-09-18-G: Two standing same-company-plus-category dedup false
-  positives fired on the new NASA/SpaceX CCtCap item (against the
-  unrelated Starfall/Space Cargo and KDDI/Starlink Mobile V2 items, both
-  sharing only company SpaceX + category contract) and one on the new
-  NIGCOMSAT/Hughes ground-gateway item (against the NigComSat-2A/Thales
-  Alenia satellite-manufacturing award, sharing only company NIGCOMSAT +
-  category contract) -- three `dedup_distinct` entries at each item's top
-  level cleared all of it in one pass, extending the long-running list.
-- 2026-09-18-H: `ir.echostar.com`'s press-release detail pages timed out
-  twice (60s) even though EchoStar's registry `website` (`echostar.com`)
-  would have passed the Hughes/NIGCOMSAT gateway release as `first_party`
-  via subdomain match; fell back to the GlobeNewswire wire copy
-  (`wire_pr`, tier 4) instead, per the standing pattern of registry-eligible
-  first-party pages that simply don't load. `idirect.net`'s own press
-  page for the ST Engineering/Datacom deal loaded fine but has no registry
-  organization entity to match against, so it capped at `informal`
-  (extends the no-registry-host workaround to a third distinct company);
-  the wire-service PR Newswire copy of the same release led at `wire_pr`
-  instead and finalize-sweep's title-collapse correctly merged the two as
-  one `wire_rewrite` corroboration unit.
-- 2026-09-18-I: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
-  updated, 0 held") plus a direct read of all three new items' and both
-  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields,
-  and the `corroboration_collapses`/`snr_movements` entries logged in
-  `state.json`, as the build-health signal.
-
-## Narrow re-check, ~3h46m gap, unfiltered full source list (2026-09-18, third)
-
-- 2026-09-18-J: Almost the entire "Google News: launch" leg this run (25+
-  of ~32 candidates) was repeat financial-press churn on the already-
-  published `2026-09-18-nasa-spacex-three-crew-flights-946m` item (stock-
-  price reaction pieces, analyst-target rehashes, "$10T Starship revenue"
-  Cathie Wood takes) plus two off-topic Futurism politics pieces the
-  "Google News: launch" feed occasionally pulls in; none needed more than
-  a title/source check against `existing[]` before discarding. A securities
-  class-action law-firm PR wave against AST SpaceMobile (Robbins/Portnoy/
-  Pomerantz "shareholder alert" GlobeNewswire/PRNewswire releases) is
-  confirmed as the standard boilerplate-lawsuit-solicitation pattern, not a
-  substantive legal/regulatory development; treated as out of scope
-  entirely, same as the routine merger-objection disclosure lawsuits in the
-  Rocket Lab/Iridium 8-K below.
-- 2026-09-18-K: An Iridium 8-K (Item 8.01, filed same day) turned out to be
-  a supplemental-disclosure response to standard "disclosure deficiency"
-  merger-objection lawsuits over the Rocket Lab acquisition (three NY state
-  suits plus demand letters, company says claims are "without merit"),
-  bundled with routine EBITDA/net-debt/share-count supplemental figures.
-  This is boilerplate M&A-litigation procedure, not new deal news; left
-  undrafted. Worth remembering this pattern shows up as an 8-K Item 8.01
-  on nearly every large public-company merger and is essentially never
-  itself newsworthy.
-- 2026-09-18-L: A same-day Aviation Week story ("L3Harris Builds Xoople
-  Earth-Observation Satellites For 2028 Launch," published Sept 16, byline
-  Robert Wall) reported L3Harris has started building the first satellites
-  of a 14-craft constellation for AI-data startup Xoople, a program
-  announced back in April 2026 that the site never covered (predates this
-  Vesperio instance or was missed at launch). Confirmed via three separate
-  WebSearch passes (exact headline, actor+distinguishing-noun variant, and
-  named-executives variant) that only Aviation Week has this specific
-  "construction has begun" fact; every other hit was the April partnership-
-  announcement coverage (SpaceNews, L3Harris's own editorial, TechCrunch on
-  Xoople's $130M Series B) reporting a different claim, so `crawl:
-  "found_none"` was correct despite the topic itself being well-covered
-  elsewhere. Landed SNR 2 (trade base 3, minus 1 for found_none).
-- 2026-09-18-M: A Marcia Smith/SpacePolicyOnline bluesky post ("Albania
-  will become the 73th Artemis Accord signatory on Monday, Sept 21, at NASA
-  HQ") posted after this run's `lastSweep` cutoff was left undrafted as a
-  scheduled-not-yet-occurred event, consistent with the standing don't-
-  draft-scheduled-launches precedent extended to diplomatic signing
-  ceremonies; draft it once NASA's own release confirms the signing
-  actually happened (the Turkey 71st-signatory item was drafted after the
-  fact, same pattern).
-- 2026-09-18-N: Confirmed the `public.api.bsky.app/xrpc/app.bsky.
-  feed.getAuthorFeed?actor=<handle>&limit=N` endpoint is a reliable way to
-  get a fetchable signals bluesky channel's recent posts with real
-  timestamps and full text; plain `bsky.app/profile/<handle>` profile pages
-  render as an empty JS shell via WebFetch (handle-only, no post content),
-  consistent with the general Bluesky JS-shell limitation noted for other
-  sites. Worth using the API endpoint by default for every bluesky signals
-  channel going forward instead of the profile URL.
-- 2026-09-18-O: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
-  updated, 0 held") plus a direct read of the new item's `snr`/
-  `snr_trace`/`category`/`impact`/`sources` fields as the build-health
-  signal.
-
 ## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-19)
 
 - 2026-09-19-A: An ISRO-first-party press release
@@ -5254,3 +5099,41 @@ a newer entry if a lesson changes.
   direct `jq` read of the updated item's grown `sources`/`updates` arrays
   (42 sources, 14 updates; 964 items, unchanged). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-19)
+
+- 2026-10-19-A: A near-total-junk 47-candidate queue (dozens of Bluesky
+  "spacex launch" reaction spam, SpaceX/Tesla-merger stock speculation,
+  off-topic BBC pieces) still had one genuine new fact buried in a Google
+  News hit: US ambassador to the EU Andrew Puzder's on-record FT interview
+  threatening "devastating" trade retaliation if Brussels reserves most of
+  the 2 GHz satellite spectrum band for European operators (a new angle on
+  the ongoing EU D2D spectrum fight the 2026-10-16 ESPI commentary item
+  already covered from the policy-brief side). Most outlets carrying the
+  story ran the identical wire headline "US threatens EU with devastating
+  retaliation..." (investinglive.com, louisvelazquez.com, and others);
+  TRT World had a genuinely distinct headline and additional quotes, so it
+  led as `mainstream` with investingLive attached as a second, `informal`
+  corroboration source rather than stacking the wire-identical copies.
+- 2026-10-19-B: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on the same-company+category heuristic (SpaceX + "regulatory"
+  within 7 days of the unrelated 2026-10-13 FAA Starbase EIS item); a
+  `dedup_distinct` attestation cleared it on the second attempt ("merged 1
+  new, 0 updated, 0 held"). Confirms the heuristic fires on coincidental
+  company+category overlap even when the two events share nothing else,
+  same pattern as 2026-10-18-I's Lithuania-arson case.
+- 2026-10-19-C: JAXA's MMX (Martian Moons eXploration) mission, queued via
+  a BBC piece and also flagged by Marcia Smith and ESA's own bluesky as
+  "pick of the week," is scheduled to launch on an H3 rocket from
+  Tanegashima at 04:41 JST Oct 20 (~19:41 UTC Oct 19), i.e. after this
+  run's window closed; left undrafted as a pre-launch preview per the
+  standing no-preview-coverage norm. Worth checking Launch Library/JAXA
+  for the actual launch result next sweep and drafting it dated on the
+  real launch date under `science` (first dated MMX program milestone).
+- 2026-10-19-D: Confirms the 2026-10-17-C/J/2026-10-18 pattern once more:
+  spacepolicyonline.com and europeanspaceflight.com were counted as
+  checked via the harvester's own health-block data (both quiet, nothing
+  past `lastSweep`) rather than a redundant direct re-fetch, while their
+  separate bluesky/substack feeds were still fetched individually.
+  europeanspaceflight.substack.com/feed 403'd yet again, extending the
+  2026-09-20-K/2026-09-22-G/2026-10-17-J intermittent-failure list.
