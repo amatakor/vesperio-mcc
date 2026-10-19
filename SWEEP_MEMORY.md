@@ -5137,3 +5137,59 @@ a newer entry if a lesson changes.
   separate bluesky/substack feeds were still fetched individually.
   europeanspaceflight.substack.com/feed 403'd yet again, extending the
   2026-09-20-K/2026-09-22-G/2026-10-17-J intermittent-failure list.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-19, second)
+
+- 2026-10-19-E: A near-total-junk 125-candidate queue (hundreds of Musk
+  "SpaceX share to every kid in America" giveaway pickups, Tesla/SpaceX
+  merger speculation, off-topic BBC/CGTN filler) still buried a genuine
+  new story: Deutsche Telekom, Orange, Telefónica and Vodafone signed a
+  letter of intent to jointly bid for Europe's 2 GHz MSS spectrum against
+  Starlink. AST SpaceMobile's own wire-distributed release (businesswire
+  via a financialcontent.com mirror, since ast-science.com's investor
+  press-release page is still a JS shell) framed itself as central to the
+  initiative, but three independent trade outlets fetched directly (Space
+  Intel Report, Telecompaper) and the operators' own joint statement
+  (vodafone.com) all explicitly stated "a satellite partner still to be
+  selected" and "no specific satellite partner is named." Led with Space
+  Intel Report rather than the AST wire release, and left AST SpaceMobile
+  out of `companies[]` entirely rather than imply a confirmed role
+  independent coverage didn't support -- a vendor's own wire release about
+  a multi-party deal can overstate its settled role in ways the other
+  parties' and independent press's own words don't confirm. Separately,
+  confirmed a Light Reading/TheNextWeb hit on the "same" story was
+  actually the stale September 7-8 "early talks, no decision" precursor
+  (byline-dated, not the page-load date), distinct from today's concrete
+  LOI-signed escalation.
+- 2026-10-19-F: Marco Langbroek's bluesky `getAuthorFeed`, re-queried with
+  a prompt asking specifically for the raw record (text, createdAt, post
+  uri) of every post mentioning "Cosmos 2612"/"Kosmos 2612"/"ICEYE"/
+  "manoeuver", cleanly surfaced a one-line Oct. 19 post easy to miss in
+  the ordinary feed read ("Another manoeuver by KOSMOS 2612, around 12:26
+  UTC on the 18th October. This is clearly not over yet.") that revised
+  the open Cosmos 2612/ICEYE-X36 incident item's prior "last clear
+  maneuver Oct 16, no further maneuvering since" / "slowly moving away"
+  de-escalation framing. Worth using this keyword-filtered raw-record
+  prompt shape whenever a whitelisted tracker's feed mixes substantive
+  updates in among personal/political replies (extends 2026-10-18-E), not
+  just when a linked report needs embed resolution (2026-10-17-A).
+- 2026-10-19-G: Re-confirms the Sateliot €100M Series C "launches"
+  headline (computerweekly.com, datacenterdynamics.com, both today-dated)
+  is still the stale April 2026 round-OPENING announcement on a third
+  appearance (2026-09-28-H), with no stated close; left undrafted again.
+  NASA's $476M CSDA On-Ramp 2 expansion (SatellitePro ME, NASA Watch)
+  traced to the same June 2026 program as the already-published June 23
+  item, not a new October award. GSAT-7B ("Indian Army's first dedicated
+  satellite," The Week) is a 2023-signed contract resurfacing with no new
+  dateable fact. A JAXA/Innovative Space Carrier reusable-rocket data-
+  sharing R&D collaboration (Oct. 14, J-SPARC) predates the window by 5
+  days with no stated dollar value; left uncashed since the predates-
+  window chase-it exception is reserved for notable/seismic gaps, not
+  thin R&D MOUs.
+- 2026-10-19-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (969 items, up from 965) and the updated Cosmos 2612/ICEYE-X36
+  item's grown `sources`/`updates` arrays (11 sources, 4 updates). `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
