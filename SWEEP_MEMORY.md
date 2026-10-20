@@ -93,88 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-19)
-
-- 2026-09-19-A: An ISRO-first-party press release
-  (`isro.gov.in/Successful_Hot_Test_of_CE20_Cryogenic.html`, published
-  Sept 10) for an already-published Sept 9 CE20 hot test item surfaced
-  through a Google News redirect a full sweep late; confirmed via
-  WebSearch (the redirect itself was an empty JS shell) that it was the
-  same test, not a new one, then used `rescore` (not just `attach`) to
-  promote the lead from mainstream (The Hans India, tier 3) to
-  first-party (tier 5): `rescore.sources[0].url` had to equal the
-  item's patched `source_url`, and the patch had to land before the
-  rescore in the same update entry. Worth remembering that a stale
-  first-party press release for a known event is still worth chasing
-  down and merging as a `rescore`, not just an `attach`, since `attach`
-  alone doesn't change which source the base tier is computed from.
-- 2026-09-19-B: A near-total-junk 24-candidate queue (scheduled-launch
-  previews, SpaceX stock-reaction churn, several already-published
-  stories resurfacing via Google News) plus a 10-query discovery pass
-  still yielded one genuinely new item: Valor Equity Partners'
-  Form-4-disclosed $8.5B in-kind SpaceX stock distribution to its LPs
-  (official_record lead, SNR 5). It hit the standing same-company
-  (SpaceX) + same-category (financial) dedup false-positive shape
-  against `2026-09-10-spacex-ai-compute-deal-1-1b-monthly`; one
-  `dedup_distinct` entry cleared it, extending the running list of that
-  false-positive pattern to a same-financial-category collision (prior
-  instances were cross-category via shared company/category pairs, not
-  strictly within the same category).
-- 2026-09-19-C: A South Korea Mirae Asset/SpaceX-private-offering story
-  (Google News, UPI) turned out to be an ongoing regulatory probe
-  running since June 2026 with no new concrete outcome (fine, finding,
-  ruling) in this window, just an escalation in investigative intensity
-  reported piecemeal across several Korean outlets on different days;
-  left undrafted as process-not-yet-fact rather than try to pin a single
-  new dateable fact to it. A NASASpaceflight China-roundup item on
-  Tianwen-3 entering "prototype development phase" traced via WebSearch
-  to a Sept 3 Global Times original (predates window by 16 days,
-  routine-tier program milestone, not a first) and was left undrafted
-  rather than invoked under the predates-window chase-it exception,
-  which is reserved for notable/seismic events.
-- 2026-09-19-D: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1
-  new, 1 updated, 0 held") plus a direct read of the new item's and the
-  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
-  and the three automatic persistence-bump `snr_movements` entries
-  logged in `state.json` as the build-health signal.
-
-## Narrow re-check, ~3h37m gap, unfiltered full source list (2026-09-19, second)
-
-- 2026-09-19-E: The Google News "launch" leg was almost entirely SpaceX
-  stock-reaction/analyst-rating churn (Nasdaq-100 rebalance weighting,
-  "stock has gone nowhere" pieces, buy-rating roundups) plus an
-  unrelated Trump "AI Force" politics story and a scheduled-launch
-  preview (Starship IFT-14's already-published Sept 28 slip); none
-  needed more than a title check against `existing[]` or the
-  don't-draft-scheduled-launches precedent.
-- 2026-09-19-F: A Global Times article on the same day's Kuaizhou-11
-  Tianyi-51/52 launch (already published, Launch Library/Xinhua lead)
-  turned out to carry substantive detail the original sources didn't:
-  a 55-degree medium-inclination orbit designed for daily InSAR revisit
-  (vs. the days-long cycle of sun-synchronous InSAR birds) and a "world's
-  first commercial medium-inclination InSAR satellites" claim. Confirmed
-  the technical/orbit facts via the non-state trade outlet China in
-  Space (china-in-space.com) before drafting, and kept the "world's
-  first" superlative labeled "per Global Times, unverified" per the
-  state-media performance-claim rule rather than stating it as fact;
-  used `rescore`-free `attach` since the lead source and base tier
-  didn't change, only impact (noise -> notable) on the strength of the
-  now-attested daily-revisit capability. Worth remembering: a same-day
-  state-media follow-up on an already-published Chinese launch is worth
-  a second look even when the original wire brief gave no payload
-  detail, since Global Times/Xinhua sometimes carry the actual technical
-  substance a day or two after the bare launch-confirmation wire.
-- 2026-09-19-G: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new,
-  1 updated, 0 held") plus a direct read of the updated item's
-  `headline`/`explainer`/`impact`/`sources`/`snr`/`snr_trace` fields as
-  the build-health signal. No `snr_movements` were logged this run (the
-  update added corroboration sources but didn't change the base tier or
-  trigger a persistence/reinforcement bump).
-
 ## Narrow re-check, ~8h07m gap, unfiltered full source list (2026-09-20)
 
 - 2026-09-20-A: Drafted a SpaceNews-sourced Simera Sense/IDOM
@@ -5309,3 +5227,66 @@ a newer entry if a lesson changes.
   updated Cosmos 2612/ICEYE-X36 item's grown `sources` (12, up from 11)
   and `updates` (5, up from 4) arrays. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h26m gap, unfiltered full source list (2026-10-20)
+
+- 2026-10-20-A: A second distinct bank's analyst note on the standing
+  Tesla-SpaceX merger speculation thread (RBC's $480-a-share/$3.74T
+  model, Oct. 19) tripped the same-company-plus-category dedup heuristic
+  against BOTH the Oct. 15 Barclays merger-timing item and the unrelated
+  Oct. 16 Evercore SpaceX-only price-target item; two `dedup_distinct`
+  entries cleared it in one pass. Confirms each bank's distinct note on
+  a live M&A-speculation thread is its own commentary item, not an
+  update to the first one, per the standing analyst-notes-are-commentary
+  rule -- the dedup gate will flag it against every prior note sharing
+  the company+category regardless of how unrelated the specific claim.
+  Benzinga itself 403'd on direct WebFetch; its content was still usable
+  via a Yahoo Finance syndication mirror that credited Benzinga by name
+  in the footer ("originally appeared on Benzinga.com"), classed by the
+  true originating outlet rather than as a generic "Yahoo Finance"
+  source, extending the standing wire/syndication-mirror attribution
+  pattern (hubble.com/StockTitan, Reuters/investing.com) to a financial
+  news syndication case.
+- 2026-10-20-B: The MAGPIE upgrade path worked cleanly on the JAXA MMX
+  item: JAXA's own post-launch press release (global.jaxa.jp, matching
+  the registry's `website` field) gave a precise 71-minute-13-second
+  separation time the whitelisted-tracker-led draft didn't have, patched
+  `source_url` + a full `rescore` moved the item from SNR 4 (whitelist
+  base) to SNR 5 (first_party ceiling) in one pass. The rescore's
+  same-domain corroboration-collapse rule (2026-10-19-P) fired again,
+  merging Marcia Smith's and Anatoly Zak's distinct bluesky posts into
+  one `same_domain` unit purely because both URLs are `bsky.app` hosts;
+  harmless here since the lead was already at the tier-5 ceiling, but
+  still worth checking on a thinner whitelist-led item where two
+  different people's bluesky corroboration is the only thing pushing
+  past `corroboration_2plus`.
+- 2026-10-20-C: The open Cosmos 2612/ICEYE-X36 incident got a real
+  escalation-then-resolution update from the signals pass, not the
+  queue: LeoLabs (via The War Zone) characterized the full maneuver
+  sequence as showing "planning, maneuverability, precise navigation,
+  and significant fuel" and the most advanced, most dangerous
+  uncooperative RPO it has tracked; some public tracking data put the
+  closest pass at roughly 26 meters, but Langbroek's own Bluesky posts
+  (fetched directly) explicitly cautioned that a specific figure that
+  precise carries large uncertainty given TLE imprecision -- used the
+  26m figure attributed to "some public tracking data" rather than
+  stated as fact, per Langbroek's own on-the-record skepticism about it.
+  By the same evening Langbroek reported the two satellites diverging
+  with no sign ICEYE-X36 was disturbed, closing out (for now) a thread
+  that had been escalating for three straight sweeps. CNN's own piece
+  on this story 451'd/blocked on direct WebFetch; a CNN-affiliate TV
+  station mirror (krdo.com, "cnn-other" syndication) carried the
+  identical byline and full text and was used as the mainstream
+  corroboration source instead, the same workaround pattern as the
+  standing Reuters/investing.com and Ars-Technica/rewrite-site cases.
+- 2026-10-20-D: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on the same-company-plus-category dedup heuristic (see -A
+  above, only one of the two needed `dedup_distinct` entries was present
+  on the first submit); merged cleanly on the second attempt ("merged 1
+  new, 2 updated, 0 held"). Confirmed via a direct `jq` read of the new
+  RBC item's `snr`/`category`/`impact`/`kind` fields, the JAXA item's
+  `snr_trace.history` (4 to 5) and grown `sources` (6, up from 5), and
+  the Cosmos 2612/ICEYE-X36 item's grown `sources` (14, up from 12) and
+  `updates` (6, up from 5) arrays (978 items, up from 977), plus a `jq
+  empty` parse check across all touched data files. `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.

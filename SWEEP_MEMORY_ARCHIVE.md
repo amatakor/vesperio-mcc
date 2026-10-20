@@ -10488,3 +10488,85 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `snr_trace`/`category`/`impact`/`sources` fields as the build-health
   signal.
 
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-09-19)
+
+- 2026-09-19-A: An ISRO-first-party press release
+  (`isro.gov.in/Successful_Hot_Test_of_CE20_Cryogenic.html`, published
+  Sept 10) for an already-published Sept 9 CE20 hot test item surfaced
+  through a Google News redirect a full sweep late; confirmed via
+  WebSearch (the redirect itself was an empty JS shell) that it was the
+  same test, not a new one, then used `rescore` (not just `attach`) to
+  promote the lead from mainstream (The Hans India, tier 3) to
+  first-party (tier 5): `rescore.sources[0].url` had to equal the
+  item's patched `source_url`, and the patch had to land before the
+  rescore in the same update entry. Worth remembering that a stale
+  first-party press release for a known event is still worth chasing
+  down and merging as a `rescore`, not just an `attach`, since `attach`
+  alone doesn't change which source the base tier is computed from.
+- 2026-09-19-B: A near-total-junk 24-candidate queue (scheduled-launch
+  previews, SpaceX stock-reaction churn, several already-published
+  stories resurfacing via Google News) plus a 10-query discovery pass
+  still yielded one genuinely new item: Valor Equity Partners'
+  Form-4-disclosed $8.5B in-kind SpaceX stock distribution to its LPs
+  (official_record lead, SNR 5). It hit the standing same-company
+  (SpaceX) + same-category (financial) dedup false-positive shape
+  against `2026-09-10-spacex-ai-compute-deal-1-1b-monthly`; one
+  `dedup_distinct` entry cleared it, extending the running list of that
+  false-positive pattern to a same-financial-category collision (prior
+  instances were cross-category via shared company/category pairs, not
+  strictly within the same category).
+- 2026-09-19-C: A South Korea Mirae Asset/SpaceX-private-offering story
+  (Google News, UPI) turned out to be an ongoing regulatory probe
+  running since June 2026 with no new concrete outcome (fine, finding,
+  ruling) in this window, just an escalation in investigative intensity
+  reported piecemeal across several Korean outlets on different days;
+  left undrafted as process-not-yet-fact rather than try to pin a single
+  new dateable fact to it. A NASASpaceflight China-roundup item on
+  Tianwen-3 entering "prototype development phase" traced via WebSearch
+  to a Sept 3 Global Times original (predates window by 16 days,
+  routine-tier program milestone, not a first) and was left undrafted
+  rather than invoked under the predates-window chase-it exception,
+  which is reserved for notable/seismic events.
+- 2026-09-19-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1
+  new, 1 updated, 0 held") plus a direct read of the new item's and the
+  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  and the three automatic persistence-bump `snr_movements` entries
+  logged in `state.json` as the build-health signal.
+
+## Narrow re-check, ~3h37m gap, unfiltered full source list (2026-09-19, second)
+
+- 2026-09-19-E: The Google News "launch" leg was almost entirely SpaceX
+  stock-reaction/analyst-rating churn (Nasdaq-100 rebalance weighting,
+  "stock has gone nowhere" pieces, buy-rating roundups) plus an
+  unrelated Trump "AI Force" politics story and a scheduled-launch
+  preview (Starship IFT-14's already-published Sept 28 slip); none
+  needed more than a title check against `existing[]` or the
+  don't-draft-scheduled-launches precedent.
+- 2026-09-19-F: A Global Times article on the same day's Kuaizhou-11
+  Tianyi-51/52 launch (already published, Launch Library/Xinhua lead)
+  turned out to carry substantive detail the original sources didn't:
+  a 55-degree medium-inclination orbit designed for daily InSAR revisit
+  (vs. the days-long cycle of sun-synchronous InSAR birds) and a "world's
+  first commercial medium-inclination InSAR satellites" claim. Confirmed
+  the technical/orbit facts via the non-state trade outlet China in
+  Space (china-in-space.com) before drafting, and kept the "world's
+  first" superlative labeled "per Global Times, unverified" per the
+  state-media performance-claim rule rather than stating it as fact;
+  used `rescore`-free `attach` since the lead source and base tier
+  didn't change, only impact (noise -> notable) on the strength of the
+  now-attested daily-revisit capability. Worth remembering: a same-day
+  state-media follow-up on an already-published Chinese launch is worth
+  a second look even when the original wire brief gave no payload
+  detail, since Global Times/Xinhua sometimes carry the actual technical
+  substance a day or two after the bare launch-confirmation wire.
+- 2026-09-19-G: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new,
+  1 updated, 0 held") plus a direct read of the updated item's
+  `headline`/`explainer`/`impact`/`sources`/`snr`/`snr_trace` fields as
+  the build-health signal. No `snr_movements` were logged this run (the
+  update added corroboration sources but didn't change the base tier or
+  trigger a persistence/reinforcement bump).
+
