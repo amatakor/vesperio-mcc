@@ -5290,3 +5290,45 @@ a newer entry if a lesson changes.
   `updates` (6, up from 5) arrays (978 items, up from 977), plus a `jq
   empty` parse check across all touched data files. `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h48m gap, unfiltered full source list (2026-10-20, second)
+
+- 2026-10-20-E: Two unrelated companies both go by "ASI" in coverage:
+  the already-profiled `2026-10-09-asi-artificial-gravity-platform`
+  (space company) and Boston-based Air Space Intelligence, which raised
+  a $325M Series C at a $3B valuation the same day this run surfaced it
+  via a discovery-pass funding query. Checked what Air Space Intelligence
+  actually builds (Flyways, a terrestrial air-traffic/flight-dispatch
+  decision-support platform for airlines, the FAA and the Air Force, no
+  space product at all) before drafting; left out of scope entirely.
+  Worth the reminder that an "ASI" funding-round hit needs a what-does-
+  this-company-do check before assuming it is the same, already-tracked
+  space ASI.
+- 2026-10-20-F: Iridium's Q3 2026 earnings release restated its Aireon
+  acquisition as "completed... on July 2, 2026", a more-than-3-month-old
+  fact with no new figure attached; left undrafted as a stale restatement
+  inside a routine earnings release rather than treated as new Aireon
+  news.
+- 2026-10-20-G: A same-day Euromaidan Press follow-up on the already-
+  published Oct. 15 Project Bromo (Airbus/Leonardo/Thales) item supplied
+  a genuine enrichment despite reading at first like a rehash: it ties
+  the EU's fast-track review explicitly to the Starshield speed-cap
+  saga (a Ukrainian military source blaming the White House's slowdown
+  order for the accelerated EU response) and adds union/supplier/MEP
+  criticism of von der Leyen's backing, neither already in the item.
+  Folded in via `updates[].attach` with an empty `patch`, confirming the
+  2026-10-18-K lesson that `patch: {}` still must be present as an
+  object.
+- 2026-10-20-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 5 new, 2 updated, 0 held"); the AnySignal/
+  Reflect Orbital item's PR Newswire release auto-collapsed as a
+  `wire_rewrite` against SpaceNews's pickup of the same release, leaving
+  trade-tier base 3 with no corroboration bump, consistent with the
+  standing wire-rewrite-collapse rule. Confirmed via a direct `jq` read
+  of all five new items' `snr`/`snr_trace`/`category`/`impact`/`kind`
+  fields (986 items, up from 981), both updated items' grown `sources`/
+  `updates` arrays (Lunar Link: 2 sources, 1 update; Project Bromo: 3
+  sources, 1 update), and the sweep log's `corroboration_collapses`
+  entry, plus a `jq empty` parse check across all touched data files.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
