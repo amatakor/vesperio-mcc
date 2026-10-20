@@ -5332,3 +5332,42 @@ a newer entry if a lesson changes.
   entry, plus a `jq empty` parse check across all touched data files.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~4h29m gap, unfiltered full source list (2026-10-20, third)
+
+- 2026-10-20-I: SpaceX's own Q3 2026 earnings (first profitable quarter as a
+  public company, SEC CIK 1181412, ticker SPCX, filed as Exhibit 99.1 to an
+  8-K) is not in `sources.json`'s SEC EDGAR 8-K feed list (PL, BKSY, RKLB,
+  SATL, SPIR, ASTS, VSAT, IRDM, GSAT, SATS, LUNR, RDW all have one; SPCX
+  doesn't), so this run found the filing via WebSearch + a direct EDGAR
+  Archives fetch rather than the harvester queue surfacing it. Worth a
+  `sources.json` addition for an SPCX 8-K feed at the next structural touch,
+  the same shape as the other public tracked operators.
+- 2026-10-20-J: A near-total-junk queue (dozens of SpaceX Q3-earnings-reaction
+  and Tesla-SpaceX-merger-speculation pickups, Bluesky stock-bot spam) still
+  buried the earnings release's own actual figures and Musk's confirmation
+  that SpaceX and Tesla have formed special committees to explore a merger,
+  both genuinely new, undrafted facts the queue's volume made easy to treat
+  as pure noise; reading past the repetition to the primary SEC filing and
+  two independently-fetched write-ups (Bloomberg Law, Seeking Alpha) found
+  two distinct events worth their own items rather than one commentary-shaped
+  pass.
+- 2026-10-20-K: An AFRL "Rocket Cargo" Starfall demonstration Google News
+  redirect (Wright-Patterson AFB .mil byline) never resolved past a bare
+  placeholder, and no independently fetchable article matching that exact
+  headline could be found via WebSearch; left undrafted per the standing
+  never-cite-an-unfetched-page rule. A 9-month-stale Russian Luch/Olymp spy
+  satellite breakup (Jan 30, 2026) recirculated today via militarnyi.com
+  with a visible Jan 31 byline underneath; left undrafted as too old for the
+  predates-window chase-it exception despite wide existing pickup (ETV
+  Bharat, Futura-Sciences, United24 Media, KeepTrack and others), a useful
+  reminder that "chase it" is for recent gaps measured in days to a few
+  weeks, not months.
+- 2026-10-20-L: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 7 new, 1 updated, 0 held"); confirmed via a direct `jq`
+  read of all seven new items' `snr`/`category`/`impact` fields (993 items,
+  up from 986), the updated Starlink/Ukraine item's grown `sources`/`updates`
+  arrays (44 sources, 16 updates), the `registry-candidates.json`
+  `flag_refresh` entry for `iceye.sats_launched_total` (76 to 84), and a
+  `jq empty` parse check across all touched data files. `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.
