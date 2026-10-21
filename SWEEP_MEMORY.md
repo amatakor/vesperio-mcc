@@ -5374,3 +5374,42 @@ a newer entry if a lesson changes.
   the sweep log's `corroboration_collapses` entry for the SpaceNukes wire_rewrite, and
   a `jq empty` parse check across all touched data files. `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.5h gap, unfiltered full source list (2026-10-21, fourth)
+
+- 2026-10-21-P: A near-total-junk ~69-candidate queue (hundreds of SpaceX Q3-earnings/Tesla-merger
+  reaction posts and Google News hits, dozens of Starlink/Ukraine saga rehash, a wall of joke/political
+  Bluesky reaction posts to the Musk SpaceX-share-giveaway and Starlink-slowdown stories) still yielded
+  three genuine gaps once chased past the headline: Atomic-6's Space Armor debris-shielding tiles flying
+  for the first time (aboard Portal Space Systems' Starburst-1, on the same Bandwagon-5 mission as the
+  already-published ICEYE four-satellite item, a per-payload-not-per-mission case), a routine CGI/UK MoD
+  PICASSO support-contract continuation (Via Satellite queue entry), and an Atombeam $18.3M funding round
+  for satellite/defense data-compression tech (also Via Satellite). Confirms the corroboration_2plus
+  modifier bumps on 2 distinct sources regardless of the second source's tier (CGI's trade-tier Via
+  Satellite lead plus an `informal`-classed corroboration from CGI's own unprofiled-domain site still
+  landed the +1), contradicting a stricter same-or-higher-tier reading of 2026-09-22-B; trust the gate's
+  actual math over that memory's phrasing.
+- 2026-10-21-Q: The PR Newswire release that read as a brand-new Atomic-6 product announcement
+  ("First Ever Launch of Atomic-6 Space Armor...") is a distinct, dateable event from a January 2026
+  PR Newswire/Payload/Interesting Engineering pre-launch preview of the same plan (then pegged to
+  Transporter-18, later actually flying on Bandwagon-5): worth checking an Atomic-6-shaped "first ever"
+  headline's actual dateline before assuming it duplicates an older company announcement, since the
+  older piece was a plan, not the flight itself. A same-day WSB Radio (Atlanta) local-news pickup, with
+  its own independently-obtained CEO quote distinct from the wire release's quote, confirmed independent
+  (non-wire-rewrite) corroboration.
+- 2026-10-21-R: PLD Space's "delays Miura 5 to 2027" SpaceNews piece (surfaced via Caleb Henry's bluesky
+  repost) and several analyst price-target pieces on Rocket Lab's already 2-month-old Neutron 2027 slip
+  (Goldman Sachs, Citizens Bank, Morgan Stanley, dated Oct 16-20 via ad-hoc-news.de) both restate facts
+  already published (2026-10-19 Miura5 item; 2026-08-10 Neutron slip item); left both undrafted as stale
+  rehashes rather than treated as fresh analyst-commentary opportunities, since the underlying fact itself
+  carried no new figure.
+- 2026-10-21-S: A scheduled Rocket Lab Electron HawkEye 360 mission ("We're Not Hawking Around", window
+  05:00-08:45 UTC Oct 21) was stood down pre-launch for out-of-family telemetry during pad operations;
+  correctly left undrafted (no result to report, a routine scrub) rather than chased as a missed launch
+  item. Two scheduled-not-yet-flown Starlink Vandenberg batches (Group 15-15 NET same evening, Group
+  15-18 NET Oct 28) were also confirmed via Launch Library as not yet flown and left undrafted per the
+  standing no-preview-coverage rule.
+- 2026-10-21-T: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 3 new, 0
+  updated, 0 held"); confirmed via a direct `jq` read of all three new items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields (1008 items, up from 1005) and a `jq empty` parse check across all
+  touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
