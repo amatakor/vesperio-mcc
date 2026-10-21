@@ -5263,3 +5263,62 @@ a newer entry if a lesson changes.
   `flag_refresh` entry for `iceye.sats_launched_total` (76 to 84), and a
   `jq empty` parse check across all touched data files. `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-10-21, second)
+
+- 2026-10-21-F: A near-total-junk ~100-candidate queue (hundreds of SpaceX
+  Q3-earnings/Tesla-merger reaction posts, dozens of Starlink/Ukraine saga
+  rehash hits on the WSJ "Musk ordered the slowdown" story, and a wall of
+  ISRO SDSC SHAR recruitment-notice reposts across a dozen Indian outlets)
+  still yielded three genuinely new, undrafted items once each lead was
+  grepped against `items.json`: a Redwire/EnduroSat European VLEO/PNT MOU
+  (mandatory Google News leg), a Solstar/Momentus/NASA Wi-Fi proximity-ops
+  demo (same leg), and HPE's Spaceborne Computer-4 flying on Astrolab's FLIP
+  rover (Payload queue entry). None were queue-adjacent rehashes; all three
+  were same-day, previously-unpublished facts.
+  Worth noting an "ISRO recruitment 2026, N vacancies" headline recurring
+  across 8+ Indian outlets in one run is a job-posting wire story, not a
+  space-program event; it is out of scope regardless of outlet count or
+  recurrence, same logic as a routine executive hire.
+- 2026-10-21-G: Redwire's own `rdw.com`/`ir.rdw.com` domains still cap at
+  `informal` (standing 2026-09-21-P workaround: the registry's `website`
+  field is `redwirespace.com`, a different domain), but a Business
+  Wire-distributed mirror (confirmed via the "KRUIBEKE, Belgium--(BUSINESS
+  WIRE)--" dateline on a direct StockTitan fetch) classed `wire_pr` and led
+  instead; two further wire mirrors (Investing.com, Redwire's own newsroom)
+  collapsed as the same release, leaving the item single-sourced after an
+  honest `found_none` crawl (no independent trade pickup found) -- wire_pr
+  tier 4 minus 1 landed SNR 3. Separately, the same release stated Redwire's
+  approximate headcount ("~1,400 people across Europe and North America"),
+  a genuine null-fill for the registry's empty `employees` field, queued via
+  `crossfeed.facts` rather than left out as "just background."
+- 2026-10-21-H: The Solstar/Momentus NASA Wi-Fi demo and the HPE lunar AI
+  compute item both confirm 2026-09-22-B's refinement again: a trade lead
+  (SpaceNews; Payload) plus ONE higher-or-equal-tier corroboration source
+  (a PRWeb wire release; The Register, mainstream) was enough for
+  `corroboration_2plus`, landing both at SNR 4 without needing a third
+  source. HPE's Spaceborne Computer-4 payload is a distinct new item from
+  the existing Sept. 23 Astrolab/Interstellar Mapping lunar-water item
+  (same FLIP rover and Griffin-1 mission, 28 days apart, no dedup_distinct
+  needed since outside the 7-day window) -- worth expecting more payload
+  partners to surface on the same not-yet-launched CLPS mission as separate
+  items rather than updates once they're genuinely new companies/facts.
+- 2026-10-21-I: Marco Langbroek's bluesky feed gave a real update to the
+  still-open Cosmos 2612/ICEYE-X36 incident (a maneuver BACK toward
+  ICEYE-X36's altitude on Oct. 19 after the Oct. 20 "diverging" update,
+  "not done with ICEYE-X36 yet") -- confirms watching a de-escalating
+  tracked-incident item for re-escalation is still worth a dedicated
+  per-post fetch (via `getPostThread` on the exact post uri from
+  `getAuthorFeed`) rather than assuming a prior "diverging" update closed
+  the thread. The post's exact `bsky.app` URL was confirmed by resolving
+  the API's `at://` uri to a `did:plc:...`/rkey pair and re-fetching that
+  exact post via `getPostThread` before citing it, rather than guessing the
+  URL shape from the handle and a timestamp.
+- 2026-10-21-J: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 3 new, 2 updated, 0 held"); confirmed via a direct `jq`
+  read of all three new items' `snr`/`category`/`impact`/`sources` fields
+  (999 items, up from 996), both updated items' grown `sources`/`updates`
+  arrays (Starlink/Ukraine: 47 sources, 17 updates; Cosmos 2612/ICEYE-X36:
+  15 sources, 7 updates), and the registry-candidates.json null-fill entry
+  for `redwire.employees`. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
