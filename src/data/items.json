@@ -64480,7 +64480,7 @@
       "source_url": "https://www.investing.com/news/stock-market-news/us-faa-looks-to-streamline-rules-for-commercial-space-launches-4935436",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -64492,10 +64492,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-21",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -64703,7 +64716,7 @@
         "https://thenextweb.com/news/spacex-spectrum-fcc-europe",
         "https://www.1012industryreport.com/technology/spacex-wants-easier-wireless-spectrum-access-to-support-up-to-10000-launches-a-year/"
       ],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -64715,9 +64728,14 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "Second distinct source (The Next Web, mainstream) now attached; applying the corroboration bump the attach alone did not trigger."
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
         "history": [
           {
@@ -64725,6 +64743,12 @@
             "from": 1,
             "to": 2,
             "reason": "Second distinct source (The Next Web, mainstream) now attached; applying the corroboration bump the attach alone did not trigger."
+          },
+          {
+            "date": "2026-10-21",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ]
       },
@@ -70457,23 +70481,27 @@
     {
       "id": "2026-10-14-stevens-county-minnesota-space-debris",
       "date": "2026-10-14",
-      "headline": "Stevens County, Minnesota sheriff recovers suspected space debris from cornfield",
+      "headline": "Stevens County, Minnesota debris identified as Chinese Zhuque-2E rocket stage",
       "explainer": {
-        "tagline": "Officials found an 11-foot scorched metallic object in a Scott Township cornfield and are working to identify its owner.",
-        "what_happened": "The Stevens County, Minnesota Sheriff's Office received a call around 3:30 p.m. on Oct. 14 reporting foreign debris in a cornfield in Scott Township. Deputies who responded confirmed a large, scorched metallic object approximately 11 feet in diameter, which the Sheriff's Office said is presumably a space object, per Dakota News Now and Valley News Live. The Minnesota Duty Officer was notified and the Sheriff's Office said it is working with several state and federal agencies to identify and notify the object's owner and plan for its removal from the field. Officials said there is no danger to the public.",
-        "why_it_matters": "Recovered debris like this becomes a commercial story once an operator or launch provider is identified: tracing it determines liability, deorbit-compliance standing, and insurance exposure for whichever company's hardware it turns out to be. The item will be updated once the responsible operator is named."
+        "tagline": "Ars Technica traces the 11-foot cornfield object to the upper stage of a LandSpace Zhuque-2E rocket that reentered Sept. 15.",
+        "what_happened": "The Stevens County, Minnesota Sheriff's Office received a call around 3:30 p.m. on Oct. 14 reporting foreign debris in a cornfield in Scott Township, confirming a large, scorched metallic object approximately 11 feet in diameter, per Dakota News Now and Valley News Live. The Sheriff's Office said it was working with state and federal agencies to identify and notify the object's owner. On Oct. 20, Ars Technica's Stephen Clark reported that the object's 11-foot diameter matches the 3.35-meter upper-stage diameter of a Zhuque-2E rocket built by China's LandSpace, which launched 10 Qianfan (Thousand Sails) satellites from the Gobi Desert on Sept. 15 and reentered without completing a full orbit roughly 75-80 minutes after liftoff, with a flight path crossing Kansas, Minnesota and Wisconsin, per West Central Tribune's and Yahoo News's republications of Clark's reporting, both of which credit Ars Technica by name. Officials said there is no danger to the public.",
+        "why_it_matters": "Identifying LandSpace's Zhuque-2E upper stage as the likely source turns an anonymous farmland find into a concrete deorbit-compliance and liability question for a specific operator, relevant to insurers, regulators and other Chinese commercial launch providers whose own reentries face similar scrutiny."
       },
       "kind": "event",
       "tags": [],
       "category": "incident",
       "impact": "noise",
-      "companies": [],
+      "companies": [
+        "LandSpace"
+      ],
       "source_url": "https://www.dakotanewsnow.com/2026/10/15/possible-space-debris-discovered-minnesota-cornfield-officials-say/",
       "secondary_urls": [
         "https://www.valleynewslive.com/2026/10/15/large-metallic-object-presumably-space-object-found-stevens-county-cornfield/",
         "https://www.mprnews.org/story/2026/10/15/space-debris-possibly-found-in-stevens-county-minnesota-cornfield",
         "https://www.kimt.com/news/feds-called-after-possible-space-debris-found-in-minnesota-field/article_2552ed37-1afe-49a8-a321-10aad96c5f89.html",
-        "https://bsky.app/profile/planet4589.bsky.social/post/3mxxx5fy3ns2n"
+        "https://bsky.app/profile/planet4589.bsky.social/post/3mxxx5fy3ns2n",
+        "https://www.wctrib.com/news/local/object-from-minnesota-cornfield-possibly-remnant-of-chinese-rocket",
+        "https://www.yahoo.com/news/science/articles/object-minnesota-cornfield-possibly-remnant-223600668.html"
       ],
       "snr": 1,
       "snr_trace": {
@@ -70533,6 +70561,20 @@
           "class": "informal",
           "added": "2026-10-16",
           "via": "corroboration"
+        },
+        {
+          "url": "https://www.wctrib.com/news/local/object-from-minnesota-cornfield-possibly-remnant-of-chinese-rocket",
+          "outlet": "West Central Tribune",
+          "class": "informal",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.yahoo.com/news/science/articles/object-minnesota-cornfield-possibly-remnant-223600668.html",
+          "outlet": "Yahoo News",
+          "class": "informal",
+          "added": "2026-10-21",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-15T22:03:37.461Z",
@@ -70547,6 +70589,11 @@
           "date": "2026-10-16",
           "kind": "attach",
           "note": "Satellite tracker Jonathan McDowell says the recovered object sits close to the path of the Zhuque-2E rocket upper stage that reentered Sept. 15."
+        },
+        {
+          "date": "2026-10-21",
+          "kind": "copy",
+          "note": "The debris has been identified: it's likely the upper stage of a Chinese Zhuque-2E rocket that reentered Sept. 15, per Ars Technica's reporting."
         }
       ]
     },
@@ -72790,7 +72837,7 @@
       "headline": "JAXA launches MMX sample-return mission toward Mars moon Phobos",
       "explainer": {
         "tagline": "JAXA's H3 rocket lifted off carrying MMX, Japan's first interplanetary mission and first attempt to return a sample from a Martian moon.",
-        "what_happened": "JAXA's H3 flight 10 lifted off from Tanegashima Space Center at 19:41 UTC Oct. 19 (4:41 a.m. JST Oct. 20) carrying the Martian Moons eXploration (MMX) spacecraft, per Marcia Smith of SpacePolicyOnline and Anatoly Zak of RussianSpaceWeb, both posting on Bluesky, Launch Library, and JAXA's own post-launch press release. JAXA's release states the H3 vehicle \"flew as planned\" and confirms MMX separation 71 minutes and 13 seconds after liftoff, with the spacecraft injected into its predetermined orbit; per TechEBlog, the spacecraft weighs roughly 4,480 kilograms. MMX is headed toward Phobos and Deimos, carrying 13 scientific instruments including two from the US and one from France's CNES and Germany's DLR, per Smith; Zak called it \"humanity's 54th mission to the Red Planet.\" MMX is expected to arrive at Mars in August 2027, collect a Phobos sample no earlier than 2029-2030, and return it to Earth in 2031.",
+        "what_happened": "JAXA's H3 flight 10 lifted off from Tanegashima Space Center at 19:41 UTC Oct. 19 (4:41 a.m. JST Oct. 20) carrying the Martian Moons eXploration (MMX) spacecraft, per Marcia Smith of SpacePolicyOnline and Anatoly Zak of RussianSpaceWeb, both posting on Bluesky, Launch Library, and JAXA's own post-launch press release. JAXA's release states the H3 vehicle \"flew as planned\" and confirms MMX separation 71 minutes and 13 seconds after liftoff, with the spacecraft injected into its predetermined orbit; per TechEBlog, the spacecraft weighs roughly 4,480 kilograms. MMX is headed toward Phobos and Deimos, carrying 13 scientific instruments including two from the US and one from France's CNES and Germany's DLR, per Smith; Zak called it \"humanity's 54th mission to the Red Planet.\" MMX is expected to arrive at Mars in August 2027, collect a Phobos sample no earlier than 2029-2030, and return it to Earth in 2031. JAXA said Oct. 21 that MMX completed its initial critical operations phase, the sequence from launch vehicle separation through solar array paddle deployment, establishing three-axis attitude control, and releasing the medium-gain antenna's hold-down mechanism, confirming the spacecraft is in good health; JAXA will next run initial functional checks on the spacecraft's onboard equipment ahead of its cruise toward the Martian system.",
         "why_it_matters": "A successful launch and separation retires the near-term risk on JAXA's first interplanetary use of its flagship H3 rocket and its first attempt at an interplanetary sample return, both of which the agency has been rebuilding credibility for after H3's earlier delays and failures; a clean flight supports confidence in H3's manifest for the commercial and government payloads still queued behind it.",
         "for_who": "Japanese launch-vehicle watchers and planetary science mission planners"
       },
@@ -72811,7 +72858,8 @@
         "https://ll.thespacedevs.com/2.2.0/launch/?search=MMX",
         "https://www.astronomy.com/whats-launching-this-week/japan-sends-mmx-toward-the-martian-moons/",
         "https://www.techeblog.com/jaxa-japan-mmx-mission-phobos-launch-overview/",
-        "https://bsky.app/profile/spacepolicyonline.bsky.social"
+        "https://bsky.app/profile/spacepolicyonline.bsky.social",
+        "https://global.jaxa.jp/press/2026/10/20261021-1_e.html"
       ],
       "snr": 5,
       "snr_trace": {
@@ -72874,6 +72922,13 @@
           "class": "informal",
           "added": "2026-10-19",
           "via": "corroboration"
+        },
+        {
+          "url": "https://global.jaxa.jp/press/2026/10/20261021-1_e.html",
+          "outlet": "JAXA",
+          "class": "first_party",
+          "added": "2026-10-21",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-19T22:51:54.535Z",
@@ -72903,6 +72958,11 @@
             "from": 4,
             "to": 5
           }
+        },
+        {
+          "date": "2026-10-21",
+          "kind": "copy",
+          "note": "JAXA confirms MMX completed its initial critical operations phase on Oct. 21: solar arrays deployed, three-axis attitude control established, and the spacecraft confirmed healthy."
         }
       ]
     },
@@ -73608,7 +73668,7 @@
       "headline": "SpaceX, Tesla form special committees to weigh a merger, Musk says",
       "explainer": {
         "tagline": "Musk says independent-director committees are evaluating combining the companies, calling a deal 'far from certain.'",
-        "what_happened": "On SpaceX's Q3 2026 earnings call, Elon Musk said SpaceX and Tesla have each established special committees of independent directors to evaluate a possible merger. Musk called it an early step that is not guaranteed, said he is not participating in the committee talks because he is a conflicted party, and said the committees have not agreed on terms. He said any deal would need approval from 50% of all outstanding Tesla shares, not just a majority of votes cast, which he described as a high hurdle.",
+        "what_happened": "On SpaceX's Q3 2026 earnings call, Elon Musk said SpaceX and Tesla have each established special committees of independent directors to evaluate a possible merger. Musk called it an early step that is not guaranteed, said he is not participating in the committee talks because he is a conflicted party, and said the committees have not agreed on terms. He said any deal would need approval from 50% of all outstanding Tesla shares, not just a majority of votes cast, which he described as a high hurdle. Musk said he personally thinks a merger \"would be a good idea,\" citing potential synergies in AI compute, chip design, the Terafab chip plant, robotics, the Starmind constellation's mass-to-orbit needs and connectivity, though he said it is ultimately up to the special committees and shareholders of both companies, per Shacknews and Reuters.",
         "why_it_matters": "A combination of SpaceX and Tesla, both led by Musk, would be among the largest corporate mergers ever attempted, and would reshape how investors and competitors value both companies' overlapping bets on AI compute, batteries, and manufacturing. The high shareholder-approval bar and lack of agreed terms mean this is a process to watch rather than a done deal, but the request for committees already signals real shareholder pressure for a combination."
       },
       "kind": "event",
@@ -73623,7 +73683,9 @@
       ],
       "source_url": "https://news.bloomberglaw.com/ip-law/musk-says-spacex-tesla-have-formed-committees-to-explore-merger",
       "secondary_urls": [
-        "https://seekingalpha.com/news/4654965-musk-says-spacex-tesla-form-committees-to-explore-potential-merger"
+        "https://seekingalpha.com/news/4654965-musk-says-spacex-tesla-form-committees-to-explore-potential-merger",
+        "https://www.shacknews.com/article/151077/elon-musk-spacex-tesla-merger",
+        "https://lufkindailynews.com/news_reuters/business/musk-says-spacex-tesla-merger-is-a-good-idea-as-companies-form-deal-committees/article_6e6ce10d-0ce3-598a-8de1-588e1ade0411.html"
       ],
       "snr": 4,
       "snr_trace": {
@@ -73656,6 +73718,20 @@
           "class": "trade",
           "added": "2026-10-20",
           "via": "corroboration"
+        },
+        {
+          "url": "https://www.shacknews.com/article/151077/elon-musk-spacex-tesla-merger",
+          "outlet": "Shacknews",
+          "class": "mainstream",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://lufkindailynews.com/news_reuters/business/musk-says-spacex-tesla-merger-is-a-good-idea-as-companies-form-deal-committees/article_6e6ce10d-0ce3-598a-8de1-588e1ade0411.html",
+          "outlet": "Reuters (via Lufkin Daily News)",
+          "class": "mainstream",
+          "added": "2026-10-21",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-20T22:13:12.515Z",
@@ -73671,7 +73747,14 @@
         "origin_url": "https://news.bloomberglaw.com/ip-law/musk-says-spacex-tesla-have-formed-committees-to-explore-merger",
         "width": 1200,
         "height": 630
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-10-21",
+          "kind": "copy",
+          "note": "Musk says on the earnings call that a merger \"would be a good idea,\" citing AI-compute, chip and connectivity synergies, though shareholders would still have to approve it."
+        }
+      ]
     },
     {
       "id": "2026-10-20-xona-pulsar-first-six-satellites",
@@ -74006,6 +74089,212 @@
         }
       ],
       "image": null
+    },
+    {
+      "id": "2026-10-20-planet-tanager2-superdove-first-light",
+      "date": "2026-10-20",
+      "headline": "Planet's Tanager-2 satellite achieves first light, expanding methane monitoring",
+      "explainer": {
+        "tagline": "Planet's second Tanager hyperspectral satellite spotted a methane plume and a Spanish salt lake six days after its October launch.",
+        "what_happened": "Planet's Tanager-2 hyperspectral satellite, launched on SpaceX's Transporter-18 rideshare mission on October 1, captured its first imagery six days later, photographing Spain's Pink Lake in Torrevieja on October 7 while simultaneously detecting a methane plume over the same coastal area, per Planet's October 20 blog post. A SuperDove from the new Flock 4J constellation, launched on the same mission, imaged Australia's Great Barrier Reef near the Whitsunday Islands on October 6. Tanager-2 is the second satellite in Planet's hyperspectral, methane-sensing partnership with the nonprofit Carbon Mapper; Carbon Mapper's own release says the satellite is designed to detect methane super-emitters with high granularity and that Planet plans to build and deploy at least two more broad-spectrum Tanagers plus one specialized next-generation imaging-spectroscopy unit.",
+        "why_it_matters": "A second operational methane-mapping satellite increases Carbon Mapper's revisit frequency over tracked emission sources, speeding up the data public agencies, regulators and oil-and-gas operators use to find and fix leaks. It also demonstrates Planet turning a new satellite from launch to usable imagery within days, relevant to any customer weighing Planet's manufacturing and operations cadence."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "hyperspectral",
+        "ghg"
+      ],
+      "category": "constellation",
+      "impact": "noise",
+      "companies": [
+        "Planet Labs",
+        "Carbon Mapper"
+      ],
+      "source_url": "https://www.planet.com/pulse/sharing-first-light-images-from-tanager-2-and-superdove-flock-4j/",
+      "secondary_urls": [
+        "http://www.prnewswire.com/news-releases/tanager-2-launch-to-scale-up-carbon-mappers-methane-impact-302896690.html"
+      ],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.planet.com/pulse/sharing-first-light-images-from-tanager-2-and-superdove-flock-4j/",
+          "reason": "base tier 5 from lead source class \"first_party\" (Planet Labs)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.planet.com/pulse/sharing-first-light-images-from-tanager-2-and-superdove-flock-4j/",
+          "outlet": "Planet Labs",
+          "class": "first_party",
+          "added": "2026-10-21",
+          "via": "initial"
+        },
+        {
+          "url": "http://www.prnewswire.com/news-releases/tanager-2-launch-to-scale-up-carbon-mappers-methane-impact-302896690.html",
+          "outlet": "Carbon Mapper (PR Newswire)",
+          "class": "wire_pr",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-21T05:33:15.457Z",
+      "entities": [
+        {
+          "name": "Planet Labs",
+          "ref": "organizations/planet-labs"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-20-planet-tanager2-superdove-first-light.webp",
+        "credit": "Image: planet.com",
+        "origin_url": "https://www.planet.com/pulse/sharing-first-light-images-from-tanager-2-and-superdove-flock-4j/",
+        "width": 1200,
+        "height": 709
+      }
+    },
+    {
+      "id": "2026-10-21-galactic-energy-ceres1s-xiguang4-launch",
+      "date": "2026-10-21",
+      "headline": "Galactic Energy launches Ceres-1S with Guangzhou Earth observation satellite",
+      "explainer": {
+        "tagline": "Galactic Energy's sea-launched Ceres-1S carried a prototype 0.5-meter imaging satellite for a planned 25-satellite constellation.",
+        "what_happened": "Galactic Energy's Ceres-1S rocket launched from a sea platform off Haiyang on October 21, carrying the Xiguang-4 01 Earth observation satellite, per Launch Library, which recorded the launch as successful. Launch Library's mission description says the satellite delivers 0.5-meter-resolution, multi-spectral imagery for the city of Guangzhou's government and Guangzhou University, and is a prototype for a proposed 25-satellite constellation. Bluesky account @everythingspace independently reported the launch succeeded.",
+        "why_it_matters": "Each new Chinese smallsat EO prototype flight is a data point on how fast China's commercial launch and imaging sector is adding capacity outside the state-run majors; a successful debut puts Guangzhou's planned 25-satellite constellation a step closer to reality."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "optical",
+        "china",
+        "smallsat-launch"
+      ],
+      "category": "launch",
+      "impact": "noise",
+      "companies": [
+        "Galactic Energy"
+      ],
+      "source_url": "https://ll.thespacedevs.com/2.2.0/launch/c6f8b6b0-6bae-460a-99bb-c12a3d29effd/",
+      "secondary_urls": [
+        "https://bsky.app/profile/everythingspace.bsky.social/post/3myecuugdgz2o"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 4,
+          "source": "https://ll.thespacedevs.com/2.2.0/launch/c6f8b6b0-6bae-460a-99bb-c12a3d29effd/",
+          "reason": "base tier 4 from lead source class \"aggregator\" (Launch Library 2)"
+        },
+        "modifiers": [],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://ll.thespacedevs.com/2.2.0/launch/c6f8b6b0-6bae-460a-99bb-c12a3d29effd/",
+          "outlet": "Launch Library 2",
+          "class": "aggregator",
+          "added": "2026-10-21",
+          "via": "initial"
+        },
+        {
+          "url": "https://bsky.app/profile/everythingspace.bsky.social/post/3myecuugdgz2o",
+          "outlet": "@everythingspace (Bluesky)",
+          "class": "informal",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-21T05:33:15.457Z",
+      "entities": [
+        {
+          "name": "Galactic Energy",
+          "ref": "organizations/galactic-energy"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-21-galactic-energy-ceres1s-xiguang4-launch.webp",
+        "credit": "Image: everythingspace.online",
+        "origin_url": "https://everythingspace.online/launches/c6f8b6b0-6bae-460a-99bb-c12a3d29effd?utm_source=bluesky&utm_campaign=outcome",
+        "width": 480,
+        "height": 360
+      }
+    },
+    {
+      "id": "2026-10-15-nasa-artemis-ii-heat-shield-analysis",
+      "date": "2026-10-15",
+      "headline": "NASA confirms Artemis II heat shield performed without Artemis I's erosion",
+      "explainer": {
+        "tagline": "Engineers counted nine char-loss spots on Artemis II's heat shield, a tenfold drop from 103 on Artemis I, after a shorter reentry.",
+        "what_happened": "NASA said October 15 that detailed engineering analysis confirmed the Orion spacecraft's heat shield performed as expected during Artemis II's April 10 splashdown, without the cracking and char loss seen on Artemis I. Engineers counted nine spots of char loss on the Artemis II heat shield, versus 103 on Artemis I, a tenfold reduction NASA attributes to shortening the maximum downrange distance Orion could fly during reentry, which reduced the time the heat shield spent in the temperature range that caused Artemis I's internal gas-pressure buildup and cracking. Orion reentered within 192 feet of its target atmospheric interface point and splashed down 0.59 miles from the predicted site while traveling 39 times the speed of sound, with the external heat shield exceeding 4,000 degrees Fahrenheit while the cabin stayed in the mid-70s. For Artemis III, NASA says it has upgraded the heat shield's Avcoat material for more uniform, consistent permeability to further reduce internal pressure buildup during entry.",
+        "why_it_matters": "The Artemis I heat shield's unexpected char loss was a multi-year open question hanging over the program's crewed-reentry plans. This is NASA's first full confirmation that the fix worked on an actual crewed flight, clearing a safety question that stood between the agency and Artemis III, which NASA has already said is running behind schedule."
+      },
+      "kind": "event",
+      "tags": [
+        "human-spaceflight"
+      ],
+      "category": "human-spaceflight",
+      "impact": "notable",
+      "companies": [
+        "NASA"
+      ],
+      "source_url": "https://www.nasa.gov/missions/artemis/artemis-2/rigorous-analysis-confirms-nasas-artemis-ii-heat-shield-performance/",
+      "secondary_urls": [
+        "https://phys.org/news/2026-10-rigorous-analysis-nasa-artemis-ii.html",
+        "https://spacenews.com/studies-confirm-performance-of-artemis-2-heat-shield/"
+      ],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.nasa.gov/missions/artemis/artemis-2/rigorous-analysis-confirms-nasas-artemis-ii-heat-shield-performance/",
+          "reason": "base tier 5 from lead source class \"first_party\" (NASA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.nasa.gov/missions/artemis/artemis-2/rigorous-analysis-confirms-nasas-artemis-ii-heat-shield-performance/",
+          "outlet": "NASA",
+          "class": "first_party",
+          "added": "2026-10-21",
+          "via": "initial"
+        },
+        {
+          "url": "https://phys.org/news/2026-10-rigorous-analysis-nasa-artemis-ii.html",
+          "outlet": "Phys.org",
+          "class": "mainstream",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://spacenews.com/studies-confirm-performance-of-artemis-2-heat-shield/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-10-21",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-10-21T05:33:15.457Z",
+      "entities": [
+        {
+          "name": "NASA",
+          "ref": "organizations/nasa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-10-15-nasa-artemis-ii-heat-shield-analysis.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/studies-confirm-performance-of-artemis-2-heat-shield/",
+        "width": 1200,
+        "height": 800
+      }
     }
   ]
 }

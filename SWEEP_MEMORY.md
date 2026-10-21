@@ -93,156 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~8h07m gap, unfiltered full source list (2026-09-20)
-
-- 2026-09-20-A: Drafted a SpaceNews-sourced Simera Sense/IDOM
-  MultiScape350 optics-partnership item from a same-day queue candidate
-  without first grepping `items.json` for the company names; it was
-  already published under an identical id from earlier the same day.
-  finalize-sweep's dedup gate caught it on the first submit ("id already
-  exists... duplicate"), but the wasted drafting pass (scoring block,
-  crossfeed, corroboration search) would have been avoided by the
-  standing grep-before-drafting practice (2026-08-22-E and many peers) —
-  worth remembering that practice applies even to queue-surfaced
-  candidates the harvester flags as fresh, not just signals/discovery
-  finds.
-- 2026-09-20-B: A Chinese Launch Library entry ("Kinetica 1 | 9
-  satellites", generic "details TBD" raw_excerpt) is not evidence of
-  which specific mission it is: an initial WebSearch for the exact
-  payload count and vehicle name surfaced a superficially matching but
-  stale Dec. 10, 2025 Kinetica-1 flight with the identical "9 satellites"
-  framing. Only a Chinese-language search for the specific date ("力箭一号
-  9月20日") resolved it to the correct, distinct Sept. 20, 2026 Yao-18
-  flight (carrying Supercomputing-1, an AI-computing EO demo satellite).
-  Extends the standing 2026-08-25-C "generic rideshare excerpt is not
-  proof of payload identity" pattern to Launch Library's own generic
-  mission titles, not just harvester excerpts; a same-shaped title with a
-  matching satellite count from a different year is a stale-resurfacing
-  trap even when it comes from the authoritative launch-tracking
-  aggregator itself.
-- 2026-09-20-C: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
-  0 updated, 0 held") plus a direct read of both new items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
-## Narrow re-check, ~6h22m gap, unfiltered full source list (2026-09-20, second)
-
-- 2026-09-20-D: A near-total-junk queue (33 candidates: SpaceX stock/IPO
-  speculation, off-topic CGTN/BBC science filler) had its only two
-  real China-launch stories (Lijian-1 Yao-18, PIESAT-2) and the Rocket
-  Lab/Synspective launch already published by the prior same-day sweep;
-  the sole genuinely new item, a routine 27-satellite Starlink batch on
-  booster B1093's 17th flight, came from a discovery-pass search after
-  the queue's own Google News entries for it (a keeptrack.space X-report
-  aggregator, a Space.com headline) didn't resolve to fetchable content
-  directly.
-- 2026-09-20-E: An NPR piece on Starbase Louisiana ("Thousands of planned
-  launches, terms of deal, worry some") genuinely cleared the
-  standing "trend/reaction piece adds nothing" bar (2026-08-27-A and
-  peers) other Louisiana follow-ups have failed: it carried three facts
-  the original Aug 25 item never stated (SpaceX's own ~30-rockets-a-day
-  cadence claim, the "Project Osprey" NDA codename from records-request
-  documents, and outdoor educator Gabe Giffin's on-record migratory-bird
-  concern) verified via a syndicated NPR-affiliate mirror after npr.org
-  itself timed out twice. Folded in via `updates[].attach`+patch with no
-  bump requested (item already at the SNR 5 ceiling).
-- 2026-09-20-F: A same-day RFE/RL piece on the Rassvet constellation,
-  fetched directly rather than assumed to be another rehash of the
-  well-trodden ISW/altitude-failure story (2026-09-07-H and peers this
-  item has attracted), turned out to carry genuinely new facts: reported
-  Ukrainian strikes on ground infrastructure the program depends on
-  (the Dubna satellite comms center, the Progress Rocket and Space
-  Center that builds Bureau 1440's Soyuz launch vehicles, a drone threat
-  to Plesetsk) and revised satellite-count targets. Treated as
-  `updates[].patch`+attach, framed as an industrial-capacity risk to the
-  deployment timeline rather than conflict analysis, consistent with the
-  2026-08-16-A Progress/Samara precedent; explicitly did not characterize
-  the war itself. No bump requested: base tier 3 (whitelist observer)
-  plus `corroboration_2plus` already sits at this non-first-party lead's
-  ceiling of 4, confirming the 2026-09-02-A silent-no-op pattern once
-  more on a 7th total source.
-- 2026-09-20-G: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new,
-  2 updated, 0 held") plus a `jq empty` parse check across all six
-  touched data files (703 items, up from 702) and a direct read of the
-  new item's and both updated items' `snr`/`snr_trace`/`category`/
-  `impact`/`sources` fields as the build-health signal.
-
-## Narrow re-check, ~5h24m gap, unfiltered full source list (2026-09-20, third)
-
-- 2026-09-20-H: Both leads the signals pass surfaced this run (Vivienne
-  Machi's Aviation Week author page listing the Sept 18 GHOST-R
-  Northrop Grumman/True Anomaly GEO-recon prototype award, and Andrew
-  Parsonson's bluesky post on ESA's Sept 18 IRIS2 Low-LEO consolidation
-  contracts) were fully drafted, sourced, and scored before a
-  `grep -i` company/program-name check against `items.json` revealed
-  both already published under existing ids
-  (`2026-09-18-northrop-grumman-true-anomaly-ghost-r`,
-  `2026-09-17-esa-iris2-low-leo-consolidation-contracts`) from an
-  earlier same-day sweep. No time was lost past the drafting stage
-  since the grep ran before `sweep-draft.json` was written, but it
-  confirms 2026-09-20-A's lesson from earlier the same day: run the
-  items.json grep on signals/discovery leads BEFORE building the
-  scoring block and crossfeed attestation, not just before writing the
-  final draft, especially on a day with several same-day sweeps already
-  ahead of you.
-- 2026-09-20-I: A fully quiet run start to finish: the harvested queue
-  (30 candidates post-filter) was entirely SpaceX stock/valuation churn,
-  Google News redirects to already-published stories, and off-topic
-  Futurism filler; all six mandatory HTML sources and 15 of 17 signals
-  channels were current with nothing new in window; a 9-query discovery
-  pass covering the full matrix (launch, financial, incident, regulatory,
-  China, India) surfaced only already-published stories (Impulse Space
-  Series D extension, Safran/Dhruva SBS-III, Stoke Space Series E/Nova
-  Block 2) or process-not-yet-fact exclusions (the FCC's draft
-  12.7-13.25/42-42.5 GHz satellite-spectrum order, scheduled for a Sept
-  30 vote, not yet decided). Zero new items, zero updates, zero held;
-  confirms a genuinely quiet day rather than an under-worked one, per
-  the standing "quiet is not the same as nothing to check" discipline
-  (2026-08-24-C and peers) followed to its honest zero-item conclusion.
-  Note: the merged sweep-entry summary text in `state.json` has a typo
-  ("an 8-8h discovery pass" should read "a 9-query discovery pass");
-  harmless but worth proofreading the summary string before it lands in
-  a future draft, since `state.json` is machine-owned and not
-  hand-editable after merge.
-
-## Narrow re-check, ~3h45m gap, unfiltered full source list (2026-09-20, fourth)
-
-- 2026-09-20-J: A "Space-Eyes confirms $638m SPAC merger with McKinley"
-  discovery-pass lead traced (via a follow-up WebSearch on what Space-Eyes
-  actually does) to a counter-drone/geospatial-AI company: its C-UAS
-  platform fuses RF, EO/IR and satellite inputs for detection, but it is
-  not an EO/SAR operator, launch provider, or connectivity constellation
-  itself. Left out of scope entirely rather than drafted as a financial
-  SPAC event, distinct from the standing Quantum Space/other space-SPAC
-  precedents that ARE in scope because the underlying company builds
-  space hardware. Worth remembering: a SPAC merger headline mentioning
-  "satellite" or "geospatial" needs the same what-does-this-company-
-  actually-do check as any other borderline actor before drafting.
-- 2026-09-20-K: `europeanspaceflight.substack.com/feed` 403'd on a direct
-  WebFetch this run (first observed failure for this channel); fell back
-  on Andrew Parsonson's bluesky and site coverage from the same run
-  instead of treating the person as unchecked. Worth a re-try next sweep
-  before assuming the substack feed itself, not just this one fetch, is
-  now blocked.
-- 2026-09-20-L: A fully quiet run start to finish: the harvested queue (9
-  candidates post-filter) was entirely FAA/NOAA fishery-council notices,
-  SpaceX stock-advice churn, and off-topic Futurism content, or stories
-  already published earlier the same day (StarBurst, United/DISH,
-  Starship Flight 14 orbit coverage); all six mandatory HTML sources, 14
-  of 17 signals channels (rotation skipped Anatoly Zak's bluesky and
-  Andrew Parsonson's site), and an 8-query discovery pass covering the
-  full matrix (launch, financial, incident, China, India, EO contracts,
-  regulatory, M&A) surfaced only already-published leads or the
-  Space-Eyes scope exclusion above. Zero new items, zero updates, zero
-  held; `bun run build` not attempted per the 2026-09-09 CLAUDE.md
-  procedure update, relying on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 0 new, 0 updated, 0 held") as the build-health
-  signal.
-
 ## Deep sweep (mode "deep", triggered after two zero-add sweeps), ~8h07m gap, 7-day window, unfiltered full source list (2026-09-21)
 
 - 2026-09-21-A: A Payload "DIU and SSC Announce Joint GHOST-R Mission" queue
@@ -5227,6 +5077,48 @@ a newer entry if a lesson changes.
   updated Cosmos 2612/ICEYE-X36 item's grown `sources` (12, up from 11)
   and `updates` (5, up from 4) arrays. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h05m gap, unfiltered full source list (2026-10-21)
+
+- 2026-10-21-A: A near-total-junk 103-candidate queue (hundreds of SpaceX Q3-earnings-reaction and
+  Tesla-SpaceX-merger-speculation pickups, continued Starlink/Ukraine saga rehash of the already-
+  captured Oct 20 WSJ report) still yielded three genuine gaps: Planet's Tanager-2/SuperDove
+  Flock 4J first-light post (found via the mandatory Planet Labs HTML pass, not the queue, even
+  though both satellites had launched on the Oct 1 Transporter-18 mission three weeks earlier --
+  worth remembering a company's own "first light" disclosure post is its own dateable event,
+  separate from the launch itself, same shape as the standing per-payload-not-per-mission rule);
+  a routine Chinese Ceres-1S/Xiguang-4 01 EO smallsat launch (Launch Library gave an unambiguous
+  "Launch Successful" status direct from its API, a non-whitelisted Bluesky account
+  independently confirmed it, no English trade coverage existed at all); and NASA's Oct 15
+  Artemis II heat-shield engineering-analysis release (found via Jeff Foust's bluesky repost of
+  the SpaceNews headline, six days stale by the time it was checked -- chased per the standing
+  predates-window convention since it's a genuine Artemis III safety-path milestone).
+- 2026-10-21-B: `finalize-sweep.ts`'s title-collapse correctly caught phys.org's "Rigorous
+  Analysis Confirms NASA's Artemis II Heat Shield Performance" as a verbatim `wire_rewrite` of
+  NASA's own release of the same name, despite living on an entirely different domain class
+  (mainstream science-news aggregator vs. .gov) -- a reminder that phys.org frequently
+  republishes agency press releases near-verbatim rather than writing original copy, so don't
+  assume a phys.org byline is independent reporting without checking how closely its wording
+  tracks the primary source.
+- 2026-10-21-C: Confirmed once more that pairing WebFetch's parallel bluesky `getAuthorFeed`
+  calls with their expected authors is error-prone if read only by content: Caleb Henry's feed
+  (chenryspace) is dominated by REPOSTS showing the original poster's name (Jonathan McDowell,
+  Elizabeth Tasker, ESA Space Science, etc.), not Caleb's own words, and Jeff Foust's feed reads
+  as a SpaceNews-style running headline digest ("Studies confirm performance of Artemis 2 heat
+  shield", "SpaceX launches Transporter-18 rideshare mission") rather than conversational posts --
+  track parallel tool-call order carefully against the actor list rather than pattern-matching
+  result content to a presumed author.
+- 2026-10-21-D: A monotonic-counter crossfeed candidate (Ceres-1's `flights_total`/
+  `flights_successful`, registry stale at 23/21 as of 2026-07-08) is honestly left with an empty
+  `crossfeed.facts` plus a note when no fetched source states the vehicle's updated cumulative
+  count after this flight, rather than guessing the next integer; the registry's own weekly
+  maintenance run owns catching up the real total from Gunter's/Launch Library.
+- 2026-10-21-E: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 3
+  new, 3 updated, 0 held"); confirmed via a direct `jq` read of all three new items' `snr`/
+  `category`/`impact`/`sources` fields (996 items, up from 993), all three updated items' grown
+  `sources`/`updates` arrays (Minnesota debris: LandSpace now named in `companies`; SpaceX/Tesla
+  merger: 4 sources; JAXA MMX: critical-ops-phase completion folded in), and the sweep log's
+  `corroboration_collapses` and two unrelated persistence-bump `snr_movements` entries.
 
 ## Narrow re-check, ~6h26m gap, unfiltered full source list (2026-10-20)
 
