@@ -5322,3 +5322,55 @@ a newer entry if a lesson changes.
   15 sources, 7 updates), and the registry-candidates.json null-fill entry
   for `redwire.employees`. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.5h gap, unfiltered full source list (2026-10-21, third)
+
+- 2026-10-21-K: The New York Times' "Starshield Cut Out, Ukrainian Drones Fell From
+  the Skies" piece (nytimes.com itself unfetchable, confirmed error) had no fetchable
+  non-Russian-state mirror; the only mirror found (tass.com) carries the exact figures
+  ($1M in lost drones, a 3-day operational halt) but is Russian state media reporting
+  on a Ukraine-war-casualty-adjacent claim. Judgment call: left this specific sub-fact
+  out of the Starlink/Ukraine saga update entirely rather than cite TASS for it, even
+  though the content itself is just TASS relaying NYT's reporting; a directly fetched,
+  independently corroborated Stars and Stripes piece on the lawmakers' investigation
+  angle (confirmed via Payload too) carried the update instead. Worth remembering that
+  "a source that is technically fetchable and factually accurate" isn't always the
+  right editorial choice when the only mirror is a combatant state's own outlet on a
+  sensitive conflict claim.
+- 2026-10-21-L: Interesting Engineering's "just over 180 satellites" figure for
+  Guowang/China SatNet (in an Oct-published piece covering an Aug-Sept polar comms
+  test) is both vaguer AND staler than the registry's current computed
+  `sats_active_verified` (234, CelesTrak, as_of 2026-10-21); deliberately left out of
+  `crossfeed.facts` rather than submitted, since it would read as contradicting a
+  fresher, more precise computed figure rather than genuinely updating anything.
+- 2026-10-21-M: The same-company-plus-category dedup heuristic flagged a brand-new
+  Firefly Elytra/MoonFall (lunar south-pole reconnaissance) PDR item against the
+  unrelated 2026-10-15 Artemis II Orion heat-shield engineering-analysis item, purely
+  because both share company NASA and category human-spaceflight; one
+  `dedup_distinct` entry cleared it on the first submit, extending the standing
+  pattern (RBC/Barclays/Evercore analyst notes, Bulgaria/Starlink vs. German Space
+  Command) to a NASA-shared-company case.
+- 2026-10-21-N: A near-total-junk ~96-candidate queue (SpaceX/Tesla-merger and Q3-
+  earnings stock-reaction spam dominating Google News: launch) still yielded six
+  genuine gaps once the queue's few non-spam Google News/trade entries were chased
+  down and cross-checked against open-web discovery: Planet's NASA CSDA Tanager
+  evaluation task order (own IR site), an Ariane 6 Block 2 Vulcain aft-bay shipment
+  (European Spaceflight), a China SatNet/Guowang polar video-call test (state media,
+  corroborated independently by Interesting Engineering), a DARPA Fat Cat award to
+  SpaceNukes (PRNewswire, collapsed against SpaceNews as the same wire release), a
+  Firefly MoonFall PDR (own site), and a thin Remondo/Meissa AI-ops MOU (EIN
+  Presswire, no independent pickup, noise tier). Also folded in two updates: Stars
+  and Stripes' lawmakers'-investigation angle on the Starlink/Ukraine saga, and
+  SpaceX's cut Starship cadence target (weekly/twice-weekly 2027, down from near-
+  daily) from the Motley Fool's full Q3 earnings-call transcript, Ars Technica's own
+  article page having been unfetchable despite its RSS entry being in the queue.
+- 2026-10-21-O: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on
+  two independent issues at once: a 150-char tagline (max 140) on the China SatNet
+  item, and the Firefly/Artemis-II dedup heuristic above; both fixed and it merged
+  cleanly on the second attempt ("merged 6 new, 2 updated, 0 held"). Confirmed via a
+  direct `jq` read of all six new items' `snr`/`impact`/`category` fields (1005
+  items, up from 999), both updated items' grown `sources`/`updates` arrays
+  (Starlink/Ukraine: 49 sources, 18 updates; SpaceX Q3 earnings: 4 sources, 1 update),
+  the sweep log's `corroboration_collapses` entry for the SpaceNukes wire_rewrite, and
+  a `jq empty` parse check across all touched data files. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
