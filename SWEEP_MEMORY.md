@@ -5274,3 +5274,50 @@ a newer entry if a lesson changes.
   arrays (Starlink/Ukraine: 51 sources, 19 updates; Starfall: 4 sources, 1 update, impact noise->notable)
   and the sweep log's `snr_movements` entry (one unrelated persistence bump, Bangladesh BS-1 2->3). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-10-22, second)
+
+- 2026-10-22-F: `blacksky.com/company/news/` rendered a full dated listing this run (newest post Oct 19),
+  reversing the empty search/filter-shell anomaly logged across seven straight sweeps (2026-09-25-C/-L,
+  2026-09-26-E/-K/-M, 2026-09-27-A). Confirms it was a transient rendering miss after all, not the
+  structural site change the streak suggested; no `fetch_note` needed.
+- 2026-10-22-G: WebSearch synthesis again fabricated a specific figure a direct fetch could not confirm
+  (extends 2026-10-22-B from this morning's run): a search for the Politico "Space Force Scrambles"
+  piece on SpaceX declining 3 launch bids surfaced a "SpaceX halts Falcon 9 bookings beyond 2028" claim
+  that reads like it belongs to the story, but three separate direct fetches (the Yahoo/Politico mirror,
+  politicalwire.com, a content-mill rewrite that explicitly cited Politico) all confirmed no such date
+  appears anywhere in the actual reporting; the figure traced to an unrelated, separately-indexed
+  BigGo Finance piece about an older Falcon 9 booking story that WebSearch's synthesis silently merged
+  in. Left the 2028 figure out of the draft entirely.
+- 2026-10-22-H: A Marco Langbroek bluesky post ("Finally US Government statement in it, after a long
+  silence") carried only an embedded image with no alt text and no linked URL -- unreadable directly.
+  Triangulated the actual content (Under Secretary of State Thomas DiNanno's X post calling Cosmos 2612's
+  behavior "consistent with on-orbit weapons operations," made at the UN First Committee) via a separate
+  WebSearch rather than the image itself, confirmed through two independently-fetchable mainstream
+  mirrors (Tribune India, both citing the same wire/ANI text). Worth remembering an image-only bluesky
+  post with no alt text is a pointer to go find the underlying statement elsewhere, not a citable source
+  on its own.
+- 2026-10-22-I: TechFlowPost's newsletter write-up of Xona's $250M Series D explicitly named Forbes as
+  its source ("according to Forbes") and linked the original (unfetchable, 403) Forbes "exclusive"
+  article; classed the source by the true originating outlet (Forbes, mainstream) rather than the
+  fetched mirror's own tier, extending the Benzinga/Yahoo (2026-10-20-A) and Hubble/StockTitan
+  syndication-attribution pattern to a financial-newsletter case. No other outlet had picked up the
+  specific $250M/$2.45B figures by this run; `crawl: "found_none"` landed SNR 2 despite `major` impact
+  (nine-figure round, largest to date) -- SNR and impact stayed on their own independent axes.
+- 2026-10-22-J: Three separate leads this run turned out to be stale resurfacings once chased past the
+  headline: the NYT's "Space Debris Found Twice Within Days Amid 'Growing Casualty Risk'" bundles the
+  already-published Oct 14 Minnesota/Mexico debris pair under general casualty-risk statistics; China's
+  "Tianwu Constellation" for Central Asia (Eurasianet) traces to a June 28 CGTN announcement with no new
+  dateable fact (first 5 satellites still only "expected by end of 2026"); and a "Capella Space wins $49
+  million contract for military communications satellite demo" hit, which read like fresh SpaceNews
+  coverage, traced via Defense Daily's own dateline to an April 7, 2026 SDA award, resurfaced today by a
+  content-mill mirror with a misleading URL date segment.
+- 2026-10-22-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the standing
+  same-company-plus-category dedup heuristic, firing twice (the Falcon 9/Space Force item against both
+  the unrelated Oct 16 USSF-481 launch and the unrelated Oct 20 Starfall item, both SpaceX+launch; the
+  NASA Competition Model 2.0 item against the unrelated Oct 21 Planet/CSDA Tanager task order, both
+  NASA+procurement); three `dedup_distinct` entries cleared it on the second attempt ("merged 5 new, 2
+  updated, 0 held"). Confirmed via a direct `jq` read of all five new items' `snr`/`category`/`impact`
+  fields (1013 items, up from 1008) and both updated items' grown `sources`/`updates` arrays
+  (Starlink/Ukraine: 52 sources, 20 updates; Cosmos 2612/ICEYE-X36: 16 sources, 8 updates). `bun run
+  build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
