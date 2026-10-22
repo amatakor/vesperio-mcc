@@ -5357,3 +5357,43 @@ a newer entry if a lesson changes.
   items' `snr`/`impact`/`category` fields (1017 items, up from 1013) and the updated Space Rider item's
   grown `sources`/`updates` arrays (3 sources, 1 update), plus a `jq empty` parse check across all touched
   data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.5h gap, unfiltered full source list (2026-10-22, fourth)
+
+- 2026-10-22-R: A WebSearch synthesis for a PCMag "FCC Lets SpaceX Acquire More Spectrum... Without an Auction"
+  headline traced to a real but different-named FCC order than the headline implied (a Tristar/TLG AWS-3
+  license transfer, not the EchoStar deal); the FCC's own DA-26-1129A1.pdf (found by searching the exact
+  docket language, not the PCMag headline) fetched cleanly as a readable PDF via WebFetch and gave the full
+  primary text (62 counties, 8 states, ~4% population, 75 MHz post-transaction) a small-model summary of the
+  wrong document (the January 9 15,000-satellite order, fetched first on a guessed URL) would have missed.
+  Worth searching for the specific docket/order number before trusting the first FCC PDF a general search
+  surfaces for a spectrum story; FCC PDFs are directly readable by WebFetch/Read (not all binary fetches are
+  opaque, contra the general PDF-extraction caution elsewhere in this log).
+- 2026-10-22-S: The Oct 1 ICEYE/Nokia sovereign-satcom partnership item got a genuine new-item-worthy sequel
+  three weeks later when Ukraine's Ministry of Defence became the first named government customer via a
+  Letter of Intent, announced during Finland's PM's Kyiv visit as one of seven Ukraine-Finland agreements
+  (~€300M). Led with ICEYE's own press release (first_party, SNR 5) rather than the Kyiv Post/United24
+  pieces covering the broader multi-sector Finland package, since only ICEYE's own page stated the
+  satcom-specific LOI facts; the broader €300M figure spans rail, energy and housing too and was used only
+  as context, not implied to be the LOI's own value. dedup_distinct was needed against the SAME-DAY
+  ICEYE/OroraTech wildfire item purely on shared company+category, extending the standing heuristic pattern.
+- 2026-10-22-T: Two bluesky posts from the same whitelisted account (Marcia Smith/SpacePolicyOnline),
+  cited as both `scoring.sources` entries on a brand-new item (not an update), collapsed via the
+  `same_domain` rule exactly as it does on updates (2026-10-19-P, 2026-10-20-B); harmless here since the
+  class is `whitelist` with an `observer` floor of 4 regardless of corroboration count, but worth remembering
+  this collapse rule applies to NEW-item scoring blocks too, not just update `attach` arrays.
+- 2026-10-22-U: Crown Castle's own Q3 2026 earnings-call transcript (fetched via a Motley Fool
+  `earnings/call-transcripts` URL, classed `trade`) gave a direct, on-record CEO quote confirming active
+  SpaceX tower-leasing talks a bare Bloomberg "people familiar with the matter" story could not support
+  alone; worth checking for the named counterparty's own earnings-call transcript (fool.com, Seeking Alpha,
+  or the company's own IR site) whenever an "X is in talks with Y" story names a specific public company,
+  since the counterparty's own quarterly call often independently confirms or denies the talks on the record.
+- 2026-10-22-V: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the standing
+  same-company-plus-category dedup heuristic (the new ICEYE/Nokia/Ukraine item against the unrelated
+  same-day ICEYE/OroraTech item); merged cleanly on the second attempt ("merged 5 new, 4 updated, 0 held").
+  Confirmed via a direct `jq` read of all five new items' `snr`/`impact`/`category` fields (1022 items, up
+  from 1017), all four updated items' grown `sources`/`updates` arrays (Starlink/Ukraine: 54 sources, 21
+  updates; SpaceX/Space Force Vulcan reassignment: 3 sources, 1 update; Cosmos 2612/ICEYE-X36: 17 sources,
+  9 updates; SpaceX/Tesla merger: 5 sources, 2 updates), the sweep log's `corroboration_collapses` entry for
+  the same-domain bluesky collapse above, and a `jq empty` parse check across all touched data files. `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
