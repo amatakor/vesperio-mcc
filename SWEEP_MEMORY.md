@@ -5321,3 +5321,39 @@ a newer entry if a lesson changes.
   fields (1013 items, up from 1008) and both updated items' grown `sources`/`updates` arrays
   (Starlink/Ukraine: 52 sources, 20 updates; Cosmos 2612/ICEYE-X36: 16 sources, 8 updates). `bun run
   build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.5h gap, unfiltered full source list (2026-10-22, third)
+
+- 2026-10-22-L: `nationalacademies.org` is not a registry-recorded domain, so the gate's anti-spoof check
+  rejects it as both `first_party` and `official_record` ("not an official ... host; reclassify") even
+  though the National Academies report is genuinely the actor speaking for its own work; had to fall back
+  to `trade` for a NASA-commissioned National Academies report, which still reached SNR 4 on
+  `corroboration_2plus` (Payload, Scientific American). Worth remembering non-profit/advisory bodies with
+  no registry entity never clear the first_party/official_record domain check, whatever their actual
+  authority, and budget for a `trade` reclassification + corroboration rather than assuming first_party
+  will fly.
+- 2026-10-22-M: delano.lu republished a verbatim September 17, 2024 Reflex Aerospace/Odysseus Space press
+  release under an October 22, 2026 page-load date, with an "early 2026" launch target baked into the old
+  text; it would have read as fresh corroboration for today's genuinely new Marble Imaging/Reflex/Odysseus
+  laser-comms partnership (same two companies, similar headline shape) if not checked against its own
+  body text. Extends 2026-10-22-J's stale-resurfacing pattern: a page's load/display date is not proof of
+  a story's actual age, read the body for internal date references (an "early 2026" launch target in an
+  October 2026 page is the tell) before citing it as same-day corroboration.
+- 2026-10-22-N: A near-total-junk ~80-candidate queue (SpaceX/Tesla merger and Q3-earnings stock-reaction
+  spam, routine launch-reaction Bluesky noise) still yielded four new items once the four mandatory HTML
+  sources and open-web discovery were chased past the headline: BlackSky's own site had a same-day Gen-3
+  Assured contract-doubling release the queue didn't surface; SatNews (found via WebSearch, not the queue)
+  carried Marble Imaging/Reflex Aerospace/Odysseus Space's new laser-downlink mission; a discovery-pass
+  NASA-contract query surfaced the National Academies non-polar moon-site report; and EarthDaily's own
+  blog had a routine SynMax energy-analytics subscription expansion. All four BlackSky/SynMax-shaped leads
+  needed `dedup_distinct` against same-company-plus-category items from the prior 3-7 days (BlackSky vs
+  Oct 15 HEO contract; SynMax/EarthDaily vs Oct 19 Australia wildfire-insurer item; National Academies vs
+  the unrelated Oct 19 JAXA MMX item on shared company NASA + category science), confirming the heuristic
+  keeps firing on coincidental company+category overlap alone.
+- 2026-10-22-O: `bun scripts/finalize-sweep.ts` rejected the first three draft attempts in sequence (a
+  `coverage` array containing a tag instead of a category; the National Academies source's anti-spoof
+  domain rejection; a 147-char tagline on the same item after the reclassification), merging cleanly on
+  the fourth attempt ("merged 4 new, 1 updated, 0 held"). Confirmed via a direct `jq` read of all four new
+  items' `snr`/`impact`/`category` fields (1017 items, up from 1013) and the updated Space Rider item's
+  grown `sources`/`updates` arrays (3 sources, 1 update), plus a `jq empty` parse check across all touched
+  data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
