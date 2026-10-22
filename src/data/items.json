@@ -66022,7 +66022,7 @@
       ],
       "source_url": "https://www.tbsnews.net/tech/us-space-tracking-alert-helps-bangladeshs-satellite-avoid-indian-satellite-debris-1565871",
       "secondary_urls": [],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -66034,10 +66034,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-10-22",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -68719,7 +68732,9 @@
         "https://www.twz.com/news-features/major-ukrainian-arms-maker-rethinking-future-reliance-on-starlink",
         "https://euromaidanpress.com/2026/10/21/starlink-slowdown-makes-ukraines-shahed-hunting-drone-maker-rethink-air-launched-interceptors/",
         "https://www.stripes.com/theaters/us/2026-10-21/lawmakers-investigation-ukraine-starlink-disruptions-23218791.html",
-        "https://payloadspace.com/senators-ask-ig-to-investigate-starlink-disruptions-in-ukraine/"
+        "https://payloadspace.com/senators-ask-ig-to-investigate-starlink-disruptions-in-ukraine/",
+        "https://politicalwire.com/2026/10/21/trump-denies-ordering-starlink-slowdown-in-ukraine/",
+        "https://www.yahoo.com/news/politics/articles/democrats-call-investigation-musk-over-144734762.html"
       ],
       "kind": "event",
       "snr": 4,
@@ -69083,6 +69098,20 @@
           "class": "trade",
           "added": "2026-10-21",
           "via": "corroboration"
+        },
+        {
+          "url": "https://politicalwire.com/2026/10/21/trump-denies-ordering-starlink-slowdown-in-ukraine/",
+          "outlet": "Political Wire",
+          "class": "informal",
+          "added": "2026-10-22",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.yahoo.com/news/politics/articles/democrats-call-investigation-musk-over-144734762.html",
+          "outlet": "The Hill",
+          "class": "mainstream",
+          "added": "2026-10-22",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-14T12:43:21.385Z",
@@ -69189,6 +69218,11 @@
           "date": "2026-10-21",
           "kind": "attach",
           "note": "Sen. Elizabeth Warren and Rep. Brian Fitzpatrick are among lawmakers demanding to know who ordered the slowdown, with Fitzpatrick saying Musk and others may need to testify under oath; Reps. DeLauro and McCollum gave the Pentagon 30 days to respond."
+        },
+        {
+          "date": "2026-10-22",
+          "kind": "attach",
+          "note": "Trump says \"I wasn't involved\" in the Starshield slowdown and doesn't know who did it, a day after the WSJ reported Musk ordered it; Sens. Schiff and Gallego join the chorus demanding Musk testify under oath."
         }
       ]
     },
@@ -73107,9 +73141,9 @@
       "headline": "SpaceX flies second Starfall reentry capsule on Bandwagon-5 mission",
       "explainer": {
         "tagline": "SpaceX launched its Starfall reentry capsule for the second time on the Bandwagon-5 rideshare mission, per Space.com.",
-        "what_happened": "SpaceX launched the Bandwagon-5 rideshare mission on a Falcon 9 at 7:04 a.m. EDT on Oct. 20 from Cape Canaveral Space Force Station, carrying 32 payloads including the company's second Starfall reentry capsule, per Space.com. Starfall debuted on a dedicated demonstration flight on June 23; per the FAA environmental assessment SpaceX has cited, the disk-shaped vehicle weighs about 2,100 kilograms and can return roughly 1,000 kilograms of payload, and SpaceX has said it is meant to enable affordable, routine access to microgravity for research and in-space manufacturing. The News International independently confirmed the launch and reported Starfall separated last, at 2 hours 48 minutes post-launch, and that the Falcon 9 first stage landed on the droneship for its 19th flight. Varda Space Industries' seventh W-Series reentry capsule also flew on the same mission, per Space.com.",
-        "why_it_matters": "A second successful flight extends SpaceX's operating history in the orbital-return market without yet disclosing a commercial service date or named customer manifest for Starfall itself. Repeat flights are the track record in-space manufacturing and defence-logistics customers will want before committing cargo to a new reentry vehicle, in a market Varda and other startups have so far had largely to themselves.",
-        "for_who": "In-space manufacturing startups, reentry-services competitors"
+        "what_happened": "SpaceX launched the Bandwagon-5 rideshare mission on a Falcon 9 at 7:04 a.m. EDT on Oct. 20 from Cape Canaveral Space Force Station, carrying 32 payloads including the company's second Starfall reentry capsule, per Space.com. Starfall debuted on a dedicated demonstration flight on June 23; per the FAA environmental assessment SpaceX has cited, the disk-shaped vehicle weighs about 2,100 kilograms and can return roughly 1,000 kilograms of payload, and SpaceX has said it is meant to enable affordable, routine access to microgravity for research and in-space manufacturing. The News International independently confirmed the launch and reported Starfall separated last, at 2 hours 48 minutes post-launch, and that the Falcon 9 first stage landed on the droneship for its 19th flight. Varda Space Industries' seventh W-Series reentry capsule also flew on the same mission, per Space.com. The Air Force Research Laboratory tested its Rocket Cargo point-to-point delivery concept aboard the same Starfall flight, per SpaceNews, evaluating whether military supplies can withstand the rigors of spaceflight as part of a Pentagon effort to explore using commercial space vehicles to deliver equipment to forces around the world.",
+        "why_it_matters": "A second successful flight extends SpaceX's operating history in the orbital-return market without yet disclosing a commercial service date or named customer manifest for Starfall itself. Repeat flights are the track record in-space manufacturing and defence-logistics customers will want before committing cargo to a new reentry vehicle, in a market Varda and other startups have so far had largely to themselves. AFRL's Rocket Cargo test adds a concrete government-logistics prospect for Starfall beyond its original in-space-manufacturing pitch.",
+        "for_who": "In-space manufacturing startups, reentry-services competitors, defense-logistics planners"
       },
       "kind": "event",
       "tags": [
@@ -73117,7 +73151,7 @@
         "rideshare"
       ],
       "category": "launch",
-      "impact": "noise",
+      "impact": "notable",
       "companies": [
         "SpaceX",
         "Varda Space Industries"
@@ -73125,7 +73159,8 @@
       "source_url": "https://www.space.com/space-exploration/launches-spacecraft/spacex-starfall-return-capsule-launch-bandwagon-5-rideshare-mission",
       "secondary_urls": [
         "https://news.google.com/rss/articles/CBMiekFVX3lxTFBxMmxodE9uOXgwM1N4Q1ZaVEpvWUhyZUFDRVVRU2gteVRHVk9yZl9scWswa3VDQks0MDJRa3liT0tGLVlOS0szSWJ1VjVlSVFXYWEzdmVYUVRtS3pzNFVkZC1rNTlacl9UUnlRa3JRQUlSdENGMW5FZFZn?oc=5",
-        "https://www.thenews.com.pk/latest/1420630-spacex-falcon-9-successfully-launches-bandwagon-5-mission-with-32-payloads"
+        "https://www.thenews.com.pk/latest/1420630-spacex-falcon-9-successfully-launches-bandwagon-5-mission-with-32-payloads",
+        "https://spacenews.com/u-s-air-force-explores-military-resupply-from-space-in-latest-spacex-starfall-flight/"
       ],
       "snr": 4,
       "snr_trace": {
@@ -73165,6 +73200,13 @@
           "class": "mainstream",
           "added": "2026-10-20",
           "via": "corroboration"
+        },
+        {
+          "url": "https://spacenews.com/u-s-air-force-explores-military-resupply-from-space-in-latest-spacex-starfall-flight/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-10-22",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-10-20T12:29:45.821Z",
@@ -73184,7 +73226,14 @@
         "origin_url": "https://spacenews.com/spacex-launches-second-starfall-reentry-vehicle/",
         "width": 1200,
         "height": 800
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-10-22",
+          "kind": "copy",
+          "note": "The Air Force Research Laboratory tested its Rocket Cargo point-to-point delivery concept aboard this same Starfall flight, exploring whether commercial reentry vehicles can deliver military equipment globally."
+        }
+      ]
     },
     {
       "id": "2026-10-16-french-mps-vortex-budget-line",
