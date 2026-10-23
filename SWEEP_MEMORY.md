@@ -93,166 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h47m gap, unfiltered full source list (2026-09-22)
-
-- 2026-09-22-A: A same-underlying-round headline can show two different
-  dollar figures for a genuinely non-stale reason: "HEO Space raises
-  $37m" (Startup Daily/Capital Brief) and "HEO raises $25M" (Axios/
-  Dealroom/Tech Startups) are the SAME Sept. 21 Series B, just quoted in
-  AUD vs. USD (confirmed by Startup Daily's own body text stating
-  "US$25 million (A$37 million)" once fetched directly) -- distinct from
-  the yen/dollar conversion-snapshot trap (2026-09-04-N) in that here
-  both figures came from the same day's coverage, not different publish
-  dates. Worth checking for a stated FX conversion before treating two
-  differing dollar figures on the same story as a stale-resurfacing or
-  wrong-round trap.
-- 2026-09-22-B: Confirms 2026-09-17-A's refinement a second time: a lead
-  source and its sole corroboration source at the EQUAL tier (both
-  `informal`, HEO's Startup Daily lead + Tech Startups corroboration)
-  triggered `corroboration_2plus` (+1) with just one attach, consistent
-  with "same-or-higher-tier corroboration earns the bump, a weaker
-  addition doesn't" rather than raw source count.
-- 2026-09-22-C: The Starbase land-swap item's Sept. 21 injunction-denial
-  fact (added same-day by the prior sweep per MyRGV) needed a same-day
-  follow-up patch once the Texas Tribune's own fuller Sept. 21 article
-  became fetchable: the original MyRGV-sourced text named no judge and
-  no legal basis; the Tribune's direct-fetched follow-up supplied the
-  judge's name (Fernando Rodriguez Jr.), the standing/irreparable-harm
-  ruling basis, the debris-allegation rejection, and the Sept. 1
-  agreement / Sept. 22 title-transfer dates -- a genuine enrichment
-  patch, not corroboration of an already-complete fact.
-- 2026-09-22-D: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
-  1 updated, 0 held") plus a direct read of both new items' and the
-  updated item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
-  as the build-health signal.
-
-## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-09-22, second)
-
-- 2026-09-22-E: A Planet Labs IR press release ("Planet Opens
-  State-of-the-Art Satellite Manufacturing in Berlin", Sept. 22, first
-  seen via the mandatory HTML pass since raw_excerpt was empty) is a
-  distinct dateable event from the Sept. 17 "opening this fall" plan
-  announcement already published as `2026-09-17-planet-berlin-satellite-
-  factory`: the actual handover/ribbon-cutting, with Germany's economy
-  minister Katherina Reiche attending, plus facility size (5,700 sqm),
-  satellite specs, 60-sat/year capacity, and the Isar Aerospace launch
-  plan. Folded in as `updates[].patch`+attach within the 7-day dedup
-  window rather than a new item, consistent with the standing
-  plan-vs-actual-event enrichment pattern (the 2026-09-22-C Starbase
-  ruling case and peers).
-- 2026-09-22-F: Confirms `loadRegistryHosts`' apex-domain reduction
-  (finalize-sweep.ts) treats `investors.planet.com` as the same actor as
-  the registry's `www.planet.com` website field (the "www." prefix is
-  stripped before matching, per the code comment), so a company's IR
-  subdomain classes cleanly as `first_party` without a registry edit.
-  Worth checking this reduction before assuming an unprofiled-looking
-  subdomain (investors., newsroom., ir.) needs `informal` per the
-  2026-09-21-P precedent, which applies to companies with NO registry
-  profile at all, not to subdomains of an already-profiled company's
-  registered site.
-- 2026-09-22-G: `draft.signalsPass.checked` must list the exact
-  whitelisted channel URL from `signals-context.ts`'s `fetchable[]`
-  array (e.g. `https://europeanspaceflight.substack.com`), never the
-  underlying `rss` fetch URL (`.../feed`) even when that's the URL
-  actually requested; finalize-sweep rejected the draft on the first
-  submit for listing the feed URL. List the channel URL and note the
-  feed 403 in the pass's `note` field instead.
-- 2026-09-22-H: A fully quiet run otherwise: of ~65 harvested candidates
-  (mostly SpaceX stock/valuation churn, Google News redirects to
-  same-day-earlier-sweep stories -- the Starbase land-swap ruling
-  picked up by 8+ more outlets, the SSC/Pleiades Neo deal restated by
-  defence-industry.eu, ISRO-ESA cooperation picked up by 4 Indian
-  outlets -- and off-topic BBC/CGTN/FAA-NOAA fishery filler), all 5
-  mandatory HTML sources, all 17 signals channels, and an 8-query
-  discovery pass covering the full matrix surfaced nothing new beyond
-  the Planet Berlin item above. `bun run build` was not attempted, per
-  the 2026-09-09 CLAUDE.md procedure update; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 1
-  updated, 0 held") plus a direct read of the updated item's fields as
-  the build-health signal.
-
-## Narrow re-check, ~5h07m gap, unfiltered full source list (2026-09-22, third)
-
-- 2026-09-22-I: All the loudest queue/discovery leads this run were already
-  fully covered same-day or earlier: a Newser "Judge OKs Land Swap" hit added
-  nothing beyond the existing Starbase land-swap item's Sept. 21/22 patch; a
-  fresh ThePrint/satnews/Space Daily wave on "ESA and ISRO extend to 2032"
-  restated the identical Paris-signing, Jan. 8 2032 date, and scope details
-  already in the Sept. 10 item; and Payload's own "HEO Raises $25M Series B"
-  and the TRL11/Firefly Mars-mission $13M-aeroshell background were each
-  already published. Confirms the standing grep-before-drafting discipline
-  (2026-09-20-A/H/I, 2026-09-21-B/M) generalizes past headline-name matches to
-  full-body company/program mentions.
-- 2026-09-22-J: The FCC's Sept. 30 vote on waiving NEPA review for satellite
-  ops (Payload) is a second, independent not-yet-decided draft order sharing
-  the same Sept. 30 Open Meeting date as the already-excluded 12.7-13.25/
-  42-42.5 GHz spectrum order (2026-09-20-I); left undrafted for the same
-  reason (a draft order on a meeting agenda is not adopted commission
-  action). Worth checking both items' outcomes together after Sept. 30.
-- 2026-09-22-K: An EarthDaily first-party blog post ("EarthDaily Secures
-  Marigold Renewals With Two Global Mining Majors") named no customers but
-  did state a concrete, quotable figure ("each six figure contracts") --
-  drafted as a thin but honest noise item rather than held or discarded,
-  since the source itself (not a paraphrase) supplied the only figure used
-  and EarthDaily's constellation registry profile satisfies the first-party
-  anti-spoof host check even without an `organizations/` profile.
-- 2026-09-22-L: The dedup gate's shared-company + shared-category heuristic
-  fired twice on one new item: a TRL11/NASA SR-1 Freedom imaging subcontract
-  (category `science`) matched against both the unrelated Sept. 16 Roman
-  Space Telescope WFI activation and the unrelated Sept. 17 SpaceX/StarBurst
-  launch task order, purely on shared company "NASA" plus shared category,
-  extending the standing pattern (2026-09-19-B, 2026-09-21-F and peers) to a
-  two-way simultaneous false-positive on the same draft item. Two
-  `dedup_distinct` entries cleared both.
-- 2026-09-22-M: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0 updated, 0
-  held") plus a direct read of all four new items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the build-health
-  signal.
-
-## Narrow re-check, ~4h14m gap, unfiltered full source list (2026-09-22, fourth)
-
-- 2026-09-22-N: Two same-day near-duplicates were caught only by grepping
-  `items.json` before drafting, not by title recognition: a Google-News
-  "ESA awards contracts for Europe's EOGS blueprint" candidate and a Via
-  Satellite "Boeing Taps Lite Coms..." mandatory-pass headline both read as
-  fresh, but the real trap was the mandatory Telesat HTML pass's "Orange and
-  Telesat inaugurate Europe's first Telesat Lightspeed Gateway in France"
-  release (Sept 17), which was already published verbatim under
-  `2026-09-17-orange-telesat-lightspeed-gateway-france` -- and the
-  Andrew Parsonson signals-pass find "SaxaVord has abandoned plans for a
-  shared suborbital launch rail" was already published same-day as
-  `2026-09-22-saxavord-launch-rail-scrapped`. Both were fully sourced and
-  ready to draft before a plain `grep -o '"id": "2026-09-1[6-9]...'` dump of
-  recent ids caught them; extends 2026-09-20-A/H/I/2026-09-21-B/M's
-  grep-before-drafting discipline to the mandatory HTML pass and signals
-  pass specifically, not just discovery/queue finds.
-- 2026-09-22-O: Confirms 2026-09-22-F's apex-domain reduction a second time
-  on a different company: `ir.spire.com` (Spire's IR press-release page)
-  classed clean as `first_party` against the registry's `https://spire.com`
-  website field for a same-day $33.2M NOAA task-order announcement, no
-  registry edit needed.
-- 2026-09-22-P: The MAGPIE upgrade-path (2026-09-02-H) worked again on a
-  live item, this time via `patch.source_url` + `rescore` rather than a bare
-  `attach`: Kymeta's Sept 17 TÜV rail-certification item (originally led by
-  Kymeta's own no-registry-entity site, capped `informal`, SNR 2) got a
-  genuinely better lead five days later when Eutelsat's own Sept 22 release
-  confirmed the certified terminal's first live rail trial (named operator,
-  route, integration partners) -- Eutelsat's release lives on
-  `mynewsdesk.com`, not the registry-recorded `eutelsat.com`, so it still
-  classed `wire_pr` (the standing 2026-08-07-L mynewsdesk precedent) rather
-  than `first_party`, but wire_pr beats the original informal lead and the
-  item moved from SNR 2 to SNR 4 on the rescore.
-- 2026-09-22-Q: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 5 new, 1 updated, 0
-  held") plus a direct read of all five new items' and the updated item's
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields (723 items, up from
-  718) as the build-health signal.
-
 ## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-09-23)
 
 - 2026-09-23-A: A near-total-junk queue (SpaceX stock/valuation churn, Trump's
@@ -5397,3 +5237,39 @@ a newer entry if a lesson changes.
   9 updates; SpaceX/Tesla merger: 5 sources, 2 updates), the sweep log's `corroboration_collapses` entry for
   the same-domain bluesky collapse above, and a `jq empty` parse check across all touched data files. `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h57m gap, unfiltered full source list (2026-10-23)
+
+- 2026-10-23-A: The em-dash ban applies even inside a real, verbatim quote: Trump's reported
+  "The bottom line — he put it back" tripped `finalize-sweep`'s blanket em-dash rejection on first
+  submission. Rewrote the quoted clause as "The bottom line, he put it back" (comma for the dash,
+  wording otherwise unchanged) rather than drop the fact; extends the 2026-10-06-R finding that the
+  no-punctuation-marks rules bind the rendered copy, not just unquoted agent prose, from exclamation
+  marks to em dashes specifically.
+- 2026-10-23-B: Two separate WebFetch passes over near-identical Al Jazeera/Reuters wire text about
+  Trump's Starlink-restoration claim returned materially different quote wording and a fabricated
+  "October 24" follow-up date that doesn't exist in this sweep's window; neither was trusted until two
+  further direct fetches (The Moscow Times via Reuters, UNN.ua) independently confirmed the same "the
+  bottom line, he put it back" / "nothing has changed anywhere" exchange. Confirms the standing
+  never-trust-a-single-WebFetch-summary-for-an-exact-quote discipline extends to short, simple quotes,
+  not just long technical ones.
+- 2026-10-23-C: A WebFetch of Vivienne Machi's Aviation Week author-page listing surfaced a "Space
+  Force Plans New 'Spider' Program For GPS Ground Ops" headline that could not be confirmed by a
+  dedicated WebSearch at all (no result named any "Spider" program); treated as a fabricated/garbled
+  small-model summarization artifact per the standing 2026-10-03-G/2026-10-22-B pattern and left
+  entirely unchased rather than drafted or even logged as a gap to revisit.
+- 2026-10-23-D: A near-total-junk queue (SpaceX/Tesla-merger and Starlink/Ukraine-saga rehash
+  dominating every Google News and Bluesky search leg) and a fully clean mandatory 4-source HTML pass
+  still yielded five genuine enrichment patches, all via a source already cited on an existing item, a
+  same-outlet correction caught through the signals pass, or a discovery-pass fact missing from an
+  already-published item's copy: Trump's disputed Starlink-restoration claim (Ukraine saga), a $561M
+  Boring Company stake markup disclosed in SpaceX's own Q3 10-Q (missed by the original Q3-earnings
+  draft because it sat in the 10-Q rather than the 8-K/Exhibit 99.1 already cited), European
+  Spaceflight's own correction to the Vulcain Aft Bay weight figures (880kg actually beat the 800kg
+  target, not fell short), SpacePolicyOnline's fuller ASAP Artemis IV writeup (adds a future-LEO-access
+  concern the original bluesky-sourced draft didn't carry), and Rocket Lab's own response to the
+  Space Force launch-capacity-gap item. Zero new items; `bun scripts/finalize-sweep.ts` merged cleanly
+  on the second attempt ("merged 0 new, 5 updated, 0 held") after the em-dash fix, confirmed via a
+  direct `grep` item-count check (1022, unchanged) and a read of the sweep log's `snr_movements` (four
+  unrelated persistence bumps) and `signals`/`discovery` blocks. `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
