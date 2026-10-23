@@ -5273,3 +5273,43 @@ a newer entry if a lesson changes.
   direct `grep` item-count check (1022, unchanged) and a read of the sweep log's `snr_movements` (four
   unrelated persistence bumps) and `signals`/`discovery` blocks. `bun run build` was not attempted, per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-10-23, second)
+
+- 2026-10-23-E: A candidate drafted from the signals pass (European Spaceflight's Themis
+  schedule-slip piece, found by fetching europeanspaceflight.com directly since its substack
+  feed 403'd) turned out to duplicate an item the immediately-prior sweep had already published
+  from the exact same source URL seconds before this run's `lastSweep` cutoff; `finalize-sweep`
+  caught it on the dedup check and it was dropped rather than drafted as a duplicate or an
+  update. Worth re-grepping a brand-new-looking signals-pass find's exact headline/company against
+  `existing[]` before drafting, even when it reads as fresh, since a same-day prior sweep can land
+  between one run's candidate discovery and its own finalize.
+- 2026-10-23-F: Bluesky profile pages (`bsky.app/profile/...`) are consistently unreadable via
+  WebFetch this run (renders only the bare handle, no post content, for every account tried); the
+  public AT Protocol endpoint `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  fetches cleanly via WebFetch instead and returns real post text with `indexedAt` timestamps.
+  Prefer that endpoint over `bsky.app` URLs directly whenever `bsky.app` returns only a handle shell.
+- 2026-10-23-G: WebSearch synthesis fabricated a source name on the Cosmos 2612 UN exchange: an
+  initial search attributed the US statement to "Thomas DiNanno" and Russia's rebuttal to named
+  diplomat "Konstantin Vorontsov" with an "absurd" quote, but two independent direct fetches
+  (rferl.org, eurasiareview.com, both the same Mike Eckel wire piece) showed the actual US speaker
+  at the Oct. 21 UN First Committee was Brian Hardesty, and Russia's representative was not
+  identified by name in either piece. Drafted the update using only the directly-confirmed names
+  and quotes; extends the standing WebSearch-synthesis-fabricates-specifics pattern
+  (2026-10-22-B/G, 2026-10-23-C) to person names, not just figures and headlines.
+- 2026-10-23-H: Several near-total-junk queue leads traced to stale resurfacings rather than new
+  facts: "Mystery space debris found in Minnesota cornfield linked to Chinese rocket" (KSTP)
+  rehashes the already-fully-identified Oct. 14 Zhuque-2E debris item; a WebSearch for "Ukraine
+  independent satellite system" surfaces Stetman's $1.1B/360-satellite constellation plan, which
+  traces to a July 2026 Kyiv Post piece, not a new event; and a "NASA awards $476M in Commercial
+  Satellite Data contracts" hit (framed by a reposted tweet as "4 hours ago") is actually the
+  June 18, 2026 CSDA On-Ramp 2 announcement. All three left undrafted.
+- 2026-10-23-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (a second new item,
+  the Themis piece above, as a same-event dedup match against both an unrelated Oct. 21
+  Airbus/Vulcain-aft-bay item and the already-published same-day Themis item); dropping that item
+  entirely merged cleanly on the second attempt ("merged 1 new, 3 updated, 0 held"). Confirmed via
+  a direct `jq` read of the new Orbital Operations/Astraeus item's `snr`/`category`/`impact` fields
+  (1025 items, up from 1024) and all three updated items' grown `sources`/`updates` arrays
+  (Atomic-6/Starburst: 3 sources, 1 update; Starlink/Ukraine: 58 sources, 23 updates; Cosmos
+  2612/ICEYE-X36: 18 sources, 10 updates), plus a `jq empty` parse check across all touched data
+  files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
