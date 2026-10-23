@@ -5313,3 +5313,53 @@ a newer entry if a lesson changes.
   (Atomic-6/Starburst: 3 sources, 1 update; Starlink/Ukraine: 58 sources, 23 updates; Cosmos
   2612/ICEYE-X36: 18 sources, 10 updates), plus a `jq empty` parse check across all touched data
   files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.3h gap, unfiltered full source list (2026-10-23, third)
+
+- 2026-10-23-J: A directly-fetched Yahoo mirror of a Politico piece ("British PM pushes Trump
+  on Ukraine's Starlink access") twice named the UK Prime Minister as "Andy Burnham," not the
+  real-world Keir Starmer; re-fetched with a targeted "who exactly is named" prompt and got the
+  same answer both times. Trusted the directly-fetched text over outside/training-data knowledge
+  of real-world politics per rule 2 (never enrich from memory) and wrote the item using the
+  site's own stated name; this platform's 2026 is a simulated continuity that can diverge from
+  real-world events, and the fetched source is the only authority that matters.
+- 2026-10-23-K: A Via Satellite "Space Systems Command Makes CASR Awards for Space Domain
+  Awareness" piece read as a fresh award but turned out to recap the already-published Oct. 22
+  CASR item (same six companies, just "unnamed by SSC" in this outlet's own phrasing where
+  airandspaceforces.com had named them); still carried genuinely new budget figures (a March 2025
+  wargame with a dozen-plus companies, $37M FY26 / $24M FY27 commercial-services lines against a
+  ~$71B FY27 request) not in the original draft, folded in as a no-bump `updates[].patch`+`attach`
+  enrichment rather than a new item or a skip. Worth reading a same-program "award" piece in full
+  even when the headline sounds redundant; it can carry the only sourced budget context the
+  original draft lacked.
+- 2026-10-23-L: An Ars Technica "pressure is on to find a home for a new spaceport" piece read as
+  a fresh gap but was the same story as the already-published Oct. 22
+  `2026-10-22-space-force-third-launch-site-feasibility` item (Garrant's "aspirational" 2030
+  quote, no site chosen), just reframed around congressional pressure and Meink's May hearing
+  testimony; grepping `items.json` by topic ("spaceport", "launch site") before drafting caught
+  it. The incremental Meink/congressional-study detail was judged too marginal to patch in on its
+  own.
+- 2026-10-23-M: Vivienne Machi's Aviation Week author-page listing (one of the mandatory
+  fetchable signals channels) surfaced a genuine same-day gap the queue and an 8-query discovery
+  matrix both missed: Space Systems Command's new ACES program (Access to the Classified
+  Ecosystem for Space), announced Oct. 22 at LA Space Week, easing security-clearance barriers for
+  commercial vendors entering classified national-security space work. SatNews and ExecutiveGov
+  both fetched directly and independently worded, landing a clean SNR 4 off two trade sources; no
+  named vendors or dollar figures exist yet, so `crossfeed.facts` stayed empty.
+- 2026-10-23-N: BlackSky's own news listing carried a same-day "AI driven space-based
+  intelligence as a path to space sovereignty" entry that read like a company blog post but
+  turned out to be syndicated NATIVE ADVERTISING (`airforcetimes.com/native/blacksky/...`,
+  `militarytimes.com/native/blacksky/...`, the same piece dated as far back as Oct. 9 on one
+  mirror) rather than a dated news item; left undrafted per the standing thin-marketing exclusion,
+  extending it to sponsored-content placements specifically, not just a company's own blog.
+- 2026-10-23-O: A routine, undramatic Chinese Yaogan launch (Long March 4B, six Yaogan 53/56-series
+  reconnaissance satellites) had zero trade or mainstream pickup on a direct search; published
+  single-sourced off Launch Library's own tracking data (`aggregator`, `crawl: "found_none"`,
+  honest SNR 3) rather than held, per the standing "every on-scope launch publishes" rule and the
+  "weak sourcing is never a reason to hold" rule, extended here to a launch vehicle itself (not
+  just its payload) when literally no press exists yet.
+- 2026-10-23-P: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4
+  new, 2 updated, 0 held"); confirmed via a direct `jq` read of all four new items'
+  `snr`/`category`/`impact` fields (1029 items, up from 1025), the CASR and Starlink/Ukraine
+  updated items' grown `sources`/`updates` arrays, and a `jq empty` parse check across all touched
+  data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
