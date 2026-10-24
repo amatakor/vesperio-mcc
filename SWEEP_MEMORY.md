@@ -5299,3 +5299,42 @@ a newer entry if a lesson changes.
   updates; FCC licensing overhaul: 5 sources, 5 updates), plus a `jq empty`
   parse check across all touched data files. `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h49m gap, unfiltered full source list (2026-10-24, third)
+
+- 2026-10-24-K: Musk's first on-record admission that SpaceX itself (not
+  only the US government) throttled Starlink/Starshield in Ukraine, "Ukraine
+  military violated Starlink terms of service and used it for offensive
+  drone strikes to kill people," surfaced the same evening restoration was
+  announced; folded into the existing 10-day-old saga item (now 68 sources,
+  27 updates) as an `attach`+`patch`, no bump (mainstream-led item already
+  at its corroboration ceiling of 4). Presidential adviser Beskrestnov's
+  on-record rebuttal (commercial Starlink has carried a 70-90 km/h cap since
+  winter, Starshield is the system actually used for strikes) came only from
+  a smaller outlet (Ukraine Today), classed `informal`; the AP wire carrying
+  Musk's quote was mirrored identically across KSL/durangoherald/krcgtv
+  (one corroboration unit).
+- 2026-10-24-L: A WebSearch for a same-day "China commercial rocket launch"
+  surfaced an article describing a Long March 8A SatNet launch as happening
+  "Saturday, Oct. 24, liftoff scheduled for 2:50 UTC," reading as a
+  same-day event, but a direct Launch Library query for the vehicle showed
+  the actual upcoming flight is NET Oct. 25 01:50 UTC, still "Go for
+  Launch"; the "2:50 UTC" figure traced to a stale preview-article
+  artifact, not a real launch time. Extends the standing
+  WebSearch-synthesis-gives-wrong-dates-for-Chinese-launches pattern
+  (2026-09-26-C and peers); left undrafted as scheduled-not-yet-occurred.
+- 2026-10-24-M: A substantial Bolivia Starlink-for-schools program (Aula
+  Conectada, President Paz, 85 La Paz municipalities, 4,500-4,700 antennas,
+  signed Oct. 20) had surfaced in the queue only via a BASENOR mirror (the
+  standing low-quality-mirror flag); two independently-written mainstream
+  outlets (Rio Times, Latin Times) confirmed the same figures with
+  distinct framing and quotes once searched for directly, and the item was
+  dated on the actual Oct. 20 signing per the predates-window convention.
+  BASENOR was left off the sources list entirely.
+- 2026-10-24-N: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 2 new, 1 updated, 0 held"); confirmed via a direct `jq`
+  read of both new items' `snr`/`category`/`impact`/`kind` fields (1034
+  items, up from 1032) and the updated Starlink/Ukraine item's grown
+  `sources`/`updates` arrays (68 sources, 27 updates), plus a `jq empty`
+  parse check across all touched data files. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
