@@ -5253,3 +5253,49 @@ a newer entry if a lesson changes.
   Amtrak Starlink Cascades 2→3) and `corroboration_collapses` entries, and a `jq empty` parse
   check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h07m gap, unfiltered full source list (2026-10-24, second)
+
+- 2026-10-24-F: `newItems[].explainer.for_who` rejects an explicit `null`
+  ("must be a string when present"); the field is optional, so OMIT the key
+  entirely rather than setting it to `null` when there is no specific
+  audience to name.
+- 2026-10-24-G: Two same-day Xinhua-originated Chinese state-media pages
+  (CGTN's own report and People's Daily's, different URLs, different
+  headlines, same underlying facts on a routine Yaogan-50 03 launch) did
+  NOT title-collapse at finalize and scored as two distinct sources
+  (`corroboration_2plus`, +1) while `crawl: "found_none"` (no independent,
+  non-state pickup existed) still applied its own -1 in the same trace,
+  netting to zero and leaving the item at its mainstream base tier of 3.
+  Worth expecting this net-zero outcome whenever a state-media pair is the
+  only coverage: attesting `found_none` honestly is correct even when the
+  state outlets themselves are plural, since "state media twice" is not
+  independent corroboration.
+- 2026-10-24-H: Two Federal Register notices continuing an already-published
+  proceeding (new GN Docket 26-289 taking comment on Upper C-band satellite
+  transition plans; Upper C-band Clearinghouse selection criteria) and a
+  Further NPRM's formal publication (the July 2026 satellite-licensing
+  overhaul's FNPRM on NGSO call-sign merging and space-based experimental
+  licensing) all folded cleanly into their respective existing items via
+  `updates[].attach`+`patch`, no bump requested in any case (one item
+  already at the official_record ceiling of 5, the other's new source
+  concerns a different procedural fact than the one the original trade
+  lead covers, not better sourcing of the same claim). An EUSPA procurement
+  listing ("Space Traffic Coordination Platform") was left undrafted
+  despite being genuinely new and unpublished: the procurement page itself
+  stated no publication date, estimated value, or scope beyond the title,
+  too thin to clear the inclusion bar even as a low-SNR item.
+- 2026-10-24-I: `mainenginecutoff.com` (a mandatory fetchable signals
+  channel) returned no content on two separate WebFetch attempts this run
+  (not a 403, just an empty/failed fetch); logged as a failed attempt in
+  the signals-pass note rather than claimed as checked with no evidence.
+  Worth a retry next sweep before concluding it needs a fetch_note.
+- 2026-10-24-J: `bun scripts/finalize-sweep.ts` merged cleanly on the second
+  attempt, after dropping an explicit `null` `for_who` per -F above ("merged
+  2 new, 3 updated, 0 held"); confirmed via a direct `jq` read of both new
+  items' `snr`/`snr_trace`/`category`/`impact` fields (1032 items, up from
+  1030) and all three updated items' grown `sources`/`updates` arrays
+  (Starlink/Ukraine: 66 sources, 26 updates; FCC Upper C-band: 9 sources, 4
+  updates; FCC licensing overhaul: 5 sources, 5 updates), plus a `jq empty`
+  parse check across all touched data files. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
