@@ -93,155 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-09-23)
-
-- 2026-09-23-A: A near-total-junk queue (SpaceX stock/valuation churn, Trump's
-  personal SpaceX stock-trade disclosures under the standing 2026-08-31-J
-  passive-disclosure exclusion, Starship Flight 14 pre-launch prep) still
-  yielded one genuinely new item via the mandatory signals pass: Anatoly
-  Zak's bluesky post on Russia's Okulus radar satellite reaching orbit and
-  beginning to supply data to federal agencies, per Roscosmos chief Dmitry
-  Bakanov. RussianSpaceWeb's own article was paywalled ("insider content");
-  the fact was sourced instead to vz.ru (mainstream) and Ruscable.ru
-  (informal, an odd small outlet that nonetheless wrote independently, same
-  shape as the standing NordiskPost/it-boltwise.de precedent). Novyy Kosmos
-  (the private developer) has no `src/data/registry` entity, so its own
-  `newspacecorp.ru` product page capped at `informal` per the standing
-  no-registry-host workaround, extending that list to a Russian company for
-  the first time; its page still supplied genuinely new, directly-fetched
-  technical specs (0.4m resolution, 400km swath, 475km SSO) the news
-  coverage didn't state.
-- 2026-09-23-B: A SpaceNews trend piece Jeff Foust linked ("Satellite
-  industry grapples with the end of Falcon 9," Sept 21) bundles only
-  already-published facts (the June rideshare-booking freeze, the Sept 10
-  Avio CEO commentary) under a bigger-sounding headline; left undrafted per
-  the standing 2026-09-04-T/2026-09-06-H/2026-09-14-D "trend piece bundles
-  old facts" pattern. Worth treating this specific headline shape as a
-  standing dead lead unless a source states a genuinely new fact (an actual
-  Falcon 9 retirement date, a stated production wind-down timeline).
-- 2026-09-23-C: A DOJ press release (`justice.gov`, a bare `.gov` host) on
-  the already-published Sept 21 Starbase land-swap injunction ruling
-  cleanly upgraded the item's lead from mainstream to official_record via
-  the documented MAGPIE `rescore` path (patch `source_url` first, then
-  `rescore.sources[0].url` must match), moving SNR 4 to 5 and adding DOJ's
-  own on-record characterization of the swap as a "win-win" for
-  conservation and national security. Aviation Week's Sept 18 "USSF Seeks
-  Agile, Docking-Capable Sats For Future Victus Mission" is a request for
-  industry proposals (responses due Oct 19, first deliveries targeted
-  FY2029), not an award; left undrafted per the standing
-  CLPS/NDAA/Resilient-GPS process-not-yet-fact pattern, worth re-checking
-  once Space Systems Command actually selects a vendor.
-
-## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-09-23, second)
-
-- 2026-09-23-D: ESA's own program name "Boost!" (with a literal exclamation
-  mark) trips the site's no-exclamation-marks rule when used verbatim in
-  headline/tagline/what_happened; finalize-sweep rejects on
-  "exclamation marks never publish" regardless of the mark being part of a
-  proper noun. Wrote around it as "Boost" (no punctuation) in all prose
-  fields while leaving the literal `Boost!_` segment untouched in URLs,
-  which the gate does not flag.
-- 2026-09-23-E: A same-day NASA Isaacman quote (Italy committing over $5
-  billion to the Multi-Purpose Habitat lunar module, securing two Italian
-  astronauts Moon-surface seats) is genuinely single-sourced: European
-  Spaceflight's Sept 23 writeup is the only outlet reporting Isaacman's
-  Sept 15 Air, Space & Cyber Conference remarks with that specific dollar
-  figure and astronaut count; every other hit (Decode39, KeepTrack's own
-  space-brief) is either the stale March Statement-of-Intent story or a
-  bare rewrite of European Spaceflight itself, and the AFA's own
-  airandspaceforces.com writeup of the same conference didn't mention
-  Italy at all. Dated the item on the actual Sept 15 statement date per
-  the standing predates-window chase-it precedent rather than Sept 23
-  (the reporting date), landed an honest single-source SNR 2
-  (`crawl: "found_none"`, trade base 3 minus 1).
-- 2026-09-23-F: The dedup gate's shared-company + shared-category
-  heuristic fired again (extends 2026-09-19-B/2026-09-21-F/L/2026-09-22-L
-  and peers): the new Italy/NASA lunar-habitat item (category
-  `human-spaceflight`) matched against the unrelated Sept 17 SpaceX
-  Dragon-retirement/Starliner item purely on shared company NASA. One
-  `dedup_distinct` entry cleared it.
-- 2026-09-23-G: All 13 unique signals-pass people were checked (bluesky
-  author-feed API for the bluesky accounts, direct site fetch for the
-  rest); everything on-scope found (Aschbacher's ISRO post, Parsonson's
-  Italy/SaxaVord/Ariane-6-turbopump posts, Andrew Jones's China roundups,
-  Vivienne Machi's Victus RFP piece) traced to already-published items or
-  the standing process-not-yet-fact exclusion. The mandatory 5-source
-  HTML pass and an 8-query discovery pass covering the full matrix
-  (launch, financial, incident, regulatory, China, India, EO contracts,
-  M&A) surfaced nothing else new; every substantive hit traced to an
-  already-published item. `bun run build` was not attempted, per the
-  2026-09-09 CLAUDE.md procedure update (the workflow runs the build
-  itself); relied on `finalize-sweep.ts`'s own merge confirmation
-  ("merged 3 new, 0 updated, 0 held") plus a direct read of all three new
-  items' `snr`/`category`/`impact`/`sources` fields as the build-health
-  signal.
-
-## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-23, third)
-
-- 2026-09-23-H: A discovery-pass-shaped SpaceNews headline ("Ethereal Space
-  Awarded NOAA SBEM Task Order 1," $27.4M covering GNSS-RO + thermospheric +
-  multispectral imagery) contradicted NOAA's own NESDIS release ($67,053,698
-  split three ways: Spire $33,158,160, PlanetiQ $28,413,038, Ethereal Space
-  $5,482,500, GNSS-RO only) for what reads like the same Sept. 18 award.
-  Rather than reconcile or repeat both figures, cited only NOAA's official,
-  internally-consistent breakdown and omitted the SpaceNews piece entirely
-  from sources; the detour was avoidable if the queue's "Ethereal Space
-  Awarded NOAA SBEM Task Order 1" headline had been grepped against
-  `items.json` (NOAA, radio occultation) before chasing the dollar figure,
-  since it turned out to already be a same-week update to
-  `2026-09-22-spire-noaa-33m-radio-occultation-task-order`, not a new item.
-  When a single-company NOAA task-order headline appears days after a
-  same-program multi-company award already published, check whether it is
-  actually a fuller breakdown of the same underlying award before treating
-  the new company name as an undrafted story.
-- 2026-09-23-I: Confirms 2026-09-22-F/O's apex-domain and registry-match
-  reduction does not require the item's `companies[]` to include the org:
-  Vast's own `vastspace.com/updates/...` post classed clean `first_party`
-  against `organizations/vast.json`'s website field for a division
-  announcement with zero dollar figure or contract, landing SNR 5 (ceiling
-  reached from the lead alone) even at `noise` impact -- SNR and impact are
-  fully independent axes, a routine company-strategy post can still hit the
-  direct-source ceiling if the company has a matching registry profile.
-- 2026-09-23-J: China SatNet's GuoWang launches recur inside the 7-day
-  dedup window almost every sweep now (25th group Sept 17, 26th group Sept
-  23, six days apart); `dedup_distinct` against the immediately-prior
-  numbered group is now the default expectation for this actor, not an
-  edge case, per the standing 2026-08-26-D "two launches by the same
-  provider inside 7 days are distinct events" rule.
-- 2026-09-23-K: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 2
-  updated, 0 held") plus a direct read of all three new items' and both
-  updated items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
-  (730 items, up from 727) as the build-health signal.
-
-## Narrow re-check, ~4.3h gap, unfiltered full source list (2026-09-23, fourth)
-
-- 2026-09-23-L: `hubblenetwork.com` now 301-redirects to `hubble.com`
-  (rebrand); the company's own `hubble.com/news` press release still
-  capped `informal` per the standing no-registry-host workaround (no
-  `src/data/registry` entity for Hubble Network), but a Business
-  Wire-distributed copy of the identical release (StockTitan mirror)
-  classed `wire_pr` (tier 4) and led a clean $200M Series C item instead;
-  finalize's title-collapse correctly merged the two as one
-  `wire_rewrite` unit. `investors.viasat.com`'s press-release detail page
-  timed out (60s) even though Viasat's registry `website` would have
-  passed it as `first_party` via subdomain match (the standing
-  `ir.echostar.com`/2026-09-18-H pattern); fell back to the GlobeNewswire
-  wire copy (`wire_pr`) instead, landing SNR 4 on an otherwise-`noise`
-  routine USMC task order.
-- 2026-09-23-M: The same-company-plus-category dedup false positive fired
-  on both new NASA/`science` and SpaceX/`contract` items this run (three
-  separate unrelated existing items in total) purely on shared company +
-  category + within-7-days, extending the long-running list once more;
-  three `dedup_distinct` entries cleared it in one pass.
-- 2026-09-23-N: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 0
-  updated, 0 held") plus a `jq` parse check (734 items, up from 730) and
-  a direct read of all four new items' `snr`/`snr_trace`/`category`/
-  `impact`/`sources` fields as the build-health signal.
-
 ## Narrow re-check, ~7h17m gap, unfiltered full source list (2026-09-24)
 
 - 2026-09-24-A: A Jamestown Foundation trend piece on Russia's Rassvet
@@ -5363,3 +5214,42 @@ a newer entry if a lesson changes.
   `snr`/`category`/`impact` fields (1029 items, up from 1025), the CASR and Starlink/Ukraine
   updated items' grown `sources`/`updates` arrays, and a `jq empty` parse check across all touched
   data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h20m gap, unfiltered full source list (2026-10-24)
+
+- 2026-10-24-A: Bash file redirection (`>`) and `mkdir` are blocked outright in this
+  session's sandbox, even for paths under the repo working directory; piping a script's
+  output straight into `jq` (e.g. `bun scripts/sweep-context.ts | jq '{...}'`) works fine
+  and was the only way to inspect the large `sweep-context`/`candidates-context` outputs
+  without a scratch file.
+- 2026-10-24-B: A government PDF (a House member's own `.house.gov`-hosted letter) comes back
+  as unreadable binary/compressed garbage through WebFetch's text-extraction pass, but the
+  Read tool parses the same fetched PDF cleanly (WebFetch auto-saves binary fetches to a
+  local tool-results path, logged in its response; pointing Read at that saved path got full,
+  verbatim, page-by-page text including the signature block) when `federalregister.gov`'s own
+  `.txt`/`.json` endpoints aren't available for a given document. Worth trying Read-on-the-
+  saved-path before giving up on a `.gov` PDF as unfetchable.
+- 2026-10-24-C: The MAGPIE upgrade path's same-domain corroboration-collapse rule (standing
+  since 2026-10-19-P) collapsed five separate `science.nasa.gov/blogs/swift/*` URLs and two
+  `spacenews.com` URLs into two units on a 19-source rescore, but the full 19-entry `sources`
+  array submitted in `rescore.sources` was preserved byte-for-byte in the merged item; the
+  collapse affects only the corroboration-counting math and `corroboration_collapses` log, not
+  which sources render on the card. Worth not under-submitting a rescore's source list out of
+  fear the collapse will drop entries.
+- 2026-10-24-D: Space.com truncated to "[Content truncated due to length...]" with zero body
+  text on three separate WebFetch attempts at different prompts this run (a first for this
+  specific URL shape; prior sessions treated space.com as reliably fetchable); fell back to a
+  Launch Library direct-JSON fetch (booster/satellite/site facts) plus a successful direct
+  fetch of a BASENOR mirror carrying the same facts verbatim, and left the space.com-only
+  "first Starlink launch in 11 days" / Starship-cadence-shift framing out of the draft
+  entirely since it was never confirmed via an actual fetch, only a WebSearch synthesis. Worth
+  a retry on space.com before assuming it is dead; this looks like a one-off rendering miss.
+- 2026-10-24-E: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1
+  new, 6 updated, 0 held"); confirmed via a direct `jq` read of the new Starlink-batch item's
+  `snr`/`snr_trace`/`category`/`impact` fields (1030 items, up from 1029), the Swift item's
+  rescore (4→5, `source_url` switched to NASA's own Oct 23 mission-end post, all 19 sources
+  preserved), the sortie-suit item's bump (3→4), the three plain-attach updates' grown
+  `sources`/`updates` arrays, the sweep log's `snr_movements` (one unrelated persistence bump,
+  Amtrak Starlink Cascades 2→3) and `corroboration_collapses` entries, and a `jq empty` parse
+  check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
