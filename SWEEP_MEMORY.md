@@ -5287,3 +5287,33 @@ a newer entry if a lesson changes.
   (3 sources, 1 update, SNR unchanged at 4), the item count moving from 1037 to 1038, and a `jq empty`
   parse check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h49m gap, unfiltered full source list (2026-10-25, third)
+
+- 2026-10-25-J: WebFetch on `bsky.app/profile/<handle>` profile pages renders no post content at all
+  (just the handle string, same empty-JS-shell failure pattern as other social platforms) for every
+  signals-pass fetchable Bluesky channel tried this run. The working fallback: fetch the public AT
+  Protocol endpoint directly, `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15`,
+  which returns real post text and `createdAt` timestamps and worked for all nine handles tried
+  (Aschbacher, Langbroek, Henry, Farrar, Berger, Foust, SpacePolicyOnline, Zak, Jones, Parsonson).
+  Worth using this endpoint by default for the Bluesky leg of the signals pass instead of the
+  `bsky.app` profile URL.
+- 2026-10-25-K: Musk's own X post confirming SpaceX had closed the previously-"seeking" $40 billion
+  Apollo/Goldman-led Nvidia GPU debt financing (first reported Oct 6 as a plan facing pricing
+  resistance per a 2026-10-24 update) surfaced via Reuters wire copies (aol.com, 1027wbow.com) rather
+  than the Google News redirect, consistent with the redirect outage flagged 2026-10-25-A/E; folded in
+  as an `attach`+`patch` (headline/tagline updated from "seeks" to "closes") with no bump, since the
+  item's mainstream/corroboration/persistence modifiers already capped it at 4.
+  Separately, a cluster of PTI-wire rewrites (ThePrint, Tribune, ETV Bharat, Daily Excelsior, Siasat,
+  Daily Pioneer) all carrying identical Narayanan quotes about four ISRO launch pads by 2029 drafted
+  as a new item; attested `crawl: "found_none"` despite the many mirrors, since none were independent
+  of the one PTI piece, netting a mainstream base of 3 up to 4 on `corroboration_2plus` and back down
+  to 3 on the found_none penalty, consistent with the state-media-pair precedent (2026-10-24-G): many
+  copies of one wire source is not corroboration.
+- 2026-10-25-L: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new, 2
+  updated, 0 held"); confirmed via a direct `jq` read of the new ISRO item's `snr`/`snr_trace` (mainstream
+  base 3, +1/-1 modifiers netting back to 3) and both updated items' grown `sources`/`updates` arrays
+  (SpaceX GPU financing: 5 sources, 3 updates, SNR unchanged at 4; Starlink/Ukraine saga: 73 sources, 29
+  updates, SNR unchanged at 4), the item count moving from 1038 to 1039, and a `jq empty` parse check
+  across all touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
