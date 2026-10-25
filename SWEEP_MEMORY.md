@@ -93,132 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~7h17m gap, unfiltered full source list (2026-09-24)
-
-- 2026-09-24-A: A Jamestown Foundation trend piece on Russia's Rassvet
-  program ("Russia Trying to Replace Starlink") mostly bundled
-  already-published satellite-failure statistics (32 satellites, 800km
-  orbit misses) per the standing trend-piece-bundles-old-facts pattern,
-  but buried inside it was a genuinely new, never-covered discrete fact:
-  Ukraine's Foreign Ministry formally petitioned the ITU on Aug. 28 to
-  exclude Ukrainian territory from Rassvet's coverage in all frequency
-  bands. Confirmed independently via Militarnyi (trade) and the Kyiv Post
-  (mainstream) rather than cited to Jamestown itself. Worth remembering
-  a "bundles old facts, skip it" trend piece can still be worth reading
-  in full for one buried, dateable sub-fact rather than discarded whole.
-  Also confirms Bureau 1440/Rassvet still has no `src/data/registry`
-  entity (no crossfeed metric touched by a diplomatic filing anyway).
-- 2026-09-24-B: `basenor.com` (already flagged 2026-09-16-R as a
-  low-quality SEO mirror) supplied specific-looking but unverifiable
-  figures for the Vietjet/Starlink deal (a VND 300 billion Galaxy Pay
-  investment, a $500K-per-aircraft hardware estimate) that no other
-  fetched source stated; left both figures out of the draft entirely
-  rather than risk citing an unverified number from a site with a
-  standing unreliability flag. `tradingview.com`'s Reuters mirror pages
-  render only the headline behind a hard paywall (no teaser paragraph,
-  unlike SpaceNews's lede-before-paywall pattern) -- the headline text
-  itself is still a legitimate citable fact when nothing else is
-  visible, just a thinner one than a teaser paragraph would give.
-- 2026-09-24-C: A "SpaceX alums found a startup" headline is not itself
-  evidence of scope: Applied Atomics (small modular nuclear reactors for
-  AI data centers, Bywater New Orleans HQ) joins the standing terrestrial-
-  diversification exclusion list (Intel Terafab, APR Energy, the Bastrop
-  turbine foundry, Ursa Major's SPAC) -- no orbital product, regardless of
-  founder pedigree or Louisiana/Starbase-adjacent framing in local coverage.
-- 2026-09-24-D: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new, 2
-  updated, 0 held") plus a `jq` parse check (736 items, up from 734) and
-  a direct read of both new items' and both updated items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields, and the six
-  automatic persistence-bump `snr_movements` entries logged in
-  `state.json`, as the build-health signal.
-
-## Narrow re-check, ~5h gap, unfiltered full source list (2026-09-24, second)
-
-- 2026-09-24-E: "Lunar Outpost" (a lunar-rover company, several existing
-  items) and "Outpost Technologies" (an unrelated reentry/in-space-
-  manufacturing startup, "Space Factories") are two entirely different
-  companies that both go by "Outpost" in casual references -- grep by the
-  full company name, not the short form, before concluding a same-named
-  candidate is already covered.
-- 2026-09-24-F: `explainer.tagline`'s 140-char cap is tighter than it
-  looks when a headline-worthy fact needs full attribution clauses;
-  five of seven drafted items this run needed a tagline trim after
-  finalize-sweep rejected an over-length one (each rejection names only
-  the FIRST offending item, so a multi-item draft with several
-  over-length taglines needs several successive fix-and-rerun passes,
-  one per item, not one pass). Worth drafting taglines noticeably under
-  140 chars on the first pass rather than at the limit.
-- 2026-09-24-G: Google's and Outpost Technologies' own announcements
-  both had no `src/data/registry` organization entity to anti-spoof
-  against (neither Google/Alphabet nor Outpost Technologies has one),
-  capping their own blog/PR-wire posts at `informal`/`wire_pr`; led both
-  items instead with a mainstream wire pickup (Reuters via Yahoo
-  Finance) and the PR Newswire wire copy respectively, extending the
-  standing no-registry-host workaround to two more frequently-recurring
-  actor shapes (a Big Tech company entering space, and a reentry/
-  manufacturing startup).
-- 2026-09-24-H: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself);
-  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 7 new,
-  0 updated, 0 held") plus a `jq` parse check (745 items, up from 736)
-  and a direct read of all seven new items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
-## Narrow re-check, ~4h25m gap, unfiltered full source list (2026-09-24, third)
-
-- 2026-09-24-I: ESA's "European Resilience from Space-Earth Observation"
-  (ERS-EO, a 167M-to-350M-euro funding line per a Sept 24 SatNews/Space
-  Intel Report pair) and the already-published Sept 17 EOGS/ARISE item
-  ("ESA awards contracts for Europe's EOGS blueprint") are the SAME
-  underlying architecture-study contracts (identical ICEYE-led ARISE vs.
-  Leonardo-led consortium, both traced to "Element 1 of ESA's European
-  Resilience from Space for Earth Observation programme" per the Sept 17
-  item's own text) reported under two different framings, ISR-military
-  vs. EOGS-civilian-governmental. Today's story is ESA now asking
-  governments to raise that same program's funding from 167M to 350M
-  euros ahead of a Nov 30 deadline; folded in as `updates[].patch` (a
-  same-program funding development) rather than a new item, since
-  drafting it standalone risked a same-week duplicate the dedup gate
-  might not catch (different category framing, same shape as the
-  2026-08-30-N Sutherland/HIE near-miss). Worth treating "ERS-EO" and
-  "EOGS" as the same program by default when the named companies and
-  contract-award dates line up, not two adjacent EU space initiatives.
-- 2026-09-24-J: An Iridium 8-K (Item 5.07, filed same day) reporting the
-  special-meeting vote adopting the Rocket Lab merger agreement (~99.6%
-  of votes cast, 81.0% of outstanding shares) was a genuine new item, not
-  an update, despite being the same M&A story as the June 29 announcement:
-  87 days outside the 7-day window, and a shareholder-approval vote is a
-  distinct, separately newsworthy closing-condition milestone. Led with
-  the SEC EDGAR exhibit (Ex. 99.1, the joint press release) as
-  `official_record`; every other hit (GlobeNewswire, PR Newswire,
-  StockTitan, Manila Times) was a wire mirror of the identical release,
-  correctly left as one `wire_pr` corroboration unit rather than stacked.
-  `crossfeed.facts` stayed empty since the deal has not closed (expected
-  mid-2027, still subject to regulatory approvals) -- a shareholder vote
-  is not itself a registry status/parent_org change.
-- 2026-09-24-K: The mandatory signals pass again outperformed the queue on
-  a near-total SpaceX-stock/Futurism-junk 36-candidate window: Marcia
-  Smith's (SpacePolicyOnline) bluesky post surfaced NASA's Crew-14
-  assignment release before any trade outlet's writeup existed, and
-  Vivienne Machi's Aviation Week author page surfaced L3Harris's SDA
-  Tranche 3 preliminary-design-review milestone, both fully undrafted
-  gaps confirmed via grep against `items.json` before scoring. Neither
-  needed the whitelist floor (both had usable first-party leads at the
-  SNR 5 ceiling already), consistent with the standing pattern that
-  whitelisted-channel corroboration is often just a free find-signal, not
-  a scoring necessity, when the underlying actor's own site is
-  first-party-eligible.
-- 2026-09-24-L: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 4 new, 1
-  updated, 0 held") plus a `jq` parse check (749 items, up from 745) and a
-  direct read of all four new items' and the updated item's
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
 ## Narrow re-check, ~7h11m gap, unfiltered full source list (2026-09-25)
 
 - 2026-09-25-A: A near-total-junk queue (SpaceX stock/valuation/Nasdaq-100
@@ -5338,3 +5212,38 @@ a newer entry if a lesson changes.
   `sources`/`updates` arrays (68 sources, 27 updates), plus a `jq empty`
   parse check across all touched data files. `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-25)
+
+- 2026-10-25-A: A near-total-junk ~39-candidate queue (dozens of Google News pickups of the
+  already-captured Starlink/Ukraine-restoration saga, SEO-mill "tech-insider.org"/"shattered.io"
+  listicles, generic Bluesky-search spam including affiliate-marketing bots and off-topic political
+  chatter, a routine ISRO recruitment notice) still yielded a clean, honestly-attested regulatory lead
+  via a discovery-pass FCC query: AT&T/Verizon/T-Mobile's CTIA-led lobbying to strip two bands from
+  the FCC's Oct. 29 Starlink Mobile spectrum vote. Google News RSS redirect URLs failed to resolve via
+  WebFetch this entire run (consistently returned a bare "Google News" header with no article content,
+  not even a redirect notice); fell back to WebSearch-plus-direct-outlet-URL for every Google News-sourced
+  lead instead of the usual follow-the-redirect approach.
+- 2026-10-25-B: A drafted "new" item's lead source URL turning out to be already cited verbatim in an
+  existing item's `sources` array (not just a similar topic, the identical satnews.com URL) is a stronger
+  same-event signal than the usual company+category heuristic collision: the Space Force/Vulcan-to-SpaceX
+  mission-reassignment story I drafted as a new item was in fact the Oct. 22 fact already fully captured
+  on `2026-10-22-spacex-falcon9-retirement-space-force-launch-gap`'s own first update; finalize-sweep's
+  dedup gate caught it, and the genuinely new facts (SpaceNews's Oct. 24 payload-category breakdown,
+  NewSpace Economy's "six is a cumulative count since April, not a fresh transfer" clarification) folded
+  in cleanly as a second update instead. Worth checking a drafted new item's own `source_url` against
+  `existing[].source_url` by exact string match, not just topic, before spending further drafting time.
+- 2026-10-25-C: NewSpace Economy's clarification above is a new shape of numeric-variance trap: SatNews's
+  own Oct. 22 "reassigns six missions" headline reads as a single fresh transfer, but a differently-angled
+  trade outlet reporting the same underlying Oct. 21 briefing can reveal the number is actually a running
+  cumulative tally (six total since an April GPS III launch) the first outlet's framing never flagged as
+  such. Attributed the cumulative framing explicitly to NewSpace Economy rather than picking one reading
+  as fact.
+- 2026-10-25-D: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on three dedup-heuristic
+  matches at once (two false-positive company+category collisions on the FCC spectrum item against
+  unrelated Starbase/Boca Chica land-use items, both needing `dedup_distinct`; the genuine same-event
+  Space Force match above, resolved by converting that item to an update); merged cleanly on the second
+  attempt ("merged 3 new, 3 updated, 0 held"). Confirmed via a direct `jq` read of all three new items'
+  `snr`/`category`/`impact` fields (1037 items, up from 1034), all three updated items' grown
+  `sources`/`updates` arrays, and a `jq empty` parse check across all touched data files. `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
