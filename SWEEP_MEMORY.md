@@ -5247,3 +5247,43 @@ a newer entry if a lesson changes.
   `snr`/`category`/`impact` fields (1037 items, up from 1034), all three updated items' grown
   `sources`/`updates` arrays, and a `jq empty` parse check across all touched data files. `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-10-25, second)
+
+- 2026-10-25-E: Google News RSS redirect URLs still failed to resolve via WebFetch this entire run
+  (every attempt returned a bare "Google News" header, no redirect target, no article content),
+  extending 2026-10-25-A's observation from earlier today into a second consecutive run; this now
+  reads as a same-day outage rather than a one-off. WebSearch-plus-direct-outlet-URL remains the
+  working fallback for any Google News-sourced queue lead.
+- 2026-10-25-F: A genuinely new, on-scope story (Starlink enforcing a new travel-registration
+  requirement against South African roaming users, Oct. 23, tied to the standing ICASA/BEE
+  30%-ownership licensing deadlock) had every fetchable mirror (African Insider, News Directory 3,
+  Shattered.io) explicitly crediting MyBroadband as the original reporter, while mybroadband.co.za
+  itself 403'd on every direct WebFetch attempt; tech-insider.org also 403'd. Published anyway at an
+  honest low SNR (informal base, `corroboration_2plus` off two separately-fetched mirror pages) per
+  the standing weak-sourcing-is-never-a-hold-reason rule, rather than held or dropped for lacking a
+  genuinely independent (non-MyBroadband-derived) second source. Worth remembering a cluster of
+  mirrors that all name the same unreachable original is still honestly `found_some`, not
+  `found_none`, as long as the mirrors are separately-fetched pages, even when none of them did
+  independent reporting.
+- 2026-10-25-G: A whitelisted signal's Bluesky post pointing at their own blog (yeandel.bsky.social's
+  "sovereign cloud... extendable to Canada" teaser) led to a thin but real enrichment: OVHcloud's own
+  press release (corporate.ovhcloud.com, no registry organization entity, classed `wire_pr` per the
+  standing 2026-10-06-W precedent since `first_party` can't pass the anti-spoof check without a
+  matching registry domain) states the already-published Sept. 28 ESA Digital EO platform "will have
+  the capability to extend to other European countries and Canada," a detail the original draft's
+  Techzine-led sourcing never carried. Patched with no bump (new fact, not better sourcing of the
+  existing claim).
+- 2026-10-25-H: A Chinese human-spaceflight agency's payload call for an uncrewed Lanyue lunar-lander
+  test flight (via Andrew Jones' bluesky feed, confirmed genuinely undrafted via SpaceNews) was judged
+  out of scope: unlike NASA's Artemis program, China's crewed-lunar effort has no named commercial
+  prime or contractor benefiting from the announcement, and CLAUDE.md's human-spaceflight carve-out
+  is explicitly scoped to programs "where contracts and outcomes affect commercial providers." Treated
+  as the same institutional-disclosure-with-no-commercial-angle exclusion as SPACECOM succession/NASA
+  STRIDE, not extended just because China coverage is a named priority.
+- 2026-10-25-I: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new, 1
+  updated, 0 held"); confirmed via a direct `jq` read of the new South Africa item's `snr`/`snr_trace`
+  (informal base 1, `corroboration_2plus` to 2) and the updated OVHcloud item's grown `sources` array
+  (3 sources, 1 update, SNR unchanged at 4), the item count moving from 1037 to 1038, and a `jq empty`
+  parse check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
