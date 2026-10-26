@@ -11337,3 +11337,179 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
   build-health signal.
 
+## Narrow re-check, ~7h11m gap, unfiltered full source list (2026-09-25)
+
+- 2026-09-25-A: A near-total-junk queue (SpaceX stock/valuation/Nasdaq-100
+  churn, UN-floor Starlink-terminal political theater from Netanyahu and
+  an Israeli envoy that stayed excluded as conflict-adjacent stunt
+  coverage rather than an operator statement, and Finland's president
+  publicly asking Musk to enable Starlink over Russian territory for
+  missile-launcher strikes, left out under the standing conflict/
+  operational-use exclusion since it is a government plea with no SpaceX
+  response on record) still yielded three items, all via the signals
+  pass rather than the queue or an 8-query discovery pass (which reached
+  only already-published or out-of-window hits): Croatia's and Cote
+  d'Ivoire's Artemis Accords signings (74th/75th) surfaced through Jeff
+  Foust's and Marcia Smith's bluesky feeds a day before any dedicated
+  trade writeup existed, and Isaacman's "dodged a bullet" China-lunar-
+  delay remarks at Payload's Off World conference surfaced through
+  Andrew Jones's feed. All three were first-party-or-trade led (NASA
+  release, SpaceNews) with genuine independent corroboration (Croatia
+  Week's own quotes from the ceremony, Behind The Black's independent
+  writeup, Payload's own conference coverage), landing SNR 5/5/4.
+- 2026-09-25-B: A same-day Google News "Earth observation satellites
+  Copernicus Sentinel-3C and Earth Explorer FLEX successfully launched"
+  hit and a Townsville Bulletin "Suspected space debris has more earthly
+  origins" hit were both stale resurfacings of much older already-
+  published stories (the Sept. 15 Vega-C launch and the July Forrest
+  Beach spheres identification respectively) rather than new events;
+  neither WebFetch nor WebSearch could pin either "republish" to a
+  genuine new dateable fact, so both were left undrafted after the
+  items.json grep confirmed prior coverage. Worth remembering that an
+  aggregator/regional-mirror headline using a definitive-sounding past
+  tense ("...successfully launched", "...has more earthly origins") on
+  a story already fully resolved weeks earlier is a resurfacing, not new
+  reporting, even when its own publish date falls inside the window.
+- 2026-09-25-C: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell (no dated items in the fetched content) on two
+  consecutive WebFetch attempts this run, despite SWEEP_MEMORY entries
+  as recent as 2026-09-24 recording clean fetches of the same URL;
+  logged no sourceHealth entry at all rather than attesting `verified`/
+  `stale` without the required `evidence.excerpt` (finalize-sweep
+  rejects a bare success claim for an html source with no evidence) or
+  wrongly demoting an otherwise-reliable source to `unverified` off a
+  single anomalous render. Worth retrying this source on a future run
+  before concluding it needs a fetch_note; this looks like a one-off
+  rendering miss, not a source change.
+- 2026-09-25-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
+  0 updated, 0 held") plus a `jq` parse check (752 items, up from 749)
+  and a direct read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-09-25, second)
+
+- 2026-09-25-E: `bsky.app/profile/<handle>` renders only the bare handle
+  via WebFetch (a JS shell, same class of failure as spacex.com/updates
+  and rocketlabcorp.com/updates in the 2026-07-05 seed lessons); the
+  public AT Protocol endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15`
+  returns real post text and `createdAt` timestamps and works cleanly
+  with WebFetch. Use the API endpoint directly for every bluesky
+  signals-pass fetch going forward rather than the profile page.
+- 2026-09-25-F: A "SpaceX raises $250M / Astra targets early 2027 for
+  Rocket 4.0" thread traced back to at least two different underlying
+  dates across mirrors: an August 14 Reuters funding-raise story
+  (americanbazaaronline, yournews) and a September 17-18 SpaceNews
+  specs/timeline piece (thedebrief.org interview, hype.aero summary),
+  with the direct spacenews.com URL returning HTTP 429 on every retry
+  this run. Left the whole thread undrafted rather than risk conflating
+  two different-dated stories or misdating a stale one; worth a future
+  run retrying spacenews.com directly (or finding an alternate primary)
+  to pin down which of the two is the actual dateable event and whether
+  either is still fresh enough to publish on its real date under the
+  stale-but-notable exception.
+- 2026-09-25-G: Isaacman's September 25 Payload "doubles down" remarks
+  on NASA's international-partnership standard (same Off World Houston
+  conference as the already-published Sept 23 "dodged a bullet" item,
+  two days apart, overlapping topic cluster) were folded into that
+  existing item as an `update` rather than drafted as a new item, to
+  avoid a same-conference near-duplicate the dedup gate might not catch
+  by headline alone. Worth treating same-conference, adjacent-day
+  remarks from the same official as an update-not-new-item case by
+  default, even when the specific topic (international partnerships vs.
+  China-delay comment) differs from the original item's headline focus.
+- 2026-09-25-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 2 new,
+  1 updated, 0 held") plus a `jq` parse check (754 items, up from 752)
+  and a direct read of the two new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+
+## Narrow re-check, ~4h47m gap, unfiltered full source list (2026-09-25, third)
+
+- 2026-09-25-I: A VC-portfolio puff piece ("FUSE Grows Its Space Portfolio,"
+  Payload) naming a fresh seed round for Pluto Aerospace read as an
+  in-scope launch-sector funding round, but Pluto's own description
+  ("building the fastest path from lab bench to hypersonic flight,"
+  a "reusable sub-orbital rocket") makes it a suborbital hypersonics-
+  testing vehicle, not an orbital launch vehicle -- left undrafted per
+  the standing CLAUDE.md orbital-only launch-vehicle scope, same logic
+  as the 2026-09-11-I Avio FD1 suborbital-demonstrator exclusion. Worth
+  the reminder that a space-VC "portfolio" framing doesn't itself confer
+  scope; check what the specific funded company's vehicle actually flies.
+- 2026-09-25-J: Two same-day "SpaceX benefits from X" trend/analysis
+  pieces (Bloomberg's "SpaceX-Focused Pentagon Contracts Leave Rivals
+  Feeling Squeezed," Yahoo Finance's "The U.S. Just Confirmed It Has
+  Weapons in Space. Here's How SpaceX Is Already Benefiting") both
+  bundle only already-disclosed contract figures (the May Golden Dome
+  satellite-network award, SB-AMTI/NSSL figures) under a competitive-
+  dynamics or institutional-disclosure news peg (Sept. 14 Air Force
+  Secretary Meink space-weapons admission, already excluded
+  2026-09-18-D) with no new dateable fact stated; left both undrafted
+  per the standing trend-piece-bundles-old-facts pattern.
+- 2026-09-25-K: A "ClearanceJobs" roundup headline bundling two unrelated
+  defense-industry items in one post title ("S23 Holdings Adding 414
+  Jobs in Virginia and SpaceX Lands $946M NASA Contract Mod") is a pure
+  headline collision, not two related facts: S23 Holdings is a maritime
+  ship-repair/fabrication private-equity firm expanding a Newport News
+  shipyard, with zero satellite or space connection despite sharing a
+  headline with an already-published SpaceX NASA contract mod. Worth a
+  reminder to check what an unfamiliar company actually does before
+  assuming a shared headline implies a shared story.
+- 2026-09-25-L: `blacksky.com/company/news/` again rendered only the
+  page's search/filter shell on WebFetch (no dated items), continuing
+  2026-09-25-C's anomaly a second consecutive sweep; logged no
+  sourceHealth entry again rather than a bare-evidence "verified" claim
+  or an unwarranted demotion. Worth flagging as a possibly-recurring
+  rendering issue (not a one-off) if it persists into a third sweep.
+- 2026-09-25-M: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself);
+  relied on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new,
+  1 updated, 0 held") plus a `jq` parse check (757 items, up from 754)
+  and a direct read of all three new items' and the updated item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
+  build-health signal.
+
+## Narrow re-check, ~4h26m gap, unfiltered full source list (2026-09-25, fourth)
+
+- 2026-09-25-N: A search-result headline "poland arrests nine on charges of
+  russian ordered sabotage" (Deccan Herald) surfacing alongside genuinely
+  fresh Sept. 25 coverage of the Wola Krobowska Starlink-station-fire
+  investigation turned out to be an unrelated 2024 case (Tusk's original
+  nine-arrest sabotage sweep) with no date in the headline itself to flag
+  it as stale; confirmed via a dedicated follow-up search before treating
+  it as a new arrest tied to this fire. A same-country, same-topic-shape,
+  no-date-in-headline resurfacing is a new wrinkle on the standing
+  stale-resurfacing trap family (distinct from the usual identical-headline
+  or same-calendar-date cases): worth a distinguishing search whenever a
+  Poland/Russia-sabotage headline reads as a fresh escalation.
+- 2026-09-25-O: Poland's National Prosecutor's Office spokesman's on-record
+  statement (formally classifying the already-published Sept. 24 Starlink
+  station fire as sabotage and a terrorism-related crime, with "reasonable
+  grounds to suspect the perpetrators acted on the orders of Russian
+  special services") was never itself posted as a press release findable
+  on pk.gov.pl; every account (TVN24, RMF24, Ukrainska Pravda, and Polish
+  outlets found via a Polish-language search) is journalism reporting the
+  spokesperson's quote, not a linkable official document, so it classed
+  `mainstream` rather than `official_record` despite naming a specific
+  named prosecutor spokesperson and an exact criminal classification.
+  Folded into the existing item via `updates[].patch`+attach with no bump
+  requested (lead unchanged, already at its non-first-party ceiling of 4).
+- 2026-09-25-P: A discovery-pass China lead (Ningbo's "Zhiyi Constellation,"
+  Zhenyou Weitong, 108-planned-satellite LEO wind-field network) had only
+  one search-surfaced source (chinatechnews.com) and it 403'd on every
+  direct-fetch attempt (including a Google cache try); left undrafted per
+  the standing never-cite-an-unfetched-page rule despite reading like a
+  clean gap. Worth a second look if chinatechnews.com becomes fetchable or
+  a second outlet picks up the story.
+- 2026-09-25-Q: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update (the workflow runs the build itself); relied
+  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") plus a `jq` parse check (758 items, up from 757) and a
+  direct read of the new item's and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields as the build-health signal.
+
