@@ -5210,3 +5210,45 @@ a newer entry if a lesson changes.
   +2 netting 4 for the Zvezda item), the item count moving from 1043 to 1045, and a `jq empty` parse check
   across all touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~5.5h gap, unfiltered full source list (2026-10-26, third)
+
+- 2026-10-26-H: A ~75-candidate queue, heavily dominated by SpaceX/Tesla-merger stock-reaction pieces
+  (Yahoo Finance/Motley Fool/Seeking Alpha/TheStreet chatter about the already-closed $40B Apollo GPU
+  financing) and dozens of Bluesky "spacex launch" search hits anticipating that evening's record-setting
+  Falcon 9 flight, still yielded five genuinely new items via careful triage rather than discarding the
+  whole queue as noise: a SEALSQ/WISeSat.Space $15M satellite-capacity LOI (found via a Bluesky
+  "satellite constellation" search hit, not the SpaceX-focused searches), an ST Engineering
+  iDirect/MBSat Oman ground-network partnership, a Flexell Space French subsidiary (noise), a Vermilion
+  Parish, Louisiana open-meetings lawsuit targeting the Starbase Louisiana tax deal, and a SpaceX FCC
+  filing backing NextNav's 900 MHz petition. Both SEALSQ's and WISeSat's own-domain press releases on
+  this deal classed `wire_pr` (tier 4), not `first_party`, per the standing 2026-10-06-W/2026-10-25-G
+  precedent: neither company has a registry organization entity for the anti-spoof domain check to pass
+  against, so even an own-domain release caps at wire_pr.
+- 2026-10-26-I: The Vermilion Parish lawsuit and the SpaceX/NextNav 900 MHz filing each triggered FOUR
+  separate same-company-plus-category dedup heuristic collisions against unrelated SpaceX regulatory
+  items (Boca Chica state park land sale, Tristar AWS-3 spectrum, carriers' spectrum opposition, South
+  Africa roaming lockout) on the first finalize attempt; all four needed `dedup_distinct` entries on
+  each item (not just one) before the draft passed, since the heuristic fires once per matching existing
+  item, not once per draft item. Worth expecting a prolific regulatory actor like SpaceX to collide with
+  several unrelated same-category items at once, not just the single most-obviously-related one.
+- 2026-10-26-J: `locationbusinessnews.com` and `findcheapbroadband.com` both looked like plausible
+  corroboration for SpaceX's Oct. 23 FCC 900 MHz filing on first search hit, but both predated it by
+  months (August filings on a related but distinct NextNav angle); fetched and dated-checked before
+  use, correctly excluded, and the Oct. 23 filing itself was left `crawl: "found_none"` since its only
+  coverage was one wire-style piece (Yahoo Finance) mirrored byte-identically on Stocktwits/TradingView/
+  Asianet. Worth re-confirming a search hit's own publish date before treating it as corroboration of a
+  specific dated filing, not just its topical match.
+- 2026-10-26-K: The full fetchable signals-channel pass (13 of 17 channels, 3 duplicate bsky-profile
+  entries skipped for people already covered via their primary site/substack) and a 6-handle X search
+  surfaced nothing new in this narrow window; `mainenginecutoff.com` fetched cleanly this run (no new
+  episode since Sept 29), resolving the "retry next sweep" flag from 2026-10-24-I as a one-off, not a
+  dead source. `aviationweek.com/author/vivienne-machi` 403'd.
+- 2026-10-26-L: `bun scripts/finalize-sweep.ts` rejected the first three draft attempts (a 148-char
+  tagline; four unattested same-company dedup collisions per -I above; two more taglines over 140 after
+  trims) before a fourth attempt passed; merged cleanly ("merged 5 new, 2 updated, 0 held"). Confirmed
+  via a direct `jq` read of all five new items' `snr`/`impact`/`category` fields (1050 items, up from
+  1045), both updated items' grown `sources`/`updates` arrays (GPU financing: 6 sources, 4 updates, SNR
+  unchanged at 4; Starfall second flight: 6 sources, 3 updates, SNR unchanged at 4), and a `jq empty`
+  parse check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
