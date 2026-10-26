@@ -83,7 +83,23 @@
     "as_of": "2026-07-05"
   },
   "positioning": {
-    "claims": [],
+    "claims": [
+      {
+        "value": "Planet describes itself as providing \"the most up-to-date, global satellite data, captured daily\" and as \"the leading web-geo platform with the highest frequency satellite data available.\"",
+        "source": "https://www.planet.com/company/",
+        "as_of": "2026-10-26"
+      },
+      {
+        "value": "Planet says it has \"built and successfully deployed 450 satellites\" and currently operates \"200+ in orbit collecting over 350M sq km of imagery daily.\"",
+        "source": "https://www.planet.com/company/",
+        "as_of": "2026-10-26"
+      },
+      {
+        "value": "Planet describes itself as the \"leading provider of geospatial data globally\" with a development approach it calls \"uniquely agile.\"",
+        "source": "https://www.planet.com/company/",
+        "as_of": "2026-10-26"
+      }
+    ],
     "mcc_read": {
       "text": "Planet's real product is time: an archive back to 2009 and a near-daily scan of the whole landmass since 2017 that no amount of rival capex can backfill. The soft spot is sharpness: 3 m daily pixels cede the high-detail tasking market, and SkySat plus the 30 cm Pelican line are the admission.",
       "basis": [
@@ -94,7 +110,7 @@
       "as_of": "2026-07-09"
     }
   },
-  "notes": "Company page states 200+ satellites in orbit and 450 built and deployed; 200 recorded as the stated floor. Constellations named: SuperDove, SkySat, Pelican, Tanager, Owl. Weekly maintenance (2026-07-23), EO spec backfill attempted and declined: this profile is the umbrella fleet parent spanning heterogeneous sub-constellations (Dove/SuperDove ~3-5 m optical, SkySat ~50 cm, Pelican, Tanager hyperspectral), each already carrying or slated for its own dedicated profile (superdove.json, skysat.json, pelican.json, tanager.json). eoPortal's 'planet' (Flock/Dove) mission page states GSD as ranges only ('2.7-3.2 m' / '3.7-4.9 m' nadir, both orbit-type dependent) and its 3-5 m SuperDove figure is already the sourced basis for superdove.json's resolution_m; writing a fleet-wide resolution_m/swath_km/spectral_bands here would either duplicate or conflate distinct sub-fleet figures already owned by child profiles, so those fields are left null, matching the design already documented on the radarsat.json fleet parent. The same eoPortal page states a design target to 'maintain 100-150 satellite constellation'; left out of sats_planned because the field takes a single number and this is a stated range, and because it is ambiguous whether it covers the whole company fleet or only the Sun-synchronous Dove/SuperDove line.",
+  "notes": "Company page states 200+ satellites in orbit and 450 built and deployed; 200 recorded as the stated floor. Constellations named: SuperDove, SkySat, Pelican, Tanager, Owl. Weekly maintenance (2026-07-23), EO spec backfill attempted and declined: this profile is the umbrella fleet parent spanning heterogeneous sub-constellations (Dove/SuperDove ~3-5 m optical, SkySat ~50 cm, Pelican, Tanager hyperspectral), each already carrying or slated for its own dedicated profile (superdove.json, skysat.json, pelican.json, tanager.json). eoPortal's 'planet' (Flock/Dove) mission page states GSD as ranges only ('2.7-3.2 m' / '3.7-4.9 m' nadir, both orbit-type dependent) and its 3-5 m SuperDove figure is already the sourced basis for superdove.json's resolution_m; writing a fleet-wide resolution_m/swath_km/spectral_bands here would either duplicate or conflate distinct sub-fleet figures already owned by child profiles, so those fields are left null, matching the design already documented on the radarsat.json fleet parent. The same eoPortal page states a design target to 'maintain 100-150 satellite constellation'; left out of sats_planned because the field takes a single number and this is a stated range, and because it is ambiguous whether it covers the whole company fleet or only the Sun-synchronous Dove/SuperDove line. Weekly maintenance (2026-10-26), positioning claims fill: fetched planet.com/company/ and recorded 3 first-party claims (daily coverage, deployed/active fleet size, self-described market leadership); superlatives attributed, not repeated as fact. mcc_read untouched (editorial surface, interactive-only).",
   "parent": null,
   "orbits": null,
   "events": [

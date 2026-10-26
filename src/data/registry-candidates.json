@@ -1,21 +1,5 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": [
-    {
-      "id": "2026-10-23-rocket-lab-hawkeye360-hawk-launch:hawkeye-360.latest_launch_date",
-      "item_id": "2026-10-23-rocket-lab-hawkeye360-hawk-launch",
-      "entity_slug": "hawkeye-360",
-      "entity_type": "constellation",
-      "field": "latest_launch_date",
-      "value": "2026-10-23",
-      "metric": "date of HawkEye 360's most recent dedicated Electron launch, as reported",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://www.space.com/space-exploration/launches-spacecraft/rocket-lab-launches-3-hawk-satellites-to-orbit-to-gather-signals-intelligence",
-      "action": "both_disputed_queue",
-      "proposed_on": "2026-10-23",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }
