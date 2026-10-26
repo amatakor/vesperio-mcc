@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-10-26-earthdaily-nasa-landsat-task-order:earthdaily-constellation.sats_active_claimed",
+      "item_id": "2026-10-26-earthdaily-nasa-landsat-task-order",
+      "entity_slug": "earthdaily-constellation",
+      "entity_type": "constellation",
+      "field": "sats_active_claimed",
+      "value": 8,
+      "metric": "satellites of the EarthDaily Constellation currently operational, as stated by the operator",
+      "same_metric": true,
+      "item_snr": 5,
+      "source_url": "https://earthdaily.com/blog/earthdaily-awarded-3-million-nasa-task-order-to-advance-commercial-earth-observation-integration-with-landsat",
+      "action": "no_registry_change",
+      "proposed_on": "2026-10-26",
+      "status": "pending"
+    }
+  ]
 }

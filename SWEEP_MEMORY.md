@@ -5141,3 +5141,33 @@ a newer entry if a lesson changes.
   updates, SNR unchanged at 4), the item count moving from 1038 to 1039, and a `jq empty` parse check
   across all touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~8h11m gap, unfiltered full source list (2026-10-26)
+
+- 2026-10-26-A: Marco Langbroek's bluesky feed carried "SpaceX wins $28.7M contract from Air Force for
+  data connectivity research" with no visible date in the post itself; a direct search traced the
+  underlying GeekWire piece to December 2018 (the DEUCSI program), not a same-day event. Worth checking
+  a signals-pass repost/HT with no obvious timeframe against its underlying source's own publish date
+  before treating it as news, distinct from the standing stale-PR-recycled-under-a-new-pageload-date
+  pattern (2026-10-22-M): here the repost carried no date at all, not a misleading one.
+- 2026-10-26-B: A near-total-junk ~110-candidate queue (SpaceX/Tesla-merger and Q3-earnings stock-reaction
+  spam, SpaceX $40B Apollo/Nvidia debt-financing rehash already closed and published 2026-10-06, dozens of
+  ISRO "four launch pads by 2029" Narayanan-quote pickups already published 2026-10-25, the Starlink/
+  Ukraine saga's restrictions-lifted and Reuters historical-pressure angles both already folded in via
+  2026-10-24/25 updates) still yielded four genuinely new items: Astranis's Falcon 9 contract upgrade to a
+  dedicated Block 4 GEO mission (SpaceNews lead, a Business Wire mirror of the same underlying release as
+  corroboration, landing SNR 3); EarthDaily's own $3M NASA Landsat-benchmarking task order (first_party,
+  single-sourced at SNR 5, only wire-syndication mirrors existed independently); Australia's formal ESA
+  counteroffer for Katherine Bennell-Pegg's ISS seat (europeanspaceflight.com trade lead, ABC News
+  corroboration, SNR 4, dated on the actual Oct 23 submission rather than the Oct 26 article date); and
+  EasyJet's fleet-wide Starlink Wi-Fi commitment (paxex.aero, the aviation-connectivity trade outlet, as
+  lead over several informal aviation blogs, SNR 4). All four needed `dedup_distinct` against unrelated
+  same-company-plus-category items within 7 days (Astranis/SpaceX against three separate Falcon 9 stories;
+  Bennell-Pegg against the Artemis III/IV mission-plan briefing, both SpaceX+human-spaceflight; EasyJet
+  against the Crown Castle cell-tower story, both SpaceX+partnership), extending the standing heuristic
+  pattern to a fresh batch.
+- 2026-10-26-C: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4 new, 0
+  updated, 0 held"); confirmed via a direct `jq` read of all four new items' `snr`/`category`/`impact`/
+  `sources` fields (1043 items, up from 1039), the sweep log's summary, and a `jq empty` parse check across
+  all touched data files (items, held, state, sources, source_ledger, candidates). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
