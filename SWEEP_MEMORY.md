@@ -5171,3 +5171,42 @@ a newer entry if a lesson changes.
   `sources` fields (1043 items, up from 1039), the sweep log's summary, and a `jq empty` parse check across
   all touched data files (items, held, state, sources, source_ledger, candidates). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3.5h gap, unfiltered full source list (2026-10-26, second)
+
+- 2026-10-26-D: A ~73-candidate queue was almost entirely SpaceX/Tesla-merger stock-market chatter
+  (dozens of Yahoo Finance/Motley Fool/Business Insider pieces on the $40B Apollo GPU financing "close",
+  already published 2026-10-25, and pure speculation pieces about a Tesla/SpaceX merger that are not
+  attributable company events) plus a dense rehash of the Starlink/Ukraine speed-restriction saga: every
+  "new" angle in the queue (Musk's "loophole closed" admission, Ukraine's denial via Beskrestnov/
+  Sternenko, the 400 km/h restoration, Trump's "he put it back") was already folded into
+  `2026-10-14-spacex-starlink-ukraine-speed-restriction`'s existing updates through Oct 25 almost
+  verbatim; fetching CBS News, NBC News and an investing.com Reuters wire copy directly confirmed this
+  rather than surfacing anything new, so no update was drafted. Worth checking a saga item's full
+  `what_happened` text for a quote before spending a corroboration fetch chasing it as "new."
+- 2026-10-26-E: A whitelisted signal's own site, not a Bluesky post, carried the sweep's best find: Anatoly
+  Zak's russianspaceweb.com running 2026 launch-schedule log (page anchor, not a dated article) stated
+  that Zvezda's leaking Transfer Chamber (PrK) will be permanently closed starting with the Progress
+  MS-36 mission (planned Nov 24), a detail no other outlet carried despite a targeted search (only vaguer
+  pre-2026-08 "reportedly planning to" coverage existed). Classed `whitelist`/`observer` (floor 4) since
+  Zak reports on Roscosmos rather than speaking for it; `crawl: "found_none"` did not pull the score below
+  the floor per the scorer's `whitelist_floor` modifier. Worth remembering that a specialist's own
+  reference/schedule page, not just their dated posts, can be the actual news source behind a signals-pass
+  repost.
+- 2026-10-26-F: A Bluesky post from a Euractiv journalist's own handle ("EU eyes Canada joining Europe's
+  Starlink alternative, IRIS²," linking an exclusive rapporteur.com piece) was judged too thin to draft:
+  rapporteur.com 403'd on every WebFetch attempt (direct, URL-decoded, and via an r.jina.ai reader proxy,
+  which hit a CAPTCHA wall instead), and the only verbatim text available was the one-sentence post itself.
+  Broader web search surfaced what the underlying story actually is (an EU Cloud and AI Development Act
+  "sovereign cloud" label being discussed for Canadian cloud providers, with IRIS² membership only a
+  tangential mention) via other outlets' independent coverage, but using those facts would have meant
+  citing claims not in the one source actually fetched. Dropped rather than drafted from search-result
+  synthesis of pages other than the cited one.
+- 2026-10-26-G: `bun scripts/finalize-sweep.ts` rejected the first two draft attempts on the Zvezda item's
+  tagline exceeding the 140-char cap (160, then 144, then 142 chars after two trims) before a third trim
+  passed at under 140; merged cleanly on the third attempt ("merged 2 new, 0 updated, 0 held"). Confirmed
+  via a direct `jq` read of both new items' `snr`/`snr_trace`/`category`/`impact` fields (mainstream base
+  3 to 4 on 2-source corroboration for the Korea item; whitelist base 3, found_none -1, whitelist_floor
+  +2 netting 4 for the Zvezda item), the item count moving from 1043 to 1045, and a `jq empty` parse check
+  across all touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
