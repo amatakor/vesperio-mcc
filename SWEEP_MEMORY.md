@@ -93,187 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~7h14m gap, unfiltered full source list (2026-09-26)
-
-- 2026-09-26-A: A regex grep for "Yaogan 50" (space) against items.json
-  missed the already-published "Yaogan-50 (02)" items entirely (hyphen,
-  not space) and a discovery-pass Yaogan-50 breakup lead nearly drafted as
-  a duplicate; finalize-sweep's own dedup gate caught it before merge.
-  Worth grepping company/object names with the punctuation variant
-  actually used in past headlines (hyphens, slashes) rather than a
-  loosely-spaced guess, since jq regex is a literal substring match, not
-  fuzzy.
-- 2026-09-26-B: Several `bsky.app` public-API signals-pass fetches this
-  run (chenryspace, tmfassociates, sciguyspace, andrewjonesspace) returned
-  posts from months-old dates (July, June, August) instead of the
-  requested last-day window, despite the 2026-09-25-E lesson confirming
-  the API endpoint works cleanly; other accounts fetched in the same
-  batch (Josef Aschbacher, Jeff Foust, Marcia Smith, Anatoly Zak, Andrew
-  Parsonson) returned correctly dated Sept 25-26 posts. Looks like an
-  intermittent stale-cache/rate-limit response on a subset of calls in a
-  large parallel batch rather than a systemic endpoint problem; worth a
-  retry on the affected handles specifically (not the whole batch) if
-  budget allows, rather than assuming the endpoint itself regressed.
-- 2026-09-26-C: A discovery-pass "SpaceX launches classified USSF-385"
-  lead had internally conflicting facts across every source found
-  (Spaceflight Now's dated article said Sept 25 liftoff with booster
-  B1100; a WebSearch synthesis citing spacex.com/keyt.com/supercluster
-  said Sept 26 with booster B1096), and the one page directly fetched for
-  confirmation (spaceflightnow.com's dedicated launch page) was itself
-  still a pre-launch preview with no completed-launch facts. Left
-  undrafted rather than assert a specific date/booster for a launch whose
-  actual occurrence I could not confirm via any single fetched page;
-  worth remembering that Spaceflight Now runs a persistent per-mission
-  URL (`/launch/falcon-9-<mission>/`) that gets updated in place, so a
-  same-URL refetch during the pre-launch window still reads as a preview
-  even close to or after the scheduled time, distinct from AI-summarized
-  search snippets claiming completion.
-- 2026-09-26-D: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 3 new, 1
-  updated, 0 held") plus a `jq` parse check (761 items, up from 758) and a
-  direct read of all three new items' and the updated item's
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
-## Narrow re-check, ~6h21m gap, unfiltered full source list (2026-09-26, second)
-
-- 2026-09-26-E: `blacksky.com/company/news/` rendered only the page's
-  search/filter shell (no dated items) again this run, a fourth
-  consecutive sweep of the same anomaly (2026-09-25-C, -L); logged no
-  sourceHealth entry rather than a bare-evidence "verified"/"stale" claim.
-  Four sweeps running is long enough that this reads like a real site
-  change (e.g. the listing now requires a filter selection or client-side
-  render finalize-sweep's fetcher can't trigger), not a one-off rendering
-  miss; worth a `fetch_note` at the next structural touch if a fifth
-  sweep confirms the same empty shell.
-- 2026-09-26-F: A near-total-junk 28-candidate queue (SpaceX stock/
-  valuation churn, off-topic BBC/Futurism filler, pre-launch Starship/
-  USSF-385 coverage) still yielded one genuinely new item straight from
-  the queue itself: Russia's defense ministry said it struck Kyiv's
-  Cosmonova data center with drones, claiming the facility supported
-  Starlink connectivity for the Ukrainian military (per TASS); Ukrainian
-  officials confirmed the strike and casualties elsewhere in the capital
-  (per Newsweek) but disputed any military impact. This is the second
-  Starlink-ground-infrastructure attack claim in three days after Poland's
-  Sept. 24 station-fire item -- a `dedup_distinct` against that item
-  (same company SpaceX + category geopolitical, different country and
-  actor claim) cleared cleanly, and Yahoo's mirror of the Newsweek piece
-  correctly auto-collapsed as a `wire_rewrite`, leaving TASS (mainstream
-  class per the standing 2026-07-19/2026-08-10/2026-09-01 precedent) as
-  the only genuine second source: `corroboration_2plus` landed a clean
-  SNR 4 off two mainstream-class sources.
-- 2026-09-26-G: A Google-News queue entry naming Poland's "reasonable
-  suspicion" of Russian involvement in the Sept. 24 Starlink-station fire
-  added no new fact beyond the already-published item's Sept. 25 patch
-  (same prosecutor-spokesman quote); left unpatched. Two Bluesky signals
-  leads (Anatoly Zak on Roskosmos's ~400-satellite/~60-in-2026 orbital
-  grouping claim and on Bureau 1440 "working on new-generation
-  satellites") were left undrafted as too thin and too aggregate: the
-  400-satellite figure is Roskosmos's whole orbital grouping (GLONASS,
-  Sfera, military, etc.), not a Rassvet-specific commercial count, reading
-  like the standing institutional-capability-disclosure exclusion rather
-  than a discrete Bureau 1440 fact, and RussianSpaceWeb's own "new-
-  generation satellites" post was a single captioned image with no
-  article text (its fuller detail is paywalled "insider content").
-- 2026-09-26-H: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 0
-  updated, 0 held") plus a direct read of the new item's `snr`/
-  `snr_trace`/`category`/`impact`/`sources` fields and the sweep log's
-  `corroboration_collapses` entry (Yahoo News mirror of Newsweek correctly
-  collapsed as a wire rewrite) as the build-health signal.
-
-## Narrow re-check, ~7h13m gap, unfiltered full source list (2026-09-26, third)
-
-- 2026-09-26-I: Resolves the 2026-09-26-C same-day conflict (Spaceflight
-  Now's pre-launch preview said Sept 25 with booster B1100, a WebSearch
-  synthesis said Sept 26 with B1096): a direct Launch Library query for
-  "USSF-385" gave an unambiguous `net` of 2026-09-26T14:00:54Z, and
-  Spaceflight Now's OWN dedicated post-launch article (a different URL
-  than the pre-launch preview, despite carrying a "2026/09/25" path
-  segment from when the preview was first published) confirmed the same
-  facts as Teslarati's independently-published piece (Sept 26, booster
-  B1100, 10th flight and landing) once actually fetched — the earlier
-  session's B1096 figure traced to an unfetched WebSearch synthesis, not
-  a real source. Lesson: a Spaceflight Now per-mission URL's date-stamped
-  path segment reflects when the article was FIRST created (the preview),
-  not the actual launch date once updated in place (extends
-  2026-09-26-C); query Launch Library's `net` field directly by mission
-  name for the authoritative date/booster before trusting either a URL
-  slug or an unfetched search-snippet synthesis.
-- 2026-09-26-J: The same-company-plus-category dedup heuristic fired
-  twice on the USSF-385 item (against the unrelated Sept 19 Starlink
-  batch and the unrelated Sept 21 Exolaunch rideshare, both Vandenberg
-  SpaceX launches), extending the long-running SpaceX-volume pattern to
-  a third distinct Vandenberg mission inside one 7-day dedup window. Two
-  `dedup_distinct` entries cleared it.
-- 2026-09-26-K: A near-total-junk 26-candidate queue (SpaceX stock
-  churn, Starship Flight 14 pre-launch hype, Crew-13's routine
-  aircraft travel from Houston to Kennedy for pre-launch review
-  mislabeled by several outlets as "lands at Kennedy"/"arrives at
-  Kennedy" in a way that reads like a spacecraft landing until checked
-  against the existing Crew-13 item, which confirms the mission is
-  still pre-launch targeting Oct 1) and a fully clean mandatory 4-source
-  HTML pass (BlackSky's news page rendered only its filter shell for a
-  5th consecutive sweep, no sourceHealth entry logged again) and 14-of-17
-  signals channels plus an 8-query discovery matrix all traced to
-  already-published ground. `bun run build` was not attempted, per the
-  2026-09-09 CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s
-  own merge confirmation ("merged 1 new, 0 updated, 0 held") and a direct
-  read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
-  fields as the build-health signal.
-
-## Narrow re-check, ~4h12m gap, unfiltered full source list (2026-09-26, fourth)
-
-- 2026-09-26-L: A genuine zero-item sweep: the queue (13 candidates after
-  filtering, mostly SpaceX stock/valuation churn and Google News Crew-13
-  reaction pieces) carried only two not-yet-flown launches (Starship
-  Flight 14/Starlink Group 31-1, net Sept 28 per Launch Library; Falcon
-  Heavy/NROL-97, net Oct 2) and Crew-13's routine pre-launch travel to
-  KSC (already tracked, still targeting Oct 1) -- nothing draftable. The
-  mandatory 4-fetchable-source HTML pass (Planet Labs, ICEYE, EUSPA,
-  Telesat), a 13-person signals pass, and an 8-query discovery matrix
-  (launch, financial/M&A, incident/regulatory, China, India, EO
-  contracts, ESA, D2D) all traced every substantive hit to an
-  already-published item. Confirms narrow same-day re-checks can
-  legitimately net zero even after full-effort, full-matrix discovery
-  (2026-08-28-H and many peers).
-- 2026-09-26-M: `blacksky.com/company/news/` rendered only the page's
-  search/filter shell (no dated items) for a SIXTH consecutive sweep
-  (2026-09-25-C, -L; 2026-09-26-E, -K, and this run's own two separate
-  fetch attempts, both empty). This is no longer a one-off rendering
-  miss; per the 2026-09-26-E note, six sweeps confirms a real site
-  change (the listing likely now requires a filter selection or a
-  client-side render the fetcher can't trigger). No sourceHealth entry
-  logged again this run either. Flag for Florian: this source needs a
-  `fetch_note` at the next structural touch to stop the repeated
-  no-evidence retry every sweep.
-- 2026-09-26-N: A new stale-resurfacing trap shape: a Sept 15 Via
-  Satellite trend piece ("Satellite-Mobile Partnerships for D2D
-  Multiply...") surfaced by a discovery-pass D2D query restates Orange's
-  MOU with AST SpaceMobile and Satellite Connect Europe (the AST/Vodafone
-  D2D joint venture) for Romania demonstrations -- the underlying Orange
-  newsroom release traces to March 2, 2026, seven months stale, with the
-  actual Romania demo still only planned for "H2 2026" in the original
-  release, not a completed event. Left undrafted; worth a same-topic
-  re-check once a Romania demo actually occurs.
-- 2026-09-26-O: The intermittent stale-Bluesky-cache pattern (2026-09-26-B)
-  persisted on a same-run retry with a smaller `limit` parameter: Caleb
-  Henry, Tim Farrar, and Eric Berger's feeds still returned posts from
-  July 2026, March 2026, and April/May 2025 respectively on a second
-  fetch; Andrew Jones's retry improved slightly (from Aug 19-28 stale to
-  Sept 23) but still missed the last ~3 days. Retrying with a different
-  `limit` value did not fix it; worth trying a fully distinct request
-  shape (e.g. a cursor param) or simply accepting these four handles as
-  occasionally cache-locked for a whole session rather than retriable
-  mid-run.
-- 2026-09-26-P: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update (the workflow runs the build itself); relied
-  on `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0
-  updated, 0 held") and the unchanged item count (763) as the
-  build-health signal.
-
 ## Narrow re-check, ~7h34m gap, unfiltered full source list (2026-09-27)
 
 - 2026-09-27-A: `blacksky.com/company/news/` rendered only the page's
@@ -5252,3 +5071,25 @@ a newer entry if a lesson changes.
   unchanged at 4; Starfall second flight: 6 sources, 3 updates, SNR unchanged at 4), and a `jq empty`
   parse check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h12m gap, unfiltered full source list (2026-10-27)
+
+- 2026-10-27-A: A secondary source covering Cowboy Space's genuinely-new Oct. 26 "Big Iron" rocket
+  reveal (Payload, a Business Wire release) also restated the company's $275M Series B/$2B valuation
+  as if current; a dedicated follow-up search showed that round closed in May 2026, five months
+  stale, and was left out of the draft entirely. A new flavor of the stale-resurfacing trap: the
+  SURROUNDING article is genuinely fresh and worth drafting, but a background figure embedded inside
+  it can still be old; check every dollar figure's own date, not just the article's dateline, before
+  copying it into a new item.
+  - PCMag, SDxCentral, Benzinga (direct), RCR Wireless, Mobile World Live, PhoneArena, and
+  driveteslacanada.ca all 403'd on direct WebFetch this run; Yahoo Finance's Benzinga-syndication
+  mirror and TheNextWeb worked as fetchable, independently-written substitutes for the same CEO
+  commentary story (Verizon's Dan Schulman on SpaceX/Starlink Mobile's buildout timeline), extending
+  the standing wire/syndication-mirror-attribution pattern. A Motley Fool (fool.com) earnings-call
+  transcript again worked cleanly as a `trade`-class primary-ish quote source for a CEO's own words
+  (extends the 2026-10-22-U Crown Castle precedent to Verizon's Q3 2026 call).
+- 2026-10-27-B: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 3 new, 1
+  updated, 0 held"); confirmed via a direct `jq` read of all three new items' `snr`/`category`/
+  `impact`/`kind` fields (1053 items, up from 1050), the updated United item's grown `sources`
+  (3)/`updates` (1) arrays, and the sweep log's two unrelated persistence-bump `snr_movements`
+  entries. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
