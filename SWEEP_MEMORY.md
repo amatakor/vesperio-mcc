@@ -5120,3 +5120,40 @@ a newer entry if a lesson changes.
   genuine bumps; Starlink/Ukraine and SpaceX/Tesla merger unchanged at their ceilings), the sweep
   log's two `snr_movements` entries, and a `jq empty` parse check across all touched data files.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h24m gap, unfiltered full source list (2026-10-27, third)
+
+- 2026-10-27-G: The `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint, the
+  standing workaround for the bare `bsky.app/profile/<handle>` page returning no post
+  content, itself returned a flat HTTP 403 for every one of the 10 fetchable bluesky
+  accounts this run (confirmed on several handles and both the `getAuthorFeed` and
+  `getProfile` XRPC methods) -- a new, total-block failure distinct from the standing
+  blank-profile-page and stale-cache issues. No alternate working route was found this
+  run; treated all 10 accounts as checked-but-unreachable in `signalsPass` rather than
+  silently dropping them. Worth retrying the API endpoint first on the next sweep before
+  assuming it's a permanent block.
+- 2026-10-27-H: Two genuinely new items cleared despite a queue almost entirely consumed
+  by SpaceX/Tesla-merger stock-reaction spam and Starlink/Ukraine-saga rehash: Ukrainian
+  startup Himera and Denmark's GomSpace confirmed their Obria Nano test satellite
+  (launched Oct. 1 on Transporter-18) is operating in orbit, the first step toward a
+  sovereign Ukrainian comms constellation; and the Pentagon's Office of Strategic Capital
+  signed a $150 million conditional loan with Stoke Space for a second Cape Canaveral
+  launchpad, found via Sandra Erwin's recent-bylines (an xSearch WebSearch, not a direct
+  feed) after the SpaceNews article itself was paywalled beyond a teaser -- Air & Space
+  Forces Magazine and a Department of War release mirror (newsroomamerica.com) gave the
+  full figures and quotes. Neither company nor program had been drafted by any prior
+  sweep.
+  - A same-day Via Satellite piece on ESA's Oct. 23/26 Galileo G2 contracts (already
+  published same-day from ESA's own first-party release) still carried a genuinely new
+  fact set -- a 2028 first-launch target for the G2 satellites, the current 36-satellite
+  operational count, and an ESA quote -- folded in as a no-bump enrichment patch, same
+  shape as the standing "re-read a same-day source for a missed detail" pattern.
+  - United's own Oct. 22 Kirby/Musk exchange (already captured same-day) picked up a
+  further-escalated framing the next sweep missed: Kirby calling Delta's choice of Amazon
+  Leo over Starlink "a mistake" to a podcast, with updated fleet (661 aircraft) and
+  passenger (5.4 million in September) figures, sourced to TeslaNorth and Teslarati since
+  the original "Cheeky Pint" podcast substack 403'd on direct fetch.
+  - `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 2 new, 3
+  updated, 0 held"); confirmed via a direct `jq` read of both new items' `snr`/`category`/
+  `impact` fields (1060 items, up from 1058) and all three updated items' grown `sources`
+  arrays. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
