@@ -5093,3 +5093,30 @@ a newer entry if a lesson changes.
   `impact`/`kind` fields (1053 items, up from 1050), the updated United item's grown `sources`
   (3)/`updates` (1) arrays, and the sweep log's two unrelated persistence-bump `snr_movements`
   entries. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4.6h gap, unfiltered full source list (2026-10-27, second)
+
+- 2026-10-27-C: A Payload "This week" framing on OSMOS X's EDF-backed Tactical-Capture (TAC)
+  consortium read as a fresh contract award but traced, via the consortium partner Poznan
+  University of Technology's own announcement and a Starburst piece, to an April 17, 2026
+  selection decision, over 6 months stale; OSMOS X's own site confirms the same partner list and
+  30-month duration with no distinct October signing/kickoff date stated anywhere. Left undrafted
+  per the standing stale-resurfacing pattern rather than trust a trade outlet's own "this week"
+  framing against three independent sources dating the underlying award months earlier.
+- 2026-10-27-D: The Guardian (theguardian.com) is now unfetchable directly via WebFetch (joins the
+  standing ft.com/wsj.com/axios.com/reuters.com/arstechnica.com list); two mirrors that explicitly
+  credit it by name (ua.news, democracynow.org) worked as citable `mainstream`-class corroboration
+  for a story (SpaceX's classified DoD tracking-data access) originally sourced to Breaking
+  Defense's Sept. 23 "sources say" report, landing a clean `mainstream_pickup` bump (3 to 4).
+- 2026-10-27-E: A Polish GPW-listed company's own ESPI stock-exchange disclosure (here, Scanway's,
+  mirrored on parkiet.com) still classes `trade`, not `official_record`/`first_party`, per the
+  standing 2026-10-02-G Creotech precedent; landed a clean SNR 4 anyway alongside two independently-
+  written trade pieces (Space24.pl, SatNews) on Scanway's MoU expanding its Pixxel partnership,
+  since three distinct `trade`-class sources alone clear `corroboration_2plus`.
+- 2026-10-27-F: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new,
+  4 updated, 0 held"); confirmed via a direct `jq` read of the new Scanway/Pixxel item's
+  `snr`/`snr_trace`/`category`/`impact` fields (1058 items, up from 1057), all four updated items'
+  `snr`/`sources`/`updates` fields (DoD tracking data 3→4, carriers/FCC spectrum 2→3, both via
+  genuine bumps; Starlink/Ukraine and SpaceX/Tesla merger unchanged at their ceilings), the sweep
+  log's two `snr_movements` entries, and a `jq empty` parse check across all touched data files.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
