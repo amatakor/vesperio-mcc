@@ -5067,3 +5067,43 @@ a newer entry if a lesson changes.
   1062) and both updated items' grown `sources`/`updates` arrays (FAA RFI: 4 sources, 1 update;
   Rassvet sanctions: 6 sources, 3 updates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h19m gap, unfiltered full source list (2026-10-28, third)
+
+- 2026-10-28-L: Two identically-titled Vietnamese outlets (VietnamPlus, Saigon Giai Phong, both
+  headlined verbatim "Vietnam joins Artemis Accords on space exploration") title-collapsed as a
+  `wire_rewrite` at finalize despite being two distinct state-media domains, netting the item a
+  mainstream base of 3 with no corroboration bump rather than the 4 two genuinely independent
+  mainstream sources would have earned; worth remembering a near-identical headline across two
+  outlets is a real risk when citing state-affiliated press that runs the same wire text in
+  English, not just when a single outlet's story is mirrored on other domains.
+- 2026-10-28-M: Dating a debris item on its actual reentry date, not the sweep date, matters for
+  the same-company-plus-category dedup gate: a LandSpace Zhuque-2E upper-stage reentry over
+  Indonesia (debris recovered in Sampit, Central Kalimantan, Oct. 18) sits only 4 days from the
+  already-published Sept.-15-launch Minnesota cornfield debris item (both company LandSpace,
+  category incident) because both are dated close together even though the two reentries are 5
+  weeks apart in real time; attesting `dedup_distinct` with each item's own launch date cleared
+  it cleanly on the second attempt.
+- 2026-10-28-N: A Google-News/queue-dominant day (SpaceX stock and Tesla-merger reaction, ISRO's
+  Oct. 30 NVS-03 preview, Starlink/Ukraine-saga rehash) still yielded four new items once each
+  queue/signals lead was chased past the headline: Flexell Space/Satoro's in-orbit solar cell
+  demo deal (SpaceNews, single-sourced, honest `found_none`), Reflect Orbital's unannounced
+  ground spotlight test near Lone Pine that drew astronomer alarm (Leonard David leading, Hoodline
+  and Futurism corroborating, three outlets giving different framings of the same facts worth
+  attributing separately rather than picking one), Vietnam's Artemis Accords signing (found via
+  Marcia Smith's bluesky, no number-of-signatory claim made since no directly-fetched source
+  stated it, only a WebSearch synthesis did), and the LandSpace debris incident above. Four
+  updates folded in: SpaceX's reported talks to acquire ~4,000 acres of Vermilion Parish School
+  District land (single-sourced local TV, no bump, still drafted per the standing weak-sourcing
+  rule); Anthropic's own public S-1 revealing the real SpaceX compute figure is $120.5B, not the
+  $84.5B from the earlier confidential-draft leak; Fitch's rating note confirming the $40B GPU
+  lease doesn't move SpaceX's BBB+ rating, with the same note disclosing SpaceX's $89.9B cash
+  position; and American Tower's CEO becoming the second tower-company executive (after Crown
+  Castle) to say on an earnings call he expects to be approached if Starlink builds a US network.
+  `bun scripts/finalize-sweep.ts` rejected the first attempt on the Minnesota-debris dedup
+  collision above, and a second attempt on one update tagline at 144 chars; merged cleanly on
+  the third attempt ("merged 4 new, 4 updated, 0 held"). Confirmed via a direct `jq` read of all
+  four new items' `snr`/`category`/`impact` fields (1072 items, up from 1068), all four updated
+  items' grown `sources`/`updates` arrays, and the sweep log's `corroboration_collapses` entry
+  for the Vietnam title-collapse above. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
