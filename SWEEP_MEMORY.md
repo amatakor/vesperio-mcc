@@ -5016,3 +5016,54 @@ a newer entry if a lesson changes.
   updated Starbase Louisiana item's grown `sources` (17, up from 15) and `updates` (9, up
   from 8) arrays, and the sweep log's two unrelated persistence-bump `snr_movements`
   entries. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-28, second)
+
+- 2026-10-28-G: A WebSearch-surfaced "Google to pay SpaceX $920 million a month" wave
+  (TechRepublic, DataCenterDynamics, TheNextWeb, tech-insider.org, all reading as live and
+  tagged "[2026]") traced on direct fetch (TheNextWeb) to a June 6, 2026 SpaceX SEC filing,
+  made public one week before the company's June 12 IPO; the figure was already background
+  in the already-published Sept. 10 `spacex-ai-compute-deal-1-1b-monthly` item ("previously
+  disclosed compute deals with... Google ($920 million a month)"). A new flavor of the
+  stale-resurfacing trap: multiple independently-domained outlets all describing the filing
+  as "ahead of SpaceX's anticipated IPO" five months after that IPO actually happened, each
+  apparently republishing or paraphrasing the same stale piece without noticing the company
+  already went public. Left entirely undrafted.
+- 2026-10-28-H: A same-day FAA comment-period closing (SpaceX's own filing on the Aug. 25
+  `faa-spaceport-launch-corridor-rfi` docket, arguing it alone expects 10,000 launches/year
+  and that outdated air traffic control, not rocket cadence, is the real bottleneck) is an
+  `updates[].patch`+`attach` on that 2-month-old RFI item, not a new item, since it's SpaceX's
+  comment on the exact docket the RFI item already covers; caught by checking the RFI's own
+  content before drafting a "SpaceX tells FAA" item from a Google-News/Dealroom headline that
+  read standalone. regulations.gov itself 403'd on every WebFetch attempt (including the
+  docket landing page); TeslaNorth and WCCFTech, both fetched directly, gave the full figures
+  (182 launches/7 reentries in 2025, Cape Canaveral's 450/year capacity claim, the docket
+  number FAA-2026-9736-0263) without needing the primary filing.
+- 2026-10-28-I: A routine Starlink batch (B1082's 26th flight, Group 15-16, 27 satellites,
+  Oct. 27 from Vandenberg) that looked like a same-day queue-sourced gap (a KeepTrack "B1082
+  Flies Starlink Group 15-16" headline plus a Florida Today trend piece on California
+  overtaking Florida in launch counts) turned out to already be published same-day as
+  `2026-10-27-spacex-starlink-15-16-b1082-26th-flight`; caught by grepping `items.json` for
+  recent SpaceX+`launch`-category items by date before drafting, not just by booster/mission
+  name. Worth the reminder on a fast-moving cadence story: check the last 5-7 days of a
+  frequent actor's same-category items by date range, not just a title/company grep, since a
+  routine batch's id rarely names the booster or group number the way a search headline does.
+- 2026-10-28-J: South Korea's KASA/KAIST active debris removal satellite (ADR-SAT) readiness
+  review and assembly start (Oct. 26-27, target KITSAT-3, 2027 Nuri-6 launch) is a genuine new
+  gap neither the queue nor a Google-News non-US query surfaced; found via a dedicated
+  discovery-pass search once the queue's own "KASA begins assembly... Nuri-6" Google News
+  entry pointed at the right program name. Korea Times named the target "KITSAT-3" while
+  Herald Business named it "Woori-byeol 3"; these are the same satellite (Woori-byeol, "Our
+  Star," is KITSAT's Korean public name), not a contradiction, worth remembering before
+  treating two Korean-sourced outlets naming a spacecraft differently as a same-metric
+  conflict.
+- 2026-10-28-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on a
+  `bump: "corroboration_2plus"` request on the Rassvet sanctions item, which already carried
+  that exact modifier from an October 3 update (modifiers saturate, confirmed again per the
+  2026-10-07-O mechanism); dropping the bump and submitting the HUR-supply-chain enrichment as
+  a plain `attach`+`patch` (the item was already at its persistence-capped ceiling of 4)
+  merged cleanly on the second attempt ("merged 6 new, 2 updated, 0 held"). Confirmed via a
+  direct `jq` read of all six new items' `snr`/`category`/`impact` fields (1068 items, up from
+  1062) and both updated items' grown `sources`/`updates` arrays (FAA RFI: 4 sources, 1 update;
+  Rassvet sanctions: 6 sources, 3 updates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
