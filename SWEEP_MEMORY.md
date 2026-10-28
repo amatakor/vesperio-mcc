@@ -5107,3 +5107,34 @@ a newer entry if a lesson changes.
   items' grown `sources`/`updates` arrays, and the sweep log's `corroboration_collapses` entry
   for the Vietnam title-collapse above. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h17m gap, unfiltered full source list (2026-10-28, fourth)
+
+- 2026-10-28-O: Vivienne Machi's Aviation Week author page (403'd on 2026-10-26) fetched cleanly this
+  run and surfaced three same-day (Oct. 28) bylines; two traced to already-published ground (CASR
+  contracts, the rideshare/launch-market trend piece) but the third was the ULA Vulcan return-to-flight
+  story, independently confirmed via the mandatory HTML/queue legs anyway. Worth treating a 403 on this
+  author page as transient, not permanent, consistent with the pattern on other outlets.
+  A genuinely new item surfaced from a discovery-pass JAXA query despite predating the sweep window by
+  6 days: ispace's own Oct. 22 release on a JAXA "Lunar Solar Power Tower" conceptual-design contract had
+  no queue/signals hit across several intervening sweeps; chased per the standing predates-window rule
+  and dated on the actual Oct. 22 announcement. Neither ispace (Japan) nor Virgin Galactic has a
+  `src/data/registry` organization entity, so both companies' own-domain releases (ispace-inc.com,
+  virgingalactic.com) classed `wire_pr`, not `first_party`, per the standing 2026-10-06-W/2026-10-25-G
+  no-registry-entity precedent, capping both items at SNR 4 despite being genuinely the actor's own site.
+- 2026-10-28-P: A crossfeed attestation on `vulcan.next_flight_date` (Nov. 13, from trade/mainstream
+  sources landing SNR 3 pre-dispute) tied against the registry's existing canonical LL2-sourced value
+  (Dec. 31 placeholder, tier 4) as a genuine same-metric SNR conflict: both sides got marked disputed
+  (the item's SNR dropping 4→3 via the `dispute` modifier) and the crossfeed fact queued to `held.json`
+  for Florian per SNR_SPEC 6, while the news item itself still published normally (held.json holds the
+  crossfeed dispute, not the item). Worth remembering a specific announced date beating a vague
+  registry placeholder on `next_flight_date` doesn't auto-win since the registry's aggregator-sourced
+  claim is still tier 4; a true same-metric tie between two tier-4-class claims disputes rather than
+  overwrites, exactly as SNR_SPEC intends.
+- 2026-10-28-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4 new, 1
+  updated, 1 held"); confirmed via a direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (1076 items, up from 1072), the Terrestar/Equatys update's grown `sources` (3) array, the new
+  `held.json` entry for the Vulcan `next_flight_date` crossfeed tie, and a `jq empty` parse check across
+  all touched data files (items, held, state, sources, source_ledger, candidates, the Vulcan registry
+  file, registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
