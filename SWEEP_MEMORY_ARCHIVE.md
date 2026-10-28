@@ -11694,3 +11694,199 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   updated, 0 held") and the unchanged item count (763) as the
   build-health signal.
 
+## Narrow re-check, ~7h34m gap, unfiltered full source list (2026-09-27)
+
+- 2026-09-27-A: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell for a SEVENTH consecutive sweep (2026-09-25-C, -L;
+  2026-09-26-E, -K, -M and this run); no sourceHealth entry logged again.
+  This has now been flagged for Florian in five straight sweep entries
+  with no fetch_note added yet; still worth flagging rather than silently
+  dropping the mandatory-pass attempt.
+- 2026-09-27-B: Two thin queue leads confirmed below the inclusion bar on
+  direct check: Gwynne Shotwell's SEC Form 144 notice to sell ~$52M in
+  SpaceX (SPCX, now publicly traded) stock is a routine pre-arranged
+  10b5-1-style trading-plan filing, not a company financial event
+  (funding round, M&A, bankruptcy, 8-K) -- same shape as the standing
+  Harvard-13F-passive-disclosure exclusion (2026-08-31-J), just from the
+  insider's side rather than a shareholder's. Silver Touch Technologies'
+  ISRO Space Applications Centre purchase order (workstations, delivery
+  by Feb 2027) has no stated dollar figure and is a routine IT-hardware
+  supply contract to a government client, not itself a space-industry
+  capability, contract, or market event; left undrafted rather than
+  published at a floor SNR, since CLAUDE.md's inclusion bar still
+  requires the fact to matter to an operator/reseller/investor, which a
+  vague-value hardware PO to SAC does not clear regardless of honest
+  low-confidence sourcing.
+- 2026-09-27-C: A fully clean zero-item sweep otherwise: a 12-candidate
+  post-filter queue (SpaceX stock/executive-equity churn, an Iran/Israeli-
+  envoy Starlink-video virality story left out as conflict-adjacent
+  political content with no operator statement, a personal SpaceX-moon-
+  trip essay, routine Crew-13/USSF-385 follow-up), a 4-of-5 mandatory
+  HTML pass, a 14-of-17-channel signals pass plus 4 targeted X searches,
+  and an 8-query discovery matrix covering the full scope (launch,
+  financial, incident, China, India, Japan, EO contracts, FCC) all traced
+  to already-published ground. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s
+  own merge confirmation ("merged 0 new, 0 updated, 0 held") and the
+  unchanged item count (763) as the build-health signal.
+
+## Deep sweep (auto-escalated, mode: deep), ~7h08m gap, unfiltered full source list (2026-09-27, second)
+
+- 2026-09-27-D: The harvester auto-escalated to a 7-day deep sweep (427
+  post-collapse candidates, 73 syndicated titles pre-collapsed) after
+  consecutive quiet narrow re-checks. Almost the entire queue was
+  re-presented Starship Flight 14 pre-launch hype (not yet flown, still
+  targeting Sept 28), SpaceX stock/executive-equity churn, and
+  already-published ground; a keyword-filtered pass (funding/contract/
+  regulatory/incident terms) cut the non-Federal-Register queue from 385
+  entries to a manageable review set and is worth reusing on future deep
+  sweeps rather than reading the full queue serially.
+- 2026-09-27-E: Three separate discovery-pass leads that read as clean
+  gaps (a WebSearch synthesis for "17,000 satellites... orbital
+  collisions" ESA debris report; "ESA awards study contracts for
+  dual-use Earth observation system" plus the ICEYE ARISE press
+  release; "Planet's Next Chapter in Germany" Berlin factory post) were
+  each already published under headlines that did not share obvious
+  keywords with the search terms that surfaced them (`2026-09-14-esa-
+  space-environment-report-2026`, `2026-09-17-esa-eogs-arise-leonardo-
+  study-contracts`, `2026-09-17-planet-berlin-satellite-factory`), and a
+  targeted `jq` grep against items.json for terms like "space
+  environment", "dual-use", and "germany" missed all three. Only
+  finalize-sweep's own dedup gate caught the duplicates before merge.
+  Lesson: for a discovery-pass lead that reads like an ESA/first-party
+  announcement or a Planet/ICEYE blog post, search items.json by
+  company name and rough date window (not just topic keywords) before
+  spending further research budget drafting it; the existing items had
+  materially more detail (e.g. the EOGS item's own €167M-to-€350M
+  funding figures, sourced from SatNews, Space Intel Report AND
+  Leonardo's own press release, which this session never found) than a
+  fresh draft would have carried.
+- 2026-09-27-F: A prior session had already resolved the ESA EOGS/ICEYE-
+  ARISE vs. "€350M European military ISR constellation" framing
+  confusion this session spent significant effort on (satnews.com and
+  Space Intel Report describe the same Sept. 17 ICEYE/Leonardo
+  architecture-study contracts using military-ISR language, while
+  ESA's and ICEYE's own releases frame it as the dual-use EOGS
+  program): Leonardo's own press release (findable via WebSearch,
+  `leonardo.com/en/press-release-detail/.../leonardo-selected-to-help-
+  shape-europe-s-future-sovereign-earth-observation-capability`) is the
+  piece that ties the two framings together as one event. Worth
+  remembering for any future ESA/EU sovereign-program story that reads
+  ambiguous between a "civil/dual-use" framing and a "military ISR"
+  framing: check whether the losing/other named contractor (here,
+  Leonardo, the second consortium lead) has its own release before
+  concluding the two framings are separate events.
+- 2026-09-27-G: Three genuinely new items cleared: China's S-AIDC
+  Supercomputing-1 onboard-AI EO satellite (RunTimeWire as lead since
+  Data Center Dynamics 403'd and Tom's Hardware's page wouldn't render
+  via WebFetch; a Thai tech-blog translation independently confirmed
+  the same facts for corroboration), Sanyark Space's $2M Indian NAV-COM
+  pre-seed (Dealroom lead, a regional business outlet for
+  corroboration), and EU commissioner Kubilius's Ariane 6 capacity
+  remarks at the Sept. 23 Access to Space Conference (SatNews as lead
+  since SpaceNews itself was paywalled beyond the headline/date/author
+  metadata WebFetch could still confirm). All landed SNR 4 off a trade
+  lead plus one corroboration source.
+- 2026-09-27-H: Several arstechnica.com and realclearscience.com URLs
+  failed outright via WebFetch this run (arstechnica.com: "unable to
+  fetch"; realclearscience.com: HTTP 403), consistent with prior notes
+  that these sites block the fetcher; a Yahoo News mirror that surfaced
+  in the same search for the ESA debris report turned out to be a
+  stale 2024 article recycled under a similar headline (a new
+  same-topic-no-date-in-snippet trap distinct from the Poland/Russia
+  case in 2026-09-25-N) and was correctly not used after a direct
+  fetch caught the wrong year. A WordPress reblog site
+  (nuclear-news.net) that credited and rehosted the original Ars
+  Technica piece fetched cleanly and was usable for corroboration
+  credit once the standalone ESA item turned out to already exist.
+- 2026-09-27-I: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 0 updated, 0 held") and the item count
+  moving from 763 to 766 as the build-health signal.
+
+## Narrow re-check, ~4h29m gap, unfiltered full source list (2026-09-27, third)
+
+- 2026-09-27-J: A near-total-junk 31-candidate queue (SpaceX stock/IPO
+  churn, Starship Flight 14 pre-launch viewing guides, off-topic
+  BBC/Futurism filler) still yielded one genuinely new item: Kremlin
+  spokesman Peskov warned that letting Ukraine use Starlink for deep
+  strikes into Russia would be "dangerous," responding to Finland's
+  Stubb reiterating his Starlink-access push to Musk. The dedup gate's
+  same-company-plus-category heuristic fired against both prior
+  Starlink-conflict items (Poland's station-fire sabotage, the Cosmonova
+  Kyiv strike) despite this being a distinct diplomatic-statement event;
+  two `dedup_distinct` entries cleared it. Anadolu Agency (aNews) and The
+  Moscow Times, both independently reporting the same Peskov quote via
+  Russian TV (Vesti/Zarubin), landed a clean SNR 4 as two mainstream
+  sources; found no kremlin.ru transcript to upgrade further.
+- 2026-09-27-K: The queue's "SpaceX just got the green light Starship
+  has waited years for" (Teslarati) confirmed the FAA had granted
+  Starship Flight 14's launch license (late Sept. 26), closing out the
+  standing item's own "awaiting its FAA launch license" open point from
+  its last update. Patched as an update rather than a new item despite
+  being 26 days after the item's creation date, since it's a direct
+  continuation of a story the item had already been receiving updates
+  on; bumped impact from notable to major given the stated regulatory
+  grant unlocking Starship's first orbital, revenue-generating flight
+  (the stated-value/first-of-kind test, not the eventual launch outcome
+  itself, which will be its own event next sweep).
+- 2026-09-27-L: Two discovery-pass leads that read as clean gaps (Google's
+  "Suncatcher" orbital-AI-chip project picking SpaceX as launch provider;
+  Dhruva Space/Safran's SBS-III contract) were both already published
+  under headlines with no shared keywords with the search terms that
+  surfaced them (`2026-09-24-google-project-suncatcher-orbital-test`,
+  `2026-09-10-safran-dhruva-space-sbs3-contract`) -- caught by an id/
+  headline grep against sweep-context's `existing[]` before drafting,
+  extending the 2026-09-27-E company-name-search lesson.
+- 2026-09-27-M: `blacksky.com/company/news/` rendered only the page's
+  search/filter shell for an EIGHTH consecutive sweep; no sourceHealth
+  entry logged again. A thin general-commentary lead (Elon Musk's CGTN
+  interview on US-China orbital-collision coordination and rocket
+  reusability) was left undrafted: no new dateable action, matching the
+  standing thin-trend-piece exclusion pattern even though Musk is a
+  first-party voice for SpaceX. `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update; relied on
+  `finalize-sweep.ts`'s own merge confirmation ("merged 1 new, 1
+  updated, 0 held") and the item count moving from 766 to 767 as the
+  build-health signal.
+
+## Narrow re-check, ~4h01m gap, unfiltered full source list (2026-09-27, fifth)
+
+- 2026-09-27-N: A near-total-junk 23-candidate queue (Starship Flight 14
+  pre-launch hype, SpaceX stock/valuation churn, off-topic Futurism
+  filler) plus an already-published Kremlin/Peskov Starlink item and a
+  too-thin, repetitive Budanov Starlink/Starshield access request (no new
+  dateable action beyond the standing Ukraine-access-ask thread) yielded
+  zero drafts. `fetch-list.ts` returned zero due HTML sources this pass
+  (all 39 currently `stale`/`dead`/`fetch_note`). A discovery matrix of 10
+  queries (launch, financial, incident/debris, China, FCC, EO contracts,
+  India, ESA, Japan, M&A) traced every hit to already-published items
+  (Stoke Space Series E, HEO Series B, Hubble Network Series C,
+  Exploration Company ALADDIN, EOGS ICEYE/Leonardo, IRIS2 study
+  contracts, NOAA GNSS-RO task orders, EnduroSat/Vantor, Yaogan-50
+  breakup) or not-yet-occurred scheduled events (the FCC's Sept. 30
+  12/42 GHz spectrum vote, Starship Flight 14 itself).
+- 2026-09-27-O: Re-broke a mistake this same session made and then
+  self-corrected before the memory write: fetched the 8 fetchable
+  Bluesky signals channels via their plain `bsky.app/profile/<handle>`
+  URLs first (which render only the bare handle, no posts, per the
+  standing lesson since 2026-09-06-Q/2026-09-10-K/2026-09-12-J/
+  2026-09-18-N/2026-09-25-E) instead of
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=N`,
+  and merged a first zero-item draft with a signalsPass note that
+  described the blank-page symptom as if it were the outcome. Caught
+  before moving on, re-fetched all 8 via the correct API endpoint, and
+  merged a second corrective draft in the same run with an accurate
+  note; the substantive result was unchanged (nothing past lastSweep on
+  any account, Josef Aschbacher/Marco Langbroek/Anatoly Zak/
+  SpacePolicyOnline all confirmed via real post data with timestamps,
+  Caleb Henry/Tim Farrar/Eric Berger/Andrew Jones stuck on the standing
+  stale-cache pattern), but the lesson is procedural: this specific
+  wrong-URL mistake recurs across sessions despite five prior memory
+  entries naming it; worth checking this exact note before starting the
+  signals pass rather than defaulting to the profile URL out of habit.
+- 2026-09-27-P: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 0 updated, 0 held" twice) and the
+  unchanged item count (767) as the build-health signal.
+
