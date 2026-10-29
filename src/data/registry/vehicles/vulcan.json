@@ -127,7 +127,17 @@
       "final": 4,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "canonical",
+    "disputed": {
+      "competing": [
+        {
+          "value": "2026-11-13",
+          "source": "https://spaceflightnow.com/2026/10/28/untied-launch-alliance-announces-mid-november-return-to-flight-for-vulcan-rocket/",
+          "as_of": "2026-10-29",
+          "snr": 4
+        }
+      ]
+    }
   },
   "status": {
     "value": "active",
@@ -161,7 +171,7 @@
     "source": "https://en.wikipedia.org/wiki/Vulcan_Centaur",
     "as_of": "2026-07-05"
   },
-  "notes": "First flight date is the VC2S configuration's maiden flight, the family's first. Flight totals are split across VC2S/VC4S/VC4L/VC6L configurations in Launch Library, so no aggregate is recorded. LEO capacity varies by configuration. Weekly maintenance 2026-08-10: Launch Library's canonical status (active) was not overwritten, but SpaceNews reporting (Lockheed Martin's Q2 2026 earnings release, and a separate Northrop Grumman GEM 63XL charges item) states Vulcan has not flown since the February 2026 USSF-87 solid rocket booster nozzle anomaly and calls the vehicle grounded; recorded as a disputed.competing claim on status pending an LL2 recheck (rate-limited this run) or Florian's call. Weekly maintenance 2026-08-20: LL2 rate-limited again (429 on first call, stopped per budget rule), so the canonical 'active' value was not re-verified or overwritten. The competing 'grounded' claim now has wide independent corroboration beyond the original SpaceNews piece (WFTV, WDBO, Yahoo, DefenseScoop, Space.com all report Vulcan has not flown since February 2026 pending BE-4 engine valve modifications, with ULA targeting return to flight by end of 2026); disputed.competing snr bumped 3->4 (wide reporting) and as_of refreshed. Still not overwriting the primary value: this is now a same-tier canonical-vs-canonical conflict for Florian to resolve.",
+  "notes": "First flight date is the VC2S configuration's maiden flight, the family's first. Flight totals are split across VC2S/VC4S/VC4L/VC6L configurations in Launch Library, so no aggregate is recorded. LEO capacity varies by configuration. Weekly maintenance 2026-08-10: Launch Library's canonical status (active) was not overwritten, but SpaceNews reporting (Lockheed Martin's Q2 2026 earnings release, and a separate Northrop Grumman GEM 63XL charges item) states Vulcan has not flown since the February 2026 USSF-87 solid rocket booster nozzle anomaly and calls the vehicle grounded; recorded as a disputed.competing claim on status pending an LL2 recheck (rate-limited this run) or Florian's call. Weekly maintenance 2026-08-20: LL2 rate-limited again (429 on first call, stopped per budget rule), so the canonical 'active' value was not re-verified or overwritten. The competing 'grounded' claim now has wide independent corroboration beyond the original SpaceNews piece (WFTV, WDBO, Yahoo, DefenseScoop, Space.com all report Vulcan has not flown since February 2026 pending BE-4 engine valve modifications, with ULA targeting return to flight by end of 2026); disputed.competing snr bumped 3->4 (wide reporting) and as_of refreshed. Still not overwriting the primary value: this is now a same-tier canonical-vs-canonical conflict for Florian to resolve. Weekly maintenance 2026-10-29: crossfeed queue candidate from the 2026-10-28 ULA return-to-flight item (Spaceflight Now, item snr 4) states ULA announced Vulcan's next launch for 2026-11-13, an equal-SNR same-metric conflict with the stored Launch Library figure (2026-12-31, snr 4, as_of 2026-10-12); per the queue's both_disputed_queue action, the stored value was not overwritten and 2026-11-13 was recorded as a disputed.competing claim under next_flight_date for Florian. Note this also bears on the status dispute above: a stated return-to-flight date corroborates the 'grounded' competing claim and suggests the grounding is ending, but that read and any status change are Florian's call, not an automatic resolution.",
   "diameter_m": {
     "value": 5.4,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=500",

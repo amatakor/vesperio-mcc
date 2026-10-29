@@ -1,51 +1,5 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": [
-    {
-      "id": "2026-10-26-earthdaily-nasa-landsat-task-order:earthdaily-constellation.sats_active_claimed",
-      "item_id": "2026-10-26-earthdaily-nasa-landsat-task-order",
-      "entity_slug": "earthdaily-constellation",
-      "entity_type": "constellation",
-      "field": "sats_active_claimed",
-      "value": 8,
-      "metric": "satellites of the EarthDaily Constellation currently operational, as stated by the operator",
-      "same_metric": true,
-      "item_snr": 5,
-      "source_url": "https://earthdaily.com/blog/earthdaily-awarded-3-million-nasa-task-order-to-advance-commercial-earth-observation-integration-with-landsat",
-      "action": "no_registry_change",
-      "proposed_on": "2026-10-26",
-      "status": "pending"
-    },
-    {
-      "id": "2026-10-26-stoke-space-pentagon-launchpad-loan:stoke-space.funding_latest",
-      "item_id": "2026-10-26-stoke-space-pentagon-launchpad-loan",
-      "entity_slug": "stoke-space",
-      "entity_type": "organization",
-      "field": "funding_latest",
-      "value": "$150 million conditional loan commitment from the U.S. Department of War's Office of Strategic Capital, announced Oct. 26, 2026, pending financial close",
-      "metric": "latest disclosed financing commitment, as stated by the Department of War's release and SpaceNews",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://spacenews.com/pentagon-backs-stoke-space-launch-expansion-with-150-million-loan-commitment/",
-      "action": "null_fill",
-      "proposed_on": "2026-10-27",
-      "status": "pending"
-    },
-    {
-      "id": "2026-10-28-ula-vulcan-return-to-flight-nov13:vulcan.next_flight_date",
-      "item_id": "2026-10-28-ula-vulcan-return-to-flight-nov13",
-      "entity_slug": "vulcan",
-      "entity_type": "vehicle",
-      "field": "next_flight_date",
-      "value": "2026-11-13",
-      "metric": "ULA's announced next Vulcan launch date, as stated by the company",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://spaceflightnow.com/2026/10/28/untied-launch-alliance-announces-mid-november-return-to-flight-for-vulcan-rocket/",
-      "action": "both_disputed_queue",
-      "proposed_on": "2026-10-28",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }
