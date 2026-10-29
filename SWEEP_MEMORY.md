@@ -5024,3 +5024,33 @@ a newer entry if a lesson changes.
   `sources`/`updates` arrays, plus a `jq empty` parse check across all touched data files (items, state,
   held, source_ledger, candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~6h3m gap, unfiltered full source list (2026-10-29, fourth)
+
+- 2026-10-29-L: A drafted "Space Force awards first operational CASR contracts to six companies" item
+  (Aviation Week's Oct. 28 writeup plus Breaking Defense) was REJECTED at finalize as a same-event match
+  against an already-published Oct. 22 item covering the identical six vendors and the identical $1.37M
+  Aviation Week figure; that existing item had already absorbed the $1.37M detail via an Oct. 29 copy
+  update earlier the same day. A Google-News/queue-dominant day's discovery-pass hits (Stoke Space $1B
+  Series E, Xona $250M Series D, Exploration Company $450M Series C, EarthDaily/Landsat task order,
+  Cowboy Space Big Iron, ISRO NVS-03 preview) were likewise all already published; worth the reminder
+  that a fresh-looking trade-press writeup on a multi-day-old program can just be redundant restatement,
+  not news, and checking item headlines for exact company/figure matches before drafting a corroboration
+  crawl saves a rejected finalize attempt.
+- 2026-10-29-M: PCMag's Google-News-only "Starlink Tests Dynamic Pricing" headline could not be
+  confirmed: pcmag.com 403'd on WebFetch and no search snippet reproduced the article's own figures,
+  so it was dropped per the standing no-WebSearch-synthesis-for-numbers rule rather than guess at
+  which of Starlink's several past pricing-change stories (all already published) it referred to.
+  Similarly, a Gadget Review "Starlink users in 105 countries...surveillance operation" headline traced
+  cleanly (Trend Micro/TrendAI research, Reuters Oct. 27 pickup) but was judged out of core scope: an
+  ad-tech/cybersecurity surveillance finding that happens to ride Starlink's IP ranges isn't a
+  commercial-space-economy event by itself, distinct from an operator's own action or a documented
+  orbital-safety incident.
+- 2026-10-29-N: `bun scripts/finalize-sweep.ts` rejected the CASR item on the first attempt (see -L);
+  removing it and re-running merged cleanly on the second attempt ("merged 3 new, 3 updated, 0 held").
+  Confirmed via a direct `jq` read of all three new items' `snr`/`category`/`impact` fields (1086 items,
+  up from 1083, the Amur-SPG whitelist-observer item landing SNR 4 despite a `found_none` corroboration
+  crawl, confirming the whitelist floor holds through the penalty) and all three updated items' grown
+  `sources`/`updates` arrays, plus a `jq empty` parse check across all touched data files (items, state,
+  candidates, source_ledger, sources). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
