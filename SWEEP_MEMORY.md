@@ -93,216 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Deep sweep (auto-escalated, mode: deep), ~7h31m gap, unfiltered full source list (2026-09-28)
-
-- 2026-09-28-A: A second consecutive deep-sweep escalation (after two
-  zero-add narrow re-checks closed out 2026-09-27) re-presented a
-  476-candidate queue that was almost entirely Starship Flight 14
-  pre-launch hype and SpaceX stock/executive-equity churn, plus dozens of
-  `previously_presented`-unflagged Via Satellite/ESA/European Spaceflight
-  items that grepped straight to already-published ids (Redwire's own
-  NITE-STAR $980M post turned out to just restate its existing membership
-  in the already-published 15-firm IDIQ awardee list; Space Applications'
-  LUVMI-M Blue Origin post was a byte-for-byte source-URL match to an
-  already-published item). Confirms the standing grep-before-drafting
-  discipline is necessary even when `previously_presented` reads false,
-  since that flag tracks queue re-presentation, not publish status.
-- 2026-09-28-B: Two genuinely new items surfaced from the discovery pass
-  after the queue/signals/HTML legs all traced to already-published or
-  thin ground: USA 32 (NORAD 19460), a retired 1988 NRO signals-
-  intelligence satellite, broke apart Sept. 13 at 775 km per a Space-Track
-  notice quoted by KeepTrack.space; chased 15 days past the sweep window
-  per the standing predates-window rule since CLAUDE.md's incident
-  category covers satellite losses/anomalies regardless of how old the
-  hardware is. Space-Track's own bulletin sits behind account
-  authentication (no public space-track.org page to link), so the lead
-  had to be KeepTrack.space's notice page (classed `informal`, not
-  `computed`, since SNR_SPEC names only CelesTrak/Space-Track for that
-  tier) rather than an `official_record`/`computed` citation of the
-  quote's original source. Landed SNR 3 off 3 informal/mainstream sources
-  (`corroboration_2plus` + `mainstream_pickup`, Futura-Sciences).
-- 2026-09-28-C: Arabsat's Sept. 22 contract with China Great Wall
-  Industry Corporation to build ARABSAT-50 (the operator's 50th-
-  anniversary satellite, its first ever built in China) surfaced via the
-  queue's own Via Satellite entries; Arabsat has no
-  `src/data/registry` entity, but the story didn't need the no-registry
-  workaround since the lead was Via Satellite (trade) rather than
-  Arabsat's own site. Landed a clean SNR 4 off three independent trade
-  sources (Via Satellite, Developing Telecoms, China-in-Space), the last
-  of which corrected an overclaim implicit in other coverage: the "first
-  Chinese satellite for the Middle East" framing is actually specific to
-  Arabsat's own fleet, not the region as a whole (China has built
-  satellites for other Middle Eastern operators before) -- worth checking
-  a specialist regional-space outlet's more precise framing before a
-  broader superlative from secondary coverage makes it into copy.
-- 2026-09-28-D: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 0 updated, 0 held") and the item count
-  moving from 767 to 769 as the build-health signal.
-
-## Narrow re-check, ~9h07m gap, unfiltered full source list (2026-09-28, second)
-
-- 2026-09-28-E: A verified company's own X/Twitter posts do NOT pass the
-  first_party anti-spoof gate even when genuinely fetched and confirmed
-  verbatim via the syndication endpoint: the gate only matches a
-  source's URL host against the registry's recorded `website` domain (or
-  a fixed official-hosts list), and `x.com` is neither, so two of
-  SpaceX's own posts confirming today's Starship Starlink V3 deployment
-  classed `informal`, not `first_party`, despite being the actor's own
-  official account. Worth remembering before assuming a verified
-  company account earns first_party the way a whitelisted person's
-  signals.json channel does; the anti-spoof rule cares about domains,
-  not verification badges.
-- 2026-09-28-F: Starship's actual first ORBITAL flight (the 14th test
-  flight, Sept. 28, engine loss during ascent, orbit reached ~25 minutes
-  after liftoff, 26 Starlink V3 satellites deployed into the operational
-  constellation for the first time rather than discarded on reentry, per
-  Payload/UPI/BBC/TechCrunch) was a genuinely undrafted gap distinct
-  from the already-published Sept. 1 FAA-license item and its Sept. 27
-  update noting the license grant: drafted as a new `launch`-category
-  item rather than folded into the license item, since a regulatory
-  approval and the actual flight execution are separate dateable events
-  (same logic as Flight 13's abort/flight being its own item apart from
-  license news). Landed `major` impact (a demonstrated first-of-kind
-  operational capability) rather than `seismic`: CLAUDE.md's seismic
-  example specifically names a vehicle's maiden flight, and Starship's
-  literal first flight was years prior (this is its first flight to
-  actually reach orbit after 13 suborbital-only attempts) -- picked the
-  lower tier per the standing "when torn, pick the lower one" rule.
-  spacex.com/updates and the dedicated spacex.com/launches/starship-
-  flight-14 page both remained unfetchable JS shells (no first_party
-  lead available), so the item led on Payload (trade) with UPI/BBC/
-  TechCrunch (mainstream) corroboration, landing SNR 4 off 5 distinct
-  sources -- the direct-source ceiling applies regardless of magnitude
-  when no first-party lead is fetchable.
-- 2026-09-28-G: The same-company-plus-category dedup heuristic fired on
-  the Starship item against two unrelated Falcon 9 missions (the Sept.
-  21 Exolaunch Starfall reentry rideshare and the Sept. 26 USSF-385
-  Vandenberg launch), purely on shared company SpaceX + category
-  `launch` + within 7 days, despite being a different vehicle and
-  program entirely. Two `dedup_distinct` entries cleared it, extending
-  the long-running pattern to same-company-different-vehicle collisions
-  specifically.
-- 2026-09-28-H: A discovery-pass "satellite company funding" query
-  resurfaced Sateliot's April 2026 Series C round-OPENING announcement
-  (not a close) under a September-dated search; confirmed stale via a
-  second targeted search finding no September close, left undrafted.
-  ESA's "first office in Japan" (europeanspaceflight.com) traced to an
-  October 2025 opening, also stale. Both genuinely new items this run
-  (Starship orbital flight, Meridian Space's spinout from SpinLaunch)
-  came from the harvester queue itself, not the 8-query discovery
-  matrix, which traced entirely to already-published ground.
-- 2026-09-28-I: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 0 updated, 0 held") and the item count
-  moving from 769 to 771 as the build-health signal.
-
-## Narrow re-check, ~2h30m gap, unfiltered full source list (2026-09-28, third)
-
-- 2026-09-28-J: A queue dominated by hundreds of Starship Flight 14
-  pickup pieces buried a genuine correction: the already-published
-  item's TechCrunch-sourced text conflated the mission's ORIGINALLY
-  PLANNED six-orbit/Chile splashdown with what actually happened once
-  mission managers cut the flight short after satellite deployment. CBS
-  News, fetched directly, gave the real outcome: splashdown in the
-  Pacific north of Hawaii about three hours in, the ship tipping over
-  and catching fire on impact (a normal ocean-landing occurrence per
-  CBS), and a Super Heavy booster splashdown off Texas after a second
-  engine issue during boost-back. ABC News and SpacePolicyOnline's
-  bluesky (real-time launch-day posts) both independently corroborated
-  "north Pacific"/"north of Hawaii" over TechCrunch's "west of Chile"
-  phrasing. Patched via `updates[].patch.explainer.what_happened` (full
-  field replacement, not an append) plus an `attach`; no bump requested,
-  since the item's non-first-party trade lead was already at its
-  corroboration ceiling of 4. Worth remembering: a same-day launch
-  item's first-draft copy can describe the PLAN rather than the OUTCOME
-  when the lead source was still live-blogging pre-splashdown; a
-  same-day follow-up fetch of a different outlet is worth doing even on
-  an already-published seismic/major item, not just thin ones.
-- 2026-09-28-K: Two genuinely new items surfaced entirely from the
-  harvester queue's own non-Starship entries, not discovery: Beeline
-  Kazakhstan's commercial Starlink Mobile direct-to-cell launch (Via
-  Satellite's `raw_excerpt` carried the full article; Kazakhstan's
-  government ministry announcement and VEON's own two prior press
-  releases, Nov 2025 and Dec 2025, were both confirmed stale on direct
-  fetch and used only for background, not as today's news peg) and
-  ESA's Digital EO cloud-infrastructure contract with OVHcloud and CGI
-  (a Reuters wire piece, credited "Thomson Reuters by Leo Marchandon"
-  on one of its many identical local-radio-station mirror hosts;
-  Techzine.eu, an independently-written tech-infra trade outlet, gave
-  the same facts in its own words for `corroboration_2plus`). Neither
-  OVHcloud nor CGI has a `src/data/registry` organization entity, but
-  the lead was never their own site, so the no-registry-host workaround
-  never came up.
-- 2026-09-28-L: `blacksky.com/company/news/` rendered only the page's
-  search/filter shell again this run (a ninth consecutive sweep,
-  2026-09-25-C through 2026-09-27-M); no sourceHealth entry logged
-  again, per the standing practice. Still flagged for Florian: needs a
-  `fetch_note` at the next structural touch.
-- 2026-09-28-M: A NASA/Boeing Starliner press conference was scheduled
-  for 3 p.m. ET today (after this run's `now`); left uncovered as a
-  scheduled, not-yet-occurred event. Worth checking next sweep for the
-  actual announcement.
-- 2026-09-28-N: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 1 updated, 0 held") plus a direct read of
-  both new items' and the updated item's `snr`/`snr_trace`/`category`/
-  `impact`/`sources` fields, and the state.json sweep-log entry, as the
-  build-health signal.
-
-## Narrow re-check, ~6h05m gap, unfiltered full source list (2026-09-28, fourth)
-
-- 2026-09-28-O: WebFetch's AI summarization of a Bluesky
-  `getAuthorFeed` JSON response is not reliably reproducible: fetching
-  Jeff Foust's and Eric Berger's feeds twice each (once asking for
-  text+timestamp, once asking additionally for the `uri` field) returned
-  materially different post sets each time, and one live-tweet-style
-  quote about the Starliner briefing shifted from being attributed to
-  Foust's feed on the first call to Berger's feed on the second. Rather
-  than risk a misattributed quote or fabricated post URI, dropped both
-  Bluesky posts from the Starliner item's sourcing entirely and drafted
-  from Payload/Scientific American/ClickOrlando instead, which was
-  already sufficient for SNR 4. Lesson: when a signals-channel fetch
-  needs an exact quote or post URI (not just "is there anything new"),
-  don't trust a single WebFetch summarization pass; re-fetching the same
-  endpoint can silently change which posts and attributions come back.
-- 2026-09-28-P: arstechnica.com again failed outright via WebFetch
-  ("unable to fetch"), but its content on the ISS mobile-transporter
-  fault ahead of Crew-13 (Sept 27-28) had already propagated through
-  rewrite/preview sites that explicitly credit Ars Technica
-  (hwbusters.com with the fuller rewrite, physicalainews.com with a
-  shorter preview linking through to the original). Used hwbusters.com
-  as the lead, classed `informal` (not `mainstream`), since Ars Technica
-  itself was never actually fetched this run; citing the rewrite site
-  honestly rather than laundering Ars Technica's tier through it. Only
-  one such rewrite cluster existed for this story (no independent
-  outlet had it yet), so `crawl: "found_none"` and the item landed SNR 1
-  -- still drafted per the standing "weak sourcing is never a reason to
-  hold" rule, since it's a genuine, dateable, on-scope Commercial Crew
-  operational risk two days before Crew-13's targeted launch.
-- 2026-09-28-Q: `finalize-sweep.ts` rejects an `updates[].attach` entry
-  missing `via` even when the attached source is first-party and is
-  functionally the new lead-quality source, not mere corroboration;
-  every attach entry needs an explicit `via` from the enum
-  (`initial`/`corroboration`/`reinforcement`/`upgrade`), not just the
-  ones that are obviously additive.
-- 2026-09-28-R: Three genuinely new items cleared after the queue (dominated
-  by already-published Starship Flight 14 coverage) and an 8-query
-  discovery matrix both traced entirely to already-published ground:
-  Boeing/NASA's Starliner return-to-flight schedule (uncrewed NET
-  December, crewed mid-2028, Vulcan Centaur certification needed since
-  Atlas V is retiring) from the harvester queue's Payload entry; the ISS
-  mobile-transporter fault above; and Northrop Grumman's first-21-of-150
-  PWSA Tranche 1 Transport Layer satellite delivery, found via the
-  signals pass (Aviation Week's Vivienne Machi) but sourced to the
-  company's own first-party press release once found, landing SNR 5
-  with Defense Daily corroboration. Also closed out the
-  2026-07-03-katalyst-swift-reboost-launch saga with NASA's first-party
-  lessons-learned page (nasa.gov concluded involvement Sept 3, Link
-  reentered Sept 25, plus quotes and the drag-minimization detail),
-  found via a Jeff Foust Bluesky headline-teaser pointing at a paywalled
-  SpaceNews piece that in turn led to the NASA source.
-
 ## Narrow re-check, ~5.5h gap, unfiltered full source list (2026-09-29)
 
 - 2026-09-29-A: `blacksky.com/company/news/` rendered a normal dated listing
@@ -5138,3 +4928,43 @@ a newer entry if a lesson changes.
   all touched data files (items, held, state, sources, source_ledger, candidates, the Vulcan registry
   file, registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~6h10m gap, unfiltered full source list (2026-10-29)
+
+- 2026-10-29-A: A ~35-candidate queue almost entirely consumed by SpaceX/Tesla-merger stock
+  speculation, Starlink/Ukraine-saga rehash, and future-dated launch previews (ISRO NVS-03 Oct. 30,
+  USSF-432 slipped to Nov. 1-2) still required chasing six distinct leads before confirming only one
+  was genuinely new: easyJet's Starlink Wi-Fi deal, the carriers-vs-FCC 482 MHz spectrum fight, the
+  Minnesota-cornfield debris recap, and the Cosmos 2612/ICEYE-X36 saga (fetched TWZ and Militarnyi
+  directly looking for a "consistent with an on-orbit weapons operation" DoD quote a WebSearch
+  synthesis attributed to no one in particular) all turned out to already be fully published,
+  several with more detail than the fresh search results carried. Worth the reminder that a
+  WebSearch synthesis asserting a government quote is not the same as that quote appearing in a
+  directly fetched page; two direct fetches here (TWZ, Militarnyi) confirmed the item's real content
+  and that nothing needed to change.
+- 2026-10-29-B: An Austin attorney's intervention in SpaceX's Texas public-records suit over Terafab
+  (KXAN's "Austin attorney joins lawsuit" headline, the queue's actual trigger) could not be drafted:
+  kxan.com 403'd on every WebFetch attempt including an r.jina.ai proxy, and no other outlet directly
+  fetched covered that specific Oct. 28 filing, only WebSearch syntheses of the blocked KXAN page.
+  Per the standing 2026-10-26-F precedent, dropped the intervention claim itself, but the underlying
+  SpaceX-vs-Paxton/Grimes-County lawsuit it referenced turned out to be a genuine month-and-a-half-old
+  gap (filed Sept. 8, never drafted) once three *other* directly-fetched outlets (ENR, Spectrum Local
+  News, KBTX) independently confirmed the filing, court, and $119B four-phase Terafab buildout figures;
+  published dated on the actual Sept. 8 filing per the predates-window chase rule. Backdating a new
+  item 7 weeks tripped the same-company-plus-category dedup heuristic against three unrelated SpaceX
+  regulatory items from that same week (FCC high-cost-fund sunset, Senegal license suspension, the
+  Starlink Roam billing lawsuit); three `dedup_distinct` entries cleared it on the second attempt.
+- 2026-10-29-C: The bare `bsky.app/profile/<handle>` page continues to return nothing but the handle
+  itself on WebFetch (confirmed again across 6 profiles this run); the
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15` endpoint worked
+  cleanly for all of them, including returning months-stale feeds for accounts that just don't post
+  often (Eric Berger's account, e.g., returned nothing newer than June 2026). Keep defaulting straight
+  to the API endpoint rather than the bare profile URL.
+- 2026-10-29-D: `bun scripts/finalize-sweep.ts` merged cleanly on the second attempt (after adding the
+  three `dedup_distinct` entries above) with "merged 1 new, 1 updated, 0 held". Confirmed via a direct
+  grep read of the new Terafab item's `snr`/`snr_trace`/`category`/`impact` fields (1077 items, up from
+  1076, SNR 4 off a trade base plus 3-source corroboration) and the Starshield item's new `updates[]`
+  entry recording the Pentagon IG's refusal to investigate. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update; full `jq`/`node -e` ad-hoc validation was unavailable in this
+  session's sandbox (only the mandated `bun scripts/*.ts` commands and plain `grep`/`sed`/`read` ran
+  without an approval prompt), so file integrity was checked via `grep`/`Read` spot-checks instead.
