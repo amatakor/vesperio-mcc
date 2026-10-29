@@ -4992,3 +4992,35 @@ a newer entry if a lesson changes.
   `sources` (4, up from 3) array, and the sweep log's `corroboration_collapses` entry for the Axelspace
   same-domain collapse. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~3h14m gap, unfiltered full source list (2026-10-29, third)
+
+- 2026-10-29-H: An Arctic Today "KSAT and PierSight sign agreement" queue headline read as same-day
+  but traced on direct fetch to ksat.no's own release dated Sept. 9, seven weeks stale; left undrafted.
+  A second flavor of the stale-resurfacing trap worth remembering: a third-party outlet's own headline
+  phrasing ("sign agreement") carries no date signal at all, so a company's own page is the fastest way
+  to rule a "new deal" lead in or out before spending further fetches on it.
+- 2026-10-29-I: A secondary outlet's "FCC votes on direct-to-device spectrum" headline can describe the
+  Commission adopting a Notice of Proposed Rulemaking (opening a comment period) rather than a final
+  order granting anything; the Oct. 29 Starlink Mobile spectrum vote was exactly this shape (482 MHz
+  "proposed," carriers' band-exclusion petition left undecided pending 60-day comment). Confirmed via a
+  direct fetch of Teslarati's own article text, not just search-synthesis framing, before patching the
+  precursor item; worth checking "NPRM" vs. "Order" explicitly on any FCC vote story before writing it
+  as a final grant/denial.
+- 2026-10-29-J: Eutelsat's own investor-relations PDF (first-party, registry-matched domain) gave a
+  garbled partial extraction on a first WebFetch pass but parsed perfectly, full 7 pages verbatim, once
+  Read was pointed at WebFetch's auto-saved local copy -- confirms the 2026-10-24-B PDF workaround
+  generalizes beyond `.gov` filings to any first-party investor PDF, and is worth trying by default
+  whenever a WebFetch PDF response calls itself "compressed/encoded" or "cannot be parsed."
+  A same-topic numeric-variance case: Turkish Minute's "35 minors" among Turkey's 85 Daltonlar
+  detainees conflicted with TeslaNorth's independently-fetched "30 minors" on the same Oct. 27 raid;
+  omitted the specific minors count entirely from the copy rather than pick one source's figure, since
+  neither article flagged the other's number as wrong and the detail wasn't essential to the story.
+- 2026-10-29-K: `finalize-sweep.ts` rejected the first draft attempt on `updates[].attach[].via: "initial"`
+  (only `corroboration`/`upgrade` are valid on an attach, even for an update's very first source, e.g.
+  the Lithuania arson item's first-ever update); changing to `"corroboration"` merged cleanly on the
+  second attempt ("merged 2 new, 5 updated, 0 held"). Confirmed via a direct `jq` read of both new
+  items' `snr`/`category`/`impact` fields (1083 items, up from 1081) and all five updated items' grown
+  `sources`/`updates` arrays, plus a `jq empty` parse check across all touched data files (items, state,
+  held, source_ledger, candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
