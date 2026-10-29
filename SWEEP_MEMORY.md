@@ -4968,3 +4968,27 @@ a newer entry if a lesson changes.
   2026-09-09 CLAUDE.md procedure update; full `jq`/`node -e` ad-hoc validation was unavailable in this
   session's sandbox (only the mandated `bun scripts/*.ts` commands and plain `grep`/`sed`/`read` ran
   without an approval prompt), so file integrity was checked via `grep`/`Read` spot-checks instead.
+
+## Narrow re-check, ~8h16m gap, unfiltered full source list (2026-10-29, second)
+
+- 2026-10-29-E: A company's own official X/Twitter account (here, @Starlink) still cannot pass the
+  `first_party` anti-spoof gate even for an unambiguously first-party statement, because the gate
+  matches on hostname (x.com) against the registry's `website` field (spacex.com), not on account
+  identity; classed the Starlink post `informal` (confirmed via the syndication endpoint for verbatim
+  text) alongside a Brazilian trade lead (TeleTime) for the nationwide Vivo/Starlink Mobile launch,
+  landing a clean trade-base SNR 4 rather than force an unsupportable first_party tier-5 claim.
+- 2026-10-29-F: A 31-day-stale Axelspace malfunction notice (Sept. 29: 4 of 7 new GRUS-3 satellites
+  permanently lost high-speed downlink) had never been drafted by any prior sweep; surfaced only by
+  checking the company's own full news listing after today's "GRUS-3C verification image" press
+  release pointed at the underlying problem, not via the queue or a discovery query. Chased per the
+  predates-window convention and dated on the actual Sept. 29 notice; the same-domain corroboration
+  collapse rule merged the two Axelspace releases into one unit, costless since the lead was already
+  first-party ceiling SNR 5. Worth remembering a routine-sounding "first light"/verification-image
+  press release from an operator can be the breadcrumb pointing at an older, unpublished setback, not
+  just good news in isolation.
+- 2026-10-29-G: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4 new, 1
+  updated, 0 held"); confirmed via a direct `jq` read of all four new items' `snr`/`snr_trace`/
+  `category`/`impact`/`kind` fields (1081 items, up from 1077), the Astroscale LEDA item's grown
+  `sources` (4, up from 3) array, and the sweep log's `corroboration_collapses` entry for the Axelspace
+  same-domain collapse. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
