@@ -4936,3 +4936,37 @@ a newer entry if a lesson changes.
   (16-channel signals pass, 11-query discovery matrix) plus one unrelated persistence-bump
   `snr_movements` entry (ISRO Gaganyaan CM/SM separation test, 2 to 3). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h25m gap, unfiltered full source list (2026-10-30, third)
+
+- 2026-10-30-I: `arstechnica.com` is unfetchable directly via WebFetch as usual, but routing the exact
+  same URL through the `r.jina.ai` reader proxy (`https://r.jina.ai/<full arstechnica.com URL>`) returned
+  full verbatim article text, byline and figures this run, succeeding where the same proxy hit a CAPTCHA
+  wall on 2026-10-26-F; worth retrying the proxy on a hard-blocked outlet rather than assuming the prior
+  CAPTCHA result is permanent. Used it to pull Eric Berger's piece citing a Quilty Space (Caleb Henry)
+  launch-capacity-shortfall analysis (150 missions through 2030, doubling with military demand, Space
+  Force Lane 1/2 demand revisions, Blue Origin New Glenn production forecasts), folded into the existing
+  Oct. 22 SpaceX/Falcon 9 retirement item as a no-bump enrichment attach+patch that also raised the
+  item's impact from notable to major, since a quantified industry-wide shortfall through the late 2030s
+  clears the "director briefs the team today" bar the original single-source item alone did not.
+- 2026-10-30-J: A Turkish national space agency "first lunar spacecraft integration completed" milestone
+  (TUBITAK's own Oct. 6 first-party release, recapped in English via a SpaceflightNow feature three
+  weeks later) was left undrafted: "production/integration completed" is not one of the science
+  category's named event types (launch, arrival, orbit insertion, landing, sample return, provider
+  selection, major anomaly/failure), and the Falcon 9 launch vehicle this SpaceflightNow piece named had
+  already been reported in Turkish-language coverage the same week as the integration milestone, so it
+  wasn't a fresh provider-selection fact either. Worth a cleaner precedent if a future sweep needs to
+  decide whether a national space agency's hardware-completion milestone belongs in `science` at all.
+- 2026-10-30-K: A Putin "Musk is a genius" / "close contact on Rassvet so satellites don't interfere"
+  quote (TechCrunch, Oct. 29) and a Fire Point CEO's Reuters interview on completing strike missions
+  without a Starlink link (Oct. 30, "only covers probably 15 to 20%" of full capability) both folded into
+  the Starlink/Ukraine speed-restriction saga (now 80 sources, 33 updates) as no-bump enrichment
+  attach+patches; the saga's dedup window for "is this the same story" keeps absorbing genuinely new
+  named-actor statements weeks after the original item, consistent with the standing practice for this
+  specific saga.
+- 2026-10-30-L: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new, 3
+  updated, 0 held"); confirmed via a direct `jq` read of the new EIB/Deutsche Bank €560M item's
+  `snr`/`snr_trace`/`category`/`impact`/`sources` fields (landing a clean first-party SNR 5 off ESA's own
+  commercialisation.esa.int subdomain, which passes the `esa.int` registry-domain anti-spoof check) and
+  all three updated items' grown `sources`/`updates` arrays (1094 items, up from 1093). `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
