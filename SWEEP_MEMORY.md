@@ -4879,6 +4879,31 @@ a newer entry if a lesson changes.
   candidates, source_ledger, sources). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
 
+## Narrow re-check, ~8h10m gap, unfiltered full source list (2026-10-30, second)
+
+- 2026-10-30-E: A KSAT/PierSight "ground station support" queue headline looked like the same stale Sept. 9
+  letter-of-intent flagged undraftable on 2026-10-29-H, but tracing it to ksat.no's own news archive showed
+  it is a genuinely distinct, newer Oct. 29 agreement (ground-segment support for launch/early-orbit ops and
+  routine mission support, superseding the September data-evaluation LOI); worth re-checking a company's own
+  news archive by URL pattern before assuming a second "KSAT and PierSight" headline is the same old story.
+  ArcticToday's flag-emoji-prefixed posts (🇳🇴) are KSAT's own press releases verbatim, not independent
+  reporting, consistent with past sweeps; classed `wire_pr` corroboration behind the ksat.no first-party lead.
+- 2026-10-30-F: `uk.finance.yahoo.com` reliably renders UK RNS-wire mirrors (Filtronic's AGM trading update)
+  when the originating `filtronic.com`/`investegate.co.uk`/`advfn.com` pages 403 or render blank; worth
+  trying the Yahoo Finance UK mirror by default for LSE-listed micro-cap RNS announcements.
+- 2026-10-30-G: Telesat's own Q3 2026 earnings PDF (first-party, `telesat.com`) renders as unreadable binary
+  on a direct WebFetch pass but parses cleanly once Read is pointed at WebFetch's auto-saved local copy,
+  confirming the 2026-10-24-B/2026-10-28-B/2026-10-29-J PDF workaround generalizes to Telesat's investor
+  releases too. The PDF itself never states the Dec. 6 deadline or the creditor consortium's rescue-package
+  terms (those facts live only in Payload's own reporting, presumably sourced from a prior 8-K/MD&A); a
+  first-party earnings release and a trade outlet's enrichment piece on the same day can be genuinely
+  complementary, non-overlapping sources rather than one superseding the other.
+- 2026-10-30-H: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 5 new, 2
+  updated, 0 held"); confirmed via a direct `jq` read of all five new items' `snr`/`category`/`impact`
+  fields (1093 items, up from 1088) and both updated items' grown `sources` (4 each) arrays, plus a
+  `jq empty` parse check across all six touched data files (items, state, held, source_ledger, sources,
+  candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
 ## Narrow re-check, ~5h43m gap, unfiltered full source list (2026-10-30)
 
 - 2026-10-30-A: A near-total-junk 43-candidate queue (SpaceX/Tesla-merger stock-reaction spam, ISRO's
