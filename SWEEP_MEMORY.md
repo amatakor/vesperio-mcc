@@ -4970,3 +4970,40 @@ a newer entry if a lesson changes.
   commercialisation.esa.int subdomain, which passes the `esa.int` registry-domain anti-spoof check) and
   all three updated items' grown `sources`/`updates` arrays (1094 items, up from 1093). `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h11m gap, unfiltered full source list (2026-10-30, fifth)
+
+- 2026-10-30-M: A near-total-junk ~90-candidate queue (dozens of ISRO GSLV-F18/NVS-03 pre/post-launch
+  pickups across Indian outlets, SpaceX/Tesla-merger stock-reaction spam, off-topic Futurism filler)
+  still yielded six new items: the NVS-03 launch itself (chased past the Google-News-redirect wall via
+  a direct ThePrint fetch, since thehindu.com/hindustantimes.com/ndtv.com/moneycontrol.com/
+  indiatoday.in all failed to fetch directly) restoring NavIC to its 4-satellite minimum operational
+  configuration; an MDA Space/Thales Alenia Space IRIS2 antenna subcontract and a Satellogic/HEO
+  non-Earth-imaging renewal, both from the Via Satellite harvester-queue leg; a Starlink
+  dynamic-residential-pricing-plus-50%-maritime-price-hike story (How-To Geek, resolving the
+  2026-10-29-M "could not be confirmed" PCMag gap via a different, fetchable outlet); and two small
+  wire_pr PWSA/GeoXO component subcontracts (ESI Motion, Rocketdyne) with no stated dollar value.
+  Both PWSA/GeoXO items needed a crossfeed block despite neither company having a registry entity,
+  since their shared customer Lockheed Martin does.
+- 2026-10-30-N: ISRO chairman V Narayanan's own post-launch quote ("with the success of this launch,
+  the NavIC constellation is restored to the minimum operational configuration with four satellites")
+  resolved a live contradiction: a pre-launch WION piece (still showing "countdown... progressing
+  smoothly" language, i.e. written before liftoff) claimed NavIC would still need "at least three
+  more" NVS-series satellites after NVS-03; the pre-launch framing doesn't apply once the chairman's
+  own post-launch count confirms minimum service was reached with just this one. Worth checking
+  whether a search-surfaced piece on a scheduled launch was written before or after the event before
+  trusting its framing of what the launch would or wouldn't achieve.
+- 2026-10-30-O: The standing same-company-plus-category dedup false positive extended to ISRO+`launch`
+  (NVS-03 against the unrelated Oct 25 "four launch pads by 2029" item) and to Thales Alenia
+  Space+`contract` (the MDA/IRIS2 antenna subcontract against the unrelated Oct 27 ESA Galileo G2
+  four-satellite order); two `dedup_distinct` entries cleared both on the second attempt. A third
+  dynamic-pricing item needed three more `dedup_distinct` entries against unrelated SpaceX+`product`
+  items (Verizon's timeline estimate, T-Mobile's MVNO rejection, the Vivo Brazil D2D launch) and
+  passed clean on the first attempt once those were pre-empted.
+- 2026-10-30-P: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the two
+  same-company-plus-category collisions above; merged cleanly on the second attempt ("merged 6 new,
+  1 updated, 0 held"). Confirmed via a direct `jq` read of all six new items' `snr`/`impact`/`category`
+  fields (1100 items, up from 1094), the sweep log's two `corroboration_collapses` entries (both PWSA/
+  GeoXO items' wire mirrors, correctly collapsed as `wire_rewrite`), and the Florida gas pipeline
+  item's grown `sources` (4, up from 2) and `updates` (1, up from 0) arrays. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
