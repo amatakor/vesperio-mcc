@@ -93,182 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~5.5h gap, unfiltered full source list (2026-09-29)
-
-- 2026-09-29-A: `blacksky.com/company/news/` rendered a normal dated listing
-  this run (Sept 15 Via Satellite pickup, Sept 14 Gen-3 first light, Sept 9
-  press release and Bloomberg pickup, back through July), ending the
-  9-consecutive-sweep empty-filter-shell streak (2026-09-25-C through
-  2026-09-28-L). Nothing on the listing was newer than lastSweep or
-  unpublished, so this changed nothing substantively, but it supersedes
-  the standing "flag for Florian, needs a fetch_note" note: the anomaly
-  was transient after all, not a permanent site change, and a fetch_note
-  is not warranted at the next structural touch.
-- 2026-09-29-B: A genuine, fully clean zero-item sweep: a 65-candidate
-  post-filter queue (almost entirely Starship Flight 14 pickup and
-  SpaceX-stock/Bluesky-search-query chatter, plus off-topic CGTN
-  general-tech filler) yielded nothing draftable. Three queue leads
-  worth naming as screened-out rather than missed: an AST SpaceMobile
-  8-K's Item 5.02 was a routine Compensation-Committee change-of-control
-  severance POLICY adoption with no named departing/appointed officer,
-  below the inclusion bar regardless of honest low-confidence sourcing
-  (not a personnel change at all, so the routine-hire exclusion doesn't
-  even need to apply); Planet's Sept 28 "Counting 5.2 Billion Trees"
-  post is a peer-reviewed research-paper case study (2019 data, published
-  in the Journal of Remote Sensing Sept 28) with no contract, customer
-  action, or dollar figure, squarely the science/EO research-not-events
-  exclusion; The Air Current's "NASA invests in Boeing, woos new entrants
-  to replace SpaceX's Dragon" named zero specific companies, programs, or
-  RFPs behind its paywall, a thin trend piece per the standing pattern.
-  The mandatory 5-source HTML pass, a 13-channel signals pass (8 further
-  X-handle searches), and a 10-query discovery matrix (launch, funding,
-  incident/debris, China, India, EO contracts, FCC, Japan, M&A,
-  geopolitical) all traced to already-published items or to the FCC's
-  not-yet-occurred Sept 30 12.7/42 GHz spectrum vote. `bun run build` was
-  not attempted, per the 2026-09-09 CLAUDE.md procedure update; relied on
-  `finalize-sweep.ts`'s own merge confirmation ("merged 0 new, 0 updated,
-  0 held") and three persistence-bump `snr_movements` in the sweep log
-  entry as the build-health signal.
-
-## Narrow re-check, ~5h08m gap, unfiltered full source list (2026-09-29, second)
-
-- 2026-09-29-C: A same-day Reuters piece ("SpaceX's Starship engine
-  failure could impact NASA's moon mission objectives," fetched via an
-  Investing.com wire mirror since reuters.com itself wasn't tried) added a
-  genuinely new, attributed analysis angle to the already-published Sept
-  28 Starship-reaches-orbit item: a named aerospace engineer (Dean Sladen,
-  Accu Components) on the specific Artemis III/2027-rehearsal/2028-landing
-  timeline risk from the same in-flight engine that failed. Folded in via
-  `updates[].patch.explainer.why_it_matters` (full-field replacement,
-  appending one attributed sentence) plus `attach`, no bump requested
-  since the item's non-first-party trade lead was already at its
-  corroboration ceiling of 4 -- a clean instance of the standing
-  "enrichment patch, not corroboration of the original claim" pattern
-  (2026-09-07-N and peers) on a major/seismic-adjacent item the same day
-  it published, not weeks later.
-- 2026-09-29-D: Singapore's "Earth Observation Initiative" (EDB/OSTIn,
-  Google-News-queue "Singapore sets up Earth Observation Initiative in
-  space sector push") is a year-and-a-half-stale resurfacing: the EOI
-  itself launched Feb. 26, 2025 at GSTC 2025 (S$60M/US$44.8M STDP
-  investment, UN/World Bank/WEF partners), confirmed via WebSearch: no
-  today-dated peg in the EDB "business insights" page. A China-Global
-  South Project analysis piece on Pakistan's still-undecided first
-  Tiangong astronaut pick (two trainees, Zeeshan Ali and Khurram Daud,
-  selection expected mid-to-late October) was left undrafted as
-  process-not-yet-fact/scheduled-not-yet-occurred, same standard as a
-  not-yet-awarded contract or not-yet-flown launch; worth a same-topic
-  chase once China names the pilot or the flight actually occurs.
-- 2026-09-29-E: A near-total-junk queue (mostly Starship Flight 14
-  reaction/stock churn and Google News redirects) plus a fully clean
-  mandatory 5-source HTML pass (Planet Labs, ICEYE, BlackSky, EUSPA,
-  Telesat, all current with nothing new since lastSweep), a 14-of-17
-  fetchable-channel signals pass (3 X-handle searches, none retrievable
-  via the syndication endpoint), and a 10-query discovery matrix covering
-  the full scope matrix all traced to already-published ground or the two
-  exclusions above. `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 0 new, 1 updated, 0 held") and a direct read of
-  the updated item's patched `why_it_matters`/`sources`/`secondary_urls`
-  fields as the build-health signal.
-
-## Deep sweep (auto-escalated after two zero-add sweeps), ~3h49m gap, unfiltered full source list (2026-09-29, third)
-
-- 2026-09-29-F: A same-outlet self-correction is a clean `updates[].patch`
-  case with no `attach`: Via Satellite silently corrected its own Sept 25
-  NSSLGlobal article in place (same URL) to say NSSLGlobal acquired
-  "MetOcean Security UK, a division of MetOcean Telematics" rather than
-  MetOcean Telematics itself, which "continues to operate as an
-  independent company" -- caught only because the harvester re-queued the
-  same URL with different `raw_excerpt` text days later, carrying an
-  explicit "Correction -- An earlier version of this story stated..."
-  paragraph. Patched `headline`/`explainer`/`companies` to the corrected
-  facts with no `attach` (no new URL exists, the same source_url was
-  simply edited by the outlet) and no rescore (same lead, same tier).
-  Worth checking a re-queued identical URL's `raw_excerpt` for a
-  correction notice before assuming it's pure re-syndication.
-- 2026-09-29-G: A `class: "whitelist"` lead source needs no second source
-  to reach its floor: Andrew Parsonson's own europeanspaceflight.com
-  article (bare-domain, satisfies the path-prefix whitelist match per
-  2026-09-10-H) on a CNES spaceport-procurement call, single-sourced with
-  `crawl: "found_none"` (the only other hit was a UFO Feed wire-rewrite
-  mirror, left uncited), still landed SNR 4 via the whitelist-floor
-  modifier alone -- base tier 3 (whitelist, before floors) would floor at
-  3 unmodified, but the observer floor of 4 applies regardless of
-  corroboration count, same mechanism as the informal-plus-whitelist-
-  observer cases (2026-09-01-C and peers), just with the whitelisted
-  person's own writing as both the fact source and the floor source.
-- 2026-09-29-H: `federalregister.gov` passes the anti-spoof gate as
-  `official_record` via the blanket bare-`*.gov`-TLD rule (its own domain
-  ends `.gov`), not via the small fixed-hosts list -- a Draft EA Notice of
-  Availability for Blue Origin's proposed New Glenn cadence increase at
-  SLC-36A (12 to 50 launches/year) landed a clean single-source SNR 5 with
-  no `found_none` penalty (direct-source ceiling) even though no
-  independent trade pickup existed yet at fetch time. Used the
-  `federalregister.gov/api/v1/documents/<doc-number>.json` and
-  `.../full_text/xml/...` endpoints (2026-09-04-H) to pull the exact
-  "from 12 to 50 launches per year" figure verbatim, since the canonical
-  HTML document page itself redirects to `unblock.federalregister.gov`.
-- 2026-09-29-I: A government-insourcing/contractor-layoff story with a
-  quantified financial impact (NASA insourcing Kennedy Space Center's
-  Amentum-run Base Operations and Spaceport Services contract, 70 jobs
-  cut via WARN notice, ~3% of Amentum's FY2027 revenue per Washington
-  Technology) was judged below the inclusion bar and left undrafted: it's
-  a facility-support-services staffing/contracting change, not a fact
-  about commercial launch, EO, connectivity, or IoT operators, resellers
-  or investors acting differently -- distinct from the in-scope
-  "government procurement of commercial space services" carve-out, which
-  covers agencies buying commercial space CAPABILITIES, not routine base-
-  ops contractor staffing.
-- 2026-09-29-J: A thin queue candidate with a real-sounding headline can
-  be pure thought-leadership marketing content with zero dateable fact:
-  Planet's own Sept 29 blog post ("Beyond the Soda Straw: Why Modern
-  Defense Needs Continual GEOINT") named no new contract, customer, or
-  product, just an argument for daily imaging cadence in defense
-  contexts -- left undrafted despite being a same-day first-party post on
-  a mandatory HTML-pass source.
-- 2026-09-29-K: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 5 new, 1 updated, 0 held") plus a direct read of
-  all five new items' and the updated item's `snr`/`snr_trace`/
-  `category`/`impact`/`sources` fields, and the sweep log's
-  `corroboration_collapses` entry (ICEYE's own release vs. Insurity's own
-  mirrored release, correctly collapsed as a wire rewrite despite living
-  on two different companies' domains), as the build-health signal.
-
-## Narrow re-check, ~5h08m gap, unfiltered full source list (2026-09-29, fourth)
-
-- 2026-09-29-L: A vendor's own press release restating its inclusion in an
-  already-published multi-vendor IDIQ list is not a new item even when it
-  reads as a fresh company-specific announcement: Umbra's Sept. 17
-  umbra.space post ("Umbra Selected by NOAA to Provide Commercial SAR
-  Data") looked like a standalone procurement win, but the already-
-  published `2026-09-11-noaa-sbem-idiq-commercial-data` item's own
-  category breakdown already named "Iceye US, Umbra Lab" under scatterometry/
-  SAR/radar. Caught only by grepping `items.json` for the NOAA program
-  name (a plain "umbra noaa" grep found nothing, since the existing item's
-  headline and id never mention Umbra by name) before drafting; worth
-  checking a suspiciously-standalone vendor-selection press release
-  against any existing multi-vendor IDIQ/contract-vehicle item covering
-  the same program, not just a direct company-name grep.
-- 2026-09-29-M: Two genuinely new items surfaced entirely from the
-  mandatory signals pass (Jeff Foust's and Andrew Jones' bluesky feeds),
-  not the queue or discovery matrix, which both traced to a near-total
-  Starship Flight 14 pickup wave: AstroForge's Solo autonomy-AI
-  announcement (Sept. 21, TechCrunch lead since AstroForge's own site
-  wasn't needed) and Momentus' Vigoride-7 AI-sensor RPO demo with a NASA
-  satellite (Sept. 29, `wire_pr` lead via a StockTitan/BusinessWire
-  mirror, SatNews independently-written trade corroboration). Both
-  companies have no `src/data/registry` entity. A third signals-pass lead
-  (UK's new No. III Space Effects Squadron, Sept. 23) was left undrafted
-  as a military-organization stand-up naming no commercial contractor,
-  procurement figure, or market-access change, per the standing
-  institutional-disclosure exclusion.
-- 2026-09-29-N: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 0 updated, 0 held") and a direct read of
-  both new items' `snr`/`snr_trace`/`category`/`impact`/`sources` fields
-  as the build-health signal.
-
 ## Narrow re-check, ~2h27m gap, unfiltered full source list (2026-09-30)
 
 - 2026-09-30-A: A near-total-junk 24-candidate queue (Starship Flight 14
@@ -5054,3 +4878,36 @@ a newer entry if a lesson changes.
   `sources`/`updates` arrays, plus a `jq empty` parse check across all touched data files (items, state,
   candidates, source_ledger, sources). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~5h43m gap, unfiltered full source list (2026-10-30)
+
+- 2026-10-30-A: A near-total-junk 43-candidate queue (SpaceX/Tesla-merger stock-reaction spam, ISRO's
+  still-pending NVS-03 launch preview, routine Bluesky SpaceX-launch chatter) yielded two genuine finds:
+  Argotec's first-ever outside funding round (50 million euros from Nuo, found via the Payload queue
+  entry) and ARK Invest's own Tesla-SpaceX merger profit model ($2.7T 2031 EBIT, found via the Google
+  News: launch feed). Both the China-DIA-spaceplane photo (Vantor/Maxar's own commercial imagery used
+  in a DIA report) and a Keldysh/Amur-SPG methane-engine signals-pass lead traced to ground: the DIA
+  story is a pure military-intelligence disclosure with no stated commercial transaction for Vantor
+  (same institutional-disclosure exclusion as DSP retirement/Space RCO jammers) and the Amur-SPG lead
+  was already published same-day by an earlier sweep.
+- 2026-10-30-B: Two vague stock-pundit soundbites (Keith Fitz-Gerald's "single most undervalued company
+  on the planet," Kevin O'Leary's Anthropic-vs-SpaceX liquidity preference) were left undrafted despite
+  being attributable, on-record CNBC quotes: neither carries a stated figure, valuation thesis, or
+  rationale beyond generic bullishness, failing the inclusion bar's "a director would act on this" test
+  even at commentary's low confirmation bar. Worth the reminder that attribution alone does not clear
+  the bar for commentary; the take itself still needs enough substance to be worth a director's morning
+  read, the same restraint CLAUDE.md asks of event items.
+- 2026-10-30-C: The new ARK Invest commentary item tripped the same-company-plus-category dedup
+  heuristic THREE ways on first submit (Galloway's Oct 26 merger commentary, the Oct 20 committee-
+  formation event, and a previously-unseen Oct 24 PhillipCapital SpaceX-only rating-upgrade item, the
+  last found only from the gate's own rejection message, not a pre-draft grep); three `dedup_distinct`
+  entries cleared it on the second attempt. Confirms the standing heuristic fires on every same-company
+  financial/commentary item in the 7-day window, not just the most obviously related one.
+- 2026-10-30-D: `bun scripts/finalize-sweep.ts` merged cleanly on the second attempt after the dedup fix
+  above ("merged 2 new, 0 updated, 0 held"); confirmed via a direct `jq` read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`kind`/`sources` fields (1088 items, up from 1086, both landing
+  an honest SNR 4: Argotec off a trade base plus two mainstream Italian corroborations, ARK Invest off a
+  mainstream base plus one informal corroboration) and the sweep log's `signals`/`discovery` blocks
+  (16-channel signals pass, 11-query discovery matrix) plus one unrelated persistence-bump
+  `snr_movements` entry (ISRO Gaganyaan CM/SM separation test, 2 to 3). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
