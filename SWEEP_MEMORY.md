@@ -4959,3 +4959,30 @@ a newer entry if a lesson changes.
   `discovery` blocks (16-channel signals pass, 8-query discovery matrix, 5 X handles
   searched). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~4.5h gap, unfiltered full source list (2026-10-31, fourth)
+
+- 2026-10-31-N: A Google News "Pentagon inspector general declines to investigate Starlink
+  disruptions in Ukraine" entry (Oct 29, nine senators including Shaheen, via ABC
+  News/Meduza/Washington Examiner, none of the three being wire rewrites of each other) was
+  the only genuine find in a 29-candidate queue otherwise all ISRO NVS-03 reposts,
+  SpaceX/Tesla-merger stock chatter, and an already-fully-covered SpaceX/T-Mobile FCC
+  spectrum filing; folded into the Starlink/Ukraine saga item (now 85 sources, 35 updates)
+  as a no-bump enrichment, confirming the item's mainstream-led lead was already at its
+  non-first-party SNR ceiling of 4.
+- 2026-10-31-O: Nearly drafted a duplicate: Andrew Parsonson's bluesky post naming
+  Astroscale's £15M UK MoD LEDA contract read as fresh, but it was the SAME already-published
+  2026-10-26 item; separately, a search for the Pentagon's CASR "first operational contracts"
+  SDA-award story (surfaced via a Main Engine Cutoff tangent) produced a full set of
+  company names and a $1.37M figure before a company-name grep caught that it too was
+  already published (2026-10-22), this time with MORE quote detail (Trimailo's "living
+  program" line, Galindo's "platinum status" line) than the existing item carries. Worth
+  the reminder to grep `items.json` by company name BEFORE spending search budget
+  building out a draft, not just before writing scoring — a signals-pass lead reading as
+  a scoop is not proof it's undrafted when the underlying contract story has been
+  recirculating across trade outlets for a week.
+- 2026-10-31-P: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt
+  ("merged 0 new, 1 updated, 0 held"); confirmed via a direct `jq` read of the updated
+  item's `snr`/`sources`/`updates` fields (SNR held at 4, 85 sources up from 82, 35
+  updates up from 34) and the sweep log's `signals`/`discovery` blocks (13-channel
+  signals pass, 10-query discovery matrix, 4 X handles searched).
