@@ -4927,3 +4927,35 @@ a newer entry if a lesson changes.
   sources, 1 update) and the sweep log's `signals`/`discovery` blocks
   (14-channel signals pass, 10-query discovery matrix). `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-10-31, third)
+
+- 2026-10-31-J: A near-total-junk ~30-candidate queue (dozens of ISRO NVS-03 congratulatory
+  reposts already published 2026-10-30, SpaceX/Tesla-merger stock-reaction spam, Halloween/
+  off-topic filler) yielded one genuine find entirely from a discovery-pass query, not the
+  queue or signals: IN-SPACe's second Technology Adoption Fund round (Rs 67.15 crore across
+  Manastu Space, Inspecity, VyomIC, MumbaiSemi). A new numeric-coincidence trap, the mirror
+  image of the usual stale-resurfacing pattern: Manastu's new Oct 31 TAF grant (Rs 22.08
+  crore, government funding for iodine propulsion) landed one day after and ~$0.08 crore
+  different from its own already-published Oct 30 private Series A extension (Rs 22 crore).
+  Same company, same category, suspiciously similar figure, but two genuinely distinct
+  funding mechanisms (government grant vs. private round) confirmed by cross-checking each
+  source's own stated mechanism rather than assuming the close figures meant one event
+  double-counted; cleared with one `dedup_distinct` entry.
+- 2026-10-31-K: The bare `bsky.app/profile/<handle>` page returned zero post content for
+  every one of 9 handles tried this run (still requires the
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15` workaround
+  every time); confirms the bare-page failure is now the permanent default, not something to
+  keep re-testing before falling back.
+- 2026-10-31-L: Caleb Henry/Quilty Space's Oct 31 KeepTrack "150-launch gap through 2030"
+  writeup is the same report already folded into the Oct 22 Falcon 9 retirement item via its
+  Oct 30 update (2026-10-30-I); a second outlet restating an analyst report days later with a
+  fresh-looking headline is not new corroboration, worth checking an existing item's own
+  `updates[]` history before treating a quote/figure as unseen.
+- 2026-10-31-M: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged
+  1 new, 0 updated, 0 held"); confirmed via a direct read of the new item's `snr`/
+  `snr_trace`/`category`/`impact` fields (SNR 4: mainstream base tier 3 plus a 3-source
+  `corroboration_2plus` bump, 1105 items up from 1104) and the sweep log's `signals`/
+  `discovery` blocks (16-channel signals pass, 8-query discovery matrix, 5 X handles
+  searched). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
