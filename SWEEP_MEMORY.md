@@ -4876,3 +4876,54 @@ a newer entry if a lesson changes.
   arrays, the `registry-candidates.json` `flag_refresh` entry for `falcon-9.flights_total` (628 to 700),
   and a `jq empty` parse check across all seven touched data files. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7h33m gap, unfiltered full source list (2026-10-31, second)
+
+- 2026-10-31-E: A fully clean zero-new-item sweep: the 114-candidate post-filter
+  queue was almost entirely dozens of ISRO NVS-03/GSLV-F18 congratulatory
+  reposts (the launch itself already published 2026-10-30) and SpaceX/
+  Tesla-merger stock-reaction spam; two queue leads that read as fresh
+  (SpaceX's "80,000 cell sites" Crown Castle story, Caleb Henry/Quilty's
+  launch-shortage figures) both traced to facts already folded into
+  existing items (the Oct. 22 Crown Castle item, the Oct. 22 Falcon 9
+  retirement item's Oct. 30 update) once grepped by company name.
+- 2026-10-31-F: Sequoia partner Shaun Maguire's own bottoms-up SpaceX
+  revenue model ($273.8B 2027, $731.1B 2028, published via an X post
+  linking to a longer piece) was left undrafted despite being a genuinely
+  new, substantive named-voice commentary candidate: the only outlet with
+  the actual figures (Dealroom) 403'd on every WebFetch attempt, the X
+  post itself only linked out (no inline text), and no other directly
+  fetchable outlet carried the specific dollar figures, only WebSearch
+  syntheses. A directly-fetched TeslaNorth piece confirmed Musk's own
+  reply quote about orbital-compute timing, but that fact alone was too
+  thin to carry a standalone item. Worth a same-topic re-check if a
+  mainstream/trade outlet picks up the actual figures with a fetchable
+  page.
+- 2026-10-31-G: A forecast reentry from a 3-month-old existing item
+  (two named Rassvet-3 satellites, No. 17 and No. 23, both forecast to
+  reenter around Oct. 29/Nov. 1 per an Oct. 13 UNN report already in the
+  item) resolved into a genuine enrichment: Defense Express (via two
+  directly-fetched mirrors, United24 Media and Fakti.bg, neither
+  fetchable at the original outlet) confirmed No. 17 actually reentered
+  Oct. 30, while No. 23 reportedly began climbing after nearing reentry
+  around Oct. 20. The existing whitelist lead's own page
+  (russianspaceweb.com/buro1440-2026-0719.html), re-fetched directly,
+  had NOT been updated with the reentry and still predicted No. 23's own
+  decay around Nov. 6, a genuine same-satellite status conflict between
+  sources; presented both reads attributed in the copy rather than
+  picking one, per the standing metric-mismatch-is-annotated-not-punished
+  rule, since this lived in item copy, not a crossfeed fact.
+- 2026-10-31-H: A Texas Tribune follow-up (Oct. 31) on the already-published
+  Oct. 20 Boca Chica State Park sale-denial item added a genuine new
+  thread: the Texas Parks and Wildlife Department is fighting an open-records
+  request for the draft commission agenda itself, and SpaceX's Starbase has
+  separately annexed about 7,100 acres around the park. A same-byline KSAT
+  mirror of the identical Tribune piece was left off the sources list as a
+  wire-shaped rewrite rather than double-counted as independent corroboration.
+- 2026-10-31-I: `bun scripts/finalize-sweep.ts` merged cleanly on the first
+  attempt ("merged 0 new, 2 updated, 0 held"); confirmed via a direct `jq`
+  read of both updated items' `snr`/`sources`/`updates` fields (Rassvet:
+  SNR held at 4, 10 sources, 7 updates; Boca Chica: SNR held at 4, 3
+  sources, 1 update) and the sweep log's `signals`/`discovery` blocks
+  (14-channel signals pass, 10-query discovery matrix). `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
