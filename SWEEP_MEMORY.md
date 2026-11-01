@@ -4836,3 +4836,37 @@ a newer entry if a lesson changes.
   at 5, official_record ceiling unchanged), plus a `jq empty` parse check across all
   seven touched data files. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h20m gap, unfiltered full source list (2026-11-01, second)
+
+- 2026-11-01-F: A Tom's Hardware "USAF successfully tests dropping SpaceX Starfall
+  cargo drop pods from space" queue headline (Nov. 1) and shattered.io/tech-insider.org
+  "Rassvet Satellite Burns Up"/"Russian Starlink Rival Already Lost 2 Satellites"
+  headlines were all stale recirculations of already-published facts (the Oct. 20
+  Starfall/AFRL Rocket Cargo Pacific-splashdown test; the already-fully-updated
+  Rassvet-3 No. 17/No. 23 reentry item), confirmed by matching the exact manifest/
+  figure details rather than drafting from the headline shape alone. A KeepTrack
+  "3 Starlink Satellites Near Reentry This Week" headline literally meant Starlink
+  (STARLINK-3306/1327/1478) plus the Swift telescope, not Rassvet, despite reading
+  at a glance like a Rassvet update given the "Starlink" framing elsewhere in the
+  same queue window; worth checking what satellite a reentry-watch headline actually
+  names before assuming it continues an open non-US-constellation thread.
+- 2026-11-01-G: Benzinga itself 403'd on direct WebFetch, but a Yahoo Finance page
+  explicitly describing itself as republishing "an exclusive Benzinga interview"
+  (with William Webb's SpaceX mobile-network cost estimate) was fetchable directly
+  and classed by the true originating outlet (Benzinga, `trade`) per the standing
+  syndication-attribution pattern; 24/7 Wall St.'s independent write-up of the same
+  estimate's stock-price fallout counted as genuine `corroboration_2plus`.
+- 2026-11-01-H: The same-company-plus-category dedup heuristic fired FOUR ways on a
+  new SpaceX financial-commentary item (an analyst's mobile-network buildout cost
+  estimate) against PhillipCapital's rating upgrade, Scott Galloway's and ARK
+  Invest's Tesla-SpaceX merger commentary, and BofA's merger-risk note, all sharing
+  only company SpaceX + category `financial`; four `dedup_distinct` entries (only
+  three were in the first draft) were needed before the gate passed.
+- 2026-11-01-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for
+  the missing PhillipCapital `dedup_distinct` entry above; merged cleanly on the
+  second attempt ("merged 1 new, 2 updated, 0 held"). Confirmed via a direct read of
+  the new item's `snr`/`snr_trace`/`category`/`impact` fields (1107 items, up from
+  1106) and both updated items' grown `sources`/`updates` arrays (MDA/IRIS2: 3
+  sources, 1 update; Quantum Space SPAC: 3 sources, no SNR change at the
+  official_record ceiling of 5).
