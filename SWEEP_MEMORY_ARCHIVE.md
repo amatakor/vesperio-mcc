@@ -12456,3 +12456,204 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   Flag for Florian if military space-command leadership changes should get
   an explicit ruling either way.
 
+## Narrow re-check, ~6h25m gap, unfiltered full source list (2026-10-01)
+
+- 2026-10-01-A: A near-total-junk ~60-candidate queue (Crew-13 pre-launch
+  coverage across dozens of outlets, SpaceX stock/options chatter, a
+  "rocket launch" headline collision that was actually an anti-ship
+  missile strike on Iranian launchers) yielded zero draftable candidates
+  from the queue itself; all three new items came from the mandatory
+  signals/HTML/discovery legs. `rocketlabcorp.com/updates/` listing page
+  still loads fine but individual `/updates/<slug>/` article pages still
+  403 behind Cloudflare (same gap as 2026-07-05-G, still unresolved);
+  GlobeNewswire carries the same press-release text at a fetchable URL
+  and was used as the `wire_pr` lead instead.
+- 2026-10-01-B: A regional/local outlet's own calculated estimate
+  (NZ Herald computing an approximate ~US$170M contract value from
+  Rocket Lab's published per-launch pricing, for a deal whose press
+  release explicitly left "remaining terms... undisclosed") is the
+  outlet's own inference, not a source-stated figure -- left out of the
+  item copy per the "numbers are copied, not paraphrased" rule even
+  though the outlet itself is a genuine, independently-written
+  corroboration source (confirmed via direct fetch, added Mahia-specific
+  launch-site detail and SpaceX-rideshare-freeze context the press
+  release didn't have). Worth remembering: an outlet being independent
+  enough to count as real corroboration doesn't make its own computed
+  figures citable; check whether a number is stated or derived before
+  copying it.
+- 2026-10-01-C: Blue Origin's CEO going on the record for the first time
+  (Dave Limp at the White House's "Hello, America" summit, Sept 30,
+  confirming the July-reported outside funding round is real,
+  oversubscribed, and still open, while declining to confirm final
+  figures) is a clean `updates[].patch` case layered on top of a
+  "reportedly" lead: patched `what_happened`/`why_it_matters` to add the
+  on-record confirmation and the WSJ's separately-reported $140B
+  valuation climb, attached two mainstream mirrors (AFP via Macau
+  Business, Yahoo Finance/Investing.com citing WSJ) since cnbc.com
+  itself 403'd on direct fetch, and requested no bump since the item's
+  mainstream-led trace was already at its corroboration_2plus ceiling of
+  4. The update's `note` led with the CEO's own on-record status rather
+  than the still-unconfirmed $140B figure, keeping the copy honestly
+  behind the sourcing.
+- 2026-10-01-D: A routine airline-Wi-Fi-rollout milestone (Alaska Air
+  Group, >40% of its combined fleet now Starlink-equipped per a Sept 29
+  investor day, two independently-written trade sources with no stated
+  dollar figure) cleared the inclusion bar at `noise`/`product` per the
+  standing "low impact and strong sourcing are independent axes" rule
+  (2026-09-04-S and peers); fired the same-company-plus-category dedup
+  heuristic against two unrelated Sept 28/29 Starlink Mobile D2C launch
+  items (Kazakhstan, Ecuador) purely on shared SpaceX + category
+  `product` + window, cleared with two `dedup_distinct` entries.
+- 2026-10-01-E: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 1 updated, 0 held") and a direct read of
+  all three new items' and the updated item's `snr`/`snr_trace`/
+  `category`/`impact`/`tags` fields, plus four unrelated persistence-bump
+  `snr_movements` in the sweep log entry, as the build-health signal.
+
+## Narrow re-check, ~8h27m gap, unfiltered full source list (2026-10-01, second)
+
+- 2026-10-01-F: A near-total-junk 104-candidate queue (Crew-13 pre-launch
+  live-coverage across dozens of outlets, SpaceX stock chatter) still
+  yielded three genuinely new seed/pre-seed funding items straight from
+  the queue's own Payload entries (Satlyt, Foundational, Charter Space),
+  none needing a live-page fetch beyond Payload's own `raw_excerpt`/page
+  content. Crew-13 (net 15:10Z), Transporter-18/the Google Suncatcher
+  orbital-test launch carrying it (net 18:18Z) and the NROL-97 Falcon
+  Heavy mission (net 2026-10-02T03:53Z) were all still "Go for Launch"/
+  pre-liftoff per a direct Launch Library fetch at this sweep's `now`
+  (13:56Z) despite dozens of "watch live today" queue headlines; left all
+  three uncovered as scheduled-not-yet-occurred rather than drafting from
+  preview coverage.
+- 2026-10-01-G: A Dealroom.co writeup of the same Charter Space raise
+  stated "US$3.24M seed round" where Payload, the company's own X post,
+  and five other outlets all agreed on $5M -- used Dealroom only as a
+  corroboration source (distinct wording, genuine independent write-up)
+  without citing its conflicting figure anywhere in the item copy, per
+  the standing 2026-09-04-N numeric-variance-trap handling (use the lead
+  source's own stated number, leave a conflicting secondary figure
+  uncited rather than imply agreement or dispute that wasn't stated).
+- 2026-10-01-H: A LiveEO/DLR "INSPECTEO" award surfaced only via a
+  SpaceWatch.Global interview-format piece (Mission-K 2026 podcast
+  writeup) with no stated date or figure; LiveEO's own newsroom listing
+  had no INSPECTEO press release at all (nearest match, "SurfaceFrame,"
+  a Sept 30 DLR-backed project with Universität der Bundeswehr München,
+  also had no fetchable article body, its direct URL 404'd and no
+  cached full text was findable). Left both undrafted per the standing
+  "don't stretch a single unconfirmed mention into an item" rule, same
+  shape as a paywalled trend piece with no verifiable body text.
+- 2026-10-01-I: The ICEYE/Nokia sovereign-LEO-satcom partnership (Oct 1,
+  first-party ICEYE press release, ceiling SNR 5) fired the standing
+  same-company-plus-category dedup false positive against the unrelated
+  Sept 29 ICEYE/Insurity/SpatialKey insurance-data item, purely on
+  shared company (ICEYE) + category (`partnership`) + within 7 days.
+  One `dedup_distinct` entry cleared it, extending the long-running
+  pattern to ICEYE specifically.
+- 2026-10-01-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 4 new, 0 updated, 0 held") and the item count
+  moving from 801 to 805 as the build-health signal.
+
+## Narrow re-check, ~3h13m gap, unfiltered full source list (2026-10-01, third)
+
+- 2026-10-01-K: WebFetch's own "detailed"/synthesized answer mode on a
+  Launch Library search query (asking it to "give me the launch status...
+  booster info" in prose) returned a fully plausible-reading but
+  unverifiable paragraph with a specific booster tail number (B1101) and
+  landing-zone detail that a follow-up raw-JSON-only fetch of the same
+  endpoint did not carry at all. Treat any WebFetch prompt that asks for
+  a prose "summary"/"detailed info" of an API endpoint as untrustworthy
+  for specific figures; always re-fetch asking verbatim for named JSON
+  fields, and get booster/crew/timing specifics from a directly fetched
+  news article or the actor's own page instead, never from the API
+  endpoint's own prose gloss.
+- 2026-10-01-L: A near-total Crew-13 launch-day queue (dozens of "watch
+  live"/liftoff reaction headlines) buried the one thing actually
+  undrafted: the launch itself. Two prior sweeps today had left Crew-13
+  as "still pre-launch" (2026-10-01-F); once it actually flew, no queue
+  candidate stated the plain fact "it launched" in a draftable way studied
+  on its own (Google News entries all required following a redirect that
+  WebFetch could not resolve). Went straight to nasa.gov/blogs/crew-13/
+  (first-party, passes the blanket `.gov` anti-spoof rule) instead,
+  landing a clean single-source SNR 5. Worth remembering: on a big
+  scheduled-crewed-launch day, check the actor's own blog/newsroom
+  directly rather than trying to resolve Google News redirects for the
+  core "did it launch" fact.
+- 2026-10-01-M: The Crew-13 item's same-company-plus-category dedup
+  heuristic fired against THREE existing human-spaceflight items in the
+  7-day window, not just the obvious transporter-fault one: also NASA's
+  Crew-14 roster-naming item and Boeing/NASA's unrelated Starliner
+  return-to-flight-schedule item (shared company NASA, category
+  human-spaceflight, no other overlap). Three `dedup_distinct` entries
+  cleared it in one pass; worth expecting the heuristic to walk every
+  same-category NASA item in-window, not just the most topically obvious
+  one.
+- 2026-10-01-N: A SpaceNews URL's own page can be labeled "Posted in
+  Press Release" with a company byline (here, Novaspace) rather than a
+  SpaceNews staff byline; checking for that label before classing a
+  SpaceNews piece as `trade` caught a would-be misclassification on the
+  LMT Group/Novaspace Latvia 5G/6G hub story. Classed `wire_pr` instead
+  (base tier 4, no independent pickup found beyond identical wire
+  mirrors on Baltic Times/TelecomTV/UFO Feed/etc., so `corroboration_none`
+  dropped it to a final SNR 3) rather than overclaim `trade`-tier
+  original reporting that was never done.
+- 2026-10-01-O: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 4 new, 0 updated, 0 held") and the item count
+  moving from 805 to 809 as the build-health signal.
+
+## Narrow re-check, ~5h25m gap, unfiltered full source list (2026-10-01, fourth)
+
+- 2026-10-01-P: Launch Library's `/launch/upcoming/?search=<name>` endpoint
+  returns an empty result set, not an error, once a mission has already
+  flown (confirmed on both "NROL-97" still upcoming and "Transporter-18"
+  already flown) -- an empty `upcoming` search is not proof a mission
+  hasn't happened, just proof it isn't in the upcoming queue anymore.
+  Switching to the unfiltered `/launch/?search=` endpoint, or a broader
+  name query ordered `-net` (e.g. "Transporter" across all 21 numbered
+  missions), surfaced the real `status.name: "Launch Successful"` and
+  `net` cleanly. Worth trying the broader/unfiltered query by default
+  whenever an `upcoming`-filtered search comes back suspiciously empty
+  for a mission that might already have flown.
+- 2026-10-01-Q: A scheduled-payload preview item that already published
+  (Google's Project Suncatcher "will launch" piece, Starfish Space's
+  Otter "scheduled to launch" piece, both drafted 2026-09-24) is the SAME
+  event continued once the rideshare mission actually flies, not a new
+  item, even though the originals were announcements rather than the
+  flight itself: patched both via `updates[]` once Transporter-18 launched
+  Oct. 1 (Suncatcher got a full `rescore` to Planet's own first-party
+  confirmation of initial contact, landing SNR 5; Starfish got a plain
+  `attach`+copy patch, no bump, since its trade lead was already at its
+  non-first-party ceiling of 4). Two OTHER payloads on the same
+  Transporter-18 mission (Cowboy Space's Reason-1, Star Catcher's
+  Protostar) had no prior item at all under any id and drafted clean as
+  new items instead -- worth checking per-payload, not per-mission,
+  whether a prior preview item exists before deciding new-item vs.
+  update.
+- 2026-10-01-R: The mandatory fetchable-signals pass again outperformed
+  the queue and a 10-query discovery matrix on a near-total Crew-13/
+  Transporter-18-repost queue: Jeff Foust's bluesky feed surfaced a
+  genuinely undrafted Pentagon OECIF contract for Overview Energy (a
+  third orbital power-beaming company, contract dated Sept. 30, one day
+  outside this run's narrow ~5.5h window) that neither the queue nor a
+  dedicated discovery query ("Overview Energy space-based solar power
+  agreement October 2026" only found it after the lead was already in
+  hand) surfaced independently. Chased per the predates-window
+  convention and dated on the actual Sept. 30 award date.
+- 2026-10-01-S: A RussianSpaceWeb homepage teaser ("Russian satellites
+  appear maneuver toward a commercial Western imager") traced via
+  WebSearch to an already-reported April-June 2026 ICEYE-X36/Kosmos
+  rendezvous-proximity-operations saga (Supercluster, Tom's Hardware,
+  dated as far back as June 16) with no fresh dateable escalation found
+  this run; left undrafted rather than risk restating 4-month-old
+  proximity-operations reporting as new, on top of the standing
+  conflict-analysis-adjacent caution for Russia/Ukraine-linked satellite
+  stories (the item would need to report the ICEYE safety fact, not
+  adjudicate Russian intent, and no fresh fact was found to hang that on).
+- 2026-10-01-T: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 3 new, 2 updated, 0 held") plus a direct read of
+  all three new items' and both updated items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields, and the sweep log's
+  `snr_movements` entry, as the build-health signal.
+
