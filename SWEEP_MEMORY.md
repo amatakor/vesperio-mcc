@@ -4870,3 +4870,50 @@ a newer entry if a lesson changes.
   1106) and both updated items' grown `sources`/`updates` arrays (MDA/IRIS2: 3
   sources, 1 update; Quantum Space SPAC: 3 sources, no SNR change at the
   official_record ceiling of 5).
+
+## Narrow re-check, ~5h03m gap, unfiltered full source list (2026-11-01, third)
+
+- 2026-11-01-J: A WebSearch synthesis claiming United's Starlink fleet had grown to
+  "720 aircraft, 1,000 by May 2027" (surfaced chasing an insideflyer.com "temporary
+  lead" headline) did not survive a direct fetch: the article itself states only the
+  already-published 635-aircraft figure, the same $1,500-$7,000 status-match
+  thresholds, and the same Jan. 2028 validity window as the existing Oct. 15 United
+  item; the 720/1,000-by-2027 figures traced to nothing in the actual page text. Left
+  unpatched rather than drafted on the search synthesis's numbers, extending the
+  standing WebSearch-fabricates-figures pattern to an aggregate aircraft count, not
+  just a quote or a date.
+- 2026-11-01-K: A follow-up Teslarati piece on Musk's Oct. 31 "terrestrial compute
+  will be peanuts" orbital-compute reply (verbatim-confirmed via a direct X search)
+  added nothing new once checked against the item it would have enriched: the CFO
+  Bret Johnsen payback-period quote it repeats ("pays for itself in under a year...
+  six months next year") is already in the Oct. 20 Q3-earnings item verbatim, and
+  2026-10-31-F already judged the Musk reply itself too thin for a standalone item.
+  Left undrafted; a trade outlet picking up a thin reply-tweet the next day doesn't
+  change that verdict by itself.
+- 2026-11-01-L: A genuinely new, dateable analyst note (Barclays' Dan Levy upgrading
+  Tesla to Overweight, $450 target from $370, Oct. 26, "a key part of the Tesla bull
+  case") surfaced six days stale via a Motley Fool Google News hit; confirmed via two
+  independent direct fetches (Investing.com, TIKR) before drafting, since cnbc.com
+  (the original) is on the standing unfetchable list. Tripped the same-company-plus-
+  category dedup heuristic SEVEN ways (every other SpaceX `financial` item in the
+  window, including the same-day Galloway commentary item); one miss (the same-day
+  Galloway item) cost a rejected first attempt, confirming the heuristic checks the
+  new item's own dated-event day too, not just the sweep's `now`.
+- 2026-11-01-M: The FCC's own Oct. 30 final text of an unrelated 800 MHz drone order
+  (FCC 26-72) added a footnote (absent from the public draft) naming SpaceX's
+  pending Oct. 9 transfer application for the Grain Management spectrum already
+  covered by the existing Oct. 8 item, found only via DroneXL (a drone-industry trade
+  outlet with no prior classification precedent in this file; treated as `trade`).
+  Folded in as a no-bump `updates[].attach`+`patch` rather than a new item, since it
+  is the same underlying spectrum transaction, just a new procedural data point on
+  its FCC approval status; `crawl: "found_none"` (two searches, no second outlet
+  covering this specific footnote) carried no penalty since the lead item is already
+  at its non-first-party ceiling.
+- 2026-11-01-N: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for
+  missing the same-day Galloway `dedup_distinct` entry above; merged cleanly on the
+  second attempt ("merged 1 new, 1 updated, 0 held"). Confirmed via a direct `jq`
+  read of the new Barclays item's `snr`/`snr_trace`/`category`/`impact`/`kind` fields
+  (1108 items, up from 1107) and the updated Grain/800MHz item's grown `sources` (6,
+  up from 5) and `updates` (2, up from 1) arrays, and the sweep log's `signals`
+  (17 channels checked, 4 X handles)/`discovery` (10 queries) blocks. `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
