@@ -4822,3 +4822,29 @@ a newer entry if a lesson changes.
   `jq empty` parse check across all six touched data files (items, state, held, source_ledger,
   sources, candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~11h gap, unfiltered full source list (2026-11-02, second)
+
+- 2026-11-02-E: A Washington Post exclusive (SpaceX in talks to buy or access EchoStar's Boost
+  Mobile, Musk personally met Ergen last month) was picked up by dozens of outlets within an hour,
+  all of them citing WaPo and none doing independent confirmation; washingtonpost.com itself 403'd.
+  Treated this as a single-sourced scoop (lead = a fetchable Reuters/Investing.com piece crediting
+  WaPo by name, `crawl: "found_none"`) rather than padding corroboration from the pile of outlets
+  that all just restate the same unconfirmed report, per the standing 2026-10-09-H "a dozen
+  syndicated copies of ONE interview is found_none" precedent extended from wire-interview pickups to
+  a cross-outlet paywalled-scoop pickup. Landed an honest SNR 2; attached one extra outlet
+  (androidheadlines.com) only in `secondary_urls`, not `scoring.sources`, so it adds a reader link
+  without inflating the corroboration count for a claim nobody has independently confirmed.
+- 2026-11-02-F: A proper-noun program name containing a literal exclamation mark (ESA's "BEST!"
+  booster initiative, second phase "BEST!2") trips the gate's blanket exclamation-mark ban the same
+  way a quoted Musk exclamation did on 2026-10-06-R; rewrote to "BEST" / "BEST 2" (dropping the
+  mark) rather than lose the fact. Worth checking any officially-styled program/product name for a
+  baked-in "!" before drafting it verbatim.
+- 2026-11-02-G: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the BEST! mark
+  above (both the tagline and what_happened fields); merged cleanly on the second attempt ("merged 4
+  new, 0 updated, 0 held"). Confirmed via a direct `jq` read of all four new items' `snr`/`category`/
+  `impact` fields (1113 items, up from 1109: Boost Mobile/EchoStar talks SNR 2 major financial;
+  Northwood Space $375M Series C SNR 4 major financial; Stellar Alpina Monarch/Morpho reveal SNR 4
+  noise product; ESA BEST 2 booster call SNR 4 noise procurement) and the sweep log's `signals`/
+  `discovery` blocks (7-channel signals pass, 8-query discovery matrix). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
