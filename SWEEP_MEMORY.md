@@ -4848,3 +4848,47 @@ a newer entry if a lesson changes.
   noise product; ESA BEST 2 booster call SNR 4 noise procurement) and the sweep log's `signals`/
   `discovery` blocks (7-channel signals pass, 8-query discovery matrix). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~27min gap, unfiltered full source list (2026-11-02, third)
+
+- 2026-11-02-H: An extremely short gap (the prior sweep had just merged) still surfaced one genuine
+  find, reached only by following a Bluesky post's external embed through two redirect hops: a
+  `bsky.app` post from `actusnews.com` had an empty `raw_excerpt` and no visible text on direct
+  WebFetch (confirms the standing bare-bsky.app-page-returns-nothing pattern extends to non-signals
+  accounts), but its embed resolved via `getPostThread` to a `dlvr.it` short link, which 301'd to the
+  actual `actusnews.com` regulatory-disclosure page (a French AMF-mandated wire, same shape as
+  BusinessWire/GlobeNewswire): STIF's first SpaceX order (~EUR1M, VIGIFLAP explosion containment
+  valves via its Texas subsidiary BOSS Products). The canonical actusnews.com page itself 403'd on
+  direct WebFetch; a `financialcontent.com` mirror carrying the full verbatim release text was used
+  as the lead instead (`wire_pr`), same "find a readable mirror of a blocked wire page" pattern as
+  2026-10-05-A/2026-10-06-A. Worth remembering to chase a content-less Bluesky post's embed link
+  through its redirect chain rather than discarding it as empty.
+- 2026-11-02-I: Judged a Ukrainian presidential defense-tech adviser's on-record statement (Serhii
+  "Flash" Beskrestnov, Nov. 2, via UNITED24 Media) about Russian EW jammer systems blanketing
+  occupied Crimea to suppress Starlink, including unit cost, coverage radius, frequency band, and
+  camouflage methods, out of scope despite fitting the letter of the geopolitical carve-out's
+  "stated by...a government on the record" exception: the content itself is battlefield OSINT about
+  a military countermeasure system's technical specs, not a government statement about commercial
+  service policy (contrast the already-published Starlink/Ukraine saga's sanctions requests,
+  diplomatic protests, and service-restriction statements, which are about Starlink's business/policy
+  status, not about how the war is being fought with it). Left undrafted and not folded into the
+  existing saga item; flag for Florian if that line is drawn wrong, since the saga item has otherwise
+  absorbed nearly every adjacent Starlink-in-Ukraine statement for weeks.
+- 2026-11-02-J: A live, in-progress launch (iQPS Launch 9, Rocket Lab Electron, "Sea God Surveys")
+  was confirmed via Launch Library as still status "Launch in Flight" (not yet a confirmed outcome)
+  17 minutes after an "off the pad" Bluesky post; left undrafted per the standing
+  don't-draft-unconfirmed-launches rule, to pick up next sweep once an outcome is known. Separately,
+  re-confirmed the 2026-11-02-E Boost Mobile/EchoStar single-sourced-scoop judgment: a fresh wave of
+  Google News pickups (TechCrunch, Data Center Dynamics, Light Reading, Yahoo Finance Stock Movers,
+  grafa.com) all still just restate the same unconfirmed WaPo report; none added independent
+  confirmation, so none were attached as corroboration, per the standing "a dozen syndicated copies
+  of one scoop is still found_none" rule.
+- 2026-11-02-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the standing
+  same-company-plus-category dedup heuristic (the new STIF item against the unrelated Oct. 30
+  Filtronic/SpaceX GEO RF-component order, sharing only company SpaceX + category `contract`); one
+  `dedup_distinct` entry cleared it on the second attempt ("merged 1 new, 0 updated, 0 held").
+  Confirmed via a direct read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources` fields
+  (1114 items, up from 1113, an honest SNR 3: wire_pr base 4 minus 1 for a genuine `found_none`
+  corroboration crawl) and the sweep log's `signals`/`discovery` blocks (16-channel signals pass,
+  8-query discovery matrix). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
