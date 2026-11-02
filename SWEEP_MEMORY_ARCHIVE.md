@@ -12657,3 +12657,142 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `category`/`impact`/`sources` fields, and the sweep log's
   `snr_movements` entry, as the build-health signal.
 
+## Narrow re-check, ~7h34m gap, unfiltered full source list (2026-10-02)
+
+- 2026-10-02-A: `draft.coverage` must list `category` values, not tags
+  ("eo" was rejected outright with "is not a known category"); use the
+  categories actually touched (`constellation`, `launch`, `contract`,
+  etc.), not domain/modality tags, even though the field reads like a
+  topic summary.
+- 2026-10-02-B: `dedup_distinct` is a top-level field on the newItem
+  object, sibling to `crossfeed`, not nested inside `crossfeed`; nesting
+  it inside `crossfeed` is silently ignored by the dedup gate (the EU
+  Space Shield item still got flagged against the same-day STRA item
+  until the attestation was moved up a level).
+- 2026-10-02-C: Four separate taglines this run tripped the 140-char cap
+  by small margins (141-157 chars) despite reading as reasonably tight
+  one-sentence summaries; the cap is stricter than it looks when a
+  tagline names two actors, a figure and a date together. Worth drafting
+  taglines short on the first pass for any item with more than one named
+  party or a stated figure.
+- 2026-10-02-D: Five Transporter-18 rideshare payloads (Spire's first
+  Boulder-built satellites, IRIDE's Eaglet II completion, Satellogic's
+  first Merlin satellite, Rheinmetall/Argotec's first surveillance
+  satellite, plus the already-covered Suncatcher/Cowboy Space/Star
+  Catcher/Altair-1 payloads) all surfaced as separate first-party or
+  trade press releases dated Oct. 1-2 rather than from one aggregated
+  manifest; confirms the standing 2026-10-01-Q practice of checking
+  per-payload for a prior preview item rather than treating a rideshare
+  mission as one event. None of IRIDE, Rheinmetall or Argotec has a
+  registry entity, extending the no-registry-host workaround to a
+  national space-agency program and a defense-hardware prime entering
+  satellite manufacturing.
+- 2026-10-02-E: A specialist non-space trade outlet (PV Magazine USA)
+  was the only fetchable lead for a genuinely new space-based-solar PPA
+  (Virtus Solis/Brae Systems); SpaceNews covered the same contracts
+  same-day but was paywalled beyond headline/byline, still usable as a
+  confirmed corroboration source per the standing paywall-lede pattern.
+  Latitude Media's independently-reported skepticism (a 2009 PG&E/
+  Solaren space-solar PPA cancelled in 2015, ~4% prior wireless
+  power-transfer efficiency) was folded into `why_it_matters`,
+  attributed, rather than left out for being unflattering to the deal.
+- 2026-10-02-F: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 9 new, 1 updated, 0 held") and the item count
+  moving from 815 to 824 as the build-health signal.
+
+## Narrow re-check, ~3h44m gap, unfiltered full source list (2026-10-02, second)
+
+- 2026-10-02-G: A Polish listed company's own stock-exchange (ESPI)
+  disclosure, republished on a financial-news site (parkiet.com's
+  `komunikaty-espi` section carrying Creotech Instruments' "Uzyskanie
+  łączności z satelitami Mikroglob-2, Mikroglob-3, Mikroglob-4"
+  announcement verbatim), is NOT `official_record` or `first_party`
+  despite functioning like an SEC 8-K exhibit: the anti-spoof domain
+  check needs either the company's own domain or a registered
+  official-regulator domain, and parkiet.com is neither. Classed
+  `trade` (a financial-press mirror of the statutory disclosure) rather
+  than force first-party/official_record through a non-matching domain;
+  worth the same treatment for any future Polish GPW-listed company's
+  ESPI/EBI announcement cited via a news aggregator.
+- 2026-10-02-H: Two independent stale-resurfacing traps in one
+  discovery-pass funding query: a WebSearch for "space company funding
+  round...October 2026" surfaced Stoke Space's Series D extension to
+  $860M and Observable Space's $90M Series A with search-engine framing
+  that read as current, but both traced on a dedicated follow-up search
+  to February and May/June 2026 respectively (Stoke's extension is
+  already superseded by its September 8 $1B Series E, already
+  published; Observable's round is from its original announcement
+  months ago) -- neither was a same-day rewrite, just old news a search
+  aggregator resurfaced with no date discipline. Worth always running a
+  second, narrower date-qualified search before drafting any funding
+  headline a broad discovery query turns up.
+- 2026-10-02-I: An Aviation Week piece ("ESA Boss Sees European Human
+  Spaceflight Taking Decade To Attain," Oct 1, Josef Aschbacher's
+  ~€10B/decade independent-human-spaceflight estimate) traced through
+  three other recycled write-ups (European Spaceflight May 19, SatNews
+  Sept 25, Agence Europe May 30) back to the same Sept 9-10 Paris Space
+  Summit remarks already a month old at this run's `now` -- left
+  undrafted as a resurfaced quote rather than a new Oct 1 statement; no
+  source found a new venue or occasion for Aschbacher to have repeated
+  the figure that day. Flag for a future sweep once ESA's December
+  Ministerial Council actually votes on the program.
+- 2026-10-02-J: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 2 new, 1 updated, 0 held") and the item count
+  moving from 824 to 826, plus a direct read of both new items'
+  `snr`/`snr_trace`/`category`/`impact` fields and the updated Starliner
+  item's five-source `sources` array, as the build-health signal.
+
+## Narrow re-check, ~4h56m gap, unfiltered full source list (2026-10-02, third)
+
+- 2026-10-02-K: A Federal Register notice of intent (SpaceX's SLC-37
+  Supplemental EIS, up to 76 Starship-Super Heavy launches and 152
+  landings/year at Cape Canaveral) sat as a genuine 3-day-old
+  predates-window gap: SpaceNews 429'd and space.com rendered only nav
+  chrome, but `federalregister.gov/api/v1/documents/<doc-number>.json`
+  gave clean verbatim text (the standard .txt/.json-endpoint workaround,
+  2026-09-04-H/2026-09-29-H) and landed a clean single-source SNR 5
+  (official_record ceiling, no `found_none` penalty). Confirms the
+  standing same-company-plus-category dedup false positive extends to
+  SpaceX + `regulatory` matching an entirely unrelated Iran/Starlink
+  item on nothing but those two fields.
+- 2026-10-02-L: A foreign university's own announcement that one of its
+  professors is leaving for industry (ETH Zurich's page on Thomas
+  Zurbuchen, NASA's science chief 2016-2022, joining Blue Origin as SVP
+  of Advanced Concepts) is `informal`, not `first_party` for Blue Origin
+  (wrong actor's domain) -- but still landed a clean SNR 4 off the
+  whitelist-floor modifier alone, with a single whitelisted observer's
+  bluesky post (Marcia Smith, no original reporting beyond linking the
+  news) as the only "second" source. A Mirage News mirror of the
+  identical ETH release collapsed correctly as `wire_rewrite` despite
+  sitting on a completely unrelated domain and covering a third-party
+  company, not the institution itself -- confirms the title-collapse
+  logic isn't limited to a single company's own multi-domain PR network.
+- 2026-10-02-M: A new corroboration-honesty distinction: Space Intel
+  Report's own framing of a US ambassador's Sept. 30 Brussels speech
+  (warning the EU Space Act could burden US space providers) was the
+  ONLY source to mention the Space Act angle at all, even though two
+  other outlets (Yahoo News, ednews.net) independently covered the SAME
+  speech's broader "Buy European" defense-procurement remarks in detail.
+  Did not count the broader-remarks outlets as corroboration for the
+  space-specific claim they never stated, and re-fetched Space Intel
+  Report a second time asking for the exact verbatim sentence (not a
+  WebFetch synthesis) before trusting the specific attribution; landed
+  an honest single-source SNR 2 (`crawl: "found_none"`) rather than
+  stack unrelated-angle coverage as fake corroboration.
+- 2026-10-02-N: Another stale-resurfacing trap from a generic WebSearch:
+  a "Japan's H3 suffers second-stage anomaly, QZS-5 satellite lost"
+  SpaceNews headline read current but traced (via a second, more
+  specific search) to a December 22, 2025 failure, nine months stale
+  and well before this site's effective coverage. Left undrafted.
+- 2026-10-02-O: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  second attempt ("merged 5 new, 1 updated, 0 held") after the first
+  attempt was rejected for a missing top-level `dedup_distinct` on the
+  SLC-37 item (shared company SpaceX + category regulatory against the
+  unrelated Iran item, 2026-10-02-K above); confirmed via a direct read
+  of all five new items' `snr`/`snr_trace`/`category`/`impact` fields,
+  the updated NROL-97 item's four-source `sources` array and patched
+  `what_happened` text, and the sweep log's `corroboration_collapses`
+  entry (2026-10-02-L) as the build-health signal.
+

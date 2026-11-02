@@ -1,24 +1,24 @@
 {
   "$comment": "HARVEST queue for the news sweep (not the registry crossfeed queue, which is src/data/registry-candidates.json). Machine-written by scripts/harvest.ts (deterministic, pre-agent). The sweep agent reads this queue first; raw_excerpt is verbatim feed text and is the only legal basis for quoted numbers besides a direct fetch of the source page. mode: deep = escalated sweep after consecutive zero-add runs; see prompts/update-items.md.",
-  "generated_at": "2026-11-01T22:26:43.713Z",
-  "window_start": "2026-10-30T17:26:22.171Z",
+  "generated_at": "2026-11-02T05:15:36.168Z",
+  "window_start": "2026-10-30T22:38:29.202Z",
   "mode": "normal",
   "health": [
     {
       "source_name": "Planet Labs IR",
       "ok": true,
-      "http_status": 200,
-      "entry_count": 10,
-      "newest_entry": "2026-10-21T13:15:00.000Z",
-      "detail": "10 entries"
-    },
-    {
-      "source_name": "BlackSky IR",
-      "ok": true,
       "http_status": 304,
       "entry_count": 0,
       "newest_entry": null,
       "detail": "304 not modified"
+    },
+    {
+      "source_name": "BlackSky IR",
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 10,
+      "newest_entry": "2026-10-22T12:30:00.000Z",
+      "detail": "10 entries"
     },
     {
       "source_name": "Vantor (ex-Maxar Intelligence)",
@@ -27,6 +27,14 @@
       "entry_count": 20,
       "newest_entry": "2026-10-27T00:00:00.000Z",
       "detail": "20 entries"
+    },
+    {
+      "source_name": "Synspective",
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "dead re-probe: HTTP 404"
     },
     {
       "source_name": "Spire Global IR",
@@ -65,7 +73,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-11-01T20:07:53.000Z",
+      "newest_entry": "2026-11-02T02:55:01.000Z",
       "detail": "10 entries"
     },
     {
@@ -265,7 +273,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 10,
-      "newest_entry": "2026-10-30T18:46:54.000Z",
+      "newest_entry": "2026-11-01T22:31:25.000Z",
       "detail": "10 entries"
     },
     {
@@ -350,11 +358,11 @@
     },
     {
       "source_name": "UNOOSA press releases (UNIS Vienna)",
-      "ok": false,
-      "http_status": null,
-      "entry_count": 0,
-      "newest_entry": null,
-      "detail": "timeout"
+      "ok": true,
+      "http_status": 200,
+      "entry_count": 24,
+      "newest_entry": "2026-10-08T11:01:32.000Z",
+      "detail": "24 entries"
     },
     {
       "source_name": "ESA Corporate News",
@@ -369,39 +377,39 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-11-01T21:54:32.000Z",
+      "newest_entry": "2026-11-02T05:06:51.000Z",
       "detail": "100 entries"
     },
     {
       "source_name": "Google News: EO + connectivity",
       "ok": true,
       "http_status": 200,
-      "entry_count": 52,
-      "newest_entry": "2026-11-01T22:00:15.000Z",
-      "detail": "52 entries"
+      "entry_count": 100,
+      "newest_entry": "2026-10-30T10:29:13.000Z",
+      "detail": "100 entries"
     },
     {
       "source_name": "Google News: space finance",
       "ok": true,
       "http_status": 200,
-      "entry_count": 30,
+      "entry_count": 73,
       "newest_entry": "2026-10-25T15:00:00.000Z",
-      "detail": "30 entries"
+      "detail": "73 entries"
     },
     {
       "source_name": "Google News: incidents + regulation",
       "ok": true,
       "http_status": 200,
-      "entry_count": 100,
-      "newest_entry": "2026-11-01T08:11:35.000Z",
-      "detail": "100 entries"
+      "entry_count": 59,
+      "newest_entry": "2026-11-01T11:39:34.000Z",
+      "detail": "59 entries"
     },
     {
       "source_name": "Google News: non-US space",
       "ok": true,
       "http_status": 200,
       "entry_count": 100,
-      "newest_entry": "2026-11-01T20:06:28.000Z",
+      "newest_entry": "2026-11-02T05:13:17.000Z",
       "detail": "100 entries"
     },
     {
@@ -425,7 +433,7 @@
       "ok": true,
       "http_status": 200,
       "entry_count": 25,
-      "newest_entry": "2026-11-01T21:03:55.382Z",
+      "newest_entry": "2026-11-02T05:10:01.875Z",
       "detail": "25 entries"
     },
     {
@@ -446,43 +454,43 @@
     },
     {
       "source_name": "Signals YouTube: Eric Berger",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2024-01-31T15:44:43.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Anatoly Zak",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 11,
-      "newest_entry": "2026-10-25T17:01:57.000Z",
-      "detail": "11 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Andrew Parsonson",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-05-08T12:16:56.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 500,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 500"
     },
     {
       "source_name": "Signals YouTube: Scott Manley",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-31T18:40:53.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Tim Dodd",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-09-28T16:48:34.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     },
     {
       "source_name": "Signals YouTube: Marcus House",
@@ -494,14 +502,214 @@
     },
     {
       "source_name": "Signals YouTube: Felix Schlang",
-      "ok": true,
-      "http_status": 200,
-      "entry_count": 15,
-      "newest_entry": "2026-10-31T14:00:22.000Z",
-      "detail": "15 entries"
+      "ok": false,
+      "http_status": 404,
+      "entry_count": 0,
+      "newest_entry": null,
+      "detail": "HTTP 404"
     }
   ],
   "candidates": [
+    {
+      "id": "4660193623b82462",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bwbnews.bsky.social/post/3mzckobplnn2w",
+      "title": "@bwbnews.bsky.social on Bluesky",
+      "published_at": "2026-11-02T05:10:01.875Z",
+      "raw_excerpt": "For the third quarter of 2026, analysts anticipate Space Exploration Technologies Corp. to report consensus revenue of $12.72 billion and earnings per share of $0.11, while the stock currently trades at $134.72 against an average analyst price target #BankingWithBilly #bwb-feed-1548372134705889280",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "6aa17af382d842d1",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/bankingwithbilly.bsky.social/post/3mzcko5hz622z",
+      "title": "@bankingwithbilly.bsky.social on Bluesky",
+      "published_at": "2026-11-02T05:09:57.671Z",
+      "raw_excerpt": "For the third quarter of 2026, analysts anticipate Space Exploration Technologies Corp. to report consensus revenue of $12.72 billion and earnings per share of $0.11, while the stock currently trades at $134.72 against an average analyst price target #BankingWithBilly #bwb-feed-1548372134705889280",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "59a07d4ba24c72a5",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNc0hnVmxEWFVMS0wzSmhiQ2RqWEl1SWJYTzA4R2VzN09zUWZlVnM2VF9nbjRaeWp6aE9ZYnJFQS1OQzd3S1hqeEtGejJRRnFIWENZX1NxdEN6LVZfdEVNMnZWV0tBRzJEdWh3dngybFphUE9tUWl2X0dFNEMydVNPQ0pocEdJWjFYTG8zY0h0Q3RrNzRacGxiZVd4akE?oc=5",
+      "title": "Sequoia Partner Shaun Maguire: SpaceX is on the eve of an NVIDIA-style revenue surge, with the market significantly underestimating its potential - 富途牛牛",
+      "published_at": "2026-11-02T05:06:51.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxNc0hnVmxEWFVMS0wzSmhiQ2RqWEl1SWJYTzA4R2VzN09zUWZlVnM2VF9nbjRaeWp6aE9ZYnJFQS1OQzd3S1hqeEtGejJRRnFIWENZX1NxdEN6LVZfdEVNMnZWV0tBRzJEdWh3dngybFphUE9tUWl2X0dFNEMydVNPQ0pocEdJWjFYTG8zY0h0Q3RrNzRacGxiZVd4akE?oc=5\" target=\"_blank\">Sequoia Partner Shaun Maguire: SpaceX is on the eve of an NVIDIA-style revenue surge, with the market significantly underestimating its potential</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">富途牛牛</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "aa966f000117486c",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/privacy-nut.bsky.social/post/3mzcjopld322q",
+      "title": "@privacy-nut.bsky.social on Bluesky",
+      "published_at": "2026-11-02T04:52:24.376Z",
+      "raw_excerpt": "700th Falcon Launch spaceflightnow.com/2026/10/30/l... #space #spacelaunch",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "2855b892ac91bbc5",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQRTVlc0FHWkg4cXY2M3Q1d08xTGZoQ0J2YWN3MmU4ZmRXZ0dlaE5FcWZQQlNGSjloMEJVZWtLY1dEbnNvX1hjWWttMm04UVdEcGJPcjBwV2ppTXlvY0dRNFQ5NkowVm9vRGpaRDF4OWh3ZzFpZ2g2dlFoT1llWmMzSFpIYUxJSmJmMG5JTjRVY0sycUtPc1R3akRHTE9DUlNWQzl6WU5sdGl0UkMtbkloY0dMZjM1V1JBUkNKeDdRUzZ3d0xaLXc?oc=5",
+      "title": "Can SpaceX Overcome the AI Trade Sell-Off? - The Globe and Mail",
+      "published_at": "2026-11-02T04:50:19.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixgFBVV95cUxQRTVlc0FHWkg4cXY2M3Q1d08xTGZoQ0J2YWN3MmU4ZmRXZ0dlaE5FcWZQQlNGSjloMEJVZWtLY1dEbnNvX1hjWWttMm04UVdEcGJPcjBwV2ppTXlvY0dRNFQ5NkowVm9vRGpaRDF4OWh3ZzFpZ2g2dlFoT1llWmMzSFpIYUxJSmJmMG5JTjRVY0sycUtPc1R3akRHTE9DUlNWQzl6WU5sdGl0UkMtbkloY0dMZjM1V1JBUkNKeDdRUzZ3d0xaLXc?oc=5\" target=\"_blank\">Can SpaceX Overcome the AI Trade Sell-Off?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "e617b5adc47e1c7a",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNdUhUMjA3ck1WOHFpM1JTYTMzWnJJQ3RKX2lETmNIbjJlOXcwMHhPbnNOeGVWaGd1Qld2N3BwX1ZtcTVVXzNCblFXVGpNOVZvWnBZM2YwOGFYdXg0R2FtaGhMdEY0MVlvNDk3ajNnT0tKa0JKX2Nsd2RJUjl5T3RwaFNWSmdXQXROZ2J6OUtkWjQxNGtIeTQ0Vw?oc=5",
+      "title": "Can SpaceX Overcome the AI Trade Sell-Off? - Yahoo Finance",
+      "published_at": "2026-11-02T04:50:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxNdUhUMjA3ck1WOHFpM1JTYTMzWnJJQ3RKX2lETmNIbjJlOXcwMHhPbnNOeGVWaGd1Qld2N3BwX1ZtcTVVXzNCblFXVGpNOVZvWnBZM2YwOGFYdXg0R2FtaGhMdEY0MVlvNDk3ajNnT0tKa0JKX2Nsd2RJUjl5T3RwaFNWSmdXQXROZ2J6OUtkWjQxNGtIeTQ0Vw?oc=5\" target=\"_blank\">Can SpaceX Overcome the AI Trade Sell-Off?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "1e872cf2a34b2bd8",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNN2RfNkdHQ1Nxa3BkZVFyNjBNd0Q5Qm9xZFVLSDgyWTFLQUVLYjU2ai1jY1QzaUdHTDh3cElpVjhjSk1JdDhCTmVwY3paZm5GRnRjVGpRU1hRZGtEREJiUml4bDQ0bE5HT2tzd3M2WXdYTnU3ZjJJOFAyd0RXSWZPY3MtMFR4RE5icGFZRg?oc=5",
+      "title": "Can SpaceX Overcome the AI Trade Sell-Off? - The Motley Fool",
+      "published_at": "2026-11-02T04:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijAFBVV95cUxNN2RfNkdHQ1Nxa3BkZVFyNjBNd0Q5Qm9xZFVLSDgyWTFLQUVLYjU2ai1jY1QzaUdHTDh3cElpVjhjSk1JdDhCTmVwY3paZm5GRnRjVGpRU1hRZGtEREJiUml4bDQ0bE5HT2tzd3M2WXdYTnU3ZjJJOFAyd0RXSWZPY3MtMFR4RE5icGFZRg?oc=5\" target=\"_blank\">Can SpaceX Overcome the AI Trade Sell-Off?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "5b44b72e22c911e5",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/xchatter.techmeme.com/post/3mzcdlh2mwt2e",
+      "title": "@xchatter.techmeme.com on Bluesky",
+      "published_at": "2026-11-02T03:03:10.774Z",
+      "raw_excerpt": "This tweet appeared under this Techmeme headline: Amir Efrati / @amir: @Walter65852293 @Techmeme google's analysis incorporates spacex launch costs and hauling capacity",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "48811724dcf29d8e",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mzcdledbms2o",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-11-02T03:03:08.284Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 02/0300 🚀 PLANNED LAUNCH/REENTRY: SPACEX R-4, VANDENBERG SFB, CA PRIMARY: 11/03/26 0142Z-0625Z BACKUP: 11/04/26 0128Z-0611Z SPACEX STARLINK 15-21, VANDENBERG SFB, CA PRIMARY: 11/06/26 0221Z-0704... More info in image. FAA Details.",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "5519727f097b1245",
+      "source_name": "Launch Library 2 (TheSpaceDevs)",
+      "url": "https://ll.thespacedevs.com/2.2.0/launch/e91d1da2-819b-4523-95bf-39ac7daa871d/",
+      "title": "Ceres-2 | Unknown Payload",
+      "published_at": "2026-11-02T02:55:01.000Z",
+      "raw_excerpt": "Details TBD.",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "e1d2811505e5f85e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQai03TUNwUjMwbjlsVUdGWXRwMUFjS2Nma3Y1blNMdF9wc3FRZjU1TDdOaFR3VUhJaElEN1VRZXlpOVdVN25tV25GZkQyZWpNVkROUWR1N1JyVzZLOEZIRkpfM3FFLVhVTWw2OWZyOUstSXY1UC1IUmVJS19CSHFaYVVpOTBmbjZwaktKY2VGV2M?oc=5",
+      "title": "Tesla-SpaceX merger math just shifted in Tesla’s favor - TheStreet",
+      "published_at": "2026-11-02T02:37:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxQai03TUNwUjMwbjlsVUdGWXRwMUFjS2Nma3Y1blNMdF9wc3FRZjU1TDdOaFR3VUhJaElEN1VRZXlpOVdVN25tV25GZkQyZWpNVkROUWR1N1JyVzZLOEZIRkpfM3FFLVhVTWw2OWZyOUstSXY1UC1IUmVJS19CSHFaYVVpOTBmbjZwaktKY2VGV2M?oc=5\" target=\"_blank\">Tesla-SpaceX merger math just shifted in Tesla’s favor</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TheStreet</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "b2306f1c32bae751",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/astrojonny.bsky.social/post/3mzcb3ek26s2e",
+      "title": "@astrojonny.bsky.social on Bluesky",
+      "published_at": "2026-11-02T02:18:29.179Z",
+      "raw_excerpt": "\"[SpaceX] recently told the Federal Aviation Administration it plans to launch 10,000 Starships a year by the 2030s\" arstechnica.com/space/2026/1...",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "49aaead442949329",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQSTgyWjAwMkxKa19XZ0xlSllVOWZrRHBCeTl6MlpGcE5tUU15UXlLNG9UZ1haS3RPbVlKbFE5RjQ3LUtpeGN2RmpBOHNER21taVRQUXlQUUtNUzlibXVqQjJ6alVteVp6Q3RsdnZ6RDBhTjBpVnZxdHNGbEllY2l4NEVuU1RhNmFOU0FjVnVrMjBKMXlhME1rQ2pkOElfckM5YkVaRnFZY0N4Nlp5TFRz0gG8AUFVX3lxTFAwc1hXY2dmY0IwQXdOU21laUJuem41R2tpWVFOOExtZmhGbExac1ZJdXhvbnlGQnhKQ2hNZ285SFFHdlR0RmlQQnMxWFJlUks0Vl9aNGR0U2diRXBUY2kzZkxpQ3JCVjVIdV9pMDZkdGRGeHVJM211SzJtaTE5WWd6elRzejNFM0ljV19iTkZsUE0teUpXdzdYWk1ySUw4SzJyWmdCa1ZGOGZKV3VOZDJ5cnljSV9CVU81MUZI?oc=5",
+      "title": "Kulasekarapattinam to launch 1st rocket in March-April 2027: ISRO Chairman - DT Next",
+      "published_at": "2026-11-02T01:55:36.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxQSTgyWjAwMkxKa19XZ0xlSllVOWZrRHBCeTl6MlpGcE5tUU15UXlLNG9UZ1haS3RPbVlKbFE5RjQ3LUtpeGN2RmpBOHNER21taVRQUXlQUUtNUzlibXVqQjJ6alVteVp6Q3RsdnZ6RDBhTjBpVnZxdHNGbEllY2l4NEVuU1RhNmFOU0FjVnVrMjBKMXlhME1rQ2pkOElfckM5YkVaRnFZY0N4Nlp5TFRz0gG8AUFVX3lxTFAwc1hXY2dmY0IwQXdOU21laUJuem41R2tpWVFOOExtZmhGbExac1ZJdXhvbnlGQnhKQ2hNZ285SFFHdlR0RmlQQnMxWFJlUks0Vl9aNGR0U2diRXBUY2kzZkxpQ3JCVjVIdV9pMDZkdGRGeHVJM211SzJtaTE5WWd6elRzejNFM0ljV19iTkZsUE0teUpXdzdYWk1ySUw4SzJyWmdCa1ZGOGZKV3VOZDJ5cnljSV9CVU81MUZI?oc=5\" target=\"_blank\">Kulasekarapattinam to launch 1st rocket in March-April 2027: ISRO Chairman</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">DT Next</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "b995282fb691ffac",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNRTVxNEpEVW51czFlZWZVTTRfU2ZmVl9VOUNYY2VzZ3FmZExhMTQ3STR4Y1VtM0VaVnZTZW1PbGNzWWVHRzhqbldQNFZxQnUtYlZtaEZLSUc0UndUQzZqa0xINlNUZFNQQjE0MGZOVkMxNUQzY3JIX280SXEwbUtaZklmajBuYncwRE56RlA1enNyLU1YMEE?oc=5",
+      "title": "Here's My Top Reason to Buy SpaceX Stock Right Now - Yahoo Finance",
+      "published_at": "2026-11-02T01:32:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxNRTVxNEpEVW51czFlZWZVTTRfU2ZmVl9VOUNYY2VzZ3FmZExhMTQ3STR4Y1VtM0VaVnZTZW1PbGNzWWVHRzhqbldQNFZxQnUtYlZtaEZLSUc0UndUQzZqa0xINlNUZFNQQjE0MGZOVkMxNUQzY3JIX280SXEwbUtaZklmajBuYncwRE56RlA1enNyLU1YMEE?oc=5\" target=\"_blank\">Here's My Top Reason to Buy SpaceX Stock Right Now</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "defae248ba93958e",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNbzFXVkpKR20wZzFxYzFrbEpmUlpSVTRON3VfRjVWd1JnUU1oS25YcmhjVEliMjFscTl6clNRSjN6aXhUU21ZRHV0cWFJbHhxazVmSTFjYXB3ZnJBNDFKMlA1LWhhZm5fQkE1VDVKS2hyNnVUYUdHZlNZbXNfTXg0YnJpNEVSamlRcWw3U09ueFdSSjFFS0lR?oc=5",
+      "title": "Here's My Top Reason to Buy SpaceX Stock Right Now - The Motley Fool",
+      "published_at": "2026-11-02T01:12:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNbzFXVkpKR20wZzFxYzFrbEpmUlpSVTRON3VfRjVWd1JnUU1oS25YcmhjVEliMjFscTl6clNRSjN6aXhUU21ZRHV0cWFJbHhxazVmSTFjYXB3ZnJBNDFKMlA1LWhhZm5fQkE1VDVKS2hyNnVUYUdHZlNZbXNfTXg0YnJpNEVSamlRcWw3U09ueFdSSjFFS0lR?oc=5\" target=\"_blank\">Here's My Top Reason to Buy SpaceX Stock Right Now</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "8028d6537d989fd2",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mzc4urc5ab2x",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-11-02T01:03:07.289Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 02/0100 🚀 PLANNED LAUNCH/REENTRY: SPACEX R-4, VANDENBERG SFB, CA PRIMARY: 11/03/26 0142Z-0625Z BACKUP: 11/04/26 0128Z-0611Z SPACEX STARLINK 15-21, VANDENBERG SFB, CA PRIMARY: 11/06/26 0221Z-0704... More info in image. FAA Details.",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "368faa9c17416fa0",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNemNyVTdEa0psUHdDNVBBU0t2bnM0dzFFTk1ZcFJzTWRHb1lMaG9tM19FZXNoTERHR3ZtbU0tRFQ5RlE3ZF9ydGlXNGJ2UGtycFFrcjk5LU82UFBNRjZrdVVoRnFtaEd2UXYxd1ZUNjBjLVA0WVRIUEE5VlZQamczVW0zYW4?oc=5",
+      "title": "Nvidia: SpaceX Offers An Ignored Bonus (NASDAQ:NVDA) - Seeking Alpha",
+      "published_at": "2026-11-02T01:00:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxNemNyVTdEa0psUHdDNVBBU0t2bnM0dzFFTk1ZcFJzTWRHb1lMaG9tM19FZXNoTERHR3ZtbU0tRFQ5RlE3ZF9ydGlXNGJ2UGtycFFrcjk5LU82UFBNRjZrdVVoRnFtaEd2UXYxd1ZUNjBjLVA0WVRIUEE5VlZQamczVW0zYW4?oc=5\" target=\"_blank\">Nvidia: SpaceX Offers An Ignored Bonus (NASDAQ:NVDA)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "2587bf878b2cdb97",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/spaceflightnow.com/post/3mzc2kq5pzk2i",
+      "title": "@spaceflightnow.com on Bluesky",
+      "published_at": "2026-11-02T00:21:44.873Z",
+      "raw_excerpt": "A SpaceX Falcon 9 lit up the Florida dawn sky on the Bandwagon-5 mission. Watch our replay of the Oct. 20 launch in glorious 4K and 5.1 surround sound. youtu.be/qvWl-fRl1Rw",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "43f54a3c29d82c5f",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOdGFoY2dwSVhCemhBOVBBS2hUS2ZNN2Nzem44M2xkbXZKVGh2X09CUGdnMWl6eEdZSjUtNWpxNkM1c0ZlUzdPdGtYX0k5TkpudW9VemZ2YVQtd0tfU0tBblZ0R29NVmwtTnk2Tkp3RDdTdmZzYjdndUlHYXZUdk5fTVNKc2ZMZS1ibkxCV3YzWWRVa2NCMHdQU3FERUJyRGlkaUx5WlExc0lUbFMxM0dRd2d0RTlUZw?oc=5",
+      "title": "Elon Musk Predicts Orbital AI Computing Surge, Boosting SpaceX (SPCX) Ambitions - GuruFocus",
+      "published_at": "2026-11-02T00:20:56.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitgFBVV95cUxOdGFoY2dwSVhCemhBOVBBS2hUS2ZNN2Nzem44M2xkbXZKVGh2X09CUGdnMWl6eEdZSjUtNWpxNkM1c0ZlUzdPdGtYX0k5TkpudW9VemZ2YVQtd0tfU0tBblZ0R29NVmwtTnk2Tkp3RDdTdmZzYjdndUlHYXZUdk5fTVNKc2ZMZS1ibkxCV3YzWWRVa2NCMHdQU3FERUJyRGlkaUx5WlExc0lUbFMxM0dRd2d0RTlUZw?oc=5\" target=\"_blank\">Elon Musk Predicts Orbital AI Computing Surge, Boosting SpaceX (SPCX) Ambitions</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">GuruFocus</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "415f30825f626799",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mzc27qkdmq2e",
+      "title": "@astronomybot.bsky.social on Bluesky",
+      "published_at": "2026-11-02T00:15:34.729Z",
+      "raw_excerpt": "Rocket Launch Falcon 9 Block 5 | Cygnus CRS-2 NG-25 On 2026-11-30 at 00:00:00 UTC | 27 days, 23 hours, 44 mins By SpaceX Status: Current date is a placeholder or rough estimation based on unreliable or interpreted sources. Rocket: Falcon 9 Block 5 Launch pad: Space Launch Complex 40, located at C...",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
     {
       "id": "19271e752870aafa",
       "source_name": "Federal Register API: FCC",
@@ -603,6 +811,56 @@
       "consumed": true
     },
     {
+      "id": "cde96f55db5c5496",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBOdXlWZy1pUTBmRUdJaVNBVHB1WGlNZUVoNXJfTXVHVGZScy14cmhJZ21rdDdFTFNsVnhDNmhRSTZvSGtEd1hmYXN2dTVfU2pzRFNvQU16ZmR4S0RJbjFraWozQ2R4bC1aWXNzWjdYT3A?oc=5",
+      "title": "School IB economics: SpaceX and Tesla boards explore potential merger - Financial Times",
+      "published_at": "2026-11-01T23:58:21.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMicEFVX3lxTFBOdXlWZy1pUTBmRUdJaVNBVHB1WGlNZUVoNXJfTXVHVGZScy14cmhJZ21rdDdFTFNsVnhDNmhRSTZvSGtEd1hmYXN2dTVfU2pzRFNvQU16ZmR4S0RJbjFraWozQ2R4bC1aWXNzWjdYT3A?oc=5\" target=\"_blank\">School IB economics: SpaceX and Tesla boards explore potential merger</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Financial Times</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "6ad6c0b7efd8e196",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOdkpJTXByejRfOGdjT3FmWTNiZXdVUmpteVdGam8tbG96eHVLTFpxUlBDRjk1a3l4WHhvdy1pTG9mbDFXajN2bnU3NWFKQmRVMUxJRGRYaU41VFVwLXJiczgwWEREUVVZZTVSRzY1S0JzeHFUOE5DVmdTeU5BTzhPcnRnVkZpTm5ZOEE?oc=5",
+      "title": "County withheld SpaceX tax break records despite state ruling, residents' lawsuit says - The Cool Down",
+      "published_at": "2026-11-01T23:15:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiigFBVV95cUxOdkpJTXByejRfOGdjT3FmWTNiZXdVUmpteVdGam8tbG96eHVLTFpxUlBDRjk1a3l4WHhvdy1pTG9mbDFXajN2bnU3NWFKQmRVMUxJRGRYaU41VFVwLXJiczgwWEREUVVZZTVSRzY1S0JzeHFUOE5DVmdTeU5BTzhPcnRnVkZpTm5ZOEE?oc=5\" target=\"_blank\">County withheld SpaceX tax break records despite state ruling, residents' lawsuit says</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Cool Down</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "d31244a00cbce1b7",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/faabot.paxex.aero/post/3mzbw67ypaf2i",
+      "title": "@faabot.paxex.aero on Bluesky",
+      "published_at": "2026-11-01T23:03:09.076Z",
+      "raw_excerpt": "🚀 FAA Space Launch Plans - 01/2300 🚀 PLANNED LAUNCH/REENTRY: SPACEX R-4, VANDENBERG SFB, CA PRIMARY: 11/03/26 0142Z-0625Z BACKUP: 11/04/26 0128Z-0611Z SPACEX STARLINK 15-21, VANDENBERG SFB, CA PRIMARY: 11/06/26 0221Z-0704... More info in image. FAA Details.",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "fa67ee9b49ba023f",
+      "source_name": "Bluesky search: spacex launch",
+      "url": "https://bsky.app/profile/glenjackson.bsky.social/post/3mzbvh5o2tk2x",
+      "title": "@glenjackson.bsky.social on Bluesky",
+      "published_at": "2026-11-01T22:50:14.477Z",
+      "raw_excerpt": "REMINDER: #Musk got some good news from the U.S. #SpaceForce on the ❌same day as the revival of America PAC, which with Musk spent nearly $290 million in 2024 to help Trump win a 2nd term. #SpaceX landed a $1.6B govt contract to launch 18 rockets.” #EpsteinList",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
+      "id": "4682be5aa3889f58",
+      "source_name": "SpacePolicyOnline",
+      "url": "https://spacepolicyonline.com/news/whats-happening-in-space-policy-november-1-8-2026/",
+      "title": "What’s Happening in Space Policy November 1-8, 2026",
+      "published_at": "2026-11-01T22:31:25.000Z",
+      "raw_excerpt": "Here is SpacePolicyOnline.com’s list of space policy events for the week plus a day of November 1-8, 2026 and any insight we can offer about them. The House and Senate are in recess, except for pro forma sessions, until after the midterm elections. During the Week The United States returned to Standard Time at 2:00 am this morning — hope you remembered to change any timepieces that don’t change themselves! The big event this week, of course, is the midterm elections on Tuesday, November 3. We are not speculating on what the outcome will be, but watching with interest like everyone else and assessing any potential impact on space activities afterwards. The Planetary Society will share their assessment during a webinar on Wednesday. Whatever the results, the House and Senate return to work next Monday, November 9, with a long list of legislation to deal with before the 119th Congress comes to a close no later than noon on January 3, 2027. All 12 FY2027 appropriations bills and the FY2027 National Defense Authorization Act are among the unfinished business. We’re including an extra day in this week’s What’s Happening because NASA Administrator Jared Isaacman’s “MAX POWER aerospace expo and air show” at Kennedy Space Center runs through the weekend. Media opportunities are available on Friday, November 5, but the main event is Saturday and Sunday. NASA describes it this way: Through multiple park experiences at MAX POWER, NASA and a variety of external collaborators will showcase the newest aircraft, autonomous vehicles, technologies, and more defining the future of air and space. NASA will display its quiet supersonic X-59 plane, and agency partners will showcase Moon rovers, spacecraft, and more. The expo also is a culmination of the agency’s recent Inspiration Tour, which included numerous flyovers to highlight NASA’s fleet of aircraft. — NASA Credit: NASA Earlier in the week, among the very interesting meetings/conferences is the Space + Defense Investor Summit in B",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
       "id": "6282cc4fad0c7b26",
       "source_name": "Google News: EO + connectivity",
       "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNY0dtNnlzVTZIRXZadUFBZWJyY3VuNlA1bFFqVUpfNlF3djk5T25QcVJVa3c2dHZsaWpZS2VBWG0yOHFreGdwRUhJRi0xZGV1VWQ0dUtFR2FCSHoyeUlNaFBCcXFIV0hsWTgwd2Y5dElsMjROS0dxNG9wczFFdTRmYXloWW1QMWFsbHFmMHZrcXJPRE50ZUJXTjc4Yw?oc=5",
@@ -620,6 +878,16 @@
       "published_at": "2026-11-01T21:54:32.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi_AFBVV95cUxNcDNqaFotUzF5eU1kbk9vNkRoM1FDRUY2TXo0RjJPQkpBMnoybzVxbTk3S3NDZE9UWkZJQzJvaWhJcVZjcnFMVHJoeUZWSW5LRUtfSFNWSkg3Y1Y3V2NjdlRlakt2VGUwXzBmSUxEREJqY0M2c0d0N0I5YU8zUTFxdzhrN19UWjNobVJnaUpTSjNBNHZOalhLZ245MjZGc1Jub3hMeTZCYkpabm9ybVgycERVdGpZRm8yenN6S0tZNWxvY3JPZEJOM2EzbXBralVWQkhOUXZTWHc2bXdRNkV3VjFCdWhLVTJ0eXl2ekFIMEs5VEtnVDhJZFRIRTc?oc=5\" target=\"_blank\">Starlink's Subscriber Growth Is Explosive. Could SpaceX Unlock a Second Growth Engine?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
       "fetched_at": "2026-11-01T22:26:43.713Z",
+      "consumed": true
+    },
+    {
+      "id": "91f44176d1e3dff1",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNVDdhYWVWVzVJOENKNm9Ub2VQLVNnZTVnT1VpYklPdDlScEVEd1NZYmE4V1FrRnQ0SXZUZUZRN2QwV1Job081WTdISFF6c18yX2l0XzFuUlNRZlNNaC1KOGNRY09DQk1BMk5sQmpNRDkxUEhEdEU1SVFFR0gtb04zZWdYemRfdW5iLXFTYktIb25NZjJwdndOMHRaajlmV1FsVHZmRno3REFUcVFWMVpEQ1RqOTVkMWVmcVlYdUI3RGU0UlgwN05sdVBKRWlTaC05S0F3aWNxVEJGR0FLN2FDNS1pUTZQR3d4Z0o4STdwTm5JYjd1N0E?oc=5",
+      "title": "Starlink's Subscriber Growth Is Explosive. Could SpaceX Unlock a Second Growth Engine? - The Globe and Mail",
+      "published_at": "2026-11-01T21:22:45.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi9gFBVV95cUxNVDdhYWVWVzVJOENKNm9Ub2VQLVNnZTVnT1VpYklPdDlScEVEd1NZYmE4V1FrRnQ0SXZUZUZRN2QwV1Job081WTdISFF6c18yX2l0XzFuUlNRZlNNaC1KOGNRY09DQk1BMk5sQmpNRDkxUEhEdEU1SVFFR0gtb04zZWdYemRfdW5iLXFTYktIb25NZjJwdndOMHRaajlmV1FsVHZmRno3REFUcVFWMVpEQ1RqOTVkMWVmcVlYdUI3RGU0UlgwN05sdVBKRWlTaC05S0F3aWNxVEJGR0FLN2FDNS1pUTZQR3d4Z0o4STdwTm5JYjd1N0E?oc=5\" target=\"_blank\">Starlink's Subscriber Growth Is Explosive. Could SpaceX Unlock a Second Growth Engine?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Globe and Mail</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
       "consumed": true
     },
     {
@@ -763,6 +1031,16 @@
       "consumed": true
     },
     {
+      "id": "7a711e28d8555553",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTFBXSXQwd3o3ZUk2UUVTbWR5bG9MQ09nbjFjMFVWaTdiMVkyMGd3VFE5bVRqYmtESmJSd05fS2M0bGpHVUVrYjE1ak5Xdm9UNzNKeHlXN2pNdXJVc1NJc0pDQ0lkbUxFdXAyMURDM0VDYTk4VHdnRnZOaWt6UTU?oc=5",
+      "title": "SpaceX Stock Is Nearly 30% Below Its Post-IPO High. Here's What Facebook's Stock Did From the Same Spot. - AOL.com",
+      "published_at": "2026-11-01T20:03:01.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifEFVX3lxTFBXSXQwd3o3ZUk2UUVTbWR5bG9MQ09nbjFjMFVWaTdiMVkyMGd3VFE5bVRqYmtESmJSd05fS2M0bGpHVUVrYjE1ak5Xdm9UNzNKeHlXN2pNdXJVc1NJc0pDQ0lkbUxFdXAyMURDM0VDYTk4VHdnRnZOaWt6UTU?oc=5\" target=\"_blank\">SpaceX Stock Is Nearly 30% Below Its Post-IPO High. Here's What Facebook's Stock Did From the Same Spot.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">AOL.com</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
       "id": "cc720a81150d1095",
       "source_name": "Google News: launch",
       "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQVTBxaWc1T3QwQ1NkUXFqYTFmRWhSTmxfaDJpa1NCVks5ZVQtRHVxdTdRM2xOeTkwRnNaRW5VT0g3Y213VUQ4U3lDV2RyTXBPZWNhejBFV05rQlV6UjJHRW9tNTRvWlBzX0xVc0MxeGpDT2lXU3B6QmVoQl9LdFNnN1BWNElLU3FjX2lkUHRkLUhJT0pCYkd2Q0pjRjdtRm82OEZhSUlvSXc2SG5jUWdDTmpxRGdia1dROU04?oc=5",
@@ -780,6 +1058,16 @@
       "published_at": "2026-11-01T19:47:00.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihAFBVV95cUxQdEZnLXBiNWNNLXVzOUdMaFZfMW14clBQVlBKM0tOSk5CeGd4S2JfWXZ5a3k3endjQVdyakRiQ0M2b2hOM1hPSGtIRVJvc1hGaFdoMWllRmFpcWV0NnBDcEpxY3M0MldRNkR4cnItQ3p1Z0tucmxDUVJCa2tkTTN4bVBNWlE?oc=5\" target=\"_blank\">Owners Say These Are The 5 Biggest Problems With Starlink</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">AOL.com</font>",
       "fetched_at": "2026-11-01T22:26:43.713Z",
+      "consumed": true
+    },
+    {
+      "id": "bcd3829379405515",
+      "source_name": "Google News: launch",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1kNjlYWkZ0WXBMYk1fSFJ5LXZsZW9kNTJ3U3VvZzFtc2c2UGY3SDZ2cDRRVU5uQ1lVY2RxdkVUNFNQeWc3dHRmOHhGNGIxRlRNN2p5MEhpNV9NenpHVXIydTRGUVN4RENMeGlDcllfOEZzYjUwcVJtWFREUERUZw?oc=5",
+      "title": "Owners Say These Are The 5 Biggest Problems With Starlink - BGR",
+      "published_at": "2026-11-01T19:47:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMifkFVX3lxTE1kNjlYWkZ0WXBMYk1fSFJ5LXZsZW9kNTJ3U3VvZzFtc2c2UGY3SDZ2cDRRVU5uQ1lVY2RxdkVUNFNQeWc3dHRmOHhGNGIxRlRNN2p5MEhpNV9NenpHVXIydTRGUVN4RENMeGlDcllfOEZzYjUwcVJtWFREUERUZw?oc=5\" target=\"_blank\">Owners Say These Are The 5 Biggest Problems With Starlink</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BGR</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
       "consumed": true
     },
     {
@@ -893,6 +1181,16 @@
       "consumed": true
     },
     {
+      "id": "5ce282e1d6136b72",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNZWJxTGIxOUsta1dOVGQ0OUEyeGtwbGlzOWRITVJRbzFCYnl2ZkJvYnhqLVd2dEpYb2s1UW9BQmFOZUo5R0VSYl9lQUlrUzloMFcxSGZfSl9VQkZRdVJGQjFqc1NLTUtZUWlvT0VmTVZFa3BoUlhxVXJ3cW9wTFJlUGdURmwzOUdlbk1kR2Y4T3NjempGdV9ZR3lCeVlyU3dMdHlpeEloRnlpVkp6Q1daUnZOZ1VSX3dYbW43akdsTkhpNVdOMHA0WVlRN0FvUUNNcTU3Ni0yNl9Ddw?oc=5",
+      "title": "India’s navigation satellite mission a grand success: ISRO chief V Narayanan - ANI News",
+      "published_at": "2026-11-01T17:30:00.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2gFBVV95cUxNZWJxTGIxOUsta1dOVGQ0OUEyeGtwbGlzOWRITVJRbzFCYnl2ZkJvYnhqLVd2dEpYb2s1UW9BQmFOZUo5R0VSYl9lQUlrUzloMFcxSGZfSl9VQkZRdVJGQjFqc1NLTUtZUWlvT0VmTVZFa3BoUlhxVXJ3cW9wTFJlUGdURmwzOUdlbk1kR2Y4T3NjempGdV9ZR3lCeVlyU3dMdHlpeEloRnlpVkp6Q1daUnZOZ1VSX3dYbW43akdsTkhpNVdOMHA0WVlRN0FvUUNNcTU3Ni0yNl9Ddw?oc=5\" target=\"_blank\">India’s navigation satellite mission a grand success: ISRO chief V Narayanan</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ANI News</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
       "id": "fa3e1e47773e3231",
       "source_name": "Futurism",
       "url": "https://futurism.com/artificial-intelligence/microsoft-patents-ai-words-in-peoples-mouths",
@@ -940,6 +1238,16 @@
       "published_at": "2026-11-01T16:58:27.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxNb3lTMllPcklWYm5oU090Z3BXMXFQQVZha2JaOGl1cjJWYmFWbzZQenBpa3hsN0VJN0Y3LXhpSXBJbVpXSE44eFlMYVlkbm9KeGpOYjFQckNTYU1saGI4NVEwalZxY0VKZGxsSi1jSExMblRDQWt6QVNBUU02ZUgwLWFCWnZjREJWQjlETmgzQ2o3QlNQVWFzMg?oc=5\" target=\"_blank\">United sees temporary Starlink lead as loyalty opportunity</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">www.insideflyer.com</font>",
       "fetched_at": "2026-11-01T22:26:43.713Z",
+      "consumed": true
+    },
+    {
+      "id": "868c9d619760ba94",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOV3JiblZMNTRzQ2FrRHM2N2RBTVd5emxBYU9BSERGSEt5VDlXU0k4dFBkVFlBRlBHNVVZNHFzcmdNVHRqZEVKNlpENVc3RGhfZXpKYTFYWGtnWko3QklnT2FpR1prZVdwNU9TUWI5SVlhZmNTU2xHams4UUUxR3YzZjlQcWhuajZTX1BheTdZYkIyMmFZRTNRLUhROHlzS19HSmNKdkVFS1BLM2tKTkc0akNzamxabC10YzlUZ05MUzRrR25DSElPR3I5UUNYd3RtRkl0NGh3?oc=5",
+      "title": "ISRO Completes First Orbit-Raising Manoeuvre of NVS-03 Navigation Satellite; Spacecraft Health Normal - www.nationpathindia.com",
+      "published_at": "2026-11-01T16:14:13.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1gFBVV95cUxOV3JiblZMNTRzQ2FrRHM2N2RBTVd5emxBYU9BSERGSEt5VDlXU0k4dFBkVFlBRlBHNVVZNHFzcmdNVHRqZEVKNlpENVc3RGhfZXpKYTFYWGtnWko3QklnT2FpR1prZVdwNU9TUWI5SVlhZmNTU2xHams4UUUxR3YzZjlQcWhuajZTX1BheTdZYkIyMmFZRTNRLUhROHlzS19HSmNKdkVFS1BLM2tKTkc0akNzamxabC10YzlUZ05MUzRrR25DSElPR3I5UUNYd3RtRkl0NGh3?oc=5\" target=\"_blank\">ISRO Completes First Orbit-Raising Manoeuvre of NVS-03 Navigation Satellite; Spacecraft Health Normal</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">www.nationpathindia.com</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
       "consumed": true
     },
     {
@@ -1810,6 +2118,16 @@
       "published_at": "2026-11-01T01:15:53.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikwFBVV95cUxPR2J6OHNzRGtFV0hCV3pqWEZ1OVNVaWNrVjI1cmNFSHk3VUFDZm5GM1V3QXdEZTQ2Sm1EOE1XbENvd0RuVE1VM2JDQXBGT1FFUEQzZUZTSzBvRXRHS1hIMGxhYjE1dDY2RFNZNVJlNGFoUXkwZ0JUUkJKMVZwVXdkTldiVHNiOHhIWEp1MEhDM2xUVkU?oc=5\" target=\"_blank\">Starship Payloads [2026]: $715M Upside vs $650M Cap</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">shattered.io</font>",
       "fetched_at": "2026-11-01T05:15:37.675Z",
+      "consumed": true
+    },
+    {
+      "id": "82c5029adea741e0",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNTkFDa0lsTm1IZjc2bXNRQzJ5cE9YVGtrYnZod18yZUlNMVdudTBDV3VrS0Y2Q3dZWHg1Z25SVjJkSjlVUk9KUVhpWkhEaE1MNlBSRlhSSmpuYnk0N2ZkOElDZ2xUVVdHbzZ3b1hYa0JlWmUxWFpIVDBVXzhUQWZGN0I4QkRXd1pSYWRoOENZS2oxSlJ4X2oxa0o1TW8wNE4yVmc?oc=5",
+      "title": "ISRO launches next-gen satellite to boost India’s GPS system - The Shillong Times",
+      "published_at": "2026-11-01T00:54:01.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiogFBVV95cUxNTkFDa0lsTm1IZjc2bXNRQzJ5cE9YVGtrYnZod18yZUlNMVdudTBDV3VrS0Y2Q3dZWHg1Z25SVjJkSjlVUk9KUVhpWkhEaE1MNlBSRlhSSmpuYnk0N2ZkOElDZ2xUVVdHbzZ3b1hYa0JlWmUxWFpIVDBVXzhUQWZGN0I4QkRXd1pSYWRoOENZS2oxSlJ4X2oxa0o1TW8wNE4yVmc?oc=5\" target=\"_blank\">ISRO launches next-gen satellite to boost India’s GPS system</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Shillong Times</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
       "consumed": true
     },
     {
@@ -4123,6 +4441,16 @@
       "consumed": true
     },
     {
+      "id": "19794ba870691069",
+      "source_name": "Google News: non-US space",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBWQm1DNmpCYU1zc3diLWJmVEdYVndrN0FkaFZoQUZmOENSVGVwUEU4QzY0VGR4WWM5SUM4T3FOcG9mWDNLNlNJVDRSN2h2d2NLYTU3Q0lIa2owdHdaYnFiQ1h3?oc=5",
+      "title": "GSLV-F18/NVS-03 Gallery - ISRO",
+      "published_at": "2026-10-31T04:05:37.000Z",
+      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiYkFVX3lxTFBWQm1DNmpCYU1zc3diLWJmVEdYVndrN0FkaFZoQUZmOENSVGVwUEU4QzY0VGR4WWM5SUM4T3FOcG9mWDNLNlNJVDRSN2h2d2NLYTU3Q0lIa2owdHdaYnFiQ1h3?oc=5\" target=\"_blank\">GSLV-F18/NVS-03 Gallery</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ISRO</font>",
+      "fetched_at": "2026-11-02T05:15:36.168Z",
+      "consumed": true
+    },
+    {
       "id": "1bd204679abd67a9",
       "source_name": "Google News: non-US space",
       "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBDNkFYM2JwMG8xYURPRFpqQkNyVDNwYjZPdVpjb3ROVG5pc28xM3cyRlhFeDBTTHhxM2l0aFBwTGxkLW1PcV9YaUprMUtvOVJMUVVmNVltaw?oc=5",
@@ -4840,896 +5168,6 @@
       "published_at": "2026-10-30T22:40:28.000Z",
       "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirwFBVV95cUxOS3NZNUdMNGU2ZzZhNVNKaF9nWS1mdGpQZkVfSEdKUnlQamFKYTRrNGplcEVwRjNuZExUeTJBMGRSd0NQMDdjR2tCZ1F5Uml1S1ZuamRVR3R5T0lHNjQzVzNQWWZiYmNfN1VydlBteEZNUGpzTmQ4VlVLalJwRmtENGw3TkJRQjVjdk9jY0JkWGo3WVRLTHdIcjZjTktPcUhYdm9SeDRnWW5MYkZ4TGhZ?oc=5\" target=\"_blank\">Inside a Ukrainian city hit by Russian drones during the Starlink disruption</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">PBS</font>",
       "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "66bea9271189bb77",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBpNGVBLWRVVW1QR19BTlRRNjdET3l1N1lDQ0lKLW5ZREE5UE5tSHF4d3NMaUhnYTRyTFk2Nm1DS2pZYTF2WUlDZzhQVmRDaUV1M1Y2Y05vUFlQSTlZWGJkM3RWLUszMzRqY3BjMVdGTVNFRzdjamZCREFCNlRYUm8?oc=5",
-      "title": "Tesla-SpaceX Merger: 3 Questions Before Any Deal [2026] - shattered.io",
-      "published_at": "2026-10-30T22:16:10.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMif0FVX3lxTFBpNGVBLWRVVW1QR19BTlRRNjdET3l1N1lDQ0lKLW5ZREE5UE5tSHF4d3NMaUhnYTRyTFk2Nm1DS2pZYTF2WUlDZzhQVmRDaUV1M1Y2Y05vUFlQSTlZWGJkM3RWLUszMzRqY3BjMVdGTVNFRzdjamZCREFCNlRYUm8?oc=5\" target=\"_blank\">Tesla-SpaceX Merger: 3 Questions Before Any Deal [2026]</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">shattered.io</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "1480474f4705bf80",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQZXNfOVhuNXZqc01mclVWUG5pdXgxRTFLcW0xeXZvVWZFNTBLSmllS3NVV1ZmMk9TUUpkT0lyMkNQNXFDV1BNRF9WZFZscjJBS0pyaFRmQnMyckxOa1dQOU1heWhkb0dWNHFKMmRncWlva2lVNDI0R0NGUkJtX1o2eUQ5TjdvaVVqQ2FXRXlVdzYyZEVSNzRpMC1Ib0g?oc=5",
-      "title": "Gwynne Shotwell’s 2M SpaceX Share Gift to Kids Is Underway - Not a Tesla App",
-      "published_at": "2026-10-30T22:15:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxQZXNfOVhuNXZqc01mclVWUG5pdXgxRTFLcW0xeXZvVWZFNTBLSmllS3NVV1ZmMk9TUUpkT0lyMkNQNXFDV1BNRF9WZFZscjJBS0pyaFRmQnMyckxOa1dQOU1heWhkb0dWNHFKMmRncWlva2lVNDI0R0NGUkJtX1o2eUQ5TjdvaVVqQ2FXRXlVdzYyZEVSNzRpMC1Ib0g?oc=5\" target=\"_blank\">Gwynne Shotwell’s 2M SpaceX Share Gift to Kids Is Underway</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Not a Tesla App</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "2def38906a76185e",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/tech-leaders-kiss-ring-trump-call-ai-si",
-      "title": "Tech Leaders Kiss the Ring and Refuse to Call It “AI” After Trump Told Them Not to",
-      "published_at": "2026-10-30T22:15:00.000Z",
-      "raw_excerpt": "It turns out the only thing more sycophantic than AI chatbots are the people in charge of building them. After president Donald Trump decreed that artificial intelligence should now be referred to as “Super Intelligence” (caps included), tech and AI CEOs — or should we say “SI” CEOs — have eagerly complied with this absurd rebranding attempt. An analysis by CNBC found that Microsoft, SpaceX, Meta, Tesla, and IBM all used the term “Super Intelligence” or “SI” in official documents and communications this earnings season. One SpaceX filing referred to SI 85 times. Microsoft, in an annual report letter, even heralded the arrival of a “Super Intelligence era.” “For Microsoft, the central question as we enter this Super Intelligence era is not just how big the opportunity becomes, but how we deliver the real-world outcomes that every country, community, and company demands and deserves,” CEO Satya Nadella wrote in the letter. Trump’s obsession with rebranding AI seemed to come out of nowhere. Last month, he launched a poll on his website Truth Social asking his supporters to choose a better name for AI. Days later, he told the UN General Assembly that all US government documents will ditch the term AI in favor of SI, and made the decree official with an executive order . This week, he escalated proceedings by saying he would be “officially BANNING” the term AI in government documents and “everything else.” That tech leaders have embraced using SI encapsulates the extraordinary toadying that they have continued to show Trump since he returned to the Oval Office, including those whom Trump once perceived as an enemy. Perhaps the most enthusiastic adopter of the new moniker is SpaceX and Tesla CEO Elon Musk, who remains closely tied to the administration. He has insisted on using the term SI in all his public appearances and posts (with occasional slip-ups), and rebranded his AI company SpaceXAI as SpaceXSI. Recently, Musk even admitted that he has “SI psychosis.” OpenAI CE",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "683668288a1886f6",
-      "source_name": "NASASpaceflight",
-      "url": "https://www.nasaspaceflight.com/2026/10/spacex-static-fires-flight-15/",
-      "title": "SpaceX Completes Three Static Fires in Three Days for Flight 15",
-      "published_at": "2026-10-30T21:53:38.000Z",
-      "raw_excerpt": "In eight days, SpaceX completed all engine testing for Flight 15, some cryo-proof and catch testing for Flight 16, and lifted the top deck deluge plates onto Pad 1’s Launch Mount. This past week has been one of the busiest in Starship program history. https://www.youtube.com/watch?v=vKqb6w5FeE Flight 16 Progress toward Flight 16 has been strong this past week. Ship 43 rolled out to Massey’s on Oct. 22 and completed both cryo-proof tests on Oct. 23. The ship then rolled back to Mega Bay 2 on Oct. 26 to be swapped to a transport stand. Once on the transport stand, the team rolled Ship 43 out to Pad 2 for ship catch testing. This entailed lifting Ship 43 to catch height, then lowering it to bring in the Ship Quick Disconnect (SQD). Once in line, SpaceX hooked up the SQD plate to the ship to test safing procedures for when they eventually catch a ship. SpaceX also performed this testing with Ship 42 in mid-September. This testing helps controllers gain experience in ship safing operations and write operations as teams progress. Ship 43 Undergoing Catch Testing The next catch test SpaceX performed moved the ship to the middle of the chopsticks while it was on the transport stand. Then the chopsticks lifted the ship without the stabilizers, and the pushers on the landing rails pushed the ship to line up with the stabilizers before hooking in. This operation is how SpaceX lined up Boosters 12, 14, and 15 when those were caught; teams just haven’t caught a ship yet, so they are practicing with non-flown ships. After all of that testing, Ship 43 was rolled back to Mega Bay 2 on Oct. 27 and placed on the back left work stand. Ship 43 will now receive its engines installed before heading back out for its static fire campaign. Booster 23 rolled back out to Massey’s on Oct. 27, but after spending over two full days at the cryo station, the booster did no visible testing. It could’ve done an ambient pressure test, but there were no noticeable vents to show either way. Booster 23 ",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "3a7c98858891b2bc",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQQWJNd2VfbG1LbUVOeS1ZV1htdk5XNkdLaWZRZUNMajFvcVdublNYNk45dVlFUkNncmd0bnlzX3VNUjdDMXpJYXRyelJnSGdfLTlxOUdBMG9jUW50Z3J3OHJmUEFOWTFZX1VzLWJBVTlGSmtHUTh4NEc4alZPdzB1SlQ3QzlPOXgyZ1ZCcEFtcm1hQVRQWHJ5RERucUprMWhUN3hnSTVaUEdsMkdfb2loRjI0TVRURGN4VlVBSWk4X2RsRzRBRWdVYUdTQVl2d21IdFE?oc=5",
-      "title": "SpaceX’s Shotwell says 2 million shares to be gifted to children’s Trump Accounts By Reuters - Investing.com",
-      "published_at": "2026-10-30T21:46:13.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0gFBVV95cUxQQWJNd2VfbG1LbUVOeS1ZV1htdk5XNkdLaWZRZUNMajFvcVdublNYNk45dVlFUkNncmd0bnlzX3VNUjdDMXpJYXRyelJnSGdfLTlxOUdBMG9jUW50Z3J3OHJmUEFOWTFZX1VzLWJBVTlGSmtHUTh4NEc4alZPdzB1SlQ3QzlPOXgyZ1ZCcEFtcm1hQVRQWHJ5RERucUprMWhUN3hnSTVaUEdsMkdfb2loRjI0TVRURGN4VlVBSWk4X2RsRzRBRWdVYUdTQVl2d21IdFE?oc=5\" target=\"_blank\">SpaceX’s Shotwell says 2 million shares to be gifted to children’s Trump Accounts By Reuters</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Investing.com</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a76b55f21e45af90",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOdm4xdlhWdTFlTWNCdDB0YUNWNDBpNW5LblpoMm1VWmpkUUZEelJBTTJiS2dLSVhFYi1jeG9kR29WZE5RUVVvcTc2eUxlYVBwYUJTS25lUEhvellnZmwwSzhqWDhfRmwxUVJFSmxfdVZCcG0za3lfTWJFQ3B0Zk5aQ1BTNkNON01XSjBsREpCTFZPYkJHU1Rfd1c3T0lmS3ZpQnJqanE5UENpaUVLMUd3ZHZjU0tRU0hfRjlsRTJnb2N6d3RvcUtJdXdDQXM?oc=5",
-      "title": "SpaceX's Shotwell says 2 million shares to be gifted to children's Trump Accounts - Reuters",
-      "published_at": "2026-10-30T21:41:26.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxOdm4xdlhWdTFlTWNCdDB0YUNWNDBpNW5LblpoMm1VWmpkUUZEelJBTTJiS2dLSVhFYi1jeG9kR29WZE5RUVVvcTc2eUxlYVBwYUJTS25lUEhvellnZmwwSzhqWDhfRmwxUVJFSmxfdVZCcG0za3lfTWJFQ3B0Zk5aQ1BTNkNON01XSjBsREpCTFZPYkJHU1Rfd1c3T0lmS3ZpQnJqanE5UENpaUVLMUd3ZHZjU0tRU0hfRjlsRTJnb2N6d3RvcUtJdXdDQXM?oc=5\" target=\"_blank\">SpaceX's Shotwell says 2 million shares to be gifted to children's Trump Accounts</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Reuters</font>",
-      "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "6bfd2330ad53f7d8",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQM0cwc1NhTXJzZzJCYl9KUmNYZ3VzLUVNeEJtYU5hOWRFbUVsV2VwVWtRenQ5UnZJVnNtZVRPendSTmJCOTFlR1MybU5xLWlmM0E3MmpIaWc0cU9wMS1oQlkzNFA5REVMbC1vZ3Vvd3RjbzI3cTN5Q2YzcXZZUm9qazNaSVItempfUV9YYjNGNklLMmRvaU9sakJOYzQ?oc=5",
-      "title": "SpaceX's Shotwell says 2 million shares to be gifted to children's Trump Accounts - Yahoo Finance",
-      "published_at": "2026-10-30T21:41:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinAFBVV95cUxQM0cwc1NhTXJzZzJCYl9KUmNYZ3VzLUVNeEJtYU5hOWRFbUVsV2VwVWtRenQ5UnZJVnNtZVRPendSTmJCOTFlR1MybU5xLWlmM0E3MmpIaWc0cU9wMS1oQlkzNFA5REVMbC1vZ3Vvd3RjbzI3cTN5Q2YzcXZZUm9qazNaSVItempfUV9YYjNGNklLMmRvaU9sakJOYzQ?oc=5\" target=\"_blank\">SpaceX's Shotwell says 2 million shares to be gifted to children's Trump Accounts</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "4d37df5934ec6f22",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQUjIzTnREODk0SVA3WEdBTnoycWlTN3ptYzZLRWlycE4yMmpfNjVPNzVNWm42Q18wT3JzVEVoVmZPbk9pR0lncVltMGZuWk5acnJ6Z2psVmtxazBDWEt1RTdEakQwa3l4WE5ZcTh1dXIxbUlCQVVxYWg0WjhwUTF5bnBuVzVNZUZIVlJWVGhwcEpNdndtcEVaVE1uYjR5amFEUlVtc3p4TUZySXhQaU1tV0RwNkZtalYtdW1PcDV0ei1jRHZ4azkzeTJCSQ?oc=5",
-      "title": "SpaceX has lost more than $500 billion in market value in less than a month - Yahoo Finance",
-      "published_at": "2026-10-30T21:38:55.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxQUjIzTnREODk0SVA3WEdBTnoycWlTN3ptYzZLRWlycE4yMmpfNjVPNzVNWm42Q18wT3JzVEVoVmZPbk9pR0lncVltMGZuWk5acnJ6Z2psVmtxazBDWEt1RTdEakQwa3l4WE5ZcTh1dXIxbUlCQVVxYWg0WjhwUTF5bnBuVzVNZUZIVlJWVGhwcEpNdndtcEVaVE1uYjR5amFEUlVtc3p4TUZySXhQaU1tV0RwNkZtalYtdW1PcDV0ei1jRHZ4azkzeTJCSQ?oc=5\" target=\"_blank\">SpaceX has lost more than $500 billion in market value in less than a month</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "db7cbe894e6b016b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOeHBQTzQ3N0ozQTc4allwVTFGZ1hQTWh3dF8tUkE5S3JueDFpUm8zWWdseDd6ZWtZUGVfTXhSYVVqWFZpUkhXaVdRR0MwMnJLRnJZZWQyTWVNci00amE5a3ppLUF6Z3dUZjdiOFgwYmpydjAwbENIQUdCdGlWQUNEZUV3?oc=5",
-      "title": "American Tower’s Starlink Opportunity (NYSE:AMT) - Seeking Alpha",
-      "published_at": "2026-10-30T21:37:40.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiggFBVV95cUxOeHBQTzQ3N0ozQTc4allwVTFGZ1hQTWh3dF8tUkE5S3JueDFpUm8zWWdseDd6ZWtZUGVfTXhSYVVqWFZpUkhXaVdRR0MwMnJLRnJZZWQyTWVNci00amE5a3ppLUF6Z3dUZjdiOFgwYmpydjAwbENIQUdCdGlWQUNEZUV3?oc=5\" target=\"_blank\">American Tower’s Starlink Opportunity (NYSE:AMT)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Seeking Alpha</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "f3aed57d3eee9196",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNT0dlOE5TcWF5OUhqcWFZcnA0blA1bkZDTGlQRzZ6emhzc19QbTVac0RjaGdpVWN1eGMyQUN2Sm1uMWoxWE11aHZiWWFudXVvRm4zUDdraFVUMVJfaTF1NDVMUjlRRHdkQmVqTFZxcWMwdmVHMDI0c1U3WnpQajFIanVPSFYtbXByLWlReFhGQVU2bFZZazY4?oc=5",
-      "title": "Elon Musk Says Neoclouds Face a \"Guppy Level\" Death. SpaceX Just Borrowed $40 Billion to Make Sure It Isn't One. - The Motley Fool",
-      "published_at": "2026-10-30T21:36:33.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxNT0dlOE5TcWF5OUhqcWFZcnA0blA1bkZDTGlQRzZ6emhzc19QbTVac0RjaGdpVWN1eGMyQUN2Sm1uMWoxWE11aHZiWWFudXVvRm4zUDdraFVUMVJfaTF1NDVMUjlRRHdkQmVqTFZxcWMwdmVHMDI0c1U3WnpQajFIanVPSFYtbXByLWlReFhGQVU2bFZZazY4?oc=5\" target=\"_blank\">Elon Musk Says Neoclouds Face a \"Guppy Level\" Death. SpaceX Just Borrowed $40 Billion to Make Sure It Isn't One.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Motley Fool</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "09a36d29bc77b301",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/cranupdates.bsky.social/post/3mz4pdua67z2m",
-      "title": "@cranupdates.bsky.social on Bluesky",
-      "published_at": "2026-10-30T21:17:42.482Z",
-      "raw_excerpt": "New on CRAN: gdalcubes (0.7.6). View at https://CRAN.R-project.org/package=gdalcubes",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "0cef499741fc6baf",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPQmpNbWRYblVKRTZZcmtCWUZTUnU4Z2UzSUtZbi1sVU5ES2wzbjZNRl9obTVkWW51bHNCdUFBcUVQbUJkMUNia1ZpTFE1UDZPeE1UY2tkM3pKVlNrN2tNWlpLOGZjaHVLeU5KRUg0YlhBaE5QeVAwaWxmZmFURUhhT0hTdmRpMU11OXp0MkNwQzVlX3lUWTkwcEFyUGpYVzFkT0h0Zl9n?oc=5",
-      "title": "ISRO places third indigenous atomic clock in orbit on NVS-03 satellite - The News Mill",
-      "published_at": "2026-10-30T21:17:13.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipgFBVV95cUxPQmpNbWRYblVKRTZZcmtCWUZTUnU4Z2UzSUtZbi1sVU5ES2wzbjZNRl9obTVkWW51bHNCdUFBcUVQbUJkMUNia1ZpTFE1UDZPeE1UY2tkM3pKVlNrN2tNWlpLOGZjaHVLeU5KRUg0YlhBaE5QeVAwaWxmZmFURUhhT0hTdmRpMU11OXp0MkNwQzVlX3lUWTkwcEFyUGpYVzFkT0h0Zl9n?oc=5\" target=\"_blank\">ISRO places third indigenous atomic clock in orbit on NVS-03 satellite</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The News Mill</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "cb701e1515fd94e9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPTUE0VFZPaEt4VTFPa3l2RnFlenp0eTAzQS11OXZabmRtazdBTFVnbWFRN2NydWktbTdkcHBVWmF6QTBKX0xGek5mLXdJQ2pCUFpDeGdFR2k3emhKemJjOFY4MkI4bGlkVWFrdkcyeXMtVjhrajdqUDhIUEFVM3duTlNSbzY1Q1hiUUxoYjVDUlI?oc=5",
-      "title": "Do SpaceX’s ‘missing pieces’ carry a Dish logo on them? - Fierce Network",
-      "published_at": "2026-10-30T21:15:15.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxPTUE0VFZPaEt4VTFPa3l2RnFlenp0eTAzQS11OXZabmRtazdBTFVnbWFRN2NydWktbTdkcHBVWmF6QTBKX0xGek5mLXdJQ2pCUFpDeGdFR2k3emhKemJjOFY4MkI4bGlkVWFrdkcyeXMtVjhrajdqUDhIUEFVM3duTlNSbzY1Q1hiUUxoYjVDUlI?oc=5\" target=\"_blank\">Do SpaceX’s ‘missing pieces’ carry a Dish logo on them?</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Fierce Network</font>",
-      "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "f49069ec0d12cf51",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/sam-altman-gen-z-lame-not-worshipping-ai",
-      "title": "Sam Altman Says Gen Z Are Lame for Not Worshipping AI",
-      "published_at": "2026-10-30T21:10:00.000Z",
-      "raw_excerpt": "OpenAI CEO Sam Altman sympathizes with Gen Zers entering the job market. It’s just unfortunate that the AI tools he’s responsible for ushering into the world are completely upending the nature of work and finding a job. “It’s totally true that huge numbers of tasks that people do today will be done better, cheaper, and faster by AI — and completely differently,” Altman said in an interview with Stanford’s Graduate School of Business, as quoted by Fortune . This, according to Altman, actually presents an opportunity. He argues that all the tumult caused by AI is a good thing, as it gives ambitious Gen Zers who are willing to embrace AI an opportunity to catapult their careers or launch a business. “I think you want to be starting your career at a time of the highest degree of change,” Altman said.&nbsp; He then dissed Gen Zers who aren’t getting with the times. “My chronic disappointment with MBA students is that they always want to go do the thing that was cool five years ago and not do the new thing,” Altman said. “I think this is a great time to go do the new thing.” But the interviewer pointed out the obvious flaw in Altman’s logic. “So go do the new thing, even if AI is the cool thing right now,” she said almost incredulously, eliciting a roar of laughter from the crowd. The thing is, AI isn’t that far away from being what was “cool five years ago.” The excitement that bubbled from ChatGPT’s release in November 2022, and the wave of AI optimism in the year that followed, feels like it happened a lifetime ago. After that, public opinion on AI quickly began to sour. Artists and tastemakers certainly didn’t embrace it. But businesses rapidly integrated AI tools in an effort to economize their operations, automate tasks , surveil workers , and justify layoffs . In short, AI is no longer “cool,” if it ever was. It’s now an inescapable part of our reality. Basically every programmer uses AI at work. Jobseekers are interviewed by AI models. It’s so pervasive now that e",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "19794ba870691069",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBWQm1DNmpCYU1zc3diLWJmVEdYVndrN0FkaFZoQUZmOENSVGVwUEU4QzY0VGR4WWM5SUM4T3FOcG9mWDNLNlNJVDRSN2h2d2NLYTU3Q0lIa2owdHdaYnFiQ1h3?oc=5",
-      "title": "GSLV-F18/NVS-03 Gallery - ISRO",
-      "published_at": "2026-10-30T21:06:48.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiYkFVX3lxTFBWQm1DNmpCYU1zc3diLWJmVEdYVndrN0FkaFZoQUZmOENSVGVwUEU4QzY0VGR4WWM5SUM4T3FOcG9mWDNLNlNJVDRSN2h2d2NLYTU3Q0lIa2owdHdaYnFiQ1h3?oc=5\" target=\"_blank\">GSLV-F18/NVS-03 Gallery</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ISRO</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "3e473b4778d767b0",
-      "source_name": "Space.com",
-      "url": "https://www.space.com/space-exploration/human-spaceflight/an-aquanaut-comes-home-returning-to-earth-from-an-undersea-space-station",
-      "title": "An aquanaut comes home: Returning to Earth from an undersea 'space station'",
-      "published_at": "2026-10-30T21:00:00.000Z",
-      "raw_excerpt": "Our time on our \"space mission\" underwater was coming to an end, and I felt like what I imagine an astronaut on the International Space Station (ISS) must feel before returning to Earth. On one hand, you are excited to return to your home and loved ones, as well as to fresh food and normal hygiene. On the other, you know you will miss your crew and the incredible experience of being in space. While my SEA STAR crew and I had not left Earth during our mission, we were separated from the surface of our home planet for five days. All we saw was a green alien water world surrounding us. We did this to live and work like astronauts on the ISS . Instead of dealing with the challenges of space that astronauts face, we problem-solved sometimes equally difficult issues that divers have to manage when performing research in sea water. Our \"wet ISS\" was the Jules' Undersea Lab, which is located near Key Largo, Florida, at 22 feet (7 meters) underwater. By the end of our mission, we had all officially become aquanauts. An aquanaut is an undersea explorer who remains underwater for more than 24 hours, without returning to the surface, in a state known as saturation. Paul Bakken conducting equipment testing. (Image credit: Dr. Michaela Musilova) In this sense, saturation refers to the physiological condition achieved by a person who breathes underwater long enough for the body's tissues to absorb the maximum possible amount of inert gas (like nitrogen), for a specific depth and pressure. The term aquanaut derives from the Latin word \"aqua\" (water) and the Greek \"nautes\" (sailor). There were a lot of things I wasn't going to miss about being an aquanaut. They included the constant loud noises our life support systems made to keep us alive underwater, as well as bathroom plumbing issues and some health concerns linked to living under pressure. We also had to be very careful when performing our \" spacewalks \" (scuba dives), due to the low visibility of the environment around us. Non",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "8382a81bf5e4845f",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPTWZ2T2RzcTRlakVhZ1dwbFY2SzZLZ1V6bUJCeVRwNGkwUTVGVnU1c1c1YXpmdU1IQTVuWUVBcDBNc0k3ZjBRWjY5UVBTanQ2QmUxYkdtX1QwOUFIMndhOEZjMHdZV21xZG1oRl83dkdGSGltVzZfWmJBQlJlLVI3c0lOSTZSN2hnWEpzSkJrTQ?oc=5",
-      "title": "Tech Earnings Sink SpaceX Stock. No Other Companies Meet Elon Musk’s High Bar. - Barron's",
-      "published_at": "2026-10-30T20:31:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMijwFBVV95cUxPTWZ2T2RzcTRlakVhZ1dwbFY2SzZLZ1V6bUJCeVRwNGkwUTVGVnU1c1c1YXpmdU1IQTVuWUVBcDBNc0k3ZjBRWjY5UVBTanQ2QmUxYkdtX1QwOUFIMndhOEZjMHdZV21xZG1oRl83dkdGSGltVzZfWmJBQlJlLVI3c0lOSTZSN2hnWEpzSkJrTQ?oc=5\" target=\"_blank\">Tech Earnings Sink SpaceX Stock. No Other Companies Meet Elon Musk’s High Bar.</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Barron's</font>",
-      "fetched_at": "2026-11-01T17:15:41.051Z",
-      "consumed": true
-    },
-    {
-      "id": "6146842f44401ed2",
-      "source_name": "Space.com",
-      "url": "https://www.space.com/space-exploration/launches-spacecraft/india-launches-nvs-03-navigation-satellite-gslv-rocket",
-      "title": "India launches next-gen navigation satellite to orbit (video)",
-      "published_at": "2026-10-30T20:29:58.000Z",
-      "raw_excerpt": "India bolstered its homegrown satellite-navigation system today (Oct. 30). A GSLV Mark II rocket launched the nation's NVS-03 satellite from Satish Dhawan Space Centre today at 2:21 p.m. EDT (1821 GMT and 11:51 p.m. India Standard Time). Everything went well: The rocket deployed NVS-03 into geostationary transfer orbit as planned, officials with the Indian Space Research Organisation (ISRO) announced on X about 30 minutes after liftoff. An Indian GSLV Mark II rocket launches the NVS-03 navigation satellite on Oct. 30, 2026. (Image credit: ISRO) NVS-03 is the third next-gen satellite that India has launched for the Navigation with Indian Constellation (NavIC), its version of the United States' Global Positioning System ( GPS ). NavIC operates on a smaller scale than its American counterpart, however. It's \"a regional navigation satellite system designed to provide accurate Position, Navigation and Timing (PNT) service to users in India as well as the region extending about 1,500 km [930 miles] beyond the Indian landmass, which is its primary service area,\" ISRO officials wrote in the NVS-03 launch brochure . The Indian constellation currently consists of three fully functioning satellites, and it requires four to provide PNT services. So today's launch was a big deal — and a lot of eyes will be watching NVS-03's commissioning and checkout phase. Today's launch was the 14th to date for the GSLV (Geosynchronous Satellite Launch Vehicle) Mark II, a three-stage rocket that stands 170 feet (52 meters) tall. Twelve of those 14 liftoffs have been successful. The GSLV Mark II debuted in 2010, the same year its predecessor retired. That previous launchers, the Mark I, flew a total of six times, with two failures. NVS-03 was the fourth Indian launch of 2026 and the third operated by ISRO. The fourth was mounted by Skyroot Aerospace, which in July became the first Indian company ever to successfully reach orbit .",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a124dcf33601c039",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPR2Z2d1MtTmNOcWQtSTNpQkZhcS1BUW9CUXlfaDVFU3pVUHVaZFFtUzNVY0NNNVNvUTdyS0FMMzZUVC0tSnBkRkIzdms5NlNveU9mTXM4TE1jeGRLR3lVVkQtcHQ2YVJaN1A5MjAtTDdPb01ZbXhVUUxSLUVDWUk4Z0NTM1hrM1d2WVhCMlQ2dG9ab082YjR4UnNONVZIVi1DZG9Xd2VTWnZYMWw3S0RhXzUyeHk?oc=5",
-      "title": "India launches next-gen navigation satellite to orbit (video) - Space",
-      "published_at": "2026-10-30T20:29:58.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitAFBVV95cUxPR2Z2d1MtTmNOcWQtSTNpQkZhcS1BUW9CUXlfaDVFU3pVUHVaZFFtUzNVY0NNNVNvUTdyS0FMMzZUVC0tSnBkRkIzdms5NlNveU9mTXM4TE1jeGRLR3lVVkQtcHQ2YVJaN1A5MjAtTDdPb01ZbXhVUUxSLUVDWUk4Z0NTM1hrM1d2WVhCMlQ2dG9ab082YjR4UnNONVZIVi1DZG9Xd2VTWnZYMWw3S0RhXzUyeHk?oc=5\" target=\"_blank\">India launches next-gen navigation satellite to orbit (video)</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Space</font>",
-      "fetched_at": "2026-10-31T17:15:37.751Z",
-      "consumed": true
-    },
-    {
-      "id": "831e4b7ad7df1d12",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/health-medicine/christa-pike-lethal-injection-tennessee-execution",
-      "title": "Woman on Death Row Says She’s in Constant Pain After Botched Execution",
-      "published_at": "2026-10-30T20:18:18.000Z",
-      "raw_excerpt": "When Christa Pike finally entered the lethal injection room after spending 30 agonizing years on Tennessee’s death row, she was at peace, ready to face her impending execution. When she awoke in a hospital following the states’ botched execution attempt, she says she was disoriented and in excruciating pain, all thanks to the barbarity of lethal injection . According to the Associated Press , Pike has been in constant pain in the month following Tennessee’s horrifically botched execution attempts. On September 30, state executioners made two attempts to administer pentobarbital, a highly controversial barbiturate the sale of which to US penal institutions is restricted by international bodies like the European Union . Observers at the time noted at least seven needles piercing Pike’s arm during one injection, followed by a 90-minute period where the woman appeared to be snapping in and out of consciousness. After it became apparent that the second injection failed, Pike was rushed to the hospital , where she was listed in critical condition. “There hasn’t been a moment since that night when I haven’t been in pain,” Pike said in her first statement since her failed execution. “My body hurts. My arms hurt. My hands hurt. My throat hurts. I still struggle to speak. And the pain isn’t just physical. There is pain in my mind and in my soul.” Tennessee’s failure to carry out an execution 30 years in the making has become a major legal and ethical dilemma around the efficacy of lethal injection in particular, and capital punishment as a whole. According to the Death Penalty Information Center , an estimated three percent of all executions between 1890 and 2010 were botched, resulting in some 276 gruesome deaths at the hands of state authorities. Lethal injection is by far the most likely to go wrong, with an overall failure rate of over seven percent. That being the case, Pike is one of 75 people to experience a botched lethal injection in the US, and according to the AP ,",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "0c9f26a9027ebfd5",
-      "source_name": "EarthDaily",
-      "url": "https://earthdaily.com/blog/people-behind-the-data-kelly-olsen-on-finding-meaning-in-change",
-      "title": "People Behind the Data: Kelly Olsen on Finding Meaning in Change",
-      "published_at": "2026-10-30T20:17:17.000Z",
-      "raw_excerpt": "<div class=\"hs-featured-image-wrapper\"> <a href=\"https://earthdaily.com/blog/people-behind-the-data-kelly-olsen-on-finding-meaning-in-change\" title=\"\" class=\"hs-featured-image-link\"> <img src=\"https://earthdaily.com/hubfs/IMG_7807%20%281%29.jpg\" alt=\"Kelly Olsen\" class=\"hs-featured-image\" style=\"width:auto !important; max-width:50%; float:left; margin:0 15px 15px 0;\"> </a> </div> <h6><span style=\"color: #666666;\">From seismic research to satellite monitoring, Kelly Olsen helps EarthDaily customers understand change and decide where to look next.</span></h6> <p><em><span>EarthDaily’s scientists, analysts and engineers do much of the work of turning satellite data into answers customers can act on. With our new series, People Behind the Data, we’re introducing them, what they do and who they are outside of work. We’ll be featuring more of our team in the months ahead.</span></em></p> <img src=\"https://track.hubspot.com/__ptq.gif?a=21994127&amp;k=14&amp;r=https%3A%2F%2Fearthdaily.com%2Fblog%2Fpeople-behind-the-data-kelly-olsen-on-finding-meaning-in-change&amp;bu=https%253A%252F%252Fearthdaily.com%252Fblog&amp;bvt=rss\" alt=\"\" width=\"1\" height=\"1\" style=\"min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important; \">",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "3fb99e32112e2a01",
-      "source_name": "Bluesky search: earth observation satellite",
-      "url": "https://bsky.app/profile/astronomybot.bsky.social/post/3mz4ludnrww23",
-      "title": "@astronomybot.bsky.social on Bluesky",
-      "published_at": "2026-10-30T20:15:20.585Z",
-      "raw_excerpt": "...t Lab Launch Complex 1, Mahia Peninsula, New Zealand Orbit: Low Earth Orbit Mission Synthetic aperture radar Earth observation satellite for Japanese Earth imaging company iQPS.",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "5aae3b1bbc273162",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQM0dWSHMxeTN2blV6RWZLVGEyVTFrYXU1M3hicGFHcVpxbjZrNVFmZnVCLXZQQ1N3NVdWaVQ3NDkyc0t4MG5FWTQzaU12YjIyeTA5MFVuazhvWDRBVkFYUzg2UkNBV0hncDNiUFdtRXZNaFNTYW56LXkxRmhpQTJXVWhGOTVBMEZEcGZOS2w4bWQteVhhd21kTg?oc=5",
-      "title": "SpaceX accuses T-Mobile, other carriers of trying to harm it - TheStreet",
-      "published_at": "2026-10-30T20:04:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxQM0dWSHMxeTN2blV6RWZLVGEyVTFrYXU1M3hicGFHcVpxbjZrNVFmZnVCLXZQQ1N3NVdWaVQ3NDkyc0t4MG5FWTQzaU12YjIyeTA5MFVuazhvWDRBVkFYUzg2UkNBV0hncDNiUFdtRXZNaFNTYW56LXkxRmhpQTJXVWhGOTVBMEZEcGZOS2w4bWQteVhhd21kTg?oc=5\" target=\"_blank\">SpaceX accuses T-Mobile, other carriers of trying to harm it</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TheStreet</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "cbca2dff7651ae42",
-      "source_name": "Bluesky search: satellite constellation",
-      "url": "https://bsky.app/profile/happenstuff.com/post/3mz4ko6vqas2w",
-      "title": "@happenstuff.com on Bluesky",
-      "published_at": "2026-10-30T19:54:05.672Z",
-      "raw_excerpt": "Article: Vladimir Putin hailed Elon Musk as ” truly a genius” on Wednesday. The Russian President said he is in “close contact” with U.S. partners and Musk...",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a24e400c9f6e0374",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5FbkE2bzM2eWJDZzVDRWxiM2hMUmEyN2lCa2ZEUVhQRDI3alB5cmZCR1BISV9YVEVrV2I2YkZnT3lYVmQzM2duOUQ1UEpySVNBLVpYWXQ2LTNlMC13LVlpTFp0Ykk2bEVRZkVhSFRpQ1ZEZw?oc=5",
-      "title": "Starlink is changing its prices again, but some customers get discounts this time - How-To Geek",
-      "published_at": "2026-10-30T19:54:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMickFVX3lxTE5FbkE2bzM2eWJDZzVDRWxiM2hMUmEyN2lCa2ZEUVhQRDI3alB5cmZCR1BISV9YVEVrV2I2YkZnT3lYVmQzM2duOUQ1UEpySVNBLVpYWXQ2LTNlMC13LVlpTFp0Ykk2bEVRZkVhSFRpQ1ZEZw?oc=5\" target=\"_blank\">Starlink is changing its prices again, but some customers get discounts this time</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">How-To Geek</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "50409ee8991c4471",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOQXBKVDUwOGc5THc5ZmZWS2dlSG92S0gzckgzS2xJMzNJbE5IN3Z1NXFUaEtHb243dWhZTnV1V2lXcE9HRFFWcmo0c29BOGRJcTVGQjlneU92a01vVm5rODRVeVU3NWRtLXBQZWxSQlNnLXJZX2Nxem1EMkIwSnV4WGJTdDVZY1RfZW9EY3NGQ0xEWFhpWDFvQVF6UQ?oc=5",
-      "title": "ISRO places NVS-03 satellite in orbit, restores NavIC operation - The News Mill",
-      "published_at": "2026-10-30T19:52:14.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxOQXBKVDUwOGc5THc5ZmZWS2dlSG92S0gzckgzS2xJMzNJbE5IN3Z1NXFUaEtHb243dWhZTnV1V2lXcE9HRFFWcmo0c29BOGRJcTVGQjlneU92a01vVm5rODRVeVU3NWRtLXBQZWxSQlNnLXJZX2Nxem1EMkIwSnV4WGJTdDVZY1RfZW9EY3NGQ0xEWFhpWDFvQVF6UQ?oc=5\" target=\"_blank\">ISRO places NVS-03 satellite in orbit, restores NavIC operation</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The News Mill</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "f461581b9a840ff8",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPXzVsZ19Wc3p0dGJYTDBTUDIxQzV1NTlEaXdRU1NidUNwN1NFd2dOX1F4NVZHZF9GWFViUTRJWjZXdnZwRjFjQXg0X3RwbzBrcWROdnUzRWRiREI0Y2x1NlpZaFN4MGs5M1pFaS0wdy1kaTBhN2xjU0QxMVlZY1J0MEFpbDluUlVKSzBkY21yQ1pWd1poZUktYkVfbENPMm5XbnlwbWxMekV2VlBMRDgwOEZkN2pLeVlmVC1vUzZmRy1QVGFoSTdMRmI3cVhTcDhTQ2dnZ2d3c29NRWdfSl82a2tR0gHnAUFVX3lxTE5VcVJuQkJCZVpyODJiQVhXenZFZlAzZlpoRGhhSnJoYlFCRzhBMlBLeW1JcTJYd2lDUXFka0l0NUlBXy1FZmw1R0t4XzlHdGhoLTZDSzM1N05QQ3FscGpIVUJfRDFrUFFsMFo0Q3NJMnlwUFNieVRXaFNwM1paelBLNklDNVg4T25pVmJycHQ0WDRTQ1BYeVRyRngyaVFFV05YNDF4MjVFSkZtZjhPU2tFRHF3aGd2c0VSNXlHSFZfVEFGdnFRX1ZCc0liZ1lWcEdUR3lOSm85WnZ0ZGs0eWljMkJaMV9YOA?oc=5",
-      "title": "ISRO NVS-03 Launch News: GSLV-F18 places Next-Gen Navigation satellite in orbit, strengthening NavIC - Organiser",
-      "published_at": "2026-10-30T19:50:54.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4gFBVV95cUxPXzVsZ19Wc3p0dGJYTDBTUDIxQzV1NTlEaXdRU1NidUNwN1NFd2dOX1F4NVZHZF9GWFViUTRJWjZXdnZwRjFjQXg0X3RwbzBrcWROdnUzRWRiREI0Y2x1NlpZaFN4MGs5M1pFaS0wdy1kaTBhN2xjU0QxMVlZY1J0MEFpbDluUlVKSzBkY21yQ1pWd1poZUktYkVfbENPMm5XbnlwbWxMekV2VlBMRDgwOEZkN2pLeVlmVC1vUzZmRy1QVGFoSTdMRmI3cVhTcDhTQ2dnZ2d3c29NRWdfSl82a2tR0gHnAUFVX3lxTE5VcVJuQkJCZVpyODJiQVhXenZFZlAzZlpoRGhhSnJoYlFCRzhBMlBLeW1JcTJYd2lDUXFka0l0NUlBXy1FZmw1R0t4XzlHdGhoLTZDSzM1N05QQ3FscGpIVUJfRDFrUFFsMFo0Q3NJMnlwUFNieVRXaFNwM1paelBLNklDNVg4T25pVmJycHQ0WDRTQ1BYeVRyRngyaVFFV05YNDF4MjVFSkZtZjhPU2tFRHF3aGd2c0VSNXlHSFZfVEFGdnFRX1ZCc0liZ1lWcEdUR3lOSm85WnZ0ZGs0eWljMkJaMV9YOA?oc=5\" target=\"_blank\">ISRO NVS-03 Launch News: GSLV-F18 places Next-Gen Navigation satellite in orbit, strengthening NavIC</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Organiser</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a395bf71584dc4fc",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/manufacturing/2026/10/30/k2-space-ceo-sets-out-expansive-growth-plan-as-high-power-demand-increases/",
-      "title": "K2 Space CEO Sets Out Expansive Growth Plan as High-Power Demand Increases",
-      "published_at": "2026-10-30T19:47:59.000Z",
-      "raw_excerpt": "As space becomes more foundational, with everything from communications to compute moving to space, startup satellite manufacturer K2 Space aims to meet large demand for high-powered satellites. In July this year, the company completed a $500 million Series D funding round that values the company at close to $7 billion. With this latest round, K2 has cumulatively raised over $1 billion in capital and secured over $1 billion in signed commercial and government contracts. It is a meteoric rise for the satellite manufacturer founded just four years ago. Via Satellite recently spoke to K2 Space CEO Karan Kunjur about what the future holds. “You are seeing military infrastructures be dependent on space capabilities, and our goal is to be in the center of that,” Kunjur says. “We are building a super robust, super high-performance platform that can host multiple different applications across different orbits. Different customers are using it for different applications. Our intent is to be in the middle of as large of a percentage of economic activity in space as possible. There is a lot left to do. We are very early in our journey.” Kunjur says the latest funding round represents a new stage. “This round is not based on hype and hopes and dreams — now it is very much based on multiples of revenue. You can see the valuation jump reflects the next 12-month growth in revenue that we are seeing,” he says. Scaling Up The company ultimately wants to be in a position to build around 100 satellites a year in its first factory, although Kunjur admits it will “take a few years” to get to this point. As space becomes more of an infrastructure play, Kunjur expects to see demand from communications and eventually compute as that scales up into the 2030s for many high-powered satellites. In the late 2030s, Kunjur says he expects the demand to come from what he calls “more sci-fi stuff.” “But I am not building my business based on that,” he said. “We are focusing purely on communications",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "cd28c560628fae3d",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/channelwritrguy.bsky.social/post/3mz4kcs7upc2f",
-      "title": "@channelwritrguy.bsky.social on Bluesky",
-      "published_at": "2026-10-30T19:47:42.586Z",
-      "raw_excerpt": "SpaceX is bringing its Grok AI tech and AI coding services to indirect channels with the launch of the SpaceXSI Partner Network, a new program with > 130 early-access channel and tech partners. This is SpaceX's second big channel move. Details @crndotcom.bsky.social tinyurl.com/5n8av9cd",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "afb468f7cc8d9459",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOblA5X2hkcHpnSnAwSzUzV0hLS3ZHdjVtdU9sbkQ1aVN6M3RQRS0xNGpPT1NYNnZvdmNBS1BXSVg1YjFhWm1aYmVyWGNTQTdGWGJUajJQVm5wdGxHOElzamo4dmdDd2s2a2lmend0RE5LcGc0NW91MFhSMUtaQlRKUHdvVkcwUWdYa1lrYkw5VEMyUnlFUEhuWEhfdEY5bWRhRnpxcXJXVmZxUlJtX3lvTFA3UkhkcDFYbEJvTl9tamFtOHBIZjZndjFYMUQ5cTJTMmU2SzVwNFBFZG5lVUxHX0tPR01jZw?oc=5",
-      "title": "Isro’s GSLV-F18 places NVS-03 navigation satellite in intended orbit, strengthening NavIC - India Sentinels",
-      "published_at": "2026-10-30T19:47:32.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5gFBVV95cUxOblA5X2hkcHpnSnAwSzUzV0hLS3ZHdjVtdU9sbkQ1aVN6M3RQRS0xNGpPT1NYNnZvdmNBS1BXSVg1YjFhWm1aYmVyWGNTQTdGWGJUajJQVm5wdGxHOElzamo4dmdDd2s2a2lmend0RE5LcGc0NW91MFhSMUtaQlRKUHdvVkcwUWdYa1lrYkw5VEMyUnlFUEhuWEhfdEY5bWRhRnpxcXJXVmZxUlJtX3lvTFA3UkhkcDFYbEJvTl9tamFtOHBIZjZndjFYMUQ5cTJTMmU2SzVwNFBFZG5lVUxHX0tPR01jZw?oc=5\" target=\"_blank\">Isro’s GSLV-F18 places NVS-03 navigation satellite in intended orbit, strengthening NavIC</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">India Sentinels</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "12aeddfb4fedf7ee",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxPVXVfMWYyUVdvSlNTRnFMZUFndnhscDNrZ1VZVmdoQ0FKakt3ejdseGN6d01jWTItc0hGZDhFVmV6aDluZHJDbkZiQng4S1g0V2YxMnFFSHFMT0lQX1F2MjYway1lOGQtTDlwZ21feEpkclJKN3I4Z2FnYkk0Njlrb3BYUFNjRWpXTmVhM1AycHJIRjgxbWVkb09haGFtbHR3bmRoMFZSeEtBanJSQUlIbV8tUlVFNTBuTngyZEoyN29DSFJnUTl2dUdaeFhDbTllajFpSWZQa0RhbVdaQjVGQlVfdE1KOWV3?oc=5",
-      "title": "ISRO places NVS-03 satellite in orbit, restores NavIC to minimum operational configuration - ANI News",
-      "published_at": "2026-10-30T19:43:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi6AFBVV95cUxPVXVfMWYyUVdvSlNTRnFMZUFndnhscDNrZ1VZVmdoQ0FKakt3ejdseGN6d01jWTItc0hGZDhFVmV6aDluZHJDbkZiQng4S1g0V2YxMnFFSHFMT0lQX1F2MjYway1lOGQtTDlwZ21feEpkclJKN3I4Z2FnYkk0Njlrb3BYUFNjRWpXTmVhM1AycHJIRjgxbWVkb09haGFtbHR3bmRoMFZSeEtBanJSQUlIbV8tUlVFNTBuTngyZEoyN29DSFJnUTl2dUdaeFhDbTllajFpSWZQa0RhbVdaQjVGQlVfdE1KOWV3?oc=5\" target=\"_blank\">ISRO places NVS-03 satellite in orbit, restores NavIC to minimum operational configuration</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ANI News</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "dd809c8199c5a3a9",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPYWpnWG5NOEhBRHhYVzRfc3FHYUIxTHpvNFdIb2RUTFhyZUJiLU5jOWY1NVM1OVFEV1FwSnQ3M1FyMTdsSVZHZVZFajNSN2tCRlN0SDZTVDR2TXBWUndCOVJmU0NLZ1RlNkhPNHBUS1JFOGRuaGdicFFaR0dzMGhzNjh2UTBqT3RDanU3UlcxQU1Ga0RSSXFR?oc=5",
-      "title": "Musk Says Tesla, SpaceX Form Committees to Weigh Merger - Yahoo Finance",
-      "published_at": "2026-10-30T19:42:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilwFBVV95cUxPYWpnWG5NOEhBRHhYVzRfc3FHYUIxTHpvNFdIb2RUTFhyZUJiLU5jOWY1NVM1OVFEV1FwSnQ3M1FyMTdsSVZHZVZFajNSN2tCRlN0SDZTVDR2TXBWUndCOVJmU0NLZ1RlNkhPNHBUS1JFOGRuaGdicFFaR0dzMGhzNjh2UTBqT3RDanU3UlcxQU1Ga0RSSXFR?oc=5\" target=\"_blank\">Musk Says Tesla, SpaceX Form Committees to Weigh Merger</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "41b019116f6fbeae",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQQ1J0YUxud1ZZU0FhV0NNNk8yRkluLXhzTGxFQ1UxNlQtZlFMYXVhVHVSX1NOMkN5Z042Q25YQ1JZanFSTXQ2ZzJQQUFqNGF6bVU5TnNQR3VsWFM3S2JHcE51OVI1S2ZBNTF5cnFJc1VqT0dWYmZIMHhJV0JSeXgtZmJiTk5vb1VlZldaT1FYQ1dEUmE0cE5YblFBWGJpUUNNMWFDTzMydmFyS1ZUbzR6aEplMNIBuAFBVV95cUxOZFpRZ3lfSFZMUmFUSl9TSXZUbzRJbWxxVGs4RTBmOFlHNEZTRVJuLUFoUW52dVFtOHRQT2owQXI2Y1ZqdTgyd0lzN0t6RnRLZkY3cFljRi1PVEJQbVE0cWx3MVJYOXJZMUtMYWFXUExvZTRtZHE5blNhVjZHN0FkZlRIcG43azhnYjIxTDdLT3FGemN1aVc2Ty1lX01uNlJ5SURnaDVoazlhZE9DMG1GYWNySlBSNVB0?oc=5",
-      "title": "ISRO's GSLV-F18 launch success revives NAVIC, but there's a catch... - WION",
-      "published_at": "2026-10-30T19:41:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxQQ1J0YUxud1ZZU0FhV0NNNk8yRkluLXhzTGxFQ1UxNlQtZlFMYXVhVHVSX1NOMkN5Z042Q25YQ1JZanFSTXQ2ZzJQQUFqNGF6bVU5TnNQR3VsWFM3S2JHcE51OVI1S2ZBNTF5cnFJc1VqT0dWYmZIMHhJV0JSeXgtZmJiTk5vb1VlZldaT1FYQ1dEUmE0cE5YblFBWGJpUUNNMWFDTzMydmFyS1ZUbzR6aEplMNIBuAFBVV95cUxOZFpRZ3lfSFZMUmFUSl9TSXZUbzRJbWxxVGs4RTBmOFlHNEZTRVJuLUFoUW52dVFtOHRQT2owQXI2Y1ZqdTgyd0lzN0t6RnRLZkY3cFljRi1PVEJQbVE0cWx3MVJYOXJZMUtMYWFXUExvZTRtZHE5blNhVjZHN0FkZlRIcG43azhnYjIxTDdLT3FGemN1aVc2Ty1lX01uNlJ5SURnaDVoazlhZE9DMG1GYWNySlBSNVB0?oc=5\" target=\"_blank\">ISRO's GSLV-F18 launch success revives NAVIC, but there's a catch...</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">WION</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "e3f4e3dd2ab11955",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/america9375.bsky.social/post/3mz4jroq4uk2c",
-      "title": "@america9375.bsky.social on Bluesky",
-      "published_at": "2026-10-30T19:38:04.173Z",
-      "raw_excerpt": "And 10 years from now when it's ready, they will use SpaceX to launch the satalites.",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "70bf44e7f38d1625",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNVG0yWkw3czY1RmZXWHM1QXZHNDNqNmsyRktJVTZVZlU5Y3JwNHQ2UTR1UlJLZnNwU2Q1SFNJT3R5YkhldjdHd3ZtT25lc3czbW1BNVJpNy1lZnB5SVp4aVdpTnExc3BLWHVHSUM2UG55ZHVSekNzSzNEa19PdjdBdVdIMXNCTWRuSW16X1cxT2VweXN0dTNWWmVzdDdmSzhIc1NxUjAwbUJhQQ?oc=5",
-      "title": "Nvidia has a stake in SpaceX that came from an unexpected place - TheStreet",
-      "published_at": "2026-10-30T19:33:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxNVG0yWkw3czY1RmZXWHM1QXZHNDNqNmsyRktJVTZVZlU5Y3JwNHQ2UTR1UlJLZnNwU2Q1SFNJT3R5YkhldjdHd3ZtT25lc3czbW1BNVJpNy1lZnB5SVp4aVdpTnExc3BLWHVHSUM2UG55ZHVSekNzSzNEa19PdjdBdVdIMXNCTWRuSW16X1cxT2VweXN0dTNWWmVzdDdmSzhIc1NxUjAwbUJhQQ?oc=5\" target=\"_blank\">Nvidia has a stake in SpaceX that came from an unexpected place</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TheStreet</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "bd64ce0e760325cd",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/oksettledown.bsky.social/post/3mz4jhsu7qk2v",
-      "title": "@oksettledown.bsky.social on Bluesky",
-      "published_at": "2026-10-30T19:32:33.381Z",
-      "raw_excerpt": "the latest spaceX article breezes by \"plans to launch 10k per year by 2030\" and into \"has not done in-space refueling\" \"has not launched from Florida\" \"Elon is fine if we are beat to the Moon by China\" \"wants to go to Mars\" (has no plans to go to Mars, is all-in on AI) it's absolutely insane",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "8ee7293eac771a87",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNDEyUm0xRV9vMFNQNWwzbUk2UHpvNWh1c1V6TVNpTlBtYlg3M1N1NS1VQ3VYWnljVnlpdjdVOWxkQ3pUSE1uZzdobS1xbFJSNHhGQjhCczctODVPbk9uRHpuMS1rNGNiYWtLQzVzeThyb2NRcTRRb3RLeFI2UjhnNmZxVUN3dGdTY1VwNzhHQ0lqRWI4TDRGbU10QlFvOEhKRWZ4MUh6Zm9JQXh1YXFQZW12NTE2emVVSDBUZnNMbTfSAccBQVVfeXFMTmZZOS1sY21wZGNkelRjY3ZBSVZnaWk5TlF3Y09UamwzLUNObGhaZXMtbE5hNVhQazJheWZaUl9RdW0waTN5Wm1lNC1oMElYT2k5ZVNBZG5HNlV3aVFUOGFzbk5LRy1pZ1lmSktVMFJvb24yUjdfYktvWmVxSzJtdVJhZzVzSDhHNFMyVkp0bUhpYUE1ejJkSERhTDhuQ1hWbnkyV2FDMG9mVWJlNHUtRC1uSEtic0dfdTd5WlVHaU9ndF9hb3lQMA?oc=5",
-      "title": "ISRO successfully injects third NavIC satellite NVS-03 in GTO - BusinessLine",
-      "published_at": "2026-10-30T19:32:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiwAFBVV95cUxNNDEyUm0xRV9vMFNQNWwzbUk2UHpvNWh1c1V6TVNpTlBtYlg3M1N1NS1VQ3VYWnljVnlpdjdVOWxkQ3pUSE1uZzdobS1xbFJSNHhGQjhCczctODVPbk9uRHpuMS1rNGNiYWtLQzVzeThyb2NRcTRRb3RLeFI2UjhnNmZxVUN3dGdTY1VwNzhHQ0lqRWI4TDRGbU10QlFvOEhKRWZ4MUh6Zm9JQXh1YXFQZW12NTE2emVVSDBUZnNMbTfSAccBQVVfeXFMTmZZOS1sY21wZGNkelRjY3ZBSVZnaWk5TlF3Y09UamwzLUNObGhaZXMtbE5hNVhQazJheWZaUl9RdW0waTN5Wm1lNC1oMElYT2k5ZVNBZG5HNlV3aVFUOGFzbk5LRy1pZ1lmSktVMFJvb24yUjdfYktvWmVxSzJtdVJhZzVzSDhHNFMyVkp0bUhpYUE1ejJkSERhTDhuQ1hWbnkyV2FDMG9mVWJlNHUtRC1uSEtic0dfdTd5WlVHaU9ndF9hb3lQMA?oc=5\" target=\"_blank\">ISRO successfully injects third NavIC satellite NVS-03 in GTO</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">BusinessLine</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "9f75ca7cb57a0b49",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMipwJBVV95cUxPUHlRNGdGanFXWVFkRmlrbkxXYWJyakkwUGhYWWctMmtTc2hhWG5uMmY5V29UMzFwX2tkRk5US0tLT1Z3UERSclB1RzU4Z2tqczQ5MjRwbHZObmE0VmFuRDFIOXZrUFY1UlRSMWsxWlM1UTNySGtZTmM3S2dkZmxWaDFoQmZIbFZ5czFqempGeG5NNm0yS05ic3NsN05NZEJVSFVyaXZWMkVCN3BhbUVZdnBISUh4SWtfYU1qVW5HQzVPSU5iSS1zYmJQQkxmUmpQSHlpODZBcF9PUEk0eU1uZ3liX1FVT3ZkVnNyLTVLWDViZWIwNUZ0azBheVh0Vm45cGUwaU9ZR2NjdTh5V2JNZkRaOTBKSEYtQ0E5MXp3Z1k5MHpoSXBR0gGsAkFVX3lxTE9CbGJXOHh6Zl9WOTdsbXN0akxta0RMV2ZPTDVmSklDdjBkRWhkYVhFV1V3OWJnaG05RF80YjROdWIzZXN4N3JlNU1hM1ZKZWltTlRvNi0zY0hxQlJiY01xME1rUVAzeDh0cE9zUXFraVJUOFZ1aEQ5VVB0NzZyWEZFLXRHUHNQM3lucV9QQ0hBU1ExVW91LTczNG5kMl9xSHNKRS1TZGVDb05LRk1uUk5aWHRON0JMTHBfT2c2c2FuN01PVkpxaTNYOElwOTZiWFVINExBLWVFZW5Nbzd4RnBFYlJIbGVEUGZ3bS1HM05lZFVNQ0I4MDc5X1o4REJJYVlrS0pFOHdXMGtzRXEyNTdtSmp4VXhfdXp3MGQzTl8zUkRydFl5bW1CLV9BLQ?oc=5",
-      "title": "Success launch of navigation sat NVS-03 with desi atomic clock will make NaVIC up & running, and give mil - The Times of India",
-      "published_at": "2026-10-30T19:27:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMipwJBVV95cUxPUHlRNGdGanFXWVFkRmlrbkxXYWJyakkwUGhYWWctMmtTc2hhWG5uMmY5V29UMzFwX2tkRk5US0tLT1Z3UERSclB1RzU4Z2tqczQ5MjRwbHZObmE0VmFuRDFIOXZrUFY1UlRSMWsxWlM1UTNySGtZTmM3S2dkZmxWaDFoQmZIbFZ5czFqempGeG5NNm0yS05ic3NsN05NZEJVSFVyaXZWMkVCN3BhbUVZdnBISUh4SWtfYU1qVW5HQzVPSU5iSS1zYmJQQkxmUmpQSHlpODZBcF9PUEk0eU1uZ3liX1FVT3ZkVnNyLTVLWDViZWIwNUZ0azBheVh0Vm45cGUwaU9ZR2NjdTh5V2JNZkRaOTBKSEYtQ0E5MXp3Z1k5MHpoSXBR0gGsAkFVX3lxTE9CbGJXOHh6Zl9WOTdsbXN0akxta0RMV2ZPTDVmSklDdjBkRWhkYVhFV1V3OWJnaG05RF80YjROdWIzZXN4N3JlNU1hM1ZKZWltTlRvNi0zY0hxQlJiY01xME1rUVAzeDh0cE9zUXFraVJUOFZ1aEQ5VVB0NzZyWEZFLXRHUHNQM3lucV9QQ0hBU1ExVW91LTczNG5kMl9xSHNKRS1TZGVDb05LRk1uUk5aWHRON0JMTHBfT2c2c2FuN01PVkpxaTNYOElwOTZiWFVINExBLWVFZW5Nbzd4RnBFYlJIbGVEUGZ3bS1HM05lZFVNQ0I4MDc5X1o4REJJYVlrS0pFOHdXMGtzRXEyNTdtSmp4VXhfdXp3MGQzTl8zUkRydFl5bW1CLV9BLQ?oc=5\" target=\"_blank\">Success launch of navigation sat NVS-03 with desi atomic clock will make NaVIC up & running, and give mil</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Times of India</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "cefe2fdd44a11049",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/vought.bsky.social/post/3mz4iv4ipzc2r",
-      "title": "@vought.bsky.social on Bluesky",
-      "published_at": "2026-10-30T19:22:07.571Z",
-      "raw_excerpt": "arstechnica.com/space/2026/1... I’m an Ars supporter; please do the same if you enjoy good space/tech/auto/health journalism. Anyway, this article is about how Elon Musk got the US taxpayer to finance his dreams. Customers are begging for launches and worried; SpaceX isn’t interested in that.",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "73e926543fb4a09f",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/future-society/hackers-20-minutes-crypto-binance",
-      "title": "It Took Hackers Just 20 Minutes to Steal $6.3 Billion in Crypto from a Single Platform",
-      "published_at": "2026-10-30T19:14:25.000Z",
-      "raw_excerpt": "Crypto exchange Binance suspended withdrawals after elite hackers stole a staggering $6.3 billion in digital assets, marking what may be the biggest crypto heist of all time. Researchers at the crypto research firm TRM Labs told the New York Times that they have “high confidence” in its assessment that the theft was the work of “North Korea’s elite hacking unit.” It reportedly took just 20 minutes to drain Binance of billions of dollars in crypto. Binance said that it was able to work with its partners to freeze about $3 billion in assets. TRM, however, estimates that around $2.4 billion in assets were moved “beyond any issuer’s reach,” per the NYT , meaning that those coins are likely as good as gone. The exchange stated in an X-formerly-Twitter post that it had initially thought that the breach was the result of a single compromised employee laptop. Further investigation, however, suggests that the attack was more elaborate. “This was a complex attack, and we are doing all we can in coordination with law enforcement to resolve it,” Binance said. “We are still gathering the facts, and will share more directly as we have them.” The crypto firm also said that it would “cover all losses” using reserve funds. Binance founder Changpeng “CZ” Zhao said on X that “user funds are safe,” but the incident “does look like a hack.” Zhao, a major player in the crypto world, pleaded guilty to money laundering and was sentenced to four months in prison in 2024 but was pardoned last year by president Donald Trump after Binance provided support to World Liberty Financial, the Trump family’s much-scrutinized crypto venture. (Zhao is no longer Binance’s CEO, but is still a shareholder.) Previously, crypto’s biggest heist was last February’s attack on Binance rival Bybit, according to NYT . That attack was also carried out by North Korean hackers, who made away with $1.5 billion. TRM told Reuters that the Bybit and Binance heists share similarities suggesting that the same team may be ",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "9281db9159ba9177",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNWkhUMHk1R3lubkVoMGR3OEZjM25QNzVvVzByYml6a0Z4OTBITi1CZEYyY0s5amVUeHl2QmFYa0daWU1Xa1ZIMVd1eUp6cnFQdUt6N0VzZDhFal9GYXExSWlLVGdDLU1LN25DTkdWMUtHTmhKRndyS1RjcC1rSUdxaVk0OF9SaVlUVlp0N0t0eGpqMHQwRTVKQ1ZTanZwZHFWM1E4ZmI4ZHlKb0M0eXc?oc=5",
-      "title": "Watch: ISRO launches NVS-03 satellite to strengthen India’s NavIC navigation network - Telangana Today",
-      "published_at": "2026-10-30T19:13:52.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMirgFBVV95cUxNWkhUMHk1R3lubkVoMGR3OEZjM25QNzVvVzByYml6a0Z4OTBITi1CZEYyY0s5amVUeHl2QmFYa0daWU1Xa1ZIMVd1eUp6cnFQdUt6N0VzZDhFal9GYXExSWlLVGdDLU1LN25DTkdWMUtHTmhKRndyS1RjcC1rSUdxaVk0OF9SaVlUVlp0N0t0eGpqMHQwRTVKQ1ZTanZwZHFWM1E4ZmI4ZHlKb0M0eXc?oc=5\" target=\"_blank\">Watch: ISRO launches NVS-03 satellite to strengthen India’s NavIC navigation network</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Telangana Today</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "0a2f7b3ce117075f",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNbFQxU3kwUzdybnBib0l1U1BmZzZ1aF9FYlVJQjlJUHhxRkxRelRrUVFYRzdDZDMxMHpuTkhxXzEyY0FRU1I1d01YOHBMZzhRT2d1T1d1azFqalBQX0h5Z25wVWlxemhoS1dIVUJDb3NOTTVMSVdOSHlXQk0ydGYxS2ctd3RjZGtFLU8xb1hCSHA4NU42T3dUeFRVLWkxd3o2SFRv0gGqAUFVX3lxTE8zdU5LNFZLZzFHcTU4WDRuNmt3cGlMUjdRbnkzcl9WVDlSYjhhelpaT0twQlprRzROSXl5S3IwY3lCZkZTOERlNnB0c1A4SDVCR1U5ZGlMaVlmcFNZRWNBY1RmYjdyMHdISmIwZVZKdkVuM1A2Nmg2ZGI2bk1KOEhHWHNINEtFWEtxMlhYR3J4REwwZnJ0T1ZkWVl1ck01djRPU1l4R2E0djBn?oc=5",
-      "title": "GSLV places next-generation navigation satellite NVS-03 into orbit - The Hindu",
-      "published_at": "2026-10-30T19:09:21.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiowFBVV95cUxNbFQxU3kwUzdybnBib0l1U1BmZzZ1aF9FYlVJQjlJUHhxRkxRelRrUVFYRzdDZDMxMHpuTkhxXzEyY0FRU1I1d01YOHBMZzhRT2d1T1d1azFqalBQX0h5Z25wVWlxemhoS1dIVUJDb3NOTTVMSVdOSHlXQk0ydGYxS2ctd3RjZGtFLU8xb1hCSHA4NU42T3dUeFRVLWkxd3o2SFRv0gGqAUFVX3lxTE8zdU5LNFZLZzFHcTU4WDRuNmt3cGlMUjdRbnkzcl9WVDlSYjhhelpaT0twQlprRzROSXl5S3IwY3lCZkZTOERlNnB0c1A4SDVCR1U5ZGlMaVlmcFNZRWNBY1RmYjdyMHdISmIwZVZKdkVuM1A2Nmg2ZGI2bk1KOEhHWHNINEtFWEtxMlhYR3J4REwwZnJ0T1ZkWVl1ck01djRPU1l4R2E0djBn?oc=5\" target=\"_blank\">GSLV places next-generation navigation satellite NVS-03 into orbit</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Hindu</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "215861290853bf45",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOdUNlcnE5UzRJT0RYMnRFLTdvMVNMdEtJU1Nqb3lhVU9OMDQ5SXlXQURKWDRxaDMwWVozb3VVOFo3eVlzVlpmamtRcEc1RUpnZUpvNDlRdHVYbkF4RkpMV21lT2xwa3NIN2hJeHRSaUdLdnJ1MnhvWmR2dVVrR0hhbGdyQkZyRlNoeko5UmRWVHdPVmJO?oc=5",
-      "title": "SpaceX and Carriers Clash at FCC Over Satellite Spectrum Rules - Yahoo",
-      "published_at": "2026-10-30T19:03:12.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilAFBVV95cUxOdUNlcnE5UzRJT0RYMnRFLTdvMVNMdEtJU1Nqb3lhVU9OMDQ5SXlXQURKWDRxaDMwWVozb3VVOFo3eVlzVlpmamtRcEc1RUpnZUpvNDlRdHVYbkF4RkpMV21lT2xwa3NIN2hJeHRSaUdLdnJ1MnhvWmR2dVVrR0hhbGdyQkZyRlNoeko5UmRWVHdPVmJO?oc=5\" target=\"_blank\">SpaceX and Carriers Clash at FCC Over Satellite Spectrum Rules</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "5a6c8a9a47d550c3",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOZVFReGtQNm5IYXJFYUNZUHdWeV9IZ2pDdmJSWUk5cVkzUnRfYkRnRl9RcVc1d1V3TGFpaWcxNHVxRTdLLTNmRmlnRlNEbWZ5cW1OUXRsRnZzRlltMHRSRXBoS0tEcUplbkp0ZktyUG9QOWZWZEo2dy1qeHRvQ0ZYQi1vdGhCQjV3eU93Z0VSTnkwdnBBcWc?oc=5",
-      "title": "SpaceX and Carriers Clash at FCC Over Satellite Spectrum Rules - Gadget Review",
-      "published_at": "2026-10-30T19:03:12.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMilgFBVV95cUxOZVFReGtQNm5IYXJFYUNZUHdWeV9IZ2pDdmJSWUk5cVkzUnRfYkRnRl9RcVc1d1V3TGFpaWcxNHVxRTdLLTNmRmlnRlNEbWZ5cW1OUXRsRnZzRlltMHRSRXBoS0tEcUplbkp0ZktyUG9QOWZWZEo2dy1qeHRvQ0ZYQi1vdGhCQjV3eU93Z0VSTnkwdnBBcWc?oc=5\" target=\"_blank\">SpaceX and Carriers Clash at FCC Over Satellite Spectrum Rules</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Gadget Review</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "18a81539c9e50726",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPeEhkdjBWVFNPXzJ0MXo1Yl9ZY1dRR2RXUTE0bmZuNnN0RTJqLVctaWdpNmxQN2QzU0t4VXp0Tzc1TUhTcnBVT1hTZ011WGNvN3I5M1pvM2dKNEE0MlVpOFgtRXJSM0RQY0kwa2VReFIyNFJfNFlEUG5iMFVLZXlPNWsxWkhhNWNCazdwSmQxdF9MNGtxd1lDag?oc=5",
-      "title": "Isro launches NVS-03 navigation satellite on GSLV-F18 rocket - The News Mill",
-      "published_at": "2026-10-30T19:02:12.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimAFBVV95cUxPeEhkdjBWVFNPXzJ0MXo1Yl9ZY1dRR2RXUTE0bmZuNnN0RTJqLVctaWdpNmxQN2QzU0t4VXp0Tzc1TUhTcnBVT1hTZ011WGNvN3I5M1pvM2dKNEE0MlVpOFgtRXJSM0RQY0kwa2VReFIyNFJfNFlEUG5iMFVLZXlPNWsxWkhhNWNCazdwSmQxdF9MNGtxd1lDag?oc=5\" target=\"_blank\">Isro launches NVS-03 navigation satellite on GSLV-F18 rocket</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The News Mill</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "309f0c0e02fbb567",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQd19qSVpqdDNHMTVzUXNHQW5uMGUycHlMZXp6R2g1THlSV2NrUnVLbmR3dWRVRzFUdGVYR0F0a1Rzeml1d2hfMlF1eGVPdVVfVjl3d1psNmdUR3pLSkZBWGhSQ1A0QTV3cWJ5emtNRmpxOWNuc2xlcy02RkF4dUZYamdMVml5dDhoY2E3SnN1RlpaOEF5OUpSLTFHbTh1Wi12WGx2dl9YNFBheDBfbG0xTnhaUjI5ZmlPM2d0VU9zUGthQlZOTnd1c1JSOTlobzd5emJiTtIB2gFBVV95cUxPUjZyUFlOR2UxT3hQT2VPekloYmQ4UTVTX1B0X0lTRENIdDhtTkQwWDc1eXJZZkt0V3Vya3lrZ0VzZThWcGJ1NVhnOVBkVmtCVnNtT0E0OXcwYlNBY3BVSVZKcHhZemxLbUhhaHg0QVlkR3N1dXcwVW1uOG9YZWVjdnNZYjVIanRuTTNTZU1UclppcVhNUHFNY0N2UHBESC1VM3Rjemx4QUhEMzYtYmpRZ2hvNE03VGF0cEJQdDRKRnZibVFkSGxGX04xZVRyaTVjalAwSUFTbThjUQ?oc=5",
-      "title": "Watch: Moment Isro's GSLV-F18 turned night into day, roared into space with NVS-03 - India Today",
-      "published_at": "2026-10-30T19:00:24.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi1AFBVV95cUxQd19qSVpqdDNHMTVzUXNHQW5uMGUycHlMZXp6R2g1THlSV2NrUnVLbmR3dWRVRzFUdGVYR0F0a1Rzeml1d2hfMlF1eGVPdVVfVjl3d1psNmdUR3pLSkZBWGhSQ1A0QTV3cWJ5emtNRmpxOWNuc2xlcy02RkF4dUZYamdMVml5dDhoY2E3SnN1RlpaOEF5OUpSLTFHbTh1Wi12WGx2dl9YNFBheDBfbG0xTnhaUjI5ZmlPM2d0VU9zUGthQlZOTnd1c1JSOTlobzd5emJiTtIB2gFBVV95cUxPUjZyUFlOR2UxT3hQT2VPekloYmQ4UTVTX1B0X0lTRENIdDhtTkQwWDc1eXJZZkt0V3Vya3lrZ0VzZThWcGJ1NVhnOVBkVmtCVnNtT0E0OXcwYlNBY3BVSVZKcHhZemxLbUhhaHg0QVlkR3N1dXcwVW1uOG9YZWVjdnNZYjVIanRuTTNTZU1UclppcVhNUHFNY0N2UHBESC1VM3Rjemx4QUhEMzYtYmpRZ2hvNE03VGF0cEJQdDRKRnZibVFkSGxGX04xZVRyaTVjalAwSUFTbThjUQ?oc=5\" target=\"_blank\">Watch: Moment Isro's GSLV-F18 turned night into day, roared into space with NVS-03</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">India Today</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "bb5029fb0979fc99",
-      "source_name": "Space.com",
-      "url": "https://www.space.com/entertainment/space-movies-shows/5-horror-franchises-that-went-to-space-and-one-that-absolutely-should-have-but-didnt",
-      "title": "5 horror franchises that went to space... and one that absolutely should have but didn't",
-      "published_at": "2026-10-30T19:00:00.000Z",
-      "raw_excerpt": "In space, no one can hear you scream... not unlike in the empty theater screens that aging horror franchises play to when the lustre has gone and their final installments limp to the public. It is perhaps little wonder that some horror franchises go to space to die... or take long breaks, at least. In celebration of Halloween , we're running down some horror franchises that made the journey to the final frontier, resulting in films that range from the sublime and outrageously campy fun to just pure awful. Absent from the list are space horror movies that have space baked into their natural fabric. So no Event Horizon, no Alien, and no Critters 4 (they were aliens, so they just went back to space; that doesn't count). 1. Jason X (2001) (Image credit: New Line Cinema / Crystal Lake Entertainment) 2001 was a really weird time for the Friday the 13th franchise. New Line had acquired the series in the wake of the terrible box office returns and critical panning of Friday the 13th Part VIII: Jason Takes Manhattan. Known as \"the house that Freddy built,\" New Line's plan was clear: pit Voorhees vs. Kruger in a battle of horror icons for the ages. However, the studio had to keep Jason in the public eye to ensure the eventual crossover lived up to expectations. The first move in that effort, 1993's Jason Goes to Hell: The Final Friday, was an odd start. The movie apparently kills Voorhees, with his iconic hockey mask seized by the equally iconic bladed glove of Freddy Krueger at the end of the film and dragged into the dirt. Fun bit of trivia: the hand wearing the glove isn't that of Freddy actor Robert Englund but belongs to Kane Hodder, arguably the best Jason Voorhees, meaning Hodder played both Jason and Freddy! Still, the crossover has stalled in the preproduction process by 2001, as a script couldn't be agreed upon. New Line wanted a new Friday film but in a different environment than the typical Crystal Lake setting. After rejecting a winter-themed movie that would see",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "b1c2be8a66f5bdf1",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxPSUlGRWhmMmpsczZrX1ZKV1NZUC10dFRjY0Z3RWwwNDBmME4tWEtxT08tUWpfd2pMeXBIV3VCOWV0ZU1xdllldS1sYXNnaWdZQ0g2cl9lYzAzRzZRWThKWmVNWWZkdC1OVEE2aVJSQ0FjM0lEY2JUeUg5RUtucXNEOTYwOS1xTlY2S1dfdU8tRlk1c0NtRENDcDcwWkM1bGowSlBrZzdtTWYweFRXM21WVHpLQm5ud3lMX1RwME91VHY1MERYeXBBdTZBb0h6QXFzT0RVNlliYlZmUzd6eUQxcHZERXrSAeoBQVVfeXFMTnNfVkR6NTlKeW5IZXpvT19sYmNXUERhOGRiY1RnRmEwSUpEcGVUVkpzUy1TYnZyc3BOdF9ZcTFrUVZHZFMzdlF3d0k1QVpKb0x0R3VqNGJLTkF5RzhWZl9yS0dla21Eb3ZHMHBZQk5FYnZiRjlWQnJ2aWxYdEtUU2w5LWNPc3QxYVd3QW03dGRZTW1Hd0hra0RWazBkSlVpYVVuSHB0bjNFYUhYUVdVcHI1V3hkZ2FTMzRMMkp1bTZ0bjZDTlBVWnY1cW4tNGwtVDlULUo4VVZVV0YtS2xlMnlkSjdXQnRDWjJ3?oc=5",
-      "title": "ISRO GSLV-F18 LAUNCH SUCCESSFUL: India Upgrades Sovereign GPS System From Sriharikota | Breaking - Moneycontrol.com",
-      "published_at": "2026-10-30T18:58:13.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5AFBVV95cUxPSUlGRWhmMmpsczZrX1ZKV1NZUC10dFRjY0Z3RWwwNDBmME4tWEtxT08tUWpfd2pMeXBIV3VCOWV0ZU1xdllldS1sYXNnaWdZQ0g2cl9lYzAzRzZRWThKWmVNWWZkdC1OVEE2aVJSQ0FjM0lEY2JUeUg5RUtucXNEOTYwOS1xTlY2S1dfdU8tRlk1c0NtRENDcDcwWkM1bGowSlBrZzdtTWYweFRXM21WVHpLQm5ud3lMX1RwME91VHY1MERYeXBBdTZBb0h6QXFzT0RVNlliYlZmUzd6eUQxcHZERXrSAeoBQVVfeXFMTnNfVkR6NTlKeW5IZXpvT19sYmNXUERhOGRiY1RnRmEwSUpEcGVUVkpzUy1TYnZyc3BOdF9ZcTFrUVZHZFMzdlF3d0k1QVpKb0x0R3VqNGJLTkF5RzhWZl9yS0dla21Eb3ZHMHBZQk5FYnZiRjlWQnJ2aWxYdEtUU2w5LWNPc3QxYVd3QW03dGRZTW1Hd0hra0RWazBkSlVpYVVuSHB0bjNFYUhYUVdVcHI1V3hkZ2FTMzRMMkp1bTZ0bjZDTlBVWnY1cW4tNGwtVDlULUo4VVZVV0YtS2xlMnlkSjdXQnRDWjJ3?oc=5\" target=\"_blank\">ISRO GSLV-F18 LAUNCH SUCCESSFUL: India Upgrades Sovereign GPS System From Sriharikota | Breaking</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moneycontrol.com</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "0f4d7d166c5ed087",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNekhOLWNmTU5yLUxMSG1VY2phTklCZEdjUXo4QXFJUVpURkpJakhTcWQ2S08wUVh2TlNPQmI4d3NwUi0yaUxUNTNQZGdJUDMxN0xCOVpBbWhySkFYajR3MEpVTERJVkE4WFJmYkJ1R1NmR09CaVF5S1NCbEJpR25DcVlDS1dnQXF0M0JsTGVqclp2QkFLWktjaFdOQm5VRm5Hanp1cWR1azBXZw?oc=5",
-      "title": "Anthropic Becomes SpaceX's Biggest Customer - Yahoo Finance",
-      "published_at": "2026-10-30T18:58:04.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxNekhOLWNmTU5yLUxMSG1VY2phTklCZEdjUXo4QXFJUVpURkpJakhTcWQ2S08wUVh2TlNPQmI4d3NwUi0yaUxUNTNQZGdJUDMxN0xCOVpBbWhySkFYajR3MEpVTERJVkE4WFJmYkJ1R1NmR09CaVF5S1NCbEJpR25DcVlDS1dnQXF0M0JsTGVqclp2QkFLWktjaFdOQm5VRm5Hanp1cWR1azBXZw?oc=5\" target=\"_blank\">Anthropic Becomes SpaceX's Biggest Customer</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "023715fc60e61c83",
-      "source_name": "SpaceNews",
-      "url": "https://spacenews.com/esi-supplying-solar-array-components-to-missile-defense-programs/",
-      "title": "ESI supplying solar array components to missile defense programs",
-      "published_at": "2026-10-30T18:54:34.000Z",
-      "raw_excerpt": "Oct. 30, 2026 – ESI Motion Inc. is proud to announce that it is supplying the Solar Array Drive Electronics (SADE) to Lockheed Martin for its work on the Space […] The post ESI supplying solar array components to missile defense programs appeared first on SpaceNews .",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "907dd7b877181974",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQRTRqUnJ3UmRxalhjb0tiWmVQR3RFNXd4bXdEQXBvSFBEUGtiRk8xQy1fYmUwXzNIc3hNWVZWR2p3LWpTZTl5VHVyUFJ6V0c5ejF6X1FDdlFHNlFGU3JnZjNFUHphN0dGWUtic2hseFpNdUxIZkwxM21WZFRVRUFUVFJVblBBUmw4MV9aanlYSkVNUTN1cHFUMzhLaVN2VjU3VFNMVzZHMHRFbS1zT0xUWlRCUDl5by1PNnBNTi1jV1JjSGFC0gHLAUFVX3lxTE8yQTcyMDlXcUhWWGdKSEpDTjA4MWd4SVFXU1lJQ2R1SVBybnA5Rks1TjJENVBsOEJRZ1RvTzlUV0ljM25pYTg0SGJGX2ZzRzdPbW05OXVJSzdSV01ldTVsRjk5QnBzQmo3T0lweTg0dllTSjJHb2ZyMDBEN1R4M0E1eFBXUTdMc2FlbWJ4N0NhUUlGclRMSEhKdmZGMm5PVl9XT2YwTHRqMy1hdzNBOTVFN0sxM19NUzI4VVY0d29DeEpNNWIxSlpPT21F?oc=5",
-      "title": "ISRO successfully launches navigation satellite NVS-03 into designated orbit - The Indian Express",
-      "published_at": "2026-10-30T18:52:33.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixAFBVV95cUxQRTRqUnJ3UmRxalhjb0tiWmVQR3RFNXd4bXdEQXBvSFBEUGtiRk8xQy1fYmUwXzNIc3hNWVZWR2p3LWpTZTl5VHVyUFJ6V0c5ejF6X1FDdlFHNlFGU3JnZjNFUHphN0dGWUtic2hseFpNdUxIZkwxM21WZFRVRUFUVFJVblBBUmw4MV9aanlYSkVNUTN1cHFUMzhLaVN2VjU3VFNMVzZHMHRFbS1zT0xUWlRCUDl5by1PNnBNTi1jV1JjSGFC0gHLAUFVX3lxTE8yQTcyMDlXcUhWWGdKSEpDTjA4MWd4SVFXU1lJQ2R1SVBybnA5Rks1TjJENVBsOEJRZ1RvTzlUV0ljM25pYTg0SGJGX2ZzRzdPbW05OXVJSzdSV01ldTVsRjk5QnBzQmo3T0lweTg0dllTSjJHb2ZyMDBEN1R4M0E1eFBXUTdMc2FlbWJ4N0NhUUlGclRMSEhKdmZGMm5PVl9XT2YwTHRqMy1hdzNBOTVFN0sxM19NUzI4VVY0d29DeEpNNWIxSlpPT21F?oc=5\" target=\"_blank\">ISRO successfully launches navigation satellite NVS-03 into designated orbit</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Indian Express</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "6c885e25d0c54d99",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQUWdrbTJvdHBUV0xJcS1NelN3dHQ0MGZNenBOVm5YcnFweXFnS3dpT0pVR1JRemt2Y2Fqa2dHZEIyTmtsSVI0T1NFQ1M3VTFQOW4wSzZaMXBMZkIyeDFBWEZFMkFlZVIydXBwT09IcVB1aDhCSVdUeFNDTkFjQ1cyWEd6ZkV5ZEM4d01aUkgxWmpuY2RfQzY5d1hwWVhpV1RZU0tiWHBYb2dJZWZaMk55TlFrVTRKTDhJMTdudElRMDlOcTJ3eVY3LXNMTXp2OVJTZnJZ0gHYAUFVX3lxTE1zTS15azJ5bnlRS2pSVkVVUTA0a01aN0lSTncyem5qd1BqbU5GWnpIMlo3THFQbEhPZFVNbWsyRlowV19NckRiSlhDTHdWMTNHMV85bmJ4Sm5vVm5zZklfeGhfaWNsZ3puSVhicE1aNVV4eHVSY2lFaS1TNjk4LWFkZjhWQjk2S203T1g5NUR5aG9jQ2o5cEJxYVZCTlY2dUVwczdzMUVsSVRrQnNtYmRJUDFFbzdnaGV1VzBDb09UWEhXUGc2UlY1MUpWMk5ncWNnQmJwYWI5Wg?oc=5",
-      "title": "ISRO's GSLV-F18 Successfully Lifts Off From Sriharikota With Next-Gen Navigation Satellite - News18",
-      "published_at": "2026-10-30T18:52:16.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0wFBVV95cUxQUWdrbTJvdHBUV0xJcS1NelN3dHQ0MGZNenBOVm5YcnFweXFnS3dpT0pVR1JRemt2Y2Fqa2dHZEIyTmtsSVI0T1NFQ1M3VTFQOW4wSzZaMXBMZkIyeDFBWEZFMkFlZVIydXBwT09IcVB1aDhCSVdUeFNDTkFjQ1cyWEd6ZkV5ZEM4d01aUkgxWmpuY2RfQzY5d1hwWVhpV1RZU0tiWHBYb2dJZWZaMk55TlFrVTRKTDhJMTdudElRMDlOcTJ3eVY3LXNMTXp2OVJTZnJZ0gHYAUFVX3lxTE1zTS15azJ5bnlRS2pSVkVVUTA0a01aN0lSTncyem5qd1BqbU5GWnpIMlo3THFQbEhPZFVNbWsyRlowV19NckRiSlhDTHdWMTNHMV85bmJ4Sm5vVm5zZklfeGhfaWNsZ3puSVhicE1aNVV4eHVSY2lFaS1TNjk4LWFkZjhWQjk2S203T1g5NUR5aG9jQ2o5cEJxYVZCTlY2dUVwczdzMUVsSVRrQnNtYmRJUDFFbzdnaGV1VzBDb09UWEhXUGc2UlY1MUpWMk5ncWNnQmJwYWI5Wg?oc=5\" target=\"_blank\">ISRO's GSLV-F18 Successfully Lifts Off From Sriharikota With Next-Gen Navigation Satellite</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">News18</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "66eba5626701483f",
-      "source_name": "SpacePolicyOnline",
-      "url": "https://spacepolicyonline.com/news/government-spending-on-civil-space-topped-42-billion-in-fy2026/",
-      "title": "Government Spending on Civil Space Topped $42 Billion in FY2026",
-      "published_at": "2026-10-30T18:46:54.000Z",
-      "raw_excerpt": "Government spending on civil space activities is more than just NASA. A new Aerospace Corporation report details the $42.6 billion allocated for civil space in FY2026 and compares it to FY2025 and the still-pending request for FY2027. NASA is the largest share, but only 55 percent of the total. Overall, the report characterizes the civil space budget as going through tumultuous times with the White House and Congress out of sync and the FY2027 outcome uncertain. The term “civil space” immediately evokes NASA, NOAA and perhaps the Office of Science at the Department of Energy (DOE), but Aerospace’s Lindsay DeMarchi painstakingly scoured all non-defense agencies and identified a total of 19 that are allocated money to “support, enable, or leverage space through direct and indirect means.” In terms of spending, the DOE is highest after NASA at 18 percent, with the others ranging from the Department of Homeland Security (DHS) at 6.79 percent down to the National Telecommunications and Information Administration (NTIA) at 0.05 percent. Source: The Aerospace Corporation’s Center for Space Policy and Strategy. DeMarchi then categorizes them into seven “national priorities” — American Leadership and Manufacturing; Fundamental Science; Infrastructure, Energy and Resiliency; Remote Sensing Applications; Homeland Security; Streamlining and Expansion; and Workforce Development. Source: The Aerospace Corporation’s Center for Space Policy and Strategy. The report compares FY2025 and FY2026, where funding is finalized, and the FY2027 request. The bottom line, not surprisingly, is that the budget for space across civil government “is experiencing a period of significant uncertainty.” FY2026 encompassed the longest government shutdown in history, but Congress ultimately appropriated much more than the President’s Budget Request (PBR) and added billions more in a separate reconciliation bill — the One Big, Beautiful Bill Act, OBBBA (also called the Working Families Tax Cut Act, WFTC)",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "4534505acaf5f327",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOVW1fWEFaemJvRE56X0FQd2loNEJHQXYxQjlEdGpoaHhXMFk0TDJKZkN2THpMTjJqYncyQWRPZWZBOHNiWE9KX3lJdVRXMnVKTVF2TDFlWTdrQjVtQmxfemk4azloZHFyV0ZwT0szV3ppdWx0MnFTeDJvSzl1S2dERHQ4NUxrYUlBZGhCQkpoME5kbkZob2pZVEVkdnBfQk5Ta0JKMFFSYmQ2QUxybTEtLTZXYTkzN1JlaXBkNzJlaVJNTzVJNTBueWhpZ21SZU9uc1hsdHc4ZkxyVFhNY3fSAeMBQVVfeXFMTlVRdkZJNTJTWEVVMXBUOUpSQXJnZkVSNUtINHJUM2JzVUJCUHNPMkJmTjVGdmJYU29SakFncE1xRV95U3lVZGl6TVZ0dXI4bjU5RTFTREFveDNyTmdGNTdKR3JRTDFheWVWODI0aTVnREp6aVVXN0VHZGhWcVZxeVJueXFTMzJTMFZHWU1jUmRLS0IwS3QtaUJlS2tEVE9taExvTmhubE5vZHZMSm0ycnAxVWRzWmhCbFE1c0VuMWN6UHNFeW9aU3NzQm45WlBwQ0I3S3hDOS1zZlJoWGRkLUtNWDQ?oc=5",
-      "title": "ISRO's GSLV-F18 Launch Successful: India sends NVS-03 into space in major NavIC mission - Moneycontrol.com",
-      "published_at": "2026-10-30T18:46:35.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3gFBVV95cUxOVW1fWEFaemJvRE56X0FQd2loNEJHQXYxQjlEdGpoaHhXMFk0TDJKZkN2THpMTjJqYncyQWRPZWZBOHNiWE9KX3lJdVRXMnVKTVF2TDFlWTdrQjVtQmxfemk4azloZHFyV0ZwT0szV3ppdWx0MnFTeDJvSzl1S2dERHQ4NUxrYUlBZGhCQkpoME5kbkZob2pZVEVkdnBfQk5Ta0JKMFFSYmQ2QUxybTEtLTZXYTkzN1JlaXBkNzJlaVJNTzVJNTBueWhpZ21SZU9uc1hsdHc4ZkxyVFhNY3fSAeMBQVVfeXFMTlVRdkZJNTJTWEVVMXBUOUpSQXJnZkVSNUtINHJUM2JzVUJCUHNPMkJmTjVGdmJYU29SakFncE1xRV95U3lVZGl6TVZ0dXI4bjU5RTFTREFveDNyTmdGNTdKR3JRTDFheWVWODI0aTVnREp6aVVXN0VHZGhWcVZxeVJueXFTMzJTMFZHWU1jUmRLS0IwS3QtaUJlS2tEVE9taExvTmhubE5vZHZMSm0ycnAxVWRzWmhCbFE1c0VuMWN6UHNFeW9aU3NzQm45WlBwQ0I3S3hDOS1zZlJoWGRkLUtNWDQ?oc=5\" target=\"_blank\">ISRO's GSLV-F18 Launch Successful: India sends NVS-03 into space in major NavIC mission</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moneycontrol.com</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "cd19f9762deda13a",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxOOU4zZmplMVd2djBHWEN5MkpCV192dEV1VDNnOUFET2JUVHJpUDNBSUFZMUR2TEFOaEhDZ21POEpEeW1wUzZiWWVCUnBpU3hQclgycnBOVjg3TkUwT2I3d1NSeE5QRnpmNU55cDhJRUpQXzFfQ3JySVdlWEpXR2RJLXg0Yk00dlBoTVhLd0RwTUVzNDIyR0tKTXhKTHRZcUF2ejZUdXNoRHFHM1o4azJwUjYtTUp2X0dRMnJZMko0ZVdRSzFjbFpXNWxXZkQxWTNvVDBEcDZydzFJeTDSAeABQVVfeXFMTWFOOVZha29SYWkxdkp5OGRLUEN1ZzNCcnl6a1hyQTdrbzc0bFpmb2RqSDVZYzlKclI3SU1VajFxZVVsLTZ4aVJPZDcxTm5IaUlObFBELUhiN0p5Vl9qT181cG5LY3pJZUdFRGtaRFhlck9GTlV2a2lBc21Pbnp5Q1ljM3lpTGpPSXR2VERMSWcxby10SGdtX1pWc3JpeXBLaURwenB3RDBXWWUyWXlrTmcwXzRFNkNMaGpYbTVHYy1RYnZFc1pzZmhyUE1MaC1EMWU3RUs4OGJ5NTIyZGt2TGo?oc=5",
-      "title": "ISRO Successfully Launches GSLV-F18 Carrying NVS-03 Navigation Satellite - Deccan Chronicle",
-      "published_at": "2026-10-30T18:44:29.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2wFBVV95cUxOOU4zZmplMVd2djBHWEN5MkpCV192dEV1VDNnOUFET2JUVHJpUDNBSUFZMUR2TEFOaEhDZ21POEpEeW1wUzZiWWVCUnBpU3hQclgycnBOVjg3TkUwT2I3d1NSeE5QRnpmNU55cDhJRUpQXzFfQ3JySVdlWEpXR2RJLXg0Yk00dlBoTVhLd0RwTUVzNDIyR0tKTXhKTHRZcUF2ejZUdXNoRHFHM1o4azJwUjYtTUp2X0dRMnJZMko0ZVdRSzFjbFpXNWxXZkQxWTNvVDBEcDZydzFJeTDSAeABQVVfeXFMTWFOOVZha29SYWkxdkp5OGRLUEN1ZzNCcnl6a1hyQTdrbzc0bFpmb2RqSDVZYzlKclI3SU1VajFxZVVsLTZ4aVJPZDcxTm5IaUlObFBELUhiN0p5Vl9qT181cG5LY3pJZUdFRGtaRFhlck9GTlV2a2lBc21Pbnp5Q1ljM3lpTGpPSXR2VERMSWcxby10SGdtX1pWc3JpeXBLaURwenB3RDBXWWUyWXlrTmcwXzRFNkNMaGpYbTVHYy1RYnZFc1pzZmhyUE1MaC1EMWU3RUs4OGJ5NTIyZGt2TGo?oc=5\" target=\"_blank\">ISRO Successfully Launches GSLV-F18 Carrying NVS-03 Navigation Satellite</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Deccan Chronicle</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "53e76e5df8d2cd12",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQY01rTzRvVnlHZHREOW1FLWREQjhaZmY5U0RvNEQ1QTBaNDVWUFFtazZKMzJtOFlwazhhRXNQU1lZVFBvX2Q1dmoyOExWVGFJNlNjbm5kNGRrOU1MYzhfVGxTbkJjV1RLaE9CUnk1VWFBUUxSeHBXZlFQOVREcjNBS21Kbk40SGIwclZyU3pNODFqV3duQ0c3UTk5X2ppQmdDVXZzbllXMVFDTVZ0cGxIZTZIdw?oc=5",
-      "title": "SpaceX Relies on Anthropic for a Third of Its Revenue - TradingView",
-      "published_at": "2026-10-30T18:44:10.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswFBVV95cUxQY01rTzRvVnlHZHREOW1FLWREQjhaZmY5U0RvNEQ1QTBaNDVWUFFtazZKMzJtOFlwazhhRXNQU1lZVFBvX2Q1dmoyOExWVGFJNlNjbm5kNGRrOU1MYzhfVGxTbkJjV1RLaE9CUnk1VWFBUUxSeHBXZlFQOVREcjNBS21Kbk40SGIwclZyU3pNODFqV3duQ0c3UTk5X2ppQmdDVXZzbllXMVFDTVZ0cGxIZTZIdw?oc=5\" target=\"_blank\">SpaceX Relies on Anthropic for a Third of Its Revenue</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">TradingView</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "50c30e956734df76",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPcndhcENIWXBlT2I5NTdseThyeVJ6QktleHJDZk5xeWh4MmN4ZTFwNlphZnp0VE5POEpPTzRMTGxyMmlrSUprMEE5NHR4dGFMNklnbWVHQ1l5SzZ2VWlmeXRob1k3cFlWM2h5MEFkVWlZalZxTFlWVkJnaWNzeWFaUEd5Qk96REstS1dUQm8zNXdNZXdHdnBMazB1N0RnVVJncm1xN085LXdtcEVnVUdqQ2xFcEZPeGdPU2lkS2FDUHp1N3FfQllBc29ETnY3OGZ5enhmUGVlajhXSnpDVlhv0gHkAUFVX3lxTE9HTEZtc001d01CaEhTLThRRzg0M1VGSHpLcGdheDlBRjVTWEttdzc5VlVRMllVbDZaSktiUjc5eHlDaWpCZnotaFZQZFFqNjVJWkpUWGxQalc0MUxHeXcycDdLVEd6U0NtTVBFUXNmZGhjaS0wako2THFWaHlTSVVlQUM1VVNrRFp3X3V3b3ludlcxY1VUZXRvZGpmQXdWTTFuVGZtZXZyRFBPaW0wTFBWREQ1NG5mRm9ISG1OUVhvZzZXTzlPZmZHZE8zbmhLeTNLQjF0VnBaTno0TGZFQnhoWlYxVw?oc=5",
-      "title": "ISRO GSLV-F18 Launch Successful: NVS-03 Takes Off | Major Boost For India's NavIC System | N18 - News18",
-      "published_at": "2026-10-30T18:44:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi3wFBVV95cUxPcndhcENIWXBlT2I5NTdseThyeVJ6QktleHJDZk5xeWh4MmN4ZTFwNlphZnp0VE5POEpPTzRMTGxyMmlrSUprMEE5NHR4dGFMNklnbWVHQ1l5SzZ2VWlmeXRob1k3cFlWM2h5MEFkVWlZalZxTFlWVkJnaWNzeWFaUEd5Qk96REstS1dUQm8zNXdNZXdHdnBMazB1N0RnVVJncm1xN085LXdtcEVnVUdqQ2xFcEZPeGdPU2lkS2FDUHp1N3FfQllBc29ETnY3OGZ5enhmUGVlajhXSnpDVlhv0gHkAUFVX3lxTE9HTEZtc001d01CaEhTLThRRzg0M1VGSHpLcGdheDlBRjVTWEttdzc5VlVRMllVbDZaSktiUjc5eHlDaWpCZnotaFZQZFFqNjVJWkpUWGxQalc0MUxHeXcycDdLVEd6U0NtTVBFUXNmZGhjaS0wako2THFWaHlTSVVlQUM1VVNrRFp3X3V3b3ludlcxY1VUZXRvZGpmQXdWTTFuVGZtZXZyRFBPaW0wTFBWREQ1NG5mRm9ISG1OUVhvZzZXTzlPZmZHZE8zbmhLeTNLQjF0VnBaTno0TGZFQnhoWlYxVw?oc=5\" target=\"_blank\">ISRO GSLV-F18 Launch Successful: NVS-03 Takes Off | Major Boost For India's NavIC System | N18</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">News18</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "9f977d15348aeb5b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPS3AySEhGSDFETU5tZ05tMnh3UmxySWZUWXc4TW4ySTRzcUZFOEpENWNVamt5ZDRWamFRdk5SRmlZU2J5a1JQRFJiVk92bC1qZzRrREkxLVo2aGpPUm9MT29jMDI1WWYtbjVnM2FsT0xCTWR3TnhiTGl6amVxQy1ER0QyTHZMWkRqY2EwcEtidDBXaExmTjlGOHJ5WlhJbHpWZTlDZXZMRkJfWW1fXy1Kai0wWE94YmxRcTdFV1ZMRnNfODU0M3hhQWJ0emU?oc=5",
-      "title": "Ukraine's Fire Point Builds Starlink-Free Strike Technology to Reduce Foreign Dependence - UNITED24 Media",
-      "published_at": "2026-10-30T18:43:21.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizAFBVV95cUxPS3AySEhGSDFETU5tZ05tMnh3UmxySWZUWXc4TW4ySTRzcUZFOEpENWNVamt5ZDRWamFRdk5SRmlZU2J5a1JQRFJiVk92bC1qZzRrREkxLVo2aGpPUm9MT29jMDI1WWYtbjVnM2FsT0xCTWR3TnhiTGl6amVxQy1ER0QyTHZMWkRqY2EwcEtidDBXaExmTjlGOHJ5WlhJbHpWZTlDZXZMRkJfWW1fXy1Kai0wWE94YmxRcTdFV1ZMRnNfODU0M3hhQWJ0emU?oc=5\" target=\"_blank\">Ukraine's Fire Point Builds Starlink-Free Strike Technology to Reduce Foreign Dependence</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">UNITED24 Media</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "81058bc3dfadbf50",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQSkROd2tHTlZPUkx5cFoxT240MlFVV1RlMkRraXpTaFNiZHRsNlJ3MFRsT1QtUmJVYnQ1dGgzWUNybFFaUXgxVUZoNFRVYklEbmRXOVlWZ1Y5dWtOMnNYSEZabmI2Y2dKcDM5NGFFdXdkZ0NKWWZiWjhkQ3dkeHBTbTlyNFZvbW9zRzVaeVM3eTVGNXU0WnoxWVFFTUNpWnNhT0Q4V1F2di1GOXdiWXltTTFuYlJ4TC1pelRfS3hZUHZDUDQt0gHSAUFVX3lxTE9ndThpdHNrZGd2UkZtbEFiRHhSN3V5RGVqU3N6bjRSQlh6VllPeHNENHJWVGtwMl94UThROERKUFBJM1hzX3hGeGh4WmV4bXh2dWhuYU00NkVpMkJZQTgwVmJWYm5XREpFbmV3MDdoTjVTOU9yWlhOcHU4SUowRF94MXJNY0RQdVF4V3ZWWUlQdHYyR1BBc3VZVVA5WUVIMEZuZGdQRklBWkRHTjNWTDV4VWpxRkdlWEFyT3dRWjVmZU56c0JXV2FjaFZrU2N4R0tYdw?oc=5",
-      "title": "ISRO launches GSLV-F18 carrying next-generation navigation satellite NVS-03 - The New Indian Express",
-      "published_at": "2026-10-30T18:42:25.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMixAFBVV95cUxQSkROd2tHTlZPUkx5cFoxT240MlFVV1RlMkRraXpTaFNiZHRsNlJ3MFRsT1QtUmJVYnQ1dGgzWUNybFFaUXgxVUZoNFRVYklEbmRXOVlWZ1Y5dWtOMnNYSEZabmI2Y2dKcDM5NGFFdXdkZ0NKWWZiWjhkQ3dkeHBTbTlyNFZvbW9zRzVaeVM3eTVGNXU0WnoxWVFFTUNpWnNhT0Q4V1F2di1GOXdiWXltTTFuYlJ4TC1pelRfS3hZUHZDUDQt0gHSAUFVX3lxTE9ndThpdHNrZGd2UkZtbEFiRHhSN3V5RGVqU3N6bjRSQlh6VllPeHNENHJWVGtwMl94UThROERKUFBJM1hzX3hGeGh4WmV4bXh2dWhuYU00NkVpMkJZQTgwVmJWYm5XREpFbmV3MDdoTjVTOU9yWlhOcHU4SUowRF94MXJNY0RQdVF4V3ZWWUlQdHYyR1BBc3VZVVA5WUVIMEZuZGdQRklBWkRHTjNWTDV4VWpxRkdlWEFyT3dRWjVmZU56c0JXV2FjaFZrU2N4R0tYdw?oc=5\" target=\"_blank\">ISRO launches GSLV-F18 carrying next-generation navigation satellite NVS-03</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The New Indian Express</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "59224f95efc2ce0b",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxOUUI3ODdRdjZFV2pRaHpfSE1IYjFmSHVvdTRiMzZJZXNUbnlNbU4tR3F0SU9qZ094dW8tdnJibmRJOHBUN2VmYXVXb2xnYmJiQ1lXRkxZVmVnZE5sd2F3UjY3by1UUjdEWHMyVUpUTHlTU3ZYU3dSS1ZrdFVhcWNRbEprRHoya2JKSDNrcjRtUFU3QTVRUU44d1VYZ0NtOXItUVRTR2tfZ3NrcGJtZzhOZldfR2pMRFBIM01SYXFsTzJ2eDF5ck1oVXhCWnlMN2Ztelpmem5pV0hSaTB0VzVLdm5SQkc5STFkTnNmejFrZ0s1RTRBUTZSYTBaeVBYVGVDaHExS3l30gGLAkFVX3lxTE93eVQ1UXUyNFJlWUd0MzRSeGJEVER6YkxnZk5IM2tiY003OUs2Q2d1V0NybUdGWVc4VFBaVXFaNFFvNnBkcmIzVmQ1bnlJY0FzSk5iTk84MlNZWWlVNVBzUlV3MU1QaURaSmRCVC16cWdOMWUzNk9jQ014dnBaa2FBMzd5ckQ0VERrNjIzaVR0c1hKc0VTdnczU0ZrdV9yMmR3NFUtQVFMR0xZbU9KdWYzZW9YLXU2Y0JGT3JacGp2VlZxdWlObEQ2OW0zclNzLVVIMnpqRzFyNnc5SE5vUHg5bjZ6RVJpaUJPbEZDWHBDQkZVT0ZJUmtkRXdQTkdmYTRlcDFIQWZ6VHVCYw?oc=5",
-      "title": "Isro successfully launches NVS-03 satellite to strengthen India's NavIC navigation system, improve civilian access | India News - Hindustan Times",
-      "published_at": "2026-10-30T18:41:44.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMihgJBVV95cUxOUUI3ODdRdjZFV2pRaHpfSE1IYjFmSHVvdTRiMzZJZXNUbnlNbU4tR3F0SU9qZ094dW8tdnJibmRJOHBUN2VmYXVXb2xnYmJiQ1lXRkxZVmVnZE5sd2F3UjY3by1UUjdEWHMyVUpUTHlTU3ZYU3dSS1ZrdFVhcWNRbEprRHoya2JKSDNrcjRtUFU3QTVRUU44d1VYZ0NtOXItUVRTR2tfZ3NrcGJtZzhOZldfR2pMRFBIM01SYXFsTzJ2eDF5ck1oVXhCWnlMN2Ztelpmem5pV0hSaTB0VzVLdm5SQkc5STFkTnNmejFrZ0s1RTRBUTZSYTBaeVBYVGVDaHExS3l30gGLAkFVX3lxTE93eVQ1UXUyNFJlWUd0MzRSeGJEVER6YkxnZk5IM2tiY003OUs2Q2d1V0NybUdGWVc4VFBaVXFaNFFvNnBkcmIzVmQ1bnlJY0FzSk5iTk84MlNZWWlVNVBzUlV3MU1QaURaSmRCVC16cWdOMWUzNk9jQ014dnBaa2FBMzd5ckQ0VERrNjIzaVR0c1hKc0VTdnczU0ZrdV9yMmR3NFUtQVFMR0xZbU9KdWYzZW9YLXU2Y0JGT3JacGp2VlZxdWlObEQ2OW0zclNzLVVIMnpqRzFyNnc5SE5vUHg5bjZ6RVJpaUJPbEZDWHBDQkZVT0ZJUmtkRXdQTkdmYTRlcDFIQWZ6VHVCYw?oc=5\" target=\"_blank\">Isro successfully launches NVS-03 satellite to strengthen India's NavIC navigation system, improve civilian access | India News</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Hindustan Times</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "fc0cf0329b801852",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxPZEluajZSZVVIU0tyeUhZWTdYVUxqZlBTOUp3QlRkZXItc0xVeHJZLXBsNUpyMmk0MGduZGUyZHRhZ2lrbUtEZF9wbl9ubmM1QzZQdEN1T1NPX1FmV0RuTlMzMHRhdzFIdkVLZDQ4QWJTbHRXcGhOX2ltOUk0d0dZNXllckhDQUFKQVdGUmo5OURLRzVBeGRTU1RobnZTS2RkNGJIOEl6NVc3VFRGMlFGb1R0UXBBTklTUDJtZmgxeVd4cEFUNWo3Zjd2SkMtczgycTlJU1U1bzlHZWItMWpJaUtBRWljcEo1N1dpNkxkNW04M09VOEFsZ1E5a0ZzZFJvR3RINE9kbnRjZ0V5Z09OekQxcXhxb3hsRkFtMmlKTdIBpAJBVV95cUxPaThTUGJ2eVJBc2xpRWN4eUJEUnpSaHVPS0g3Q2s1T2NpVDNCMkZXc2dXTHZEYXdtcWg5bk9DeFdwY1RWT20tNmNTZVZaUi1tN1dJd3dHQWQ1M2ZuRmExNlhwWjl5blVLSzlVU09rSWhyR1pfYkpyVFdUcDU5UjJlcVJrUVlyVHNxemtQdEhycEFZR3Z1MmdaQV9BRzBPUTVjcTR4UDR4cW4zbldkTW9sSTRXalNMLVNxNGxUWE5NM29zZmFmTVhZY3h1NHpMM21CUEdLRVQ4YzJQU3N3RWNVcEhVakJRS3FwZmUwbF9VMkhuX2dSMTVOZXUwQ2pvWWJCOTJoczl6WWE4ckw2dVgtN1g0eVoydUFOMVFFWUxGRHBobi1R?oc=5",
-      "title": "Isro’s GSLV-F18/NVS-03 mission successful: Next-generation navigation satellite placed in orbit; NavIC co - The Times of India",
-      "published_at": "2026-10-30T18:40:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMinwJBVV95cUxPZEluajZSZVVIU0tyeUhZWTdYVUxqZlBTOUp3QlRkZXItc0xVeHJZLXBsNUpyMmk0MGduZGUyZHRhZ2lrbUtEZF9wbl9ubmM1QzZQdEN1T1NPX1FmV0RuTlMzMHRhdzFIdkVLZDQ4QWJTbHRXcGhOX2ltOUk0d0dZNXllckhDQUFKQVdGUmo5OURLRzVBeGRTU1RobnZTS2RkNGJIOEl6NVc3VFRGMlFGb1R0UXBBTklTUDJtZmgxeVd4cEFUNWo3Zjd2SkMtczgycTlJU1U1bzlHZWItMWpJaUtBRWljcEo1N1dpNkxkNW04M09VOEFsZ1E5a0ZzZFJvR3RINE9kbnRjZ0V5Z09OekQxcXhxb3hsRkFtMmlKTdIBpAJBVV95cUxPaThTUGJ2eVJBc2xpRWN4eUJEUnpSaHVPS0g3Q2s1T2NpVDNCMkZXc2dXTHZEYXdtcWg5bk9DeFdwY1RWT20tNmNTZVZaUi1tN1dJd3dHQWQ1M2ZuRmExNlhwWjl5blVLSzlVU09rSWhyR1pfYkpyVFdUcDU5UjJlcVJrUVlyVHNxemtQdEhycEFZR3Z1MmdaQV9BRzBPUTVjcTR4UDR4cW4zbldkTW9sSTRXalNMLVNxNGxUWE5NM29zZmFmTVhZY3h1NHpMM21CUEdLRVQ4YzJQU3N3RWNVcEhVakJRS3FwZmUwbF9VMkhuX2dSMTVOZXUwQ2pvWWJCOTJoczl6WWE4ckw2dVgtN1g0eVoydUFOMVFFWUxGRHBobi1R?oc=5\" target=\"_blank\">Isro’s GSLV-F18/NVS-03 mission successful: Next-generation navigation satellite placed in orbit; NavIC co</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Times of India</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "c78361c0bdbd06a0",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxNR2s0VWhhN2VRWW04X2hnZXBMeG5RdHJCWWpKRWxndEkwenhROXhybExueTVoV0pCU2xUbnBDSExFSERwWGdSeWlFajZDSUNWajFXNWctczBQMVZqblFta2NKczhtN0hDbE94eTJpWkhmdHRQX2JIekFCaGVJZ0FoZGVYNGlKcEFvdUtvdmYyMWhub1ZkQ0czQVFySU1xODZjRGtVN1RyYjgzZy1hMWM1b0pRX0Q5Q1hWbUItcWh5Z2lOb0Z6Vk85VlhGS2JQNDcxYVpnc094djlNeUJNZlQ2LV92S0NEWmZ4Vy1pTmpNSTNBQdIB9wFBVV95cUxNWGpzT21rVEg1STZRaEQzX3dZNUtZYzlnczg5ZUE4SkhCQ3ZZbTZLV0FtVDAzQnM3YWxNanJULWhUcFZVenQxck16RGVtSEtaN0hRbzhjVzZCaTFmejlvS2puOFFoRWI5RFVYWGprUXI2aDR4bWJEMXF5Zjh2YUJqdDlIa1BxazlwbTYzUG53cFFhU1Uyak04b3RCTTZUczJYTkRobFpRbzRwc19pMklVREdSSnBLdDc4a3FwMUswTkpBVFdFUmdqMXVBck1MZGdXcjFfSllZbUdOb1ZFNzZOU0FUWTJ1bHZxWFQxVnBCbG1qZERybnJF?oc=5",
-      "title": "ISRO launches GSLV-F18 carrying NVS-03 satellite to strengthen India’s NavIC navigation system - The Economic Times",
-      "published_at": "2026-10-30T18:35:12.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi8gFBVV95cUxNR2s0VWhhN2VRWW04X2hnZXBMeG5RdHJCWWpKRWxndEkwenhROXhybExueTVoV0pCU2xUbnBDSExFSERwWGdSeWlFajZDSUNWajFXNWctczBQMVZqblFta2NKczhtN0hDbE94eTJpWkhmdHRQX2JIekFCaGVJZ0FoZGVYNGlKcEFvdUtvdmYyMWhub1ZkQ0czQVFySU1xODZjRGtVN1RyYjgzZy1hMWM1b0pRX0Q5Q1hWbUItcWh5Z2lOb0Z6Vk85VlhGS2JQNDcxYVpnc094djlNeUJNZlQ2LV92S0NEWmZ4Vy1pTmpNSTNBQdIB9wFBVV95cUxNWGpzT21rVEg1STZRaEQzX3dZNUtZYzlnczg5ZUE4SkhCQ3ZZbTZLV0FtVDAzQnM3YWxNanJULWhUcFZVenQxck16RGVtSEtaN0hRbzhjVzZCaTFmejlvS2puOFFoRWI5RFVYWGprUXI2aDR4bWJEMXF5Zjh2YUJqdDlIa1BxazlwbTYzUG53cFFhU1Uyak04b3RCTTZUczJYTkRobFpRbzRwc19pMklVREdSSnBLdDc4a3FwMUswTkpBVFdFUmdqMXVBck1MZGdXcjFfSllZbUdOb1ZFNzZOU0FUWTJ1bHZxWFQxVnBCbG1qZERybnJF?oc=5\" target=\"_blank\">ISRO launches GSLV-F18 carrying NVS-03 satellite to strengthen India’s NavIC navigation system</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Economic Times</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "9cf31aa30740ebba",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/andrewpb.bsky.social/post/3mz4g4eh25k2s",
-      "title": "@andrewpb.bsky.social on Bluesky",
-      "published_at": "2026-10-30T18:32:27.579Z",
-      "raw_excerpt": "Next up: SpaceX is targeting October 30, 9:02 p.m. PDT (October 31, 0402 UTC, 05:02 CET), a Falcon 9 launch with the Starlink 15-18 payload from SLC-4E at Vandenberg Space Force Base in California. The launch window remains open until 12:48 a.m. PDT, Oct. 31. www.youtube.com/watch?v=OVOV...",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "e3531d5ac160dcea",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPTFFHZXdiUjZqaVIweXg0d1NkS00yV2RKNldfSDlQZmpNdWVfcXNCWnF0ZUVjMHZCcVM1TWQ5Q3FYYnA4YmZvZEk0LUZ6N3VudUhkNFBYOXBlc2xiS2haVHk4eEItLVpRQnlKX0J6UGZvMHpEODlqT0JBN0RxUnRqNVNGQ01vUXptaHhsc0dDemNObUdKOUtXdHliZ2lORk9faFM4OVJTZG52RTdJekdWV01Tbk1OLXJWMGZKWkk0ZWdTeHBtck5rU9IBzgFBVV95cUxQdGYyRTI4MllTZ2VmUnAwcUNuLVBZcFE4eDhpcF9LTmxWQk9nN0xhZXREVVRtbnlqSlZkRXBSNkRrMUdrY210Snlub21vbkdMR2R6X2RCdWcyVml0VnFqbmw0TzdaMFFreWdjMzZIN1M0QWpnLXFsbzMyWFZMTkplbEpZX19rOVVMR05NWEZCZzhvN3BfWFBEdFpRTlN6T3FxTE9laGRJSlJJTDNzelZhbnBRSXV6WC0yVUc1LW5kNU5ydkg1WWRwUzQ1bXctZw?oc=5",
-      "title": "ISRO successfully launches GSLV-F18, places NVS-03 satellite into geosynchronous transfer orbit - Moneycontrol.com",
-      "published_at": "2026-10-30T18:32:20.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiyAFBVV95cUxPTFFHZXdiUjZqaVIweXg0d1NkS00yV2RKNldfSDlQZmpNdWVfcXNCWnF0ZUVjMHZCcVM1TWQ5Q3FYYnA4YmZvZEk0LUZ6N3VudUhkNFBYOXBlc2xiS2haVHk4eEItLVpRQnlKX0J6UGZvMHpEODlqT0JBN0RxUnRqNVNGQ01vUXptaHhsc0dDemNObUdKOUtXdHliZ2lORk9faFM4OVJTZG52RTdJekdWV01Tbk1OLXJWMGZKWkk0ZWdTeHBtck5rU9IBzgFBVV95cUxQdGYyRTI4MllTZ2VmUnAwcUNuLVBZcFE4eDhpcF9LTmxWQk9nN0xhZXREVVRtbnlqSlZkRXBSNkRrMUdrY210Snlub21vbkdMR2R6X2RCdWcyVml0VnFqbmw0TzdaMFFreWdjMzZIN1M0QWpnLXFsbzMyWFZMTkplbEpZX19rOVVMR05NWEZCZzhvN3BfWFBEdFpRTlN6T3FxTE9laGRJSlJJTDNzelZhbnBRSXV6WC0yVUc1LW5kNU5ydkg1WWRwUzQ1bXctZw?oc=5\" target=\"_blank\">ISRO successfully launches GSLV-F18, places NVS-03 satellite into geosynchronous transfer orbit</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moneycontrol.com</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "d104a5b31fd8223d",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNX3cyQTZBeWZIY1NoTzhUNXl2T0FtVDBWN0lQeElaV09abTFPd21RWjJFZThMNVRfUmZHdGZOeXQ2azFPZWlTLWZBdFljeHFSZWtCMm55X0phNElsTXVSM0VyTV9BZldiRkM3UEZxTHRhUDRlNHVONldaRU5TZ1h0WHpwOUZFYUc2R19KMlgtSlBObnNWY0Y4MjJ0MzdRMTV5ams5SDdla2liTkNCbEJFWDAyaFVhekVyQVE?oc=5",
-      "title": "ISRO launches GSLV-F18 rocket carrying next-gen navigation satellite NVS-03 - Deccan Herald",
-      "published_at": "2026-10-30T18:28:11.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxNX3cyQTZBeWZIY1NoTzhUNXl2T0FtVDBWN0lQeElaV09abTFPd21RWjJFZThMNVRfUmZHdGZOeXQ2azFPZWlTLWZBdFljeHFSZWtCMm55X0phNElsTXVSM0VyTV9BZldiRkM3UEZxTHRhUDRlNHVONldaRU5TZ1h0WHpwOUZFYUc2R19KMlgtSlBObnNWY0Y4MjJ0MzdRMTV5ams5SDdla2liTkNCbEJFWDAyaFVhekVyQVE?oc=5\" target=\"_blank\">ISRO launches GSLV-F18 rocket carrying next-gen navigation satellite NVS-03</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Deccan Herald</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "1ae2611c7753f90f",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9HajhHUWdPMTNyOU5iTFhmaEl6cktqdGFaRVRhT3lPN0RkSVVmV3dQN2phb2VWYUlNTmo0blphTTVuMWgybVp5bmhCZEJLeE5CcE9IT1VKWXh4UUNvaHJvYldRRFlrNHVRRFhIOFlvSEtwTThjdnZRVDVoNNIBgAFBVV95cUxPdlppX0tPYUcwbUJtVGlSSFB5UG5OMk9RMmg4YW1wT1VVc0pzQmhFMkFNdWZfWE1ySUNPRzgzOFdMZkN0V19pWW55RXppQWtMcDZGalB1OG1JWHZuNk1NZmZLbzludU92eTE3YU9HdzlaQ3I1emNwdGxfUWN5UnFiaQ?oc=5",
-      "title": "ISRO launches third next-gen NavIC satellite after NVS-02 setback - ThePrint",
-      "published_at": "2026-10-30T18:25:57.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMie0FVX3lxTE9HajhHUWdPMTNyOU5iTFhmaEl6cktqdGFaRVRhT3lPN0RkSVVmV3dQN2phb2VWYUlNTmo0blphTTVuMWgybVp5bmhCZEJLeE5CcE9IT1VKWXh4UUNvaHJvYldRRFlrNHVRRFhIOFlvSEtwTThjdnZRVDVoNNIBgAFBVV95cUxPdlppX0tPYUcwbUJtVGlSSFB5UG5OMk9RMmg4YW1wT1VVc0pzQmhFMkFNdWZfWE1ySUNPRzgzOFdMZkN0V19pWW55RXppQWtMcDZGalB1OG1JWHZuNk1NZmZLbzludU92eTE3YU9HdzlaQ3I1emNwdGxfUWN5UnFiaQ?oc=5\" target=\"_blank\">ISRO launches third next-gen NavIC satellite after NVS-02 setback</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">ThePrint</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "7325bb587c6b357a",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/technology/2026/10/30/mda-space-to-build-antenna-subsystems-for-66-iris%c2%b2-leo-satellites/",
-      "title": "MDA Space to Build Antenna Subsystems for 66 IRIS² LEO Satellites",
-      "published_at": "2026-10-30T18:24:03.000Z",
-      "raw_excerpt": "Canadian manufacturer MDA Space will supply digital antenna subsystems for 66 IRIS² Low-Earth Orbit (LEO) satellites, under a new contract with Thales Alenia Space announced Friday. MDA will provide its Aurora broadband digital phased array antennas and digital antenna controller, which have digital beamforming capabilities. Thales issued MDA Space an authorization to proceed valued at more than $100 million Canadian dollars ($72 million). Eutelsat contracted the LEO component of IRIS² in September , tapping Airbus to build 66 Ka-band satellites. Thales Alenia Space will supply the playloads. MDA Space said that its Aurora direct radiating arrays (DRA) will be “key enablers” for the program. These 66 satellites will form Layer 1 of the IRIS² LEO component and are set to be launched in 2029. Separately, Aerospacelab is building 264 dual Ku/Ka-band satellite platforms. MDA Space CEO Mike Greenley called the contract a “landmark moment” for MDA Space and its Aurora technology. “This critical role reflects the confidence Thales Alenia Space and the European Commission have placed in our ability to offer quickly performing, interoperable connectivity that meets the requirements of the Layer 1 satellites,” Greenley commented. The post MDA Space to Build Antenna Subsystems for 66 IRIS² LEO Satellites appeared first on Via Satellite .",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "3c7e423e9bbb0905",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNZEs5ckVHRTNnTXZlcmxmbGQ3TllIejJ6MDdlS2cwYllycThHcHpydlo3bHg3aS1RVEYzTGl3c25wb3FVMjRRcXZlVW1xV1hSRElGUEh3N1ctcnY5NGlCN1N3VndHMHRyaDNackhFbTNEVzhDdnd0TG5sc2U3NnBkOFFhYlBUdGswZWdway1kY3hOZ2czTTIzeUx3VmNkellETnpYWm1KSWI4OHRoYXozX0tJbGlQcU5iY0HSAcIBQVVfeXFMTXcwVWhCcC1DaHZqTUNVaFF6V2ZlQ3EtNkZYUG1IOGc5akpUYlpGakpydDM4bm1xaXlwSzMxWlNLWkdkZDFEU3hKOTdkeUMycjI3bVdjNWRpcWk0N2RJaE54eTR2UHJKZlY4VXNxRExpbWJqVnBlM2p0WDg2MVUtcGtxZW5aQ0VVNnBiYURiMmlxN0o2QzhneS1ILUdpVUZjMkpHTGRKYTQ2RTh3dTVVS0NUZWVWRkd2aGdyaXhWSGJ2Nnc?oc=5",
-      "title": "Watch ISRO's NVS-03 Satellite Launch Live: GSLV-F18 Mission Set For Liftoff - NDTV Profit",
-      "published_at": "2026-10-30T18:22:46.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxNZEs5ckVHRTNnTXZlcmxmbGQ3TllIejJ6MDdlS2cwYllycThHcHpydlo3bHg3aS1RVEYzTGl3c25wb3FVMjRRcXZlVW1xV1hSRElGUEh3N1ctcnY5NGlCN1N3VndHMHRyaDNackhFbTNEVzhDdnd0TG5sc2U3NnBkOFFhYlBUdGswZWdway1kY3hOZ2czTTIzeUx3VmNkellETnpYWm1KSWI4OHRoYXozX0tJbGlQcU5iY0HSAcIBQVVfeXFMTXcwVWhCcC1DaHZqTUNVaFF6V2ZlQ3EtNkZYUG1IOGc5akpUYlpGakpydDM4bm1xaXlwSzMxWlNLWkdkZDFEU3hKOTdkeUMycjI3bVdjNWRpcWk0N2RJaE54eTR2UHJKZlY4VXNxRExpbWJqVnBlM2p0WDg2MVUtcGtxZW5aQ0VVNnBiYURiMmlxN0o2QzhneS1ILUdpVUZjMkpHTGRKYTQ2RTh3dTVVS0NUZWVWRkd2aGdyaXhWSGJ2Nnc?oc=5\" target=\"_blank\">Watch ISRO's NVS-03 Satellite Launch Live: GSLV-F18 Mission Set For Liftoff</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NDTV Profit</font>",
-      "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "e1a991d68963da47",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNZEs5ckVHRTNnTXZlcmxmbGQ3TllIejJ6MDdlS2cwYllycThHcHpydlo3bHg3aS1RVEYzTGl3c25wb3FVMjRRcXZlVW1xV1hSRElGUEh3N1ctcnY5NGlCN1N3VndHMHRyaDNackhFbTNEVzhDdnd0TG5sc2U3NnBkOFFhYlBUdGswZWdway1kY3hOZ2czTTIzeUx3VmNkellETnpYWm1KSWI4OHRoYXozX0tJbGlQcU5iY0E?oc=5",
-      "title": "Watch ISRO's NVS-03 Satellite Launch Live: GSLV-F18 Mission Set For Liftoff - NDTV Profit",
-      "published_at": "2026-10-30T18:22:46.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiugFBVV95cUxNZEs5ckVHRTNnTXZlcmxmbGQ3TllIejJ6MDdlS2cwYllycThHcHpydlo3bHg3aS1RVEYzTGl3c25wb3FVMjRRcXZlVW1xV1hSRElGUEh3N1ctcnY5NGlCN1N3VndHMHRyaDNackhFbTNEVzhDdnd0TG5sc2U3NnBkOFFhYlBUdGswZWdway1kY3hOZ2czTTIzeUx3VmNkellETnpYWm1KSWI4OHRoYXozX0tJbGlQcU5iY0E?oc=5\" target=\"_blank\">Watch ISRO's NVS-03 Satellite Launch Live: GSLV-F18 Mission Set For Liftoff</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NDTV Profit</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "db4836d490f8de10",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQY09aZVM3UjFhNGNWSTRueWw3WUM1blBnaEw5eWhGbEd5Qm5VQ3duYnVBbjVPYzZZRmI0LVNmZEhfNU1Nbll1dDJJbHZ5TWJoRi14VmdFTFM2NWFPalkxb2FNaEhNRWs1eWV3emRWaERXcGM0S2R0LVVtNks5LTItWHZudU02NTE5WWdvQkhDZlB6TDBZVVpLRzB4WnpJWXZSR0FQN29mcUJtUHNCMmZUVC1oMUVmcm_SAb8BQVVfeXFMUEl2WnFZWHlwaVFBSWZ4dW5BZzZodmZSUDVoSk5FUjR3NFpmYWxwWmVlOTlReElseGE3X3lKU1lLNmstVFd5Uklubjgxb1dGTlNuaThPTHY1Y2tnNUxmdGRxVS0tbVVLVV85VWFiNlV5ZTV2MVh5Nzg1WFhXQ3BUWnFQV0xxTTR5N20wS01HM2tnSzl2RWxCVmQ3Zk50akptbmxuSk9iQW1oMXlHb1loNjdDNlJGWlBwbGUwZVpqczA?oc=5",
-      "title": "ISRO Launches Next-Gen Satellite To Strengthen Indigenous GPS System - NDTV",
-      "published_at": "2026-10-30T18:22:38.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMitwFBVV95cUxQY09aZVM3UjFhNGNWSTRueWw3WUM1blBnaEw5eWhGbEd5Qm5VQ3duYnVBbjVPYzZZRmI0LVNmZEhfNU1Nbll1dDJJbHZ5TWJoRi14VmdFTFM2NWFPalkxb2FNaEhNRWs1eWV3emRWaERXcGM0S2R0LVVtNks5LTItWHZudU02NTE5WWdvQkhDZlB6TDBZVVpLRzB4WnpJWXZSR0FQN29mcUJtUHNCMmZUVC1oMUVmcm_SAb8BQVVfeXFMUEl2WnFZWHlwaVFBSWZ4dW5BZzZodmZSUDVoSk5FUjR3NFpmYWxwWmVlOTlReElseGE3X3lKU1lLNmstVFd5Uklubjgxb1dGTlNuaThPTHY1Y2tnNUxmdGRxVS0tbVVLVV85VWFiNlV5ZTV2MVh5Nzg1WFhXQ3BUWnFQV0xxTTR5N20wS01HM2tnSzl2RWxCVmQ3Zk50akptbmxuSk9iQW1oMXlHb1loNjdDNlJGWlBwbGUwZVpqczA?oc=5\" target=\"_blank\">ISRO Launches Next-Gen Satellite To Strengthen Indigenous GPS System</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">NDTV</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "862476c3f6aa038e",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPTEpDX1VtNF9fSWtScFlSV2ZBeUE4NlcwWFFUREJQVjIyc2F1WFRZT3luaS11SGlSaDYtQkZUQ0tqSXU0RGNWX2xvSWdTc3lwWW5UTmpWNV9DRXp3QmdOTWxaLWZ3TTNDY1lMV1hQNjNJQk55WVM3X0RWb29mOFB1R1U3azRKcVlycXJoSG1zcnBMZ0tzd3RFX2FwN1JpNU9vRlJReFNRRHNoa2VKYml3TFMySWVOT01ZcGxPNkJwbTBqYTJSalhFdkVZN0RCVzM0NlB2WmFZSXdVek93UGdXLTdR0gHnAUFVX3lxTE5IaTVmQ3ZoQnhqMU9zazlEdmxONUhRMHRGSWZuWGEyVnM4Zzltb2dReFZBbmpLWnNscGxubFNsblMxYlNlOC1iLUdRVF9zZ1E2clN3eGwzeUQtd2hfaXI5ckhFeVZtemdkZnpLazFXX1h5NGl4bTZBcEVxMnk2UW1vRHFkeHB4TEl5c3NXZTFIRXktSy1QNUU0a0ZmNXRlTERNMVhrT1c5WnQxaHJhaUV0Wm1NcXBVVGZVdWk2Z0VzTm5KdzVWVXl0ZXBLTTEyMGpCZlpxM2M1QVZTLTZnRm5fU1NrZ3NzUQ?oc=5",
-      "title": "India gets its own GPS boost: Isro launches NVS-03 to strengthen homegrown navigation - India Today",
-      "published_at": "2026-10-30T18:21:39.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi4gFBVV95cUxPTEpDX1VtNF9fSWtScFlSV2ZBeUE4NlcwWFFUREJQVjIyc2F1WFRZT3luaS11SGlSaDYtQkZUQ0tqSXU0RGNWX2xvSWdTc3lwWW5UTmpWNV9DRXp3QmdOTWxaLWZ3TTNDY1lMV1hQNjNJQk55WVM3X0RWb29mOFB1R1U3azRKcVlycXJoSG1zcnBMZ0tzd3RFX2FwN1JpNU9vRlJReFNRRHNoa2VKYml3TFMySWVOT01ZcGxPNkJwbTBqYTJSalhFdkVZN0RCVzM0NlB2WmFZSXdVek93UGdXLTdR0gHnAUFVX3lxTE5IaTVmQ3ZoQnhqMU9zazlEdmxONUhRMHRGSWZuWGEyVnM4Zzltb2dReFZBbmpLWnNscGxubFNsblMxYlNlOC1iLUdRVF9zZ1E2clN3eGwzeUQtd2hfaXI5ckhFeVZtemdkZnpLazFXX1h5NGl4bTZBcEVxMnk2UW1vRHFkeHB4TEl5c3NXZTFIRXktSy1QNUU0a0ZmNXRlTERNMVhrT1c5WnQxaHJhaUV0Wm1NcXBVVGZVdWk2Z0VzTm5KdzVWVXl0ZXBLTTEyMGpCZlpxM2M1QVZTLTZnRm5fU1NrZ3NzUQ?oc=5\" target=\"_blank\">India gets its own GPS boost: Isro launches NVS-03 to strengthen homegrown navigation</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">India Today</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a11a3aecbb0be496",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNTXZPNEJ5dGtFbTQ4eW5HVXNEUWVoQy03a2VqbXJ2NnRiN0VyZ1JSM1UydW1pdVhuNWUxd0duaEF4UkhHR3l4NWJzWlJLRXY1enh6OHIxQjZVbGZ2eWNEZTQ1bTh1bmdwVWZ3WjJVQ2E0SDFlbXlzYVlBa2E5eTl0VC1YNUVrQ1ZpMHJUUlNKREVXcERvMkJfbFNtM0JaTVpNVGlkQnZ5SDZBMktzYkNFajZNaHp5SnBUcE9IRUxDbUxTTTh0U2ZNZDJZTktqSVRYeXNZU0xlcGIyd3pTMjUwX2djWWtQNjTSAewBQVVfeXFMUGtzTTFBbnA3QzJOejN4WkR3VlZrUVBoVGxESlFUendzcl9FRXhnU0F5Tlc0dlEweTQ5Vld6Z1F5Zm5rMkkxajhGWVZncDFmeGxWMkZFU1NpMnBJSXA2ZFlrdWF6TkRXUGNGLXVLV0hMV0hQTU9mNWpVcUwzUGxvMEIxRXBmZUl5TXMzRVJSYlpZdlRFWlduS1RTcVFVSnlCMGNsWFJRZTRyTWZjWmFORzVxV1dJNVlEamNGNjJ0SEVWNVRROWpsWDliWXBrWnJCQ1ZYRVpQRk1ZTUlYeU9OSkhtSi15RVA3SnJkTXA?oc=5",
-      "title": "Isro's navigation satellite NVS-03 lifts off from Andhra Pradesh's Sriharikota | India News - Hindustan Times",
-      "published_at": "2026-10-30T18:21:27.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5wFBVV95cUxNTXZPNEJ5dGtFbTQ4eW5HVXNEUWVoQy03a2VqbXJ2NnRiN0VyZ1JSM1UydW1pdVhuNWUxd0duaEF4UkhHR3l4NWJzWlJLRXY1enh6OHIxQjZVbGZ2eWNEZTQ1bTh1bmdwVWZ3WjJVQ2E0SDFlbXlzYVlBa2E5eTl0VC1YNUVrQ1ZpMHJUUlNKREVXcERvMkJfbFNtM0JaTVpNVGlkQnZ5SDZBMktzYkNFajZNaHp5SnBUcE9IRUxDbUxTTTh0U2ZNZDJZTktqSVRYeXNZU0xlcGIyd3pTMjUwX2djWWtQNjTSAewBQVVfeXFMUGtzTTFBbnA3QzJOejN4WkR3VlZrUVBoVGxESlFUendzcl9FRXhnU0F5Tlc0dlEweTQ5Vld6Z1F5Zm5rMkkxajhGWVZncDFmeGxWMkZFU1NpMnBJSXA2ZFlrdWF6TkRXUGNGLXVLV0hMV0hQTU9mNWpVcUwzUGxvMEIxRXBmZUl5TXMzRVJSYlpZdlRFWlduS1RTcVFVSnlCMGNsWFJRZTRyTWZjWmFORzVxV1dJNVlEamNGNjJ0SEVWNVRROWpsWDliWXBrWnJCQ1ZYRVpQRk1ZTUlYeU9OSkhtSi15RVA3SnJkTXA?oc=5\" target=\"_blank\">Isro's navigation satellite NVS-03 lifts off from Andhra Pradesh's Sriharikota | India News</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Hindustan Times</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "d757e460c1c363e9",
-      "source_name": "Via Satellite",
-      "url": "https://www.satellitetoday.com/connectivity/2026/10/30/eutelsat-sets-10b-target-for-oneweb-revenue-from-2032-to-2040/",
-      "title": "Eutelsat Sets 10B Target for OneWeb Revenue from 2032 to 2040",
-      "published_at": "2026-10-30T18:18:37.000Z",
-      "raw_excerpt": "Eutelsat ’s revenue from the OneWeb constellation grew by 30% year-over-year in the first quarter of its fiscal year, despite lower terminal sales during the quarter. The operator set a bold projection for Low-Earth Orbit revenue in the future. CEO Jean-François Fallacher told investors that IRIS², forming the next-generation of Eutelsat’s LEO infrastructure, will set the stage for 10 billion euro in OneWeb service revenue between 2032 and 2040 ($11 billion). This comes after Eutelsat ordered 330 LEO satellites for IRIS² during the quarter. The operator also has 669 OneWeb refresh satellites on order. “This milestone that we passed this quarter is cementing Eutelsat’s role at the heart of Europe’s future sovereign and connectivity infrastructure, giving us absolutely great confidence about the future of Eutelsat in the satcom business,” Fallacher commented. Eutelsat reported Q1 financials for its 2026-27 fiscal year on Oct. 29. Overall, the company reported 286 million euro ($319 million) in revenue, down 2.4% year-over-year and about 1% on a like-for-like basis. Mobile connectivity led growth at 39% year-over-year, driven by the aviation segment. Government Services grew 15% and Fixed Connectivity declined 4%. Video revenue declined nearly 18% to 110 million euro ($123 million). Video made up about 40% of Eutelsat’s operating revenue during the quarter, while Connectivity segments made up 60%. Fallacher told investors that LEO growth is expected to offset the decline of Geostationary Orbit (GEO) revenues this year, including the decline of video revenues. Q1 was “quite” a lower quarter in terminal sales, Fallacher said, although Eutelsat does not break out LEO revenue into terminals vs. services. He called the dip “nothing to worry about” and said it is not related to any bottleneck in the supply chain. Fallacher referenced “recent events” accelerating Eutelsat’s terminal sales, likely a reference to recent Starlink/Starshield disruptions that impacted military ope",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "49f9a78455f7fef2",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPbElUOUt3ZWhtaElFUFJFNVQxWEZMaFB0OVQ4VjMtWW1rNlI3UWhLOFJPWlUxelpBdmpSc2VfZDdUd3QzS0pBSHdVaGRmMFNQTDd2X2xtZUsxUlpwYmoxNnJWR2VCVHhrRlRqWENLM1BsM094NC1ORS16b2dVZFRpZmR2dWU1dFdsRUJsdXQ2RWE1azAzT0UyWFFIdHJNUm9UTVp5VzhtMm42RHVVbXdpRTh3bjBFcDFEbkM0TTlmbDBnUk5KTzR5VWxBWQ?oc=5",
-      "title": "Binance Hack: CZ Fires Back at Elon Musk, Cites $1B SpaceX Stake as Coinbase Offers Security Support - Brave New Coin",
-      "published_at": "2026-10-30T18:18:18.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiywFBVV95cUxPbElUOUt3ZWhtaElFUFJFNVQxWEZMaFB0OVQ4VjMtWW1rNlI3UWhLOFJPWlUxelpBdmpSc2VfZDdUd3QzS0pBSHdVaGRmMFNQTDd2X2xtZUsxUlpwYmoxNnJWR2VCVHhrRlRqWENLM1BsM094NC1ORS16b2dVZFRpZmR2dWU1dFdsRUJsdXQ2RWE1azAzT0UyWFFIdHJNUm9UTVp5VzhtMm42RHVVbXdpRTh3bjBFcDFEbkM0TTlmbDBnUk5KTzR5VWxBWQ?oc=5\" target=\"_blank\">Binance Hack: CZ Fires Back at Elon Musk, Cites $1B SpaceX Stake as Coinbase Offers Security Support</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Brave New Coin</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "77e5a2a0676cc878",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQY2tNWEZHUlVSc3BnXzFOVXNrcE82Z0NuUTRLU0pOMFh3VDdCMmFKUU1YVE1lbk00WjhacEt5amx6R3ZiWl8zZDZxOGY5M3E5YXBWOU5uOUFsOGdHSkFsZTlfVi1oZjhtMjFIWENta09HTkYzM0dRbVB0RWNiUDFYak55YlpQa215LVBZQVhPV3V6WG44VnQwUlpqV2VhUk1TeUk0a2JOcEFqUktZV1lpTkVERDhKSGpjMFpTOHBMbndBbk02US1tbWZIVTZkeU5MUzVDbXVUUzZMcmF6MlUtUFBPaUXSAeoBQVVfeXFMTV9Ubkh5NlBjNFFDRDhLRzBjOThsWEd2Tng3Z0YyQkhPUUhDYXl0THNCOHV0amxPd3NDMjd3UzJIZG9EeWlmSks5cnBFUFc0d1NCenVBSnJKeGJoNjdLdi1FbjQzclE1Wm5OWERwMXRCQXQ1clN0NHdkZ3dLTW9yeVpldFVRSHp6ai1FSGdTeFJVREVXckhjU1BzUFZ5V0VRaWtycWVWbm43aDdOTFpnVkFqakFUQ3pxVThsMDhEVTVyTWJKa1c3cVdpWFBHaGhXVk91QkRUOXlPNnk4NWJhN2poSGRXQkFhZTVB?oc=5",
-      "title": "ISRO GSLV-F18 Launch: India Set To Deploy Navigation Satellite NVS-03 | Why This Mission Matters - News18",
-      "published_at": "2026-10-30T18:18:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi5AFBVV95cUxQY2tNWEZHUlVSc3BnXzFOVXNrcE82Z0NuUTRLU0pOMFh3VDdCMmFKUU1YVE1lbk00WjhacEt5amx6R3ZiWl8zZDZxOGY5M3E5YXBWOU5uOUFsOGdHSkFsZTlfVi1oZjhtMjFIWENta09HTkYzM0dRbVB0RWNiUDFYak55YlpQa215LVBZQVhPV3V6WG44VnQwUlpqV2VhUk1TeUk0a2JOcEFqUktZV1lpTkVERDhKSGpjMFpTOHBMbndBbk02US1tbWZIVTZkeU5MUzVDbXVUUzZMcmF6MlUtUFBPaUXSAeoBQVVfeXFMTV9Ubkh5NlBjNFFDRDhLRzBjOThsWEd2Tng3Z0YyQkhPUUhDYXl0THNCOHV0amxPd3NDMjd3UzJIZG9EeWlmSks5cnBFUFc0d1NCenVBSnJKeGJoNjdLdi1FbjQzclE1Wm5OWERwMXRCQXQ1clN0NHdkZ3dLTW9yeVpldFVRSHp6ai1FSGdTeFJVREVXckhjU1BzUFZ5V0VRaWtycWVWbm43aDdOTFpnVkFqakFUQ3pxVThsMDhEVTVyTWJKa1c3cVdpWFBHaGhXVk91QkRUOXlPNnk4NWJhN2poSGRXQkFhZTVB?oc=5\" target=\"_blank\">ISRO GSLV-F18 Launch: India Set To Deploy Navigation Satellite NVS-03 | Why This Mission Matters</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">News18</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "2cbaa4912644fdc6",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPWXNHV3c0Q2xfUmpBTEo1ZHRpcDBBNnplVXBxTl8zQmdfdEJLYV9hNVNuZlBodE5WRnVPTW9acVc1MFBOcGE2OWZCalBjUENQR2NLbWlTX2hJNGFQZHl0RkhvQWc5ZmdLQ0d1dVNxc0trQldQZk1FaTJBN1VXcnNzVFRPV2xVWjk3dTdubVRQZDFQaG5hZDBrbjZlN2M5bk91bUhLXzg3NUUwdUpRRGNYRklhRHN1dzkwUHJoeGY0cW5QcG9CcHNMWFBQNjBKQdIBzgFBVV95cUxPWXNHV3c0Q2xfUmpBTEo1ZHRpcDBBNnplVXBxTl8zQmdfdEJLYV9hNVNuZlBodE5WRnVPTW9acVc1MFBOcGE2OWZCalBjUENQR2NLbWlTX2hJNGFQZHl0RkhvQWc5ZmdLQ0d1dVNxc0trQldQZk1FaTJBN1VXcnNzVFRPV2xVWjk3dTdubVRQZDFQaG5hZDBrbjZlN2M5bk91bUhLXzg3NUUwdUpRRGNYRklhRHN1dzkwUHJoeGY0cW5QcG9CcHNMWFBQNjBKQQ?oc=5",
-      "title": "ISRO Prepares GSLV-F18 Launch With NVS-03 To Boost NavIC Navigation - India Today - India Today",
-      "published_at": "2026-10-30T18:16:32.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizgFBVV95cUxPWXNHV3c0Q2xfUmpBTEo1ZHRpcDBBNnplVXBxTl8zQmdfdEJLYV9hNVNuZlBodE5WRnVPTW9acVc1MFBOcGE2OWZCalBjUENQR2NLbWlTX2hJNGFQZHl0RkhvQWc5ZmdLQ0d1dVNxc0trQldQZk1FaTJBN1VXcnNzVFRPV2xVWjk3dTdubVRQZDFQaG5hZDBrbjZlN2M5bk91bUhLXzg3NUUwdUpRRGNYRklhRHN1dzkwUHJoeGY0cW5QcG9CcHNMWFBQNjBKQdIBzgFBVV95cUxPWXNHV3c0Q2xfUmpBTEo1ZHRpcDBBNnplVXBxTl8zQmdfdEJLYV9hNVNuZlBodE5WRnVPTW9acVc1MFBOcGE2OWZCalBjUENQR2NLbWlTX2hJNGFQZHl0RkhvQWc5ZmdLQ0d1dVNxc0trQldQZk1FaTJBN1VXcnNzVFRPV2xVWjk3dTdubVRQZDFQaG5hZDBrbjZlN2M5bk91bUhLXzg3NUUwdUpRRGNYRklhRHN1dzkwUHJoeGY0cW5QcG9CcHNMWFBQNjBKQQ?oc=5\" target=\"_blank\">ISRO Prepares GSLV-F18 Launch With NVS-03 To Boost NavIC Navigation - India Today</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">India Today</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "461c6ff9f38653db",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNVjBXWUY5djNzWEl4Umo0VVFfV2dHSGE5RVl0YTdQczQ2ekRHYnk2NVZDMmUwdW5yNnBfZS1HODQ2LXNycExMV0FfT0tid21ic3ppeW1GdkU4cmNtUW1RcjNudDUxbFNUTFpWNUhoTzRINkExRk1nVzlQWUU4QXBJR2Z1VVZEQkg1bW1hRW9lUjVnWUE0SnVhdWxTZFF4R1NtaDNpVjhYcnVfclB1ZmVJczhUTC1xcGg0SjN2Zmh0RFB0YlQxclo0S190SUxyQ0gtN0tv0gHYAUFVX3lxTE51UnFrbHNPTnhKMDV3b3ZpVjd4SzNqaGZHTG9JQXhOQkx0cUFhdm0zVUhSMEI4V3NEV2RycUxQbVdUcWFGdHRLN2JXS0dvZkY1bHhXWkpNUDZWY2V2akVReWs2c0VJV09obWtnWmgxSjdhYVNKOFA1bER4SDhOREtsdUhSdTJPMkVaRnlpU1lZOGRERG5TMTNZdkk2WVlPXzFaYWJsSXpacmZSTnJoNkhVWTZqbm9lTXhXWTZpaGpJdEpDTVd6Ujc2ZHFUTXUxUlBsMlNvd2ZGMw?oc=5",
-      "title": "LIVE: ISRO launches NavIC satellite NVS-03 aboard GSLV-F18 from Sriharikota - The Economic Times",
-      "published_at": "2026-10-30T18:14:47.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi0wFBVV95cUxNVjBXWUY5djNzWEl4Umo0VVFfV2dHSGE5RVl0YTdQczQ2ekRHYnk2NVZDMmUwdW5yNnBfZS1HODQ2LXNycExMV0FfT0tid21ic3ppeW1GdkU4cmNtUW1RcjNudDUxbFNUTFpWNUhoTzRINkExRk1nVzlQWUU4QXBJR2Z1VVZEQkg1bW1hRW9lUjVnWUE0SnVhdWxTZFF4R1NtaDNpVjhYcnVfclB1ZmVJczhUTC1xcGg0SjN2Zmh0RFB0YlQxclo0S190SUxyQ0gtN0tv0gHYAUFVX3lxTE51UnFrbHNPTnhKMDV3b3ZpVjd4SzNqaGZHTG9JQXhOQkx0cUFhdm0zVUhSMEI4V3NEV2RycUxQbVdUcWFGdHRLN2JXS0dvZkY1bHhXWkpNUDZWY2V2akVReWs2c0VJV09obWtnWmgxSjdhYVNKOFA1bER4SDhOREtsdUhSdTJPMkVaRnlpU1lZOGRERG5TMTNZdkk2WVlPXzFaYWJsSXpacmZSTnJoNkhVWTZqbm9lTXhXWTZpaGpJdEpDTVd6Ujc2ZHFUTXUxUlBsMlNvd2ZGMw?oc=5\" target=\"_blank\">LIVE: ISRO launches NavIC satellite NVS-03 aboard GSLV-F18 from Sriharikota</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">The Economic Times</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "56dd62900d5bcf2e",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/joseph-n-hall.bsky.social/post/3mz4f2lgsy22c",
-      "title": "@joseph-n-hall.bsky.social on Bluesky",
-      "published_at": "2026-10-30T18:13:33.469Z",
-      "raw_excerpt": "SpaceX should be required to continue providing Falcon/Dragon services, via DPA or other means if necessary arstechnica.com/space/2026/1...",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "eada37ca1d7167c7",
-      "source_name": "Futurism",
-      "url": "https://futurism.com/artificial-intelligence/pope-leo-ai-personhood",
-      "title": "Pope Leo Comes Out Swinging Against AI Personhood",
-      "published_at": "2026-10-30T18:06:15.000Z",
-      "raw_excerpt": "Sorry to anybody who believes AI models deserve rights: the Pontiff is not on your side. In a lengthy thread on X-formerly-Twitter today, Pope Leo XIV issued a scathing rebuke of calls for “AI personhood,” or the argument that AI models should be granted rights through a process of legal personhood. This would effectively make AI systems human in the eyes of the law, an approach that the Pope argues could shift accountability for AI-enabled harm or abuse away from the humans who actually build and use AI systems. “The future of Artificial Intelligence is not pre-determined,” reads the Pope’s decree. “As a technology developed by human beings, its future depends on the choices we make. We therefore have the responsibility to guide, change and, when necessary, reject its applications. A reliable system that serves the human person is of greater value than one that is exceptionally powerful but whose consequences cannot be adequately foreseen or controlled.” “Machines are tools, not persons,” he added. “Today, some propose granting these systems rights, or even legal personhood. Such an approach risks obscuring human responsibility and leaving those who suffer harm to confront a faceless entity.” The future of #ArtificialIntelligence is not pre-determined. As a technology developed by human beings, its future depends on the choices we make. We therefore have the responsibility to guide, change and, when necessary, reject its applications. A reliable system that serves the… &mdash; Pope Leo XIV (@Pontifex) October 30, 2026 Leo isn’t alone in his well-documented concerns. Lawyers, activists, and lawmakers have taken stands against legal personhood for AI on similar grounds, arguing that giving rights to AI systems, for example First Amendment rights to freedom of speech, could muddy the legal waters around who&nbsp;is&nbsp;responsible when things go wrong. Doing so could even give way to a scenario in which no human is clearly accountable for the consequences of actions ",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "d12040a0b10bce6b",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNRGxodlNrVzVMWlN4YnpIVEFqMzFYOXpjNnNCZXo4QUs5NzUtZEJ4a0M4czlpWS1WOTB6Sk5UbVRPWnc0R01YcVRnTi1lM1hFbU5vbUdTQ3lzX0F3LUFndDdwVkNzNEhIWms2d1A5Y002UF9UWWtrUXppSkQ1bzVfS0ZYcTcyQ3dsUjNzQ3dXRkVRSHhucmdYTU1FalppSFptc2VVQnZ2T2tUQ05NZk1UTy02ZmQtVUE4ZjBPNmFVcXpibTZ6dkFLRnFXVkdiMDRyYU1vNFota0Fhb0E?oc=5",
-      "title": "Tesla-SpaceX Merger Could Face The Biggest Regulatory Risk In China, BofA Warns - Stocktwits",
-      "published_at": "2026-10-30T18:04:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi2wFBVV95cUxNRGxodlNrVzVMWlN4YnpIVEFqMzFYOXpjNnNCZXo4QUs5NzUtZEJ4a0M4czlpWS1WOTB6Sk5UbVRPWnc0R01YcVRnTi1lM1hFbU5vbUdTQ3lzX0F3LUFndDdwVkNzNEhIWms2d1A5Y002UF9UWWtrUXppSkQ1bzVfS0ZYcTcyQ3dsUjNzQ3dXRkVRSHhucmdYTU1FalppSFptc2VVQnZ2T2tUQ05NZk1UTy02ZmQtVUE4ZjBPNmFVcXpibTZ6dkFLRnFXVkdiMDRyYU1vNFota0Fhb0E?oc=5\" target=\"_blank\">Tesla-SpaceX Merger Could Face The Biggest Regulatory Risk In China, BofA Warns</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Stocktwits</font>",
-      "fetched_at": "2026-10-31T05:15:37.901Z",
-      "consumed": true
-    },
-    {
-      "id": "f906db88378d36f7",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSzFCMkItamQzZmpBUDB1SnE3N0NEYlNsYzVnZmhaM2JoS3M5OUxRaU5vNzg1NnN0ZWNrR09OaVhHTTFLRV9KN041ZWpPbS1LaERFRnh5R0hxWGZfTDJLVzVyRkV6cUN6UDlBYmxsNzFKek1adThOR0s0ZXZ1aW1MeVNydVRiQ3FmVlNZVjJyQkczUXl0SnU4eDBqTFV3NGxSaDJhOTU3X1dNd3Ezc3JQSUVGcGM1S1JJckxPSg?oc=5",
-      "title": "'A good marriage': Analysts react to Anthropic becoming SpaceX's top customer - Yahoo Finance",
-      "published_at": "2026-10-30T18:01:51.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMivAFBVV95cUxOSzFCMkItamQzZmpBUDB1SnE3N0NEYlNsYzVnZmhaM2JoS3M5OUxRaU5vNzg1NnN0ZWNrR09OaVhHTTFLRV9KN041ZWpPbS1LaERFRnh5R0hxWGZfTDJLVzVyRkV6cUN6UDlBYmxsNzFKek1adThOR0s0ZXZ1aW1MeVNydVRiQ3FmVlNZVjJyQkczUXl0SnU4eDBqTFV3NGxSaDJhOTU3X1dNd3Ezc3JQSUVGcGM1S1JJckxPSg?oc=5\" target=\"_blank\">'A good marriage': Analysts react to Anthropic becoming SpaceX's top customer</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "07cdcc45c333506a",
-      "source_name": "Space.com",
-      "url": "https://www.space.com/space-exploration/the-rocket-scientist-who-summoned-demons-the-true-horror-story-of-jack-parsons",
-      "title": "The rocket scientist who summoned demons: The true horror story of Jack Parsons",
-      "published_at": "2026-10-30T18:00:00.000Z",
-      "raw_excerpt": "In the winter of 1946, two men from very different walks of life walked into California's Mojave Desert together, where one of them became convinced an extraordinary experiment they had been conducting had finally succeeded. One of the men was pioneering rocket scientist Jack Parsons , a self-taught chemist who helped establish what would become NASA's Jet Propulsion Laboratory , and whose innovations in rocket propulsion would help lay the groundwork for the Space Race that would erupt in the years that followed. His unlikely companion was none other than L. Ron Hubbard, then a science fiction writer who had yet to compose the writings that would form the underpinnings of the Church of Scientology that he later established. Despite Parsons' work with rockets and his companion Hubbard's fictional writings about them, their work together in the early months of 1946 had nothing to do with rocket propulsion, spacecraft, or other technological innovations that would eventually carry humans to space. Instead, Parsons and Hubbard were engaged in an elaborate series of occult ceremonies at the time, whereby they intended to summon an elemental feminine goddess known as \"Babalon\" (not to be confused with Babylon) to help them bring an otherworldly entity into physical existence. Their efforts, known today as the \"Babalon Working,\" represent one of the most unusual affairs in American history, with tangential connections to the history of space exploration. Given its strangeness, the episode has garnered attention from several scholars and historians over the decades, who have sought to understand a series of events at the intersection of science and the occult involving one of the most unconventional innovators behind modern rocket propulsion. Rockets and magic Parsons, born in 1914, would become a key figure in the early development of American rocket technologies by the 1930s and 1940s in California, ultimately helping establish what would become the Jet Propulsion Labora",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "a70e7fc0a227543d",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPTjU1YVJ1ZXZUQWpGRjNKVWthTVhDTi1XeEpVMmJWMXV0d2d1c1lTRGtLM1loYWxCWk8zdGUzSVpxdUp1Vkl3NFpLNlAzeW1BVWpJSTRZdGluVnRLV0VvNnVFUzlVS1p0STdENVR3dXBiRndCWHR0dDcwby1uMkRtZWVITElBOFVJSkNVVmwzUVpqTWhYMjNmMWJJNA?oc=5",
-      "title": "Tesla-SpaceX Merger Could Face The Biggest Regulatory Risk In China, BofA Warns - Yahoo Finance",
-      "published_at": "2026-10-30T17:58:59.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMimwFBVV95cUxPTjU1YVJ1ZXZUQWpGRjNKVWthTVhDTi1XeEpVMmJWMXV0d2d1c1lTRGtLM1loYWxCWk8zdGUzSVpxdUp1Vkl3NFpLNlAzeW1BVWpJSTRZdGluVnRLV0VvNnVFUzlVS1p0STdENVR3dXBiRndCWHR0dDcwby1uMkRtZWVITElBOFVJSkNVVmwzUVpqTWhYMjNmMWJJNA?oc=5\" target=\"_blank\">Tesla-SpaceX Merger Could Face The Biggest Regulatory Risk In China, BofA Warns</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "df7a21e48e2507f1",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/dryool.bsky.social/post/3mz4e3nrnvc2v",
-      "title": "@dryool.bsky.social on Bluesky",
-      "published_at": "2026-10-30T17:56:16.985Z",
-      "raw_excerpt": "As a private corporation, #SpaceX absolutely aren't obliged to supply #NASA with launch services. This is on #NASA and those favouring private sector provision without planning for downstream consequences. Unless they were favouring endangering publicly-funded science - in which case, well done!",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "4313cabb83679580",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/andrewmfounder.bsky.social/post/3mz4ddmah2k2r",
-      "title": "@andrewmfounder.bsky.social on Bluesky",
-      "published_at": "2026-10-30T17:42:49.977Z",
-      "raw_excerpt": "I suspect the things Musk is afraid of: 1. Investigations into actions with Starshield in Ukraine 2. A spin off the launch and communications parts of SpaceX outside of his control 3. Investigations into Tesla FSD crashes 4. Accountability for his actions with DOGE 5. A new tax on billionaires",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "505ab8351e81ee61",
-      "source_name": "Google News: launch",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxOc1J1YktQUFJOWnhkYWNpTFM5QWlKd0F1R29yajFrOC1BTWZmeEk2OVBORzhETUljWHNVX2I5V0w1dlVRWDNKZHpXNjR3SHJBWEFFMGM0V3l5azI5bmlraVV4X3hlWWdsV2VwYjNqV2pfQzhIcC1XTFVQQTZRM25PS1VERHdyb1V3enM4dTU5c3RXMm9kejJCS3M2eUtWM3ZzdnpzT3BqWDVuMEQtZlo2RGE2OU5fbDNVYm9oRXpnX1VjY2dpTEdYaGVOcFN3WWc?oc=5",
-      "title": "Amazon earnings fall short amid tech sell-off, and Anthropic becomes SpaceX's top partner - Yahoo Finance",
-      "published_at": "2026-10-30T17:40:24.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMizwFBVV95cUxOc1J1YktQUFJOWnhkYWNpTFM5QWlKd0F1R29yajFrOC1BTWZmeEk2OVBORzhETUljWHNVX2I5V0w1dlVRWDNKZHpXNjR3SHJBWEFFMGM0V3l5azI5bmlraVV4X3hlWWdsV2VwYjNqV2pfQzhIcC1XTFVQQTZRM25PS1VERHdyb1V3enM4dTU5c3RXMm9kejJCS3M2eUtWM3ZzdnpzT3BqWDVuMEQtZlo2RGE2OU5fbDNVYm9oRXpnX1VjY2dpTEdYaGVOcFN3WWc?oc=5\" target=\"_blank\">Amazon earnings fall short amid tech sell-off, and Anthropic becomes SpaceX's top partner</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Yahoo Finance</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "5f8852d2023bd34a",
-      "source_name": "Bluesky search: spacex launch",
-      "url": "https://bsky.app/profile/bigearthdata.ai/post/3mz4cy5qtqq2z",
-      "title": "@bigearthdata.ai on Bluesky",
-      "published_at": "2026-10-30T17:36:25.581Z",
-      "raw_excerpt": "Analysts find looming launch crisis is \"more severe\" than anticipated ->Ars Technica | More on \"Global rocket launch capacity shortage\" at BigEarthData.ai",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "23fa4f291c8596b2",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxOZEc3ZVpIWldYbHBYcUtXUXVQOHhzZk01elhuekViQkJLT0RtQmNFLVFrRXh5WHc4YW0wNW5mU2oxRDdOMnE3cmVucjdNT2YyQnJTVFRuVWNLVEpZbWRMbERBTFlTZE1KVkFya3BmMmVYSHNkUnB2QUFEeDNaV1BidE05ZXZDMG9UN3IxUkprbmJub1F6eHVxY01xSUprNnd0V2xnREFFcWdyTlNDUFVWTzlTNmdrRHZ2bGVOX0lIdC01OUlzTDRFTmVZdHJ6cWpMN1hvS0RoUHRuU3dqZDQ5UTB3cG9Yd21DbnUyZ2ZkSFgxMDZld2ZjblJXZ9IBgAJBVV95cUxPaHdSUGIyMlNjTzdTYko5ZU1GR0lBVTdkLVUtS1k4Tk1UdWR5dEdXYlpGLUtxRDZpOWtGai1Kb0ZxWWZMamR1SlRtX2wzVE5HMXJxNHRzMXIzX1FMalNJdWVxNzlhQmNaMzVLb04tZV9JQWpKQmF2TjVBNElsc3NxZ0d5MmVvWVBzWVRSc3FnSl9CbWk3SzdSaUhTWldlZGo0Nmgxb1JrSTI0S09RMmN0TUliWndZUGRRUENnOEgwblVZZlRpYWJ2WlVoRjRrdjlQNG5XSVl4TU1HdDk2dGlQel8wVTV2MWxpc1Fxdy1COV9VcDFUSjY4Y1o4cnBMRVh4?oc=5",
-      "title": "ISRO GSLV-F18 Launch 2026 tonight: NVS-03 liftoff from Sriharikota, India's NavIC mission explained |... - Moneycontrol.com",
-      "published_at": "2026-10-30T17:30:49.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMi-wFBVV95cUxOZEc3ZVpIWldYbHBYcUtXUXVQOHhzZk01elhuekViQkJLT0RtQmNFLVFrRXh5WHc4YW0wNW5mU2oxRDdOMnE3cmVucjdNT2YyQnJTVFRuVWNLVEpZbWRMbERBTFlTZE1KVkFya3BmMmVYSHNkUnB2QUFEeDNaV1BidE05ZXZDMG9UN3IxUkprbmJub1F6eHVxY01xSUprNnd0V2xnREFFcWdyTlNDUFVWTzlTNmdrRHZ2bGVOX0lIdC01OUlzTDRFTmVZdHJ6cWpMN1hvS0RoUHRuU3dqZDQ5UTB3cG9Yd21DbnUyZ2ZkSFgxMDZld2ZjblJXZ9IBgAJBVV95cUxPaHdSUGIyMlNjTzdTYko5ZU1GR0lBVTdkLVUtS1k4Tk1UdWR5dEdXYlpGLUtxRDZpOWtGai1Kb0ZxWWZMamR1SlRtX2wzVE5HMXJxNHRzMXIzX1FMalNJdWVxNzlhQmNaMzVLb04tZV9JQWpKQmF2TjVBNElsc3NxZ0d5MmVvWVBzWVRSc3FnSl9CbWk3SzdSaUhTWldlZGo0Nmgxb1JrSTI0S09RMmN0TUliWndZUGRRUENnOEgwblVZZlRpYWJ2WlVoRjRrdjlQNG5XSVl4TU1HdDk2dGlQel8wVTV2MWxpc1Fxdy1COV9VcDFUSjY4Y1o4cnBMRVh4?oc=5\" target=\"_blank\">ISRO GSLV-F18 Launch 2026 tonight: NVS-03 liftoff from Sriharikota, India's NavIC mission explained |...</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Moneycontrol.com</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
-      "consumed": true
-    },
-    {
-      "id": "8fb060822fc342b4",
-      "source_name": "Google News: non-US space",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOcVdpMzZCdUVrQ0RmVFJraFJNTW1vS2gxVFZ0dGtCQ0FJV0FTR0tNTVVOSVc0eEZtcnF5ekt2cDBnaXY0Q19zdjlFTXVJUTN0V01fMGY3NjRHSEFGQWRvLVQxUko0ZFZ5ZVJDcVdCQnB5U0llZFdxeFJTYTFrR25WTnZxTkN1SzByY3VJR1FRdUVxRlFUdEkwQWJuM1ladUpoRGZ4c1NRRGdoZ9IBrwFBVV95cUxPMVFIRmluVTZWNDhZd1oyTW1lNlNvXzQ1UGx4RlZhOXBkdmJyQTM3ampKRzRLY2FTODZDVDJ4a1pnRzRnVlh1Rm9VendrV04wNWZzZjhLdUVaaUQ2Uzc4Rk41U3cwRF80T3lKTXpyT0tWTGpIZ3BlRTdrQm5fRXQyQTRNYmtGQUN1VTZKVTNiTWRQbjYzamgzU2ZsTlhzcU9Ea1pXMWM5RDNKbjNGOU9J?oc=5",
-      "title": "Watch LIVE: Isro successfully launches NVS-03 satellite aboard GSLV-F18 - India Today",
-      "published_at": "2026-10-30T17:30:00.000Z",
-      "raw_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiqgFBVV95cUxOcVdpMzZCdUVrQ0RmVFJraFJNTW1vS2gxVFZ0dGtCQ0FJV0FTR0tNTVVOSVc0eEZtcnF5ekt2cDBnaXY0Q19zdjlFTXVJUTN0V01fMGY3NjRHSEFGQWRvLVQxUko0ZFZ5ZVJDcVdCQnB5U0llZFdxeFJTYTFrR25WTnZxTkN1SzByY3VJR1FRdUVxRlFUdEkwQWJuM1ladUpoRGZ4c1NRRGdoZ9IBrwFBVV95cUxPMVFIRmluVTZWNDhZd1oyTW1lNlNvXzQ1UGx4RlZhOXBkdmJyQTM3ampKRzRLY2FTODZDVDJ4a1pnRzRnVlh1Rm9VendrV04wNWZzZjhLdUVaaUQ2Uzc4Rk41U3cwRF80T3lKTXpyT0tWTGpIZ3BlRTdrQm5fRXQyQTRNYmtGQUN1VTZKVTNiTWRQbjYzamgzU2ZsTlhzcU9Ea1pXMWM5RDNKbjNGOU9J?oc=5\" target=\"_blank\">Watch LIVE: Isro successfully launches NVS-03 satellite aboard GSLV-F18</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">India Today</font>",
-      "fetched_at": "2026-10-30T22:39:30.733Z",
       "consumed": true
     }
   ]
