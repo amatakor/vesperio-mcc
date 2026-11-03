@@ -4774,3 +4774,51 @@ a newer entry if a lesson changes.
   `impact` fields (1119 items, up from 1114) and the `registry-candidates.json` `flag_refresh`
   entry for `electron.flights_total` (96 to 99). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3.6h gap, unfiltered full source list (2026-11-03)
+
+- 2026-11-03-A: A near-total-junk 15-candidate post-filter queue (SpaceX/Boost Mobile mirror
+  pickups, a China lunar-architecture repost already judged out of scope, routine FAA launch-
+  schedule Bluesky posts) still yielded three genuine finds by chasing the Boost Mobile cluster
+  and an xSearch hit past their headlines: AT&T and AST SpaceMobile's first terrestrial-to-
+  satellite cellular handoff (announced Nov. 2, dated on the actual Oct. 21 test per the
+  predates-window convention; att.com 403'd and AST's own ast-science.com didn't carry it, so a
+  financialcontent.com Business Wire mirror led at `wire_pr`, with broadbandbreakfast.com's
+  independently-written piece, different quote/byline, as genuine trade corroboration); Boost
+  Mobile founder Peter Adderton's on-X "pivot, and pivot FAST" call for AST SpaceMobile, plus Tim
+  Farrar's competing read that SpaceX's real target is EchoStar's DISH Wireless network, both
+  relayed via one StockTwits-authored piece (mirrored verbatim across Yahoo Finance/TradingView/
+  Stocktwits/Asianet, so no independent second source existed despite the mirror count) -- drafted
+  as `kind: "commentary"` at an honest informal-base SNR 1, not folded into the existing Boost
+  Mobile/EchoStar talks item, since it is a third-party reaction to that story, not new sourcing
+  of it; and ESA DG Aschbacher's UAE/Gulf-partnership trip (found via an xSearch WebSearch on
+  Weeden's handle, not the queue), which traced to a single Reuters wire piece (byline Florence
+  Loeve) syndicated under an identical headline across a dozen mirrors -- finalize's title-collapse
+  correctly merged the two attached mirrors into one `wire_rewrite` unit, landing a correctly thin
+  SNR 2 (mainstream base 3, `corroboration_none` -1) despite the mirror count.
+- 2026-11-03-B: The new commentary item tripped the standing same-company-plus-category dedup
+  heuristic FIVE ways on first submit (the Boost Mobile/EchoStar talks item itself, ARK Invest,
+  BofA, William Webb, and Maguire's SpaceX revenue model all share company SpaceX + category
+  `financial`), and TWO more were missing from the first draft (Galloway's and Barclays' Tesla-
+  SpaceX merger commentary/upgrade, also company SpaceX + category `financial`) -- seven
+  `dedup_distinct` entries total were needed before the gate passed, confirming a commentary item
+  about an already-crowded company+category combination can collide with more existing items than
+  a typical event item in the same window.
+- 2026-11-03-C: A Nov. 2 evertiq.com "Airbus awarded contract for two additional Galileo
+  satellites" discovery-pass hit recycled the already-published Oct. 27 ESA/Airbus/Thales
+  four-satellite G2 order under a new dateline; caught because the evertiq piece's own
+  atc-network.com citation was byte-identical to a URL already in that item's `sources` array --
+  worth checking a "new" contract headline's own cited links against an existing item's sources
+  list directly, not just the company/figure shape, when the figure (two satellites) is a clean
+  subset of an already-known total (four).
+- 2026-11-03-D: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for the two
+  missing Galloway/Barclays `dedup_distinct` entries above; merged cleanly on the second attempt
+  ("merged 3 new, 1 updated, 0 held"). Confirmed via a direct `jq` read of all three new items'
+  `snr`/`snr_trace`/`category`/`impact` fields (1122 items, up from 1119), the United Starlink-
+  fleet item's grown `sources` (6, up from 5) and `updates` (3, up from 2) arrays (671 aircraft,
+  up from 661, SNR unchanged at 4), the sweep log's `corroboration_collapses` entry (Aschbacher
+  item, Free Malaysia Today/Al-Monitor Reuters-wire collapse), and the `registry-candidates.json`
+  `flag_refresh` confirmation entry for `ast-spacemobile.sats_launched_total` (13, unchanged). A
+  `jq empty` parse check passed on all seven touched data files (items, state, held, source_ledger,
+  sources, candidates, registry-candidates). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
