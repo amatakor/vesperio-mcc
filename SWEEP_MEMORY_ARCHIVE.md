@@ -12796,3 +12796,141 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   `what_happened` text, and the sweep log's `corroboration_collapses`
   entry (2026-10-02-L) as the build-health signal.
 
+## Narrow re-check, ~6h26m gap, unfiltered full source list (2026-10-03)
+
+- 2026-10-03-A: A same-company-plus-category dedup false positive fired
+  FOUR ways at once on a new AT&T-CEO/Starlink-cellular commentary item
+  (category `product`): against Beeline Kazakhstan's and CNT Ecuador's
+  Starlink Mobile D2D launches, Alaska Air Group's Starlink aviation
+  fleet milestone, and SpaceX's residential Starlink Community Host
+  program, none of which share anything with an AT&T executive's opinion
+  piece beyond company SpaceX + category `product` + the window. Four
+  `dedup_distinct` entries cleared it in one pass; extends the
+  long-running list to commentary items specifically, not just hard-news
+  events.
+  Also confirms a 4-day predates-window chase is worth it for executive
+  commentary that moves a tracked company's stock: AT&T CEO Stankey's
+  Sept. 29 on-record dismissal of SpaceX's Starlink cellular strategy to
+  Axios (axios.com itself 403's) was fully recoverable via Yahoo
+  Finance's direct quotes (crediting the Axios interview) plus CircleID's
+  independently-written technical/regulatory analysis of the same
+  remarks, landing a clean SNR 4 (`mainstream` base + `corroboration_2plus`)
+  despite neither being a space-trade outlet.
+- 2026-10-03-B: A Google News "Starlink helped Jamaica get back online
+  after Hurricane Melissa" (PCMag-bylined) candidate traced via search to
+  wall-to-wall October 2025 coverage (Hurricane Melissa hit Jamaica
+  October 2025, not 2026) -- a one-year-anniversary retrospective
+  resurfacing, not fresh news, caught before any fetch of the actual
+  PCMag page. A Google News "Zelenskyy asked Trump to block Russia and
+  China's Starlink rival" (FT) candidate could not be independently
+  confirmed to add anything beyond the already-published Sept. 30
+  Ukraine/Rassvet-sanctions item: ft.com itself is unfetchable
+  ("unable to fetch", joining arstechnica.com/axios.com/realclearscience.com
+  on the standing always-blocked list), and no secondary source
+  confirmed a China-specific angle; left undrafted as a probable
+  trend-piece restatement rather than guess.
+- 2026-10-03-C: HyImpulse's new UK CAA launch operator licence (Oct 1,
+  SpaceWatch.Global/PA-wire-syndicated local papers, SaxaVord spring-2027
+  target) is genuinely new and distinct from the same-week Omnidea/Orbex
+  item, but the vehicle named throughout (SR75) is HyImpulse's suborbital
+  hybrid-propellant test rocket, not its future orbital SL1 -- left
+  undrafted per the standing orbital-only launch-vehicle scope
+  (2026-09-11-I Avio FD1 / 2026-09-25-I Pluto Aerospace precedent),
+  despite the regulatory/spaceport-milestone framing reading like a
+  stronger scope case than a bare vehicle-demo flight.
+- 2026-10-03-D: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 1 new, 0 updated, 0 held") plus a direct `jq`
+  read of the new item's `snr`/`snr_trace`/`category`/`impact`/`sources`
+  fields (832 items, up from 831) and the sweep log's `snr_movements`
+  entry (one unrelated persistence bump, Aer Lingus Starlink item 1 to 2)
+  as the build-health signal.
+
+## Narrow re-check, ~6h38m gap, unfiltered full source list (2026-10-03, second)
+
+- 2026-10-03-E: A fully clean, zero-new-item sweep: the 54-candidate
+  post-filter queue was almost entirely routine Federal Register
+  aviation/fishery notices (none FCC/satellite-relevant), off-topic
+  CGTN/Futurism/BBC filler, and bot/stock-chatter Bluesky hits; all 5
+  mandatory HTML sources, 14 of 17 signals channels (rotated out two
+  site duplicates of already-checked bluesky accounts plus Parsonson's
+  substack feed) and 4 X-handle searches, and a 10-query discovery
+  matrix covering the full scope (launch, financial/M&A, incident,
+  China, India, Japan, EO contracts, FCC, D2D) all traced to
+  already-published items (Satlyt seed round, WISeSat SPAC close,
+  NorthStar SPAC listing, AT&T/Verizon/T-Mobile D2D JV, Rocket
+  Lab/Synspective 20-launch, ESA EOGS/ICEYE-Leonardo study contracts) or
+  out-of-scope/not-yet-occurred leads: SDA's 4th Tranche 1 mission
+  (confirmed via WebSearch as net Oct. 5, not yet flown, despite a
+  Google News headline reading as settled), CAS Space's Lihong-2
+  pharmaceutical-payload test (explicitly a 2027-planned *suborbital*
+  verification flight per the fetched article, out per the standing
+  orbital-only launch-vehicle scope), and the Space Force's DSP
+  missile-warning constellation retirement after 56 years (confirmed via
+  WebSearch: a pure institutional decommissioning exercise with no named
+  commercial contractor or market-access fact, same shape as the
+  standing SPACECOM-succession/NASA-STRIDE institutional-disclosure
+  exclusion).
+- 2026-10-03-F: A same-source enrichment that needed no new attach: the
+  Sept. 30 FCC NEPA/spectrum item's own already-cited lead (Via
+  Satellite) stated one more fact the original draft never extracted
+  into copy — the same Sept. 30 meeting also issued an FNPRM exploring
+  1,450 MHz more Ku/Ka-band and D-band spectrum, plus bands for
+  non-connectivity uses. Patched `what_happened` with no `attach`/bump
+  (the fact was already in the existing `source_url`, not a new source).
+  Worth re-reading an item's own already-cited source in full when a
+  later pickup (here, advanced-television.com) flags a detail that
+  sounds unfamiliar; it often turns out the original source said it all
+  along.
+- 2026-10-03-G: An Aviation Week author-page headline for a new piece
+  can itself be a WebFetch summarization artifact: a listed headline
+  ("Pentagon Space-Based Target Tracking Constellations Take Shape")
+  could not be found verbatim anywhere via WebSearch, including on
+  Aviation Week's own site (the guessed URL 404'd); left uncovered
+  rather than draft from a possibly-mistitled summary. Worth a direct
+  re-fetch of the author-page listing (not a single AI-summarized pass)
+  before trusting an unusual-sounding headline enough to chase it.
+- 2026-10-03-H: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") plus a direct `jq`
+  read of the updated item's patched `what_happened`/`snr`/`sources`
+  fields (unchanged SNR 4, no new source added) as the build-health
+  signal.
+
+## Narrow re-check, ~5h12m gap, unfiltered full source list (2026-10-03, third)
+
+- 2026-10-03-I: A same-event escalation within the 7-day window is an
+  `attach`+`bump` update, not a new item, even when the actor moves up a
+  level: Zelenskyy personally telling the FT (Oct. 3) that he has
+  repeatedly asked Trump to sanction Rassvet's backers is the same
+  underlying "Ukraine seeks US sanctions on Rassvet suppliers" event as
+  the Sept. 30 item sourced to Ukraine's Washington envoy, just a more
+  senior speaker with a new fact (China named as a collaborator) three
+  days later. `corroboration_2plus` stacked cleanly on top of the
+  original item's `corroboration_none` penalty (different modifier
+  types, not a saturation conflict), landing SNR 2 -> 3. The turkiyetoday.com
+  Google News candidate itself 404'd on direct fetch; the FT interview
+  (paywalled, standing unfetchable per 2026-10-03-B precedent) was only
+  usable via two independent Ukrainian outlets (Ukrainska Pravda, UNN)
+  that both quoted it directly, re-confirming the paywalled-lede pattern
+  works for a head-of-state interview too, not just corporate press.
+- 2026-10-03-J: A video-description claim ("SpaceX just filed the first
+  real construction permit for Starbase Louisiana, with a bridge, a
+  wharf, and five million cubic yards of dredging in it," Felix
+  Schlang's Oct. 3 upload) could not be pinned to one dateable, fetchable
+  filing: Starbase Louisiana's bridge/wharf/dredging permits are several
+  separate, weeks-old, still-pending items (LA 82 bridge replacements,
+  Army Corps Freshwater Bayou maintenance dredging, a pending Corps test-pit
+  permit) per direct search, not one new filing matching the "5 million
+  cubic yards" figure anywhere. Left undrafted rather than compress an
+  ongoing multi-permit process into a single invented event; the
+  video-description-as-source rule still requires the description's
+  claim to be independently pinnable to a real, dated fact.
+- 2026-10-03-K: `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
+  confirmation ("merged 0 new, 1 updated, 0 held") plus a direct `jq`
+  read of the updated Rassvet item's patched `headline`/`tags`/`snr`/
+  `snr_trace`/`sources` fields (SNR 2 to 3, two new mainstream sources
+  attached) and the sweep log's `snr_movements` entry as the
+  build-health signal.
+
