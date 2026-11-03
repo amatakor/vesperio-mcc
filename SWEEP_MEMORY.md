@@ -4822,3 +4822,47 @@ a newer entry if a lesson changes.
   `jq empty` parse check passed on all seven touched data files (items, state, held, source_ledger,
   sources, candidates, registry-candidates). `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~9h gap, unfiltered full source list (2026-11-03, second)
+
+- 2026-11-03-E: `signalsPass.checked` entries must exactly match a `signals-context` fetchable
+  entry's `url` field, not a derived fetch URL: using Andrew Parsonson's substack `rss` value
+  (`https://europeanspaceflight.substack.com/feed`) instead of its `url`
+  (`https://europeanspaceflight.substack.com`) got the whole draft rejected
+  ("not a fetchable whitelisted signal channel"), even though the feed URL is what was actually
+  fetched. List the catalogue URL, not the endpoint used to read it.
+- 2026-11-03-F: NASASpaceflight.com 403'd on direct WebFetch for a specific article (Isaacman on
+  Hubble/Swift) exactly as it has before for other pages; the `r.jina.ai/<url>` proxy (per
+  2026-11-02-A) again returned clean, directly-fetched verbatim quotes, confirming this is a
+  reliable first fallback for a 403 (not just an empty-placeholder "Document" shell) before writing
+  a source off as unfetchable this run.
+- 2026-11-03-G: UNITED24 Media's "secret Rassvet-4 upgrade" piece and a same-day en.defence-ua.com
+  (Defense Express) piece on the identical ITU-filing story are NOT independent corroboration:
+  UNITED24's own article credits Defense Express's analysis as its source. Treated as one source
+  (Defense Express led, UNITED24 in `secondary_urls` only), extending the "outlet explicitly credits
+  another outlet as its source" non-independence check beyond wire-rewrites to analysis pieces.
+- 2026-11-03-H: A near-total-junk queue (dozens of SpaceX/Boost Mobile stock-speculation Google News
+  pickups, all already absorbed into existing items per 2026-11-02-E/2026-11-03-A/B) still yielded
+  seven genuine new items by chasing Payload/SpaceNews/wire items past the queue and running the
+  full discovery matrix cold (all 8 queries surfaced only already-published or stale-dated stories:
+  Meteor 2-7 breakup, Galileo G2, Starcloud, Stoke Space, Starfish Space funding, Leonardo Space
+  Guardian). Two Google-News-sourced items (Leonardo's "Space Guardian" EO constellation bluesky
+  recap, a KeepTrack Vikram-1 retrospective, a Rediff NavIC "new lease of life" piece) traced to
+  announcements from March 2025 and the already-published Jul 18/Oct 30 items respectively once
+  checked for an actual new dateline; a bluesky recap restating an old fact with no new hook is not
+  a fresh candidate even when it surfaces today.
+- 2026-11-03-I: Judged a SpaceX stock-gift-to-Trump-Accounts item (Shotwell donating 2M+ shares,
+  widely covered Nov 2) out of scope despite fitting "financial events of tracked companies" on a
+  narrow reading: the story is about a philanthropic/political distribution program, not a
+  funding round, M&A, bankruptcy, or anything that changes SpaceX's capital structure or a
+  commercial director's plans. Left undrafted; flag for Florian if that line is drawn wrong, since
+  it was widely covered and SpaceX stock is nominally a tracked-company asset.
+- 2026-11-03-J: `bun scripts/finalize-sweep.ts` rejected the first draft attempt three times in a
+  row (a 157-char and then a 141-char tagline over the 140 limit on two different items; a missing
+  `dedup_distinct` against an unrelated NASA+incident item, Roscosmos's Zvezda closure, sharing only
+  company NASA and category incident with the new Swift reentry item); merged cleanly on the fourth
+  attempt ("merged 7 new, 2 updated, 0 held"). Confirmed via a direct `jq` read of all seven new
+  items' `snr`/`category`/`impact` fields (1129 items, up from 1122) and the two updated items'
+  grown `sources` arrays (Iridium/FCC item: 4, up from 2; Hubble RFI item: 3, up from 2). A
+  `jq empty` parse check passed on all seven touched data files. `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
