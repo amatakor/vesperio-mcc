@@ -4866,3 +4866,35 @@ a newer entry if a lesson changes.
   grown `sources` arrays (Iridium/FCC item: 4, up from 2; Hubble RFI item: 3, up from 2). A
   `jq empty` parse check passed on all seven touched data files. `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2.4h gap, unfiltered full source list (2026-11-03, third)
+
+- 2026-11-03-K: A near-total-junk queue (dozens of SpaceX/Tesla-merger and Boost Mobile stock-
+  reaction pickups, all already absorbed per 2026-11-02-E/2026-11-03-A/B/H) still yielded three
+  genuine finds: Simera Sense and Spacemanic's dual-use CubeSat camera/bus/deployer collaboration
+  (SpaceNews, single-sourced after a real corroboration search, `crawl: "found_none"`, landing SNR
+  2); EarthDaily and Panama's Geosolutions Consulting partnering to resell EarthDaily imagery across
+  six Central American countries (first-party on earthdaily.com, no pickup found anywhere else, but
+  `found_none` costs a direct-source lead nothing, so it stood at base-tier SNR 5); and CAS Space's
+  Lijian-2 Y2 flying its second mission and first megaconstellation batch (18 more Qianfan/Spacesail
+  satellites, 276 total), led on a Xinhua wire mirror (arabtimesonline.com) with CGTN's own near-
+  identical-titled writeup as a second source, per the standing routine-megaconstellation-batches-
+  always-publish rule (noise). A 24/7 Wall St. stock-reaction piece on the same-day Intuitive
+  Machines FALCON-RADAR item (already published in the prior 14:57 UTC sweep) independently
+  confirmed the contract as fact rather than just restating the press release, worth a no-bump
+  `updates[].attach` + explicit `bump: "corroboration_2plus"` that correctly reversed the item's
+  existing `corroboration_none` penalty (SNR 3 to 4, modifiers are additive and the two types don't
+  collide). Separately judged a SpaceX/T-Mobile "fires back" TheStreet piece, a Sequoia/Maguire
+  "Amazon Google Microsoft are jokes" Benzinga pickup, and an Ars Technica Argo Space profile feature
+  all out as non-new: the first two were later-wave pickups of quotes already verbatim in existing
+  items (Oct. 30 FCC spectrum update, Oct. 30/Nov. 2 Maguire revenue-model item), and the Argo Space
+  piece wrapped up three already-past milestones (July demo, September ispace contract, 2027 Chiron
+  plans) with no new dateable announcement, not matching the news-item schema's one-event shape.
+- 2026-11-03-L: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 3 new,
+  1 updated, 0 held"). Confirmed via a direct `jq` read of all three new items' `snr`/`category`/
+  `impact` fields (1132 items, up from 1129: Simera/Spacemanic SNR 2 noise product, EarthDaily/
+  Geosolutions SNR 5 notable partnership, Lijian-2/Qianfan SNR 4 noise launch), the updated FALCON-
+  RADAR item's grown `sources` (2, up from 1) and SNR move (3 to 4), and the
+  `registry-candidates.json` `flag_refresh` entry for `qianfan.sats_launched_total` (276, up from
+  239). A `jq empty` parse check passed on all seven touched data files. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
