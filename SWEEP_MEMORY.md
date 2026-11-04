@@ -4727,3 +4727,57 @@ a newer entry if a lesson changes.
   `registry-candidates.json` `flag_refresh` entry for `qianfan.sats_launched_total` (276, up from
   239). A `jq empty` parse check passed on all seven touched data files. `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~9.4h gap, unfiltered full source list (2026-11-04)
+
+- 2026-11-04-A: A near-total-junk queue (127 candidates, almost entirely SpaceX/Tesla election-
+  reaction stock churn plus a dozen pickups of the same SpaceX/Qualcomm Starlink Mobile 5G deal)
+  still yielded four genuine new items. The Qualcomm deal itself had no qualcomm.com-domain or
+  spacex.com-domain fetchable copy; the actual lead was a Business-Wire-distributed release mirrored
+  on Yahoo Finance, classed `wire_pr` (not `first_party`, since neither SpaceX's chip-vendor partner
+  Qualcomm nor the release's own domain has a registry profile to validate against, same rule as the
+  2026-10-06-W SEALSQ/ThinKom precedent) -- final SNR held at the non-first-party ceiling of 4 despite
+  a dozen mainstream/trade pickups (Reuters, Bloomberg, CNBC, Axios, Light Reading, The Next Web, etc).
+- 2026-11-04-B: NASA's own blog (`nasa.gov/blogs/smallsatellites`) reporting a contractor's (Starfish
+  Space) in-orbit failure classed cleanly as `official_record` (the agency reporting on a funded
+  program's status, not a company's own announcement) for an honest SNR 5, with Payload's independent
+  write-up as trade corroboration -- confirms nasa.gov is usable as `official_record` for third-party
+  program status, not just `first_party` for NASA's own actions. Drafted as a NEW incident item (not an
+  `updates[]` attach) against the existing Sept. 24 "Starfish Space completes first operational Otter
+  servicing spacecraft" item, since that earlier item covered pre-launch completion and this covered a
+  post-launch failure 40 days later -- same spacecraft program, different event kind, a `dedup_distinct`
+  case even outside the literal 7/30-day windows.
+- 2026-11-04-C: A Payload exclusive (Orbital Matter/EnduroSat 2028 in-space-manufacturing mission) had
+  no own-domain press release yet (orbitalmatter.com's newsroom only went up to August) and no second
+  outlet on a direct search; published honestly at `crawl: "found_none"` (trade base 3, final SNR 2)
+  rather than held, per the standing weak-sourcing-is-not-a-hold-reason rule.
+- 2026-11-04-D: A SpaceNews piece (Vantor's 7-minute Ukraine tactical-imagery-delivery demo, Nov. 2,
+  Sandra Erwin byline) was paywalled beyond its lede, and a same-topic SatNews write-up (Nov. 3) read as
+  a near-verbatim rewrite of the same quotes and figures rather than independent reporting -- treated
+  as non-independent and left unattached, landing an honest single-source `crawl: "found_none"` SNR 2
+  rather than padding corroboration from a rewrite. An operator (Vantor) confirming its own
+  service/capability change in a conflict context is the explicit CLAUDE.md carve-out from the
+  conflict-analysis exclusion, distinct from 2026-11-02-I's judgment call to leave a Ukrainian official's
+  battlefield-jammer-specs statement out of scope.
+- 2026-11-04-E: A SpaceNews piece on NASA's MAVEN anomaly-review final report ("computer and gyro
+  problems likely caused loss of MAVEN," Nov. 2 byline) could not be reliably dated: a direct fetch of an
+  Italian mirror (astrospace.it) attributed the underlying final report to July 2026, while NASA's own
+  MAVEN blog archive showed no July or November post with that content, leaving a live conflict between
+  "new Nov. 2 reporting" and "recap of an already-months-old report." Left undrafted rather than guess a
+  date; worth a future sweep specifically fetching NASA's MAVEN anomaly-board final report page directly
+  if it resurfaces.
+- 2026-11-04-F: Several recap/stale traps left undrafted: a Euromaidan Press piece on the Poland-
+  Starlink-sabotage German arrest (Nov. 4) restated facts the prior sweep had already attached to
+  `2026-09-24-poland-starlink-station-fire-sabotage` on 2026-11-03, plus one thin unconfirmed detail
+  (gang leader "protected by Russia," non-extradition); a KeepTrack Cosmos-2612/ICEYE-X36 "deep dive"
+  recapped the already-fully-updated Oct. 17-23 close-approach saga with no new date-specific fact; a
+  Google News "Singapore sets up Earth Observation Initiative" hit traced to a Feb. 2025 program
+  announcement recirculating via EDB's own "business insights" page; and an Investigative Journalism
+  Foundation "Canada federal Starlink contract increased ten-fold" piece gave no dollar figures on direct
+  fetch and WebSearch dated the underlying reporting to Sept. 2, 2026, not today.
+- 2026-11-04-G: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 4 new, 2
+  updated, 0 held"), 1138 items up from 1134. Confirmed via a direct `jq` read of all four new items'
+  `snr`/`category`/`impact` fields and both updated items' grown `sources`/`updates` arrays (Grain/
+  800MHz: 8 sources, 3 updates; Miura 5: 3 sources, 1 update). A `jq empty` parse check passed on all six
+  touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
