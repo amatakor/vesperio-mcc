@@ -4781,3 +4781,40 @@ a newer entry if a lesson changes.
   800MHz: 8 sources, 3 updates; Miura 5: 3 sources, 1 update). A `jq empty` parse check passed on all six
   touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2.1h gap, unfiltered full source list (2026-11-04, second)
+
+- 2026-11-04-H: A 52-candidate queue almost entirely SpaceX/Tesla midterm-election-reaction stock
+  churn and a dozen pickups of the already-published SpaceX/Qualcomm Starlink Mobile 5G deal (the
+  "tens of thousands of cell sites"/2027-rollout figures were already in the item's copy, so none
+  of Broadband Breakfast/PhoneArena/pcmag's Bluesky repost added anything) still yielded one genuine
+  find via a Bluesky search-feed hit: Ubotica's own first-party announcement (ubotica.com, no
+  registry entity for Ubotica or Open Cosmos so classed `wire_pr` per the standing
+  no-registry-host precedent) of a CogniSAT-6 onboard-AI "Autonomous Scheduling" demo (re-imaging a
+  Pacific Ocean site two days after first spotting a cruise ship, no ground instruction). Irish Tech
+  News's independent write-up of the same story 403'd on every attempt (direct WebFetch and the
+  `r.jina.ai` proxy, which hit the publisher's own bot-check page this time rather than returning
+  clean text), landing an honest single-source `crawl: "found_none"` SNR 3.
+- 2026-11-04-I: A SpacePolicyOnline "Blue Tsunami" midterm-results piece explicitly said "what it
+  all means for space activities is difficult to assess at this early stage," with no stated
+  space-industry fact; left undrafted as political news with no commercial-space angle yet, not a
+  judgment call worth revisiting unless a later Planetary Society/NASA-budget follow-up states one.
+  A staff-written Investing.com/Yahoo Finance "AT&T's vulnerability to a SpaceX mobile network push"
+  piece was financial analysis with no named analyst voice (so not commentary-eligible) and no fact
+  beyond the already-published FCC Starlink Mobile approval and Boost Mobile talks; left undrafted
+  as neither a new event nor attributable commentary.
+  An Anadolu Ajansı "OPINION - Ukraine's Starlink moment: Who can switch off modern battlespace?"
+  piece was judged out of scope as outlet-authored conflict analysis (not a named individual's
+  commentary, and not a government/operator statement on the record), consistent with the standing
+  conflict-analysis exclusion.
+- 2026-11-04-J: A Bluesky thread (/2 continuation) relaying Telesat CEO Dan Goldberg's "hundreds
+  more hires" and "$7 billion" Gatineau investment quotes traced via WebSearch only to a cluster of
+  2024-dated Ottawa Business Journal/SpaceQ/BetaKit articles about the original Gatineau campus
+  announcement, with no November 2026 dateline found anywhere; left undrafted as an old quote
+  recirculating via a social thread rather than new news, worth a reminder that a Bluesky thread
+  quoting a named exec by name is not itself proof the underlying remark is new.
+- 2026-11-04-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 1 new,
+  0 updated, 0 held"), 1139 items up from 1138. Confirmed via a direct `jq` read of the new Ubotica
+  item's `snr`/`snr_trace`/`category`/`impact` fields and a `jq empty` parse check across all six
+  touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.
