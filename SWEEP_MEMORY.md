@@ -93,186 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~7h10m gap, unfiltered full source list (2026-10-05)
-
-- 2026-10-05-A: A `wire_pr`-led item (SFL Missions' GHGSat-D2 contract,
-  BusinessWire-distributed, Sept 28) with one `trade`-class corroboration
-  (SpaceQ, independently written) landed zero corroboration modifier
-  (`modifiers: []`, final SNR held at the wire_pr base tier of 4) rather
-  than the `corroboration_2plus` bump a naive reading of the spec would
-  predict -- worth remembering a single non-mainstream corroboration
-  source on top of a wire_pr lead doesn't always move the score; the
-  math is code and this is an honest outcome, not a bug to chase.
-  businesswire.com and a lelezard.com mirror both 403'd on direct
-  WebFetch; a third mirror (amerisurv.com, The American Surveyor) fetched
-  cleanly with the full press release text and executive quotes, used as
-  the lead instead.
-- 2026-10-05-B: Two more stale-resurfacing traps from generic discovery
-  queries: a SpaceNews "Landspace secures launch contracts for China's
-  megaconstellation projects" piece traced to January reporting (9+
-  months stale, from Landspace's IPO filing period), left undrafted as
-  far outside any reasonable predates-window chase; and a nuclear-news.net/
-  americanpartisan.org/sgtreport.com "exploding satellite: act of war?"
-  wave was the already-published Sept 13 USA-32 breakup
-  (2026-09-13-usa-32-satellite-breakup) resurfacing on fringe/conspiracy
-  sites with speculative framing added, not a new fact -- left unpatched.
-- 2026-10-05-C: ESA's own Smile mission page (already an item's
-  `source_url` at the first-party SNR 5 ceiling) had been updated in
-  place with new content -- the mission's first released images (a July
-  24 UVI auroral-substorm view, an SXI test shot of Cassiopeia A) -- with
-  no URL change, same shape as 2026-10-03-F's "re-read an item's own
-  already-cited source" pattern. Patched with no new `attach`/bump since
-  the fact lived on the existing `source_url`.
-- 2026-10-05-D: A Bluesky post linking to an Ars Technica piece (itself
-  unfetchable, standing block) led to a genuinely new supplementary fact
-  for an already-published, SNR-5-ceilinged item: Jessica Watkins became
-  the first Black woman to command a crewed orbital spaceflight (Crew-13,
-  Oct 1). Wikipedia stated this clearly but was not used as the citable
-  source (Wikipedia's registry-sourcing relaxation doesn't extend to news
-  items); PBS NewsHour and AOL, both independently fetched, confirmed the
-  same fact in their own words and were attached instead. No bump
-  requested since the item's `what_happened` enrichment didn't change
-  the sourcing tier.
-- 2026-10-05-E: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 1 new, 2 updated, 0 held") and the item count
-  moving from 834 to 835, plus a direct read of the new item's and both
-  updated items' `snr`/`snr_trace`/`sources` fields, and the sweep log's
-  two unrelated persistence-bump `snr_movements` entries, as the
-  build-health signal.
-
-## Narrow re-check, ~9h30m gap, unfiltered full source list (2026-10-05, second)
-
-- 2026-10-05-F: Redwire's registry `website` field still records the
-  retired `redwirespace.com` domain, which now 301-redirects to `rdw.com`
-  (a rebrand, same pattern as `hubblenetwork.com`->`hubble.com` and
-  `aerospacelab.be`->`aerospacelab.com`); `ir.rdw.com`'s own press page for
-  a new Axiom Space ROSA follow-on contract therefore still fails the
-  anti-spoof `first_party` host check against the stale registry value.
-  Led instead with a StockTitan mirror explicitly credited "Business Wire"
-  (`wire_pr`, tier 4, better than the mainstream Investing.com pickup
-  would have given), and used `ir.rdw.com` itself only as `informal`
-  corroboration. Worth a registry update to `rdw.com` at a future
-  structural touch.
-- 2026-10-05-G: A new company-with-no-registry-entity pairing: Nebex (a
-  space-sector financial-exchange startup founded by two former Axiom
-  Space executives) and Thrusters Unlimited (a Mexican EO operator) have
-  neither one a `src/data/registry` organization entity, so their joint
-  $700M Mexico-sovereign-space financing announcement led on a WebWire
-  press-release mirror (`wire_pr`) rather than either company's own site,
-  extending the standing no-registry-host workaround to a financial-
-  services space startup for the first time.
-- 2026-10-05-H: A `pulse2.com`-style press-release-aggregator page (no
-  original reporting, just a close restatement of the underlying EXIM/
-  company release) still counts as a genuinely distinct second source for
-  `crawl: "found_some"` purposes, classed `informal`, same treatment as
-  the standing "weak sourcing still counts as a second source" rule
-  (2026-09-09-L) -- it does not need to add new facts to count, only to
-  exist as a separately-fetched page.
-- 2026-10-05-I: A discovery-pass National Geographic "space junk near-miss"
-  snippet claimed an October 15, 2026 close-approach event -- ten days
-  AFTER this sweep's own `now` (Oct 5). Treated as an unconfirmable/likely
-  mis-dated search artifact (not a source directly fetched) and left out
-  entirely rather than guess at a future-dated claim; worth a direct fetch
-  next time a search snippet's own stated date postdates the sweep's `now`,
-  since that is never possible for a real past event.
-- 2026-10-05-J: The standing Bluesky stale/cross-contaminated-cache pattern
-  (2026-09-26-B/-O, 2026-09-30-E) recurred on a THIRD consecutive sweep day:
-  Caleb Henry's and Tim Farrar's `getAuthorFeed` API responses were still
-  stuck on pre-August 2026 posts, and Marco Langbroek's feed, while
-  genuinely current (posts through Oct 5), was entirely off-topic Dutch
-  politics content with no space posts in the returned window at all.
-  Andrew Jones's feed was current only through Sept 30, five days stale.
-  Treated all four as checked-but-empty rather than re-querying repeatedly;
-  the channels that return cleanly (Josef Aschbacher, Jeff Foust, Marcia
-  Smith, Anatoly Zak, Andrew Parsonson) continue to be the reliable core of
-  this leg.
-- 2026-10-05-K: Iran's Starlink-threat thread escalated again within the
-  same item's 7-day+ window: a Sept 30 single-source `informal` warning
-  (SNR 1) grew a same-week diplomatic protest to Norway (formal note to
-  the ambassador) plus a cyber-council official's "legitimate military
-  target" threat, independently confirmed via Mehr News (Iranian state
-  media, `informal`) and Daily Times (Pakistani mainstream, `mainstream`)
-  -- landed `mainstream_pickup` (+1, SNR 1 to 2) via `updates[].patch`+
-  `attach`, with a full-field `explainer`/`headline` replacement rather
-  than an append, since the diplomatic escalation was the more newsworthy
-  framing than the original "undermines internet control" quote.
-- 2026-10-05-L: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 3 new, 1 updated, 0 held") and the item count
-  moving from 835 to 838, plus a direct read of all three new items' and
-  the updated item's `snr`/`snr_trace`/`category`/`impact`/`sources`
-  fields, and the sweep log's `mainstream_pickup` `snr_movements` entry,
-  as the build-health signal.
-  no-op) as the build-health signal.
-
-## Narrow re-check, ~1h49m gap, unfiltered full source list (2026-10-05, third)
-
-- 2026-10-05-M: `dedup_distinct` on a new item belongs at the item's TOP
-  LEVEL (sibling of `scoring`/`crossfeed`), not nested inside
-  `scoring.dedup_distinct`; finalize-sweep's dedup gate reads `raw.dedup_distinct`
-  and silently ignores it in the wrong place, so a first attempt with it
-  nested under `scoring` still rejected with the exact same unattested-match
-  errors even though the acknowledgment was present in the draft.
-- 2026-10-05-N: A whitelisted signal's post found via a general bluesky-feed
-  check (not a targeted handle search) led to a genuine predates-window gap:
-  Jeff Foust's Oct 5 IAC2026 post flagged an ESA talk citing a "late 2027"
-  Artemis III date against NASA's still-public "mid-2027," which traced back
-  to NASA Administrator Isaacman's Sept 20 staff memo ("~90 days broken
-  against the Artemis III schedule," obtained by NASA Watch, reported by
-  Fox 35 Orlando Sept 24) -- never drafted by any prior sweep despite being
-  two weeks old. Worth the reminder that a single vague social post is
-  sometimes just the thread to pull, not the citable fact itself: the memo,
-  not the IAC2026 post, became the lead.
-- 2026-10-05-O: A discovery-pass hit (Andrew Parsonson's "ESA Selects Airbus
-  and OHB to Lead European Space Station Studies") read as a genuine gap
-  until a full draft hit finalize-sweep's dedup gate and surfaced
-  `2026-09-29-esa-orbital-outpost-studies`, already published same-day at
-  SNR 5 from ESA's own first-party release with the exact same Airbus/OHB
-  Pre-Phase A/`EUR1B`-per-period facts, just reached via a European
-  Spaceflight mirror rather than esa.int itself. Worth checking
-  `source_url`-adjacent first-party domains (here, esa.int) before trusting
-  a trade-press mirror's framing as the only account of an ESA decision.
-- 2026-10-05-P: Two more recycled-content traps, both left undrafted: (1) a
-  Euromaidan Press "Ukraine wants to aim Starlink at Russian targets and
-  build a version Musk can't switch off" (Oct 4/5) bundled Zelenskyy's
-  Aug 23 "we have started testing it" European-alternative remark and Fire
-  Point's June 7 "satellite constellation for Ukraine and Europe" quote
-  under a fresh conflict-framed headline, with no genuinely new fact
-  (confirmed via direct fetches of the Aug 23 and June 7 originals); (2) a
-  Morgan Stanley SpaceX "AI, Starship upside" wave (6+ outlets, Oct 5) was a
-  reiteration of the SAME $300 target Adam Jonas set July 7 and reiterated
-  Sept 15, just with a new AI-compute/broadband/launch/X-Grok component
-  breakdown -- consistent with the standing same-number-reiteration
-  skip rule (2026-09-06-A), even though the breakdown framing was new.
-- 2026-10-05-Q: An Iranian official's "disabled Starlink terminals during
-  the recent war" claim (WANA/Mehr News, Oct 5) and a "95% of initial
-  phase tests complete" Gaganyaan claim (Times of India, via Google News)
-  both turned out to be already-captured or unverifiable: the Iran claim
-  restates the same Aghamiri quote the existing
-  `2026-09-30-iran-official-starlink-internet-control-warning` item already
-  carries (just "January 2026 unrest" vs. this piece's vaguer "recent war"
-  wording); the Gaganyaan figure couldn't be confirmed since
-  timesofindia.indiatimes.com is unfetchable in this environment and every
-  other search hit cited a different percentage (80/90%) from months
-  earlier. Left both unpatched/undrafted.
-- 2026-10-05-R: Eric Berger's bluesky feed (`sciguyspace.bsky.social`, via
-  the `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint) is
-  stuck on posts through June 23, 2026 -- a new name on the standing
-  stale/cross-contaminated-cache list (2026-09-26-B/-O, 2026-09-30-E,
-  2026-10-05-J), now five bluesky accounts affected. The bare
-  `bsky.app/profile/<handle>/post/<id>` WebFetch route still only returns
-  the handle with no post text (confirms 2026-09-06-Q); the
-  `getAuthorFeed` endpoint works for named accounts but a plain
-  `searchPosts` call to the same API 403'd, so there is still no reliable
-  way to read content from generic (non-signals) bluesky search-queue hits.
-- 2026-10-05-S: `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update; relied on `finalize-sweep.ts`'s own merge
-  confirmation ("merged 2 new, 0 updated, 0 held") and the item count
-  moving from 838 to 840, plus a direct read of both new items'
-  `snr`/`snr_trace`/`category`/`impact`/`sources` fields as the
-  build-health signal.
-
 ## Narrow re-check, ~6h gap, unfiltered full source list (2026-10-06)
 
 - 2026-10-06-A: A company's own press release, wire-distributed (Business
@@ -4857,3 +4677,34 @@ a newer entry if a lesson changes.
   A `jq empty` parse check passed on all seven touched data files (items, state, held, source_ledger,
   sources, candidates, registry-candidates). `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-11-05)
+
+- 2026-11-05-A: Bluesky profile pages 404/render-blank on plain WebFetch exactly like X does (confirms
+  the standing JS-shell pattern extends to bsky.app, not just x.com); the public AT Protocol endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10` returns clean
+  post text and `createdAt` timestamps with no auth needed, and is now the reliable way to run the
+  signals pass's bluesky leg instead of fetching bsky.app pages directly.
+- 2026-11-05-B: Trump's "American Declaration of Freedom in Space" proclamation (Nov. 3, wide pickup
+  Nov. 4-5) was judged out of the inclusion bar despite being space-specific and widely covered: three
+  independently fetched pieces (SpacePolicyOnline, newspaceeconomy.ca's legal-analysis angle) all
+  confirmed it "doesn't provide direction or funding, but only asserts U.S. aspirations" and "does not
+  specify every system or agreement required to sustain it" -- no new program, funding, agency
+  instruction, or regulatory change for any commercial operator. Left undrafted rather than published
+  at `noise`, extending the standing political-news-with-no-commercial-fact precedent
+  (2026-11-03-I/2026-11-04-I) to a space-themed but substance-free proclamation; flag for Florian if a
+  symbolic presidential space proclamation should publish anyway purely for reader-interest reasons.
+- 2026-11-05-C: A Bloomberg TV interview quote from Eutelsat chair Sunil Mittal ("countries can't rely
+  on another country" for satellite connectivity) was genuinely new (a fresh Nov. 5 "Leaders with
+  Francine Lacqua" interview, distinct from his Oct. 14 India-queue remarks) but drew no second outlet
+  on a direct quoted-phrase search; drafted as `kind: "commentary"` at an honest `crawl: "found_none"`
+  mainstream-base SNR 2 rather than held, since weak corroboration is never a hold reason and a named
+  executive's on-record take about a tracked operator's market positioning clears the commentary bar
+  even without new facts.
+- 2026-11-05-D: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new, 1
+  updated, 0 held"), 1148 items up from 1146. Confirmed via a direct `jq` read of both new items'
+  `snr`/`snr_trace`/`category`/`impact` fields and the updated Rocket Lab/Iridium item's grown
+  `sources` (8, up from 7) and `updates` (4, up from 3) arrays. A `jq empty` parse check passed on all
+  seven touched data files (items, state, held, source_ledger, sources, candidates,
+  registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
