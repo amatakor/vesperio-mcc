@@ -4818,3 +4818,42 @@ a newer entry if a lesson changes.
   item's `snr`/`snr_trace`/`category`/`impact` fields and a `jq empty` parse check across all six
   touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h32m gap, unfiltered full source list (2026-11-04, third)
+
+- 2026-11-04-L: A WebSearch hit ("Beyond Gravity wins ULA contract," businessalabama.com) that read
+  like same-day corroboration for ULA's Nov. 4 in-house fairing-manufacturing announcement turned out,
+  once fetched via the `r.jina.ai` proxy, to be a stale October 2022 story about Beyond Gravity WINNING
+  (not losing) a ULA fairing contract for Amazon Kuiper launches -- the opposite direction of today's
+  news, from the same two companies. Caught only because the proxy returned a dateline; a bare WebSearch
+  synthesis repeated the "38 fairings for Kuiper" fact without flagging it as years old. Defense Daily's
+  own Nov. 4 piece on the same in-house-transition story was used as genuine corroboration instead, and
+  finalize-sweep's title-collapse correctly merged it with the Via Satellite lead as a `wire_rewrite`
+  (both outlets ran the identical headline) rather than crediting a second source.
+- 2026-11-04-M: OHB's own regulatory ad-hoc disclosure, hosted on eqs-news.com (a third-party German/EU
+  financial disclosure platform, not ohb.de), classed `wire_pr` rather than `first_party` for the same
+  reason as the SEALSQ/ThinKom precedent (2026-10-06-W): the anti-spoof check only passes a domain that
+  matches the entity's registry-recorded website, and eqs-news.com isn't it even though the disclosure
+  is OHB's own regulated announcement. A German regional paper (Weser-Kurier) carrying an independent
+  CEO quote on the same contract gave genuine `mainstream` corroboration.
+- 2026-11-04-N: A Redwire quarterly-earnings 8-K's SEC-hosted Exhibit 99.1 (the press release itself,
+  filed as an exhibit) is a cleaner `official_record` lead than Redwire's own `ir.rdw.com` investor
+  page, which still fails the anti-spoof check against the registry's stale `redwirespace.com` value
+  (2026-10-05-F) -- worth defaulting to the SEC exhibit document for any quarterly-earnings item on a
+  US-listed company, not just the IR page, since EDGAR itself is always first-party-domain-clean.
+- 2026-11-04-O: Andrew Parsonson's bluesky post "DGA conducted the first operational flight of
+  ArianeGroup's SyLEx sounding rocket" (posted today) traced to a November 2025 story on direct fetch
+  of the European Spaceflight article it linked -- a full year stale, and also out of scope regardless
+  (SyLEx is a suborbital sounding rocket; CLAUDE.md's launch-vehicle scope is orbital only). Left
+  undrafted on both grounds.
+- 2026-11-04-P: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for two standing
+  same-company-plus-category dedup false positives (a new NASA/`procurement` item against the existing
+  Hubble commercial-servicing RFI, and a new ESA/`procurement` item against the existing BEST! reusable-
+  booster call) and a second attempt for one `explainer.tagline` at 146 chars; merged cleanly on the
+  third attempt ("merged 7 new, 3 updated, 0 held"), 1146 items up from 1139. Confirmed via a direct
+  `jq` read of all seven new items' `snr`/`category`/`impact` fields, the three updated items' grown
+  `sources`/`updates` arrays, the sweep log's `corroboration_collapses` entry (ULA item, Via Satellite/
+  Defense Daily wire-rewrite collapse), and three unrelated persistence-bump `snr_movements` entries.
+  A `jq empty` parse check passed on all seven touched data files (items, state, held, source_ledger,
+  sources, candidates, registry-candidates). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
