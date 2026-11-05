@@ -4708,3 +4708,43 @@ a newer entry if a lesson changes.
   seven touched data files (items, state, held, source_ledger, sources, candidates,
   registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~9.5h gap, unfiltered full source list (2026-11-05, second)
+
+- 2026-11-05-E: A near-total-junk 128-candidate queue (dozens of SpaceX/Tesla midterm-election stock
+  churn and already-published Qualcomm/Starlink Mobile 5G pickups, plus a dozen syndicated Indian
+  outlets on one Cosmoserve Space press event) still yielded five genuine finds. Both the OHB/Sentinel-3
+  (European Spaceflight) and Redwire/Otter-VLEO (Redwire's own `ir.rdw.com` IR page) queue hits traced
+  to events already published in the prior two sweeps; `ir.rdw.com` was left unattached rather than
+  misclassified as `first_party`, since Redwire's registry-recorded website is `redwirespace.com`
+  (2026-10-05-F/2026-11-04-N precedent) and the item already had two trade sources at the wire_pr/trade
+  ceiling, so attaching it would have added no reader value.
+- 2026-11-05-F: BlackSky's own `blacksky.com/press-releases/...` page and the same-day SEC 8-K Exhibit
+  99.1 turned out to carry the identical press-release text; finalize-sweep's title-collapse correctly
+  merged them as a `wire_rewrite` (kept the first-party blacksky.com lead, dropped the SEC exhibit)
+  rather than crediting a second source, confirming the collapse rule applies even to two from-the-actor
+  documents on different domains, not just third-party rewrites.
+- 2026-11-05-G: Andrew Jones's Bluesky feed carried two factual claims about Chinese programs on the
+  same day: a Long March 9 state-approval claim he himself prefaced "Haven't seen an official public
+  source" for, and an unhedged one about commercial startup Yilong Aerospace's YL-1 rocket targeting a
+  2027 debut. Drafted only the unhedged one (whitelist `observer` floor, `crawl: "found_none"` after a
+  genuine web search for independent coverage); left the self-flagged-uncertain one undrafted rather
+  than publish a claim the reporting whitelist signal themselves doubted, even at SNR 1. Fetching a
+  Bluesky post's exact text for drafting purposes requires pulling its `uri`/rkey from the
+  `getAuthorFeed` API response to build the `bsky.app/profile/<handle>/post/<rkey>` permalink; the
+  catalogue `url` (the profile page) is what belongs in `signalsPass.checked`, but the item's
+  `source_url` needs the specific post permalink, not the profile URL.
+- 2026-11-05-H: A United/Spotify Starlink-seatback item got auto-flagged by the dedup gate against two
+  unrelated existing items (a Connected Solutions Starlink-reseller item, the SpaceX/Qualcomm Starlink
+  Mobile 5G item) purely because all three share company "SpaceX" and category "partnership" within 7
+  days; resolved with `dedup_distinct` reasons rather than folding a genuinely distinct airline/streaming
+  partnership into either unrelated item.
+- 2026-11-05-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for the United/Spotify
+  same-company-plus-category dedup false positive above; merged cleanly on the second attempt ("merged 5
+  new, 0 updated, 0 held"), 1153 items up from 1148. Confirmed via a direct `jq` read of all five new
+  items' `snr`/`category`/`impact` fields and the sweep log's `corroboration_collapses` entry (BlackSky
+  wire_rewrite collapse). A `jq empty` parse check passed on all seven touched data files (items, state,
+  held, source_ledger, sources, candidates, registry-candidates); only five of the seven (items, state,
+  source_ledger, sources, candidates) actually changed, since this run produced no held entries or
+  registry-crossfeed facts. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
