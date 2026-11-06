@@ -4748,3 +4748,41 @@ a newer entry if a lesson changes.
   source_ledger, sources, candidates) actually changed, since this run produced no held entries or
   registry-crossfeed facts. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~6.4h gap, unfiltered full source list (2026-11-05, third)
+
+- 2026-11-06-A: A 128-candidate queue almost entirely SpaceX/Tesla midterm-election stock churn still
+  yielded seven genuine finds, two of them (a Blue Origin GS3 third-stage/Northstar engine hardware
+  announcement and a same-day New Glenn NG-4.1 January 2027 return-to-flight delay) sharing company
+  Blue Origin and category `launch` on the same date; resolved with two mutual `dedup_distinct` entries
+  rather than folding the capability announcement into the schedule-delay item or vice versa, since they
+  are genuinely different event kinds.
+- 2026-11-06-B: The NG-4.1 January 2027 crossfeed (`new-glenn.next_flight_date`) landed on a genuine
+  SNR tie against the registry's existing Launch-Library-sourced value (both tier 4) and was correctly
+  auto-queued `both_disputed_queue` for Florian rather than silently overwritten, confirming the
+  SNR_SPEC same-metric-tie rule fires even when the new claim is clearly more current (an internal CEO
+  memo reported by two wire/mainstream outlets) than the older aggregator snapshot it's superseding.
+- 2026-11-06-C: Reuters/CNBC coverage of Blue Origin CEO Dave Limp's internal memo (via a Yahoo mirror,
+  since ft.com/bloomberg.com/floridatoday.com/seekingalpha.com all blocked direct WebFetch with
+  403/429) was treated as `mainstream`, distinct from the same-day GS3/Northstar hardware reveal
+  (NASASpaceflight/Space.com/SpaceflightNow, independently bylined, not wire rewrites of one Blue Origin
+  blog post we could never actually fetch ourselves after repeated 404/429s on blueorigin.com/news) --
+  worth remembering that blueorigin.com's own site is frequently unfetchable, so trade/mainstream
+  write-ups of its announcements are the practical lead even when a first-party blog post almost
+  certainly exists.
+- 2026-11-06-D: A corroborating secondary source that itself explicitly cites another outlet's reporting
+  (RuntimeWire's CesiumAstro piece citing Bloomberg by name) still counts as a genuine second write-up
+  for `crawl: found_some` as long as it's independently drafted (different framing/angle), extending the
+  2026-11-03-G non-independence check (which is about outlets crediting each other as their SOURCE for
+  facts) to not over-apply when the citation is just attribution of a stat within otherwise original
+  commentary.
+- 2026-11-06-E: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (`draft.coverage` must
+  be category values, not tag values -- "connectivity" is not a valid top-level coverage entry even
+  though it's a legitimate domain tag) and a second attempt for one `explainer.tagline` at 142 chars;
+  merged cleanly on the third attempt ("merged 7 new, 0 updated, 1 held"), 1162 items up from 1155. The
+  1 held entry was the auto-queued NG-4.1 crossfeed dispute above, not an edit-queue item from this
+  draft's own `held` array (which was empty). Confirmed via a direct `jq` read of all seven new items'
+  `snr`/`category`/`impact` fields and the `registry-candidates.json` `both_disputed_queue` entry. A
+  `jq empty` parse check passed on all seven touched data files (items, held, state, source_ledger,
+  sources, candidates, registry-candidates). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.

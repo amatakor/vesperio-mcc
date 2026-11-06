@@ -1,5 +1,21 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": []
+  "candidates": [
+    {
+      "id": "2026-11-05-blue-origin-new-glenn-ng41-january-delay:new-glenn.next_flight_date",
+      "item_id": "2026-11-05-blue-origin-new-glenn-ng41-january-delay",
+      "entity_slug": "new-glenn",
+      "entity_type": "vehicle",
+      "field": "next_flight_date",
+      "value": "2027-01",
+      "metric": "next planned New Glenn launch date (NG-4.1), as stated in CEO Dave Limp's internal memo per Reuters and CNBC",
+      "same_metric": true,
+      "item_snr": 4,
+      "source_url": "https://www.yahoo.com/news/articles/blue-origin-delays-glenn-rocket-164646389.html",
+      "action": "both_disputed_queue",
+      "proposed_on": "2026-11-06",
+      "status": "pending"
+    }
+  ]
 }
