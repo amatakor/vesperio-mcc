@@ -4604,3 +4604,50 @@ a newer entry if a lesson changes.
   3) and `updates` array. A `jq empty` parse check passed on all six touched data files (items, held,
   state, source_ledger, sources, candidates). `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~9h gap, unfiltered full source list (2026-11-06, second)
+
+- 2026-11-06-K: `https://www.iceye.com/press` has now 404'd for at least five consecutive sweeps
+  (four Nov 5 notes plus this run), well past the three-failure threshold, but `fail_count` in
+  sources.json had stayed at 0/status `unverified` the whole time -- prior sweeps were logging
+  dated failure notes without actually flipping status via `sourceHealth`. This run reported
+  `status: "dead"` explicitly and it stuck. The newsroom content itself is still live at
+  `https://www.iceye.com/newsroom/press-releases` (the actual press-release path; `/press` appears
+  to be a stale redirect target); worth a reviewed PR to fix the configured URL rather than relying
+  on agents to rediscover the working path every run.
+- 2026-11-06-L: A Payload op-ed by a named non-whitelisted individual (Shield Space's CTO, writing a
+  guest column on Russia's Cosmos 2612/ICEYE-X36 approach) qualifies as commentary under the
+  "named outlet/author" clause even though the author isn't in signals.json; classed the source as
+  `trade` (Payload is the outlet of record) rather than `informal`, scoring the attribution at the
+  outlet's tier. `crawl: "found_none"` cost it one level since no second write-up of his specific
+  argument existed; still publishable per the standing weak-sourcing-is-not-a-hold rule.
+- 2026-11-06-M: Chased a Nov 6 European Spaceflight piece ("Avio Scales Back Demonstrator
+  Programme") to its real event date: the article recaps Avio's September 10, 2026 half-year
+  financial report rather than reporting new news today. Drafted dated 2026-09-10 per the
+  predates-window convention, with `dedup_distinct` against both existing same-day Avio items
+  (FD1 integration-complete, CEO SpaceX-capacity commentary) since all three are different facts
+  from the same company's busy day. Andrew Parsonson's own same-day bluesky post repeating the
+  story doesn't count as independent corroboration (he is European Spaceflight), so the item
+  landed a `crawl: "found_none"` SNR 2.
+- 2026-11-06-N: A near-total-junk 109-candidate queue (SpaceX/Tesla midterm-election stock churn,
+  dozens of Google News financial-reaction pickups, routine Federal Register airworthiness
+  directives, BBC non-space stories) still yielded genuine finds only by chasing items past the
+  queue: the AST SpaceMobile/Firefly $1.3B Blacklift rocket deal was in the queue only as
+  secondary Bloomberg/Barron's Google News redirects (which render as a bare "Google News" shell on
+  direct WebFetch and need either the publisher URL or the `r.jina.ai` proxy to read), while
+  Firefly's own first-party press release with the full financial/engine breakdown had to be found
+  via WebSearch, not the queue. A CGTN "China launches new remote sensing satellites" queue entry
+  and a discovery-pass China query both resolved to the already-published Nov 5 Yaogan-51 07-09
+  item; a SpaceX/Coforge "Grok AI partner network" story was judged out of scope as SpaceX's
+  terrestrial AI/compute business per the 2026-11-06-H precedent, not a satellite/launch event.
+- 2026-11-06-O: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (the Russian
+  Security Council/Starlink-OneWeb item tripped the same-company-plus-category dedup heuristic
+  against two unrelated existing geopolitical items sharing company SpaceX within 7 days: Mittal's
+  sovereign-network commentary and the Ukraine Starshield contract-expiry item); merged cleanly on
+  the second attempt with two `dedup_distinct` entries ("merged 5 new, 0 updated, 0 held"), 1168
+  items up from 1163. Confirmed via a direct `jq` read of all five new items'
+  `snr`/`category`/`impact` fields and the sweep log's `signals`/`discovery` blocks. A `jq empty`
+  parse check passed on all seven touched data files (items, held, state, source_ledger, sources,
+  candidates, registry-candidates); no registry-candidates entries were added since none of the
+  five items' crossfeed blocks carried a fact. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
