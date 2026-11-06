@@ -4651,3 +4651,28 @@ a newer entry if a lesson changes.
   candidates, registry-candidates); no registry-candidates entries were added since none of the
   five items' crossfeed blocks carried a fact. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2.4h gap, unfiltered full source list (2026-11-06, third)
+
+- 2026-11-06-P: Vivienne Machi's Nov. 6 Aviation Week piece on AFRL's Oracle-P cislunar-tracking
+  prototype ("due to launch in mid-'27... following a swap in launch providers") read as a fresh
+  schedule update but traced, via a SpaceNews/Potomac Officers Club search, to the same "2027
+  launch" target the program has carried since at least a September 2023 SpaceNews piece on an
+  earlier slip (2025 to 2027); no commercial contractor was named in any directly-fetched source
+  and the "provider swap" detail added nothing dateable beyond the recurring target. Left
+  undrafted as a thin, long-slipping institutional R&D program update, extending the standing
+  stale-recirculation pattern to a years-long (not just weeks- or months-old) recurring delay.
+- 2026-11-06-Q: A Daily Beast piece on the same-day SpaceX/White House Starlink billing item
+  (Washington Post-led, single-sourced at `crawl: found_none`) had its own byline and added a
+  genuinely new fact the original draft didn't carry (Democracy Defenders Fund, not the
+  government, first identified three of the four contracts; a DOGE-installation security-concerns
+  detail; chief counsel Virginia Canter's on-record "pay-to-play access" quote) rather than
+  reading as a bare WaPo rewrite; treated as independent `mainstream` corroboration
+  (`corroboration_2plus`, SNR 2 to 3) per the standing distinct-byline-plus-added-fact test, not
+  the credits-the-original-outlet non-independence rule.
+- 2026-11-06-R: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 0
+  new, 1 updated, 0 held"), 1168 items unchanged. Confirmed via a direct `jq` read of the updated
+  item's `snr`/`snr_trace` (2 to 3, `corroboration_2plus` applied cleanly alongside the existing
+  `corroboration_none` modifier) and `sources` (2, up from 1) fields, and the sweep log's
+  `signals`/`discovery` blocks (17-channel signals pass, 4 X handles, 8-query discovery matrix).
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
