@@ -4521,3 +4521,36 @@ a newer entry if a lesson changes.
   files (items, held, state, source_ledger, sources, candidates, registry-candidates); no
   registry-candidates entries were added since none of the three items' crossfeed blocks carried a
   fact. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-11-07, third)
+
+- 2026-11-07-K: A near-total-junk 40-candidate queue (SpaceX/Tesla post-midterm stock-reaction
+  spam, a Starship IFT-15 Nov. 13 preview, Pakistani-astronaut-on-Shenzhou-24 wire pickups with no
+  commercial prime) still yielded two genuine commentary finds once chased past the headline:
+  Musk's own Nov. 6 Baron Investment Conference remark that SpaceX could "just acquire that legacy
+  telco" and use its spectrum "ten times more effectively" (24/7 Wall St. lead, TeslaNorth's full
+  interview writeup as independent corroboration), and a Nov. 3 Morgan Stanley note (Adam Jonas,
+  "SPCX Getting Even Cheaper") picked up by TheStreet Nov. 7 that SpaceX now trades cheaper than the
+  S&P 500 on 2028 earnings. TheStreet itself 403'd; `louisvelazquez.com`'s republication explicitly
+  credited TheStreet by name (classed `trade` per the standing republication-attribution pattern),
+  with `finance.biggo.com`'s independently-headlined writeup as genuine corroboration. 24/7 Wall
+  St. had no prior classification precedent in this file; treated as `trade` (same tier as
+  Benzinga/TheStreet/Motley Fool) rather than `informal`.
+- 2026-11-07-L: Both new items shared company SpaceX + category `financial` with a crowded field of
+  12 existing items from the prior two weeks (Q3 earnings, the Tesla-SpaceX merger committee event,
+  and seven distinct analyst/named-voice commentary items); pre-empting all 12 `dedup_distinct`
+  entries on EACH new item (plus cross-referencing each other) got a clean first-attempt merge with
+  zero rejections, confirming the 2026-10-15-J "default to pre-empting whenever a new item shares
+  SpaceX + a common category with any existing item from the last 7 days" practice scales even when
+  the colliding set is this large.
+  Also folded in a no-bump enrichment on the Oct. 6 GPU-financing item: Goldman/Apollo began
+  shopping the $40B deal to outside investors in up-to-$500M slices ahead of formal syndication
+  (24/7 Wall St., corroborated by a Bloomberg pickup on theedgemalaysia.com), with the package now
+  described as ~$47.3B including an $8.3B senior secured loan and a $7B lease prepayment.
+  `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new, 1 updated, 0
+  held"), 1179 items up from 1177. Confirmed via a direct `jq` read of both new items'
+  `snr`/`category`/`impact`/`kind` fields (both SNR 4: trade base 3 plus `corroboration_2plus`) and
+  the GPU-financing item's grown `sources` (9, up from 7) and `updates` (6, up from 5) arrays. A
+  `jq empty` parse check passed on all six touched data files (items, state, held, source_ledger,
+  sources, candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
