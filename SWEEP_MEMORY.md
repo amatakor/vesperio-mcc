@@ -4479,3 +4479,45 @@ a newer entry if a lesson changes.
   140-char cap ("merged 3 new, 1 updated, 0 held"), 1174 items up from 1171. Confirmed via a direct
   `jq` read of all three new items' `snr`/`impact`/`category` fields and the AST SpaceMobile
   update's `sources` count (3 to 4) and the sweep log's two automatic persistence `snr_movements`.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-11-07, second)
+
+- 2026-11-07-F: A UK MOD `gov.uk` press release (Titania/ISTARI satellite reaching orbit) failed
+  the `official_record` anti-spoof host check the same way as the 2026-10-15-E `.gov.uk` ClearSpace
+  case; reclassified to `trade` per that same precedent rather than resubmitting. A company's own
+  official X post (@Starlink confirming Router 4 shipping) hit the same wall as 2026-10-29-E
+  (hostname x.com never matches a registry `website` field of spacex.com): reclassified `informal`.
+  Both precedents held up unchanged three weeks later; worth trusting on sight rather than
+  re-deriving from the raw error message each time.
+- 2026-11-07-G: A Bytes Europe/Ynetnews piece on Israel's "Access to Space" program ("will help 15
+  companies... over the next three years", 60M NIS / $19M, 35% subsidy) traced via JNS/JPost to the
+  program's original December 2025 launch announcement, which stated the identical "minimum 15
+  payloads within three years" target and funding figure; left undrafted as stale recirculation of
+  an 11-month-old announcement rather than a genuine new selection-of-15-companies milestone, since
+  no source actually named the selected companies or confirmed the selection had concluded.
+- 2026-11-07-H: SpaceX board member Donald Harrison's resignation (Nov 4, Musk citing "too many
+  conflicts of interest involving Alphabet", filing states no disagreement over operations/policy)
+  was judged routine board-composition governance below the inclusion bar, same tier as the
+  standing routine-executive-hire exclusion, despite a Bloomberg headline framing it as happening
+  "amid Tesla merger discussions" — the actual filing ties the departure to Alphabet's shareholder
+  conflict, not the merger evaluation, and the merger-consideration story itself is already tracked
+  via the 2026-10-20 committees item plus a string of analyst-commentary items.
+- 2026-11-07-I: Galactic Energy's Ceres-2 Y3 (Nov 7, Jiuquan) was the medium-lift vehicle's first
+  successful flight, ten months after a January 17 nozzle-liner failure on its maiden launch;
+  scored `notable` rather than `seismic` since CLAUDE.md reserves "first flight of a new vehicle"
+  for maiden flights, and this is a return-to-flight recovery, not a debut. `china-in-space.com`
+  (Andrew Jones) gave the most complete verbatim figures of any outlet checked (flight count
+  context, exact payload names, nozzle-liner failure detail) and is worth treating as a go-to trade
+  lead for Chinese commercial launch stories alongside CGTN for mainstream pickup.
+- 2026-11-07-J: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on three grounds at
+  once (the `gov.uk` and `x.com` anti-spoof host failures above, plus a same-company-plus-category
+  dedup false positive pairing the new Starlink router-shipping item against both the Oct-30
+  residential-pricing item and the Nov-5 Deutsche Telekom CEO commentary item on shared
+  company+category alone); merged cleanly on the second attempt after the two reclassifications and
+  one `dedup_distinct` entry covering both prior items ("merged 3 new, 0 updated, 0 held"), 1177
+  items up from 1174. Confirmed via a direct `jq` read of all three new items' `snr`/`impact`/
+  `category` fields and the sweep log's `signals`/`discovery` blocks (17-channel signals pass, 4 X
+  handles, 8-query discovery matrix). A `jq empty` parse check passed on all seven touched data
+  files (items, held, state, source_ledger, sources, candidates, registry-candidates); no
+  registry-candidates entries were added since none of the three items' crossfeed blocks carried a
+  fact. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
