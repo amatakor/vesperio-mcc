@@ -93,237 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h07m gap, unfiltered full source list (2026-10-07)
-
-- 2026-10-07-A: A pre-event Bluesky "live now, off the pad" post for South
-  Korea's 5th Nuri launch (NEONSAT-2 to 6) led to a genuine gap once chased
-  past the launch window: Korea Times and Korea JoongAng Daily, both fetched
-  after the window closed, independently confirmed a clean success (570km
-  orbit, satellites released at 35-40s/10s intervals). A pre-launch claim
-  (TechTimes/BigGo, both dated weeks before the flight) that Hanwha Aerospace
-  would hold full operational command of the rocket for the first time was
-  NOT repeated by either post-launch article; kept it in `why_it_matters`
-  attributed to TechTimes rather than dropped or stated as confirmed, since
-  neither post-event source contradicted it either. The existing Aug 13
-  NEONSAT item covered KASA's pre-shipment review, a different milestone 55
-  days earlier, so this was a new item, not an update.
-- 2026-10-07-B: The same-company-plus-category dedup false positive now
-  confirmed for Hanwha Aerospace specifically (new pattern, not just
-  SpaceX/NASA/Blue-Origin/Redwire/Viasat/SES/ICEYE/ESA): a new item about
-  KARI's government Nuri/NEONSAT launch false-matched the existing Sept 30
-  Hanwha-reusable-rocket-demonstrator item purely on shared company + category
-  `launch` + within 7 days, despite covering unrelated programs. One
-  `dedup_distinct` cleared it.
-- 2026-10-07-C: A brand-new FAA Part 450 licensing-NPRM item (Duffy's "five
-  actions," Oct 6, surfaced via Marcia Smith's bluesky post and confirmed via
-  a Reuters/Investing.com mirror) tripped the same-company-plus-category dedup
-  gate FOUR ways at once against unrelated SpaceX+`regulatory` items (Iran
-  Starlink threat, the Starship SLC-37 SEIS, the Florida gas-pipeline permit,
-  and the McGregor groundwater settlement) sharing nothing but company+
-  category+window; four `dedup_distinct` entries cleared it in one pass,
-  extending the standing heuristic-fires-on-shared-company-alone finding to a
-  case with four simultaneous false matches on one item.
-- 2026-10-07-D: A WebSearch AI-synthesized answer stated "On October 6, 2026"
-  for the Duffy FAA announcement, but several of the search-result titles it
-  drew from (executivegov.com, flyingmag.com, thefederalnewswire.com) turned
-  out on direct fetch to be a stale March 18, 2026 story about the FAA's
-  *original* Part 450 framework completion, not today's new NPRM -- the
-  genuine Oct 6 story was only confirmed by directly fetching a Reuters wire
-  mirror (investing.com) and cross-checking the Federal Register's own Oct 5
-  docket titles (`2026-20392`, `2026-20387`) via search. The Federal Register
-  documents themselves 403'd behind an `unblock.federalregister.gov` wall on
-  direct WebFetch and were correctly left uncited (title-only from search is
-  not a fetch); the direct Reuters fetch was sufficient to publish honestly
-  at `crawl: found_none` (every other hit traced to the same Reuters wire).
-- 2026-10-07-E: SpaceX's Starbase Louisiana living-document item picked up a
-  genuinely new, specific fact five days after it broke (Oct 5 coastal-use
-  permit filing for a 15.5-mile heavy-haul road, 1.5-mile bridge, and a
-  Freshwater City cargo wharf) via two independently-fetched mainstream
-  outlets (The Advocate/Acadiana, KALB) that gave slightly different road
-  lengths (15.5mi vs. 15.75mi) for the same filing -- attributed each outlet's
-  own figure rather than picking one, consistent with the standing
-  attribute-what-each-source-states practice.
-- 2026-10-07-F: The SpaceX/Apollo/Nvidia-chip financing item (published Oct 6
-  at informal-base SNR 2) got a same-day `mainstream_pickup` bump when Reuters
-  independently picked up the same FT scoop with one new fact (expected 2027
-  close) not in the original ChainCatcher/Crypto Briefing draft -- confirms a
-  `mainstream_pickup` bump is available even on an update to a same-day item,
-  not just on day-later corroboration.
-- 2026-10-07-G: `finalize-sweep.ts` merged cleanly on the second attempt after
-  adding the five `dedup_distinct` entries above ("merged 2 new, 2 updated, 0
-  held"); confirmed via a direct `jq` read of both new items' `snr`/`category`/
-  `impact`/`tags`/`companies` fields (865 items, up from 863), both updated
-  items' patched `explainer`/`snr_trace` fields, and the sweep log's four
-  `snr_movements` entries (one from this run's Nvidia-financing bump, three
-  unrelated persistence bumps) and `flag_refresh` entries for
-  `nuri-kslv-2.flights_total`/`flights_successful` (4->5, 3->4).
-
-## Narrow re-check, ~8h26m gap, unfiltered full source list (2026-10-07, second)
-
-- 2026-10-07-H: A near-total-junk queue (99 candidates, almost entirely SpaceX
-  stock-reaction churn on the Apollo/Nvidia $40B financing story and routine
-  Crew-12 ISS-return coverage) still yielded two genuinely new FCC stories via
-  the discovery pass: a granted Starlink Mobile buildout (15,000 satellites
-  plus a spectrum-leasing waiver, Oct. 6, sourced to ISPreview UK + a French
-  Notebookcheck.biz mirror since the English notebookcheck.net page 403'd
-  directly) and a still-pending SpaceX petition to drop AFTRCC's third-party
-  launch-spectrum coordination (single-sourced TipRanks, `crawl: found_none`,
-  honest SNR 1; LA Times and Bloomberg's own versions of this AP-shaped story
-  both proved unfetchable). Neither was in the harvested queue at all; both
-  came from targeted WebSearch once the queue's generic SpaceX-financing noise
-  was cleared.
-- 2026-10-07-I: A same-company-plus-category dedup false positive fired on
-  BOTH new FCC items against `2026-09-29-faa-starship-slc37-seis` (a wholly
-  different agency/docket, FAA environmental review vs. FCC spectrum/
-  satellite-count actions), extending the standing shared-company-alone
-  pattern to cases where even the REGULATING AGENCY differs, not just the
-  underlying fact. Also: the Themis second-wet-dress-rehearsal item (below)
-  matched `2026-10-06-eu-salto-themis-deadline-extension` on shared company +
-  category + window despite being a genuinely different kind of event (an EU
-  administrative deadline extension vs. an actual test milestone) even though
-  both belong to the same SALTO/Themis program; worth remembering
-  `dedup_distinct` can legitimately apply to two items about the identical
-  program when the EVENT KIND differs (a bureaucratic decision vs. a hardware
-  test), not only when the underlying facts are wholly unrelated.
-- 2026-10-07-J: SSC Space's own newsroom (`sscspace.com`) passes the
-  anti-spoof `first_party` host check for facts about Esrange specifically,
-  because the Esrange spaceport registry entity's `website` field is
-  `sscspace.com` (SSC operates Esrange) -- used for a second Themis wet dress
-  rehearsal (Sept. 29, announced Oct. 7 by ESA/SSC), landing a clean SNR 5
-  even though neither ArianeGroup's nor SSC's domain is first-party for
-  ArianeGroup facts generally. Dated the item on the actual test date (Sept.
-  29) rather than the Oct. 7 announcement date, chasing the predates-window
-  convention for a routine item, not just notable/seismic ones.
-- 2026-10-07-K: Two same-day enrichment patches avoided drafting stale
-  "new" items: Korea Times' own post-launch "cover story" on the Nuri/NEONSAT
-  flight (already published same-day) added KASA's two-way-comms confirmation,
-  one CubeSat (Quaternion's PERSAT02) failing to separate, and the 10-satellite
-  constellation's planned revisit cadence; and the Sept. 17 SpaceX/Dragon-
-  retirement item picked up NASA Administrator Isaacman's on-record
-  acknowledgment plus a $3.1B NASA investment figure and SpaceX's notice to
-  private station developers (Axiom, Voyager, Vast) that Dragon service ends
-  after 2030, both fetched directly (Tech Times, Digital Today) rather than
-  taken from a WebSearch synthesis. A third candidate enrichment (a Benzinga
-  "FAA targets 1,000 launches by 2030" figure) turned out to already be fully
-  present in the existing FAA Part 450 item's `why_it_matters`; checking the
-  existing item's full text before treating a new figure as novel saved a
-  wasted no-op patch.
-- 2026-10-07-L: A whitelisted signal's bluesky post surfaced a real scoop
-  (Andrew Parsonson: a FOIA'd Polish State Labour Inspectorate report on
-  POLSA, four improper Article-52 dismissals) judged out of scope: it is an
-  internal labor-law/governance story about a space agency's HR practices
-  with no stated commercial-space angle (no contract, market access, or
-  operator effect), the same institutional-disclosure exclusion applied to
-  NASA-STRIDE/ASI-board/Space-Command-succession stories. Flag if a future
-  installment of this series ties the findings to a commercial consequence
-  (e.g., a contractor dispute or lost tender).
-- 2026-10-07-M: A WebSearch result ("Long March 6A... October 17, 2026,
-  Thousand Sails Polar Group 18") postdated this sweep's own `now` (Oct. 7) by
-  ten days -- a future-dated search artifact, not a real retrievable fact,
-  consistent with the standing 2026-10-05-I pattern; left unconfirmed rather
-  than treated as a real launch.
-- 2026-10-07-N: `finalize-sweep.ts` merged cleanly on the third attempt, after
-  (1) adding `dedup_distinct` entries for the three same-company-plus-category
-  false positives above and (2) trimming two `explainer.tagline` fields that
-  initially ran 142-145 chars over the 140-char cap ("merged 3 new, 2 updated,
-  0 held"); confirmed via a direct `jq` read of all three new items'
-  `snr`/`impact`/`category` fields (868 items, up from 865) and both updated
-  items' patched `sources`/`snr` fields.
-
-## Narrow re-check, ~3h gap, unfiltered full source list (2026-10-07, third)
-
-- 2026-10-07-O: `updates[].attach` alone does NOT recompute an item's SNR,
-  confirmed by direct inspection: attaching a genuinely new second source
-  (The Next Web, mainstream) to the single-sourced SpaceX/AFTRCC spectrum
-  item left `snr`/`snr_trace` byte-for-byte unchanged at the old value
-  after the merge ("merged 3 new, 2 updated, 0 held"), even though the
-  `sources` array correctly grew to two entries. A second
-  `updates[]` entry on the same id with an explicit
-  `"bump": "corroboration_2plus"` (one of the valid bump types:
-  reinforcement, corroboration_2plus, corroboration_4plus,
-  mainstream_pickup) was required to actually move the score (1 to 2,
-  logged in `snr_movements`). The Royal Air Maroc update in the same
-  merge looked fine without a bump only because its base+corroboration_2plus
-  was already at the trade-lead ceiling (4), so no visible change was
-  expected either way; do not take a same-sweep plain `attach` producing
-  no score movement as proof the math is wired up when the lead is at a
-  ceiling. Rule of thumb going forward: whenever an `attach` is meant to
-  move the score (not just add a citation), pair it with the matching
-  `bump` (or a full `rescore` block for a lead upgrade) in the SAME
-  update entry, and verify by reading `snr_trace.modifiers`/`history`
-  after merge, not just the `sources` array length.
-- 2026-10-07-P: Three new items (EU SST/TraCSS SSA data-exchange study,
-  first-party sourced from space.commerce.gov; an ESA-Vast post-ISS MoU
-  on using Vast's Haven station, first-party sourced from esa.int; and a
-  Sateliot Draconis five-satellite IoT launch, dated on the actual Oct 2
-  launch date per the predates-window convention) all merged on the
-  second attempt, after (1) trimming the TraCSS tagline from 157 to under
-  140 chars and (2) adding a `dedup_distinct` entry for the ESA-Vast item
-  against the existing Sept 29 ESA/Airbus/OHB sovereign-outpost-studies
-  item -- another instance of the standing shared-company-plus-category
-  false-positive pattern, this time on "ESA" specifically rather than
-  SpaceX/NASA/Blue-Origin/Hanwha, confirming the heuristic fires on any
-  frequently-tracked institutional actor, not just companies.
-- 2026-10-07-Q: A near-total-junk candidate queue (79 candidates after
-  filtering, almost entirely SpaceX stock-reaction churn on the
-  Apollo/Nvidia $40B financing story, Crew-12 ISS-return coverage, and a
-  dozen Via Satellite evergreen analysis/opinion pieces with no dated
-  news hook) still yielded two genuine finds via the open-web discovery
-  pass that were NOT in the harvested queue at all: the EU SST/TraCSS
-  study and the ESA-Vast MoU. Several queue entries that looked like new
-  stories resolved to recycled olds ones on direct fetch: a BASENOR
-  "Starlink Mobile V2 100x bandwidth" piece recycled a March 2026
-  announcement; a Tech Review Africa "STAR.VISION/Oman Lens two new
-  satellites" piece recycled a Sept 2025 TechAfrica News story; and a
-  BASENOR "Royal Air Maroc, Africa's First LEO In-Flight Wi-Fi" piece
-  turned out to be the first OFFICIAL confirmation of an Aug. 4 deal
-  previously reported only as unconfirmed trade sourcing (Royal Air
-  Maroc CEO Hamid Addou and Starlink's Lauren Dreyer both quoted on
-  record), landing as a content-upgrade `updates[]` patch rather than a
-  new item or a skip.
-
-## Narrow re-check, ~5h45m gap, unfiltered full source list (2026-10-07, fourth)
-
-- 2026-10-07-R: The standing same-company-plus-category dedup false
-  positive fired a record SIX ways at once on a new Musk "oligarchs
-  blocking Starlink in India" commentary item (category `regulatory`):
-  against the Iran-Starlink item, the Florida gas-pipeline permit, the
-  McGregor groundwater settlement, the FAA Part 450 rulemaking, the FCC
-  15,000-satellite approval, and the AFTRCC spectrum fight, none of
-  which share anything with Musk's India market-access commentary
-  beyond company SpaceX + category regulatory + window. Six
-  `dedup_distinct` entries at the item's top level cleared it in one
-  pass; worth expecting this heuristic to walk literally every
-  same-category SpaceX item in the 7-day window, not a handful, once
-  SpaceX has had several regulatory items in one week.
-- 2026-10-07-S: A trade piece covering an FCC order the agency itself
-  issued (Via Satellite's deep read of the Oct. 6 15,000-satellite D2D
-  grant) carried materially more regulatory detail than the two outlets
-  that broke the story first (ISPreview UK, Notebookcheck): the 15-year
-  license term, the 2032/2035 50%/100% build-out deadlines, the
-  condition tying SpaceX's EchoStar spectrum rights to closing that
-  deal's second step, and the specific bands the FCC deferred
-  (2020-2025MHz Earth-to-space; 20.2-21.2/30.0-31.0GHz, citing heavy
-  federal use). Folded in as an `updates[].patch`+`attach` enrichment
-  with no bump requested, since the item's trade-led lead was already
-  at its non-first-party ceiling of 4 — a same-event dedup match on an
-  already-published regulatory order is still worth a deeper read of
-  the agency's own order, not just the outlets that first reported it.
-- 2026-10-07-T: Vivienne Machi's Aviation Week author-page listing
-  carried a same-day "Debrief: When Will U.S. Space Force Get Its
-  Optical Mesh Network?" piece that read as a potential undrafted SDA
-  gap; a WebSearch of the piece's own preview text showed it is a
-  historical status explainer (recapping Starlink's 2019 RF debut and
-  2021 optical-crosslink addition) rather than a dateable new event or
-  award — left undrafted per the standing trend/explainer-piece
-  exclusion, distinct from the several SDA Tranche-vendor award items
-  that DO belong on the feed.
-- 2026-10-07-U: `finalize-sweep.ts` merged cleanly on the second attempt
-  after adding the six `dedup_distinct` entries above ("merged 4 new, 2
-  updated, 0 held"); confirmed via a direct `jq` read of all four new
-  items' `snr`/`impact`/`kind` fields (875 items, up from 871) and both
-  updated items' patched `explainer`/`sources` fields.
-
 ## Narrow re-check, ~5h40m gap, unfiltered full source list (2026-10-08)
 
 - 2026-10-08-A: A genuinely new on-record fact (Bezos telling Fox News's
@@ -4676,3 +4445,37 @@ a newer entry if a lesson changes.
   `corroboration_none` modifier) and `sources` (2, up from 1) fields, and the sweep log's
   `signals`/`discovery` blocks (17-channel signals pass, 4 X handles, 8-query discovery matrix).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h gap, unfiltered full source list (2026-11-07)
+
+- 2026-11-07-A: `signalsPass.checked` must list a fetchable channel's canonical `url` from
+  signals-context, not its `rss` field: listing European Spaceflight's substack as
+  `.../feed` (the `rss` value) got the whole draft rejected ("not a fetchable whitelisted signal
+  channel"); the fix was the bare `https://europeanspaceflight.substack.com` URL instead.
+- 2026-11-07-B: The same-company-plus-category dedup false positive fired again for a plain
+  national-security Falcon 9 launch (USSF-432) against the unrelated Oct-31 "700th Falcon 9
+  launch" milestone item, six days earlier, on shared company + category + window alone, extending
+  the standing pattern (first logged 2026-10-07 for Hanwha, SpaceX/NASA/Blue-Origin/etc. before
+  that) to the single most generic possible pairing: two ordinary Falcon 9 launches a week apart.
+  One `dedup_distinct` cleared it.
+- 2026-11-07-C: A days-old wire story (Reuters, Nov 5, on Russian satellites Cosmos 2611/2613
+  approaching a second ICEYE satellite, X37) was a genuinely new item, not an update to the
+  Oct-17 Cosmos 2612/X36 item: 19 days past that item's last `updates[]` entry and well outside
+  both the 7-day same-event window and the 30-day SNR-1-2 reinforcement window (the Oct 17 item is
+  SNR 4). Cross-linked the Oct-17 item's lead source in `secondary_urls` per the "anything else"
+  branch of the dedup rule rather than stretching the living-document pattern past its stated
+  windows. Needed a `dedup_distinct` against a same-week ICEYE/`incident`-category commentary item
+  (Molland/Shield Space jamming op-ed) on event-kind-differs grounds (op-ed speculation vs a new
+  Reuters-sourced satellite-approach report), per the 2026-10-07-I precedent.
+- 2026-11-07-D: For "attack rehearsal"-type quotes recurring identically across several
+  independently-WebFetched outlets (Insider Paper, United24 Media) quoting the same analyst, the
+  repetition across multiple separate direct fetches is reasonable confirmation it's a real
+  verbatim quote in those pages, not a WebSearch-synthesis artifact; treated as citable with
+  outlet attribution rather than discarded on direct-fetch-only purism, since the underlying
+  analyst's own site (fetched separately) used more hedged language dated weeks earlier and was
+  cited separately for that hedged framing instead.
+- 2026-11-07-E: `bun scripts/finalize-sweep.ts` merged cleanly on the fourth attempt after fixing
+  the signals-channel URL, adding one `dedup_distinct`, and trimming two taglines over the
+  140-char cap ("merged 3 new, 1 updated, 0 held"), 1174 items up from 1171. Confirmed via a direct
+  `jq` read of all three new items' `snr`/`impact`/`category` fields and the AST SpaceMobile
+  update's `sources` count (3 to 4) and the sweep log's two automatic persistence `snr_movements`.

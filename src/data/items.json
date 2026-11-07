@@ -78500,7 +78500,7 @@
       "secondary_urls": [
         "https://en.people.cn/n3/2026/1024/c90000-20511935.html"
       ],
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -78517,11 +78517,24 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
+        "final": 4,
         "scorer_version": 2,
-        "single_class_corroboration": "mainstream"
+        "single_class_corroboration": "mainstream",
+        "history": [
+          {
+            "date": "2026-11-07",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -78579,7 +78592,7 @@
       "secondary_urls": [
         "https://www.tradingview.com/news/moodys:861bbbc99da42:0-gvfl-leads-rs-3-7-cr-seed-funding-round-in-spectragaze-systems/"
       ],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -78591,11 +78604,24 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "2 distinct sources (>=2)"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
-        "single_class_corroboration": "informal"
+        "single_class_corroboration": "informal",
+        "history": [
+          {
+            "date": "2026-11-07",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -87730,7 +87756,7 @@
       "explainer": {
         "tagline": "AST SpaceMobile is developing its own reusable rocket, powered by Firefly engines, to launch its BlueBird satellites.",
         "what_happened": "AST SpaceMobile and Firefly Aerospace signed a three-year agreement worth more than $1.3 billion for 36 rocket engines (27 Miranda, 9 Vira), engine IP licensing and engineering support. AST says the engines will power Blacklift, its own 20-ton reusable rocket designed to launch up to five BlueBird satellites per flight; the company plans to unveil Blacklift on November 12 in New York.",
-        "why_it_matters": "The deal reduces AST's dependence on SpaceX and other launch providers for its direct-to-cell constellation, a dependency that has become more pointed as Starlink expands its own mobile network. For Firefly, it is the company's largest engine order to date, funding new hiring, a Briggs, Texas test facility and faster development of its own launch vehicles.",
+        "why_it_matters": "The deal reduces AST's dependence on SpaceX and other launch providers for its direct-to-cell constellation, a dependency that has become more pointed as Starlink expands its own mobile network. For Firefly, it is the company's largest engine order to date, funding new hiring, a Briggs, Texas test facility and faster development of its own launch vehicles. Spaceflight Now reports that an analysis from Payload Space found it historically takes about six years to go from the start of a rocket's development to a successful first launch, underscoring the risk in AST's roughly two-year timeline for Blacklift.",
         "for_who": "direct-to-device operators, launch providers"
       },
       "tags": [
@@ -87748,7 +87774,8 @@
       "source_url": "https://fireflyspace.com/news/firefly-aerospace-signs-rocket-engine-deal-valued-at-more-than-1-3-billion-with-ast-spacemobile/",
       "secondary_urls": [
         "https://www.stocktitan.net/news/FLY/ast-space-mobile-to-build-own-20-ton-rocket-to-deploy-blue-bird-w2qoxbqqvss6.html",
-        "https://www.bloomberg.com/news/articles/2026-11-06/ast-spacemobile-to-build-own-rocket-to-compete-with-spacex"
+        "https://www.bloomberg.com/news/articles/2026-11-06/ast-spacemobile-to-build-own-rocket-to-compete-with-spacex",
+        "https://spaceflightnow.com/2026/11/07/ast-spacemobile-unveils-1-3-billion-engine-deal-with-firefly-aerospace-to-power-new-heavy-lift-rocket/"
       ],
       "kind": "event",
       "snr": 5,
@@ -87783,6 +87810,13 @@
           "class": "mainstream",
           "added": "2026-11-06",
           "via": "corroboration"
+        },
+        {
+          "url": "https://spaceflightnow.com/2026/11/07/ast-spacemobile-unveils-1-3-billion-engine-deal-with-firefly-aerospace-to-power-new-heavy-lift-rocket/",
+          "outlet": "Spaceflight Now",
+          "class": "trade",
+          "added": "2026-11-07",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-11-06T14:52:41.932Z",
@@ -87802,7 +87836,14 @@
         "origin_url": "https://fireflyspace.com/news/firefly-aerospace-signs-rocket-engine-deal-valued-at-more-than-1-3-billion-with-ast-spacemobile/",
         "width": 1200,
         "height": 800
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-11-07",
+          "kind": "copy",
+          "note": "Payload Space's analysis, reported by Spaceflight Now, flags AST's roughly two-year Blacklift development timeline as unusually fast against a historical six-year norm for new rocket programs."
+        }
+      ]
     },
     {
       "id": "2026-11-06-molland-shield-space-x36-jamming-commentary",
@@ -88304,6 +88345,238 @@
         "src": "/img/items/2026-11-06-musk-spacex-government-contracts-cancel-offer.webp",
         "credit": "Image: wbap.com",
         "origin_url": "https://www.wbap.com/2026/11/06/just-say-the-word-musk-offers-to-cancel-unwanted-spacex-contracts/",
+        "width": 1200,
+        "height": 675
+      }
+    },
+    {
+      "id": "2026-11-06-spacex-ussf-432-vandenberg",
+      "date": "2026-11-06",
+      "headline": "SpaceX launches classified USSF-432 mission for Space Force",
+      "explainer": {
+        "tagline": "A Falcon 9 lifted off from Vandenberg at sunset carrying a classified Space Force payload, with its booster landing for the eighth time.",
+        "what_happened": "A SpaceX Falcon 9 launched the classified USSF-432 mission for the US Space Force from Vandenberg Space Force Base's SLC-4E on November 6 at 4:48 p.m. PST, per Space.com. Neither SpaceX nor the Space Force disclosed the payload's identity; SpaceX cut its webcast about 10 minutes into flight, shortly after the first stage landed on the droneship Of Course I Still Love You for its eighth flight. Space.com reported USSF-432 was the 119th Falcon 9 launch of 2026 and the rocket's 14th national-security flight of the year; outside observers cited by Space.com said the payload is possibly a batch of classified satellites for the Space Force's Space Based Sensing and Targeting portfolio, built on SpaceX's Starshield bus.",
+        "why_it_matters": "USSF-432 is routine cadence for the Falcon 9's national-security manifest, which Space.com notes has made up a 14th flight this year alongside the rocket's broader Starlink-dominated schedule. It is more evidence that the Space Force remains reliant on Falcon 9 reuse even as the fleet's phase-out toward Starship looms.",
+        "for_who": "national-security launch planners"
+      },
+      "tags": [
+        "launch",
+        "reusability",
+        "us-gov"
+      ],
+      "category": "launch",
+      "impact": "noise",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://www.space.com/space-exploration/launches-spacecraft/spacex-launches-classified-mission-space-force-ussf-432",
+      "secondary_urls": [
+        "https://interestingengineering.com/space/spacex-launches-classified-ussf-432-mission",
+        "https://spaceflightnow.com/2026/11/06/falcon-9-to-launch-from-california-on-classified-mission-for-u-s-space-force/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.space.com/space-exploration/launches-spacecraft/spacex-launches-classified-mission-space-force-ussf-432",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Space.com)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.space.com/space-exploration/launches-spacecraft/spacex-launches-classified-mission-space-force-ussf-432",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-11-07",
+          "via": "initial"
+        },
+        {
+          "url": "https://interestingengineering.com/space/spacex-launches-classified-ussf-432-mission",
+          "outlet": "Interesting Engineering",
+          "class": "trade",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://spaceflightnow.com/2026/11/06/falcon-9-to-launch-from-california-on-classified-mission-for-u-s-space-force/",
+          "outlet": "Spaceflight Now",
+          "class": "trade",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-07T05:32:06.494Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-06-spacex-ussf-432-vandenberg.webp",
+        "credit": "Image: spaceflightnow.com",
+        "origin_url": "https://spaceflightnow.com/2026/11/06/falcon-9-to-launch-from-california-on-classified-mission-for-u-s-space-force/",
+        "width": 678,
+        "height": 381
+      }
+    },
+    {
+      "id": "2026-11-05-russia-cosmos-2611-2613-iceye-x37",
+      "date": "2026-11-05",
+      "headline": "Russia's Cosmos 2611 and 2613 approach ICEYE's X37 after Cosmos 2612 pass",
+      "explainer": {
+        "tagline": "Reuters reports two Russian satellites tied to Cosmos 2612 are nearing ICEYE's X37, as an analyst calls the X36 pass a possible rehearsal.",
+        "what_happened": "A Reuters wire story carried by multiple outlets on November 5 reported that two of the six Russian satellites launched alongside Cosmos 2612 in April, Cosmos 2611 and 2613, have orbital geometry bringing them near ICEYE's X37, a second radar satellite in the same constellation, with crossings expected in early and mid-November. Space analyst Greg Gillinger of Integrity ISR, who first flagged the Cosmos 2611/2613-X37 geometry on his firm's site in October, told Reuters that Cosmos 2612's earlier close approach to ICEYE's X36 \"looks like an attack rehearsal.\" Tracking firm COMSPOC said on X that Cosmos 2610, 2611, 2612, 2613 and 2614 now share an orbital plane with ICEYE's X36, X37 and X38. Reuters noted that US Under Secretary of State Thomas DiNanno had already called the October Cosmos 2612 maneuver \"intentionally maneuvering dangerously close to a commercial satellite,\" in conduct \"consistent with on-orbit weapons operations.\"",
+        "why_it_matters": "If the pattern that targeted X36 repeats on X37, ICEYE faces a second satellite at risk from the same group of Russian spacecraft, widening the operational exposure for an EO operator that supplies imagery to Ukraine and NATO governments. The escalation raises the stakes for any SAR or optical operator serving defense customers near active conflicts, and for insurers pricing on-orbit liability for satellites shadowed by state actors.",
+        "for_who": "SAR/EO operators with government and defense customers; satellite insurers"
+      },
+      "tags": [
+        "eo",
+        "sar"
+      ],
+      "category": "incident",
+      "impact": "notable",
+      "companies": [
+        "ICEYE"
+      ],
+      "source_url": "https://www.taipeitimes.com/News/world/archives/2026/11/06/2003867270",
+      "secondary_urls": [
+        "https://integrityisr.com/kosmos-2612-iceye-x36-close-approach/",
+        "https://x.com/COMSPOC_OPS/status/2077469954027532744",
+        "https://www.themoscowtimes.com/2026/11/05/russian-military-may-have-rehearsed-attack-on-finnish-satellite-specialist-warns-a94181",
+        "https://russianspaceweb.com/spacecraft-military-soyuz2-volga-2026-0417.html#iceye"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.taipeitimes.com/News/world/archives/2026/11/06/2003867270",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Reuters (via Taipei Times))"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "4 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.taipeitimes.com/News/world/archives/2026/11/06/2003867270",
+          "outlet": "Reuters (via Taipei Times)",
+          "class": "mainstream",
+          "added": "2026-11-07",
+          "via": "initial"
+        },
+        {
+          "url": "https://integrityisr.com/kosmos-2612-iceye-x36-close-approach/",
+          "outlet": "Integrity ISR",
+          "class": "informal",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://x.com/COMSPOC_OPS/status/2077469954027532744",
+          "outlet": "COMSPOC (X)",
+          "class": "informal",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://www.themoscowtimes.com/2026/11/05/russian-military-may-have-rehearsed-attack-on-finnish-satellite-specialist-warns-a94181",
+          "outlet": "The Moscow Times",
+          "class": "mainstream",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-07T05:32:06.494Z",
+      "entities": [
+        {
+          "name": "ICEYE",
+          "ref": "constellations/iceye"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-05-russia-cosmos-2611-2613-iceye-x37.webp",
+        "credit": "Image: themoscowtimes.com",
+        "origin_url": "https://www.themoscowtimes.com/2026/11/05/russian-military-may-have-rehearsed-attack-on-finnish-satellite-specialist-warns-a94181",
+        "width": 1200,
+        "height": 675
+      }
+    },
+    {
+      "id": "2026-11-01-gistda-krabi-suspected-debris",
+      "date": "2026-11-01",
+      "headline": "GISTDA recovers suspected space debris off Thailand's Krabi coast",
+      "explainer": {
+        "tagline": "Thailand's space agency collected an object resembling space debris that washed up on Koh Mai Phai and is analyzing its origin.",
+        "what_happened": "Thailand's Geo-Informatics and Space Technology Development Agency (GISTDA) said an object resembling space debris was found November 1 near a ranger station on Koh Mai Phai island in Krabi's Hat Noppharat Thara-Mu Ko Phi Phi National Park, per Thai PBS World. GISTDA's Space Technology Research Centre (S-TREC) team inspected and collected the object on November 5 and transported it to the agency's Chon Buri facility for engineering analysis to determine its origin. GISTDA warned the public not to touch or move any suspected space debris because it could contain hazardous chemicals, and asked anyone finding similar objects to photograph them, record the location and notify officials.",
+        "why_it_matters": "Debris reaching land is a byproduct of rising launch cadence, and identifying a recovered piece's owner is itself the commercial story once GISTDA's analysis concludes: liability, deorbit-compliance and insurance questions follow whichever operator or program it traces back to.",
+        "for_who": "launch providers and insurers tracking deorbit and debris liability"
+      },
+      "tags": [],
+      "category": "incident",
+      "impact": "noise",
+      "companies": [],
+      "source_url": "https://www.thaipbsworld.com/around-thailand/572279",
+      "secondary_urls": [
+        "https://thethaiger.com/news/national/suspected-space-debris-found-krabi-island"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.thaipbsworld.com/around-thailand/572279",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Thai PBS World)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "mainstream"
+      },
+      "sources": [
+        {
+          "url": "https://www.thaipbsworld.com/around-thailand/572279",
+          "outlet": "Thai PBS World",
+          "class": "mainstream",
+          "added": "2026-11-07",
+          "via": "initial"
+        },
+        {
+          "url": "https://thethaiger.com/news/national/suspected-space-debris-found-krabi-island",
+          "outlet": "The Thaiger",
+          "class": "mainstream",
+          "added": "2026-11-07",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-07T05:32:06.494Z",
+      "image": {
+        "src": "/img/items/2026-11-01-gistda-krabi-suspected-debris.webp",
+        "credit": "Image: thethaiger.com",
+        "origin_url": "https://thethaiger.com/news/national/suspected-space-debris-found-krabi-island",
         "width": 1200,
         "height": 675
       }
