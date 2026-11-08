@@ -13738,3 +13738,84 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   items' `snr`/`impact`/`kind` fields (875 items, up from 871) and both
   updated items' patched `explainer`/`sources` fields.
 
+## Narrow re-check, ~5h40m gap, unfiltered full source list (2026-10-08)
+
+- 2026-10-08-A: A genuinely new on-record fact (Bezos telling Fox News's
+  "Special Report with Bret Baier," Oct 7, that a Blue Origin IPO
+  "probably makes sense...several years from now," his first personal
+  comment on a future listing) folded cleanly into the existing
+  2026-07-08 $10B/$130B funding-round item as an `updates[].patch`+attach,
+  no bump requested (non-first-party mainstream lead already at its
+  corroboration_2plus ceiling of 4). Confirms the standing "enrichment
+  patch, no rescore" pattern applies even when the new fact is a fresh
+  on-record quote, not just a closing/escalation milestone.
+- 2026-10-08-B: A LeoLabs Meteor 2-7 fragmentation event (Oct 5, Soviet-era
+  weather satellite) had exactly one source (spacewatch.global) and it
+  403'd on every direct-fetch attempt (including the full article URL);
+  no LeoLabs own blog/X post and no second outlet were findable. Left
+  undrafted per the standing never-cite-an-unfetched-page rule even
+  though WebSearch could describe it in full. Worth a second look if
+  spacewatch.global becomes fetchable or a second outlet picks it up.
+- 2026-10-08-C: The FCC's Oct. 29 vote on a 25MHz D2D spectrum auction
+  (1675-1695/2020-2025MHz bands) plus a companion 482MHz NPRM is a
+  scheduled, not-yet-decided proposal (CNBC, Oct 7) distinct from the
+  already-published Oct 6 15,000-satellite D2D grant; left undrafted per
+  the standing process-not-yet-fact rule (same shape as the Sept 30
+  FCC-vote precedent before it happened). Worth checking after Oct 29.
+- 2026-10-08-D: NASA's Crew-12 return: SpacePolicyOnline's own calendar
+  (fetched directly) showed undock already moved to Oct 7, 8:05am ET and
+  splashdown scheduled Oct 8, 11:24am ET, i.e. AFTER this sweep's own
+  `now` (05:18 UTC) despite a same-day C-SPAN "Crew-12 Return to Earth"
+  queue headline reading like a completed event. Left undrafted per the
+  standing don't-draft-a-scheduled-not-yet-occurred rule; check the next
+  sweep for the actual splashdown.
+- 2026-10-08-E: `finalize-sweep.ts` merged cleanly on the first attempt
+  ("merged 0 new, 1 updated, 0 held"); confirmed via a direct `jq` read
+  of the updated Blue Origin item's patched `explainer`/`sources`/
+  `updates` fields (SNR held at 4, as expected) and the sweep log's two
+  unrelated persistence-bump `snr_movements` entries.
+
+## Narrow re-check, ~8.6h gap, unfiltered full source list (2026-10-08, second)
+
+- 2026-10-08-F: The same-company-plus-category dedup false positive extended
+  to ESA/`constellation` specifically: a new Sentinel-3C first-light item
+  (ESA's own release, two weeks after the Sept 15 launch) false-matched
+  `2026-10-01-iride-eaglet-ii-constellation-complete` on nothing but shared
+  company ESA + category `constellation` + window; the two programs
+  (Copernicus EO vs. Italy's IRIDE SAR constellation) share no actual
+  connection. One `dedup_distinct` cleared it.
+- 2026-10-08-G: A genuinely new-looking "Norway proposes second Andoya
+  launch pad" story, surfaced fresh via European Spaceflight's own site
+  listing (the whitelisted signals-pass channel, not the harvested queue),
+  turned out to already be published as `2026-09-30-norway-andoya-second-
+  launch-pad` from the exact same source URL -- the finalize gate caught it
+  as a same-source-URL dedup match even though the on-site listing read as
+  today's top story. A second independent source (Behind the Black) was
+  found on the corroboration crawl but added no reader-facing fact and the
+  existing item was already at its whitelist-observer SNR ceiling (4), so
+  it was left unpatched rather than filed as a content-free `updates[]`
+  attach. Lesson: a whitelisted outlet's own homepage/listing page can
+  resurface an old story as if new; always check `existing[]` by source URL
+  before drafting, not just by headline similarity.
+- 2026-10-08-H: Self-correction, not a new finding: initially ran the
+  signals pass on five bluesky people (Aschbacher, Langbroek, Henry, Foust,
+  A. Jones) using the bare `bsky.app/profile/<handle>` WebFetch route, which
+  (per the standing 2026-09-06-Q/2026-10-05-R finding) returns only the
+  handle header with no post body; re-ran all five afterward via
+  `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>`,
+  which worked cleanly and surfaced real post text/dates. Nothing new came
+  of the retry (Aschbacher's latest post was about the already-drafted
+  Sentinel-3C item; Foust's Sept 30 Rocket Lab/Synspective repost and
+  space-based-solar-power repost were both already published). Worth
+  defaulting to the `getAuthorFeed` endpoint FIRST for any named signals
+  bluesky check, never the bare profile URL, to avoid burning fetch budget
+  on empty responses.
+- 2026-10-08-I: `finalize-sweep.ts` rejected once on a JSON structural typo
+  (a stray array-closing bracket introduced mid-edit) and once on the two
+  dedup false positives above before merging cleanly on the third attempt
+  ("merged 6 new, 1 updated, 0 held"); confirmed via a direct read of all
+  six new items' `snr`/`category`/`impact` fields (881 items, up from 875)
+  and the updated Musk/India commentary item's patched `explainer`/
+  `sources`/`updates` fields. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
+
