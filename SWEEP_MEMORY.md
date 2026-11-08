@@ -4574,3 +4574,41 @@ a newer entry if a lesson changes.
   data files (items, state, held, source_ledger, sources, candidates, registry-candidates);
   only five of the seven (items, state, source_ledger, sources, candidates) actually changed.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h15m gap, unfiltered full source list (2026-11-08, third)
+
+- 2026-11-08-L: A near-total-junk 43-candidate queue (FAA airworthiness directives, an FCC
+  Odessa TX broadcast-license notice, NOAA fishery notices, a wall of Google News SpaceX/Tesla
+  midterm-election stock-reaction pieces, three bot/spam Bluesky search hits, off-topic
+  Futurism/Space.com/BBC filler) yielded nothing of its own; two queue entries that looked
+  promising on headline alone both traced to already-published stories once checked: Bloomberg/
+  Barron's "AST SpaceMobile to build its own rocket" is the same Nov. 6 Firefly Blacklift deal
+  already published, and a Payload "NASA Unveils Moon Base Awards" piece recaps the same Nov. 7
+  NASA press event already split into three items. A naive grep for "planet ai app" (literal
+  three-word substring) missed the already-published `2026-11-05-planet-ai-app-launch` item
+  because the actual headline reads "Planet launches free AI App for..." with other words
+  between "Planet" and "AI App"; worth checking a topic with a jq/company-name search rather
+  than a rigid literal-phrase grep before spending research budget on it. An "Eyes Only with Wes
+  O'Donnell" Ukraine "$0-satellite" piece was confirmed stale recirculation of the already-
+  published Himera/GomSpace Oct. 30 test-satellite item.
+- 2026-11-08-M: The one genuine find came entirely from the discovery pass's required ESA/Europe
+  leg: ArianeGroup's Prometheus reusable methane engine completed its first hot-fires on ESA's
+  newly methane-capable P5 test bench at DLR Lampoldshausen on Oct. 29, reported via ESA's own
+  article (official_record, SNR 5, the v2 scorer's found_none-doesn't-penalize-direct-sources
+  rule held since nothing else covered this specific test). Drafted dated on the actual Oct. 29
+  test date despite predating the sweep window, per the don't-drop-a-genuine-gap-as-stale rule,
+  even at `noise` impact (a routine-shaped ground test, not the "important/seismic" case that
+  rule was written for) since every on-scope fact still publishes. ESA's own page reporting on
+  ArianeGroup's (not ESA's) funded-program test result classed `official_record`, extending the
+  2026-11-04-B NASA-blog-on-third-party-program precedent to ESA.
+- 2026-11-08-N: All 17 fetchable signals channels were checked (10 bluesky `getAuthorFeed` API
+  calls, 7 direct site/substack fetches) and 4 X handles searched; everything found predated the
+  ~3h15m window or was already published (Avio STS scope-back, OHB Sentinel-3, PLD Miura 5
+  test, SyLEx, NASA Moon Base items). `europeanspaceflight.substack.com` 403'd again, covered via
+  the `europeanspaceflight.com` site instead per the standing 2026-11-08-J workaround.
+- 2026-11-08-O: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 1
+  new, 0 updated, 0 held"), 1184 items up from 1183. Confirmed via a direct `jq` read of the new
+  Prometheus item's `snr`/`snr_trace`/`category`/`impact` fields and a `jq empty` parse check on
+  all five touched data files (items, state, source_ledger, sources, candidates); held and
+  registry-candidates were untouched since this draft had no held entries or crossfeed facts.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
