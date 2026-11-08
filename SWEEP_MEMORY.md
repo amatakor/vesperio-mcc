@@ -4612,3 +4612,41 @@ a newer entry if a lesson changes.
   all five touched data files (items, state, source_ledger, sources, candidates); held and
   registry-candidates were untouched since this draft had no held entries or crossfeed facts.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-11-08, fourth)
+
+- 2026-11-08-P: A near-total-junk 30-candidate queue (SpaceX/Tesla stock-reaction Google News spam,
+  Pakistani-astronaut-on-Shenzhou-24 wire pickups with no commercial prime, off-topic Futurism
+  AI/climate pieces, a wall of bot-shaped Bluesky posts: a launch-viewing-app promo, an FAA launch
+  schedule bot, a Kalshi prediction-market bot, a Starbase local-opinion rant) yielded one genuine
+  find only via the Launch Library queue entry itself: a provisional "SatNet LEO Group TBD?"
+  listing resolved on direct fetch to a successful Long March 12 launch of the 29th Guowang batch
+  (Nov 8, 20:24 UTC, Wenchang Commercial LC-2). A Chinese-language search surfaced CCTV News
+  coverage (via a Sina portal repost) as genuine corroboration, consistent with the 2026-10-09-G
+  precedent of classing CCTV-sourced Chinese portal reposts as `mainstream` tier 3, not `trade`.
+  Simplywall.st's "SpaceX Lands $45B AI Deal And Moves To Merge xAI" read as new but the $45B
+  figure traces to the already-published Sept 29 Anthropic compute-deal item (now at $120.5B per
+  IPO filing) and the one-sentence "plans to fold xAI into SpaceX" claim carried no attribution,
+  date, or source of its own; left undrafted as thin aggregator rewrite plus unsourced speculation.
+  A Wccftech/TeslaNorth writeup of Musk's Nov 6 Baron-conference remark on ~100k V4 Starlink
+  satellites "outcompeting undersea cables" (paired with an FT/Windward report on Iran-linked ships
+  lingering over Gulf of Oman cables) was judged below the inclusion bar: Musk's own 100-laser
+  figure is explicitly aspirational/unconfirmed per his own caveat, and it is pure forward tech-
+  roadmap hype about hardware that does not exist yet, not a stated commercial action; left
+  undrafted rather than publishing attributed commentary on an unconfirmed spec. A TechCrunch
+  "Sequoia partners reportedly blindsided when Roelof Botha joined SpaceX board" item was judged
+  routine board-composition news (same tier as the 2026-11-07-H Donald Harrison precedent), the
+  "reportedly" hedge weakening it further.
+- 2026-11-08-Q: All 17 fetchable signals channels (10 Bluesky `getAuthorFeed` calls, 7
+  site/substack fetches) came back with nothing newer than lastSweep (2026-11-08T17:26Z) across
+  the board on this ~5h gap, extending the 2026-11-08-J/N pattern to a third consecutive narrow
+  sweep; 6 X handles searched (Peter Beck, Tory Bruno, Michael Sheetz, Joey Roulette, Sandra Erwin,
+  Jared Isaacman) likewise surfaced nothing inside the window.
+- 2026-11-08-R: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 1 new,
+  0 updated, 0 held"), 1185 items up from 1184. Confirmed via a direct `jq` read of the new Guowang
+  Group 29 item's `snr`/`category`/`impact` fields (SNR 4: aggregator base 4, `corroboration_2plus`
+  offset by nothing else) and a `jq empty` parse check on all five touched data files (items, state,
+  source_ledger, sources, candidates); held and registry-candidates were untouched (no held entries,
+  no crossfeed facts: the item stated only a batch count, not a cumulative total, so
+  `sats_launched_total` could not be crossfed). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
