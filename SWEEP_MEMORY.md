@@ -4520,3 +4520,57 @@ a newer entry if a lesson changes.
   `impact` fields (procurement/major, procurement/major, procurement/notable) and the two
   updated items' grown `sources`/`updates` arrays. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8.4h gap, unfiltered full source list (2026-11-08, second)
+
+- 2026-11-08-G: A near-total-junk 40-candidate queue (Pakistani-astronaut-on-Shenzhou wire
+  pickups with no commercial prime, SpaceX/Tesla stock chatter, off-topic BBC/CGTN/Futurism
+  science and entertainment pieces) still yielded one genuine find by chasing a Google News
+  pair past the headline: a new "Retailers" page on Starlink's own site (Nov. 6, unfetchable
+  directly, standard JS-shell) invites any US store to apply to sell its kits for commission.
+  TeslaNorth led (`trade`) with Notebookcheck's independently-bylined write-up (different
+  detail: the $300 kit price, the endcap-display requirement) as genuine `corroboration_2plus`;
+  a third queue entry (Mezha.net) 403'd on direct fetch and was left unattached rather than
+  cited unseen. A Motley Fool piece pitting Morgan Stanley's $300 target against Michael
+  Burry "overvalued" quotes read as fresh but the Burry quotes themselves trace to this
+  summer's IPO-prospectus commentary (already stale by the time of the already-published
+  July 7 price-target item); left undrafted as a recap with old quotes, not new news. A
+  FourWeekMBA "$75B" Apollo chip-deals piece turned out to be the already-published $40B/
+  $47.3B SpaceX GPU lease summed with an unrelated $35B Anthropic/Broadcom deal; no new
+  SpaceX-specific fact, left undrafted. A KeepTrack "Starlink Mobile as a Major Carrier"
+  piece and two "NASA's $10B Moon base" Google News hits were pure recaps of already-published
+  facts (Qualcomm deal, Boost Mobile talks, Höttges $200B quote; the Nov. 7 CLPS 2 items),
+  caught by grepping `items.json` by headline keyword before spending search budget on them.
+- 2026-11-08-H: The new Starlink retailer item tripped the standing same-company-plus-category
+  dedup heuristic three ways (the Oct. 30 dynamic-pricing item, the Nov. 5 Deutsche Telekom
+  $200B commentary item, the Nov. 6 Router 4 shipping item, all sharing company SpaceX +
+  category `product` within 7 days); three `dedup_distinct` entries cleared it on the second
+  attempt, each a genuinely distinct fact (a pricing change, a named exec's cost estimate, a
+  new hardware SKU shipping, vs. a new wholesale retail channel).
+- 2026-11-08-I: RussianSpaceWeb's `buro1440-2026-0719.html` page (the existing Rassvet-3
+  item's own lead source, re-fetched) flipped Satellite No. 23's status again: having
+  "revived" and climbed per the Oct. 31 update, it is now forecast to decay within 78 hours
+  of Nov. 6 08:15 UTC. Folded in as a no-bump `updates[].attach: []` + `patch: {}` copy-only
+  enrichment (no new source URL, just updated content on the same already-attached page),
+  matching the item's own prior pattern for this living-document saga.
+- 2026-11-08-J: The 17-fetchable-channel signals pass found nothing new anywhere: every
+  Bluesky/site/substack feed's newest entry predated this run's ~8.4h window (lastSweep
+  2026-11-08T05:32Z), confirming that on a short gap the fetchable leg can legitimately come
+  back empty across the board, not just from a few channels. `europeanspaceflight.substack.com`
+  403'd (covered via the europeanspaceflight.com site URL instead, which did return content).
+  The 10-query discovery matrix (launch, financial, incident, China, India, EO, FCC, Europe,
+  Japan, launch-vehicle-failure) surfaced only already-published items (CesiumAstro, Xona,
+  Northwood, Astranis/NASA Ka-band, Amazon-Globalstar, Meteor 2-7, OHB Sentinel-3) or stale
+  recaps (Landspace megaconstellation contracts recapping Aug/Sept 2025 awards, an ASF/NASA
+  SAR contract from June); one genuinely new funding round (EOS-X Space, $120M, Madrid) was
+  judged out of scope as suborbital stratospheric-balloon tourism, not a first flight or
+  incident.
+- 2026-11-08-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the three
+  same-company-plus-category dedup false positives above; merged cleanly on the second attempt
+  ("merged 1 new, 1 updated, 0 held"), 1183 items up from 1182. Confirmed via a direct `jq`
+  read of the new item's `snr`/`snr_trace`/`category`/`impact` fields (SNR 4: trade base 3
+  plus `corroboration_2plus`) and the updated Rassvet item's grown `sources` (10, unchanged)
+  and `updates` (8, up from 7) arrays. A `jq empty` parse check passed on all seven touched
+  data files (items, state, held, source_ledger, sources, candidates, registry-candidates);
+  only five of the seven (items, state, source_ledger, sources, candidates) actually changed.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
