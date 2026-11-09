@@ -4515,3 +4515,32 @@ a newer entry if a lesson changes.
   were untouched (no held entries; none of the seven items' companies had registry profiles with
   a like-for-like metric to crossfeed). `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~10-minute gap, unfiltered full source list (2026-11-09, second)
+
+- 2026-11-09-H: A sweep launched only ~10 minutes after the prior one's merge is a legitimate
+  genuine-zero case, not a signal to skip the loop: the 15-candidate queue's one substantive-
+  looking lead (an Aviation Week "CesiumAstro Secures $730M..." Google News hit) traced via
+  WebSearch straight to the already-published Nov. 5 Series D item, and a Morgan Stanley
+  "reiterates $300 target after post-midterm sell-off" note added no new figure or argument
+  beyond the Oct. 14/Nov. 3 notes already published, extending the recurring-analyst-reiteration-
+  is-not-new-news pattern (ISRO chairman, Telesat/Goldberg, SyLEx) to Adam Jonas's SpaceX target.
+  A Cathie Wood/ARK "sells AI stock, buys SpaceX" piece was left undrafted too: ARK discloses
+  trades daily (also bought SpaceX Nov. 4, traded Broadcom/Nvidia Nov. 5), so a bare trade
+  execution with no named analytical quote is routine portfolio churn, not the "take, analysis, or
+  position from a named voice" the commentary kind requires (distinct from the Oct. 29 ARK merger-
+  model item, which carried an actual $2.7T analytical claim).
+- 2026-11-09-I: A NASA "$1 million Moon Base Student Challenge" (Isaacman announcing cash prizes
+  for students at a KSC air show) was judged out of scope despite being a dateable NASA human-
+  spaceflight-program announcement: it is STEM outreach with no contract, commercial provider, or
+  procurement angle, unlike the CLD/Artemis/CLPS awards the human-spaceflight scope clause actually
+  covers.
+- 2026-11-09-J: On this short a gap, checking 13 of 17 fetchable signals channels directly (the
+  other 4 covered via an already-checked equivalent surface for the same person, e.g. Parsonson's
+  bluesky standing in for his substack) and running the full 8-query discovery matrix still found
+  nothing: everything traced to stories already published in the immediately preceding sweep
+  (SaxaVord UK stake, RFA 2027 slip, the Guowang 29th batch under CGTN's Beijing-time framing of
+  the same Nov. 8 20:24 UTC launch). `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST
+  attempt ("merged 0 new, 0 updated, 0 held"), 1192 items unchanged. Confirmed via a direct `jq`
+  read of the sweep log's `signals`/`discovery` blocks in `state.json`. `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
