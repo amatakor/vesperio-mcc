@@ -80311,7 +80311,7 @@
         "https://starlust.org/starship-flight-15-spacex-completes-full-duration-static-fire-test-of-booster-watch-video/"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -80323,11 +80323,24 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "2 distinct sources (>=2)"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
-        "single_class_corroboration": "informal"
+        "single_class_corroboration": "informal",
+        "history": [
+          {
+            "date": "2026-11-10",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -80532,7 +80545,7 @@
       "source_url": "https://www.space.com/space-exploration/satellites/astroscale-proposes-fleet-of-bodyguard-spacecraft-to-protect-satellites-from-orbital-attacks",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -80544,10 +80557,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-10",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -90019,6 +90045,210 @@
         }
       ],
       "image": null
+    },
+    {
+      "id": "2026-11-09-rocket-lab-q3-2026-neutron-backlog",
+      "date": "2026-11-09",
+      "headline": "Rocket Lab books $515 million in new Neutron contracts, backlog hits $3.57 billion",
+      "explainer": {
+        "tagline": "Rocket Lab signed $515 million in new Neutron deals in Q3, lifting its backlog to 16 missions and base price to $70 million.",
+        "what_happened": "Rocket Lab's Q3 2026 earnings, filed with the SEC on Nov. 9, reported record quarterly revenue of $268 million, up 73% year on year, and a total backlog of $3.57 billion, up 52% from Q2. The company said it signed more than $515 million in new Neutron launch contracts during the quarter, covering eight missions for five constellation operators: three dedicated launches for ICEYE, two for Muon Space, and one each for Starcloud, Kepler Communications and the U.S. Space Force's SB-AMTI program. The deals take Neutron's total backlog to 16 missions, beginning with the vehicle's planned 2027 debut, and raise its base launch price to $70 million from $55 million; Rocket Lab said its next available Neutron launch slots now fall in the 2030s.",
+        "why_it_matters": "A $15 million base-price increase and a multi-year wait for new slots on a rocket that has not yet flown is a pricing-power signal for an industry already short on launch capacity for established vehicles like Falcon 9. ICEYE's three dedicated Neutron missions give the SAR operator a second major launch provider beyond SpaceX, a hedge other constellation operators are likely to weigh as Neutron's 2027 debut approaches."
+      },
+      "tags": [
+        "launch"
+      ],
+      "category": "financial",
+      "impact": "major",
+      "companies": [
+        "Rocket Lab",
+        "ICEYE"
+      ],
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000073/rklb-11092026ex991.htm",
+      "secondary_urls": [
+        "https://aviationweek.com/space/launch-vehicles-propulsion/rocket-lab-signs-515-million-launch-deals-neutron"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000073/rklb-11092026ex991.htm",
+          "reason": "base tier 5 from lead source class \"official_record\" (SEC EDGAR (Rocket Lab 8-K Ex. 99.1))"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1819994/000181999426000073/rklb-11092026ex991.htm",
+          "outlet": "SEC EDGAR (Rocket Lab 8-K Ex. 99.1)",
+          "class": "official_record",
+          "added": "2026-11-10",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.stocktitan.net/news/RKLB/rocket-lab-lands-over-515m-in-neutron-launch-deals-from-evh6t0ia0ts4.html",
+          "outlet": "StockTitan (Rocket Lab release mirror)",
+          "class": "wire_pr",
+          "added": "2026-11-10",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://aviationweek.com/space/launch-vehicles-propulsion/rocket-lab-signs-515-million-launch-deals-neutron",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-11-10",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-10T01:59:39.986Z",
+      "entities": [
+        {
+          "name": "Rocket Lab",
+          "ref": "organizations/rocket-lab"
+        },
+        {
+          "name": "ICEYE",
+          "ref": "constellations/iceye"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-09-rocket-lab-q3-2026-neutron-backlog.webp",
+        "credit": "Image: aviationweek.com",
+        "origin_url": "https://aviationweek.com/space/launch-vehicles-propulsion/rocket-lab-signs-515-million-launch-deals-neutron",
+        "width": 1000,
+        "height": 643
+      }
+    },
+    {
+      "id": "2026-11-09-ast-spacemobile-q3-2026-results",
+      "date": "2026-11-09",
+      "headline": "AST SpaceMobile posts Q3 revenue of $42.3 million, reaffirms 2026 guidance",
+      "explainer": {
+        "tagline": "AST SpaceMobile's Q3 2026 revenue rose to $42.3 million from $14.7 million a year earlier; the company held $3.2 billion in cash.",
+        "what_happened": "AST SpaceMobile's Q3 2026 earnings release, filed with the SEC on Nov. 9, reported revenue of $42.3 million for the quarter ended Sept. 30, up from $14.739 million in Q3 2025, driven by product sales and U.S. government services. The company said it held $3.2 billion in cash, cash equivalents and restricted cash and reaffirmed full-year revenue guidance of $150 million to $200 million. AST SpaceMobile said it has 12 BlueBirds in orbit, is targeting a production rate of six ASIC satellites per month by December, and is aiming for roughly 45 BlueBirds in orbit by mid-2027.",
+        "why_it_matters": "The reaffirmed guidance and production ramp matter for AST SpaceMobile's direct-to-cellular rivalry with SpaceX's Starlink Mobile, which drew public pushback from T-Mobile and AT&T executives this month; how fast AST reaches a 45-satellite constellation will shape how credible its continuous-coverage pitch to carriers looks against Starlink's faster deployment cadence."
+      },
+      "tags": [
+        "connectivity",
+        "direct-to-device"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "AST SpaceMobile"
+      ],
+      "source_url": "https://www.sec.gov/Archives/edgar/data/0001780312/000119312526453758/asts-ex99_1.htm",
+      "secondary_urls": [
+        "https://www.sec.gov/Archives/edgar/data/0001780312/000119312526453758/asts-ex99_2.htm"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.sec.gov/Archives/edgar/data/0001780312/000119312526453758/asts-ex99_1.htm",
+          "reason": "base tier 5 from lead source class \"official_record\" (SEC EDGAR (AST SpaceMobile 8-K Ex. 99.1))"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/0001780312/000119312526453758/asts-ex99_1.htm",
+          "outlet": "SEC EDGAR (AST SpaceMobile 8-K Ex. 99.1)",
+          "class": "official_record",
+          "added": "2026-11-10",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.panabee.com/news/ast-spacemobile-earnings-q3-2026",
+          "outlet": "Panabee",
+          "class": "informal",
+          "added": "2026-11-10",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-10T01:59:39.986Z",
+      "entities": [
+        {
+          "name": "AST SpaceMobile",
+          "ref": "constellations/ast-spacemobile"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-09-ast-spacemobile-q3-2026-results.webp",
+        "credit": "Image: sec.gov",
+        "origin_url": "https://www.sec.gov/Archives/edgar/data/0001780312/000119312526453758/asts-ex99_1.htm",
+        "width": 660,
+        "height": 314
+      }
+    },
+    {
+      "id": "2026-11-09-tmobile-execs-starlink-mobile-dismissal",
+      "date": "2026-11-09",
+      "headline": "T-Mobile executives dismiss SpaceX's Starlink Mobile as a near-term threat",
+      "explainer": {
+        "tagline": "Per Fierce Network: T-Mobile COO Jon Freier and CCO Andre Almeida say Starlink Mobile stays a complementary, low-density niche.",
+        "what_happened": "At T-Mobile's T-Mix event in Los Angeles, reported by Fierce Network on Nov. 9, COO Jon Freier said T-Mobile is \"heads down on driving this business with or without\" SpaceX's Starlink Mobile service, and Chief Commercial Officer Andre Almeida said satellite direct-to-device technology \"is for very low-density areas, and it won't go beyond that.\" Almeida added that T-Mobile knows \"exactly what you can do and what you can't do with that technology.\"",
+        "why_it_matters": "The comments are the latest in a string of on-record pushback from T-Mobile leadership this month against SpaceX's Starlink Mobile buildout; a commercial director tracking the direct-to-device fight will read this as the carrier doubling down on its existing Starlink-powered T-Satellite service as a coverage backstop, not treating a competing satellite-only network as an imminent subscriber threat."
+      },
+      "kind": "commentary",
+      "tags": [
+        "connectivity",
+        "direct-to-device"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "T-Mobile",
+        "SpaceX"
+      ],
+      "source_url": "https://www.fierce-network.com/wireless/t-mobile-execs-stay-unfazed-spacex-hype",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.fierce-network.com/wireless/t-mobile-execs-stay-unfazed-spacex-hype",
+          "reason": "base tier 3 from lead source class \"trade\" (Fierce Network)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.fierce-network.com/wireless/t-mobile-execs-stay-unfazed-spacex-hype",
+          "outlet": "Fierce Network",
+          "class": "trade",
+          "added": "2026-11-10",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-10T01:59:39.986Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-09-tmobile-execs-starlink-mobile-dismissal.webp",
+        "credit": "Image: fierce-network.com",
+        "origin_url": "https://www.fierce-network.com/wireless/t-mobile-execs-stay-unfazed-spacex-hype",
+        "width": 1200,
+        "height": 800
+      }
     }
   ]
 }
