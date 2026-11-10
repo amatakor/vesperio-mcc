@@ -4502,3 +4502,46 @@ a newer entry if a lesson changes.
   `jq empty` parse check on all seven touched data files (items, held, state, source_ledger,
   sources, candidates, registry-candidates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~1h45m gap, unfiltered full source list (2026-11-10, fourth)
+
+- 2026-11-10-Q: A `funding_latest` crossfeed attestation on a government conditional LOAN
+  (Rocket Lab's $150M Pentagon/OSC commitment for Neutron production) against a registry
+  field whose stored value was an unrelated equity ATM RAISE ($1.944B for the Iridium deal)
+  triggered a same-metric dispute downgrade (SNR 4 to 3) on the first finalize attempt. A debt
+  instrument and an equity raise are different metrics even though both could narratively be
+  called "funding"; `funding_latest` crossfeed facts need the same like-for-like scrutiny as
+  any other field, not just automatic same_metric:true because both are "financing news."
+  Fixed via the `dispute_resolved: true` + `rescore` update path in a second finalize pass
+  (SNR corrected back to 4, `disputed` cleared, history entry logged); the erroneous
+  registry-candidates.json entry itself (`action: "downgrade_incoming"`, status "pending")
+  was left untouched since that file is machine-owned and only the weekly maintain-registry
+  run or Florian should resolve it, not a hand-edit from this sweep.
+- 2026-11-10-R: Two genuinely new items came from Sandra Erwin's SpaceNews byline (found via
+  a plain WebSearch for her name + date, not her X feed, which the public bluesky/X search
+  tools couldn't surface directly): Anduril unveiling in-orbit test results from all three
+  Anduril-26 payloads (an update to the Aug. 14 first-satellite-on-orbit item, not a new
+  item), and Rocket Lab's $150M conditional OSC loan (distinct from the same-week $515M
+  Neutron customer-backlog item on `dedup_distinct`). A single-source Ars Technica piece
+  (unfetchable directly, but readable via the `r.jina.ai/<url>` readability-proxy technique)
+  on an Axiom Space v. Vast Space False Claims Act lawsuit over a NASA mission-planning
+  document had no second outlet on an exact-headline-quote search; published anyway at a
+  single-source `mainstream` tier (Ars Technica has no settled class precedent in this file
+  beyond "often unfetchable directly") per the standing weak-sourcing-is-not-a-hold rule,
+  dated on the Nov. 4 unsealing (the dateable fact) rather than the Nov. 10 discovery date.
+  A Caltech/DARPA ASTRA robot autonomously assembling a 1.4m antenna truss bay in orbit
+  (NOM4D program) was drafted despite having no tracked commercial company attached: Caltech's
+  own site is not a registry-matched first_party domain (same non-registered-actor precedent
+  as NTT/Rakuten, 2026-11-09-A), so classed `trade`, with Space.com/Phys.org as independent
+  `mainstream` corroboration.
+- 2026-11-10-S: `bun scripts/finalize-sweep.ts` merged cleanly on the second attempt after
+  four taglines needed trimming under the 140-char cap ("merged 3 new, 1 updated, 0 held"),
+  1204 items up to 1207. A follow-up correction-only draft (0 new, 1 updated) fixed the
+  funding_latest dispute above; both merges required the full signalsPass/discoveryPass
+  blocks even though the second draft touched no new candidates, confirming those blocks are
+  unconditional on every finalize call, not just ones with new items. Confirmed via a direct
+  `jq` read of all three new items' and the corrected item's `snr`/`category`/`impact` fields,
+  the Anduril update's grown `sources` (3, up from 2) and `updates` (1, up from 0), and a
+  `jq empty` parse check on all seven touched data files (items, held, state, source_ledger,
+  sources, candidates, registry-candidates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
