@@ -4458,3 +4458,47 @@ a newer entry if a lesson changes.
   update, both held at their official_record ceiling of 5). `bun run build` was not attempted,
   per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~9.7h gap, unfiltered full source list (2026-11-10, third)
+
+- 2026-11-10-L: A company's own IR/newsroom page can pass the `first_party` anti-spoof host
+  check via subdomain match even when its registry `website` field points elsewhere: BlackSky's
+  `ir.blacksky.com` matched registry host `blacksky.com` (subdomain of the registered apex) and
+  Firefly's own `fireflyspace.com` press release matched its registry host exactly, both scoring
+  SNR 5 as single-source first-party leads with `crawl: "found_none"` costing nothing (direct
+  sources take no corroboration penalty). By contrast Redwire's `ir.rdw.com` and Airbus's
+  `airbus.com` newsroom do NOT match their registry hosts (`redwirespace.com` and
+  `space-solutions.airbus.com` respectively) and were reclassified to `wire_pr` rather than
+  resubmitted as `first_party`, extending the ispace-inc.com/boe.es/.gov.uk reclassify-don't-
+  resubmit pattern to same-company domain mismatches, not just missing registry entities.
+- 2026-11-10-M: Kratos and Seagate Space's "Mobile Offshore Launch Capabilities for National
+  Security Missions" partnership (a modular offshore launch platform for Kratos's hypersonic/
+  ballistic-missile-target test vehicles) was judged out of scope despite reading like a launch-
+  infrastructure story: the vehicles described are suborbital missile-defense test articles, not
+  orbital payloads, extending the HyImpulse SR75/Avio FD1/Pluto Aerospace orbital-only exclusion
+  and the Minotaur-ICBM-reentry-test precedent (2026-10-12-G) to a dedicated offshore pad story.
+  A Payload exclusive on stealth startup Lyra Systems (AI-enabled mission-integration software,
+  a five-year AFRL CRADA, no stated dollar value or named customer beyond the Pentagon agreement)
+  was left undrafted as a vague company-profile piece rather than a dateable transaction with
+  market terms; flag for reconsideration if a future piece names a specific contract value.
+- 2026-11-10-N: France's DGA awarding Airbus/Thales Alenia Space a >€1.5bn IRIS spy-satellite
+  contract (notified Nov. 5, reported Nov. 9-10) was chased as a genuine predates-window major
+  gap: `defense.gouv.fr` fails the `official_record` host check (not on the fixed list, no
+  `.gov` suffix) same as `boe.es`/`.gov.uk`, reclassified to `trade`. The item still reached
+  SNR 4 on `corroboration_2plus` from Defense News, AeroTime, and the DGA's own page alongside
+  the Airbus `wire_pr` lead.
+- 2026-11-10-O: Both Starlink/Ukraine saga updates patched the item's top-level `explainer` to
+  the latest development (BT delaying its own commercial Starlink launch over Ukraine optics;
+  EU space commissioner Kubilius's on-record "could lose trust" warning) rather than appending to
+  the old text, confirming the living-document convention: `updates[].note` is the point-in-time
+  reader-facing log line, but `explainer` always reflects the single most current state of the
+  story. The EU Commission item's 4th distinct source correctly triggered `corroboration_4plus`
+  in the draft but the final score held at 4, confirming the non-first-party ceiling caps the
+  modifier rather than erroring when the sum would exceed it.
+- 2026-11-10-P: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 6
+  new, 2 updated, 0 held"), 1204 items up from 1198. Confirmed via a direct `jq` read of all six
+  new items' `snr`/`category`/`impact` fields and both updated items' grown `sources` (Starlink/
+  Ukraine: 91 sources, 40 updates; EU Commission: 4 sources, 2 updates, SNR held at 4) and a
+  `jq empty` parse check on all seven touched data files (items, held, state, source_ledger,
+  sources, candidates, registry-candidates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
