@@ -4404,4 +4404,57 @@ a newer entry if a lesson changes.
   major financial; AST SpaceMobile Q3 results SNR 5 notable financial; T-Mobile Starlink-dismissal
   commentary SNR 2 notable product) and a `jq empty` parse check across all six touched data files
   (items, state, source_ledger, sources, candidates, held). `bun run build` was not attempted, per
+
+## Narrow re-check, ~3h18m gap, unfiltered full source list (2026-11-10, second)
+
+- 2026-11-10-F: A near-total-junk 17-candidate queue (SpaceX $24B Starbase gas-power/
+  supercompute buildout, the standing terrestrial-compute exclusion per 2026-11-06-H/
+  2026-11-10-A; SpaceX/Tesla stock reaction; scheduled-not-yet-flown Starship IFT-15/
+  Vandenberg previews) still yielded a routine Russian GLONASS-K launch (Nov 7, Plesetsk)
+  via RussianSpaceWeb once Zak's own `glonass-k-2026-2.html` page was found (search-only,
+  not a guessed URL pattern; `glonass-k-20.html` 404'd). The Russian MoD itself never names
+  the payload type (standard classified-launch language); Zak's own page hedges the
+  identification as "presumed" GLONASS-K1, so the item's headline/copy kept that hedge
+  rather than asserting the satellite type as confirmed fact.
+- 2026-11-10-G: An FT headline in the queue ("BT cools on Starlink satellite tie-up after
+  Elon Musk Ukraine controversy," 16 minutes old at fetch time) could not be drafted: ft.com
+  is on the standing unfetchable list, and WebSearch's index had nothing yet, not even a
+  crediting mirror, this fresh into the story. Left undrafted per the never-cite-an-unfetched-
+  page rule rather than reconstruct it from the headline alone; worth a same-topic re-check
+  next sweep once a mirror exists.
+- 2026-11-10-H: A Dealroom-only "Transcom Instruments buys satellite-nav tester for $133M"
+  queue headline (Chinese Transcom Instruments acquiring GNSS-test-equipment firm Weiyu
+  Tiandao) resolved via WebSearch synthesis but the Dealroom source itself 403'd on every
+  fetch attempt; left undrafted both for the unverified-primary-source reason and a genuine
+  scope judgment call (a domestic Chinese M&A between two test-equipment makers, neither a
+  constellation operator, launch provider, nor ground-segment company serving the space
+  industry specifically, reads as outside CLAUDE.md's ecosystem carve-outs even though one
+  product line touches satellite-navigation simulation).
+- 2026-11-10-I: Vivienne Machi's Aviation Week author page surfaced three same-day (Nov 9)
+  bylines; two (Rocket Lab's $515M Neutron backlog, Planet/Stoke Space Nova deal) traced to
+  already-published items from the immediately preceding sweep, but the third (ICEYE US CEO
+  Ann Stevens telling Aviation Week the company wants to become a SAR payload provider to
+  prime contractors) was genuinely new and undrafted; worth continuing to check all bylines
+  on this page individually rather than assuming one hit means the others are covered too.
+- 2026-11-10-J: Jeff Foust's bluesky feed listed a "NASA proceeds with plans to convert Mars
+  rover engineering model into a lunar rover" headline that read as a fresh Nov 8 story but
+  traced, once the actual cited SpacePolicyOnline source was fetched, to a June 30, 2026
+  announcement; the genuinely new angle (RTG recycled from Cassini, <$400M total delivery
+  cost including the lander, 1m drill, VIPER instrument copies) came instead from a Nov 9
+  Register piece on the same program, found only via a targeted search once the June-dated
+  source ruled out the WebSearch synthesis's implied freshness. The same SpacePolicyOnline
+  Nov 7-8 Moon Base recap also carried a genuine, separate enrichment (Griffin/Endurance/
+  Trinity CLPS missions all slipping into 2027; NASA's "10 CLPS landings a year" cadence
+  target now starting 2028, not 2027) folded into two different existing items rather than
+  one, since each fact fit a different item's own topic more precisely than a single
+  catch-all patch would have.
+- 2026-11-10-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged
+  3 new, 3 updated, 0 held"), 1198 items up from 1195. Confirmed via a direct `jq` read of
+  all three new items' `snr`/`impact`/`category` fields (GLONASS-K launch SNR 4 noise launch;
+  ICEYE SAR-payload-provider SNR 2 noise product; Barclays/T-Mobile commentary SNR 2 notable
+  financial, 11 `dedup_distinct` entries pre-empted in one pass against the crowded SpaceX
+  financial/commentary field) and all three updated items' grown `sources`/`updates` arrays
+  (HPE/Griffin: 4 sources, 1 update; CLPS 2: 5 sources, 1 update; PROMISE rover: 5 sources, 1
+  update, both held at their official_record ceiling of 5). `bun run build` was not attempted,
+  per
   the 2026-09-09 CLAUDE.md procedure update.
