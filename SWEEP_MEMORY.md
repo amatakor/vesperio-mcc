@@ -4545,3 +4545,40 @@ a newer entry if a lesson changes.
   `jq empty` parse check on all seven touched data files (items, held, state, source_ledger,
   sources, candidates, registry-candidates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h13m gap, unfiltered full source list (2026-11-10, fifth)
+
+- 2026-11-10-T: `x.com`/`twitter.com` status URLs, even an actor's own verified brand account
+  (`@Starlink`), fail the gate's `first_party` anti-spoof host check (only the registry-recorded
+  website domain passes); reclassifying to `informal` cleared it on the second attempt, extending
+  the standing x.com/elonmusk precedent (2026-10-08 Grain item) from a founder's personal account
+  to a product's own brand account. The public syndication endpoint
+  (`cdn.syndication.twimg.com/tweet-result?id=...&token=a`) worked cleanly here to retrieve the
+  exact Starlink Mini 2 launch-post text once the status ID was found via a WebSearch for the
+  quoted product tagline, not by guessing the ID.
+- 2026-11-10-U: A thin, no-byline, single-page e-commerce-blog (BASENOR, a "Tesla Accessories"
+  retailer with a news section) story claiming "FCC Accepts SpaceX Bid for 800 MHz Spectrum" could
+  not be corroborated: no trade outlet (SpaceNews, Via Satellite, Light Reading, FierceNetwork)
+  carried it, no docket/file number appeared anywhere in the piece, and an extensive FCC-filings
+  search surfaced only an unrelated October WT Docket 26-187 Tristar order plus the original
+  Oct. 8 SpaceX/Grain application narrative (not an acceptance notice). Left undrafted as an
+  update to the existing `2026-10-08-spacex-grain-800mhz-spectrum` item rather than patch its
+  copy from a single unverifiable content-mill claim; worth a direct re-check once real coverage
+  or the FCC's own ECFS docket for the NewLevel IV/Starlink Spectrum Holdings transfer turns up.
+- 2026-11-10-V: Four distinct same-day SpaceX "product"-category items (Starlink Mini 2 launch,
+  the Nov. 5 Deutsche Telekom $200B commentary, the Nov. 6 Router 4 Wi-Fi 7 shipping start, the
+  Nov. 6 US retail program) all collided on the company+category dedup heuristic despite being
+  four unrelated events; `dedup_distinct` at the item's top level (not nested under `scoring`,
+  per the 2026-11-10-C/E lesson) cleared all four in one pass.
+- 2026-11-10-W: Earnings-release items for companies with no registry organization profile
+  (Satellogic: only a constellation profile exists, no organization entity) or with a profile
+  whose crossfeed-eligible fields don't cover revenue/EBITDA (Spire Global) both need an explicit
+  `crossfeed: { facts: [], note: "..." }` block all the same; the gate does not exempt financial
+  items just because the metric reported isn't crossfeed-eligible.
+- 2026-11-10-X: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the `x.com`
+  first_party misclassification and a missing `dedup_distinct` block (both above); merged cleanly
+  on the third attempt after a tagline trim ("merged 4 new, 0 updated, 0 held"), 1211 items up
+  from 1207. Confirmed via a direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields and a `jq empty` parse check on all five touched data files (items, state, source_ledger,
+  sources, candidates); held and registry-candidates were untouched (no held entries, no crossfeed
+  facts). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
