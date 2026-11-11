@@ -4546,4 +4546,58 @@ a newer entry if a lesson changes.
   data files (items, state, held, source_ledger, sources, candidates, registry-candidates); held
   and registry-candidates were untouched (no held entries; none of the four items' companies had a
   registry profile with a like-for-like crossfeed metric). `bun run build` was not attempted, per
+
+## Narrow re-check, ~9.5h gap, unfiltered full source list (2026-11-11, second)
+
+- 2026-11-11-F: Reading an FCC PDF public notice directly via the Read tool (after WebFetch returned
+  only garbled binary text) recovered the exact docket/date/figures cleanly; worth defaulting straight
+  to that path for any `docs.fcc.gov/public/attachments/*.pdf` link rather than retrying WebFetch
+  variations, since the PDF renders as unreadable binary through WebFetch every time.
+- 2026-11-11-G: Two Senate Commerce Committee press releases on the same bill passage (the Democratic
+  whip's "Cantwell Leads..." release and the bipartisan committee's "Senate Unanimously Approves..."
+  release, both on commerce.senate.gov) collapsed into one corroboration unit at finalize
+  (`same_domain` rule) despite covering the same vote from two press offices; treat same-domain
+  institutional press releases about one action as one source going in, not two, since the gate
+  will collapse them anyway.
+- 2026-11-11-H: `bsky.app/profile/<handle>` profile pages render as an empty JS shell through
+  WebFetch (handle only, zero posts), confirming the pattern already seen for spacex.com/updates;
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=15` reliably
+  returns real post text and timestamps for the same accounts and should be the default fetch for
+  every bluesky signals-pass channel, not the profile URL itself.
+- 2026-11-11-I: A near-total-junk queue (SpaceX/Tesla stock reaction, Starship Flight 15 preview
+  spam, dozens of Starlink Mini 2 review pieces) again yielded real stories almost entirely from the
+  discovery pass and signals pass rather than the queue itself: a SpaceX SDA $9.9M Plaser
+  laser-comms risk-reduction study (found via an "FCC satellite license order" discovery query,
+  not the queue's own SpaceNews entry, which undersold the story without the dollar figure), the
+  UAE's Arab Satellite 813 clearing its post-launch review, and the Senate's unanimous Weather Act
+  passage codifying NOAA's commercial weather-data program (surfaced via Marcia Smith's bluesky
+  feed, not the queue). Several queue leads traced to already-published stories on sight: an
+  "Israel Defense" France-EO-satellite headline was the already-published Nov. 5 DGA/Airbus-Thales
+  IRIS contract; "OHB stock gets EUR 554 million ESA contract for Sentinel-3" was the already-
+  published Nov. 4 item; "Pentagon Backs Rocket Lab With $150M Loan" was the already-published
+  Nov. 10 OSC loan item; an "Airbus awarded contract for two additional Galileo satellites" piece
+  (evertiq.com, dated Nov. 2) traced to the same underlying Oct. 26 Airbus order already folded into
+  the published "four more Galileo Second Generation satellites" item, just reported from the
+  Airbus side with a different satellite count framing.
+- 2026-11-11-J: An IHI/Nikkei Asia "to mass-produce dual-use satellites in Japan" piece was left
+  undrafted: the only fetchable content was a single paywall-truncated paragraph with no figures,
+  dates, or satellite counts, and the fuller picture found via search traced to IHI's own July 22
+  press release (an already-stale ICEYE assembly-training milestone), not new reporting. A
+  PierSight Varuna 2.0 SAR-AIS vibration-test pass was judged below the inclusion bar as a routine
+  qualification-test milestone, consistent with the standing ISRO-engine-test-fire precedent.
+  EOS-X Space's $120M raise (stratospheric balloon flights, diversifying into a dual-use-satellite
+  division) and Firehawk Aerospace's $150M raise (tactical rocket/artillery motors, not orbital
+  launch vehicles) were both judged out of scope as non-orbital, extending the standing
+  balloon/missile-motor exclusion precedents to two funding-round candidates specifically.
+- 2026-11-11-K: `bun scripts/finalize-sweep.ts` rejected the first attempt (`coverage` must be
+  drawn from the Category enum, not freeform strings like "non-US") and the second attempt (a
+  `dedup_distinct` gap: the new SpaceX SDA contract item collided with two same-week SpaceX
+  `contract`-category items, the Singulus solar-cell order AND the Nov. 2 STIF valve order, and
+  only the first was attested); merged cleanly on the third attempt ("merged 3 new, 1 updated, 0
+  held"), 1218 items up from 1215. Confirmed via a direct `jq` read of all three new items'
+  `snr`/`category`/`impact` fields and the Grain-spectrum item's grown `sources` (9, up from 7) and
+  `updates` (4, up from 3) arrays, the sweep log's `corroboration_collapses` entry confirming the
+  two Senate press releases collapsed to one source, and a `jq empty` parse check on all six
+  touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.
   the 2026-09-09 CLAUDE.md procedure update.
