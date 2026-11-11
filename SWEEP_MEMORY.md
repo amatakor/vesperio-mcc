@@ -4601,3 +4601,29 @@ a newer entry if a lesson changes.
   touched data files (items, state, held, source_ledger, sources, candidates). `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2.3h gap, unfiltered full source list (2026-11-11, third)
+
+- 2026-11-11-L: A WebSearch synthesis for "ISS Progress maneuver debris avoidance November 11
+  2026" confidently returned a same-day-shaped NASA/Roscosmos debris-avoidance maneuver, but
+  direct fetches of both cited articles (Aviation Week, Space.com) showed the actual event was
+  from November 19, 2024, two years stale; the synthesis had silently re-dated an old story to
+  match the query's requested date. Extends the standing WebSearch-fabricates-and-conflates-dates
+  pattern specifically to a recurring headline shape (ISS debris-avoidance maneuvers happen
+  periodically, so a vague-dated hit is easy to mistake for today's news); always direct-fetch and
+  check the byline date before drafting this shape of story.
+  A Bloomberg/GovExec/Forbes thread on Democrats-controlled Congress scrutinizing SpaceX's Golden
+  Dome contracts (post-midterm) was investigated but left undrafted: every directly-fetched piece
+  hedged ("could," "likely," "going to have a closer eye") with no stated investigation, vote, or
+  contract action yet, the same forward-looking-political-speculation shape as the 2026-11-03-I/
+  2026-11-04-I precedents. A GF Securities/SemiAnalysis-sourced "SpaceX designs Kessel rack for
+  orbital data centers" rumor (Tom's Hardware, FourWeekMBA, et al.) was left undrafted as an
+  unconfirmed hardware leak ("report claims," unnamed sourcing, ambiguous terrestrial-vs-orbital
+  scope) with no SpaceX confirmation.
+- 2026-11-11-M: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 2
+  new, 0 updated, 0 held"), 1220 items up from 1218. Confirmed via a direct `jq` read of both new
+  items' `snr`/`category`/`impact`/`sources` fields (NASA ESCAPADE powered Earth flyby: SNR 5,
+  official_record base, science/notable; Sierra Space Dream Chaser FAA reentry license: SNR 4,
+  trade base plus `corroboration_2plus`, regulatory/notable) and a `jq empty` parse check on all
+  five touched data files (items, state, source_ledger, sources, candidates); held was untouched
+  (no held entries, no crossfeed facts).
