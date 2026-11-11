@@ -14184,3 +14184,88 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   10-query discovery matrix. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
 
+## Deep sweep (auto-escalated after two consecutive zero-add sweeps), ~7h gap, unfiltered full source list (2026-10-11)
+
+- 2026-10-11-A: A 700-candidate deep-mode queue (7-day window) was almost
+  entirely junk (SpaceX stock/valuation churn, off-topic Futurism/BBC
+  filler, routine Federal Register notices, IAC 2026 generic-cooperation
+  wire pieces) or re-presentation of already-published stories; roughly a
+  dozen candidates that read as genuinely new on headline alone (Amazon's
+  1,000th Kuiper satellite, Kapta Space's $24M round, the Themis/SALTO
+  deadline extension, the Exploration Company's ONEIROS hopper, Redwire's
+  Axiom ROSA follow-on, T1TL-A's launch, American Airlines' mainline
+  Starlink rollout, Aselsan's Gokbagi/Astralink and TUSAS/Roketsan's
+  Hursat-2, Golbriak/Fortastra/Astrolight/Astrogate funding and MOUs, the
+  L3Harris LISA telescope contract) all turned out to already be
+  published once grepped against `items.json` by company name. Confirms
+  the standing deep-mode norm (2026-09-27-D, 2026-10-04-B) at a larger
+  scale than previously logged.
+- 2026-10-11-B: A new vague-conference-announcement shape: a Turkish
+  industry-cluster chair (Haluk Bayraktar, SAHA Istanbul, not a
+  government or company official) announcing at IAC 2026's opening that
+  Türkiye is "building" a 100-satellite navigation constellation named no
+  contractor, budget, or timeline in any outlet checked (AA, Yeni Şafak).
+  Left undrafted alongside two CGTN/JAXA-Saudi vague-cooperation MOUs
+  already excluded 2026-10-10-I; worth a cleaner precedent if a future
+  sweep finds the Turkish Space Agency or a named contractor attaching a
+  budget to the same program.
+- 2026-10-11-C: Two more ESA Multimedia Videos/Images read as thin/not a
+  defined science-event type: Hera's "first glimpse of Didymos" (Oct 7,
+  236,500 km out, an optical-acquisition navigation milestone two years
+  post-launch, with the actual rendezvous/survey still not until 2027)
+  and an animated educational short claiming Hera has "finally arrived"
+  were both left undrafted as neither an arrival, orbit insertion, nor
+  landing per the science scope's named event list, and ESA's own page
+  states no commercial/industry angle. Revisit when the actual 2027
+  rendezvous/survey begins.
+- 2026-10-11-D: The Bluesky stale-cache pattern now affects Caleb Henry,
+  Tim Farrar and Eric Berger on essentially every sweep (Eric Berger's
+  `getAuthorFeed` returned posts dated back to March 2025 this run, the
+  worst staleness yet recorded); Marco Langbroek's feed was dominated by
+  an unrelated French SLBM-test news cycle. Treated all four as
+  checked-but-empty per the standing practice rather than re-querying.
+- 2026-10-11-E: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 0 new, 0 updated, 0 held"); confirmed via the
+  sweep log's `signals`/`discovery` blocks recording full 17-channel/
+  13-person coverage, 8 X-handle searches, and the 12-query discovery
+  matrix. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
+
+## Narrow re-check, ~3h33m gap, unfiltered full source list (2026-10-11, second)
+
+- 2026-10-11-F: A near-total-junk 25-candidate queue (Bluesky spacex-launch
+  bot/opinion accounts, stock-reaction Yahoo/Barron's/Seeking Alpha pieces
+  on the Oct 8 Grain spectrum deal, Futurism/BBC off-topic filler) yielded
+  nothing itself; the one genuine new item came from the discovery pass,
+  not the queue: a Sept 30 NASA/Glenn Research Center $38M firm-fixed-price
+  contract to Modulate Space Corporation for a lunar-surface 5G/Wi-Fi 6
+  network, confirmed via NASA's own press release (first_party, SNR 5,
+  `dedup_distinct` against the unrelated Oct 6 NASA bulk-rocket-buy item on
+  shared-company/category grounds) and missed entirely by the prior four
+  sweeps that day. Worth remembering: a plain WebSearch discovery query can
+  surface a real NASA contract award that several SEO-mirror sites
+  (memesita, dijitalmasallar, streamlinefeed, ufofeed, time.news,
+  miragenews) picked up days before any sweep drafted it; none of those
+  mirrors counted as corroboration (pure rewrites of the NASA release, no
+  independent reporting), so the crawl recorded `found_none` with no SNR
+  penalty since the lead is first-party.
+- 2026-10-11-G: WebFetch cannot render `bsky.app/profile/<handle>` pages at
+  all (they return only the bare handle, no post content, regardless of
+  account); the public API endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  works reliably and returns real post text + `createdAt` timestamps for
+  every handle tried this run (Aschbacher, Langbroek, Henry, Farrar,
+  Berger, Foust, Jones). Use the API endpoint directly for the signals
+  pass rather than the profile page URL (still record the bare profile
+  URL in `signalsPass.checked` per the 2026-10-10-N lesson; the API URL is
+  just the fetch mechanism).
+- 2026-10-11-H: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on the dedup gate (shared company NASA + category "procurement"
+  within 7 days against the unrelated Oct 6 bulk-rocket-buy item), then on
+  a tagline length overage (144 vs 140 char max) after the dedup_distinct
+  fix; merged cleanly on the third attempt ("merged 1 new, 0 updated, 0
+  held"), confirmed via a direct `grep` read of the new item's `snr`
+  (5)/`impact` (notable)/`category` (procurement) fields (905 items, up
+  from 904). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
+

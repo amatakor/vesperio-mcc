@@ -93,91 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Deep sweep (auto-escalated after two consecutive zero-add sweeps), ~7h gap, unfiltered full source list (2026-10-11)
-
-- 2026-10-11-A: A 700-candidate deep-mode queue (7-day window) was almost
-  entirely junk (SpaceX stock/valuation churn, off-topic Futurism/BBC
-  filler, routine Federal Register notices, IAC 2026 generic-cooperation
-  wire pieces) or re-presentation of already-published stories; roughly a
-  dozen candidates that read as genuinely new on headline alone (Amazon's
-  1,000th Kuiper satellite, Kapta Space's $24M round, the Themis/SALTO
-  deadline extension, the Exploration Company's ONEIROS hopper, Redwire's
-  Axiom ROSA follow-on, T1TL-A's launch, American Airlines' mainline
-  Starlink rollout, Aselsan's Gokbagi/Astralink and TUSAS/Roketsan's
-  Hursat-2, Golbriak/Fortastra/Astrolight/Astrogate funding and MOUs, the
-  L3Harris LISA telescope contract) all turned out to already be
-  published once grepped against `items.json` by company name. Confirms
-  the standing deep-mode norm (2026-09-27-D, 2026-10-04-B) at a larger
-  scale than previously logged.
-- 2026-10-11-B: A new vague-conference-announcement shape: a Turkish
-  industry-cluster chair (Haluk Bayraktar, SAHA Istanbul, not a
-  government or company official) announcing at IAC 2026's opening that
-  Türkiye is "building" a 100-satellite navigation constellation named no
-  contractor, budget, or timeline in any outlet checked (AA, Yeni Şafak).
-  Left undrafted alongside two CGTN/JAXA-Saudi vague-cooperation MOUs
-  already excluded 2026-10-10-I; worth a cleaner precedent if a future
-  sweep finds the Turkish Space Agency or a named contractor attaching a
-  budget to the same program.
-- 2026-10-11-C: Two more ESA Multimedia Videos/Images read as thin/not a
-  defined science-event type: Hera's "first glimpse of Didymos" (Oct 7,
-  236,500 km out, an optical-acquisition navigation milestone two years
-  post-launch, with the actual rendezvous/survey still not until 2027)
-  and an animated educational short claiming Hera has "finally arrived"
-  were both left undrafted as neither an arrival, orbit insertion, nor
-  landing per the science scope's named event list, and ESA's own page
-  states no commercial/industry angle. Revisit when the actual 2027
-  rendezvous/survey begins.
-- 2026-10-11-D: The Bluesky stale-cache pattern now affects Caleb Henry,
-  Tim Farrar and Eric Berger on essentially every sweep (Eric Berger's
-  `getAuthorFeed` returned posts dated back to March 2025 this run, the
-  worst staleness yet recorded); Marco Langbroek's feed was dominated by
-  an unrelated French SLBM-test news cycle. Treated all four as
-  checked-but-empty per the standing practice rather than re-querying.
-- 2026-10-11-E: `bun scripts/finalize-sweep.ts` merged cleanly on the
-  first attempt ("merged 0 new, 0 updated, 0 held"); confirmed via the
-  sweep log's `signals`/`discovery` blocks recording full 17-channel/
-  13-person coverage, 8 X-handle searches, and the 12-query discovery
-  matrix. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
-  procedure update.
-
-## Narrow re-check, ~3h33m gap, unfiltered full source list (2026-10-11, second)
-
-- 2026-10-11-F: A near-total-junk 25-candidate queue (Bluesky spacex-launch
-  bot/opinion accounts, stock-reaction Yahoo/Barron's/Seeking Alpha pieces
-  on the Oct 8 Grain spectrum deal, Futurism/BBC off-topic filler) yielded
-  nothing itself; the one genuine new item came from the discovery pass,
-  not the queue: a Sept 30 NASA/Glenn Research Center $38M firm-fixed-price
-  contract to Modulate Space Corporation for a lunar-surface 5G/Wi-Fi 6
-  network, confirmed via NASA's own press release (first_party, SNR 5,
-  `dedup_distinct` against the unrelated Oct 6 NASA bulk-rocket-buy item on
-  shared-company/category grounds) and missed entirely by the prior four
-  sweeps that day. Worth remembering: a plain WebSearch discovery query can
-  surface a real NASA contract award that several SEO-mirror sites
-  (memesita, dijitalmasallar, streamlinefeed, ufofeed, time.news,
-  miragenews) picked up days before any sweep drafted it; none of those
-  mirrors counted as corroboration (pure rewrites of the NASA release, no
-  independent reporting), so the crawl recorded `found_none` with no SNR
-  penalty since the lead is first-party.
-- 2026-10-11-G: WebFetch cannot render `bsky.app/profile/<handle>` pages at
-  all (they return only the bare handle, no post content, regardless of
-  account); the public API endpoint
-  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
-  works reliably and returns real post text + `createdAt` timestamps for
-  every handle tried this run (Aschbacher, Langbroek, Henry, Farrar,
-  Berger, Foust, Jones). Use the API endpoint directly for the signals
-  pass rather than the profile page URL (still record the bare profile
-  URL in `signalsPass.checked` per the 2026-10-10-N lesson; the API URL is
-  just the fetch mechanism).
-- 2026-10-11-H: `bun scripts/finalize-sweep.ts` rejected the first draft
-  attempt on the dedup gate (shared company NASA + category "procurement"
-  within 7 days against the unrelated Oct 6 bulk-rocket-buy item), then on
-  a tagline length overage (144 vs 140 char max) after the dedup_distinct
-  fix; merged cleanly on the third attempt ("merged 1 new, 0 updated, 0
-  held"), confirmed via a direct `grep` read of the new item's `snr`
-  (5)/`impact` (notable)/`category` (procurement) fields (905 items, up
-  from 904). `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update.
-
 ## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-10-12)
 
 - 2026-10-12-A: A satnews.com piece ("Amazon Leo Plans Prime Subscription
@@ -4582,3 +4497,53 @@ a newer entry if a lesson changes.
   fields and a `jq empty` parse check on all five touched data files (items, state, source_ledger,
   sources, candidates); held and registry-candidates were untouched (no held entries, no crossfeed
   facts). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h18m gap, unfiltered full source list (2026-11-11)
+
+- 2026-11-11-A: A near-total-junk 47-candidate queue (SpaceX/Tesla stock-reaction spam, the
+  Starbase $24B gas-plant/data-center buildout already excluded per 2026-11-06-H, Starlink Mini 2
+  review pieces recapping the already-published Nov. 10 launch item, dozens of bot-shaped "Starship
+  Flight 15 squeeze test" Bluesky reposts) still yielded one genuine queue find (Cosmoserve's Base
+  1 facility, via a Google News redirect to Electronics For You) plus a continuation of the
+  standing Terafab records-lawsuit saga (KBTX's own follow-up, chased past the headline to confirm
+  SpaceX's amended petition now also targets KBTX's own records request, not just the residents'
+  and citizens-group's requests already in the item). A Ninth Circuit arbitration ruling on SpaceX
+  harassment claims and an India-France "Strategic Space Dialogue" (vague "reviewed progress,
+  discussed avenues" diplomatic language, no named program or figure) were both left undrafted,
+  the former as routine personnel-legal news, the latter as a vague-institutional-MOU non-event.
+- 2026-11-11-B: An Isaacman NSF "Flame Trench" interview on standardizing SLS, the Centaur V
+  switch, and cancelling Mobile Launcher 2 (`nasaspaceflight.com`) 403'd on every direct WebFetch
+  attempt, and no alternate directly-fetchable mirror with verbatim quotes ever turned up despite
+  two dedicated searches; the genuinely new thread in it (industry RFI responses on future
+  commercial lunar transportation pointing to the 2030s, not an earlier end-to-end replacement)
+  was left undrafted entirely rather than sourced from WebSearch-synthesis paraphrase, per the
+  standing never-cite-an-unfetched-page rule. Worth a same-topic re-check if a mirror surfaces.
+- 2026-11-11-C: The signals pass's X-search leg (not the queue or the 8-query discovery matrix)
+  surfaced the sweep's highest-impact item: a Sandra Erwin SpaceNews byline search turned up AST
+  SpaceMobile's $100M Space Force SB-AMTI sensing-contract disclosure from its own Nov. 10 Q3
+  earnings exhibit. The company's own SEC 8-K Ex. 99.1 frames the award as flowing directly to AST
+  SpaceMobile, while SpaceNews's reporting on the same disclosure describes AST as a subcontractor
+  to prime contractor Systems & Technology Research (STR); copy used the official_record lead's
+  figures but noted SpaceNews's subcontractor framing rather than picking one reading as fact.
+  Needed three `dedup_distinct` entries against a crowded same-week AST SpaceMobile field (Firefly
+  Blacklift rocket deal, Q3 results, Rakuten JV) despite differing categories, consistent with the
+  standing practice of pre-empting the heuristic whenever a prolific actor has multiple items in
+  the trailing 7 days.
+- 2026-11-11-D: An AFP wire story on Isar Aerospace CEO Daniel Metzler's "could overtake SpaceX in
+  18 years" remarks was carried near-verbatim by Brussels Times, France24, TheLocal.de and others
+  with DIFFERENT headlines each (no SimHash title-collapse triggered); rather than stack several
+  wire-identical mirrors as false corroboration, attached only the single clearest mirror
+  (Brussels Times) and attested `crawl: "found_none"`, consistent with the standing
+  many-copies-of-one-wire-source-is-not-corroboration practice (2026-10-25-K and peers) even when
+  the gate's own title-collapse wouldn't have caught it. A WebFetch of a second mirror (France24)
+  mis-dated the event "October 11" where the URL's own date segment (`20261110`) and a separate
+  mirror's byline both confirmed Nov. 10; trusted the hard URL/byline evidence over the fetch tool's
+  own date interpretation.
+- 2026-11-11-E: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 4 new,
+  1 updated, 0 held"), 1215 items up from 1211. Confirmed via a direct `jq` read of all four new
+  items' `snr`/`category`/`impact`/`kind` fields and the updated Terafab item's grown `sources` (6,
+  up from 5) and `updates` (2, up from 1) arrays, plus a `jq empty` parse check on all seven touched
+  data files (items, state, held, source_ledger, sources, candidates, registry-candidates); held
+  and registry-candidates were untouched (no held entries; none of the four items' companies had a
+  registry profile with a like-for-like crossfeed metric). `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
