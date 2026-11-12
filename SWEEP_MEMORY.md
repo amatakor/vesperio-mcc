@@ -4637,3 +4637,39 @@ a newer entry if a lesson changes.
   seven touched data files (items, held, state, source_ledger, sources, candidates,
   registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~10.1h gap, unfiltered full source list (2026-11-12, third)
+
+- 2026-11-12-N: An "FCC approves SpaceX's move on Grain's spectrum" (Advanced Television) and
+  several mirror headlines overstated the action: the FCC's own Nov. 10 notice only accepted the
+  transfer application for filing and opened a public comment period (petitions to deny due Dec. 1,
+  oppositions due Dec. 8), confirmed by Total Telecom's more careful framing; patched the existing
+  Grain item's copy to say "accepted for filing," not "approved," rather than repeat the outlet's
+  overclaim.
+- 2026-11-12-O: `payloadspace.com` direct-URL queue entries (Spaceium's $1 OpenPort refueling
+  license, NeuralSat's €2.9M pre-seed, OwlO Cloud's stealth launch) and a European Spaceflight
+  direct entry (MaiaSpace's still-unsigned ESA Launcher Challenge contract, three weeks past ESA's
+  "question of days" promise) were the queue's only non-Google-News, non-Bluesky items in a
+  near-total SpaceX/Tesla-stock-reaction and Starship-preview-spam ~129-candidate queue; all four
+  were genuinely new and none needed a Google News redirect workaround.
+- 2026-11-12-P: `blueorigin.com/news/gs1-3-hotfire-updates` 429'd on every direct fetch attempt
+  (three tries), and no independent trade outlet had written up that specific Nov. 10
+  valve-qualification-complete update (only WebSearch's own synthesis of the unfetched page);
+  left undrafted per the never-cite-an-unfetched-page rule despite it being a genuinely new,
+  dateable fact about the New Glenn/Vulcan BE-4 valve fix. Worth a direct re-fetch next sweep once
+  the rate limit clears.
+- 2026-11-12-Q: A second Zelenskyy Starshield-restriction claim (speed capped to 161 kph again,
+  timed with the Kushner/Witkoff Moscow-Putin talks, "helps Russians kill more Ukrainians") landed
+  on the same living-document item that already carried 91 sources and 40 updates; patched the
+  top-level explainer to the new claim per the standing living-document convention (2026-11-10-O)
+  rather than just logging an `attach`, since the quote was substantially more pointed than the
+  prior BT-delay update it was superseding at the top of the explainer.
+- 2026-11-12-R: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 7 new,
+  2 updated, 0 held"), 1233 items up from 1226. Confirmed via a direct `jq` read of all seven new
+  items' `snr`/`category`/`impact` fields and both updated items' grown `sources` (Grain: 11, up
+  from 9; Starshield: 92, up from 91) and `updates` (Grain: 5, up from 4; Starshield: 41, up from
+  40) arrays, and a `jq empty` parse check on all five touched data files (items, state,
+  source_ledger, sources, candidates); held and registry-candidates were untouched (no held
+  entries; none of the seven new items' companies had a registry profile with a like-for-like
+  crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
