@@ -4601,3 +4601,39 @@ a newer entry if a lesson changes.
   queue's growth to 19 entries, and a `jq empty` parse check on all seven touched data files
   (items, held, state, source_ledger, sources, candidates, registry-candidates). `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-11-12, second)
+
+- 2026-11-12-I: A TechTimes piece claiming a Nov. 9 SDA Transport Layer launch reached "105 of 126
+  (83%)" did not survive verification: nextspaceflight independently placed the only Nov. 9 Vandenberg
+  Falcon 9 slot as USSF-627 (delayed to Nov. 11, then actually flown Nov. 12), the article itself
+  could not name which contractor built the 21 satellites despite claiming to, and no other outlet
+  (SpaceNews, Defense Daily, Breaking Defense, SDA.mil's own news page) carried a 5th Tranche 1
+  Transport Layer mission; left undrafted as unverifiable/likely-conflated rather than amplify a
+  single uncorroborated outlet's numbers, extending the standing WebSearch-synthesis-conflates-
+  stories caution (2026-11-11-L) to a case caught only by cross-checking a competing confirmed
+  launch's own timeline.
+- 2026-11-12-J: Google News redirect URLs again failed to resolve via WebFetch (bare header, no
+  content); re-finding the publisher's own URL via a second, more specific WebSearch (the exact
+  headline plus outlet name) recovered a clean direct-fetchable URL every time this run, for both
+  the Anadolu Agency USSF-627 piece and the Greek-language ICEYE/HIIF coverage.
+- 2026-11-12-K: An ESA EOGS architecture-study contract to ICEYE and Leonardo read as a fresh
+  Nov. 2026 story via a media-advisory URL, but the underlying contracts were signed Sept. 17, 2026
+  with no stated dollar value; left undrafted per the standing chase-it-only-for-notable/seismic-gaps
+  rule (early-stage study contract, not a production award).
+- 2026-11-12-L: A govinfo.gov Federal Register PDF (FAA's Nov. 10 Starbase PEIS scoping-meeting
+  update, same docket FAA-2026-12808 as the existing Oct. 13 item) read cleanly via the Read tool
+  after WebFetch returned only raw PDF structure, continuing the 2026-11-11-F pattern; the matching
+  federalregister.gov HTML deep link (not the govinfo PDF) was used as the cited source, and that
+  HTML host scored `official_record` without an anti-spoof rejection, same as the Oct. 13 item's
+  existing federalregister.gov source.
+- 2026-11-12-M: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new,
+  1 updated, 0 held"), 1226 items up from 1224. Confirmed via a direct `jq` read of both new items'
+  `snr`/`category`/`impact` fields (USSF-627: SNR 4 noise launch; ICEYE/Greece HIIF investment: SNR 4
+  major financial, 4 sources) and the FAA Starbase item's grown `sources` (4, up from 3) and
+  `updates` (1) arrays; a requested `corroboration_4plus` bump on the FAA update had no visible
+  effect on the trace (already at its non-first-party ceiling of 4 via `corroboration_2plus`),
+  consistent with the 2026-11-10-O capped-modifier precedent. A `jq empty` parse check passed on all
+  seven touched data files (items, held, state, source_ledger, sources, candidates,
+  registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
