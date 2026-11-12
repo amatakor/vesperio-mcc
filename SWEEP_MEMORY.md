@@ -93,98 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h40m gap, unfiltered full source list (2026-10-12)
-
-- 2026-10-12-A: A satnews.com piece ("Amazon Leo Plans Prime Subscription
-  Bundling...") read like independent reporting on a genuine queue find
-  but, once fetched directly, turned out to be the outlet's own
-  uncredited characterization of someone else's reporting: no quote, no
-  named source, no attribution language at all, just "Amazon disclosed
-  details" framing. The real origin was an Ars Technica interview with
-  Amazon Leo VP of business Chris Weber (Oct 9), recoverable only via
-  three rewrite sites that DO credit Ars Technica by name (HowToGeek,
-  Broadband Breakfast, Telecompaper), each with its own distinct
-  verbatim quotes. Led with HowToGeek (fullest quotes: 3x downlink/
-  8-10x uplink claim vs. Starlink, 396 satellites, bundling with Prime/
-  Eero/Fire TV/Ring); satnews.com itself was left off the sources list
-  entirely since nothing in it was independently attributable. Worth
-  remembering: an aggregator piece that *sounds* like original reporting
-  but names no source at all is weaker than a rewrite site that openly
-  credits the outlet it's summarizing; the latter is citable (informal),
-  the former is not citable for anything beyond its own bare headline.
-  Telecompaper.com is a telecom-trade outlet with no prior
-  classification precedent in this file; treated as `informal` here
-  since it was only used as an Ars Technica rewrite, not for original
-  telecom-trade reporting.
-- 2026-10-12-B: `bun scripts/finalize-sweep.ts` merged cleanly on the
-  first attempt ("merged 1 new, 0 updated, 0 held"); confirmed via a
-  direct `jq` read of the new item's `snr`/`snr_trace`/`category`/
-  `impact`/`sources` fields (906 items, up from 905), the
-  `registry-candidates.json` `annotate_mismatch` entry for
-  `kuiper.sats_launched_total`, and the sweep log's two unrelated
-  persistence-bump `snr_movements` entries. `bun run build` was not
-  attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~10h45m gap, unfiltered full source list (2026-10-12, second)
-
-- 2026-10-12-C: A same-looking Brazil/Venezuela Starlink regulatory headline
-  bundled two genuinely different facts: a BNamericas-style roundup framed both
-  as one "Starlink flies higher" story, but Venezuela's Oct. 9 Conatel license
-  was already published three days earlier while Brazil's ANATEL S-band vote,
-  also Oct. 9, was a genuine gap. Worth checking a bundled dual-country
-  headline for which half is actually new before discarding the whole thing as
-  already covered.
-- 2026-10-12-D: Starlink's own quoted self-description of a regulatory grant
-  can overclaim relative to the actual grant: the company told TELETIME News
-  it won ANATEL's vote for "full access to the 2 GHz spectrum," but the
-  regulator's own order gave 15+15 MHz, half of the ~25+25 MHz requested
-  (confirmed independently via a second, Brazilian-language search once the
-  English-language TeslaNorth mirror repeated the "full access" framing
-  uncritically). Led on TELETIME (trade, independently reported the actual
-  MHz figures) rather than the company's own superlative; cited Starlink's
-  quote in copy but did not treat it as the fact, per the standing
-  first-party-superlative-is-attributed-not-scored rule now confirmed for a
-  grant amount, not just a product claim.
-- 2026-10-12-E: A same-day press release that reads as a completed launch
-  event can still describe a launch that hasn't happened yet: Redwire's own
-  Oct. 12 "Final Pair of Redwire ROSA Wings Launch to the ISS" release uses
-  present/future-continuous phrasing ("will be launching... onboard... SpaceX
-  CRS-35") for a Dragon cargo mission Launch Library confirmed was still
-  "Go for Launch," net Oct. 13 -- left undrafted per the standing
-  don't-draft-scheduled-launches rule despite the headline's completed-event
-  shape; worth a same-topic re-check once CRS-35 actually flies.
-- 2026-10-12-F: `bun scripts/finalize-sweep.ts` merged cleanly on the first
-  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct `jq`
-  read of the new Brazil/ANATEL item's `snr`/`snr_trace`/`category`/`impact`/
-  `sources` fields (907 items, up from 906) and the updated Musk/India
-  item's `sources`/`updates` arrays (10 sources, 6 updates). `bun run build`
-  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~53min gap, unfiltered full source list (2026-10-12, third)
-
-- 2026-10-12-G: A genuine zero-item sweep on a very narrow gap: the
-  8-candidate post-filter queue was SpaceX stock chatter, a "Carolinas can
-  see the rocket" visibility piece, off-topic storm coverage, and a
-  SatNews Google-News re-report of the already-published Oct 10 T1TL-A
-  launch (`2026-10-10-spacex-sda-tranche1-transport-layer-a`, same 21
-  Northrop Grumman satellites). The 14-channel signals pass, 4 X-handle
-  searches, and an 8-query discovery matrix all traced to already-
-  published items or two fresh out-of-scope exclusions: Poland's
-  SpaceForest PERUN ("fourth PERUN launch, fifth pushed to 2027" per
-  Andrew Parsonson's bluesky) is a suborbital test rocket, joining the
-  standing HyImpulse SR75/Avio FD1/Pluto Aerospace orbital-only
-  exclusion list; and Vivienne Machi's Oct 12 Aviation Week piece headlined
-  around "Fourth SDA Data Relay Launch" turned out on closer check to be
-  about an unarmed Mk21A ICBM reentry-vehicle test (a Minotaur I flight
-  for the Sentinel/W87-1 warhead program) that merely caused the range
-  conflict behind the already-published T1TL-A launch's one scrub -- a
-  military nuclear-weapons test with zero commercial-space angle, the
-  same institutional-disclosure shape as the Air Force Secretary Meink
-  space-weapons-admission precedent (2026-09-18-D), not a new SDA launch.
-  `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt
-  ("merged 0 new, 0 updated, 0 held"); `bun run build` was not attempted,
-  per the 2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~7h38m gap, unfiltered full source list (2026-10-13)
 
 - 2026-10-13-A: All 7 whitelisted YouTube signals channels (Eric Berger,
@@ -4627,3 +4535,69 @@ a newer entry if a lesson changes.
   trade base plus `corroboration_2plus`, regulatory/notable) and a `jq empty` parse check on all
   five touched data files (items, state, source_ledger, sources, candidates); held was untouched
   (no held entries, no crossfeed facts).
+
+## Narrow re-check, ~7.5h gap, unfiltered full source list (2026-11-12)
+
+- 2026-11-12-A: A near-total-junk 95-candidate queue (SpaceX/Tesla stock-reaction spam, Starship
+  Flight 15 preview pieces, the already-excluded Starbase data-center saga) again yielded real
+  stories mostly outside the queue: a "SpaceX, Rocket Lab blast higher as NASA hands out $10
+  billion in moon base awards" headline traced entirely to the already-published Nov 7 CLPS-2/
+  VADR/PROMISE items (stock-reaction piece on stale news, not a new event); the four genuine finds
+  (MDA/Globalstar on-orbit testing, Skylo/KT SAT, Gilat guidance cut, Kratos/Thaicom-10) all came
+  from Via Satellite/satellitetoday.com trade coverage reachable only via the discovery pass's own
+  WebSearch chase, not the queue entries themselves (satellitetoday pieces don't appear to be
+  harvested into the queue at all; worth checking whether it needs an RSS feed added to
+  sources.json).
+- 2026-11-12-B: For both the MDA/Globalstar and Kratos/Thaicom-10 trade-press finds, chasing the
+  company's own newsroom past the trade writeup upgraded the lead source class: MDA Space's own
+  mda.space/article/... press release (first_party, verified against its registry profile domain)
+  and Kratos' own kratosdefense.com press release both existed and stated the same facts with a
+  named quote, confirming the standing practice of checking for a first-party original behind
+  every trade-press rewrite before accepting trade as the lead. Kratos' own press release still
+  classed `trade`, not `first_party`, because Kratos has no registry organization profile for the
+  anti-spoof domain check to verify against (same non-registered-actor precedent as Caltech/NTT,
+  2026-11-10-R/2026-11-09-A) -- a first-party-shaped page from an unregistered actor is not a
+  first-party source until that actor gets a profile.
+- 2026-11-12-C: Gilat's own SEC Form 6-K (filed same day as the Via Satellite writeup) stated the
+  new 2026 guidance figures directly and classed `official_record` at base tier 5; the prior
+  ($500-520M) guidance figure needed for the "cut" framing came only from the trade writeup, not
+  the filing itself, confirming a single item can mix an official-record lead for the headline fact
+  with a trade source for necessary comparison context, each fact attributed to the source that
+  actually stated it.
+- 2026-11-12-D: Skylo's South Korea/KT SAT distribution deal collided on the company+category
+  dedup heuristic with the unrelated Nov 4 KT SAT/ST Engineering iDirect maritime satcom item
+  (both `partnership`, both touching KT SAT); `dedup_distinct` at the item's top level cleared it,
+  consistent with the standing prolific-actor pre-emption practice (2026-11-10-V, 2026-11-11-C).
+- 2026-11-12-E: An Ars Technica piece on Anduril's night-vision satellite sensor (fetched via the
+  `r.jina.ai/<url>` proxy, since arstechnica.com itself remains unfetchable directly) added a named,
+  on-record quote from VP/GM Adam Thurn describing the exact eclipse-tracking gap the LWIR sensor
+  closes, genuinely new attributable content beyond the Nov 10 "calibrated imagery from all three
+  sensors" update already on the Aug 14 Anduril item; patched into `why_it_matters` as the living-
+  document convention requires (2026-11-10-O) rather than appended as stale duplicate text.
+- 2026-11-12-F: A Pakistani-astronaut-to-fly-on-Shenzhou-24 story (CMSA announcement via Xinhua/AP,
+  Nov 7, first foreign national to visit China's Tiangong station) was held, not drafted or
+  discarded: it is government-to-government human-spaceflight diplomacy with no stated contract or
+  outcome touching a commercial provider, reseller, or prime, so it doesn't fit CLAUDE.md's
+  commercial-angle-gated human-spaceflight scope, and isn't a sovereign EO/connectivity
+  constellation program either (the exception that would otherwise let a sovereign program in). A
+  genuine scope question for Florian, same shape as the Serbia/Artemis Accords and Singapore space
+  agency precedents, not a sourcing-quality hold.
+- 2026-11-12-G: A CalPERS/Bloomberg story confirming its $500M+ Grain Management investment "nearly
+  doubled" following the SpaceX 800MHz spectrum deal (an update angle on the existing Oct 8 Grain
+  item) was left undrafted: Bloomberg and Benzinga both 403'd on direct WebFetch, and the only
+  reachable mirror (a biztoc snippet) couldn't confirm a precise multiple or dollar distribution
+  beyond "$500M" and "nearly doubled," too thin to add confidently as a sourced update fact. A
+  SpaceX/AST SpaceMobile FCC unlicensed-D2D-band comment filing (Broadband Breakfast, named
+  spokespeople quoted) was also left undrafted: filed comments on an August 2026 NPRM with no
+  vote or decision are procedural, below the inclusion bar's "a director acts or briefs today" test
+  even at `noise` tier, distinct from an actual grant/denial.
+- 2026-11-12-H: `bun scripts/finalize-sweep.ts` rejected the first attempt (invalid JSON from a
+  stray brace in the `held[]` entry, and a missing `dedup_distinct` on the Skylo/KT SAT item) and
+  the Kratos source's `first_party` misclassification (above); merged cleanly on the second attempt
+  ("merged 4 new, 1 updated, 1 held"), 1224 items up from 1220. Confirmed via a direct `jq` read of
+  all four new items' `snr`/`category`/`impact` fields (MDA/Globalstar: SNR 5 official-equivalent
+  first-party base; Skylo/KT SAT: SNR 4; Gilat: SNR 5 official_record base; Kratos: SNR 4), the
+  Anduril item's grown `sources` (4, up from 3) and `updates` (2, up from 1) arrays, the held
+  queue's growth to 19 entries, and a `jq empty` parse check on all seven touched data files
+  (items, held, state, source_ledger, sources, candidates, registry-candidates). `bun run build`
+  was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
