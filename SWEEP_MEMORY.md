@@ -4673,3 +4673,44 @@ a newer entry if a lesson changes.
   entries; none of the seven new items' companies had a registry profile with a like-for-like
   crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~1h23m gap, unfiltered full source list (2026-11-12, fourth)
+
+- 2026-11-12-S: A same-day NASA Moon Base release (the Nov. 7 bundle already feeding three
+  existing items: VADR task orders, CLPS 2, and the PROMISE rover) also named a fourth, distinct
+  task order to SpaceX only, the Cislunar Communications Deployment Demonstration (Starship
+  launching Starlink-based comms satellites to cislunar space in 2028, no stated dollar value),
+  surfaced only via an open-web discovery query five days after the fact; needed `dedup_distinct`
+  against FOUR existing items at once (VADR, CLPS 2, PROMISE rover, plus an unrelated Nov. 4
+  NASA/Viasat/SES/Astranis Ka-band relay item and an unrelated Nov. 6 White House/SpaceX Starlink-
+  donation item, both sharing company+category "procurement" only) before it merged clean.
+  Aviation Week's own coverage of the same NASA release added a genuinely new fact (the satellites
+  are Starlink-based) that NASA's own release never specified, confirming a trade write-up of a
+  primary release can still carry an independent, citable detail worth attaching as corroboration
+  even when the primary source is already at its official_record ceiling.
+- 2026-11-12-T: A Star Vision/Oman Lens $200M+, 20-satellite China-Oman deal (per SCMP, itself
+  unfetchable, picked up only by content-mill mirrors crediting SCMP by name) looked like a
+  genuine new gap but could not be confidently separated from the already-published Nov. 2
+  StarVision Aerospace/Adasat Oman item: both trace to the same Beijing state-visit week, share a
+  near-identical Chinese company name, and one source describes "Oman Lens" as itself an
+  "affiliated entity of STAR.VISION" rather than an arms-length third party. Left undrafted rather
+  than risk either double-counting one deal under two company-name spellings or citing an
+  unfetchable paywalled source's dollar figure through an unverified mirror; worth a dedicated
+  re-check with a working SpaceNews or SCMP fetch (both 429'd/403'd this run) before concluding
+  either way.
+- 2026-11-12-U: A U-Space "€24 million Series A" funding-round hit read as a fresh Nov. 12
+  announcement but several independent mirrors (satellitetoday.com, fundz.net, globalautomobility.com)
+  carry the identical figure with an explicit `2025-11-12` or `2025-11-13` date in their own URLs/
+  bylines, a year-stale story; left undrafted. A second, unrelated U-Space/Tenchijin EO partnership
+  item was already published 2026-09-10, confirming the funding hit was the stale story, not a
+  missed dedup.
+- 2026-11-12-V: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on three
+  unattested same-company-plus-category dedup collisions on the Cislunar-comms item (see -S
+  above); merged cleanly on the second attempt ("merged 3 new, 1 updated, 0 held"), 1236 items up
+  from 1233. Confirmed via a direct `jq` read of all three new items' `snr`/`category`/`impact`
+  fields and the AST SpaceMobile Blacklift item's grown `sources` (5, up from 4) and `updates` (2,
+  up from 1) arrays, plus a `jq empty` parse check on all seven touched data files (items, held,
+  state, source_ledger, sources, candidates, registry-candidates); held and registry-candidates
+  were untouched (no held entries; none of the three new items' companies had a registry profile
+  with a like-for-like crossfeed metric). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
