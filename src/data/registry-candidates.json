@@ -1,21 +1,5 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": [
-    {
-      "id": "2026-11-10-rocket-lab-osc-150m-neutron-loan:rocket-lab.funding_latest",
-      "item_id": "2026-11-10-rocket-lab-osc-150m-neutron-loan",
-      "entity_slug": "rocket-lab",
-      "entity_type": "organization",
-      "field": "funding_latest",
-      "value": "$150 million conditional loan commitment from the Pentagon's Office of Strategic Capital for Neutron production and recovery capacity",
-      "metric": "most recent stated financing event for Rocket Lab, as reported by OSC and SpaceNews",
-      "same_metric": true,
-      "item_snr": 4,
-      "source_url": "https://spacenews.com/rocket-lab-gets-pentagon-financing-to-boost-neutron-production/",
-      "action": "downgrade_incoming",
-      "proposed_on": "2026-11-10",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }
