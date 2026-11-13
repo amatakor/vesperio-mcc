@@ -93,120 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~7h38m gap, unfiltered full source list (2026-10-13)
-
-- 2026-10-13-A: All 7 whitelisted YouTube signals channels (Eric Berger,
-  Anatoly Zak, Andrew Parsonson, Scott Manley, Tim Dodd, Marcus House,
-  Felix Schlang) failed this run's harvest with HTTP 404/500, not the
-  usual staleness; none of their videos reached the candidate queue.
-  Worth a dedicated check next run before assuming it's another one-off
-  (the harvester's YouTube feed mechanism, not an individual channel,
-  may be the actual fault).
-- 2026-10-13-B: Drafted the first dedicated noise-tier Starlink batch
-  launch item in over a month (the last was 2026-09-06, booster
-  B1093's 17th flight) per the explicit CLAUDE.md rule that every
-  on-scope launch publishes, even routine cadence, at `noise`. Actual
-  practice across the feed has been sparser than the rule implies (only
-  7 of 64 Starlink-tagged items are dedicated batch-launch items in
-  three months), suggesting most routine batches simply don't surface
-  with enough corroborated detail in the queue/discovery pass rather
-  than being deliberately excluded; when one does surface with a clean
-  trade source (SpaceflightNow's live-blog pattern: confirmed liftoff +
-  booster landing, hedged "if all goes to plan" language only for
-  satellite deployment), draft it rather than skip it as mere cadence.
-- 2026-10-13-C: `finalize-sweep` rejected the first draft attempt for
-  three reasons at once: a top-level `coverage` field must use the
-  category vocabulary (`product`, `contract`, ...), not domain tags
-  (`eo`, `connectivity`); a same-company contract item inside 7 days of
-  an unrelated existing contract item (York's new SDN task orders vs.
-  its Oct 5 Tetra 3/4 design-review item) needed `dedup_distinct`; and
-  a company's own newsroom domain (ispace-inc.com) cannot be classed
-  `first_party` when the actor has no registry profile to verify the
-  domain against (reclassified to `wire_pr`, one of the gate's own
-  suggested fallbacks). Merged cleanly on the second attempt ("merged 4
-  new, 0 updated, 0 held"); confirmed via a direct `grep` read of all
-  four new items' `snr`/`category`/`impact` fields (911 items, up from
-  907) and the sweep log's `signals`/`discovery` blocks. `bun run
-  build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
-  update.
-
-## Narrow re-check, ~2h27m gap, unfiltered full source list (2026-10-13, second)
-
-- 2026-10-13-D: A still-`public-inspection` (not yet officially published)
-  Federal Register document has its own API shape: `federalregister.gov/
-  api/v1/documents/<doc-number>.json` 404's until the document's real
-  publication date arrives, but `federalregister.gov/api/v1/
-  public-inspection-documents/<doc-number>.json` works immediately and
-  returns title/agency/filing-date/publication-date metadata (no body
-  text) even the day before formal publication; the PDF at
-  `public-inspection.federalregister.gov/<doc-number>.pdf` fetched as
-  unreadable binary (no `pdftotext`/`poppler-utils` available in this
-  environment, and the Read tool's PDF support needs `pdftoppm`, also
-  absent). Used the metadata purely to confirm the document existed and
-  matched the story (title, agency, filing date), while sourcing the
-  actual figures (456 launches/912 landings, two phases) to a directly-
-  fetched mainstream wire mirror (Insurance Journal's Bloomberg pickup)
-  rather than force an `official_record` lead off unread body text;
-  landed an honest mainstream-base SNR 4 via `corroboration_2plus`
-  rather than an unverifiable SNR 5. A second IAC-2026-day-two lead
-  (Baykar/Fergani's 100-satellite GNSS plan, Turkey's Somalia spaceport)
-  traced to a years-old plan and a January 2026 construction-start
-  announcement both still being restated without any new figure or
-  timeline actually confirmed across sources; left undrafted per the
-  standing vague-conference-restatement pattern. `bun scripts/
-  finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new,
-  1 updated, 0 held"); confirmed via a direct `jq` read of the new FAA/
-  Starbase item's `snr`/`snr_trace`/`category`/`impact` fields (916
-  items, up from 915) and the updated Varda item's patched `explainer`
-  and three-source `sources` array. `bun run build` was not attempted,
-  per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h43m gap, unfiltered full source list (2026-10-13, third)
-
-- 2026-10-13-E: A deal-value conflict across directly-fetched sources
-  resolved by fetching a third: two independently-written trade pieces
-  on CSG's MDA Space stake (defence-industry.eu, globalbankingandfinance.com,
-  the latter a Reuters wire pickup) stated no dollar figure at all, while
-  a WebSearch synthesis of Space Intel Report claimed a precise "C$618.5
-  million ($434 million)" figure -- rather than trust either the omission
-  or the unfetched synthesis, re-fetched Space Intel Report directly
-  asking only "does this article state a dollar figure, quote it
-  verbatim" and got the exact sentence back, then found a second
-  directly-fetched source (SatNews, whose own headline states "for $434
-  Million") independently carrying the same number. Two sources omitting
-  a figure a third, more detailed source states is not a contradiction
-  worth holding over; it just means the shorter wires ran before or
-  without the number. Worth the reminder that a WebSearch synthesis
-  claiming a specific figure still needs its own direct re-fetch with a
-  narrow, verbatim-quote-only prompt before it is trusted, even when the
-  figure sounds plausible and nothing else contradicts it outright.
-- 2026-10-13-F: The stated-value test moved a routine-sounding "European
-  group buys minority stake" story to `major`: CSG's $434 million
-  payment for 9.5% of MDA Space is nine figures and a clear "largest
-  shareholder" trajectory change for a already-profiled registry
-  organization, even though the transaction itself never touches a
-  crossfeed-eligible field (not a capital raise into MDA Space, no
-  change of control) -- impact and crossfeed are independent judgments,
-  and a minority-stake purchase can still clear the stated-value bar the
-  same way a funding round does.
-- 2026-10-13-G: An ~80% queue composed of "SpaceX Falcon 9 jellyfish
-  effect visible over the Carolinas/Florida/etc." sighting posts and
-  Google News pickups was all noise around a single already-published
-  launch (today's CRS-35/Dragon resupply mission); the sky-glow
-  spectacle generated dozens of local-TV and Bluesky posts but zero new
-  facts about the mission itself. Three genuinely new items (Gogo/Duncan
-  Aviation, SES/Lyntris, Viasat/All.Space) all came from the same Via
-  Satellite harvester entries published the same morning, confirming
-  trade-press feed entries are worth reading individually even on a
-  queue otherwise dominated by one viral visual-sighting story.
-- 2026-10-13-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
-  first attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a
-  direct `jq` read of all four new items' `snr`/`category`/`impact`
-  fields (920 items, up from 916) and both updated items' grown
-  `sources`/`updates` arrays (Rassvet: 8 sources/6 updates; Musk/Ambani:
-  11 sources/7 updates). `bun run build` was not attempted, per the
-  2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~5h55m gap, unfiltered full source list (2026-10-14)
 
 - 2026-10-14-A: A near-total-junk 50-candidate queue (SpaceX "jellyfish"
@@ -4714,3 +4600,37 @@ a newer entry if a lesson changes.
   were untouched (no held entries; none of the three new items' companies had a registry profile
   with a like-for-like crossfeed metric). `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-11-13)
+
+- 2026-11-13-A: A SpaceNews "UARX Space Marks a Milestone..." piece dated Nov. 12 read as a fresh
+  OSSIE-D maiden-flight event but, once chased, turned out to narrate a subsystem performing well
+  on a flight that actually launched Oct. 1 aboard Transporter-18 (and had a since-resolved
+  ground-station comms anomaly, per a separate SpaceNews piece found only by searching the
+  company name plus "anomal"). A company-milestone feature with a present-tense "achieves" framing
+  is not proof the underlying flight is new; search for the actual launch/event date before
+  drafting any "marks a milestone" or vendor-performance-recap shaped piece as today's news.
+- 2026-11-13-B: The near-total-junk queue this run (SpaceX/Tesla merger speculation wire pickups,
+  Starship Flight 15 preview spam, dozens of identical "SpaceX $74B Texas/Arizona AI campus"
+  rewrites already excluded per 2026-11-06-H) again yielded its only genuine finds from direct
+  trade-source queue entries (Via Satellite: Revolv Space Series A, Gatehouse Satcom/Satlab
+  acquisition, the Ukraine Starshield EPC Summit update) rather than Google News or Bluesky.
+  Merger-speculation pieces ("could announce as soon as December," "sources say") with no
+  confirming action from either company were left undrafted as unconfirmed rumor, same treatment
+  as the standing forward-looking-political-speculation precedent.
+- 2026-11-13-C: A discovery-pass India-Brazil Skyroot/Concert Technologies micro-launcher MoU
+  (signed at IAC 2026 in Antalya in early October, reported fresh via ANI on Nov. 12) was left
+  undrafted despite being a genuine non-US launch-vehicle development: financing, production, and
+  final vehicle design were all still explicitly undecided per the source, making it too thin a
+  non-binding MoU to chase a month-plus stale under the notable/seismic-only chase-it exception.
+- 2026-11-13-D: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new,
+  3 updated, 0 held"). Confirmed via a direct `jq` read of both new items' `snr`/`category`/
+  `impact` fields (Revolv Space Series A, Gatehouse Satcom/Satlab acquisition, both SNR 4 on
+  `corroboration_2plus` from two distinct trade sources) and all three updated items' grown
+  `sources`/`updates` arrays (Starlink/Ukraine: 94 sources, 42 updates; EU Commission GOVSATCOM:
+  6 sources, 3 updates; AST SpaceMobile Blacklift: 6 sources, 3 updates, held at its first-party
+  ceiling of 5), plus a `jq empty` parse check on all seven touched data files (items, held, state,
+  source_ledger, sources, candidates, registry-candidates); held and registry-candidates were
+  untouched (no held entries; neither new item's companies had a registry profile with a
+  like-for-like crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
