@@ -4661,3 +4661,57 @@ a newer entry if a lesson changes.
   `updates` arrays (Blacklift: 7 sources, 4 updates; Boca Chica: 6 sources, 3 updates; Starlink/
   Ukraine: 96 sources, 43 updates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~9.5h gap, unfiltered full source list (2026-11-13, third)
+
+- 2026-11-13-G: Four of the YouTube signals channels flagged 404 at the harvester level since
+  2026-10-13-A (Scott Manley, Tim Dodd, Marcus House, Felix Schlang) came back with real entries
+  this run per `candidates-context`'s health block, while Eric Berger's and Andrew Parsonson's
+  stayed stale (newest entries 2024 and May 2026 respectively). Worth treating the harvester-level
+  404 as per-channel and possibly transient rather than a blanket "YouTube is unreachable" status;
+  check each channel's own `newest_entry` in the health block before writing one off.
+- 2026-11-13-H: Both ULA's Vulcan/Amazon Leo return-to-flight and SpaceX's Starship Flight 15
+  double-catch attempt dominated the queue (dozens of Google News/Bluesky hits) but neither had
+  actually flown as of this sweep's `now` (Vulcan NET Nov. 14 17:32 UTC, Starship NET Nov. 13
+  22:45 UTC, confirmed via a direct Launch Library query); left both undrafted per the standing
+  no-preview-coverage rule despite the volume, including a "Rocket Lab Marks 100th Electron
+  Launch" headline that likewise previewed an unflown Nov. 14 iQPS mission, not a completed one.
+- 2026-11-13-I: A same-day TravelPulse "Southwest Airlines Achieves New Milestone in Starlink
+  Wi-Fi Rollout" piece (403'd directly) traced via search to the same 47-aircraft figure Southwest
+  itself gave AirlineGeeks on Oct. 17, repackaged around a Nov. 12 in-flight gaming charter stunt
+  with no updated fleet count; left undrafted as a thin marketing recap rather than a genuine
+  rollout milestone, the same shape as the standing thin-marketing-stunt exclusion.
+- 2026-11-13-J: A Mynaric EIN Presswire release ("CONDOR optical terminal achieves bidirectional
+  space-to-ground data transfer," Nov. 11) and a W.Media piece on a Japanese "mega-constellation"
+  consortium both turned out to be vendor/outlet restatements of facts already fully published:
+  the Mynaric terminal is the same K2 Gravitas/Cailabs demo SES announced Nov. 4
+  (`2026-11-04-ses-optical-comms-demo-k2-gravitas`), and the W.Media consortium is the same
+  five-company NTT/Mitsubishi Electric/MUFG/DBJ MOU already published Nov. 9. Worth the reminder
+  that a company's own wire release restating a customer's earlier announcement, or a second
+  outlet's recap of an already-fully-detailed MOU, needs a company/program grep against
+  `items.json` before drafting, not just a fresh-looking dateline.
+- 2026-11-13-K: A Kyiv Post/United24 Media pair on Ukraine's HUR disclosing none of Russia's 30
+  launched Rassvet-3 satellites reached their planned 800km orbit (26 stuck at 500-520km, two
+  deorbited) folded cleanly into the 10-day-old Rassvet-4 ITU-filing item via `attach`+`patch`+
+  `bump: "reinforcement"`, moving it 2→3; both outlets were independently bylined, not a wire pair,
+  despite covering the same HUR report.
+- 2026-11-13-L: A WebSearch-surfaced "ICEYE US raises $536 million" claim (Nov. 12) traced only to
+  low-quality funding-tracker aggregator snippets (fundz.net-style sites); no outlet's own page
+  could be found stating the figure directly, and SpaceNews's piece on ICEYE US's manufacturing
+  expansion was paywalled beyond a lede that never mentioned a dollar amount. Left undrafted per
+  the standing never-cite-an-unfetched-page rule rather than trust an aggregator's own number.
+- 2026-11-13-M: A Daily Upside "Blue Origin Grounds Commercial Space Station Plans" piece that
+  read as same-day corroboration for SpaceNews's real Nov. 13 "Blue Origin bows out of NASA
+  commercial space station competition" scoop was actually a recirculated October 2023 Reuters
+  story (Blue Origin reassigning most of the Orbital Reef team), caught only by checking the
+  article's own stated byline date; Digg's own write-up (dated correctly, with its own "betting
+  the Moon beats LEO real estate" framing) was used as the genuine second source instead. A sharp
+  reminder that a same-topic, similarly-titled piece can still be stale-shaped resurfacing even
+  when the real underlying story broke that same day elsewhere.
+- 2026-11-13-N: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on one tagline at
+  149 chars (max 140); merged cleanly on the second attempt ("merged 6 new, 1 updated, 0 held"),
+  1245 items up from 1239. Confirmed via a direct `jq` read of all six new items'
+  `snr`/`category`/`impact` fields and the Rassvet-4 item's grown `sources` (3, up from 1) and
+  `updates` (1) arrays, plus a `jq empty` parse check on all seven touched data files (items, held,
+  state, source_ledger, sources, candidates, registry-candidates). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
