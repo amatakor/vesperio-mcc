@@ -4715,3 +4715,28 @@ a newer entry if a lesson changes.
   `updates` (1) arrays, plus a `jq empty` parse check on all seven touched data files (items, held,
   state, source_ledger, sources, candidates, registry-candidates). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2h gap, unfiltered full source list (2026-11-13, fourth)
+
+- 2026-11-13-O: A near-total-junk 68-candidate queue (Starship Flight 15 preview coverage, dozens of
+  SpaceX/Tesla merger-speculation wire pickups, stock-analyst-call pieces, and Starlink/Ukraine saga
+  rehash) traced every apparently-new lead to something already published: the Boca Chica "1,200
+  acres, not the beach" clarification and the Zelenskyy mid-talks restriction claim were both already
+  folded into their respective living-document items by an earlier sweep that same day. The only
+  genuinely new, fetchable fact came from the mandatory signals-pass leg, not the queue: SpacePolicyOnline's
+  bluesky account (Marcia Smith, verbatim via `getAuthorFeed`) gave the exact cause of ULA's Vulcan
+  scrub to Nov. 14 ("power interruption in the Air Liquide gaseous nitrogen (GN2) plant causing a loss
+  of their high-pressure pumps"), a detail a half-dozen WebSearch queries for the same fact only ever
+  returned as unattributed synthesis, never from a page that would directly confirm it on fetch. Worth
+  remembering that a signals-pass whitelisted bluesky account can out-source the open web on a fast-
+  moving technical detail like a launch scrub cause.
+- 2026-11-13-P: `bsky.app/profile/<handle>` post URLs needed for an `attach` citation aren't visible
+  from the `getAuthorFeed` JSON reply by default; asking the fetch tool explicitly for the post's `uri`
+  (`at://did/app.bsky.feed.post/rkey`) and reconstructing `bsky.app/profile/<handle>/post/<rkey>` from
+  it worked cleanly, extending the 2026-11-11-H lesson on using the API endpoint over the profile page.
+- 2026-11-13-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 1
+  updated, 0 held"). Confirmed via a direct `jq` read of the ULA Vulcan item's grown `sources` (4, up
+  from 3) and `updates` (1) arrays and the sweep log's `signals`/`discovery` blocks (17 channels
+  checked, 8 discovery queries, 0 new candidates). A zero-new-item sweep with a single routine update
+  is an honest result for a ~2-hour gap dominated by unflown-launch preview spam, not a sign something
+  was missed.
