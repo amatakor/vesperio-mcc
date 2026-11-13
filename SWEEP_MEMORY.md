@@ -4634,3 +4634,30 @@ a newer entry if a lesson changes.
   untouched (no held entries; neither new item's companies had a registry profile with a
   like-for-like crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~5h gap, unfiltered full source list (2026-11-13, second)
+
+- 2026-11-13-E: ISRO's own first-party page naming a PSLV ground test "following anomalies in
+  the third stage during the PSLV-C61/EOS-09 and PSLV-C62/EOS-N1 missions" is itself the dateable
+  event even though this platform never drafted either of those two underlying failures (both
+  predate this site's 2026-07 launch); published as a standalone item off the fix-test fact alone,
+  not held for lacking prior context, since the test (and its anomaly-history framing) is fully
+  attested by ISRO's own release. Tripped the standing same-company-plus-category dedup heuristic
+  against the Nov. 10 GSLV-F19 cryogenic-engine item purely on shared company ISRO + category
+  `launch`; one `dedup_distinct` cleared it (different vehicle, different underlying fact: a GSLV
+  upper-stage flight acceptance test for a named upcoming mission vs. a PSLV third-stage redesign
+  test addressing two unrelated past failures).
+- 2026-11-13-F: A SpaceNews "AST SpaceMobile presses case for developing own launch vehicle" piece,
+  read in full, turned out to be a routine extension of the already-published Nov. 6 Blacklift
+  unveiling, EXCEPT for one new, independently-checkable fact buried in it: the Virginia Spaceport
+  Authority's on-record contradiction of CEO Avellan's claim that Blacklift will launch from
+  Wallops Island ("early, preliminary conversations" only). Worth continuing to read a seemingly-
+  redundant follow-up piece on an open story in full rather than skipping it on headline-shape
+  alone, since the genuinely new fact can be a single contradicting quote, not a new figure.
+  `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the ISRO dedup collision
+  above; merged cleanly on the second attempt ("merged 1 new, 3 updated, 0 held"), 1239 items up
+  from 1238. Confirmed via a direct `jq` read of the new PSLV item's `snr`/`category`/`impact`
+  fields (SNR 5, first_party base, launch/notable) and all three updated items' grown `sources`/
+  `updates` arrays (Blacklift: 7 sources, 4 updates; Boca Chica: 6 sources, 3 updates; Starlink/
+  Ukraine: 96 sources, 43 updates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
