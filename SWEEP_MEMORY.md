@@ -4608,4 +4608,38 @@ a newer entry if a lesson changes.
   (items, held, state, source_ledger, sources, candidates, registry-candidates); registry-candidates
   was untouched (crossfeed facts list was empty, honestly noted rather than inventing a precise
   `next_flight_date`). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h18m gap, unfiltered full source list (2026-11-14, third)
+
+- 2026-11-14-J: A near-total-junk 58-candidate queue (Starship Flight 15 aftermath rehash, Starlink/
+  Ukraine saga rehash, off-topic Tesla/SpaceX-merger-speculation chatter and stock-analyst pieces,
+  spam-shaped Bluesky reaction posts) yielded zero new items but five genuine update-worthy facts, all
+  found by chasing queue headlines past their first line rather than from the signals or discovery
+  passes: SpaceX disclosed the Flight 15 booster-catch abort cause (an automated GNC trigger, not a
+  hardware fault, per Dan Huot via Spaceflight Now) distinct from the "not disclosed" framing already
+  published; ULA's Vulcan slipped a third time (network communication issue, now NET Nov. 15), confirmed
+  independently by Marcia Smith's bluesky verbatim before any trade outlet's own write-up; Zelenskyy's
+  Nov. 14 Reuters remarks added a sharper political-recognition framing ("already partially recognising
+  the temporarily occupied territories as not ours") beyond the already-published technical/air-defense
+  framing; a discovery-pass Equatys/D2D query surfaced Space42's own Q3 earnings release upgrading the
+  Sept. 16 "commit up to $1 billion" MOU-shaped item to a signed "binding agreement," found via two
+  wire-style republications (Sharjah24, Defense Arabia) rather than Space42's own newsroom (no registry
+  org profile exists for Space42, so even a first-party-shaped page would cap at informal per the
+  standing no-registry-host workaround); and a Kyiv Post direct fetch surfaced a named Ukrainian Air
+  Assault Forces commander's on-record, if thin, Rassvet timeline assessment. Astrome's Rs 64.05 crore
+  AI-ELINT grant (Adda247 queue entry) and the India ELINT headline were both confirmed stale resurfacings
+  of the already-published Nov. 12 item on an items.json grep. A Peter Thiel/Founders Fund 13F disclosure
+  ($17B of SpaceX stock reduced across Q3, confirmed via Yahoo Finance/24/7 Wall St.) was left undrafted:
+  it's a secondary-market investor's portfolio filing, not a transaction by the tracked company itself,
+  the filing states no reason, and it fails the "director acts on this" test, same treatment as the
+  2026-11-12-G CalPERS/Grain precedent for investor-position stories.
+- 2026-11-14-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 5
+  updated, 0 held"), 1251 items unchanged (update-only sweep). Confirmed via a direct `jq` read of all
+  five updated items' grown `sources`/`updates` arrays (Vulcan: 7 sources/2 updates; Starship Flight 15:
+  9 sources/2 updates; Starlink/Ukraine: 97 sources/44 updates; Equatys: 5 sources/1 update; Rassvet-4: 3
+  sources/2 updates) and the sweep log's `signals`/`discovery` blocks (17 channels checked, 3 X handles
+  attempted, 8 discovery queries, 0 new candidates). A `jq empty` parse check passed on all six touched
+  data files (items, held, state, source_ledger, sources, candidates); registry-candidates was untouched
+  (no crossfeed facts on any of the five update-only items). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
