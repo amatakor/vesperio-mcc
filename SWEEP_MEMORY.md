@@ -4567,4 +4567,45 @@ a newer entry if a lesson changes.
   (Roscosmos) + category (`launch`) Nov. 7 GLONASS-K/Plesetsk item was attested up front and cleared
   on the first submit. A `jq empty` parse check passed on all six touched data files (items, state,
   held, source_ledger, sources, candidates); registry-candidates was untouched (no crossfeed facts).
+
+## Narrow re-check, ~8h17m gap, unfiltered full source list (2026-11-14, second)
+
+- 2026-11-14-F: A 93-candidate queue was almost entirely Starship Flight 15 aftermath (dozens of
+  Google News/Bluesky rewrites of the booster-explosion/Gulf-splashdown story, already fully
+  reflected on the existing item) and junk (stock-prediction listicles, a BBC sky-watching piece, a
+  GTA6/ISRO-budget comparison, routine Federal Register airworthiness/fisheries notices, a Blue
+  Vigil LLC tethered-drone FAA petition). A Xinhua "China-Thailand space cooperation turns tangible
+  projects" roundup traced its only concrete claim (the GISTDA CubeSat-1/GalaxySpace launch) to an
+  August 25, 2026 event; left undrafted as an evergreen retrospective with no new dateable fact,
+  same treatment as the standing science-evergreen exclusion extended to geopolitical-cooperation
+  recaps.
+- 2026-11-14-G: The only genuine new find was European Spaceflight's own Avio/Vega C/IRIDE launch-
+  slip piece (Ranzo's Nov. 11 earnings-call quote, picked up by the harvester's direct feed fetch of
+  europeanspaceflight.com, not the signals leg). A second apparent corroborating hit (archyde.com)
+  403'd on direct fetch, so the crawl landed `found_none`; Andrew Parsonson's own same-day bluesky
+  post about his own article was correctly NOT counted as independent corroboration or a whitelist
+  source, extending the 2026-11-06-M precedent for the exact same author/outlet pair. `next_flight_date`
+  crossfeed was left empty rather than invent a precise date from Ranzo's "very close to Christmas
+  Day" phrasing.
+- 2026-11-14-H: Confirmed the signals-pass budget-rotation logic from first principles rather than
+  from a prior entry: when a signals.json person's `fetchable` channel is the exact same domain as a
+  regular sources.json feed the harvester already fetched this run (europeanspaceflight.com for
+  Parsonson, spacepolicyonline.com for Marcia Smith), it's legitimate to drop that one duplicate leg
+  from the 15-fetch budget and rely on the harvester's own fetch of the identical URL, rotating the
+  saved budget onto channels with no such overlap (here, nothing extra was found either way).
+  Fetched all 15 remaining channels via the `getAuthorFeed` API / site pages; nothing else was new
+  beyond stories already published in prior sweeps (CNSA Tianwen-4 Callisto call, Blue Origin CLD
+  exit, ULA Vulcan scrub cause, MaiaSpace delay, OHB Sentinel-3 NGT, Mynaric/SES optical demo,
+  USSF EW orchestration vendors). A held.json entry from 2026-07-16 on Ma Xingrui (CNSA/CASC,
+  scope question re: commercial-space angle) still has no Florian ruling; a Nov. 5 escalation to a
+  formal bribery indictment (via Andrew Jones's bluesky, itself untouched this far from the window)
+  doesn't change the underlying scope question, so no new held entry or action was taken.
+- 2026-11-14-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on `coverage: ["launch",
+  "eo"]` ("eo" is a tag, not a category); merged cleanly on the second attempt after trimming coverage
+  to `["launch"]` ("merged 1 new, 0 updated, 0 held"), 1251 items up from 1250. Confirmed via a direct
+  `jq` read of the new item's `snr`/`snr_trace`/`category`/`impact` fields (SNR 2, trade base minus
+  `corroboration_none`, launch/noise) and a `jq empty` parse check on all seven touched data files
+  (items, held, state, source_ledger, sources, candidates, registry-candidates); registry-candidates
+  was untouched (crossfeed facts list was empty, honestly noted rather than inventing a precise
+  `next_flight_date`). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
