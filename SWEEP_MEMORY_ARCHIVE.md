@@ -14475,3 +14475,264 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   11 sources/7 updates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
 
+## Narrow re-check, ~5h55m gap, unfiltered full source list (2026-10-14)
+
+- 2026-10-14-A: A near-total-junk 50-candidate queue (SpaceX "jellyfish"
+  sighting pieces from the CRS-35 launch, a wall of Bluesky bot/fan
+  accounts reacting to the same launch, two Motley Fool stock-speculation
+  pieces, BBC off-topic weather/wildlife filler, a routine Texas State
+  University educational CubeSat riding the already-published CRS-35
+  cargo, and a BroadbandBreakfast piece restating a 2024 Hurricane Helene
+  anecdote) still yielded one genuine queue-sourced update: SpacePolicyOnline's
+  own RSS feed carried Ship 40's long-running recovery saga's final chapter
+  (reached Starbase Oct. 7, moved into a Megabay for heatshield/Raptor/
+  avionics data), folded into the existing Flight 13 item as an
+  attach+patch (TeslaNorth corroborating with a second, later article) at
+  no bump since the item was already at its non-first-party ceiling of 4.
+  A thin JAXA/Innovative Space Carrier "co-creation activities" release
+  (Japanese-only, no figures) was left undrafted as a vague-cooperation
+  shape, same standing pattern as Turkish/CGTN/JAXA-Saudi MOUs.
+- 2026-10-14-B: Two genuinely new items came entirely from the discovery
+  pass's required non-US/financial legs, not the queue: ESA DG Aschbacher's
+  Oct. 5 10-year/10bn-euro independent-crewed-spaceflight proposal (led on
+  SatNews, corroborated by Euronews and a paywalled-but-fetchable Aviation
+  Week fragment) and ESA's Oct. 7 FLOTTA microsatellite-manufacturing
+  contract with Hungary's C3S, whose own announcement lived on a
+  resilience.esa.int subdomain that passed the first_party anti-spoof
+  check against the esa.int registry host (same subdomain-match pattern
+  as 2026-09-18-H's ir.echostar.com). Both items independently triggered
+  the standing same-company-plus-category dedup false positive against
+  TWO unrelated existing items apiece (the crewed-spaceflight item against
+  the Airbus/OHB orbital-outpost study and the ESA/Vast Haven MoU; the
+  FLOTTA item against the Planet/Sinergise Slovenia item); four
+  `dedup_distinct` entries at the items' top level cleared both in one
+  pass.
+- 2026-10-14-C: A T-Mobile-scrubs-Starlink-branding story needed care on
+  the lead source: the original PCMag piece (`pcmag.com`) is unfetchable
+  (standing pattern), and the obvious Yahoo Finance URL that surfaced via
+  search turned out to be a TheStreet piece mainly about SpaceX's Oct. 8
+  Grain 800MHz spectrum deal (already published) with the branding-scrub
+  fact as one paragraph crediting a separate dedicated TheStreet article
+  (`thestreet.com/retail/t-mobile-removes-starlink-from-t-satellite-website`,
+  itself 403-blocked) -- led on the fetchable Yahoo Finance mirror anyway
+  since it independently confirms the fact with its own reporting (CTO
+  John Saw quote, JV context), with TmoNews (which explicitly credits
+  PCMag) as the second distinct corroboration source. The item tripped the
+  same-company dedup false positive against THREE unrelated existing
+  SpaceX/T-Mobile `partnership` items in the window (the AT&T/Verizon/
+  T-Mobile JV launch, American Airlines' fleet Starlink order, KLM's
+  Starlink Wi-Fi deal); three `dedup_distinct` entries cleared it.
+- 2026-10-14-D: The 15-fetch signals-pass budget comfortably covered all
+  17 fetchable channels this run without rotation: 10 bluesky accounts via
+  the `getAuthorFeed` API (per 2026-10-11-G) plus 4 direct site fetches
+  (russianspaceweb.com, mainenginecutoff.com, planet4589.org, Vivienne
+  Machi's Aviation Week author page) came to 14 new fetches, with
+  spacepolicyonline.com and europeanspaceflight.com/substack counted as
+  checked-without-a-separate-fetch since their content was already in
+  hand via the RSS-harvested queue. Nothing on any of the 17 channels was
+  both new and substantive enough to draft beyond what the queue/discovery
+  passes already found (Aschbacher's Warsaw Security Forum remarks and
+  ESA's own Oct. 19 MMX-launch announcement were too vague or
+  scheduled-not-yet-occurred). `bun scripts/finalize-sweep.ts` rejected the
+  first draft attempt on four same-company-plus-category dedup matches
+  (fixed via `dedup_distinct`, see 2026-10-14-B/C above); merged cleanly on
+  the second attempt ("merged 3 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of all three new items' `snr`/`category`/`impact`/
+  `tags`/`sources` fields (923 items, up from 920) and the patched Flight
+  13 item's grown `sources`/`updates` arrays (13 sources, 6 updates). `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
+
+## Narrow re-check, ~7h gap, unfiltered full source list (2026-10-14, second)
+
+- 2026-10-14-E: Ukraine's government adviser statement that SpaceX imposed
+  an unannounced 100 mph speed cap on Starshield terminals (per Serhii
+  "Flash" Beskrestnov, confirmed independently by Ukrinform and a Yahoo
+  Finance mirror crediting WSJ) qualifies under CLAUDE.md's geopolitical
+  carve-out via the "government statement directly concerning commercial
+  space services in a conflict" leg, not the "operator confirms" leg:
+  SpaceX/Musk never commented on the record (confirmed via a dedicated
+  WebSearch), and the item was drafted and scored on the Ukrainian
+  officials' attributed statements alone. Landed `major` impact (not
+  `seismic`) on the judgment that any government/enterprise Starlink or
+  Starshield customer would treat an operator's unilateral, unannounced
+  service change for a major client as a same-day reliability/political-
+  risk briefing item, distinct from CLAUDE.md's stated-value/regulatory-
+  grant major examples but matching the underlying "director acts or
+  briefs the team today" test.
+- 2026-10-14-F: The standing same-company-plus-category dedup false
+  positive fired on two unrelated items this run: the Starlink/Ukraine
+  geopolitical item against the unrelated Sept 9 German Space Command
+  Russia-shadowing-tactics item (shared company SpaceX + category
+  geopolitical only), and a Deutsche Telekom CEO commentary item
+  (category `product`) against both the VEON/Banglalink Starlink Mobile
+  Bangladesh launch and the Amtrak Starlink Cascades trial (shared
+  company SpaceX + category product only). Three `dedup_distinct`
+  entries at each item's top level cleared both in one pass.
+- 2026-10-14-G: `finalize-sweep.ts` also rejected a first draft for
+  marking 6 of 7 new items' corroboration crawl `not_attempted` while the
+  sweep had only 7 new items total, well under the 8-event budget
+  threshold that makes `not_attempted` legal; had to actually run the
+  2-search-minimum crawl per event before resubmitting. One of the six
+  (In Orbit Aerospace's autonomy pivot, a Payload Exclusive) and one
+  (Genrobotics' ISRO boom-arm contract, whose only other hit,
+  uniindia.com, 403'd on fetch) came back honest `found_none`; the other
+  four picked up genuine second sources (Reflect Orbital's own PR
+  Newswire release for the Skyroot item; SiliconIndia for OXG Space;
+  Finimize already in hand for the Seraphim report; Advanced Television
+  already in hand for the Deutsche Telekom item) once actually searched.
+  Worth remembering: with only a handful of new items in a draft,
+  `not_attempted` is essentially never legal and the crawl has to
+  actually run for every one before submitting, not just for items that
+  look under-sourced.
+- 2026-10-14-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  second attempt ("merged 7 new, 0 updated, 0 held"); confirmed via a
+  direct `jq` read of all seven new items' `snr`/`category`/`impact`/
+  `kind` fields (930 items, up from 923) and the sweep log's `signals`/
+  `discovery` blocks. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h34m gap, unfiltered full source list (2026-10-14, third)
+
+- 2026-10-14-I: The Starshield speed-restriction story drafted two sweeps
+  ago blew up into the widest mainstream pickup of any item this month
+  (NYT, LA Times, NBC, Politico, The Verge, CNN, Bloomberg, Gizmodo,
+  Tom's Hardware, dozens more) within about 4.5 hours, plus two genuinely
+  new on-the-record facts: Polish Foreign Minister Sikorski publicly
+  challenging Musk on X ("are you playing politics with your products
+  again? As your European customers, we are watching you," confirmed via
+  a direct Euromaidan Press fetch, which also carried the terminal-supply
+  figures: Poland supplies ~29,500 of Ukraine's terminals, about half,
+  for ~$50M/year) and Musk's own on-record X post ("Zelensky has gone too
+  far," confirmed via a direct Newsweek fetch) -- the first time SpaceX/
+  Musk commented at all on this story, reversing the prior sweep's note
+  that neither had. A same-day Euromaidan Press follow-up also confirmed
+  the restriction tightened further during the day (160 km/h down to
+  60-70 km/h). All of this folded into the existing item as an `update`
+  (same event, same day) rather than a new item, per the standing 7-day
+  dedup rule; a WebSearch synthesis is not enough to source a quote like
+  this, each one needed its own direct fetch per the 2026-10-13-E lesson,
+  and Google News redirect URLs would not resolve via WebFetch at all this
+  run (bare "Google News" header, no content) -- had to re-find each
+  publisher URL via a dedicated WebSearch instead of following the
+  redirect directly.
+- 2026-10-14-J: A separate, unrelated same-day Starlink story (Musk
+  accusing Indian "oligarchs" Ambani/Mittal of blocking Starlink's India
+  launch) resurfaced via Google News/Bloomberg with an Oct 14 timestamp
+  but traced entirely to the Oct 8-9 dispute already covered by the
+  existing Musk/Ambani item; left alone as a non-update, confirming the
+  standing practice of checking a same-actor headline's actual date
+  before treating it as new.
+- 2026-10-14-K: An Al Jazeera "Iran targets Starlink as a tool of war"
+  piece read as fresh but restated the same Aghamiri "tool of war"/
+  "legitimate military target" quote already published 2026-09-30 and
+  2026-10-05, just with added background on criminal penalties; left
+  undrafted as a non-event rehash, not a new government statement.
+- 2026-10-14-L: A ZhuQue-2E launch found via the discovery pass's
+  launch-matrix query had no coverage at all in English trade press
+  (SpaceNews 429'd both direct-fetch attempts); the only usable coverage
+  was a niche English-language China-watch blog (China in Space, classed
+  `informal` per the standing 2026-07-12 precedent for that outlet) plus
+  a Global Times account's X post, verbatim-confirmed via the
+  `cdn.syndication.twimg.com` endpoint. Honest SNR 2 (informal base +
+  corroboration) on a routine `noise`-tier batch item is the model
+  working as intended for a genuinely under-covered non-US story; a
+  WebSearch-only "fact" about a third Group-03 batch planned for Q4 2026
+  was dropped from the draft since it was never confirmed via a direct
+  fetch.
+- 2026-10-14-M: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice in a row on tagline-length overages (145 and then 153
+  chars against the 140 max) introduced while folding in the day's new
+  facts, and once on a signals-pass channel URL mismatch (listed the
+  substack `/feed` RSS endpoint instead of the bare channel URL
+  `signals-context` actually lists); merged cleanly on the fourth
+  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct
+  read of the new ADA Space item's `snr`/`category`/`impact` fields (931
+  items, up from 930) and the updated Starshield item's grown `sources`/
+  `secondary_urls` arrays (5 sources). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h31m gap, unfiltered full source list (2026-10-14, fourth)
+
+- 2026-10-14-N: `boe.es` (Spain's official state gazette, Boletin Oficial
+  del Estado) fails the anti-spoof `official_record` host check even for a
+  genuine government legal order (Orden ITU/920/2026 on Hisdesat's PAZ 2
+  loan): `isOfficialHost` only passes `*.gov`, the small FIXED_OFFICIAL_HOSTS
+  list (sec.gov, fcc.gov, sam.gov, ted.europa.eu, esa.int, nasa.gov, noaa.gov,
+  itu.int, unoosa.org, europa.eu), and registry website hosts. Spain's `.es`
+  government domains (no `.gob.es`/`.gov` pattern here) are not on that list.
+  Reclassified `boe.es` to `trade` per the gate's own hint; the item still
+  landed a clean SNR 4 since a `whitelist`/`observer` corroboration source
+  (European Spaceflight) was also attached. Worth remembering for any future
+  EU-member-state official-gazette citation (BOE, France's Legifrance,
+  Italy's Gazzetta Ufficiale, etc.): none of these pass the official_record
+  gate unless a dev adds them to FIXED_OFFICIAL_HOSTS; class them `trade` by
+  default rather than resubmitting against the rejection.
+- 2026-10-14-O: A quarter's largest individual funding round cited inside an
+  aggregate industry report (Seraphim's Q3 Space Index naming Hadrian's
+  $1.37B Series D as the period's biggest raise) does not itself qualify as
+  a fresh gap to chase standalone once it is two-plus months stale (Hadrian's
+  round closed Aug. 6): the report's own release date is the dateable event,
+  not the underlying figures it recaps. Confirmed Hadrian's round had never
+  been drafted as its own item and left it that way deliberately, consistent
+  with the predates-window chase-it exception being reserved for notable/
+  seismic gaps, not routine funding recaps embedded in someone else's report.
+- 2026-10-14-P: The already-published Seraphim Q3 report item
+  (`2026-10-14-seraphim-q3-2026-space-funding-report`, led on an Investing.com/
+  Reuters wire pickup at SNR 4) had a same-day first-party upgrade sitting in
+  plain sight: `seraphim.vc/seraphim-space-index/` is Seraphim's own registry-
+  recorded website and states the identical headline figures directly, plus
+  genuinely new detail the wire pickup omitted (trailing-twelve-month totals,
+  the Hadrian/Stoke Space/K2 Space round breakdown, a VP quote). A same-sweep
+  `rescore` via the MAGPIE upgrade path (patch `source_url` first, then
+  `rescore.sources[0].url` matching it) moved the item from 4 to 5. Worth
+  checking a firm's own site for its underlying report/index page whenever a
+  wire-sourced industry-report item is still open the same day, not just
+  treating the wire version as the ceiling.
+- 2026-10-14-Q: A months-old "may slip to 2027" item
+  (`2026-08-11-rocket-lab-neutron-slip-2027`, 65 days outside both the 7-day
+  same-event and 30-day reinforcement windows) still took a same-program
+  `rescore`+`patch` rather than a new item once Rocket Lab's own SEC 8-K
+  (Ex. 99.1) firmed the guidance into a confirmed 2027 debut with a named
+  cause (voids in a carbon-composite propellant dome): the MAGPIE upgrade
+  path (official_record lead via the SEC exhibit) isn't restricted to
+  continuations found within the ordinary dedup windows when it is
+  unambiguously the same ongoing story being resolved, consistent with the
+  2026-10-06-M "same-program follow-up outside both windows" precedent.
+- 2026-10-14-R: A single evolving geopolitical story (SpaceX's Starshield
+  speed restriction for Ukraine) generated a second, institutionally
+  distinct in-scope item the same day rather than folding into the existing
+  item: the European Commission's own Oct. 14 press briefing (Thomas Regnier
+  on GOVSATCOM/IRIS2, Paula Pinho on intelligence-sharing) is a different
+  actor taking a different action, not a development of SpaceX's story, so
+  it drafted as its own `geopolitical` item with an empty `companies` array
+  (no company's registry profile is a party to a talks-underway policy
+  statement) rather than an `updates[].attach` on the SpaceX item. Only the
+  commercial-space-relevant half of that briefing (GOVSATCOM/IRIS2) went in
+  the copy; the intelligence-sharing half was left out entirely as having no
+  stated commercial-space angle, per the standing conflict/operational-use
+  exclusion.
+- 2026-10-14-S: Two superficially similar October-dated pieces reporting the
+  same EU spokesperson's Starlink-alternative framing were NOT both current:
+  `militarnyi.com`'s "Europe to Help Ukraine Switch from Starlink..." page
+  displayed a March 3, 2025 byline underneath a same-day page-load header
+  (checked directly, not assumed), making it a stale recycled page from a
+  year-old funding-pause crisis despite surfacing in an October-2026-dated
+  search; `euperspectives.eu` and `eurointegration.com.ua`, by contrast, both
+  carried genuine `14.10.2026`/`2026/10/14`-dated URLs and content. A WebFetch
+  summarization pass that reports "Publish Date: October 14, 2026" for a page
+  can be reading the page's load/copyright timestamp, not the article's own
+  byline; always ask explicitly for the byline date shown under the headline
+  before trusting a "fresh" read on a story this shaped (a recurring EU/
+  Starlink-alternative debate that genuinely recurred across more than one
+  crisis).
+- 2026-10-14-T: `bun scripts/finalize-sweep.ts` merged cleanly on the second
+  attempt, after reclassifying the BOE lead source from `official_record` to
+  `trade` per -N above ("merged 2 new, 3 updated, 0 held"); confirmed via a
+  direct `jq` read of both new items' and all three updated items' `snr`/
+  `snr_trace`/`category`/`impact`/`sources` fields (933 items, up from 931),
+  the two `snr_movements` entries (Neutron 4→5, Seraphim 4→5) logged in the
+  sweep entry, and an empty `registry-candidates.json` delta (both new
+  items' crossfeed blocks carried no facts). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
