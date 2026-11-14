@@ -4643,3 +4643,42 @@ a newer entry if a lesson changes.
   (no crossfeed facts on any of the five update-only items). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h21m gap, unfiltered full source list (2026-11-14, fourth)
+
+- 2026-11-14-L: `finalize-sweep.ts` rejected a first draft attempt for quoting SpaceX's own X post
+  verbatim ("Mechazilla catches Starship!") inside `what_happened`: the exclamation-mark gate applies
+  even to a direct, attributed first-party quote, not just to agent-authored hype. Paraphrasing the
+  quote ("confirmed the catch...writing that its tower...had caught Starship") cleared it on the next
+  attempt. Worth defaulting to paraphrase-with-attribution rather than verbatim-quote whenever a
+  source's own exclamatory language is the only way to state a fact.
+- 2026-11-14-M: A same-day queue/discovery/signals triage (86-candidate queue, almost entirely Google
+  News/Bluesky rewrites of the Starship Flight 15 ship-catch story) correctly separated the mission's
+  two distinct facts: the booster catch failure (already published 2026-11-13) and the ship's own
+  tower catch, the first-ever recovery of an orbital-class rocket's upper stage, confirmed directly via
+  SpacePolicyOnline's own queue-harvested piece (raw_excerpt alone gave the full story: Ship 42, 14
+  orbits, ~22.5 hours, Mechazilla) plus direct fetches of Teslarati and a second, distinct CNBC article.
+  Patched the existing item's headline/impact (notable to major) rather than draft a new one, since it
+  is the same Flight 15 event. Separately, a UPI/LBC "Zelensky accuses SpaceX of lying" pair that read
+  as a fresh escalation in the Starlink/Ukraine saga turned out to be a word-for-word match for facts
+  an earlier same-day sweep had already folded into the item's top-level `what_happened` ("they say it
+  is some kind of technical issue...SpaceX has denied introducing new restrictions"); always diff a
+  seemingly-new saga quote against the item's current full copy, not just its `updates[]` log, before
+  drafting. A discovery-pass "Amazon Leo Vulcan launch" hit (UPI photo captioned with today's date,
+  several outlets describing it in past tense) was confirmed unflown via a direct Launch Library check
+  (still "Go for Launch", NET the next day) before being left undrafted, extending the standing
+  WebSearch-conflates-unflown-launches-with-completed-ones caution to wire-photo-caption artifacts
+  specifically.
+- 2026-11-14-N: Rocket Lab's 100th Electron launch (iQPS's 11th satellite, "The Mountain God Rises")
+  cleared as a new `notable`-impact item once Launch Library's own launch record confirmed mission
+  success (space.com/starlust syntheses alone didn't state it); `rocketlabcorp.com/updates/` still
+  403's directly, so the lead stayed the Launch Library record with space.com (mainstream) and
+  Starlust (informal, per standing precedent) as corroboration. `bun scripts/finalize-sweep.ts`
+  rejected the first draft attempt on the exclamation-mark quote above; merged cleanly on the second
+  attempt ("merged 1 new, 1 updated, 0 held"), 1252 items up from 1251. Confirmed via a direct `jq`
+  read of both items' `snr`/`category`/`impact` fields and the Starship item's grown `sources` (12, up
+  from 9) and `updates` (3, up from 2) arrays, the registry-candidates file's new Electron
+  `flights_total: 100` monotonic-refresh proposal, and a `jq empty` parse check on all seven touched
+  data files (items, held, state, source_ledger, sources, candidates, registry-candidates); held was
+  untouched (no held entries). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
