@@ -4740,3 +4740,51 @@ a newer entry if a lesson changes.
   checked, 8 discovery queries, 0 new candidates). A zero-new-item sweep with a single routine update
   is an honest result for a ~2-hour gap dominated by unflown-launch preview spam, not a sign something
   was missed.
+
+## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-11-13, fifth)
+
+- 2026-11-13-R: Starship Flight 15 lifted off at 22:47 UTC and deployed its 26 Starlink V3 satellites
+  cleanly, but SpaceX aborted the Super Heavy booster's tower-catch attempt (cause unclear) and
+  diverted it to a Gulf of Mexico splashdown; the ship's own catch attempt remains pending ~22 hours
+  out, well past this sweep's window, so `flights_successful` was deliberately left unattested on the
+  vehicle crossfeed fact (only the monotonic `flights_total: 15` was attested) rather than guess at a
+  final mission outcome that will only be known on a later sweep. The Launch Library entry itself
+  (not just press coverage) already carried the abort/splashdown narrative text, confirming it is
+  usable as an aggregator-tier LEAD for an in-progress multi-stage mission's partial outcome, not just
+  the generic pre-launch mission description.
+- 2026-11-13-S: A same-day satellitetoday.com "Office of Space Commerce Picks 4 Companies for
+  Regulatory Pilot" piece read as fresh (dateline Nov. 13) but was a one-day-later trade rewrite of
+  the already-published Nov. 12 item (`2026-11-12-osc-space-commerce-certification-pilot-cohort`,
+  already at its official_record SNR 5 ceiling) with identical companies (Cowboy Space, Portal Space
+  Systems, Redwire/SpaceMD, Starcloud) and the same Taylor Jordan quote; caught only by an
+  items.json grep on the shared company (Redwire) before drafting, not by the headline looking novel.
+  Worth the reminder that a trade outlet's own write-up of an official release can still lag the
+  release itself by a full day and read as "today's news" in the queue.
+- 2026-11-13-T: Andrew Jones's Bluesky post on CNSA's Tianwen-4 international payload call (Callisto
+  lander added, Uranus flyby probe dropped) needed the `getAuthorFeed` verbatim-text re-fetch
+  discipline (2026-11-13-P) to get the exact post text rather than a WebFetch paraphrase; the post's
+  own linked `cnsa.gov.cn` URL itself `ECONNRESET`'d on every direct-fetch attempt (consistent with
+  the standing pattern of Chinese government sites being intermittently unreachable), but an
+  independent Italian outlet (hwupgrade.it, dated the same day, citing the same CNSA notice with
+  additional instrument detail) gave real corroboration without needing the primary page. Classed
+  Jones `whitelist`/`observer` (he is reporting CNSA's own action, not speaking for CNSA itself) and
+  hwupgrade.it `informal` (no established-outlet precedent in this file). Also confirmed a
+  WebSearch-synthesis claim about an FCC "36 next-gen Starlink gateways" grant (PCMag, 403'd on
+  direct fetch) could not be distinguished from the already-known Jan. 2026 gigabit approval via any
+  fetchable source; left undrafted per the never-cite-an-unfetched-page rule. A WSJ-sourced "Democrats
+  order Musk to preserve Starshield records" piece recirculating via Google News traced entirely to
+  the already-published Nov. 4-5 CNN/WSJ scoop (Blumenthal/Whitehouse/Shaheen/Coons letter already on
+  the living-document item); left undrafted as a stale resurfacing, not a new Nov. 13 development.
+- 2026-11-13-U: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on a same-company
+  (SpaceX) + category (`launch`) dedup collision against `2026-11-06-spacex-ussf-432-vandenberg` (a
+  second, older Falcon 9 Space Force launch in the trailing 7 days beyond the one already attested
+  against `2026-11-12-spacex-ussf-627-vandenberg`); merged cleanly on the second attempt after adding
+  both `dedup_distinct` entries ("merged 3 new, 0 updated, 0 held"), 1248 items up from 1245.
+  Confirmed via a direct `jq` read of all three new items' `snr`/`category`/`impact`/`kind` fields
+  (Starship Flight 15: SNR 4, aggregator base plus `corroboration_2plus`; Space42: SNR 4, trade base
+  plus corroboration; Tianwen-4: SNR 4, whitelist/observer floor) and a `jq empty` parse check on all
+  seven touched data files (items, held, state, source_ledger, sources, candidates,
+  registry-candidates); held and registry-candidates were untouched (no held entries; none of the
+  three new items' companies had a registry profile with a like-for-like crossfeed metric beyond the
+  Starship `flights_total` monotonic-counter fact). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
