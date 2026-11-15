@@ -4555,3 +4555,28 @@ a newer entry if a lesson changes.
   touched), and a `jq empty` parse check on all six touched data files (items, held, state,
   source_ledger, sources, candidates); registry-candidates was untouched (no crossfeed block on an
   update). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~9h gap, unfiltered full source list (2026-11-15, second)
+
+- 2026-11-15-E: A near-total-junk ~90-candidate queue (almost entirely Starship Flight 15 ship-catch
+  rehash, already published 2026-11-13/14, plus off-topic CGTN general-China and Futurism filler, zero
+  entries from any direct trade/IR/regulatory feed despite the harvester fetching all of them) confirms
+  2026-11-13-O's pattern once more: even a near-total-junk queue needs full per-candidate triage, but
+  this time it genuinely yielded nothing beyond one signals-pass find.
+- 2026-11-15-F: Re-checked the Star Vision/Oman Lens 20-satellite, $200M+ AI-constellation story flagged
+  in 2026-11-12-T for a dedicated re-check: SCMP still 403's on every direct fetch, but a targeted search
+  established "Oman Lens" is a distinct, pre-existing Omani startup (operates satellite OL-1, launched
+  2024 from China) from "Adasat Oman" (the signer on the already-published Nov. 2 StarVision/Space Silk
+  Road item). That distinction alone doesn't resolve whether the SCMP-reported 20-satellite/$200M+ deal
+  IS the same Nov. 2 Beijing state-visit agreement (same companies, same program name, same scholarship/
+  training numbers) reported from Oman Lens's angle, or a second, separate StarVision deal; left
+  undrafted again rather than risk either double-counting one deal or citing an unfetched SCMP figure
+  through content-mill mirrors. Worth a direct SpaceNews or SCMP fetch, or an Oman-side primary source,
+  before ruling either way.
+- 2026-11-15-G: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 1
+  updated, 0 held"), 1252 items unchanged (update-only sweep). Confirmed via a direct `jq` read of the
+  Cosmos 2612/ICEYE-X36 item's grown `sources` (19, up from 18) and `updates` (11, up from 10) arrays
+  with `snr` correctly unchanged at 4 (already at its non-first-party ceiling, no bump requested), and a
+  `jq empty` parse check on all six touched data files (items, state, source_ledger, sources,
+  candidates); held was untouched (no held entries; the update carried no crossfeed-eligible fact).
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
