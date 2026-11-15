@@ -4580,3 +4580,50 @@ a newer entry if a lesson changes.
   `jq empty` parse check on all six touched data files (items, state, source_ledger, sources,
   candidates); held was untouched (no held entries; the update carried no crossfeed-eligible fact).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Deep sweep (triggered by two prior zero-new sweeps), ~2h50m gap (2026-11-15, third)
+
+- 2026-11-15-H: A 957-candidate deep-mode queue (dominated by hundreds of Starship Flight 15
+  ship-catch and Vulcan/Amazon Leo return-to-flight rehash) still rewarded full per-candidate
+  triage: an IHI press release (ihi.co.jp, Nov. 12) disclosed a new SAR-satellite demonstration
+  lab in Tokyo and domestic assembly/testing of 2 of 4 ICEYE-procured satellites toward a
+  contract that could grow to 24, while Nikkei separately reported (not confirmed by IHI's own
+  page) a much larger 100-satellite/2030 dual-use ambition; led with IHI's own release and
+  attributed the bigger, unconfirmed figure to Nikkei by name rather than merging the two into
+  one stated fact, the same "first-party doesn't confirm the bigger number" caution as the
+  2026-10-16-M RATLOG case, just inverted (here the SECONDARY source has the bigger number).
+- 2026-11-15-I: Classed IHI's own ihi.co.jp press release `trade` rather than `first_party`,
+  pre-empting the anti-spoof domain check rather than spending a submit-reject cycle on it: IHI
+  has no `src/data/registry` organization entity, so there is no registry-recorded website for
+  the gate to match against, the same no-registry-host workaround as the 2026-10-22-L National
+  Academies case. Worth checking for a registry entity BEFORE attempting `first_party` on any
+  company's own domain, not just after a rejection.
+  Separately, a Payload-exclusive-shaped Canadian lunar-rover redesign story (CSA pivoting from
+  a 4-ton/2034 to a 2-ton/earlier design) had two apparent corroborating hits
+  (newspaceeconomy.ca, econotimes.com) that both explicitly stated "Payload reported" as their
+  own source; correctly treated as non-independent and scored `crawl: "found_none"` (honest SNR
+  2) rather than credited as `corroboration_2plus`, extending the wire-rewrite-collapse logic to
+  a case where the rewrite says so in its own text rather than needing title-similarity
+  detection.
+- 2026-11-15-J: A dozen-plus discovery-pass leads that read as fresh on first WebSearch snippet
+  (Pakistan's first foreign astronaut on Shenzhou-24, a Bridgit Mendler/Northwood profile piece,
+  Isaacman's MAX POWER remarks, a Lynk/Omnispace merger, Amazon's Globalstar acquisition, a
+  Globalstar-Rocket Lab FCC petition, France's IRIS contract, ESA/MaiaSpace's launcher-challenge
+  delay, AST SpaceMobile's Q3 "45 satellites by mid-2027" figure, Anduril's eclipse-tracking
+  demo) all traced via `items.json` id greps to stories already published across the past two
+  weeks; a bare WebSearch snippet reading "new" is not evidence against a prior sweep having
+  already caught it, especially during a Starship-Flight-15-saturated news cycle where
+  secondary/rewrite outlets keep re-dating old facts. The Pakistan/Shenzhou-24 "first foreign
+  astronaut on China's space station" story was left out of scope on a judgment call: a
+  government-to-government diplomatic/training cooperation with no stated commercial contract,
+  procurement, or market-access angle, distinct from the human-spaceflight carve-out's
+  commercial-primes test (Commercial Crew, CLD, Artemis awards) and the geopolitical category's
+  documented-commercial-angle requirement; flag for Florian if China/foreign-astronaut stories
+  like this should instead publish under the general "equal weight to Chinese activity" clause.
+- 2026-11-15-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2
+  new, 0 updated, 0 held"), 1254 items up from 1252. Confirmed via a direct `jq` read of both new
+  items' `snr`/`category`/`impact` fields (CSA lunar rover: SNR 2, trade base minus
+  `corroboration_none`, human-spaceflight/notable; IHI/ICEYE: SNR 4, trade base plus
+  `corroboration_2plus`, constellation/notable) and the sweep log's `signals`/`discovery` blocks
+  (15 channels checked, 12 discovery queries, mode "deep"). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
