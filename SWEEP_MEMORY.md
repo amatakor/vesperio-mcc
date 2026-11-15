@@ -93,174 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~7h gap, unfiltered full source list (2026-10-15)
-
-- 2026-10-15-A: A WSJ "exclusive" piece paywalled at source (`wsj.com` is
-  outright unfetchable, joining the standing ft.com/axios.com/arstechnica.com
-  list) was still usable as a LEAD-FINDING tool without being cited itself: a
-  freerepublic.com forum thread had reposted the full text crediting the WSJ
-  byline, which surfaced a genuinely new fact (Rep. Brian Fitzpatrick warning
-  Congress could withhold agency funding over the Starlink/Ukraine speed
-  restriction) that a WebSearch synthesis alone had NOT confirmed (an initial
-  synthesis claimed US officials blamed a "technical malfunction," which the
-  direct fetch of the same mirror explicitly did not support — left out).
-  Rather than cite the forum mirror, searched for and directly fetched two
-  independent outlets (interfax.com.ua, washingtonsun.com) that independently
-  quoted the same Congressional Ukraine Caucus statement and a second
-  lawmaker (Rep. Don Bacon), and cited those instead. Worth remembering: a
-  forum repost of a paywalled scoop is a legitimate way to find what to go
-  verify, never a citable source on its own, and a single mirror's claim
-  still needs the standing re-fetch-for-verbatim discipline before trusting
-  it (the "technical malfunction" claim didn't survive that check here).
-- 2026-10-15-B: Nikkei Asia (asia.nikkei.com) had no prior classification
-  precedent in this file; treated as `mainstream` (same tier as Reuters/FT),
-  used as the lead for a genuinely new Solafune/Tohoku University AI-satellite
-  research-partnership item neither the queue nor a dedicated discovery query
-  surfaced (found via a generic "earth observation satellite" Bluesky search
-  result, an unwhitelisted account reposting the Nikkei headline). Solafune's
-  own newsroom confirmed the same facts with more partnership detail but has
-  no `src/data/registry` entity, capping it at `informal` per the standing
-  no-registry-host workaround.
-- 2026-10-15-C: `milenio.com` (Mexican national daily) 403'd on every direct
-  WebFetch attempt for a Playa Bagdad Starship-debris corroboration search,
-  consistent with the general pattern of paywalled/bot-blocked outlets;
-  landed the Mexico News Daily-led debris item at an honest single-source
-  SNR 2 (`crawl: "found_none"`) rather than force an unfetched Spanish-language
-  mirror into the sources list, per the standing never-cite-an-unfetched-page
-  rule.
-- 2026-10-15-D: `bun scripts/finalize-sweep.ts` merged cleanly on the first
-  attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a direct `jq`
-  read of all four new items' `snr`/`category`/`impact`/`kind` fields (937
-  items, up from 933) and both updated items' grown `sources`/`updates`
-  arrays (Starlink/Ukraine: 14 sources, 3 updates; NEONSAT: 6 sources). `bun
-  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
-  update.
-
-## Narrow re-check, ~6h37m gap, unfiltered full source list (2026-10-15, second)
-
-- 2026-10-15-E: `.gov.uk` fails the `official_record` anti-spoof host check
-  the same way Spain's `boe.es` did on 2026-10-14 (not on the fixed
-  official-hosts list): reclassified the UK Space Agency's own
-  `space.blog.gov.uk` announcement to `trade` rather than resubmitting
-  against the rejection, for a ClearSpace UK Active Debris Removal mission
-  contract item (`£61.3M, five-year, prime contractor, beating Astroscale
-  and Starfish Space, SaxaVord 2029 launch). ClearSpace's own newsroom
-  confirmed the same award but, like Solafune on 2026-10-15 (first entry),
-  has no `src/data/registry` entity, so it capped at `informal` rather than
-  `first_party` per the standing no-registry-host workaround.
-- 2026-10-15-F: A single-source Payload exclusive (JAXA awarding ArkEdge
-  Space two lunar-navigation study contracts, no stated value) returned a
-  genuinely honest `found_none` after a real two-search crawl turned up only
-  older, unrelated ArkEdge/JAXA stories (a 2024 feasibility study, a
-  different Space Strategy Fund LNSS award) rather than anything about
-  today's specific MoonQuest/LANS-receiver and signal-reception-demo
-  contracts; published at single-source SNR 2 rather than force a
-  tangentially-related older article into the sources list as false
-  corroboration.
-- 2026-10-15-G: The Starlink/Ukraine saga's "restored" claim needed care:
-  Kyiv Independent's own follow-up explicitly says the source "did not say
-  if all restrictions had been lifted," while a Moscow Times headline the
-  same morning flatly claimed "Functionality Restored Fully" for the same
-  underlying ministry quote: Moscow Times's framing. Kept the item's copy to
-  the more precise Kyiv Independent/Kyiv Post phrasing (resumed but
-  ambiguous cap, Kyiv separately requesting 450 km/h) rather than the
-  overstated "fully restored" framing, consistent with the model's "never
-  claim more certainty than sources support" rule even when a reputable
-  outlet's own headline overclaims.
-- 2026-10-15-H: Google News redirect URLs continued to not resolve via
-  WebFetch this run (bare "Google News" header, no content, same as
-  2026-10-14-I); every lead in this sweep was re-found via a dedicated
-  WebSearch for the publisher's own URL instead of following the redirect.
-  Separately, `thehill.com` 403'd on direct WebFetch (new addition to the
-  standing paywalled/bot-blocked list alongside wsj.com/ft.com/axios.com/
-  arstechnica.com/pcmag.com/milenio.com); a Senate GOP/Trump-friction fact
-  surfaced only via WebSearch synthesis was left out of the update's copy
-  entirely rather than cited without a direct fetch.
-- 2026-10-15-I: `bun scripts/finalize-sweep.ts` merged cleanly on the first
-  attempt ("merged 2 new, 1 updated, 0 held"); confirmed via a direct `jq`
-  read of both new items' `snr`/`category`/`impact` fields (939 items, up
-  from 937) and the Starlink/Ukraine item's grown `sources`/`updates`
-  arrays (18 sources, 4 updates). `bun run build` was not attempted, per
-  the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h gap, unfiltered full source list (2026-10-15, third)
-
-- 2026-10-15-J: Pre-empting the standing same-company-plus-category dedup
-  false positive paid off: three of four new items this run shared
-  company SpaceX + category partnership with the Oct 8 American
-  Airlines/KLM Starlink items (an Alaska Communications ground-ISP
-  reseller deal and a United Starlink-tracker/half-fleet milestone, both
-  genuinely distinct programs), and writing `dedup_distinct` entries for
-  both existing ids into the first draft got a clean first-attempt merge
-  with zero rejections, versus the usual one-or-two retry cycle. Worth
-  defaulting to this when a new item shares SpaceX + a common category
-  (partnership, contract, geopolitical) with ANY existing item from the
-  last 7 days, not just waiting for the gate to name the collision.
-- 2026-10-15-K: A discovery-pass query ("India ISRO satellite launch
-  contract announcement") surfaced a genuine same-day gap the queue never
-  carried at all: India's Ministry of Defence signed a Rs 2,563 crore
-  contract with NewSpace India Limited for GSAT-7C, the IAF's first
-  dedicated comms satellite. tribunindia.com and theprint.in both fetched
-  cleanly (mainstream, SNR 4); business-standard.com and indiatvnews.com
-  403'd on direct fetch. NSIL has no `src/data/registry` entity (only
-  ISRO does), so no crossfeed field applied despite the nine-figure-scale
-  value; impact landed `major` on the stated-value test alone.
-- 2026-10-15-L: A same-day Andrew Parsonson find (Arianespace targeting
-  Nov. 23 for Ariane 6's return to flight, reportedly after fixing the
-  turbopump anomaly first reported 2026-09-18) folded cleanly into that
-  26-day-old item via `attach`+`patch`, no bump needed. Separately,
-  CGTN's own direct coverage of the Oct 14 ADA Space Three-Body Group-02
-  launch (already published same-day off an informal lead) was fetched
-  independently and used as a `rescore` upgrade: state-media CGTN classes
-  `mainstream` for a fact of record (launch occurred, satellite count),
-  moving the item from SNR 2 to 4 in one pass. Confirms CGTN is usable as
-  a same-day upgrade path for Chinese launch stories first caught only by
-  informal aggregators.
-- 2026-10-15-M: `bun scripts/finalize-sweep.ts` merged cleanly on the
-  first attempt ("merged 4 new, 3 updated, 0 held"); confirmed via a
-  direct `jq` read of all four new items' `snr`/`category`/`impact`
-  fields (943 items, up from 939), all three updated items' grown
-  `sources`/`updates` arrays, and the `snr_movements` entry for the ADA
-  Space rescore (2→4). `bun run build` was not attempted, per the
-  2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~4h gap, unfiltered full source list (2026-10-15, fourth)
-
-- 2026-10-15-N: An Aviation Week headline found via WebSearch ("Software
-  Readiness Issue Pushes Next SDA Launch To 2026") read as live but was
-  dated December 5, 2025, nine months stale; its own internal "Sept 10"/
-  "Oct 15" date references are to 2025, not the current year, a trap a
-  WebSearch synthesis alone did not flag until the article was fetched
-  directly and the byline/publish date checked. Worth treating any
-  recurring SDA/launch-delay headline shape the same as the standing
-  stale-resurfacing pattern: fetch and check the actual publish date
-  before trusting a plausible-sounding date mentioned in the body text.
-- 2026-10-15-O: Two Gray Television-owned local affiliates (Dakota News
-  Now, Valley News Live) ran near-identical text on a Stevens County,
-  Minnesota debris find with different bylines (Avery Arens vs. Erick
-  George) -- treated as a same-network wire-rewrite pair (one
-  corroboration unit, `crawl: "found_none"`), the same shape as the
-  2026-10-06-Q Texas Newsroom/NPR-affiliate case, now confirmed for a
-  commercial local-TV group rather than a public-radio collaborative.
-- 2026-10-15-P: A genuine predates-window gap surfaced only via a same-
-  day Comtech earnings-call reaffirmation (Via Satellite, "expects
-  divestiture to Gilat to close this year"): the underlying $157.5M sale
-  of Comtech's Satellite and Space Communications segment to Gilat's
-  Wavestream unit was announced June 15 and never drafted by any prior
-  sweep. Comtech's own SEC 8-K exhibit (official_record via the fixed
-  sec.gov host, no registry entity needed) gave a clean primary lead;
-  dated on the actual June 15 announcement per the standing chase-it
-  convention. Worth remembering a routine same-day earnings-call
-  reaffirmation of an old deal's timeline can be the thread that surfaces
-  a real, never-published gap, not just a stale non-event itself.
-- 2026-10-15-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the
-  first attempt ("merged 4 new, 2 updated, 0 held"); confirmed via a
-  direct `jq` read of all four new items' `snr`/`category`/`impact`
-  fields (947 items, up from 943) and both updated items' grown
-  `sources`/`updates` arrays (Starlink/Ukraine: 23 sources, 6 updates;
-  SDA T1TL-A: 4 sources, 1 update). `bun run build` was not attempted,
-  per the 2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~7h14m gap, unfiltered full source list (2026-10-16)
 
 - 2026-10-16-A: An almost entirely off-topic 61-candidate queue (dozens of
@@ -4682,3 +4514,44 @@ a newer entry if a lesson changes.
   data files (items, held, state, source_ledger, sources, candidates, registry-candidates); held was
   untouched (no held entries). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~6h20m gap, unfiltered full source list (2026-11-15)
+
+- 2026-11-15-A: A 73-candidate queue was almost entirely Starship Flight 15 ship-catch rehash
+  (already published 2026-11-14) and the 100th Electron/iQPS launch (already published 2026-11-14,
+  confirmed by matching the Launch Library mission title "The Mountain God Rises" to the existing
+  item despite the queue calling it "iQPS Launch 10" vs. the item's "10th dedicated Electron mission
+  for iQPS" framing); a Falcon 9 NROL-136 Launch Library entry was still NET Nov. 21, not yet flown.
+  Bluesky's "satellite constellation" search leg surfaced an AFU-commander Rassvet quote that an
+  items.json grep confirmed was already folded into the 2026-11-03 Rassvet-4 item's latest update
+  verbatim. A Yahoo Finance "Simply Wall St." AI-written piece flatly claimed SpaceX had "signaled
+  plans to retire Falcon 9," but a direct fetch found zero named source or SpaceX statement behind
+  it (just unattributed analyst synthesis); left undrafted per the never-state-an-unattributable-claim
+  rule rather than treat an AI-generated finance-site summary as reporting.
+- 2026-11-15-B: All 3 HTML-only sources (Planet Labs Pulse, BlackSky News, EUSPA procurement) and 14
+  of the 17 signals-pass fetchable channels (dropping Marcia Smith's spacepolicyonline.com site leg
+  and Andrew Parsonson's europeanspaceflight.com site leg as duplicates of this run's own harvested
+  feeds of the same two domains, both 304-unmodified, extending 2026-11-14-H) returned nothing newer
+  than the window start; RussianSpaceWeb's own page rendered a "November 24, 2026" dateline on a
+  Progress MS-36 preview despite the site's own "last updated November 13" stamp, a future-dated
+  rendering artifact in the same family as 2026-11-14-B, not evidence of real content from the future.
+- 2026-11-15-C: The 8-query discovery pass (full matrix) surfaced six stories that all traced to
+  items already published in prior sweeps (CesiumAstro Series D, Northwood Series C, Revolv Space
+  Series A, the France/Airbus-Thales IRIS contract, OHB's Sentinel-3 award, China's 29th Guowang
+  batch) plus one genuine new development: Bloomberg's Nov. 12 and Nov. 14 reporting (read via
+  Investing.com's Reuters pickup and a Yahoo Finance republish carrying the original Bloomberg
+  byline, Bloomberg's own domain 403'd on direct fetch both times) that SpaceX-Tesla merger talks
+  have advanced from the Oct. 20 "special committees formed" stage to negotiating price and control,
+  with a deal possibly announced as early as December to coincide with Tesla's Dec. 3 annual meeting.
+  Treated this as an attach-only update to the standing `2026-10-20-spacex-tesla-merger-committees`
+  living-document item (same ongoing merger-talks story, same pattern as the Starlink/Ukraine and
+  Rassvet sagas) rather than a new item, even though the gap since that item's last update is well
+  past 7 days: the dedup rule's day windows are for distinguishing discrete events, not for capping
+  how long a single continuing negotiation can keep accreting updates.
+- 2026-11-15-D: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 1
+  updated, 0 held"), 1252 items unchanged (update-only sweep). Confirmed via a direct `jq` read of
+  the merger-committees item's grown `sources` (11, up from 8) and `updates` (5, up from 4) arrays
+  with `snr`/`impact` correctly unchanged at 4/major (an attach-only patch, no score-moving fields
+  touched), and a `jq empty` parse check on all six touched data files (items, held, state,
+  source_ledger, sources, candidates); registry-candidates was untouched (no crossfeed block on an
+  update). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
