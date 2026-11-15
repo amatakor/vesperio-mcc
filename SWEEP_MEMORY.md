@@ -4627,3 +4627,35 @@ a newer entry if a lesson changes.
   `corroboration_2plus`, constellation/notable) and the sweep log's `signals`/`discovery` blocks
   (15 channels checked, 12 discovery queries, mode "deep"). `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h41m gap, unfiltered full source list (2026-11-15, fourth)
+
+- 2026-11-15-L: ULA's Vulcan suffered the company's first outright launch failure since its 2006
+  founding on its Nov. 15 return-to-flight attempt, destroying all 40 Amazon Leo satellites aboard
+  about 10 minutes into flight (Centaur upper stage anomaly). Treated as an `update` to the
+  standing `2026-10-28-ula-vulcan-return-to-flight-nov13` item (same tracked launch event, now
+  resolved) rather than a new item, patching headline/explainer/impact from `notable` to `seismic`:
+  a flagship national-security launch vehicle's first-ever failure, grounding it again nine months
+  after its last anomaly and destroying a major customer's satellites, clears the same bar as "first
+  flight of a new orbital vehicle" (inverted) rather than a routine launch outcome. Led the patch on
+  Spaceflight Now's own direct-fetched article (trade) with Launch Library's independently-confirmed
+  "Launch Failure" status (aggregator/computed) as corroboration, plus SpacePolicyOnline (whitelist,
+  her own site) and CBS News (mainstream, direct fetch, carried Amazon's own on-record quote: "there
+  is risk with any launch... we believe they'll learn from this mission"); did not attest a
+  `flights_total` registry crossfeed fact since crossfeed blocks apply only to `newItems`, not
+  `updates`, per the draft schema.
+- 2026-11-15-M: Confirms 2026-11-14-H's signals-pass budget-rotation logic a second time: with
+  Marcia Smith's site and Andrew Parsonson's site each duplicating a domain the harvester already
+  fetched this run, dropping those two legs from the 17 fetchable channels left exactly 15 to fetch
+  within budget. Marco Langbroek's bluesky surfaced a Kosmos 2612/ICEYE-X36 maneuver detail that
+  read as fresh but an `items.json` grep of the open incident item's own `updates[]` confirmed it was
+  the identical fact an earlier same-day sweep had already attached; always diff a signals-pass find
+  against the target item's existing `updates[]` text, not just assume a new-sounding post is new.
+- 2026-11-15-N: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 2
+  updated, 0 held"), 1254 items unchanged (update-only sweep). Confirmed via a direct `jq` read of
+  the Vulcan item's patched `headline`/`impact` (seismic, up from notable) and grown `sources` (11,
+  up from 7) and `updates` (3, up from 2) arrays, and the Starlink/Ukraine item's grown `sources` (98,
+  up from 97) and `updates` (45, up from 44) arrays, plus a `jq empty` parse check on all six touched
+  data files (items, held, state, source_ledger, sources, candidates); registry-candidates was
+  untouched (no crossfeed block on either update). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
