@@ -4458,3 +4458,41 @@ a newer entry if a lesson changes.
   Meridian: SNR 1, informal base, commentary) and the sweep log's two unrelated persistence-bump
   `snr_movements` entries (Boost Mobile/EchoStar talks 2→3, STIF valve order 3→4). `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~43m gap, unfiltered full source list (2026-11-16, second)
+
+- 2026-11-16-F: A near-total-rehash 30-candidate queue (Starship Flight 15 ship-catch, the Vulcan
+  failure, the SpaceX/Tesla merger talks, the Starlink/Ukraine saga, and a stale 11-day-old Nov. 5
+  France/Airbus-Thales IRIS contract resurfacing via two new outlets with no new figure) yielded
+  nothing from the queue itself, but Marcia Smith's bluesky (the signals pass, posted minutes before
+  this run's `now`) surfaced a genuinely fresh fact on the open Vulcan item: the FAA is requiring ULA
+  to conduct a mishap investigation and activated two Debris Response Areas after debris fell outside
+  the closed hazard zones. Her post linked a `faa.gov/newsroom/statements/general-statements` URL that
+  403'd on direct fetch (standing .gov block); a WebSearch corroboration crawl found only a
+  self-contradicting synthesis (one line claiming the FAA said it had no jurisdiction since this was a
+  "government mission," which is wrong for a commercial Amazon Leo payload and reads like conflation
+  with an unrelated earlier NSSL mishap-authority question) and no direct mainstream confirmation yet;
+  trusted Marcia Smith's own post over the WebSearch synthesis per the standing never-trust-a-
+  self-contradicting-synthesis-over-a-direct-source rule, folded in via `attach`+`patch` at her
+  standing `whitelist`/`observer` class, no `bump` (item capped at SNR 3 by a standing same-metric
+  dispute that survives rescores).
+- 2026-11-16-G: An 8-query discovery pass (full matrix) surfaced one genuine miss from an earlier
+  sweep: Reflect Orbital's Nov. 10 $73.5 million raise (total funding now over $100M), reported by
+  SpaceNews, the company's own site, and PV Tech, confirmed independently via the company's own X post
+  through the syndication endpoint. Classed the company's own `reflectorbital.com` press release
+  `trade` rather than `first_party` up front (no registry org profile exists for Reflect Orbital, so
+  there is no registry-recorded website for the anti-spoof gate to match against), extending the
+  2026-11-15-I/2026-10-22-L no-registry-host workaround. Drafted dated on the actual Nov. 10 event per
+  the standing predates-window chase-it exception rather than as a stale miss.
+- 2026-11-16-H: `bun scripts/finalize-sweep.ts` rejected the first draft attempt for listing
+  `europeanspaceflight.substack.com/feed` (the channel's `rss` value) in `signalsPass.checked`; the
+  gate matches against the channel's `url` field from `signals-context` (`europeanspaceflight.substack.com`,
+  no `/feed`), not the RSS endpoint actually fetched. Swapping to the bare `url` cleared it on the second
+  attempt ("merged 1 new, 1 updated, 0 held"), 1258 items up from 1257. Confirmed via a direct `jq` read
+  of the new Reflect Orbital item's `snr`/`snr_trace`/`category`/`impact` fields (SNR 4, trade base plus
+  `corroboration_2plus`, financial/notable) and the Vulcan item's grown `sources` (12, up from 11) and
+  `updates` (4, up from 3) arrays with `snr` correctly unchanged at 3 (dispute cap survives rescore), and
+  a direct `jq empty` parse check on all six touched data files (items, held, state, source_ledger,
+  sources, candidates); registry-candidates was untouched (no registry entity for Reflect Orbital, no
+  crossfeed block on the Vulcan update). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
