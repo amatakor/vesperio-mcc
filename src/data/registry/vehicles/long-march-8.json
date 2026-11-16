@@ -110,38 +110,14 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 6,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/462/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/462/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 7,
+    "source": "https://en.wikipedia.org/wiki/Long_March_8",
+    "as_of": "2026-11-16"
   },
   "flights_successful": {
-    "value": 6,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/462/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/462/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 7,
+    "source": "https://en.wikipedia.org/wiki/Long_March_8",
+    "as_of": "2026-11-16"
   },
   "last_flight_date": {
     "value": "2026-06-05",
@@ -161,9 +137,9 @@
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": null,
-    "source": null,
-    "as_of": null
+    "value": "2026-11-20",
+    "source": "https://en.wikipedia.org/wiki/Long_March_8",
+    "as_of": "2026-11-16"
   },
   "status": {
     "value": "active",
@@ -187,7 +163,7 @@
     "source": null,
     "as_of": null
   },
-  "notes": "Figures are for the base Long March 8; the 8A variant is tracked separately by Launch Library. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/cz-8.htm) returned 4 base-variant launches with most recent 2026-04-07, fewer than the on-file canonical 6, so it looks like a truncated read rather than a genuine downward revision; not used to change any field. Separately, items.json has a 2026-07-05 item (SpaceSail's 15th Qianfan group) explicitly on a Long March-8A, which per this profile's own notes belongs to the 8A variant profile, not this one; not applied here. flights_total/flights_successful/last_flight_date left unchanged.",
+  "notes": "Figures are for the base Long March 8; the 8A variant is tracked separately by Launch Library. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/cz-8.htm) returned 4 base-variant launches with most recent 2026-04-07, fewer than the on-file canonical 6, so it looks like a truncated read rather than a genuine downward revision; not used to change any field. Separately, items.json has a 2026-07-05 item (SpaceSail's 15th Qianfan group) explicitly on a Long March-8A, which per this profile's own notes belongs to the 8A variant profile, not this one; not applied here. flights_total/flights_successful/last_flight_date left unchanged. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia's base Long March 8 (CZ-8, excluding 8A) launch table instead, a full read this time: flights_total 6->7, flights_successful 6->7, both citing Wikipedia; last_flight_date unchanged (2026-06-05, matches Wikipedia's most recent entry exactly, so the earlier on-file count of 6 looks to have been an undercount, not a new flight). next_flight_date filled from the same table: a planned Wenchang Commercial LC-1 mission dated 20 November 2026, the only base-CZ-8 entry in its table with day-level precision.",
   "payload_gto_kg": {
     "value": 2800,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",

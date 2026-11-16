@@ -113,21 +113,9 @@
     "as_of": "2026-10-22"
   },
   "next_flight_date": {
-    "value": "2026-10-31",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=H3&limit=10",
-    "as_of": "2026-08-13",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=H3&limit=10",
-        "reason": "Launch Library upcoming-launches endpoint, weekly maintenance refresh 2026-08-13"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "active",
@@ -163,7 +151,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded; the aggregate carried here follows Wikipedia's and JAXA's own sequential family-wide numbering instead. Weekly maintenance 2026-08-13: landed crossfeed candidate 2026-08-11-jaxa-h3-qzs7-michibiki-launch:h3.flights_total (flag_refresh) from JAXA's own first-party press release, which states this launch was \"H3 Launch Vehicle flight No.9\" and confirms QZS-7 separation and orbit injection succeeded; flights_total 8->9, flights_successful 6->7, last_flight_date 2026-06-12->2026-08-11, all re-sourced to the JAXA release. next_flight_date (2026-08-06) was already past due and superseded by this flight; refreshed to 2026-10-31 (MMX, H3-24 configuration) from Launch Library's upcoming-launches endpoint, the nearest dated H3 flight it lists (several others carry only year precision). Weekly maintenance 2026-10-22: landed crossfeed candidates 2026-10-19-jaxa-mmx-h3-launch:h3.flights_total and :h3.flights_successful (flag_refresh); re-sourced from the queue's bsky.app profile link to JAXA's own first-party post-launch press release, which states the MMX launch was \"H3 Launch Vehicle flight No.10\" and confirms the flight \"flew as planned\" with successful MMX separation; flights_total 9->10, flights_successful 7->8, last_flight_date 2026-08-11->2026-10-20.",
+  "notes": "First flight date is the H3-22 configuration's maiden flight, the family's first. Flight totals are split across H3-22/24/30 configurations in Launch Library, so no aggregate is recorded; the aggregate carried here follows Wikipedia's and JAXA's own sequential family-wide numbering instead. Weekly maintenance 2026-08-13: landed crossfeed candidate 2026-08-11-jaxa-h3-qzs7-michibiki-launch:h3.flights_total (flag_refresh) from JAXA's own first-party press release, which states this launch was \"H3 Launch Vehicle flight No.9\" and confirms QZS-7 separation and orbit injection succeeded; flights_total 8->9, flights_successful 6->7, last_flight_date 2026-06-12->2026-08-11, all re-sourced to the JAXA release. next_flight_date (2026-08-06) was already past due and superseded by this flight; refreshed to 2026-10-31 (MMX, H3-24 configuration) from Launch Library's upcoming-launches endpoint, the nearest dated H3 flight it lists (several others carry only year precision). Weekly maintenance 2026-10-22: landed crossfeed candidates 2026-10-19-jaxa-mmx-h3-launch:h3.flights_total and :h3.flights_successful (flag_refresh); re-sourced from the queue's bsky.app profile link to JAXA's own first-party post-launch press release, which states the MMX launch was \"H3 Launch Vehicle flight No.10\" and confirms the flight \"flew as planned\" with successful MMX separation; flights_total 9->10, flights_successful 7->8, last_flight_date 2026-08-11->2026-10-20. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes), so cross-checked via Wikipedia's H3 launch table (https://en.wikipedia.org/wiki/H3_(rocket)) instead; it independently confirms flights_total/flights_successful unchanged at 10/8, with its listed most-recent date (19 October 2026) a one-day JST/UTC artifact against the JAXA first-party source already on file, not a genuine conflict, so last_flight_date untouched. next_flight_date (2026-10-31) had passed unflown as scheduled; nulled, since Wikipedia states only that the next launches begin H1 2027 with no day-level date.",
   "payload_gto_kg": {
     "value": 6500,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",

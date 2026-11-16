@@ -173,21 +173,9 @@
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-09-30",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-07-09",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "active",
@@ -223,7 +211,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule; Gunter's Space Page gslv-3.htm returned 404). Wikipedia cross-check independently confirms 9 total launches, 9 successful (100% record), last flight 2025-12-24, active status, matching the on-file canonical figures exactly. No field changes; next_flight_date (2026-09-30, LL as_of 2026-07-09) not independently re-verified this run.",
+  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule; Gunter's Space Page gslv-3.htm returned 404). Wikipedia cross-check independently confirms 9 total launches, 9 successful (100% record), last flight 2025-12-24, active status, matching the on-file canonical figures exactly. No field changes; next_flight_date (2026-09-30, LL as_of 2026-07-09) not independently re-verified this run. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia instead: flights_total/flights_successful/last_flight_date confirmed unchanged at 9/9/2025-12-24, no field edit needed. next_flight_date (2026-09-30) had long passed unflown; nulled, since Wikipedia states no specific date for any future LVM3 mission.",
   "payload_gto_kg": {
     "value": 5000,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",

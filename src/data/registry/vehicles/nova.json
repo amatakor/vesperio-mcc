@@ -142,28 +142,16 @@
     "as_of": null
   },
   "status": {
-    "value": "active",
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/533/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/533/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": "in development",
+    "source": "https://en.wikipedia.org/wiki/Stoke_Space_Nova",
+    "as_of": "2026-11-16"
   },
   "price_per_launch_usd": {
     "value": null,
     "source": null,
     "as_of": null
   },
-  "notes": "Not yet flown per Launch Library (0 launches recorded). Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Checked Stoke Space's own Nova product page, which states no launch date or timeline; no update possible. All fields left unchanged.",
+  "notes": "Not yet flown per Launch Library (0 launches recorded). Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Checked Stoke Space's own Nova product page, which states no launch date or timeline; no update possible. All fields left unchanged. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia instead: still not yet flown (flights_total/flights_successful 0/0 unchanged), Pathfinder variant's first flight targeted for 2027 (no day-level date, per a September 2026 Stoke Space announcement), so next_flight_date stays null. status updated active->'in development' per Wikipedia's explicit current-status wording for a vehicle that has not yet flown; the prior 'active' value traced to Launch Library's program-level status field, a different sense of the word than this site's pre-flight convention used elsewhere in the registry (e.g. Neutron).",
   "payload_gto_kg": {
     "value": 2500,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=300",

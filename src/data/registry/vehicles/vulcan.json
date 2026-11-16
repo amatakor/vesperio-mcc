@@ -86,9 +86,21 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 4,
-    "source": "https://en.wikipedia.org/wiki/Vulcan_Centaur",
-    "as_of": "2026-07-05"
+    "value": 5,
+    "source": "https://satnews.com/2026/11/15/ula-vulcan-centaur-suffers-anomaly-during-return-to-flight-losing-40-amazon-leo-satellites/",
+    "as_of": "2026-11-16",
+    "snr": 3,
+    "snr_trace": {
+      "base": {
+        "tier": 3,
+        "source": "https://satnews.com/2026/11/15/ula-vulcan-centaur-suffers-anomaly-during-return-to-flight-losing-40-amazon-leo-satellites/",
+        "reason": "single reputable trade press source, states Vulcan's 2026-11-15 Amazon Leo 1 mission was its fifth flight (four prior missions before this one) (weekly maintenance 2026-11-16)"
+      },
+      "modifiers": [],
+      "final": 3,
+      "scorer_version": 1
+    },
+    "tier": "provisional"
   },
   "flights_successful": {
     "value": 4,
@@ -96,48 +108,26 @@
     "as_of": "2026-07-05"
   },
   "last_flight_date": {
-    "value": "2026-02-12",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&offset=100&mode=normal",
-    "as_of": "2026-07-05",
-    "snr": 4,
+    "value": "2026-11-15",
+    "source": "https://satnews.com/2026/11/15/ula-vulcan-centaur-suffers-anomaly-during-return-to-flight-losing-40-amazon-leo-satellites/",
+    "as_of": "2026-11-16",
+    "snr": 3,
     "snr_trace": {
       "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&offset=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
+        "tier": 3,
+        "source": "https://satnews.com/2026/11/15/ula-vulcan-centaur-suffers-anomaly-during-return-to-flight-losing-40-amazon-leo-satellites/",
+        "reason": "single reputable trade press source, states Vulcan's return-to-flight Amazon Leo 1 mission launched 2026-11-15 and suffered an anomaly 10 minutes into flight, failing to deliver the payload to orbit (weekly maintenance 2026-11-16)"
       },
       "modifiers": [],
-      "final": 4,
+      "final": 3,
       "scorer_version": 1
     },
-    "tier": "canonical"
+    "tier": "provisional"
   },
   "next_flight_date": {
-    "value": "2026-12-31",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-10-12",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical",
-    "disputed": {
-      "competing": [
-        {
-          "value": "2026-11-13",
-          "source": "https://spaceflightnow.com/2026/10/28/untied-launch-alliance-announces-mid-november-return-to-flight-for-vulcan-rocket/",
-          "as_of": "2026-10-29",
-          "snr": 4
-        }
-      ]
-    }
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "active",
@@ -154,24 +144,14 @@
       "final": 4,
       "scorer_version": 1
     },
-    "tier": "canonical",
-    "disputed": {
-      "competing": [
-        {
-          "value": "grounded",
-          "source": "https://spacenews.com/ula-deals-with-financial-challenges-caused-by-vulcan-grounding/",
-          "as_of": "2026-08-20",
-          "snr": 4
-        }
-      ]
-    }
+    "tier": "canonical"
   },
   "price_per_launch_usd": {
     "value": 110000000,
     "source": "https://en.wikipedia.org/wiki/Vulcan_Centaur",
     "as_of": "2026-07-05"
   },
-  "notes": "First flight date is the VC2S configuration's maiden flight, the family's first. Flight totals are split across VC2S/VC4S/VC4L/VC6L configurations in Launch Library, so no aggregate is recorded. LEO capacity varies by configuration. Weekly maintenance 2026-08-10: Launch Library's canonical status (active) was not overwritten, but SpaceNews reporting (Lockheed Martin's Q2 2026 earnings release, and a separate Northrop Grumman GEM 63XL charges item) states Vulcan has not flown since the February 2026 USSF-87 solid rocket booster nozzle anomaly and calls the vehicle grounded; recorded as a disputed.competing claim on status pending an LL2 recheck (rate-limited this run) or Florian's call. Weekly maintenance 2026-08-20: LL2 rate-limited again (429 on first call, stopped per budget rule), so the canonical 'active' value was not re-verified or overwritten. The competing 'grounded' claim now has wide independent corroboration beyond the original SpaceNews piece (WFTV, WDBO, Yahoo, DefenseScoop, Space.com all report Vulcan has not flown since February 2026 pending BE-4 engine valve modifications, with ULA targeting return to flight by end of 2026); disputed.competing snr bumped 3->4 (wide reporting) and as_of refreshed. Still not overwriting the primary value: this is now a same-tier canonical-vs-canonical conflict for Florian to resolve. Weekly maintenance 2026-10-29: crossfeed queue candidate from the 2026-10-28 ULA return-to-flight item (Spaceflight Now, item snr 4) states ULA announced Vulcan's next launch for 2026-11-13, an equal-SNR same-metric conflict with the stored Launch Library figure (2026-12-31, snr 4, as_of 2026-10-12); per the queue's both_disputed_queue action, the stored value was not overwritten and 2026-11-13 was recorded as a disputed.competing claim under next_flight_date for Florian. Note this also bears on the status dispute above: a stated return-to-flight date corroborates the 'grounded' competing claim and suggests the grounding is ending, but that read and any status change are Florian's call, not an automatic resolution.",
+  "notes": "First flight date is the VC2S configuration's maiden flight, the family's first. Flight totals are split across VC2S/VC4S/VC4L/VC6L configurations in Launch Library, so no aggregate is recorded. LEO capacity varies by configuration. Weekly maintenance 2026-08-10: Launch Library's canonical status (active) was not overwritten, but SpaceNews reporting (Lockheed Martin's Q2 2026 earnings release, and a separate Northrop Grumman GEM 63XL charges item) states Vulcan has not flown since the February 2026 USSF-87 solid rocket booster nozzle anomaly and calls the vehicle grounded; recorded as a disputed.competing claim on status pending an LL2 recheck (rate-limited this run) or Florian's call. Weekly maintenance 2026-08-20: LL2 rate-limited again (429 on first call, stopped per budget rule), so the canonical 'active' value was not re-verified or overwritten. The competing 'grounded' claim now has wide independent corroboration beyond the original SpaceNews piece (WFTV, WDBO, Yahoo, DefenseScoop, Space.com all report Vulcan has not flown since February 2026 pending BE-4 engine valve modifications, with ULA targeting return to flight by end of 2026); disputed.competing snr bumped 3->4 (wide reporting) and as_of refreshed. Still not overwriting the primary value: this is now a same-tier canonical-vs-canonical conflict for Florian to resolve. Weekly maintenance 2026-10-29: crossfeed queue candidate from the 2026-10-28 ULA return-to-flight item (Spaceflight Now, item snr 4) states ULA announced Vulcan's next launch for 2026-11-13, an equal-SNR same-metric conflict with the stored Launch Library figure (2026-12-31, snr 4, as_of 2026-10-12); per the queue's both_disputed_queue action, the stored value was not overwritten and 2026-11-13 was recorded as a disputed.competing claim under next_flight_date for Florian. Note this also bears on the status dispute above: a stated return-to-flight date corroborates the 'grounded' competing claim and suggests the grounding is ending, but that read and any status change are Florian's call, not an automatic resolution. Weekly maintenance 2026-11-16: LL2 globally rate-limited this run (429 with ~50min Retry-After on every endpoint tried, stopped per budget rule). Vulcan's return-to-flight mission (Amazon Leo 1, 40 Amazon satellites) launched 2026-11-15 and suffered a Centaur upper-stage anomaly roughly 10 minutes into flight, failing to deliver the payload to orbit; per Satnews this was the vehicle's fifth flight. flights_total updated to 5 (press-sourced, provisional, since LL2 could not be reached to confirm); flights_successful left at 4 (this flight failed, so the prior count still holds) and last_flight_date updated to 2026-11-15. The flight having actually occurred resolves both outstanding disputes by event: the grounded/active status dispute is moot (the vehicle flew, so the disputed block is removed; canonical LL2 'active' value is left untouched and unverified this run), and the next_flight_date dispute (stored 2026-12-31 vs disputed 2026-11-13) is also moot since that flight already happened on 2026-11-15; next_flight_date nulled pending a confirmed post-failure return-to-flight date, none found this run.",
   "diameter_m": {
     "value": 5.4,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=500",

@@ -125,21 +125,9 @@
     "as_of": "2026-10-08"
   },
   "next_flight_date": {
-    "value": "2027-12-31",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=Nuri&limit=10",
-    "as_of": "2026-10-08",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?search=Nuri&limit=10",
-        "reason": "Launch Library 2 record for \"Nuri | NEONSAT-7 to 11\", status To Be Determined, year-only precision (NET placeholder 2027-12-31 means sometime in 2027, not a firm date); weekly maintenance refresh, prior NET (2026-09-30) was superseded by the fifth flight that already occurred on 2026-10-07"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "operational",
@@ -163,7 +151,7 @@
     },
     "tier": "provisional"
   },
-  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/kslv-2.htm) independently confirms 4 total launches, 3 successful, last flight 2025-11-26, matching the on-file figures; it states a fifth mission is planned 'sometime in 2026' without a firm date, which does not contradict the on-file next_flight_date of 2026-09-30 (LL-sourced) but also does not confirm it precisely. No field changes. Weekly maintenance 2026-10-08: landed crossfeed queue entries for the 2026-10-07 fifth flight (NEONSAT 2-6 plus 10 CubeSats) from Korea Times/Korea JoongAng Daily, cross-confirmed by Launch Library 2 (same 5 total / 4 successful figures); flights_total 4->5, flights_successful 3->4, last_flight_date refreshed. next_flight_date refreshed from LL2's upcoming-launches search: next listed Nuri mission is NEONSAT-7 to 11, year-only TBD precision for 2027.",
+  "notes": "Added in the audit Phase 3 backfill (2026-07-08), verify-then-add. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/kslv-2.htm) independently confirms 4 total launches, 3 successful, last flight 2025-11-26, matching the on-file figures; it states a fifth mission is planned 'sometime in 2026' without a firm date, which does not contradict the on-file next_flight_date of 2026-09-30 (LL-sourced) but also does not confirm it precisely. No field changes. Weekly maintenance 2026-10-08: landed crossfeed queue entries for the 2026-10-07 fifth flight (NEONSAT 2-6 plus 10 CubeSats) from Korea Times/Korea JoongAng Daily, cross-confirmed by Launch Library 2 (same 5 total / 4 successful figures); flights_total 4->5, flights_successful 3->4, last_flight_date refreshed. next_flight_date refreshed from LL2's upcoming-launches search: next listed Nuri mission is NEONSAT-7 to 11, year-only TBD precision for 2027. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia instead: flights_total/flights_successful/last_flight_date confirmed unchanged at 5/4/2026-10-07, no edit needed. next_flight_date corrected from 2026-10-08's day-level '2027-12-31' (itself a year-only NET mislabeled with a specific day) to null, since Wikipedia also states only '2027' with no specific date for the sixth Nuri mission (NEXTSat 3 and others).",
   "height_m": {
     "value": 47.2,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=300",

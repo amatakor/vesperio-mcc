@@ -122,38 +122,14 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 9,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/128/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/128/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 11,
+    "source": "https://en.wikipedia.org/wiki/Long_March_5",
+    "as_of": "2026-11-16"
   },
   "flights_successful": {
-    "value": 9,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/128/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/128/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 10,
+    "source": "https://en.wikipedia.org/wiki/Long_March_5",
+    "as_of": "2026-11-16"
   },
   "last_flight_date": {
     "value": "2026-06-11",
@@ -199,7 +175,7 @@
     "source": "https://en.wikipedia.org/wiki/Long_March_5",
     "as_of": "2026-07-12"
   },
-  "notes": "Figures are for the base Long March 5; 5B and YZ-2 variants are tracked separately by Launch Library. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/cz-5.htm) returned 10 total / 9 successful / 1 failure with most recent launch 2025-12-20, which conflicts with the on-file canonical figures (9 total, 9 successful, last flight 2026-06-11 per LL) on both count and date, and the vehicle's own events list already documents a 2017-07-02 failure that the on-file flights_successful=flights_total figure does not seem to reflect. Given the fetch tool's demonstrated unreliability on long tables elsewhere in this run (see long-march-2d), this was not used to overwrite the canonical LL figures, but the flights_successful=flights_total=9 inconsistency against the vehicle's own documented 2017 failure is flagged for Florian to check against a fresh LL pull. Weekly maintenance 2026-09-07: next_flight_date nulled, the on-file 2026-08-31 NET has passed unflown and Launch Library's remaining upcoming Long March 5 family entries (Xuntian Telescope, Chang'e 7, Chang'e 8) carry only year-level placeholder dates (2027-2029), none firm.",
+  "notes": "Figures are for the base Long March 5; 5B and YZ-2 variants are tracked separately by Launch Library. Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Gunter's Space Page cross-check (space.skyrocket.de/doc_lau/cz-5.htm) returned 10 total / 9 successful / 1 failure with most recent launch 2025-12-20, which conflicts with the on-file canonical figures (9 total, 9 successful, last flight 2026-06-11 per LL) on both count and date, and the vehicle's own events list already documents a 2017-07-02 failure that the on-file flights_successful=flights_total figure does not seem to reflect. Given the fetch tool's demonstrated unreliability on long tables elsewhere in this run (see long-march-2d), this was not used to overwrite the canonical LL figures, but the flights_successful=flights_total=9 inconsistency against the vehicle's own documented 2017 failure is flagged for Florian to check against a fresh LL pull. Weekly maintenance 2026-09-07: next_flight_date nulled, the on-file 2026-08-31 NET has passed unflown and Launch Library's remaining upcoming Long March 5 family entries (Xuntian Telescope, Chang'e 7, Chang'e 8) carry only year-level placeholder dates (2027-2029), none firm. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia's base Long March 5 (CZ-5, excluding 5B) launch table instead: flights_total 9->11, flights_successful 9->10, both citing Wikipedia; this resolves the flights_successful=flights_total inconsistency flagged 2026-07-13, since the base-CZ-5-only count now correctly reflects the documented 2017-07-02 failure as the sole loss in 11 flights. last_flight_date unchanged (2026-06-11, Y11/TJS-25), matching Wikipedia's most recent entry exactly; left sourced to Launch Library since the value did not change.",
   "payload_gto_kg": {
     "value": 14000,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",

@@ -122,15 +122,15 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 99,
+    "value": 100,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/26/",
-    "as_of": "2026-11-05",
+    "as_of": "2026-11-16",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/26/",
-        "reason": "established aggregator, single reference (launcher config record's total_launch_count field now reads 99, weekly registry maintenance 2026-11-05); independently matches Rocket Lab's own 2026-11-02 mission-success release (\"99th flight of Electron\"), the crossfeed candidate proposed for this field (2026-11-02-rocket-lab-iqps-10th-launch), landed against the stronger matching aggregator source rather than the press-wire reprint"
+        "reason": "established aggregator, single reference (launcher config record's total_launch_count field now reads 100, weekly registry maintenance 2026-11-16); independently matches the Launch Library launch record for \"The Mountain God Rises\" (iQPS Launch 10), the crossfeed candidate proposed for this field (2026-11-14-rocket-lab-electron-100th-launch:electron.flights_total), which itself stated the 100th cumulative launch"
       },
       "modifiers": [],
       "final": 4,
@@ -139,15 +139,15 @@
     "tier": "canonical"
   },
   "flights_successful": {
-    "value": 95,
+    "value": 96,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/26/",
-    "as_of": "2026-11-05",
+    "as_of": "2026-11-16",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/26/",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-11-05; successful_launches 95 direct from the launcher config record)"
+        "reason": "established aggregator, single reference (weekly registry maintenance 2026-11-16; successful_launches 96 direct from the launcher config record, consistent with the 100th launch, \"The Mountain God Rises,\" succeeding per Launch Library)"
       },
       "modifiers": [],
       "final": 4,
@@ -156,15 +156,15 @@
     "tier": "canonical"
   },
   "last_flight_date": {
-    "value": "2026-09-19",
+    "value": "2026-11-14",
     "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Electron&limit=5&mode=normal",
-    "as_of": "2026-09-21",
+    "as_of": "2026-11-16",
     "snr": 4,
     "snr_trace": {
       "base": {
         "tier": 4,
         "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?search=Electron&limit=5&mode=normal",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-09-21; \"Owl By The Dozen (StriX Launch 12)\", net 2026-09-19)"
+        "reason": "established aggregator, single reference (weekly registry maintenance 2026-11-16; \"The Mountain God Rises (iQPS Launch 10)\", net 2026-11-14, Launch Successful, the 100th cumulative Electron flight)"
       },
       "modifiers": [],
       "final": 4,
@@ -173,21 +173,9 @@
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-09-26",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=Electron&limit=5&mode=normal",
-    "as_of": "2026-09-21",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/upcoming/?search=Electron&limit=5&mode=normal",
-        "reason": "established aggregator, single reference (weekly registry maintenance 2026-09-21; \"Owlright, Owlright, Owlright (StriX Launch 13)\", Go for Launch, NET 2026-09-26, nearest listed Electron entry after today; prior value 2026-09-30 (LOXSAT 1) has since been superseded in the upcoming manifest ordering)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "active",
@@ -223,7 +211,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Launch Library records Electron as not reusable; Rocket Lab booster recovery efforts are not reflected in that flag. Weekly maintenance 2026-09-21: flights_total refreshed to 96 via the Launch Library launcher config's total_launch_count field, an aggregator upgrade over the prior provisional press-wire figure and consistent with a same-day crossfeed flag_refresh candidate sourced from Rocket Lab's own mission-success release (\"96th Electron flight\"); flights_successful, last_flight_date, and next_flight_date refreshed from the same Launch Library pass. Weekly maintenance 2026-11-05: crossfeed candidate 2026-11-02-rocket-lab-iqps-10th-launch (flights_total=99, StockTitan/GlobeNewswire reprint of Rocket Lab's own release) landed; flights_total/flights_successful refreshed to 99/95 citing the Launch Library launcher config record, which independently confirms the same figure at an equal or stronger aggregator tier.",
+  "notes": "Launch Library records Electron as not reusable; Rocket Lab booster recovery efforts are not reflected in that flag. Weekly maintenance 2026-09-21: flights_total refreshed to 96 via the Launch Library launcher config's total_launch_count field, an aggregator upgrade over the prior provisional press-wire figure and consistent with a same-day crossfeed flag_refresh candidate sourced from Rocket Lab's own mission-success release (\"96th Electron flight\"); flights_successful, last_flight_date, and next_flight_date refreshed from the same Launch Library pass. Weekly maintenance 2026-11-05: crossfeed candidate 2026-11-02-rocket-lab-iqps-10th-launch (flights_total=99, StockTitan/GlobeNewswire reprint of Rocket Lab's own release) landed; flights_total/flights_successful refreshed to 99/95 citing the Launch Library launcher config record, which independently confirms the same figure at an equal or stronger aggregator tier. Weekly maintenance 2026-11-16: crossfeed candidate 2026-11-14-rocket-lab-electron-100th-launch:electron.flights_total (value 100) landed; flights_total/flights_successful refreshed to 100/96 and last_flight_date to 2026-11-14 citing the Launch Library launcher config record and previous-launches endpoint, both confirming \"The Mountain God Rises (iQPS Launch 10)\" as the 100th cumulative Electron flight, successful. next_flight_date nulled: the prior value (2026-09-26) has since flown; the upcoming manifest now lists only month/quarter-level NETs (StriX Launch 14, BlackSky Gen-3 6/7, iQPS Launch 11, LOXSAT 1), no source states a specific next-flight date this run.",
   "height_m": {
     "value": 18,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=100",

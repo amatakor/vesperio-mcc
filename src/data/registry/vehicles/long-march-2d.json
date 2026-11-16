@@ -110,72 +110,24 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 100,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/17/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/17/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 107,
+    "source": "https://en.wikipedia.org/wiki/Long_March_2D",
+    "as_of": "2026-11-16"
   },
   "flights_successful": {
-    "value": 99,
-    "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/17/",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/17/",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": 106,
+    "source": "https://en.wikipedia.org/wiki/Long_March_2D",
+    "as_of": "2026-11-16"
   },
   "last_flight_date": {
-    "value": "2026-05-30",
-    "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-    "as_of": "2026-07-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.3.0/launches/previous/?limit=100&mode=normal",
-        "reason": "established aggregator, single reference (migration backfill 2026-07-06)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": "2026-11-11",
+    "source": "https://en.wikipedia.org/wiki/Long_March_2D",
+    "as_of": "2026-11-16"
   },
   "next_flight_date": {
-    "value": "2026-09-19",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-09-14",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical"
+    "value": "2026-11-18",
+    "source": "https://en.wikipedia.org/wiki/Long_March_2D",
+    "as_of": "2026-11-16"
   },
   "status": {
     "value": "active",
@@ -211,7 +163,7 @@
     },
     "tier": "canonical"
   },
-  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Attempted a Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-2d.htm); the fetched summary returned only 3 early launches ending 1996, clearly an incomplete read of a very long flight table (this vehicle has flown 100 times per the on-file canonical figure), so it was discarded as unreliable rather than used to update flights_total/flights_successful/last_flight_date. All three fields left unchanged, not independently re-verified this run.",
+  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule). Attempted a Gunter's Space Page cross-check (space.skyrocket.de/doc_lau_det/cz-2d.htm); the fetched summary returned only 3 early launches ending 1996, clearly an incomplete read of a very long flight table (this vehicle has flown 100 times per the on-file canonical figure), so it was discarded as unreliable rather than used to update flights_total/flights_successful/last_flight_date. All three fields left unchanged, not independently re-verified this run. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Cross-checked via Wikipedia's Long March 2D launch table instead (established reference, full table this time, not the earlier truncated read): flights_total 100->107, flights_successful 99->106, last_flight_date 2026-05-30->2026-11-11 (CAS Pathfinder-1), all citing the fresher Wikipedia count; next_flight_date (previously 2026-09-19, long past and unflown as scheduled) refreshed to 2026-11-18, a specific day-level date the article states for a planned Taiyuan LA-9 LEO mission.",
   "height_m": {
     "value": 38.3,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",

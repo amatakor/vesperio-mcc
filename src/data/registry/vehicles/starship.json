@@ -98,21 +98,21 @@
     "tier": "canonical"
   },
   "flights_total": {
-    "value": 14,
-    "source": "https://payloadspace.com/starship-reaches-orbit-on-14th-test-flight/",
-    "as_of": "2026-10-05",
-    "snr": 3,
+    "value": 15,
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+    "as_of": "2026-11-16",
+    "snr": 4,
     "snr_trace": {
       "base": {
-        "tier": 3,
-        "source": "https://payloadspace.com/starship-reaches-orbit-on-14th-test-flight/",
-        "reason": "trade press, monotonic counter refresh (SNR_SPEC 6.6): item states 'Flight 14 was the first operational mission for Starship', flown 2026-09-28; item itself scored snr 4 in items.json (weekly registry maintenance 2026-10-05)"
+        "tier": 4,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+        "reason": "established aggregator, single reference: Launch Library launch record for Flight 15 (ship caught at the tower, booster diverted to Gulf of Mexico splashdown, 2026-11-13), monotonic counter refresh (SNR_SPEC 6.6), landing crossfeed flag_refresh candidate 2026-11-13-spacex-starship-flight-15-booster-splashdown:starship.flights_total (weekly registry maintenance 2026-11-16); upgrades the prior provisional trade-press figure to canonical aggregator tier"
       },
       "modifiers": [],
-      "final": 3,
+      "final": 4,
       "scorer_version": 1
     },
-    "tier": "provisional"
+    "tier": "canonical"
   },
   "flights_successful": {
     "value": 7,
@@ -120,21 +120,21 @@
     "as_of": "2026-07-12"
   },
   "last_flight_date": {
-    "value": "2026-09-28",
-    "source": "https://payloadspace.com/starship-reaches-orbit-on-14th-test-flight/",
-    "as_of": "2026-10-05",
-    "snr": 3,
+    "value": "2026-11-13",
+    "source": "https://ll.thespacedevs.com/2.2.0/launch/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+    "as_of": "2026-11-16",
+    "snr": 4,
     "snr_trace": {
       "base": {
-        "tier": 3,
-        "source": "https://payloadspace.com/starship-reaches-orbit-on-14th-test-flight/",
-        "reason": "trade press, single reference; Flight 14 reached orbit and deployed Starlink V3 on 2026-09-28 (weekly registry maintenance 2026-10-05)"
+        "tier": 4,
+        "source": "https://ll.thespacedevs.com/2.2.0/launch/0f867f0c-5422-4d44-93b8-d7faaae7019b/",
+        "reason": "established aggregator, single reference; Launch Library launch record shows Flight 15 launched 2026-11-13 (weekly registry maintenance 2026-11-16)"
       },
       "modifiers": [],
-      "final": 3,
+      "final": 4,
       "scorer_version": 1
     },
-    "tier": "provisional"
+    "tier": "canonical"
   },
   "next_flight_date": {
     "value": null,
@@ -163,7 +163,7 @@
     "source": "https://en.wikipedia.org/wiki/SpaceX_Starship",
     "as_of": "2026-07-12"
   },
-  "notes": "First flight date is the first integrated flight (V1); prototype hops excluded. Flight totals are split across V1/V2/V3 configurations in Launch Library, so no aggregate is recorded. Reusable per V1-V3 configs. Weekly maintenance 2026-08-10: flights_total bumped 12->13 and last_flight_date to 2026-07-24 per a SpaceNews item stating Flight 13 flew (monotonic counter refresh, SNR_SPEC 6.6); flights_successful left at 7 (Wikipedia, 2026-07-12) since no source states whether Flight 13 counts as a success (booster suffered a hard splashdown, ship reentry/splashdown intact) -- Florian should reconcile the successful count against an authoritative source. next_flight_date nulled: the prior value (2026-07-16) was actually the Flight 13 T-0 abort date, not a future NET, and no confirmed Flight 14 date was found this run. Weekly maintenance 2026-10-05: flights_total bumped 13->14 and last_flight_date to 2026-09-28, landing a crossfeed flag_refresh candidate from Payload's Flight 14 report (reached orbit, deployed Starlink V3, first operational mission). flights_successful left at 7 pending Florian's reconciliation of Flights 8-14's individual outcomes against an authoritative source; no source fetched this run states that count. next_flight_date still null: no confirmed Flight 15 date found this run.",
+  "notes": "First flight date is the first integrated flight (V1); prototype hops excluded. Flight totals are split across V1/V2/V3 configurations in Launch Library, so no aggregate is recorded. Reusable per V1-V3 configs. Weekly maintenance 2026-08-10: flights_total bumped 12->13 and last_flight_date to 2026-07-24 per a SpaceNews item stating Flight 13 flew (monotonic counter refresh, SNR_SPEC 6.6); flights_successful left at 7 (Wikipedia, 2026-07-12) since no source states whether Flight 13 counts as a success (booster suffered a hard splashdown, ship reentry/splashdown intact) -- Florian should reconcile the successful count against an authoritative source. next_flight_date nulled: the prior value (2026-07-16) was actually the Flight 13 T-0 abort date, not a future NET, and no confirmed Flight 14 date was found this run. Weekly maintenance 2026-10-05: flights_total bumped 13->14 and last_flight_date to 2026-09-28, landing a crossfeed flag_refresh candidate from Payload's Flight 14 report (reached orbit, deployed Starlink V3, first operational mission). flights_successful left at 7 pending Florian's reconciliation of Flights 8-14's individual outcomes against an authoritative source; no source fetched this run states that count. next_flight_date still null: no confirmed Flight 15 date found this run. Weekly maintenance 2026-11-16: flights_total bumped 14->15 and last_flight_date to 2026-11-13, landing crossfeed flag_refresh candidate 2026-11-13-spacex-starship-flight-15-booster-splashdown:starship.flights_total from the Launch Library launch record for Flight 15 (ship caught at the tower for the first time, booster diverted to a Gulf of Mexico splashdown); both fields upgraded from provisional trade-press sourcing to canonical aggregator sourcing. flights_successful still left at 7 pending Florian's reconciliation (Flight 15's own outcome was a mission success per Launch Library, but Flights 8-14's individual outcomes remain unresolved against an authoritative source). next_flight_date still null: no confirmed next flight date found this run.",
   "height_m": {
     "value": 124.4,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=400",

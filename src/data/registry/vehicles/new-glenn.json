@@ -161,31 +161,9 @@
     "tier": "canonical"
   },
   "next_flight_date": {
-    "value": "2026-12-31",
-    "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-    "as_of": "2026-10-05",
-    "snr": 4,
-    "snr_trace": {
-      "base": {
-        "tier": 4,
-        "source": "https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=100",
-        "reason": "Launch Library 2 record, deterministic weekly enrichment (null-fill only)"
-      },
-      "modifiers": [],
-      "final": 4,
-      "scorer_version": 1
-    },
-    "tier": "canonical",
-    "disputed": {
-      "competing": [
-        {
-          "value": "2027-01",
-          "source": "https://www.yahoo.com/news/articles/blue-origin-delays-glenn-rocket-164646389.html",
-          "as_of": "2026-11-09",
-          "snr": 4
-        }
-      ]
-    }
+    "value": null,
+    "source": null,
+    "as_of": null
   },
   "status": {
     "value": "grounded",
@@ -197,7 +175,7 @@
     "source": null,
     "as_of": null
   },
-  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule; LL's config/138 record, last pulled 2026-07-05, still showed status 'active'). Status updated to 'grounded' per Wikipedia (canonical, no badge), which confirms the May 28, 2026 static-fire pad explosion already logged in events and states repairs/an alternative pad could take over a year; consistent with the 2026-07-01 SpaceNews item already in items.json (id 2026-07-01-blue-origin-new-glenn-pad-conops) describing Blue Origin's return-to-flight plan. flights_total (3) and flights_successful (2) confirmed unchanged by the same Wikipedia check. next_flight_date left null/TBD, consistent with Wikipedia's account.",
+  "notes": "Weekly maintenance 2026-07-13: LL2 rate-limited this run (429 on first call, stopped per budget rule; LL's config/138 record, last pulled 2026-07-05, still showed status 'active'). Status updated to 'grounded' per Wikipedia (canonical, no badge), which confirms the May 28, 2026 static-fire pad explosion already logged in events and states repairs/an alternative pad could take over a year; consistent with the 2026-07-01 SpaceNews item already in items.json (id 2026-07-01-blue-origin-new-glenn-pad-conops) describing Blue Origin's return-to-flight plan. flights_total (3) and flights_successful (2) confirmed unchanged by the same Wikipedia check. next_flight_date left null/TBD, consistent with Wikipedia's account. Weekly maintenance 2026-11-16: Launch Library returned 429 on every endpoint tried this run (retry-after ~51 minutes). Wikipedia now independently confirms status (grounded), flights_total/flights_successful (3/2), and last_flight_date (2026-04-19) unchanged, and states the next flight is NET January 2027, corroborating the 2026-11-09 Yahoo claim previously logged as disputed against the stale 2026-12-31 Launch Library placeholder; since both agreeing sources give only month-level precision, next_flight_date is nulled (no day-level date stated anywhere) rather than set to a specific day, and the disputed block is resolved/removed since the sources now agree with each other, just not at day precision.",
   "payload_gto_kg": {
     "value": 13000,
     "source": "https://ll.thespacedevs.com/2.2.0/config/launcher/?limit=100&mode=detailed&offset=200",
