@@ -4340,3 +4340,43 @@ a newer entry if a lesson changes.
   source_ledger, sources, candidates); held and registry-candidates were untouched (no held entries, no
   registry entities for any of the nine companies to crossfeed against). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~11h gap, unfiltered full source list (2026-11-17, second)
+
+- 2026-11-17-E: Thales Alenia Space's own press release for "Space Cargo Unlimited and Thales Alenia
+  Space unveil details of their alliance" (thalesaleniaspace.com, registry-domain-matched first_party)
+  turned out to be dated December 2, 2022, the original contract-signing announcement, with a different
+  timeline (2-3 month missions, late-2025 target) than today's actual Space Tech Expo Bremen unveiling
+  (1,200L/2.5kW/six-month-mission REV1 specs, 2028-2030 target). A first-party page surfaced by searching
+  the exact company+product name can be the WRONG, years-stale document even when its domain passes
+  every anti-spoof check; led with Payload's and Aviation Week's direct, same-day trade coverage instead
+  and left the 2022 release unused. Worth checking a first-party press release's own dateline against the
+  event being drafted, not just its domain, before trusting it as today's source.
+- 2026-11-17-F: NATO's own nato.int article was pre-emptively classed `trade`, not `official_record` or
+  `first_party`, since NATO (like ESA-less institutions UK MOD, France's DGA, and EU bodies in prior
+  entries) has no `src/data/registry` entity for the anti-spoof host check to match against; a second,
+  independently-written trade outlet (defence-industry.eu) gave `corroboration_2plus` cleanly. Worth
+  extending the standing no-registry-host workaround to NATO specifically.
+- 2026-11-17-G: A near-total-junk ~124-candidate queue (SpaceX stock-reaction/13F-filing spam, Starship
+  Flight 15 and Vulcan-failure rehash, dozens of off-topic CGTN/Futurism/Federal-Register entries) still
+  buried a seismic find in a single queue headline: ICEYE's own 2.05 billion euro public tender offer for
+  Avio, found via the queue's lone europeanspaceflight.com entry and independently confirmed by Il Sole 24
+  Ore, Bloomberg (403'd, used only via search snippets), and Rafal Modrzewski's own X post. ICEYE's own
+  `iceye.com` press release (found via a targeted WebSearch, not the queue) gave the full first-party
+  figures and reached the direct-source SNR 5 ceiling despite being an unsolicited, unaccepted bid still
+  needing five countries' regulatory clearance.
+- 2026-11-17-H: Seven further genuinely new, same-day items (REV1, Ramon.Space Series B, Firefly/QASCOM,
+  SEOPS/Stoke Nova, Asynchronics seed, Cosmo Bee/D-Orbit, the $985M NSSL Lane 2 contract mod, and a Delta
+  CEO Bastian Starlink-dismissal commentary piece) all came from direct Payload/SpaceNews/trade queue
+  entries or a Google-News redirect chased to its originating outlet (ClearanceJobs, Defense Daily for the
+  NSSL item; Yahoo Finance/View from the Wing for the Bastian commentary), not the discovery or signals
+  passes. The NSSL item's own ClearanceJobs/Defense Daily leads stated no per-company dollar breakdown and
+  no funds obligated; left that split out entirely rather than infer one from a WebSearch synthesis that
+  cited unconfirmed per-company figures.
+- 2026-11-17-I: The same-company-plus-category dedup heuristic fired five separate ways across this
+  draft's ten items (ICEYE/financial vs. the Nov 11 Greece/HIIF item; Thales Alenia/product vs. the Nov 12
+  OwlO Cloud item; Firefly/contract vs. the Nov 10 Synspective deal; D-Orbit/product vs. the Nov 16
+  SpaceComputer demo; SpaceX/contract vs. the Nov 10 Singulus order; and three separate SpaceX/product
+  collisions on the Bastian commentary alone). Pre-empting all of them from a `jq` scan of the full Nov
+  10-17 window by category, rather than drafting first and reacting to rejections, got a clean first-attempt
+  merge ("merged 10 new, 0 updated, 0 held", 1278 items up from 1268).
