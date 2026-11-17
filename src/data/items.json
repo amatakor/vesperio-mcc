@@ -85663,16 +85663,30 @@
       "secondary_urls": [
         "https://www.tradingview.com/news/stocktwits:7911140ab094b:0-asts-stock-climbs-from-16-month-low-boost-mobile-founder-urges-ast-to-pivot-fast-as-spacex-eyes-bigger-wireless-push/"
       ],
-      "snr": 1,
+      "snr": 2,
       "snr_trace": {
         "base": {
           "tier": 1,
           "source": "https://finance.yahoo.com/markets/stocks/articles/asts-stock-climbs-16-month-033048959.html",
           "reason": "base tier 1 from lead source class \"informal\" (StockTwits (via Yahoo Finance))"
         },
-        "modifiers": [],
-        "final": 1,
-        "scorer_version": 2
+        "modifiers": [
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 1,
+            "to": 2,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -85731,7 +85745,7 @@
         "https://www.al-monitor.com/originals/2026/11/europe-space-chief-heads-gulf-bloc-looks-beyond-us"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -85743,10 +85757,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -85802,7 +85829,7 @@
       "source_url": "https://payloadspace.com/exclusive-sceye-signs-five-year-deal-to-fly-haps-fleet-for-softbank/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -85814,10 +85841,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -85925,7 +85965,7 @@
       "source_url": "https://spacenews.com/detumbler-airbus-passive-spin-stabilization-solution/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -85937,10 +85977,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -86174,7 +86227,7 @@
       "source_url": "https://www.morningstar.com/news/accesswire/1245381msn/connected-solutions-group-named-authorized-starlink-reseller-bringing-starlink-for-american-businesses",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
@@ -86186,10 +86239,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -86233,7 +86299,7 @@
         "https://united24media.com/war-in-ukraine/russias-starlink-ambitions-are-sky-high-but-its-satellites-cant-reach-their-target-altitude-24338"
       ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -86251,9 +86317,14 @@
             "delta": 1,
             "reason": "Ukraine's HUR says none of the 30 launched Rassvet-3 satellites reached their planned 800km orbit, with 26 stuck at 500-520km and two already deorbited.",
             "source": "https://www.kyivpost.com/post/90030"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
+        "final": 4,
         "scorer_version": 2,
         "history": [
           {
@@ -86261,6 +86332,12 @@
             "from": 2,
             "to": 3,
             "reason": "Ukraine's HUR says none of the 30 launched Rassvet-3 satellites reached their planned 800km orbit, with 26 stuck at 500-520km and two already deorbited."
+          },
+          {
+            "date": "2026-11-17",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ]
       },
@@ -86335,7 +86412,7 @@
       "source_url": "https://spacenews.com/simera-sense-and-spacemanic-to-collaborate-on-a-new-complete-dual-use-mission-solution/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -86347,10 +86424,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -86584,7 +86674,7 @@
       "source_url": "https://www.law360.com/articles/2545588/texas-residents-say-spacex-knew-launches-were-too-loud",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -86596,10 +86686,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-17",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -95155,6 +95258,560 @@
         "width": 1200,
         "height": 800
       }
+    },
+    {
+      "id": "2026-11-16-iceye-gen5-sar-satellite",
+      "date": "2026-11-16",
+      "headline": "ICEYE unveils Gen5 SAR satellite with 11cm resolution for government customers",
+      "explainer": {
+        "tagline": "ICEYE's fifth-generation SAR satellite sharpens resolution to 11cm for sovereign customers and 16cm for commercial ones.",
+        "what_happened": "ICEYE announced Gen5, the fifth generation of its SAR satellite, offering resolution as fine as 11cm for sovereign government customers using 1,800 MHz of bandwidth, and 16cm for other customers at 1,200 MHz, per the company's press release. Gen5 collects 18 images per acquisition versus 15 for Gen4, downlinks at up to 1 Gbps versus 700 Mbps previously, and carries an onboard AI processor for in-orbit screening and pre-processing. ICEYE said Gen5 is fully compatible with existing ground segments and can be delivered to customers within 12 months of signing.",
+        "why_it_matters": "Faster downlink and more images per pass shorten the time between tasking and actionable imagery, the metric government SAR buyers care most about when tracking a vessel or responding to a flood. ICEYE's roughly 18-month generation cadence also raises the bar other SAR operators have to match on resolution and revisit."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "sar"
+      ],
+      "category": "constellation",
+      "impact": "notable",
+      "companies": [
+        "ICEYE"
+      ],
+      "source_url": "https://www.iceye.com/newsroom/press-releases/iceye-unveils-gen5-the-sharpest-commercially-built-sar-satellite",
+      "secondary_urls": [
+        "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/iceyes-fifth-generation-sar-satellite-built-for-11cm-resolution/"
+      ],
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.iceye.com/newsroom/press-releases/iceye-unveils-gen5-the-sharpest-commercially-built-sar-satellite",
+          "reason": "base tier 5 from lead source class \"first_party\" (ICEYE)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.iceye.com/newsroom/press-releases/iceye-unveils-gen5-the-sharpest-commercially-built-sar-satellite",
+          "outlet": "ICEYE",
+          "class": "first_party",
+          "added": "2026-11-17",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/iceyes-fifth-generation-sar-satellite-built-for-11cm-resolution/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "ICEYE",
+          "ref": "constellations/iceye"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-16-iceye-gen5-sar-satellite.webp",
+        "credit": "Image: satellitetoday.com",
+        "origin_url": "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/iceyes-fifth-generation-sar-satellite-built-for-11cm-resolution/",
+        "width": 1200,
+        "height": 675
+      }
+    },
+    {
+      "id": "2026-11-16-umbra-secures-launches-next-seven-satellites",
+      "date": "2026-11-16",
+      "headline": "Umbra secures launches for its next seven SAR satellites",
+      "explainer": {
+        "tagline": "Umbra booked launches for satellites 15-20 and a demo craft, after Umbra-13 and Umbra-14 delivered first images days after launch.",
+        "what_happened": "Umbra said it has secured launches for its next seven SAR satellites: spacecraft 15 through 18 on SpaceX's Bandwagon-6 rideshare mission, no earlier than April 2027, and spacecraft 19 and 20 plus a demonstration satellite for an unnamed customer on SEOPS' Waymaker-1 dedicated rideshare, no earlier than April 2028, per the company's press release and Via Satellite. Umbra-13 and Umbra-14 launched on SpaceX's Bandwagon-5 mission on October 20; Umbra-14 delivered its first SAR image on October 24 and Umbra-13 on October 28.",
+        "why_it_matters": "Locking in launch slots roughly a year or more out, across two different rideshare providers, lets Umbra keep building to a fixed schedule instead of waiting on a single vehicle's availability, a hedge other SAR operators are also reaching for amid the launch-capacity crunch."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "sar",
+        "rideshare"
+      ],
+      "category": "constellation",
+      "impact": "notable",
+      "companies": [
+        "Umbra"
+      ],
+      "source_url": "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/umbra-secures-launch-for-next-7-sar-satellites-with-increased-capabilities/",
+      "secondary_urls": [
+        "https://www.prnewswire.com/news-releases/umbra-to-launch-next-phase-of-constellation-expansion-as-newest-spacecraft-deliver-first-imagery-302940696.html"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/umbra-secures-launch-for-next-7-sar-satellites-with-increased-capabilities/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/imagery-and-sensing/2026/11/16/umbra-secures-launch-for-next-7-sar-satellites-with-increased-capabilities/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/umbra-to-launch-next-phase-of-constellation-expansion-as-newest-spacecraft-deliver-first-imagery-302940696.html",
+          "outlet": "PR Newswire",
+          "class": "wire_pr",
+          "added": "2026-11-17",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "Umbra",
+          "ref": "constellations/umbra"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-16-umbra-secures-launches-next-seven-satellites.webp",
+        "credit": "Image: prnewswire.com",
+        "origin_url": "https://www.prnewswire.com/news-releases/umbra-to-launch-next-phase-of-constellation-expansion-as-newest-spacecraft-deliver-first-imagery-302940696.html",
+        "width": 400,
+        "height": 209
+      }
+    },
+    {
+      "id": "2026-11-16-leolabs-acquires-fisheye-software",
+      "date": "2026-11-16",
+      "headline": "LeoLabs acquires FishEye Software to speed missile-tracking radars",
+      "explainer": {
+        "tagline": "LeoLabs bought the three-decade missile-defense engineering firm FishEye Software to speed its next-generation radar programs.",
+        "what_happened": "LeoLabs said Monday it acquired FishEye Software, Inc., an engineering firm with nearly three decades of experience on software for government missile-defense and space-domain-awareness radars, making it a wholly owned subsidiary, per the company's statement to Via Satellite and Breaking Defense. LeoLabs funded the deal with proceeds from a loan from Hercules Capital; Mirus Capital Advisors advised FishEye. The deal follows a $150 million conditional Pentagon Office of Strategic Capital loan commitment LeoLabs disclosed this month to expand its radar network, and LeoLabs said it has booked more than $100 million for 2026 across U.S. and allied customers.",
+        "why_it_matters": "Buying an engineering team already cleared and experienced on government missile-warning radar work shortens LeoLabs' path from commercial space-tracking radars into the missile-defense budget the Pentagon is already funding it to chase, ahead of rivals pursuing the same market."
+      },
+      "kind": "event",
+      "tags": [
+        "m-and-a"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "LeoLabs",
+        "FishEye Software"
+      ],
+      "source_url": "https://www.satellitetoday.com/finance/2026/11/16/leolabs-buys-missile-defense-and-space-awareness-engineering-firm-fisheye/",
+      "secondary_urls": [
+        "https://breakingdefense.com/2026/11/leolabs-acquires-fisheye-to-bolster-its-missile-defense-chops/"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/finance/2026/11/16/leolabs-buys-missile-defense-and-space-awareness-engineering-firm-fisheye/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/finance/2026/11/16/leolabs-buys-missile-defense-and-space-awareness-engineering-firm-fisheye/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "initial"
+        },
+        {
+          "url": "https://breakingdefense.com/2026/11/leolabs-acquires-fisheye-to-bolster-its-missile-defense-chops/",
+          "outlet": "Breaking Defense",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "image": {
+        "src": "/img/items/2026-11-16-leolabs-acquires-fisheye-software.webp",
+        "credit": "Image: breakingdefense.com",
+        "origin_url": "https://breakingdefense.com/2026/11/leolabs-acquires-fisheye-to-bolster-its-missile-defense-chops/",
+        "width": 968,
+        "height": 545
+      }
+    },
+    {
+      "id": "2026-11-16-meridian-space-reflectarray-antenna-validation",
+      "date": "2026-11-16",
+      "headline": "Meridian Space validates reflectarray antenna in orbit",
+      "explainer": {
+        "tagline": "Meridian Space's demo satellite validated its reconfigurable antenna on orbit, linking to a ground station in Toulouse, France.",
+        "what_happened": "Meridian Space said its First Customer Link demonstration satellite, launched in early October, validated the company's proprietary reflectarray antenna in orbit, communicating with a ground segment in Toulouse, France, CEO Massimiliano Ladovaz told Via Satellite. Meridian built the communications payload and Kongsberg NanoAvionics supplied the satellite bus. Ladovaz said the demonstration followed five years of antenna development and that Meridian will now run a testing and demonstration phase with early government, regional-operator, and telco customers.",
+        "why_it_matters": "A cheaper, lower-power antenna that still delivers high throughput is the piece Meridian says LEO constellations need to pencil out for governments and regional operators who cannot build at SpaceX or Amazon scale. Proving the antenna works in orbit, not just on the ground, is the gating milestone before any of those customers can commit."
+      },
+      "kind": "event",
+      "tags": [
+        "connectivity"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "Meridian Space",
+        "NanoAvionics"
+      ],
+      "source_url": "https://www.satellitetoday.com/connectivity/2026/11/16/meridian-space-validates-reflectarray-antenna-in-space/",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/connectivity/2026/11/16/meridian-space-validates-reflectarray-antenna-in-space/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/connectivity/2026/11/16/meridian-space-validates-reflectarray-antenna-in-space/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "NanoAvionics",
+          "ref": "organizations/nanoavionics"
+        }
+      ],
+      "image": null
+    },
+    {
+      "id": "2026-11-16-spacenukes-los-alamos-manufacturing-facility",
+      "date": "2026-11-16",
+      "headline": "SpaceNukes opens Los Alamos facility to manufacture reactor materials",
+      "explainer": {
+        "tagline": "SpaceNukes opened a facility to 3D-print exotic reactor alloys it says no supplier can provide off the shelf.",
+        "what_happened": "Space Nuclear Power Corporation (SpaceNukes) opened its Manufacture and Materials Development Facility at 150 Central Park Square in Los Alamos, New Mexico on November 13, dedicated to additive manufacturing of nickel-based and refractory alloys, including tungsten, molybdenum, tantalum, rhenium, and niobium, for its Generation 2 reactor, per the company's press release. The facility, led by Omar Mireles, director of manufacture and materials, handles no radioactive material and complements SpaceNukes' integration and test facility in Medina, Ohio. CEO Andrew Phelps said the company's next reactor is \"a materials and manufacturing challenge before it is a reactor problem.\"",
+        "why_it_matters": "In-space nuclear power is the enabling technology several government programs are funding for lunar and cislunar operations. A dedicated domestic supply chain for alloys off-the-shelf suppliers can't provide is the unglamorous bottleneck that will determine whether SpaceNukes or a competitor actually flies a reactor by the decade's end."
+      },
+      "kind": "event",
+      "tags": [],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "Space Nuclear Power Corporation"
+      ],
+      "source_url": "https://spacenews.com/spacenukes-opens-los-alamos-manufacture-and-materials-facility-to-build-its-next-generation-space-reactor/",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://spacenews.com/spacenukes-opens-los-alamos-manufacture-and-materials-facility-to-build-its-next-generation-space-reactor/",
+          "reason": "base tier 3 from lead source class \"trade\" (SpaceNews)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://spacenews.com/spacenukes-opens-los-alamos-manufacture-and-materials-facility-to-build-its-next-generation-space-reactor/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "image": {
+        "src": "/img/items/2026-11-16-spacenukes-los-alamos-manufacturing-facility.webp",
+        "credit": "Image: spacenews.com",
+        "origin_url": "https://spacenews.com/spacenukes-opens-los-alamos-manufacture-and-materials-facility-to-build-its-next-generation-space-reactor/",
+        "width": 780,
+        "height": 439
+      }
+    },
+    {
+      "id": "2026-11-16-transastra-tests-10-meter-capture-bag",
+      "date": "2026-11-16",
+      "headline": "TransAstra tests 10-meter capture bag for asteroids and debris",
+      "explainer": {
+        "tagline": "TransAstra ran an 11-day test of its full-scale, 10-meter Mantis Capture Bag, built to snare asteroids and space debris.",
+        "what_happened": "TransAstra said it completed an 11-day test campaign on the full-scale, 10-meter version of its Mantis Capture Bag, an inflatable structure designed to envelop asteroids or tumbling debris, per the company's press release. The team inflated the bag, pushed on it at multiple points to confirm its structural response matched engineering models, captured imagery for rendezvous-sensor development in simulated low-light conditions, and demonstrated closing and cinching the bag's mouth, including with three of its four drawstring mechanisms. CEO Joel Sercel said the test \"demonstrates that our 10-meter Capture Bag can inflate and close as designed.\"",
+        "why_it_matters": "Closing around and securing a tumbling, uncooperative object is the hard part of debris removal and asteroid mining that most in-space-servicing pitches gloss over. A ground test validating the mechanism at full scale is a concrete step toward TransAstra actually flying a capture mission rather than just rendering one."
+      },
+      "kind": "event",
+      "tags": [],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "TransAstra"
+      ],
+      "source_url": "https://www.financialcontent.com/article/accwirecq-2026-11-16-transastra-successfully-tests-10-meter-capture-bag-designed-to-capture-asteroids-and-space-debris",
+      "secondary_urls": [
+        "https://www.cnn.com/science/asteroid-capture-transastra-giant-bag-spc"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 4,
+          "source": "https://www.financialcontent.com/article/accwirecq-2026-11-16-transastra-successfully-tests-10-meter-capture-bag-designed-to-capture-asteroids-and-space-debris",
+          "reason": "base tier 4 from lead source class \"wire_pr\" (AccessWire)"
+        },
+        "modifiers": [],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.financialcontent.com/article/accwirecq-2026-11-16-transastra-successfully-tests-10-meter-capture-bag-designed-to-capture-asteroids-and-space-debris",
+          "outlet": "AccessWire",
+          "class": "wire_pr",
+          "added": "2026-11-17",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.cnn.com/science/asteroid-capture-transastra-giant-bag-spc",
+          "outlet": "CNN",
+          "class": "mainstream",
+          "added": "2026-11-17",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "image": {
+        "src": "/img/items/2026-11-16-transastra-tests-10-meter-capture-bag.webp",
+        "credit": "Image: cnn.com",
+        "origin_url": "https://www.cnn.com/science/asteroid-capture-transastra-giant-bag-spc",
+        "width": 1182,
+        "height": 788
+      }
+    },
+    {
+      "id": "2026-11-16-uk-mod-starshield-resilience-statement",
+      "date": "2026-11-16",
+      "headline": "UK Ministry of Defence says it isn't reliant on single satcom provider",
+      "explainer": {
+        "tagline": "The UK defence minister told Parliament the MOD uses SpaceX's Starshield but isn't dependent on any one commercial satcom provider.",
+        "what_happened": "Responding to a parliamentary written question from Liberal Democrat MP Helen Maguire on the consequences of losing access to Starlink and Starshield, UK defence minister Luke Pollard said on November 10 that \"Starlink is not used for UK military operations,\" and that while the Ministry of Defence does use SpaceX's Starshield, it combines military and commercial satcom capabilities to reduce dependence on any single provider, per European Spaceflight's report on the exchange. Maguire's question followed concerns raised separately in the House of Lords and an October Joint Committee on the National Security Strategy hearing about SpaceX's October restrictions on Ukraine's Starshield terminal speeds.",
+        "why_it_matters": "The UK is one of the first governments outside the US to put operational military traffic on Starshield. A direct parliamentary answer distinguishing it from consumer Starlink, and asserting multi-provider resilience, is the kind of on-record government statement other Starshield customers and competing satcom providers will use to gauge how exposed European defence ministries see themselves to a single commercial supplier."
+      },
+      "kind": "event",
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://europeanspaceflight.com/uk-mod-defends-satcom-resilience-amid-spacex-starshield-concerns/",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://europeanspaceflight.com/uk-mod-defends-satcom-resilience-amid-spacex-starshield-concerns/",
+          "reason": "base tier 3 from lead source class \"trade\" (European Spaceflight)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://europeanspaceflight.com/uk-mod-defends-satcom-resilience-amid-spacex-starshield-concerns/",
+          "outlet": "European Spaceflight",
+          "class": "trade",
+          "added": "2026-11-17",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-16-uk-mod-starshield-resilience-statement.webp",
+        "credit": "Image: europeanspaceflight.com",
+        "origin_url": "https://europeanspaceflight.com/uk-mod-defends-satcom-resilience-amid-spacex-starshield-concerns/",
+        "width": 800,
+        "height": 500
+      }
+    },
+    {
+      "id": "2026-11-16-ramaphosa-musk-starlink-south-africa-bee-policy",
+      "date": "2026-11-16",
+      "headline": "Ramaphosa says Musk's BEE policy stance keeps Starlink out of South Africa",
+      "explainer": {
+        "tagline": "Ramaphosa says Musk's resistance to South Africa's Black Economic Empowerment rule, not the country itself, keeps Starlink out.",
+        "what_happened": "Speaking at a Semafor event in California, South African President Cyril Ramaphosa said Elon Musk's \"difficulty in understanding\" the country's Black Economic Empowerment (BEE) policy, which requires at least 30% of a company's South African operation to be sold to Black locals, is the main obstacle to Starlink launching in South Africa, per Semafor. Ramaphosa said \"all countries have policies in terms of how they admit companies to operate\" and that Musk \"doesn't fully understand the extent\" of apartheid's impact on Black South Africans. Musk has called the BEE policy \"openly racist\" and cited it as the reason Starlink does not operate in the country.",
+        "why_it_matters": "Ramaphosa's direct, personal framing signals South Africa isn't moving toward a carve-out for Starlink, which matters for competitors like Amazon's Kuiper and resellers such as Vodacom already filling the gap with Starlink service routed from neighboring countries. It also confirms the BEE equity requirement, not a technical or spectrum issue, remains the actual blocker."
+      },
+      "kind": "event",
+      "tags": [
+        "connectivity",
+        "mena"
+      ],
+      "category": "geopolitical",
+      "impact": "notable",
+      "companies": [
+        "SpaceX"
+      ],
+      "source_url": "https://www.semafor.com/article/11/16/2026/musks-policy-difficulty-prevents-starlinks-south-africa-entry",
+      "secondary_urls": [],
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.semafor.com/article/11/16/2026/musks-policy-difficulty-prevents-starlinks-south-africa-entry",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Semafor)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.semafor.com/article/11/16/2026/musks-policy-difficulty-prevents-starlinks-south-africa-entry",
+          "outlet": "Semafor",
+          "class": "mainstream",
+          "added": "2026-11-17",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "SpaceX",
+          "ref": "organizations/spacex"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-16-ramaphosa-musk-starlink-south-africa-bee-policy.webp",
+        "credit": "Image: semafor.com",
+        "origin_url": "https://www.semafor.com/article/11/16/2026/musks-policy-difficulty-prevents-starlinks-south-africa-entry",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "id": "2026-11-16-galactic-energy-huoniao6-vtvl-testbed",
+      "date": "2026-11-16",
+      "headline": "Galactic Energy nears final assembly of its Huoniao-6 hop-test vehicle",
+      "explainer": {
+        "tagline": "Galactic Energy's Huoniao-6 hop-test vehicle, built from a first stage, is nearing final assembly for tests by year end.",
+        "what_happened": "Galactic Energy said its Huoniao-6 vertical-takeoff-vertical-landing testbed, built from a first-stage booster, is in final assembly, with kilometer- and 10-kilometer-level hop tests planned before the end of the year, per Andrew Jones, a SpaceNews correspondent who tracks Chinese launch activity, on Bluesky. Jones said the company is targeting 2027 for a first-stage recovery attempt on its orbital Pallas-1 rocket.",
+        "why_it_matters": "Hop tests are the step before an actual recovery attempt, and Galactic Energy is one of several Chinese commercial launchers, alongside LandSpace and iSpace, racing toward reusable first stages. A 2027 recovery target puts it on a similar timeline to its domestic rivals rather than years behind."
+      },
+      "kind": "event",
+      "tags": [
+        "launch",
+        "china",
+        "reusability"
+      ],
+      "category": "launch",
+      "impact": "noise",
+      "companies": [
+        "Galactic Energy"
+      ],
+      "source_url": "https://bsky.app/profile/andrewjonesspace.bsky.social/post/3n2gok7325k2u",
+      "secondary_urls": [],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://bsky.app/profile/andrewjonesspace.bsky.social/post/3n2gok7325k2u",
+          "reason": "base tier 3 from lead source class \"whitelist\" (Andrew Jones (SpaceNews) on Bluesky)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "whitelist_floor",
+            "delta": 2,
+            "reason": "whitelist floor: whitelisted observer (4)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://bsky.app/profile/andrewjonesspace.bsky.social/post/3n2gok7325k2u",
+          "outlet": "Andrew Jones (SpaceNews) on Bluesky",
+          "class": "whitelist",
+          "added": "2026-11-17",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-17T02:27:11.290Z",
+      "entities": [
+        {
+          "name": "Galactic Energy",
+          "ref": "organizations/galactic-energy"
+        }
+      ],
+      "image": null
     }
   ]
 }

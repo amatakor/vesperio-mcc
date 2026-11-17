@@ -15147,3 +15147,194 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   (32 sources, 10 updates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
 
+## Narrow re-check, ~7h15m gap, unfiltered full source list (2026-10-17)
+
+- 2026-10-17-A: A prior same-day sweep's signals-pass note said a Marcia
+  Smith bluesky claim ("GAO says NOAA's GeoXO... cut from $19.6B to $13B")
+  "could not be pinned to an actual fetchable GAO report page despite
+  several targeted searches" and was left undrafted; this run resolved it
+  by fetching the post's own embed via
+  `getPostThread?uri=at://<did>/app.bsky.feed.post/<rkey>` (not the
+  author-feed text, which only showed a truncated `www.gao.gov/products/
+  gao...` link) and reading `embed.external.uri` directly off the post
+  record, which gave the exact `gao.gov/products/gao-26-107739` URL a
+  generic gao.gov site search never surfaced. Worth trying this
+  post-embed-resolution step before concluding a bluesky post's cited
+  report is unfindable, whenever the post's own text truncates the link.
+- 2026-10-17-B: The GAO report itself (Published Sep 16, Publicly Released
+  Oct 16, 2026) gave the exact $19.6B-to-$13B and six-to-four-satellite/
+  five-to-two-instrument figures verbatim, confirming Marcia Smith's post
+  precisely; the House Science Committee's own same-day press release
+  (science.house.gov) carried Chairman Babin's quote but, per a direct
+  fetch, stated no dollar figures or satellite counts at all. Led on the
+  GAO report itself (official_record, SNR 5) rather than the Committee
+  release, since the actual figures only existed in the primary document.
+- 2026-10-17-C: A fully quiet harvester queue (26 post-filter candidates,
+  entirely FAA scheduled-launch-notice reposts, SpaceX-nationalization/
+  Starshield-description opinion posts, and off-topic BBC/Futurism filler)
+  and five quiet mandatory HTML sources (Planet, ICEYE, BlackSky, EUSPA,
+  Telesat, all newest-dated before the window or already published) meant
+  both of this run's items came entirely from the signals pass's
+  fetchable-channel leg, not the queue or discovery. `spacepolicyonline.com`
+  and `europeanspaceflight.com` were counted as checked via the
+  harvester's own RSS results (304-not-modified / all-entries-already-
+  triaged) rather than re-fetched directly, since their content was
+  already in hand; the other 14 fetchable channels (10 bluesky via
+  `getAuthorFeed`, 4 direct sites) were fetched individually.
+- 2026-10-17-D: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 2 new, 0 updated, 0 held"); confirmed via a
+  direct read of both new items' `snr`/`snr_trace`/`category`/`impact`/
+  `sources` fields (960 items, up from 958). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h45m gap, unfiltered full source list (2026-10-17, second)
+
+- 2026-10-17-E: ISRO's own LOX-methane engine page
+  (isro.gov.in/LOX_Methane_engine.html, dated Oct 16, reporting an Oct 9
+  gas-generator ignition test for the LME1100 engine) surfaced only via
+  a Google News "non-US space" Swarajya pickup; the Swarajya article's
+  own URL never resolved (Google News redirect dead-ended, a direct
+  WebSearch for its exact headline returned only the ISRO page, an old
+  X post, and Wikipedia pages, and the one fetchable-looking mirror,
+  indiandefensenews.in, hit a Google anti-bot captcha wall on direct
+  WebFetch). Drafted single-source off the first-party ISRO page alone
+  (`crawl: "found_none"`, no penalty since first-party is already at the
+  tier-5 ceiling) rather than force an unfetched mirror into the sources
+  list. Dated the item on the actual Oct 9 test date per the standing
+  chase-it convention, even though first coverage only surfaced a week
+  later.
+- 2026-10-17-F: Starlink's own X statement responding to Reliance's Oct
+  16 "never feared competition" post ("Starlink is ready to connect
+  India with high-speed internet... all with the requisite government
+  approvals") was findable only via WebSearch synthesis (Benzinga 403'd
+  on direct WebFetch) but confirmed verbatim via a direct fetch of
+  tribuneindia.com's republication, including Musk's one-word reply
+  "Much appreciated." Folded into the existing Oct 7 Musk/Ambani
+  commentary item as an `attach`+`patch`, since it's the same ongoing
+  feud, not a new event; no bump needed (item already at its
+  corroboration ceiling of 4).
+- 2026-10-17-G: A near-total-junk 85-candidate queue (Federal Register
+  airworthiness-directive/privacy-act/fishery-meeting filler, Tesla
+  Roadster "flying car" stunt pickups, a dozen stale Gaganyaan
+  crew-module-separation reruns already published 2026-10-16, and
+  Starlink/Ukraine saga rehashes with no fact beyond what the existing
+  item already carries) needed per-candidate triage rather than a
+  blanket discard, but yielded only the two items above. Two Federal
+  Register documents that looked promising on title alone (an "Upper
+  C-Band" order and "Modernizing the Commission's NEPA Rules," both
+  future-dated 2026-10-19) turned out to be the formal Federal Register
+  publication of already-covered FCC orders (the Jul 22 C-band auction
+  and the Sep 30 NEPA exemption); both 302-redirected to
+  unblock.federalregister.gov on direct WebFetch and were left unfetched
+  rather than chased further, consistent with federalregister.gov's
+  standing bot-block. SpaceX's NYC Council AI-safety testimony and
+  OpenAI's third SpaceX-sales-exec poach were treated as out of scope
+  (AI-industry/corporate-personnel stories with no commercial-space
+  transaction), and Evercore ISI's "buy ahead of earnings" CNBC piece
+  and a Washington Post Starlink/Rassvet feature were left undrafted as
+  rehashes of already-published material (the Oct 16 price-target item;
+  the standing Rassvet/China-assistance narrative).
+- 2026-10-17-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of the new ISRO item's `snr`/`snr_trace`/`category`/
+  `impact`/`sources` fields (961 items, up from 960) and the updated
+  Musk/Ambani item's grown `sources`/`updates` arrays (14 sources, 9
+  updates). `bun run build` was not attempted, per the 2026-09-09
+
+## Narrow re-check, ~6h gap, unfiltered full source list (2026-10-17, third)
+
+- 2026-10-17-I: The queue (85+ candidates) was almost entirely Starlink/
+  Ukraine saga rehash (dozens of Google News/Bluesky hits on Zelensky's
+  Oct 17 comments) and off-topic Tesla Roadster "flying car" stunt
+  chatter; all five mandatory HTML sources and all 17 signals channels
+  were stale (newest posts predated `lastSweep` or were already
+  published) and a 10-query discovery pass covering the full matrix
+  surfaced only already-published leads (GSAT-7C, Kapta Space, WISeSat
+  SPAC close, IRIS2 contracts, GuoWang/Zhuque-2E launches, NASA CLD final
+  RFP) or non-events (a minister's reiterated India space-economy
+  figures; ETH Zurich's new Earth Observation Lab, an academic research
+  facility consuming EO data rather than a commercial operator or
+  constellation, left out of scope; a 3-week-stale, no-dollar-value NASA/
+  Blue Origin NLS II on-ramp, too small and stale to chase under the
+  predates-window exception). The one genuine new fact, Zelensky calling
+  the 161 km/h Starlink cap a "planned operation" that an EU vehicle test
+  proved was geography-specific, not technical, needed the same re-fetch-
+  for-verbatim discipline as every other beat in this saga: the Google
+  News redirect for the Kyiv Independent piece didn't resolve, but a
+  direct WebSearch for the exact headline found the real
+  kyivindependent.com URL, and United24 Media's and Ukrainska Pravda's
+  own pages independently confirmed the same 161 km/h figure and
+  "planned operation" quote before it was folded in via `attach`+`patch`
+  (no bump: item already at its mainstream corroboration_2plus ceiling of
+  4, 10 updates deep already).
+- 2026-10-17-J: Confirms the 2026-10-17-C pattern of counting a
+  signals-pass channel as checked via the harvester's own RSS results
+  rather than a direct re-fetch when nothing in that feed is newer than
+  `lastSweep` (here, SpacePolicyOnline's site and European Spaceflight's
+  site, both already in the candidates-context health block); still
+  fetched the channel's OTHER registered surfaces (bluesky accounts,
+  substack) separately since those are distinct feeds the harvester
+  doesn't cover. `europeanspaceflight.substack.com/feed` 403'd again,
+  extending the 2026-09-20-K/2026-09-22-G intermittent-failure pattern.
+- 2026-10-17-K: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt for a `draft.coverage` entry of `"connectivity"` (a tag, not a
+  category); the gate only accepts the fixed category list. Resubmitting
+  with `"geopolitical"` (the actual patched item's category) merged
+  cleanly on the second attempt ("merged 0 new, 1 updated, 0 held");
+  confirmed via a direct `jq` read of the updated item's `snr` (unchanged
+  at 4), `sources` (35, up from 32) and `updates` (11, up from 10)
+  arrays, and the sweep-log summary in `state.json`. `bun run build` was
+  not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h37m gap, unfiltered full source list (2026-10-17, fourth)
+
+- 2026-10-17-L: A near-total-junk 27-candidate queue (SpaceX-launch-reaction
+  Bluesky chatter, more Starlink/Ukraine saga rehash, an off-topic Futurism
+  pair) and five quiet mandatory HTML sources yielded nothing, but the
+  signals pass's fetchable-channel leg surfaced a genuine, fast-moving
+  incident: Marco Langbroek (bluesky post linking his own SatTrackCam blog)
+  and Anatoly Zak (bluesky post linking his own RussianSpaceWeb site)
+  independently reported that Russia's Cosmos 2612 had closed to within 1-2
+  km of ICEYE's US-registered, Ukraine-linked SAR satellite ICEYE-X36, with
+  Langbroek warning of a possible approach to within meters within hours.
+  CSIS's Aerospace Security Project (Oct 15 report, fetched directly,
+  class `informal`) and Poland's space24.pl (`trade`, citing tracking firm
+  Integrity ISR) independently corroborated the broader pattern (a May
+  2.5-22 km approach by sister satellites, today's escalation). Axios's own
+  piece on the story 403'd on direct WebFetch and was not used for any
+  quote; a Washington Times piece also 403'd. Dropped a "bumper-to-bumper"
+  Swope quote and a specific CSIS "no one should assume..." line that only
+  appeared in WebSearch-synthesis text, not in my own direct CSIS fetch,
+  per the standing never-quote-from-a-WebFetch/WebSearch-summary rule;
+  re-fetched CSIS with a targeted prompt and got the real verbatim quote
+  ("policymakers should assume Cosmos 2612 could take an action that
+  threatens the commercial satellite") instead. Classed `incident`
+  (orbital-safety/proximity-operations angle) rather than `geopolitical`
+  since no government has stated anything on the record yet; impact
+  `major` (a director at ICEYE or its insurers would act today; not yet
+  `seismic` since no satellite has actually been harmed).
+- 2026-10-17-M: Confirms 2026-10-16-G's strict-channel-match rule from the
+  gate side, not just precedent: `finalize-sweep` REJECTED a draft that (a)
+  listed Langbroek's blog URL in `signalsPass.checked` (it is not in
+  `signals-context`'s fetchable list; only his bluesky is, since the blog's
+  own signals.json channel status is `exists_activity_unverified`, not
+  `verified_active`) and (b) classed that same blog URL `whitelist` in
+  `scoring.sources` (same reason: the gate checks class against
+  verified-active channels, not just channel presence in signals.json).
+  Reclassifying the blog as `informal` and dropping it from `checked`
+  (keeping only his bluesky post, which IS verified_active) merged clean
+  on the next attempt. Zak's `russianspaceweb.com` was fine as `whitelist`
+  because that exact site IS listed `verified_active` in signals.json,
+  unlike Langbroek's blog. Worth checking a person's per-channel `status`
+  field, not just whether a URL belongs to them, before classing anything
+  `whitelist`.
+- 2026-10-17-N: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice (once for the `checked` list, once for the source class),
+  merged clean on the third attempt ("merged 1 new, 0 updated, 0 held");
+  confirmed via a direct `jq` read of the new item's `snr`/`snr_trace`
+  (base tier 3 from the whitelist lead, +1 corroboration_2plus = final 4)/
+  `category`/`impact` fields (962 items, up from 961) and the sweep-log
+  entry in `state.json`. `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
+
