@@ -4380,3 +4380,42 @@ a newer entry if a lesson changes.
   collisions on the Bastian commentary alone). Pre-empting all of them from a `jq` scan of the full Nov
   10-17 window by category, rather than drafting first and reacting to rejections, got a clean first-attempt
   merge ("merged 10 new, 0 updated, 0 held", 1278 items up from 1268).
+
+## Narrow re-check, ~29min gap, unfiltered full source list (2026-11-17, third)
+
+- 2026-11-17-J: `candidates-context`'s `window_start` can sit well before `sweep-context`'s `lastSweep`
+  (here, two full days earlier) even in `mode: "normal"`; the candidates queue is a global, independently-
+  windowed cursor, not keyed to this run's own gap, so a short-gap sweep can still see a wide queue window.
+  Worked from the queue's own output as instructed regardless of the mismatch.
+- 2026-11-17-K: A 17-candidate queue, 29 minutes after a 10-item merge, was entirely rehash/noise: unflown
+  USSF-317 preview spam (Bluesky FAA bot, Google News, Launch Library), stale Starship-catch rehash, two
+  separate investor-13F-disclosure stock pieces (Tepper's $518M SpaceX bet, Berkshire/Nvidia stake moves,
+  both the standing investor-position-not-a-company-transaction exclusion), and a Musk "SpaceX assumes
+  zero sales to OpenAI" remark (SpaceX's terrestrial AI/compute business, out of scope per the standing
+  2026-11-06-H exclusion). A Havana Times "Cuban police prepare block-by-block Starlink offensive" piece
+  was judged out of scope on a fresh instance of the pattern: it is Cuba's domestic crackdown on citizens'
+  unauthorized Starlink antennas (censorship/contraband enforcement), with explicitly "no official
+  confirmation" of a nationwide operation, not an operator or government statement about commercial
+  service policy; flag for Florian if cross-border Starlink-access-crackdown stories like this should
+  publish anyway under the geopolitical category.
+- 2026-11-17-L: All three mandatory HTML sources (Planet Labs, BlackSky, EUSPA procurement) and 14 of 17
+  fetchable signals channels (dropping Parsonson's site+substack and Marcia Smith's site legs as
+  harvester-duplicate domains, both 304-not-modified) traced entirely to already-published items;
+  confirmed via direct `items.json` greps rather than assumption (Parsonson's ICEYE/Avio bid and Avio/
+  Vega-C Christmas-Day items, Andrew Jones' Galactic Energy Huoniao-6 post, and SpacePolicyOnline's FAA/
+  Vulcan mishap-investigation note were all already in the feed verbatim). A SpacePolicyOnline post merely
+  linking the Senate Appropriations Committee's just-unveiled FY2027 defense bill, with no space-specific
+  figure in the post itself, led to a WebSearch rabbit hole (Golden Dome cut to $9.4B) that never produced
+  a directly-fetched source with a Space Force/NSSL-specific breakdown; left undrafted as a
+  still-unveiled, not-yet-passed appropriations bill with no independently confirmed space line item,
+  not a missed story.
+- 2026-11-17-M: The 8-query discovery pass's lone genuine find (Freezz Italia's ESA IRIS2 Low-LEO VLEO
+  direct-to-device Consolidation Phase contract, via a Google-indexed IRW-Press/ACCESS Newswire release)
+  had a dozen-plus mirrors (German, Spanish, Italian, English) but all traced to the same one wire
+  release; no SpaceNews/Payload/European Spaceflight pickup existed on a dedicated second search, landing
+  an honest `crawl: "found_none"` wire_pr-base SNR 3. The new item's only shared element with two
+  unrelated same-week ESA items (MaiaSpace launcher-challenge delay, Thales Alenia/TeQuantS quantum
+  contract) was company "ESA" + category `contract`; two `dedup_distinct` entries cleared the standing
+  heuristic on the second attempt. `bun scripts/finalize-sweep.ts` merged cleanly on the second attempt
+  ("merged 1 new, 0 updated, 0 held"), 1279 items up from 1278. `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
