@@ -91721,8 +91721,8 @@
       "headline": "Axiom Space sues Vast over NASA mission-planning document",
       "explainer": {
         "tagline": "Axiom accuses Vast of copying its NASA mission-planning text, in a suit unsealed as both race to file final station proposals.",
-        "what_happened": "Per Ars Technica, Axiom Space filed a False Claims Act lawsuit in Houston federal court alleging Vast submitted a NASA mission-planning document that, in Axiom's telling, NASA itself flagged as having substituted \"the PAM Provider\" for Axiom's name in some places while leaving Axiom's name and content elsewhere, indicating the text originated with Axiom rather than being independently authored by Vast. NASA notified Axiom of the issue in June, Axiom filed suit June 19, the Department of Justice declined to intervene in October, and a federal judge unsealed the case on November 4. Final proposals in NASA's commercial space station competition, which both companies are pursuing, are due December 14.",
-        "why_it_matters": "A rival accused of lifting a competitor's own NASA submission text, right as both companies finalize bids in the same NASA commercial-station competition, is a reputational and competitive risk for Vast regardless of the suit's outcome, and a data point for NASA evaluators weighing both companies' proposals."
+        "what_happened": "Per Ars Technica, Axiom Space filed a False Claims Act lawsuit in Houston federal court alleging Vast submitted a NASA mission-planning document that, in Axiom's telling, NASA itself flagged as having substituted \"the PAM Provider\" for Axiom's name in some places while leaving Axiom's name and content elsewhere, indicating the text originated with Axiom rather than being independently authored by Vast. NASA notified Axiom of the issue in June, Axiom filed suit June 19, the Department of Justice declined to intervene in October, and a federal judge unsealed the case on November 4. Vast CEO Max Haot says the document was supplied to Vast by a subcontractor that also serves Axiom, using standard documentation adapted from prior missions, and that Vast proactively told NASA the document needed correcting and resubmitted a revised version the next day; Haot says \"Vast did not take anything from Axiom, and any suggestion otherwise is false.\" Final proposals in NASA's commercial space station competition, which both companies are pursuing, are due December 14.",
+        "why_it_matters": "A rival accused of lifting a competitor's own NASA submission text, right as both companies finalize bids in the same NASA commercial-station competition, is a reputational and competitive risk for Vast regardless of the suit's outcome or its denial, and a data point for NASA evaluators weighing both companies' proposals."
       },
       "tags": [
         "human-spaceflight",
@@ -91735,9 +91735,12 @@
         "Vast"
       ],
       "source_url": "https://arstechnica.com/space/2026/11/one-space-station-company-sues-another-for-copying-its-work/",
-      "secondary_urls": [],
+      "secondary_urls": [
+        "https://x.com/maxhaot/status/2120315694671888475",
+        "https://starlust.org/axiom-is-suing-vast-for-copying-its-private-astronaut-mission-roadmap-submission-to-nasa/"
+      ],
       "kind": "event",
-      "snr": 2,
+      "snr": 5,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -91746,13 +91749,26 @@
         },
         "modifiers": [
           {
-            "type": "corroboration_none",
-            "delta": -1,
-            "reason": "corroboration crawl ran and found nothing"
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          },
+          {
+            "type": "whitelist_floor",
+            "delta": 1,
+            "reason": "whitelist floor: concerned party about itself (5)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 5,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-18",
+            "from": 2,
+            "to": 5,
+            "reason": "Vast's CEO says a shared subcontractor supplied the document and denies copying Axiom's work."
+          }
+        ]
       },
       "sources": [
         {
@@ -91761,6 +91777,20 @@
           "class": "mainstream",
           "added": "2026-11-10",
           "via": "initial"
+        },
+        {
+          "url": "https://x.com/maxhaot/status/2120315694671888475",
+          "outlet": "Max Haot (Vast CEO) on X",
+          "class": "whitelist",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://starlust.org/axiom-is-suing-vast-for-copying-its-private-astronaut-mission-roadmap-submission-to-nasa/",
+          "outlet": "Starlust",
+          "class": "informal",
+          "added": "2026-11-18",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-11-10T17:31:02.229Z",
@@ -91780,7 +91810,18 @@
         "origin_url": "https://arstechnica.com/space/2026/11/one-space-station-company-sues-another-for-copying-its-work/",
         "width": 1152,
         "height": 648
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-11-18",
+          "kind": "score",
+          "note": "Vast's CEO says a shared subcontractor supplied the document and denies copying Axiom's work.",
+          "score": {
+            "from": 2,
+            "to": 5
+          }
+        }
+      ]
     },
     {
       "id": "2026-11-10-rocket-lab-osc-150m-neutron-loan",
@@ -97234,6 +97275,350 @@
         "width": 1200,
         "height": 630
       }
+    },
+    {
+      "id": "2026-11-18-dcubed-series-a-extension",
+      "date": "2026-11-18",
+      "headline": "Dcubed raises €27.2 million to quadruple satellite hardware production",
+      "explainer": {
+        "tagline": "The German satellite-actuator and solar-array maker closed an oversubscribed Series A extension led by Warsaw Equity Group.",
+        "what_happened": "Dcubed, a Munich-based maker of satellite release actuators and solar arrays, raised a €27.2 million ($30 million) Series A extension led by Warsaw Equity Group, with the European Innovation Council Fund, HTGF Opportunity Fund, BayBG and Expansion Aerospace Ventures also participating. The company says it has more than 170 customers and over 500 products flying in space, and will use the funding to quadruple production of its release actuators and solar arrays at new facilities in Colorado and Germany.",
+        "why_it_matters": "Dcubed sells standardized, ready-to-order hardware rather than custom-built components, a model that matters as satellite builders try to scale production; the funding also backs ARAQYS, a new solar-array and power-system line whose first HALO demonstration is set for a 2027 SpaceX rideshare, positioning the company to compete on power systems as well as deployables."
+      },
+      "tags": [
+        "europe",
+        "funding"
+      ],
+      "category": "financial",
+      "impact": "notable",
+      "companies": [
+        "Dcubed"
+      ],
+      "source_url": "https://payloadspace.com/dcubed-raises-e27-2m-to-quadruple-its-production-capacity/",
+      "secondary_urls": [
+        "https://tech.eu/2026/11/18/dcubed-raises-eur272m-series-a-to-scale-space-deployment-and-power-systems",
+        "https://dcubed.space/dcubed-raises-oversubscribed-e27-2m-round-to-accelerate-global-leadership-in-space-deployment-systems-and-power/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://payloadspace.com/dcubed-raises-e27-2m-to-quadruple-its-production-capacity/",
+          "reason": "base tier 3 from lead source class \"trade\" (Payload)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://payloadspace.com/dcubed-raises-e27-2m-to-quadruple-its-production-capacity/",
+          "outlet": "Payload",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "initial"
+        },
+        {
+          "url": "https://tech.eu/2026/11/18/dcubed-raises-eur272m-series-a-to-scale-space-deployment-and-power-systems",
+          "outlet": "Tech.eu",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://dcubed.space/dcubed-raises-oversubscribed-e27-2m-round-to-accelerate-global-leadership-in-space-deployment-systems-and-power/",
+          "outlet": "Dcubed",
+          "class": "informal",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "image": null
+    },
+    {
+      "id": "2026-11-18-pld-space-mitsubishi-miura5-contract",
+      "date": "2026-11-18",
+      "headline": "PLD Space signs first commercial Miura 5 launch contract with Mitsubishi Electric",
+      "explainer": {
+        "tagline": "Mitsubishi Electric, already a PLD Space investor, booked an in-orbit demonstration satellite on Miura 5's second test flight.",
+        "what_happened": "PLD Space signed its first commercial launch contract, agreeing to fly a Mitsubishi Electric in-orbit demonstration satellite on the second test flight of its Miura 5 rocket from French Guiana, targeted for the first half of 2027 pending the outcome of Miura 5's maiden flight. Mitsubishi Electric, which led a €108 million extension of PLD Space's Series C round in September, says the satellite will refine its system concept for a planned megaconstellation offering communications, Earth observation, data-center and positioning services.",
+        "why_it_matters": "A strategic investor converting into Miura 5's first paying launch customer is a concrete trajectory signal for a European launch startup that has not yet flown; it also shows Mitsubishi Electric moving its own megaconstellation ambitions from funding to hardware, even before PLD Space's rocket has completed a single flight."
+      },
+      "tags": [
+        "launch",
+        "smallsat-launch",
+        "europe",
+        "japan"
+      ],
+      "category": "contract",
+      "impact": "notable",
+      "companies": [
+        "PLD Space",
+        "Mitsubishi Electric"
+      ],
+      "source_url": "https://europeanspaceflight.com/pld-space-investor-selects-miura-5-to-launch-demo-mission",
+      "secondary_urls": [
+        "https://spacenews.com/mitsubishi-books-second-miura-5-test-flight-for-megaconstellation-demo/",
+        "https://aviationweek.com/space/launch-vehicles-propulsion/pld-space-investor-mitsubishi-buys-ride",
+        "http://satnews.com/2026/11/18/pld-space-signs-first-commercial-miura-5-launch-contract-with-mitsubishi-electric/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://europeanspaceflight.com/pld-space-investor-selects-miura-5-to-launch-demo-mission",
+          "reason": "base tier 3 from lead source class \"trade\" (European Spaceflight)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "4 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://europeanspaceflight.com/pld-space-investor-selects-miura-5-to-launch-demo-mission",
+          "outlet": "European Spaceflight",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "initial"
+        },
+        {
+          "url": "https://spacenews.com/mitsubishi-books-second-miura-5-test-flight-for-megaconstellation-demo/",
+          "outlet": "SpaceNews",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://aviationweek.com/space/launch-vehicles-propulsion/pld-space-investor-mitsubishi-buys-ride",
+          "outlet": "Aviation Week",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        },
+        {
+          "url": "http://satnews.com/2026/11/18/pld-space-signs-first-commercial-miura-5-launch-contract-with-mitsubishi-electric/",
+          "outlet": "SatNews",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "image": null
+    },
+    {
+      "id": "2026-11-18-cubecom-netherlands-office",
+      "date": "2026-11-18",
+      "headline": "CUBECOM opens Netherlands office to scale European satellite RF sales",
+      "explainer": {
+        "tagline": "The South African satellite RF-systems maker says European customers now drive over half its revenue.",
+        "what_happened": "CUBECOM, a South African maker of satellite RF communications systems including Ka-, S- and X-band antennas and transmitters, opened a sales and customer-support office in Delft, the Netherlands. The company says it sold more than 300 components to European customers in 2026, tripling its revenue from the prior year, and plans to eventually add engineering staff and a regional production facility within five years.",
+        "why_it_matters": "CUBECOM CEO Sampie Booysen points to Europe's push for sovereign space and defense capabilities as the driver; a non-European RF supplier building local presence, and eventually local production, is a direct response to European primes and governments increasingly favoring European-made components."
+      },
+      "tags": [
+        "connectivity",
+        "europe"
+      ],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "CUBECOM"
+      ],
+      "source_url": "https://payloadspace.com/exclusive-cubecom-expands-to-the-netherlands-to-scale-european-biz/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://payloadspace.com/exclusive-cubecom-expands-to-the-netherlands-to-scale-european-biz/",
+          "reason": "base tier 3 from lead source class \"trade\" (Payload)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://payloadspace.com/exclusive-cubecom-expands-to-the-netherlands-to-scale-european-biz/",
+          "outlet": "Payload",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "image": null
+    },
+    {
+      "id": "2026-11-18-inflection-space-systems-first-mission",
+      "date": "2026-11-18",
+      "headline": "Inflection Space Systems books first orbital mission for 2028",
+      "explainer": {
+        "tagline": "The YC-backed startup will fly a 16U cubesat via Exolaunch to gain flight heritage for its planned standardized bus.",
+        "what_happened": "Inflection Space Systems, a Y Combinator-backed startup, booked a rideshare launch through Exolaunch for its first mission, Pax, a 16U, 36-kilogram cubesat targeted for no earlier than 2028. Pax will carry an on-orbit radiation testbed from The Radiation Team and Indiana University's Center for Reliable & Trusted Electronics, plus a second customer tech-demo payload, to prove out avionics, sensors, power and structures for Exponent, the company's planned standardized satellite bus.",
+        "why_it_matters": "Inflection is pricing Exponent at $1.5 million for a single unit and $700,000 each for orders of 100 or more, a bet that satellite operators will pay for a standardized, high-volume bus instead of custom-built spacecraft; Pax is the flight-heritage proof point that pricing depends on."
+      },
+      "tags": [],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "Inflection Space Systems"
+      ],
+      "source_url": "https://payloadspace.com/exclusive-inflection-space-systems-books-first-orbital-mission/",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://payloadspace.com/exclusive-inflection-space-systems-books-first-orbital-mission/",
+          "reason": "base tier 3 from lead source class \"trade\" (Payload)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://payloadspace.com/exclusive-inflection-space-systems-books-first-orbital-mission/",
+          "outlet": "Payload",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "image": null
+    },
+    {
+      "id": "2026-11-18-esa-sentinel-3c-slstr-first-thermal-images",
+      "date": "2026-11-18",
+      "headline": "Sentinel-3C's thermal radiometer returns its first images, ESA says",
+      "explainer": {
+        "tagline": "ESA says Sentinel-3C's thermal radiometer is already returning usable images, ahead of full commissioning.",
+        "what_happened": "ESA says the Sea and Land Surface Temperature Radiometer (SLSTR) aboard Sentinel-3C, launched September 15, has returned its first thermal images, showing surface temperatures over Western Australia and over southwestern Europe and North Africa. ESA says the instrument is functioning effectively even before being fully commissioned.",
+        "why_it_matters": "SLSTR's thermal channels, once commissioned, feed wildfire detection and sea- and land-surface temperature data into the Copernicus program that commercial resellers and value-added services built on Sentinel data depend on; an instrument already working ahead of full commissioning is a small but concrete signal that Sentinel-3C's data stream will be available on schedule."
+      },
+      "tags": [
+        "eo",
+        "europe",
+        "esa"
+      ],
+      "category": "constellation",
+      "impact": "noise",
+      "companies": [
+        "ESA"
+      ],
+      "source_url": "https://www.esa.int/articles/about-us/directorates/earth-observation-programmes/copernicus/sentinel-3/first-thermal-images-from-sentinel-3c-radiometer",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.esa.int/articles/about-us/directorates/earth-observation-programmes/copernicus/sentinel-3/first-thermal-images-from-sentinel-3c-radiometer",
+          "reason": "base tier 5 from lead source class \"first_party\" (ESA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.esa.int/articles/about-us/directorates/earth-observation-programmes/copernicus/sentinel-3/first-thermal-images-from-sentinel-3c-radiometer",
+          "outlet": "ESA",
+          "class": "first_party",
+          "added": "2026-11-18",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "entities": [
+        {
+          "name": "ESA",
+          "ref": "organizations/esa"
+        }
+      ],
+      "image": null
+    },
+    {
+      "id": "2026-11-18-china-cas-qv-band-satellite-internet-test",
+      "date": "2026-11-18",
+      "headline": "Chinese Academy of Sciences institute tests record Q/V-band satellite link speed",
+      "explainer": {
+        "tagline": "Per Xinhua, unverified: researchers claim a 6.75 Gbps single-channel record, aimed at 6G and satellite-internet ground links.",
+        "what_happened": "Per Xinhua, the Aerospace Information Research Institute under the Chinese Academy of Sciences, working with other institutions, ran a wireless communication experiment at a satellite ground station in Lijiang, Yunnan province, on the Q/V frequency band. Xinhua reports the team achieved a 6.75 gigabits-per-second bidirectional transmission rate on a single channel, more than double China's prior single-channel rate in the same band, and reached 27 Gbps using dual-carrier and polarization multiplexing.",
+        "why_it_matters": "Q/V-band ground-link capacity is a bottleneck for high-throughput satellite internet; a state research institute demonstrating a new domestic record, even at testbed scale rather than on an operating satellite, is a data point on how China is building the ground infrastructure behind its satellite-internet ambitions, including Guowang."
+      },
+      "tags": [
+        "connectivity",
+        "china"
+      ],
+      "category": "product",
+      "impact": "noise",
+      "companies": [
+        "Chinese Academy of Sciences"
+      ],
+      "source_url": "https://english.news.cn/20261117/b3e1236c4b8840e6936ba0af217b3bad/c.html",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 2,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://english.news.cn/20261117/b3e1236c4b8840e6936ba0af217b3bad/c.html",
+          "reason": "base tier 3 from lead source class \"trade\" (Xinhua)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_none",
+            "delta": -1,
+            "reason": "corroboration crawl ran and found nothing"
+          }
+        ],
+        "final": 2,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://english.news.cn/20261117/b3e1236c4b8840e6936ba0af217b3bad/c.html",
+          "outlet": "Xinhua",
+          "class": "trade",
+          "added": "2026-11-18",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-18T16:16:30.370Z",
+      "image": null
     }
   ]
 }

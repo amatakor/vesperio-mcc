@@ -4333,3 +4333,49 @@ a newer entry if a lesson changes.
   (FAA Starbase EIS: 5 sources, 2 updates; Starlink/Ukraine: 99 sources, 46 updates; Starship Flight
   15: 14 sources, 4 updates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~10.5h gap, unfiltered full source list (2026-11-18, third)
+
+- 2026-11-18-I: A signals-pass X search for Vast CEO Max Haot (not on any fetchable channel type,
+  only `x`) surfaced a real, substantive update to the open Nov. 4 Axiom/Vast lawsuit item sitting
+  at a single-sourced SNR 2: Haot's own X post explaining the disputed mission-planning document
+  came from a subcontractor shared with Axiom and that Vast had already corrected and resubmitted
+  it to NASA, plus an on-record denial ("Vast did not take anything from Axiom, and any suggestion
+  otherwise is false."). `x.com` itself now 402s on direct WebFetch (a new failure mode, previously
+  just login-walled); the public syndication endpoint
+  (`cdn.syndication.twimg.com/tweet-result?id=<status_id>&token=a`) still returned the verbatim
+  (truncated) text and was enough to cite. Classing the post `whitelist`/`self` (Max Haot's org
+  "Vast" matches the item's own `companies` array; he is the concerned party speaking about its own
+  conduct) plus a genuine third source (Starlust) moved the item via `rescore` from SNR 2 to 5 in
+  one pass (`corroboration_2plus` +1, `whitelist_floor` self +1, both applied on top of the
+  unchanged mainstream base 3). Worth remembering the self/observer whitelist floor applies to a
+  company's own denial/defense statement just as readily as to a plain factual claim; the SNR
+  scores the attribution, not which side of a dispute turns out to be right.
+- 2026-11-18-J: A near-total-junk 123-candidate queue (SpaceX/Tesla-merger and Anthropic-IPO-vs-
+  SpaceX comparison spam dominating Google News: launch, Starship/Vulcan rehash, a wall of CGTN
+  filler and Federal Register routine notices) still yielded six genuinely new, same-day items once
+  chased past the headline, all via Payload/European Spaceflight/ESA/Xinhua rather than the queue
+  itself: a Dcubed funding round, PLD Space's first commercial Miura 5 launch contract (Mitsubishi
+  Electric), CUBECOM's Netherlands office, Inflection Space Systems' first booked mission, ESA's
+  Sentinel-3C SLSTR first-light images, and a Chinese Academy of Sciences Q/V-band satellite-
+  internet speed-record claim (scored `trade`, "per Xinhua, unverified," per the state-media edge
+  case rule, since the entire story is a performance claim). Two apparent discovery-pass finds
+  (an Isar Aerospace/Maritime Launch Services Nova Scotia spaceport deal, an ESA Sentinel-1 NGT
+  contract to Thales Alenia Space) both turned out to be stale articles from July and June 2026
+  respectively resurfacing in a plain WebSearch with no date filter; always check a search hit's
+  own byline/publish date before treating it as today's news, even when the query specified
+  "November 2026." A Nigeria NASRDA six-satellite, $2 billion sovereign procurement program ("95%
+  complete," IAI/Thales Alenia Space/China Great Wall Industry Corp as expected partners) traced to
+  an Oct. 2 original statement with contracts still unsigned, due at the Nov. 24-27 ASEICC
+  conference in Abuja; left undrafted as a pre-signing "coming soon" restatement, worth checking
+  again after ASEICC for the actual signed contracts.
+- 2026-11-18-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 6 new,
+  1 updated, 0 held"), 1291 items up from 1285. Confirmed via a direct `jq` read of all six new
+  items' `snr`/`category`/`impact` fields (Dcubed and PLD Space/Mitsubishi both SNR 4 off
+  `corroboration_2plus`; ESA Sentinel-3C SNR 5 first-party ceiling; CUBECOM, Inflection Space, and
+  the China Q/V-band item all SNR 2 off `corroboration_none`) and the Axiom/Vast item's rescore
+  (SNR 2 to 5, 3 sources, 1 update), plus a `jq empty` parse check on all seven touched data files
+  (items, held, state, source_ledger, sources, candidates, registry-candidates); held was untouched
+  (no held entries; none of the six new items' companies had a registry profile with a like-for-like
+  crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
