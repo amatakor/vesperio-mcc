@@ -4379,3 +4379,52 @@ a newer entry if a lesson changes.
   (no held entries; none of the six new items' companies had a registry profile with a like-for-like
   crossfeed metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
   update.
+
+## Narrow re-check, ~1h gap, unfiltered full source list (2026-11-18, fourth)
+
+- 2026-11-18-L: ULA's own blog (blog.ulalaunch.com, registry-domain-matched first_party) narrowed
+  the open Vulcan failure's cause from the vaguer "low booster performance" framing already in the
+  item to a specific finding: inadequate fuel supply from the vehicle to the BE-4 engines, not the
+  engines' own performance. Marcia Smith's bluesky independently carried the identical quote minutes
+  later, giving a clean second-source confirmation. The item's `explainer.what_happened` text was
+  still the ORIGINAL Oct. 28/Nov. 15 draft wording, missing both the Nov. 16 FAA mishap-investigation
+  fact and a Nov. 17 Peller/BE-4 quote that a prior sweep had apparently patched onto a stray
+  top-level `what_happened` key instead of nesting it under `explainer` (the site only ever renders
+  `item.explainer.what_happened`, per `src/pages.tsx`, so that Nov. 17 patch never actually displayed).
+  Rewrote `explainer.what_happened` from scratch with the full current narrative (failure, FAA
+  investigation, today's fuel-supply finding) rather than just appending today's delta, to resync the
+  rendered copy; worth checking a long-running saga item's actual `explainer.what_happened` against
+  its own `updates[]` log before assuming prior copy patches landed where the site reads them.
+- 2026-11-18-M: A "New details emerge in SpaceX's $40B debt plan" queue lead traced to a single
+  Bloomberg report (Bloomberg.com itself 403'd) mirrored non-independently by both briefs.co and a
+  Yahoo Finance republish, both explicitly crediting Bloomberg by name; attached only one
+  (briefs.co, "Bloomberg (via Briefs)", mainstream) rather than stacking the second non-independent
+  mirror. Gave the first-tranche-to-market bond terms (5-year Nvidia chip lease with no
+  force-majeure exit, Moody's A3/Kroll A- ratings, Goldman Sachs/Apollo underwriting an Atlas SP
+  SPV) that the existing item's `explainer.what_happened` never had (it was still the Oct. 6
+  "seeking to raise... expected to close in 2027" draft text, stale against the item's own
+  already-updated headline/SNR); rewrote the explainer field in full for the same resync reason as
+  -L above.
+- 2026-11-18-N: A near-total-junk 23-candidate queue (Anthropic-IPO-vs-SpaceX stock comparisons,
+  SpaceX/Tesla merger and Starship-catch rehash, a Musk/Duffy free-Starlink-for-FAA X spat) and
+  three quiet mandatory HTML sources yielded nothing else: the Musk/Duffy spat was left out of
+  scope on a judgment call (Musk's own X claim is unconfirmed by DOT/FAA on the specific offer,
+  no stated terms/scope/date, reads as political blame-exchange rather than a procurement event a
+  director would act on); flag for Florian if this read is too strict. A NASA SkyFall/DRACO "why
+  are the helicopters riding a nuclear rocket" space.com piece was a background explainer/feature,
+  not a dated event, left out per the evergreen-explainer exclusion. An HPQ Silicon battery-pack
+  accessory for Starlink Mini (GlobeNewswire) was judged too thin/tangential (a non-tracked
+  materials company's third-party accessory, "not affiliated with or endorsed by SpaceX") to clear
+  the inclusion bar. An 8-query discovery pass (full matrix) and a 15-of-17-channel signals pass
+  (Marcia Smith's and Andrew Parsonson's own-domain site legs dropped as harvester duplicates, both
+  304/already-covered) surfaced nothing beyond items already published, mostly in this same day's
+  16:16 UTC sweep (Dcubed, PLD Space/Mitsubishi, OHB ClearSpace-1, Thales Alenia/TeQuantS, Freezz
+  Italia/IRIS2). `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new,
+  2 updated, 0 held"), 1291 items unchanged (update-only sweep). Confirmed via a direct `jq` read of
+  both updated items' `snr`/`impact` fields, correctly unchanged (Vulcan: 3/seismic, dispute cap
+  survives; SpaceX financing: 4/major), their grown `sources` (Vulcan 17, up from 15; financing 11,
+  up from 10) and `updates` (Vulcan 6, up from 5; financing 8, up from 7) arrays, and a `jq empty`
+  parse check on all six touched data files (items, held, state, source_ledger, sources,
+  candidates); held and registry-candidates were untouched (no held entries; both touched items
+  were updates, which carry no crossfeed block). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
