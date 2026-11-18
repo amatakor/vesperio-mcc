@@ -93,163 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~8h07m gap, unfiltered full source list (2026-10-18)
-
-- 2026-10-18-A: A thin 29-candidate queue (near-total SpaceX-launch-reaction
-  Bluesky spam, Tesla Roadster/stock chatter, scheduled-not-yet-flown
-  Bandwagon-5/MMX/Long March placeholders) yielded zero new items; all three
-  updates came from chasing two queue leads past the headline (a Marco Rubio
-  Google News redirect, a Russia/ICEYE-X36 Bluesky repost) rather than from
-  the queue's own content. Confirms a near-total-junk queue is still worth a
-  full per-candidate triage pass.
-- 2026-10-18-B: Reconfirms 2026-10-16-G/2026-10-17-M's per-channel
-  `verified_active` check on the same two people again: Marco Langbroek's
-  bluesky (verified_active) classed `whitelist`/`observer` cleanly, while
-  Jonathan McDowell's bluesky (`exists_activity_unverified`; only his X and
-  `planet4589.org` site are verified_active) classed `informal` even though
-  the post was genuinely his and added a real analytical claim ("first LEO
-  rendezvous... without the owner's approval"). Worth continuing to check
-  signals.json's per-channel `status` field before classing a bluesky find
-  `whitelist`, not just whether the account belongs to a listed person.
-- 2026-10-18-C: Anadolu Agency's English-language `anews.com.tr` mirror
-  classed `mainstream` for a same-day Rubio Starshield-access quote, extending
-  2026-10-06-B's AA-as-mainstream precedent to a second AA-owned domain
-  beyond `aa.com.tr` itself.
-- 2026-10-18-D: `bun scripts/finalize-sweep.ts` rejected the first draft
-  attempt once on a 161-char tagline (vs. 140 max); merged cleanly on the
-  second attempt ("merged 0 new, 3 updated, 0 held"); confirmed via a direct
-  `jq` read of all three updated items' `snr`/`sources`/`updates` fields
-  (Starlink/Ukraine: 38 sources, 12 updates; Starmind: 7 sources, 2 updates;
-  Cosmos 2612/ICEYE-X36: 7 sources, 1 update) and the sweep log's
-  `snr_movements` entry (one unrelated persistence bump, Serco NadirEO 2→3).
-  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
-  update.
-
-## Narrow re-check, ~6h17m gap, unfiltered full source list (2026-10-18, second)
-
-- 2026-10-18-E: Marco Langbroek's bluesky `getAuthorFeed` is a thread of
-  personal/political replies to unrelated accounts (French politics, a
-  "vvdonline" dig, a Tesla "Super Happy Fun Car" taunt) with his genuinely
-  on-topic posts interleaved; worth reading the whole feed per sweep rather
-  than skimming for space keywords, since the useful post ("Last clear
-  manoever of Kosmos 2612 was 16 Oct ~6:35 UTC") was a one-line reply with no
-  space-specific keyword in isolation, only legible via `getPostThread` on its
-  parent post. The same feed surfaced a non-whitelisted account ("s2a
-  systems") reposting a fresh time-lapse of ICEYE-X36/Cosmos 2612's Oct 18
-  pass over South America; classed `informal` and attached as a second
-  corroboration source for the existing incident item, extending the standing
-  per-channel `verified_active` precedent (2026-10-16-G/2026-10-17-M/
-  2026-10-18-B) to a repost-within-a-whitelisted-feed case, not just a
-  different-channel-same-person case.
-- 2026-10-18-F: Three same-day discovery-pass leads that read as fresh
-  (Guoxing Aerospace/"Xing Suan" Zhuque-2E launch via a Chinese-language
-  search, Aalyria's $100M Series B, Stoke Space's "$860M Series D extension")
-  all turned out to be stale on a direct check: the Zhuque-2E/Xing Suan launch
-  was the already-published Oct 14 ADA Space Three-Body Group-02 item under a
-  different company label (CGTN itself calls the same program "Xing Suan";
-  worth remembering a Chinese-language source can attribute the same
-  constellation to a different named company than the English trade press
-  does), Aalyria's Series B closed in February 2026, and no evidence of an
-  "$860M Stoke Space Series D extension" exists beyond the already-published
-  Sept 8 $1B Series E (likely a WebSearch-synthesis conflation of unrelated
-  figures). None were drafted.
-- 2026-10-18-G: A Kyiv Post piece citing Ukraine's presidential defense-tech
-  adviser Serhii Beskrestnov on Rassvet's "real-time strike control" timeline
-  (six months, 292 satellites by 2027, 924 by 2035) is a genuinely new,
-  dateable angle on the long-running Rassvet saga (deployment tracking and
-  ITU/sanctions items already published), not a rehash: drafted as its own
-  new item rather than an update, since the most recent Rassvet item was 18
-  days old and this is a distinct threat-capability assessment, not a
-  continuation of the sanctions-request story. NV.ua (`english.nv.ua`) 403'd
-  on direct WebFetch (new addition to the paywalled/bot-blocked list);
-  RBC-Ukraine (`newsukraine.rbc.ua`) fetched cleanly and independently
-  confirmed the core quote and timeline, used as corroboration instead.
-- 2026-10-18-H: `bun scripts/finalize-sweep.ts` merged cleanly on the first
-  attempt ("merged 1 new, 1 updated, 0 held"); confirmed via a direct `jq`
-  read of the new Rassvet item's `snr`/`category`/`impact`/`sources` fields
-  (963 items, up from 962) and the updated Cosmos 2612/ICEYE-X36 item's grown
-  `sources`/`updates` arrays (9 sources, 2 updates). `bun run build` was not
-  attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h31m gap, unfiltered full source list (2026-10-18, third)
-
-- 2026-10-18-I: A near-total-junk 49-candidate queue (dozens of Google News
-  Starlink/Ukraine-saga rehash hits on the Bessent/Zelenskyy/Rubio exchange,
-  SpaceX-launch-reaction Bluesky spam, off-topic Futurism filler) still
-  needed a genuine same-company (SpaceX) + same-category (geopolitical)
-  dedup_distinct: a same-day Lithuania Starlink-equipment arson attempt
-  (Kyiv Independent lead, corroborated by Kyiv Post/United24 Media/
-  Euromaidan Press, all independently worded, not wire rewrites) is the
-  third such suspected-Russian sabotage attempt on European Starlink ground
-  infrastructure since September (after Poland and Bulgaria) but a wholly
-  distinct event from the ongoing US speed-restriction/intelligence-sharing
-  saga; one `dedup_distinct` entry cleared the gate's same-company+category
-  heuristic on the first attempt.
-- 2026-10-18-J: Zelenskyy's own NBC "Meet the Press" transcript, fetched
-  directly rather than quoted from a WebSearch synthesis, gave a more direct
-  on-record claim than any prior update in the saga ("the message came from
-  American government to limit this speed, and technically SpaceX did it,"
-  intelligence blocked "for some period of time," no intel "during ballistic
-  attacks during three days"); paired with Bessent's on-record "very
-  reckless" pushback (NBC) and Rep. Mike Turner's on-record call for a
-  congressional investigation (CBS "Face the Nation" transcript, fetched
-  directly), folded into the existing item via `attach`+empty `patch` with no
-  bump (mainstream-led item already at its corroboration_2plus ceiling of 4,
-  now 13 updates deep).
-- 2026-10-18-K: `updates[].patch` must still be present as an object (`{}`
-  is fine) even when an update is a pure `attach`+`note` with no copy
-  change; omitting it entirely produced a hard rejection
-  ("updates[N].patch: required object") on both of this run's updates. The
-  worked example in prompts/update-items.md shows a non-empty patch, which
-  reads like patch is optional for attach-only updates; it is not.
-- 2026-10-18-L: Marco Langbroek's bluesky feed (fetched via
-  `getAuthorFeed`, the only one of 15 checked fetchable channels with
-  anything inside this run's window) gave a genuine de-escalation data
-  point on the open Cosmos 2612/ICEYE-X36 incident (a small orbit raise
-  around Oct 18 ~1:52 UTC, ~5 km apart six hours after closest approach) --
-  folded in via `attach`+empty `patch`, no bump (whitelist-led item already
-  at its non-first-party ceiling of 4).
-- 2026-10-18-M: An 8-query discovery pass covering the full matrix (launch,
-  financial, incident/debris, China, India, EO contracts, FCC/regulatory,
-  Europe) surfaced nothing new; every hit traced to an already-published
-  item (Voyager/DoW dispenser contract, GuoWang 27th batch, ADA Space,
-  Meteor 2-7 breakup, Minnesota cornfield debris, Rocket Lab Neutron slip,
-  Stoke/Hadrian Q3 funding). Both of this run's genuinely new threads
-  (Lithuania arson, the Bessent/Zelenskyy/Turner escalation) were found via
-  targeted follow-up searches on queue leads instead, consistent with the
-  2026-09-21-C deep-mode norm extending to normal-mode sweeps too: the
-  matrix pass is a floor, not the only path to a real find.
-- 2026-10-18-N: `bun scripts/finalize-sweep.ts` rejected the first draft
-  attempt on two counts (the Lithuania item's missing `dedup_distinct` and
-  both updates' missing `patch`); merged cleanly on the second attempt
-  ("merged 1 new, 2 updated, 0 held"); confirmed via a direct `jq` read of
-  the new Lithuania item's `snr`/`snr_trace`/`category`/`impact`/`sources`
-  fields (964 items, up from 963) and both updated items' grown `sources`/
-  `updates` arrays (Starlink/Ukraine: 41 sources, 13 updates; Cosmos
-  2612/ICEYE-X36: 10 sources, 3 updates). `bun run build` was not attempted,
-  per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~3h39m gap, unfiltered full source list (2026-10-18, fifth)
-
-- 2026-10-18-O: A thin ~20-candidate queue (near-total Starlink/Ukraine saga
-  rehash of the Bessent/Rubio/Zelenskyy exchange already captured by earlier
-  same-day sweeps, plus scheduled-not-yet-flown Bandwagon-5/MMX H3 launches)
-  and all five mandatory HTML sources, all 16 directly-fetched signals
-  channels (europeanspaceflight.substack.com skipped, budget), and an
-  8-query discovery pass covering the full matrix (launch, financial,
-  incident/regulatory, China, India, Europe, EO contracts, M&A) yielded
-  only one genuinely new fact: Zelensky's direct Kyiv Independent quote
-  confirming US intelligence sharing on Russian ballistic missile launches
-  has been restored ("We are very thankful for this. Now it works") after
-  a three-day block, while the Starlink/Starshield speed cap itself stays
-  in place. Folded into the existing saga item via `attach`+empty `patch`,
-  no bump (mainstream-led item already at its corroboration_2plus ceiling
-  of 4, 14 updates deep). `bun scripts/finalize-sweep.ts` merged cleanly on
-  the first attempt ("merged 0 new, 1 updated, 0 held"); confirmed via a
-  direct `jq` read of the updated item's grown `sources`/`updates` arrays
-  (42 sources, 14 updates; 964 items, unchanged). `bun run build` was not
-  attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-19)
 
 - 2026-10-19-A: A near-total-junk 47-candidate queue (dozens of Bluesky
@@ -4419,3 +4262,43 @@ a newer entry if a lesson changes.
   heuristic on the second attempt. `bun scripts/finalize-sweep.ts` merged cleanly on the second attempt
   ("merged 1 new, 0 updated, 0 held"), 1279 items up from 1278. `bun run build` was not attempted, per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-11-18)
+
+- 2026-11-18-A: Cameron County commissioners voting 3-2 against a public hearing on SpaceX's tax
+  abatement request for its $24 billion Starbase data center/gas-plant plant was left entirely out of
+  scope, extending the 2026-11-06-H/2026-11-10-A terrestrial-AI/compute-business exclusion from the
+  compute-deal financial stories themselves to a LOCAL TAX dispute whose subject is squarely that same
+  excluded data center (no launch, satellite, or EO/connectivity angle at all); a same-day Politico piece
+  on the data center's Texas air permit was excluded on the identical reasoning. Worth remembering the
+  exclusion travels with the data-center subject matter, not just with "financial event" framing.
+- 2026-11-18-B: A third ESA+`contract` same-company-plus-category dedup collision this week (against the
+  Nov. 12 MaiaSpace launcher-challenge delay, the Nov. 16 Thales Alenia/TeQuantS quantum contract, and
+  the Nov. 17 Freezz Italia IRIS2 item, all three at once) confirms ESA's prolific contract cadence now
+  needs the same pre-emptive multi-entry `dedup_distinct` treatment as SpaceX; a brand-new OHB/ClearSpace-1
+  debris-removal contract needed three entries in one draft to clear on the second attempt.
+- 2026-11-18-C: ULA's CEO is now Mark Peller, not Tory Bruno (who resigned per earlier entries); Aviation
+  Week's Nov. 17 Vivienne Machi byline quoting him on the Vulcan anomaly investigation ("centers around
+  core stage booster... powered by a pair of BE-4 engines") reads as pointing toward the engines, while
+  the same day's Ars Technica piece (citing ULA's own statement) says the early data "may not be due to
+  BE-4 engines" and instead describes low booster performance causing early stage separation; folded both
+  readings into the item's `what_happened`/`why_it_matters` attributed to their outlets rather than picking
+  one, per the standing metric-mismatch-is-annotated-not-punished rule. The item's SNR correctly held at 3
+  (the standing same-metric dispute cap survives the rescore).
+- 2026-11-18-D: Texas's frozen $109M Starlink BEAD award (standing Aug. 12 item) got a genuine escalation
+  via Fortune: Gina Hinojosa, who sued Abbott for his Musk emails and unseated him in the Nov. 3 election
+  to become Texas's first Latina governor, and incoming AG Nathan Johnson have both pledged to investigate
+  the broadband office's shift from calling satellite "non-reliable" to funding Starlink as possible
+  favoritism. Worth watching next sweep for Hinojosa's own campaign-trail "data center freeze" pledge
+  (per the same Fortune piece's sourcing) materializing as an actual state action against the Cameron
+  County-adjacent Terafab/Starbase buildout, which would be a genuinely new, in-scope regulatory fact
+  distinct from the out-of-scope tax-abatement vote itself.
+- 2026-11-18-E: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the triple ESA+contract
+  dedup collision above; merged cleanly on the second attempt ("merged 5 new, 4 updated, 0 held"), 1284
+  items up from 1279. Confirmed via a direct `jq` read of all five new items' `snr`/`impact`/`category`
+  fields and all four updated items' grown `sources`/`updates` arrays (Vulcan: 15 sources/5 updates, SNR
+  held at 3; Texas BEAD: 2 sources/1 update, SNR 3 to 4; AST SpaceMobile/Firefly: 8 sources/5 updates, SNR
+  held at 5; SpaceX/Apollo financing: 10 sources/7 updates, SNR held at 4), the sweep log's three unrelated
+  persistence-bump `snr_movements` entries, and a `jq empty` parse check on all six touched data files
+  (items, held, state, source_ledger, sources, candidates). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
