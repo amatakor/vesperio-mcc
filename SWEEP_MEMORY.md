@@ -4302,3 +4302,34 @@ a newer entry if a lesson changes.
   persistence-bump `snr_movements` entries, and a `jq empty` parse check on all six touched data files
   (items, held, state, source_ledger, sources, candidates). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h42m gap, unfiltered full source list (2026-11-18, second)
+
+- 2026-11-18-F: `scoring.whitelist: "observer"` on a commentary item needs an actual source entry
+  classed `whitelist` under a verified-active signals.json channel in that item's `scoring.sources`;
+  attesting the floor off a trade outlet's report of a whitelisted analyst's (Tim Farrar) X quote,
+  with no fetchable copy of his own channel confirming it, gets rejected ("the floor is earned by
+  membership, not attested"). Setting `whitelist: null` and letting the plain trade-base-plus-
+  corroboration math run (Light Reading lead, a Stocktwits/Yahoo Finance mirror as the second
+  distinct source) still landed a clean SNR 4; worth remembering the floor requires citing the
+  person's own channel, not just a report of what they said elsewhere, even when they are genuinely
+  signals.json-whitelisted and the quote is corroborated across multiple direct fetches.
+- 2026-11-18-G: A near-total-junk 28-candidate queue (SpaceX/Tesla stock and merger-speculation
+  chatter, Starship-catch and Vulcan-failure rehash already published 2026-11-14/15/18) still
+  yielded one genuine commentary gap via the open-web discovery pass, not the queue: analyst Tim
+  Farrar's X post (quoted identically across three independently-fetched trade outlets) urging Musk
+  to guarantee 50+ Falcon 9 flights/year to third parties after Vulcan's failure. Also confirmed a
+  WebSearch-synthesis fabrication the standing pattern predicts: a search result flatly claimed "the
+  Space Force suspended Vulcan launches for NSSL" following the failure, but a direct CNBC fetch
+  showed the real fact is a pre-existing Pentagon certification hold pending that mission's outcome,
+  not a new suspension triggered by the failure. All three mandatory HTML-only sources (Planet Labs
+  Pulse, BlackSky News, EUSPA procurement) traced to already-published or already-judged-too-thin
+  ground (BlackSky's Nov. 10 MoD contract, the EUSPA Space Traffic Coordination Platform listing
+  flagged thin on 2026-10-24-H).
+- 2026-11-18-H: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the whitelist-
+  floor misuse above; merged cleanly on the second attempt ("merged 1 new, 3 updated, 0 held"), 1285
+  items up from 1284. Confirmed via a direct `jq` read of the new Farrar item's `snr`/`snr_trace`/
+  `category`/`impact`/`kind` fields and all three updated items' grown `sources`/`updates` arrays
+  (FAA Starbase EIS: 5 sources, 2 updates; Starlink/Ukraine: 99 sources, 46 updates; Starship Flight
+  15: 14 sources, 4 updates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
