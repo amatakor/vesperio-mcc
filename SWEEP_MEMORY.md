@@ -4250,3 +4250,49 @@ a newer entry if a lesson changes.
   sources, up from 3; Starlink/Ukraine: 99 sources, unchanged, copy-only patch) and the sweep log's
   four unrelated persistence-bump `snr_movements` entries. `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-11-19, second)
+
+- 2026-11-19-E: A near-total-junk 40-candidate queue (DealBook Summit Musk political/midterms chatter,
+  SpaceX-Tesla-merger and Anthropic-IPO-vs-SpaceX stock comparisons, repeated Bluesky launch-alert bot
+  posts) still yielded a cluster of genuinely new DealBook Summit facts once chased past the political
+  headlines: Musk's on-record "he is lying" accusation against Zelenskyy over Starshield (distinguishing
+  civilian Starlink's "kill decisions" framing from government-controlled Starshield), and a separate,
+  more specific stance on his Tesla pay package not being triggered by a merger alone. Both folded into
+  their respective living-document items (Starlink/Ukraine saga, Tesla/SpaceX merger) as attach+patch
+  enrichments, no bump (both items already at modifier ceilings). The ISRO "4 Gaganyaan astronaut
+  candidates revealed" queue/discovery hit (also "How did ISRO pick...") traced to Modi's February 2024
+  naming ceremony, a pure recap feature with zero new dateable fact and no commercial-contractor angle;
+  left undrafted per the standing stale-resurfacing and evergreen-explainer exclusions, extending the
+  2026-10-25-H China-crewed-lunar precedent to Gaganyaan crew-reveal recaps specifically.
+- 2026-11-19-F: HallTech (Eindhoven, €25M Series A) uses Hall-effect-thruster physics repurposed into a
+  terrestrial physical-vapor-deposition tool for semiconductor fabs; it doesn't build or operate
+  anything in orbit, so it's out of scope entirely despite the ESA BIC pedigree and the "satellite
+  propulsion" framing in coverage. Worth the general reminder that a space-derived-IP company's own
+  product category (semiconductor fab tooling here) decides scope, not its origin story.
+- 2026-11-19-G: `candidates-context`'s queue surfaced a signals-pass-shaped value-add only via a direct
+  X search, not the registered `fetchable` leg: ESA Director General Josef Aschbacher's own Nov. 17 X
+  post welcoming the ICEYE/Avio tie-up ("a strategically significant move... a powerful end-to-end
+  European player") was found by a targeted WebSearch for his handle rather than his `signals-context`
+  `fetchable` bluesky/site channel. `whitelistFloorChannels` covers ALL verified-active channel types
+  per person (including `x`), so citing his own x.com/status URL directly as `class: "whitelist"` on a
+  plain `attach` (no bump requested) validated cleanly even though the floor machinery is normally only
+  exercised via `scoring.whitelist`/`rescore.whitelist`.
+- 2026-11-19-H: A second, independently-fetched source (Space.com) on the already-published Nov. 17
+  Foundational.Space Retro-2 item added real new facts the single-sourced Via Satellite-led draft
+  lacked (the July 2026 Transporter-17/D-Orbit ION launch vehicle, ESA's collaboration explicitly named,
+  a CTO quote), earning a clean `corroboration_2plus` bump (2 to 3) on an `attach`+`bump` update with no
+  `patch` needed. Worth re-checking a single-sourced recent item for a second angle before assuming
+  `found_none` is final; the Payload April 2026 "Kepler opens 40-GPU cluster" piece surfaced by the same
+  search was confirmed (via a direct fetch) to be a stale pre-announcement of a DIFFERENT, later Nov. 19
+  Sophia Space/Kepler test-completion story, not corroboration of it.
+- 2026-11-19-I: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new, 4
+  updated, 0 held"), 1299 items up from 1297. Confirmed via a direct `jq` read of both new items'
+  `snr`/`category`/`impact` fields (Sophia Space/Kepler: SNR 2, trade base minus `corroboration_none`;
+  Thales Alenia/ASI SAR-L: SNR 5, first-party ceiling) and all four updated items' grown `sources`/
+  `updates` arrays (Starlink/Ukraine: 102 sources, 48 updates; Tesla merger: 13 sources, 6 updates;
+  ICEYE/Avio: 5 sources, 2 updates; Foundational Retro-2: 2 sources, 1 update, SNR 2 to 3), plus a direct
+  `jq empty` parse check on all seven touched data files (items, held, state, source_ledger, sources,
+  candidates, registry-candidates); held and registry-candidates were untouched (no held entries;
+  neither new item's companies touched a crossfeed-eligible registry field). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
