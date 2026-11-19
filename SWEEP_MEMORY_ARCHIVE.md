@@ -15495,3 +15495,213 @@ Append-only; the standing rules and the live window stay in SWEEP_MEMORY.md.
   (42 sources, 14 updates; 964 items, unchanged). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
 
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-19)
+
+- 2026-10-19-A: A near-total-junk 47-candidate queue (dozens of Bluesky
+  "spacex launch" reaction spam, SpaceX/Tesla-merger stock speculation,
+  off-topic BBC pieces) still had one genuine new fact buried in a Google
+  News hit: US ambassador to the EU Andrew Puzder's on-record FT interview
+  threatening "devastating" trade retaliation if Brussels reserves most of
+  the 2 GHz satellite spectrum band for European operators (a new angle on
+  the ongoing EU D2D spectrum fight the 2026-10-16 ESPI commentary item
+  already covered from the policy-brief side). Most outlets carrying the
+  story ran the identical wire headline "US threatens EU with devastating
+  retaliation..." (investinglive.com, louisvelazquez.com, and others);
+  TRT World had a genuinely distinct headline and additional quotes, so it
+  led as `mainstream` with investingLive attached as a second, `informal`
+  corroboration source rather than stacking the wire-identical copies.
+- 2026-10-19-B: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt on the same-company+category heuristic (SpaceX + "regulatory"
+  within 7 days of the unrelated 2026-10-13 FAA Starbase EIS item); a
+  `dedup_distinct` attestation cleared it on the second attempt ("merged 1
+  new, 0 updated, 0 held"). Confirms the heuristic fires on coincidental
+  company+category overlap even when the two events share nothing else,
+  same pattern as 2026-10-18-I's Lithuania-arson case.
+- 2026-10-19-C: JAXA's MMX (Martian Moons eXploration) mission, queued via
+  a BBC piece and also flagged by Marcia Smith and ESA's own bluesky as
+  "pick of the week," is scheduled to launch on an H3 rocket from
+  Tanegashima at 04:41 JST Oct 20 (~19:41 UTC Oct 19), i.e. after this
+  run's window closed; left undrafted as a pre-launch preview per the
+  standing no-preview-coverage norm. Worth checking Launch Library/JAXA
+  for the actual launch result next sweep and drafting it dated on the
+  real launch date under `science` (first dated MMX program milestone).
+- 2026-10-19-D: Confirms the 2026-10-17-C/J/2026-10-18 pattern once more:
+  spacepolicyonline.com and europeanspaceflight.com were counted as
+  checked via the harvester's own health-block data (both quiet, nothing
+  past `lastSweep`) rather than a redundant direct re-fetch, while their
+  separate bluesky/substack feeds were still fetched individually.
+  europeanspaceflight.substack.com/feed 403'd yet again, extending the
+  2026-09-20-K/2026-09-22-G/2026-10-17-J intermittent-failure list.
+
+## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-19, second)
+
+- 2026-10-19-E: A near-total-junk 125-candidate queue (hundreds of Musk
+  "SpaceX share to every kid in America" giveaway pickups, Tesla/SpaceX
+  merger speculation, off-topic BBC/CGTN filler) still buried a genuine
+  new story: Deutsche Telekom, Orange, Telefónica and Vodafone signed a
+  letter of intent to jointly bid for Europe's 2 GHz MSS spectrum against
+  Starlink. AST SpaceMobile's own wire-distributed release (businesswire
+  via a financialcontent.com mirror, since ast-science.com's investor
+  press-release page is still a JS shell) framed itself as central to the
+  initiative, but three independent trade outlets fetched directly (Space
+  Intel Report, Telecompaper) and the operators' own joint statement
+  (vodafone.com) all explicitly stated "a satellite partner still to be
+  selected" and "no specific satellite partner is named." Led with Space
+  Intel Report rather than the AST wire release, and left AST SpaceMobile
+  out of `companies[]` entirely rather than imply a confirmed role
+  independent coverage didn't support -- a vendor's own wire release about
+  a multi-party deal can overstate its settled role in ways the other
+  parties' and independent press's own words don't confirm. Separately,
+  confirmed a Light Reading/TheNextWeb hit on the "same" story was
+  actually the stale September 7-8 "early talks, no decision" precursor
+  (byline-dated, not the page-load date), distinct from today's concrete
+  LOI-signed escalation.
+- 2026-10-19-F: Marco Langbroek's bluesky `getAuthorFeed`, re-queried with
+  a prompt asking specifically for the raw record (text, createdAt, post
+  uri) of every post mentioning "Cosmos 2612"/"Kosmos 2612"/"ICEYE"/
+  "manoeuver", cleanly surfaced a one-line Oct. 19 post easy to miss in
+  the ordinary feed read ("Another manoeuver by KOSMOS 2612, around 12:26
+  UTC on the 18th October. This is clearly not over yet.") that revised
+  the open Cosmos 2612/ICEYE-X36 incident item's prior "last clear
+  maneuver Oct 16, no further maneuvering since" / "slowly moving away"
+  de-escalation framing. Worth using this keyword-filtered raw-record
+  prompt shape whenever a whitelisted tracker's feed mixes substantive
+  updates in among personal/political replies (extends 2026-10-18-E), not
+  just when a linked report needs embed resolution (2026-10-17-A).
+- 2026-10-19-G: Re-confirms the Sateliot €100M Series C "launches"
+  headline (computerweekly.com, datacenterdynamics.com, both today-dated)
+  is still the stale April 2026 round-OPENING announcement on a third
+  appearance (2026-09-28-H), with no stated close; left undrafted again.
+  NASA's $476M CSDA On-Ramp 2 expansion (SatellitePro ME, NASA Watch)
+  traced to the same June 2026 program as the already-published June 23
+  item, not a new October award. GSAT-7B ("Indian Army's first dedicated
+  satellite," The Week) is a 2023-signed contract resurfacing with no new
+  dateable fact. A JAXA/Innovative Space Carrier reusable-rocket data-
+  sharing R&D collaboration (Oct. 14, J-SPARC) predates the window by 5
+  days with no stated dollar value; left uncashed since the predates-
+  window chase-it exception is reserved for notable/seismic gaps, not
+  thin R&D MOUs.
+- 2026-10-19-H: `bun scripts/finalize-sweep.ts` merged cleanly on the
+  first attempt ("merged 4 new, 1 updated, 0 held"); confirmed via a
+  direct `jq` read of all four new items' `snr`/`category`/`impact`
+  fields (969 items, up from 965) and the updated Cosmos 2612/ICEYE-X36
+  item's grown `sources`/`updates` arrays (11 sources, 4 updates). `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
+
+## Narrow re-check, ~3h gap, unfiltered full source list (2026-10-19, third)
+
+- 2026-10-19-I: A near-total-junk 72-candidate queue (Musk "SpaceX share
+  to every kid in America" giveaway pickups, Tesla/SpaceX merger
+  speculation, off-topic Futurism/BBC filler) and five quiet mandatory
+  HTML sources still yielded four new items, all via the signals pass
+  and one queue-adjacent SpaceNews hit: Uzbekistan's Artemis Accords
+  signing (77th nation, Samarkand), a Polish deputy minister's Oct 13
+  parliamentary remarks on US budget uncertainty complicating Artemis
+  commitments (Andrew Parsonson/European Spaceflight bluesky post,
+  created minutes after `lastSweep`), UARX Space's disclosed-and-resolved
+  OSSIE-D ground-station anomaly on its maiden OTV flight, and an
+  EarthDaily wildfire-product deployment to an unnamed Australian
+  insurer. Confirms 2026-10-17-C/J's pattern once more: SpacePolicyOnline
+  and European Spaceflight's own feeds surfaced the Uzbekistan and
+  Poland leads respectively via their bluesky accounts' `getAuthorFeed`,
+  not the harvester queue.
+- 2026-10-19-J: `state.gov`'s own Uzbekistan-Artemis-Accords press
+  release 403'd on every WebFetch attempt (same failure mode as past
+  `.gov` blocks); NASA's own site had no matching release yet (a guessed
+  URL pattern 404'd, and a `site:nasa.gov` search confirmed nothing),
+  consistent with a Behind The Black aside that "NASA has not yet made
+  an announcement." Led instead with two independent Uzbek/Central-Asian
+  outlets (Gazeta.uz, carrying a direct Saidov quote; Times of Central
+  Asia, independently confirming the same quote) as `mainstream`, with
+  UzDaily and Behind The Black as further corroboration -- a same-day
+  Artemis Accords signing is still fully sourceable and worth drafting
+  even when the usual NASA/State first-party lead hasn't posted yet.
+- 2026-10-19-K: The Poland/Artemis item's single-source whitelist lead
+  (European Spaceflight) scored SNR 4 despite an honest `found_none`
+  corroboration crawl: the gate applies `corroboration_none` (-1) before
+  `whitelist_floor` (+2 to reach the floor of 4), so a whitelisted
+  observer's on-topic factual claim still lands at its floor even after
+  the found_none penalty, not at floor-minus-one. Worth remembering the
+  whitelist floor is a hard floor applied after other modifiers, not
+  just an alternate base tier.
+- 2026-10-19-L: `crawl: "not_attempted"` on a draft with only 4 new items
+  (well under the 8-event corroboration budget) is illegal regardless of
+  how thin the search prospects look; the first finalize attempt would
+  have been rejected for this had it been submitted (caught before
+  submission by re-reading the budget rule). Ran an actual search for
+  the EarthDaily Australia item, found nothing independent, and used
+  `crawl: "found_none"` instead -- costless anyway since
+  `corroboration_none` doesn't apply to an already-ceiling first-party
+  lead (SCORER_VERSION 2).
+- 2026-10-19-M: `bun scripts/finalize-sweep.ts` rejected the first draft
+  attempt twice, both on tagline overages (164 and then 141 chars vs. 140
+  max, on two different items in sequence); merged cleanly on the third
+  attempt ("merged 4 new, 1 updated, 0 held"). Confirmed via a direct
+  `jq` read of all four new items' `snr`/`snr_trace`/`category`/`impact`
+  fields (973 items, up from 969) and the updated Starlink/Ukraine item's
+  grown `sources`/`updates` arrays (43 sources, 15 updates, the new
+  four-senator-to-SpaceX letter). `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h14m gap, unfiltered full source list (2026-10-19, fourth)
+
+- 2026-10-19-N: A near-total-junk 83-candidate queue (dozens of Google News/
+  Bluesky hits on Musk's pledge to gift one SpaceX share to every US child,
+  plus SpaceX-launch-reaction spam) was left out of scope entirely: it is
+  Musk's personal philanthropy framing of his own equity, not a funding
+  round, M&A, 8-K, or other corporate financial event of SpaceX itself,
+  the same distinction as the standing 2026-08-31-J passive-stock-
+  disclosure exclusion. The queue's only two real gaps were a same-day
+  Via Satellite "OHB Wins ESA Study Deal for Lunar Infrastructure" hit
+  (OHB's own ohb.de release was fetchable and registry-matched, landing
+  SNR 5 first-party) and a Via Satellite FCC/Globalstar C-3 authorization
+  story; a third, the Bulgaria Starlink-antenna arson now at the EU-
+  arrest-warrant stage, required chasing a queue-adjacent Google News hit
+  past the headline to BTA (Bulgaria's national news agency) and Kyiv
+  Post, then dating the item on the actual Oct. 9 arson per the standing
+  predates-window chase-it convention rather than today's court-filing
+  date; it is the first dedicated item for Bulgaria's incident, which the
+  Oct. 18 Lithuania item had previously only referenced as background
+  ("following incidents in Poland and Bulgaria").
+- 2026-10-19-O: JAXA's own site (global.jaxa.jp, mmx.jaxa.jp) would not
+  surface post-launch confirmation of the MMX/H3 liftoff (one straight
+  404, one page apparently cached pre-launch despite the event having
+  occurred hours earlier), and spaceflightnow.com/nasaspaceflight.com/
+  japantimes.co.jp all 403'd or paywalled on direct fetch. Marcia Smith's
+  and Anatoly Zak's Bluesky posts (both signals.json whitelisted,
+  verified_active channels) ended up the most reliable confirmation of
+  liftoff and second-stage separation, with astronomy.com (mainstream)
+  and Launch Library (aggregator) as further corroboration; worth
+  defaulting to the whitelisted trackers' own channels over chasing
+  paywalled outlets when a launch result needs same-day confirmation.
+- 2026-10-19-P: `finalize-sweep`'s same-domain corroboration-collapse rule
+  merged two DIFFERENT whitelisted people's Bluesky posts
+  (`bsky.app/profile/spacepolicyonline.bsky.social` and
+  `bsky.app/profile/anatolyzak.bsky.social`) into one corroboration unit
+  purely because both URLs share the `bsky.app` host, logging it in
+  `corroboration_collapses` as `same_domain`. Both source entries still
+  appear in the item's `sources` array and the final trace text still
+  read "4 distinct sources," so the bump math wasn't affected here (two
+  other distinct-domain sources covered the threshold), but on a thinner
+  item where two different bluesky posts were the ONLY corroboration,
+  this collapse could wrongly suppress a `corroboration_2plus` bump.
+  Worth flagging if a sparsely-sourced bluesky-led item scores lower than
+  expected despite two posts from two different whitelisted people.
+- 2026-10-19-Q: Globalstar's registry `sats_planned` field (17, Wikipedia,
+  2026-07-08) reads as stale against the FCC's newly authorized 48-LEO-
+  satellite C-3 generation; rather than attest `same_metric: true` and
+  risk the gate reconciling a non-monotonic field incorrectly, the
+  crossfeed block left `facts: []` with a note flagging the mismatch for
+  the weekly registry run instead of auto-merging it. `bun scripts/
+  finalize-sweep.ts` rejected the first draft attempt on the standing
+  same-company-plus-category dedup heuristic (the Bulgaria item against
+  the unrelated Oct. 9 German Space Command item and the Starlink/Ukraine
+  saga, both sharing company SpaceX); two `dedup_distinct` entries cleared
+  it on the second attempt ("merged 4 new, 1 updated, 0 held"). Confirmed
+  via a direct `jq` read of all four new items' `snr`/`snr_trace`/
+  `category`/`impact`/`sources` fields (977 items, up from 973) and the
+  updated Cosmos 2612/ICEYE-X36 item's grown `sources` (12, up from 11)
+  and `updates` (5, up from 4) arrays. `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
+
