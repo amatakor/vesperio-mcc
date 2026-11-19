@@ -4296,3 +4296,36 @@ a newer entry if a lesson changes.
   candidates, registry-candidates); held and registry-candidates were untouched (no held entries;
   neither new item's companies touched a crossfeed-eligible registry field). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~10.5h gap, unfiltered full source list (2026-11-19, third)
+
+- 2026-11-19-J: A Mediaite piece surfaced by a Duffy/Starlink search read like the same FAA-outage
+  explanation ("Sean Duffy Blames Faulty Test of One Router for FAA Stop") but, fetched directly,
+  turned out to describe an unrelated router-installation failure, not the Starlink lab-test claim;
+  used two other independently-fetched outlets (Moneywise, 24/7 Wall St.) that both carried Duffy's
+  actual verbatim quote ("we sent Starlink, in one of its prior iterations, to our tech lab...")
+  instead. Worth the reminder that two Duffy-and-FAA stories from the same week can cover genuinely
+  different root-cause explanations; a matching headline shape is not proof of a matching claim,
+  extending the standing WebSearch-conflates-distinct-facts caution to same-official multi-cause
+  news cycles specifically.
+- 2026-11-19-K: A drafted new item on the Senate Appropriations defense bill's SpaceX sole-source
+  restriction (Section 8127, SB-AMTI/SDN, $100M cap) turned out to duplicate
+  `2026-11-17-senate-appropriations-space-force-sole-source-limit`, already published by an earlier
+  sweep the same day the bill was released; caught only by grepping `items.json` for recent
+  SpaceX+procurement items before drafting, not by the headline (my lead source, SatNews, used
+  different wording than the existing item's SpacePolicyOnline-led copy). A second, genuinely
+  distinct fact from the SAME underlying bill (Aviation Week's "SAML R&D up 226% to $31.7M" in-space-
+  servicing budget line, naming Astroscale/Orbit Fab/Rocket Lab/Northrop Grumman/Starfish Space/
+  Momentus Space) folded in cleanly as a no-bump `updates[].attach`+`patch` enrichment instead of a
+  second new item, since it is the same bill-release event just a different provision. Worth checking
+  a budget-bill story against `items.json` by company+category before drafting even when the specific
+  provision and lead outlet both look fresh.
+- 2026-11-19-L: `bun scripts/finalize-sweep.ts` rejected five consecutive draft attempts, each on a
+  single tagline over 140 chars (one item at a time, since the gate reports only the first
+  violation); merged cleanly on the sixth attempt ("merged 6 new, 1 updated, 0 held"), 1305 items up
+  from 1299. Confirmed via a direct `jq` read of all six new items' `snr`/`category`/`impact` fields
+  and the Senate appropriations item's grown `companies` array and `updates` (1), plus a `jq empty`
+  parse check on all six touched data files (items, held, state, source_ledger, sources, candidates);
+  registry-candidates was untouched (no crossfeed facts: none of the six companies/entities touched a
+  registry-eligible field). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
+  update.
