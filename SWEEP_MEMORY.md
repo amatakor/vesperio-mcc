@@ -4313,3 +4313,52 @@ a newer entry if a lesson changes.
   harvester-duplicate domains (spacepolicyonline.com, europeanspaceflight.com bare sites),
   `europeanspaceflight.substack.com` 403'd. `bun run build` was not attempted, per the 2026-09-09
   CLAUDE.md procedure update.
+
+## Narrow re-check, ~1h13m gap, unfiltered full source list (2026-11-20, fourth)
+
+- 2026-11-20-O: A thepeninsulaqatar.com mirror of Xinhua's same-day Long March 8A/SatNet Group 30
+  report stated the launch date as "November 21," a full day off every Chinese-language source
+  (Xinhua, The Paper, Sina, 21jingji) and Launch Library's own 11:59 UTC Nov. 20 timestamp; trusted
+  the converging Chinese-language sources and LL2 over the one English mirror's date rather than
+  split the difference, consistent with the standing single-outlet-conflicts-with-everything-else
+  caution.
+- 2026-11-20-P: Vivienne Machi's Aviation Week author page 403'd on the first fetch attempt this run
+  but succeeded on a second, immediately-retried fetch with no change in approach; worth retrying
+  once before logging a 403 as a failed attempt, since the page has flipped between the two outcomes
+  across sweeps with no apparent pattern. Its newest byline ("Demand For Rides Ignites Rocket
+  Developments," Nov. 19, on AST SpaceMobile's Blacklift rocket amid the industry launch-capacity
+  crunch) was a paywalled recap of the already-published Nov. 6 Firefly/AST SpaceMobile Blacklift
+  item with no new fact beyond its own teaser paragraph; left unpatched as too thin to add anything.
+- 2026-11-20-Q: A discovery-pass DIA "Challenges to Security in Space" report finding ("Russia is
+  developing a nuclear space weapon") was judged out of scope on the standing institutional-
+  intelligence-disclosure precedent (DSP retirement, Space RCO jammers, the China DIA spaceplane
+  story): the report names no specific commercial operator, contractor, or transaction, only generic
+  language about satellites "operated by countries and companies around the world." A CoStar
+  Group/Vexcel $730M acquisition read as a strong EO-sector M&A gap on headline alone but Vexcel
+  turned out to be a manned-aircraft aerial-imagery company (UltraCam cameras on airplanes, not
+  satellites); out of scope entirely despite the imagery-industry framing in coverage, same
+  space-derived-but-not-actually-space-hardware judgment as 2026-11-19-F's HallTech thruster-tech
+  exclusion.
+- 2026-11-20-R: Andrew Parsonson's bluesky surfaced the sweep's only genuine signals-pass find: a
+  europeanspaceflight.com piece on Greenland's government admitting (in a Nov. 5 parliamentary
+  response, chased per the predates-window exception) it lacks the resources to meaningfully enforce
+  its Starlink ban against reportedly-sneaking Danish soldiers' personal terminals. Single-sourced to
+  Parsonson's own site with a genuine `crawl: "found_none"` (no other outlet had covered the Nov. 5
+  government response by this run); landed SNR 4 anyway via the `whitelist`/`observer` floor, the
+  same floor-survives-found_none mechanic as the 2026-10-26-E Zvezda case and 2026-10-29-N Amur-SPG
+  case. A Marcos-at-APEC "Philippines in early talks with SpaceX over launch sites" story (Daily
+  Tribune lead, mainstream; The Deep Dive corroboration, informal) needed three `dedup_distinct`
+  entries against unrelated same-window SpaceX+launch items (Starship Flight 15, two launch-capacity
+  commentary pieces) purely on company+category overlap, extending the standing prolific-actor
+  pre-emption pattern to a government/company story rather than a company's own announcement.
+- 2026-11-20-S: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on four
+  same-company-plus-category dedup collisions at once (three on the Philippines item, one on the
+  Greenland item, all against unrelated SpaceX+launch/regulatory items in the window); adding the
+  `dedup_distinct` entries merged cleanly on the second attempt ("merged 3 new, 0 updated, 0 held"),
+  1321 items up from 1318. Confirmed via a direct `jq` read of all three new items' `snr`/`category`/
+  `impact`/`sources` fields (SatNet Group 30: SNR 4, aggregator base plus `corroboration_2plus`;
+  Philippines/SpaceX: SNR 4, mainstream base plus `corroboration_2plus`; Greenland/Starlink: SNR 4,
+  whitelist `observer` floor surviving `found_none`) and a `jq empty` parse check on all six touched
+  data files (items, held, state, source_ledger, sources, candidates); held and registry-candidates
+  were untouched (no held entries; none of the three companies/entities touched a crossfeed-eligible
+  registry field). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
