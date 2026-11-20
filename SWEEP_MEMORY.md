@@ -4273,3 +4273,43 @@ a newer entry if a lesson changes.
   already fully captured via a different CNBC URL from the same event, extending the standing
   diff-against-current-copy-not-just-updates-log practice (2026-11-14-M) to avoid a redundant attach.
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~10h14m gap, unfiltered full source list (2026-11-20, third)
+
+- 2026-11-20-J: Grepping `items.json` by company before drafting caught a near-miss: the queue's
+  "Japan to Transfer H3 Rocket Launch Operations to Mitsubishi" story (nippon.com, confirmed
+  directly with a verbatim minister quote naming Yoshihiro Seki, plus an independent Korean
+  outlet, JKN, as a second source) turned out to already be published by the immediately prior
+  same-day sweep (`2026-11-20-jaxa-h3-mhi-launch-operations-transfer`); dropped entirely rather
+  than drafted as a duplicate.
+- 2026-11-20-K: Two Chinese-language mainstream outlets (The Paper, TVB News) independently
+  reporting the same CCTV footage of LandSpace's Zhuque-3 Y2 recovered-engine reuse test (9
+  engines, 185-second hot-fire) is the same shape as the standing state-media-pair precedent
+  (2026-10-24-G): `corroboration_2plus` and `crawl: "found_none"` (no non-Chinese-state-adjacent
+  pickup existed despite a dedicated English-language search) netted to the mainstream base of 3,
+  correctly landing SNR 3 rather than 4. Worth treating two CCTV-sourced Chinese portals the same
+  way as two Xinhua pieces for this purpose.
+- 2026-11-20-L: A signals-pass bluesky find (Andrew Parsonson) surfaced a genuinely new, slightly
+  startling item on its own merits: ATMOS Space Cargo and MBDA Deutschland's cooperation agreement
+  to study a "Precision Orbital Deep Strike" capability (a conventional munition parked in orbit
+  and deorbited on command onto a ground target). Judged in scope as a company
+  product/capability-development announcement (ecosystem: manufacturer + defense), not conflict
+  analysis or operational-use attribution, since no conflict or operational use is implicated;
+  flag for Florian if an orbital-weapons-concept story like this should be scoped differently.
+  Aviation Week (trade) and Tech Times, explicitly crediting Defense News as the original source,
+  gave clean `corroboration_2plus` (two genuinely distinct original outlets, not one wire-rewrite).
+- 2026-11-20-M: A WebSearch-sourced "India Today Digital" ISRO Gaganyaan G1 delay-to-February-2027
+  story (unnamed officials, anonymous sourcing) had two mirrors (CSR Journal, NewsBytes) that both
+  explicitly credit India Today Digital as their own source; treated as ONE source per the
+  standing credits-the-original-outlet-by-name non-independence rule, landing an honest SNR 2
+  (`crawl: "found_none"`) rather than `corroboration_2plus` padding from the mirror count.
+- 2026-11-20-N: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 4 new,
+  3 updated, 0 held"), 1318 items up from 1314. Confirmed via a direct `jq` read of all four new
+  items' `snr`/`category`/`impact` fields and all three updated items' grown `sources`/`updates`
+  arrays (FCC Upper C-band: 10 sources, 5 updates, SNR held at 5; Atomic-6: 4 sources, 2 updates,
+  SNR held at 4; Telesat/Dominion: 4 sources, 1 update, SNR held at 4, a copy-only enrichment at
+  the non-first-party ceiling). All three mandatory HTML sources (Planet Labs, BlackSky, EUSPA
+  procurement) and 14 of 17 signals channels traced to already-published ground; 2 dropped as
+  harvester-duplicate domains (spacepolicyonline.com, europeanspaceflight.com bare sites),
+  `europeanspaceflight.substack.com` 403'd. `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
