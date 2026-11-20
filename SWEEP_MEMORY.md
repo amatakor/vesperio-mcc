@@ -4246,3 +4246,30 @@ a newer entry if a lesson changes.
   source_ledger, sources, candidates, registry-candidates); held was untouched (no held entries;
   none of the six new items' companies had a registry profile with a like-for-like crossfeed
   metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h gap, unfiltered full source list (2026-11-20, second)
+
+- 2026-11-20-H: JAXA's registry-recorded website is `global.jaxa.jp`, but its own Japanese-language
+  press releases live on `www.jaxa.jp` (the English stub pages under `global.jaxa.jp/press/...` carry
+  only a title, "Japanese Only," with no body text); the anti-spoof gate rejected `www.jaxa.jp` as
+  `first_party` on the exact-hostname mismatch. Reclassified to `trade` rather than resubmit, same
+  playbook as the standing same-company domain-mismatch precedents (Redwire's `ir.rdw.com`, Airbus's
+  `space-solutions.airbus.com`, 2026-11-10-L); still reached SNR 4 on `corroboration_2plus` with Jiji
+  Press independently confirmed (minister's name, a 5-of-7 success-rate stat, MHI's own stated
+  overseas-contract ambition, none of which were in JAXA's own page). Also confirms: a WebSearch
+  synthesis flatly claimed South Korea's Mir rocket flew its first full four-stage orbital test on
+  Nov. 10, but a second, more specific search showed the real flight is still NET Nov. 30; left
+  undrafted, extending the standing WebSearch-fabricates-completed-launches pattern to a vehicle with
+  a thin English-language footprint.
+- 2026-11-20-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the JAXA
+  `first_party` host mismatch above; merged cleanly on the second attempt ("merged 3 new, 3 updated,
+  0 held"), 1314 items up from 1311. Confirmed via a direct `jq` read of all three new items'
+  `snr`/`category`/`impact` fields and all three updated items' grown `sources`/`updates` arrays
+  (FAA Starbase EIS: 6 sources, 3 updates; SpaceX GPU financing: 13 sources, 9 updates; United
+  Starlink fleet: 3 sources, 1 update), plus a `jq empty` parse check on all six touched data files
+  (items, held, state, source_ledger, sources, candidates); held was untouched (no held entries).
+  Diffed a Musk/Zelensky DealBook Summit quote found via CNBC against the Starlink/Ukraine saga
+  item's own current `explainer.what_happened` text before drafting an update and found it was
+  already fully captured via a different CNBC URL from the same event, extending the standing
+  diff-against-current-copy-not-just-updates-log practice (2026-11-14-M) to avoid a redundant attach.
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
