@@ -89056,7 +89056,7 @@
       ],
       "source_url": "https://payloadspace.com/op-ed-why-did-russia-bother-with-x36/",
       "secondary_urls": [],
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -89068,10 +89068,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-20",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -89199,7 +89212,7 @@
       "source_url": "https://europeanspaceflight.com/avio-scales-back-demonstrator-programme-amid-technical-challenges/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -89211,10 +89224,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-20",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -89263,7 +89289,7 @@
         "https://www.thedailybeast.com/trumps-white-house-gift-story-about-elon-musks-starlink-takes-embarrassing-twist"
       ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -89281,9 +89307,14 @@
             "delta": 1,
             "reason": "The Daily Beast independently confirms Democracy Defenders Fund first flagged three of the four contracts and adds a watchdog quote on pay-to-play access concerns.",
             "source": "https://www.thedailybeast.com/trumps-white-house-gift-story-about-elon-musks-starlink-takes-embarrassing-twist"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
+        "final": 4,
         "scorer_version": 2,
         "history": [
           {
@@ -89291,6 +89322,12 @@
             "from": 2,
             "to": 3,
             "reason": "The Daily Beast independently confirms Democracy Defenders Fund first flagged three of the four contracts and adds a watchdog quote on pay-to-play access concerns."
+          },
+          {
+            "date": "2026-11-20",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ]
       },
@@ -98219,7 +98256,7 @@
       "headline": "Sophia Space links two Kepler satellites in distributed-compute test",
       "explainer": {
         "tagline": "Sophia Space's SOOS software replicated itself across processors on one Kepler satellite, then jumped the optical link to a second.",
-        "what_happened": "Sophia Space said its Sophia Orbital Operating System (SOOS) ran on an alpha deployment across four NVIDIA Jetson Orin processors aboard a Kepler Communications Tranche 1 satellite, copying itself onto additional processors to form a local network, then transferred over an optical link to a second Kepler satellite and repeated the process, per Payload. CEO Rob DeMillo said Sophia defined success as the moment the two satellites began talking to each other. The company said it already has one paying customer for compute capacity and a second ready to sign, billed similarly to data-center GPU pricing, per Payload.",
+        "what_happened": "Sophia Space said its Sophia Orbital Operating System (SOOS) ran on an alpha deployment across four NVIDIA Jetson Orin processors aboard a Kepler Communications Tranche 1 satellite, copying itself onto additional processors to form a local network, then transferred over an optical link to a second Kepler satellite and repeated the process, per Payload. CEO Rob DeMillo said Sophia defined success as the moment the two satellites began talking to each other. The company said it already has one paying customer for compute capacity and a second ready to sign, billed similarly to data-center GPU pricing, per Payload. Via Satellite reported the software now runs across six Jetson Orin processors spanning the two satellites, delivered entirely through on-orbit software updates after the Kepler partnership was announced in April and Kepler's first 10 satellites launched in January 2026. DeMillo compared the approach to cloud computing: \"You don't build a data center by putting a computer in space or even three computers in space. You build it by connecting computer resources and making them all work together.\"",
         "why_it_matters": "Spreading compute jobs across multiple satellites rather than tying them to one spacecraft is a basic building block for orbital data centers; Sophia's planned TILE compute modules, due to fly on an Apex-built satellite in 2027, use the same processor configuration tested here. A working distributed-compute layer gives Kepler's optical-relay network a paying use case beyond data relay."
       },
       "tags": [],
@@ -98230,9 +98267,11 @@
         "Kepler Communications"
       ],
       "source_url": "https://payloadspace.com/sophia-space-tests-orbital-compute-software-on-kepler-constellation/",
-      "secondary_urls": [],
+      "secondary_urls": [
+        "https://www.satellitetoday.com/technology/2026/11/19/sophia-space-ceo-details-computing-software-deployment-on-kepler-satellites/"
+      ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -98244,10 +98283,24 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "Via Satellite, an independent outlet, adds the exact processor count, partnership timeline, and DeMillo's cloud-computing analogy for the two-satellite distributed-compute test.",
+            "source": "https://www.satellitetoday.com/technology/2026/11/19/sophia-space-ceo-details-computing-software-deployment-on-kepler-satellites/"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-20",
+            "from": 2,
+            "to": 3,
+            "reason": "Via Satellite, an independent outlet, adds the exact processor count, partnership timeline, and DeMillo's cloud-computing analogy for the two-satellite distributed-compute test."
+          }
+        ]
       },
       "sources": [
         {
@@ -98256,6 +98309,13 @@
           "class": "trade",
           "added": "2026-11-19",
           "via": "initial"
+        },
+        {
+          "url": "https://www.satellitetoday.com/technology/2026/11/19/sophia-space-ceo-details-computing-software-deployment-on-kepler-satellites/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-11-19T05:33:23.689Z",
@@ -98265,7 +98325,18 @@
         "origin_url": "https://payloadspace.com/sophia-space-tests-orbital-compute-software-on-kepler-constellation/",
         "width": 1200,
         "height": 675
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-11-20",
+          "kind": "score",
+          "note": "Via Satellite, an independent outlet, adds the exact processor count, partnership timeline, and DeMillo's cloud-computing analogy for the two-satellite distributed-compute test.",
+          "score": {
+            "from": 2,
+            "to": 3
+          }
+        }
+      ]
     },
     {
       "id": "2026-11-19-thales-alenia-asi-sar-l-contract",
@@ -98466,7 +98537,7 @@
       "headline": "SpaceX plans rooftop microcells to push Starlink Mobile signal through walls",
       "explainer": {
         "tagline": "Musk said SpaceX designed a rooftop microcell, using the 800 MHz band, to push Starlink Mobile signal through thick walls in dense cities.",
-        "what_happened": "Elon Musk said at the New York Times' DealBook Summit on Nov. 18 that SpaceX has designed a rooftop microcell device using the 800 MHz band to help Starlink Mobile signal penetrate thick or metal roofs in dense urban areas, with production expected to begin in 2027, per Tesla North. The devices could be mounted on rooftops and potentially bundled with Starlink terminals, per WCCFTech. Musk separately posted on X that the spectrum is 'the last critical piece of the spectrum puzzle needed for SpaceX to provide complete phone coverage in America.'",
+        "what_happened": "Elon Musk said at the New York Times' DealBook Summit on Nov. 18 that SpaceX has designed a rooftop microcell device using the 800 MHz band to help Starlink Mobile signal penetrate thick or metal roofs in dense urban areas, with production expected to begin in 2027, per Tesla North, WCCFTech and TechCrunch. Musk said the devices would pair with SpaceX's Direct-to-Cell V2 satellite constellation, launching next year with a stated 40-fold bandwidth increase, and could be bundled with Starlink terminals. Musk separately posted on X that the spectrum is 'the last critical piece of the spectrum puzzle needed for SpaceX to provide complete phone coverage in America.'",
         "why_it_matters": "Direct-to-phone satellite service has struggled with indoor and urban coverage; a terrestrial rooftop relay signals SpaceX intends to compete for dense-city Starlink Mobile subscribers rather than confine the service to rural and emergency use, a market AST SpaceMobile and Lynk are also chasing."
       },
       "tags": [
@@ -98479,10 +98550,11 @@
       ],
       "source_url": "https://teslanorth.com/2026/11/19/musk-dealbook-tesla-spacex-model-y-starlink/",
       "secondary_urls": [
-        "https://wccftech.com/elon-musk-says-spacex-will-provide-starlink-mobile-users-rooftop-microcell-towers-to-push-signals-through-thick-walls-in-dense-cities/"
+        "https://wccftech.com/elon-musk-says-spacex-will-provide-starlink-mobile-users-rooftop-microcell-towers-to-push-signals-through-thick-walls-in-dense-cities/",
+        "https://techcrunch.com/2026/11/19/elon-musk-says-spacex-has-a-plan-to-eliminate-cell-phone-dead-zones/"
       ],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 1,
@@ -98494,11 +98566,25 @@
             "type": "corroboration_2plus",
             "delta": 1,
             "reason": "2 distinct sources (>=2)"
+          },
+          {
+            "type": "mainstream_pickup",
+            "delta": 1,
+            "reason": "TechCrunch's own DealBook Summit coverage adds SpaceX's Direct-to-Cell V2 constellation and its stated 40-fold bandwidth increase to Musk's rooftop-microcell plan.",
+            "source": "https://techcrunch.com/2026/11/19/elon-musk-says-spacex-has-a-plan-to-eliminate-cell-phone-dead-zones/"
           }
         ],
-        "final": 2,
+        "final": 3,
         "scorer_version": 2,
-        "single_class_corroboration": "informal"
+        "single_class_corroboration": "informal",
+        "history": [
+          {
+            "date": "2026-11-20",
+            "from": 2,
+            "to": 3,
+            "reason": "TechCrunch's own DealBook Summit coverage adds SpaceX's Direct-to-Cell V2 constellation and its stated 40-fold bandwidth increase to Musk's rooftop-microcell plan."
+          }
+        ]
       },
       "sources": [
         {
@@ -98513,6 +98599,13 @@
           "outlet": "WCCFTech",
           "class": "informal",
           "added": "2026-11-19",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://techcrunch.com/2026/11/19/elon-musk-says-spacex-has-a-plan-to-eliminate-cell-phone-dead-zones/",
+          "outlet": "TechCrunch",
+          "class": "mainstream",
+          "added": "2026-11-20",
           "via": "corroboration"
         }
       ],
@@ -98529,7 +98622,18 @@
         "origin_url": "https://teslanorth.com/2026/11/19/musk-dealbook-tesla-spacex-model-y-starlink/",
         "width": 1200,
         "height": 675
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-11-20",
+          "kind": "score",
+          "note": "TechCrunch's own DealBook Summit coverage adds SpaceX's Direct-to-Cell V2 constellation and its stated 40-fold bandwidth increase to Musk's rooftop-microcell plan.",
+          "score": {
+            "from": 2,
+            "to": 3
+          }
+        }
+      ]
     },
     {
       "id": "2026-11-19-redwire-ascendarc-elsa-solar-array",
@@ -98537,7 +98641,7 @@
       "headline": "Redwire wins $15 million contract to supply solar arrays for AscendArc's GEO satellite",
       "explainer": {
         "tagline": "Redwire will deliver ELSA solar array wings to power AscendArc's stackable GEO communications satellite in Q3 fiscal 2026.",
-        "what_happened": "Redwire was awarded a contract worth approximately $15 million to deliver its Extensible Low-Profile Solar Array (ELSA) wings to AscendArc, a developer of geosynchronous communications satellites, with delivery planned for the third quarter of fiscal 2026, Redwire said in a Business Wire release. The ELSA wings are designed for low- to medium-power GEO satellites and mark the second ELSA sale since Redwire introduced the product this year, bringing ELSA contracts to a combined $27.8 million.",
+        "what_happened": "Redwire was awarded a contract worth approximately $15 million to deliver its Extensible Low-Profile Solar Array (ELSA) wings to AscendArc, a developer of geosynchronous communications satellites, with delivery planned for the third quarter of fiscal 2026, Redwire said in a Business Wire release. The ELSA wings are designed for low- to medium-power GEO satellites and mark the second ELSA sale since Redwire introduced the product this year, bringing ELSA contracts to a combined $27.8 million. Via Satellite reported AscendArc previously sold one GEO satellite to KT SAT and that Space Leasing International has a letter of intent for two more, while Redwire said it has delivered more than 65 solar array wings to date, including for the International Space Station and NASA's DART mission.",
         "why_it_matters": "The deal extends Redwire's power-systems business into the smaller, stackable GEO satellites that newer entrants like AscendArc are betting on to cut the cost of geostationary broadband, a segment Redwire's larger competitors have typically served with custom, higher-cost solar arrays."
       },
       "tags": [
@@ -98550,9 +98654,11 @@
         "AscendArc"
       ],
       "source_url": "https://www.stocktitan.net/news/RDW/redwire-awarded-15-million-contract-to-deliver-elsa-high-performance-ic6qf83tgnmi.html",
-      "secondary_urls": [],
+      "secondary_urls": [
+        "https://www.satellitetoday.com/technology/2026/11/19/redwire-elsa-wings-to-power-ascendarc-geo-sat/"
+      ],
       "kind": "event",
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
@@ -98564,10 +98670,24 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "Via Satellite, an independent outlet, adds AscendArc's customer list (KT SAT, a Space Leasing International letter of intent) and Redwire's broader ELSA/solar-array heritage.",
+            "source": "https://www.satellitetoday.com/technology/2026/11/19/redwire-elsa-wings-to-power-ascendarc-geo-sat/"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-20",
+            "from": 3,
+            "to": 4,
+            "reason": "Via Satellite, an independent outlet, adds AscendArc's customer list (KT SAT, a Space Leasing International letter of intent) and Redwire's broader ELSA/solar-array heritage."
+          }
+        ]
       },
       "sources": [
         {
@@ -98576,6 +98696,13 @@
           "class": "wire_pr",
           "added": "2026-11-19",
           "via": "initial"
+        },
+        {
+          "url": "https://www.satellitetoday.com/technology/2026/11/19/redwire-elsa-wings-to-power-ascendarc-geo-sat/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
         }
       ],
       "publishDate": "2026-11-19T16:21:43.722Z",
@@ -98591,7 +98718,18 @@
         "origin_url": "https://www.stocktitan.net/news/RDW/redwire-awarded-15-million-contract-to-deliver-elsa-high-performance-ic6qf83tgnmi.html",
         "width": 1200,
         "height": 670
-      }
+      },
+      "updates": [
+        {
+          "date": "2026-11-20",
+          "kind": "score",
+          "note": "Via Satellite, an independent outlet, adds AscendArc's customer list (KT SAT, a Space Leasing International letter of intent) and Redwire's broader ELSA/solar-array heritage.",
+          "score": {
+            "from": 3,
+            "to": 4
+          }
+        }
+      ]
     },
     {
       "id": "2026-11-19-heo-insights-next-sda-tool",
@@ -98708,6 +98846,414 @@
         "origin_url": "https://news.cgtn.com/news/2026-11-19/China-launches-Shijian-24-satellite-1SbP1QH57JS/p.html",
         "width": 418,
         "height": 233
+      }
+    },
+    {
+      "id": "2026-11-19-google-blue-origin-suncatcher-new-glenn",
+      "date": "2026-11-19",
+      "headline": "Google books Blue Origin's New Glenn for first dedicated Suncatcher satellite launch",
+      "explainer": {
+        "tagline": "Google will launch its first dedicated batch of Project Suncatcher AI-computing satellites on Blue Origin's New Glenn in Q1 2029.",
+        "what_happened": "Google and Blue Origin signed a launch services agreement for the first dedicated heavy-lift flight of Project Suncatcher, Google's research project exploring space-based AI computing. The New Glenn mission, targeted for the first quarter of 2029, will deploy solar-powered satellites, each carrying Google TPUs with roughly the computing capacity of a data center rack, into sun-synchronous orbit. No contract value was disclosed.",
+        "why_it_matters": "The agreement gives New Glenn a dedicated commercial satellite-launch contract tied to a major tech company's orbital-compute research, following Google's October rideshare-launched Suncatcher prototype with Planet. Google said it plans to link two satellites in 2027 before this larger New Glenn flight."
+      },
+      "tags": [
+        "launch",
+        "heavy-lift"
+      ],
+      "category": "contract",
+      "impact": "notable",
+      "companies": [
+        "Google",
+        "Blue Origin"
+      ],
+      "source_url": "https://www.satellitetoday.com/launch/2026/11/19/google-orders-heavy-lift-launch-for-project-suncatcher-from-blue-origin/",
+      "secondary_urls": [
+        "https://blog.google/innovation-and-ai/models-and-research/google-research/blue-origin-project-suncatcher-partnership/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/launch/2026/11/19/google-orders-heavy-lift-launch-for-project-suncatcher-from-blue-origin/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "trade"
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/launch/2026/11/19/google-orders-heavy-lift-launch-for-project-suncatcher-from-blue-origin/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "initial"
+        },
+        {
+          "url": "https://blog.google/innovation-and-ai/models-and-research/google-research/blue-origin-project-suncatcher-partnership/",
+          "outlet": "Google",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "Blue Origin",
+          "ref": "organizations/blue-origin"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-19-google-blue-origin-suncatcher-new-glenn.webp",
+        "credit": "Image: satellitetoday.com",
+        "origin_url": "https://www.satellitetoday.com/launch/2026/11/19/google-orders-heavy-lift-launch-for-project-suncatcher-from-blue-origin/",
+        "width": 1200,
+        "height": 800
+      }
+    },
+    {
+      "id": "2026-11-19-telesat-dominion-dynamics-leo-antennas",
+      "date": "2026-11-19",
+      "headline": "Telesat and Dominion Dynamics will build rugged LEO antennas for Canadian troops",
+      "explainer": {
+        "tagline": "Telesat and Dominion Dynamics will build two ruggedized terminals linking Canadian troops and drones to Telesat Lightspeed.",
+        "what_happened": "Telesat and Ottawa-based Dominion Dynamics agreed to develop two ruggedized user terminals, a portable manpack unit and one for uncrewed systems, to connect the Canadian Armed Forces to Telesat's Lightspeed LEO constellation. The project is funded with 2.2 million Canadian dollars (about $1.5 million), including a contribution from Canada's National Research Council Industrial Research Assistance Program, with Dominion Dynamics as prime contractor.",
+        "why_it_matters": "The terminals target Arctic and expeditionary conditions and would connect to Dominion's Scout uncrewed platform, a concrete defense use case for Lightspeed ahead of its planned first-quarter-2028 commercial service start, and a government-funded foothold in satcom hardware for Dominion, a startup founded in 2025."
+      },
+      "tags": [
+        "connectivity"
+      ],
+      "category": "partnership",
+      "impact": "notable",
+      "companies": [
+        "Telesat",
+        "Dominion Dynamics"
+      ],
+      "source_url": "https://www.satellitetoday.com/government-military/2026/11/19/telesat-partners-with-canadas-dominion-dynamics-for-portable-and-uncrewed-leo-antennas/",
+      "secondary_urls": [
+        "https://www.newswire.ca/news-releases/dominion-dynamics-and-telesat-to-develop-ruggedized-antennas-to-connect-with-telesat-lightspeed-857075932.html",
+        "https://canadiandefencereview.com/dominion-dynamics-to-develop-antennas-for-telesat-leo/"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.satellitetoday.com/government-military/2026/11/19/telesat-partners-with-canadas-dominion-dynamics-for-portable-and-uncrewed-leo-antennas/",
+          "reason": "base tier 3 from lead source class \"trade\" (Via Satellite)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "3 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.satellitetoday.com/government-military/2026/11/19/telesat-partners-with-canadas-dominion-dynamics-for-portable-and-uncrewed-leo-antennas/",
+          "outlet": "Via Satellite",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.newswire.ca/news-releases/dominion-dynamics-and-telesat-to-develop-ruggedized-antennas-to-connect-with-telesat-lightspeed-857075932.html",
+          "outlet": "Dominion Dynamics/Telesat (Canada Newswire)",
+          "class": "wire_pr",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        },
+        {
+          "url": "https://canadiandefencereview.com/dominion-dynamics-to-develop-antennas-for-telesat-leo/",
+          "outlet": "Canadian Defence Review",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "Telesat",
+          "ref": "organizations/telesat"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-19-telesat-dominion-dynamics-leo-antennas.webp",
+        "credit": "Image: canadiandefencereview.com",
+        "origin_url": "https://canadiandefencereview.com/dominion-dynamics-to-develop-antennas-for-telesat-leo/",
+        "width": 930,
+        "height": 683
+      }
+    },
+    {
+      "id": "2026-11-19-relativity-terran-r-second-stage-hotfire",
+      "date": "2026-11-19",
+      "headline": "Relativity completes Terran R second-stage hot-fire testing ahead of debut launch",
+      "explainer": {
+        "tagline": "Relativity's Terran R second stage passed a 400-second hot fire, completing structural testing before its first flight.",
+        "what_happened": "Relativity Space said its Terran R flight-one second stage completed a mission duty cycle hot fire lasting more than 400 seconds on the first attempt, at NASA's Stennis Space Center, the full burn duration required for upper-stage vacuum flight. The company also finished structural qualification testing of the interstage in Long Beach and completed thrust-structure breakover on the first stage, closing out structural testing of all primary flight-one structures.",
+        "why_it_matters": "The milestones clear structural and propulsion risks on Relativity's heavy-lift Terran R ahead of its inaugural launch from Cape Canaveral, a vehicle positioned between Falcon 9 and New Glenn in size as it works toward joining a medium-to-heavy launch market where Vulcan recently suffered a launch failure."
+      },
+      "tags": [
+        "launch",
+        "heavy-lift"
+      ],
+      "category": "product",
+      "impact": "notable",
+      "companies": [
+        "Relativity Space"
+      ],
+      "source_url": "https://www.relativityspace.com/press-release/2026/11/16/october-2026-company-update",
+      "secondary_urls": [
+        "https://www.nasaspaceflight.com/2026/11/relativity-update-1116/"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.relativityspace.com/press-release/2026/11/16/october-2026-company-update",
+          "reason": "base tier 5 from lead source class \"first_party\" (Relativity Space)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.relativityspace.com/press-release/2026/11/16/october-2026-company-update",
+          "outlet": "Relativity Space",
+          "class": "first_party",
+          "added": "2026-11-20",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.nasaspaceflight.com/2026/11/relativity-update-1116/",
+          "outlet": "NASASpaceflight",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "Relativity Space",
+          "ref": "organizations/relativity-space"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-19-relativity-terran-r-second-stage-hotfire.webp",
+        "credit": "Image: nasaspaceflight.com",
+        "origin_url": "https://www.nasaspaceflight.com/2026/11/relativity-update-1116/",
+        "width": 1200,
+        "height": 796
+      }
+    },
+    {
+      "id": "2026-11-11-esa-hera-arrives-didymos-dimorphos",
+      "date": "2026-11-11",
+      "headline": "ESA's Hera spacecraft arrives at Didymos-Dimorphos to survey DART's impact site",
+      "explainer": {
+        "tagline": "Hera reached the Didymos-Dimorphos asteroid pair and began close-range survey orbits, four years after DART's deflection test.",
+        "what_happened": "ESA said its Hera spacecraft arrived at the Didymos-Dimorphos binary asteroid system and began an \"early characterisation phase,\" flying repeating patterns it calls rectangular orbits roughly 25 to 30 kilometers from the pair, using periodic thruster firings to hold that distance while circling the asteroids. Hera launched in October 2024 to investigate the aftermath of NASA's 2022 DART impact on Dimorphos.",
+        "why_it_matters": "Hera is the first mission to revisit a body after a deliberate asteroid deflection, giving planetary-defense researchers their first direct look at the DART impact site and whether any debris reached Didymos. ESA says Hera will fly closer in the coming months and deploy two CubeSats in early 2027 for nearer investigation."
+      },
+      "tags": [
+        "science"
+      ],
+      "category": "science",
+      "impact": "notable",
+      "companies": [
+        "ESA"
+      ],
+      "source_url": "https://www.esa.int/articles/about-us/directorates/operations/space-safety/hera/hera-spacecraft-in-rectangular-orbit-around-target-asteroids",
+      "secondary_urls": [
+        "https://skyandtelescope.org/astronomy-news/spacecraft-investigates-asteroid-after-impact/"
+      ],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.esa.int/articles/about-us/directorates/operations/space-safety/hera/hera-spacecraft-in-rectangular-orbit-around-target-asteroids",
+          "reason": "base tier 5 from lead source class \"first_party\" (ESA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.esa.int/articles/about-us/directorates/operations/space-safety/hera/hera-spacecraft-in-rectangular-orbit-around-target-asteroids",
+          "outlet": "ESA",
+          "class": "first_party",
+          "added": "2026-11-20",
+          "via": "initial"
+        },
+        {
+          "url": "https://skyandtelescope.org/astronomy-news/spacecraft-investigates-asteroid-after-impact/",
+          "outlet": "Sky & Telescope",
+          "class": "trade",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "ESA",
+          "ref": "organizations/esa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-11-esa-hera-arrives-didymos-dimorphos.webp",
+        "credit": "Image: skyandtelescope.org",
+        "origin_url": "https://skyandtelescope.org/astronomy-news/spacecraft-investigates-asteroid-after-impact/",
+        "width": 900,
+        "height": 563
+      }
+    },
+    {
+      "id": "2026-11-19-esa-plasma-observatory-selected",
+      "date": "2026-11-19",
+      "headline": "ESA picks seven-satellite Plasma Observatory as its next medium-class science mission",
+      "explainer": {
+        "tagline": "ESA selected the seven-spacecraft Plasma Observatory to study how solar energy moves through Earth's magnetic shield.",
+        "what_happened": "ESA Member States formally selected Plasma Observatory as the agency's next medium-class science mission (M7), concluding a selection process that began in 2021. The mission will use seven coordinated spacecraft to take simultaneous measurements of the Sun's energy as it moves through Earth's magnetosphere across multiple scales of distance and time at once, addressing a limitation of the earlier four-spacecraft Cluster mission. ESA provisionally targets a launch in the late 2030s and said it also narrowed candidates for upcoming fast-class and medium-class mission selections due in 2027 and 2030.",
+        "why_it_matters": "Formal selection moves Plasma Observatory from concept to adoption and construction planning, the stage at which ESA typically opens industrial contracts for a mission's spacecraft and instruments, now provisionally targeted for a late-2030s launch."
+      },
+      "tags": [
+        "science"
+      ],
+      "category": "science",
+      "impact": "notable",
+      "companies": [
+        "ESA"
+      ],
+      "source_url": "https://www.esa.int/articles/about-us/directorates/science/seven-spacecraft-observatory-to-study-plasma-universe",
+      "secondary_urls": [],
+      "kind": "event",
+      "snr": 5,
+      "snr_trace": {
+        "base": {
+          "tier": 5,
+          "source": "https://www.esa.int/articles/about-us/directorates/science/seven-spacecraft-observatory-to-study-plasma-universe",
+          "reason": "base tier 5 from lead source class \"first_party\" (ESA)"
+        },
+        "modifiers": [],
+        "final": 5,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://www.esa.int/articles/about-us/directorates/science/seven-spacecraft-observatory-to-study-plasma-universe",
+          "outlet": "ESA",
+          "class": "first_party",
+          "added": "2026-11-20",
+          "via": "initial"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "ESA",
+          "ref": "organizations/esa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-19-esa-plasma-observatory-selected.webp",
+        "credit": "Image: esa.int",
+        "origin_url": "https://www.esa.int/articles/about-us/directorates/science/seven-spacecraft-observatory-to-study-plasma-universe",
+        "width": 1200,
+        "height": 630
+      }
+    },
+    {
+      "id": "2026-11-17-jaxa-hayabusa2-2015-bm510-retarget",
+      "date": "2026-11-17",
+      "headline": "JAXA retargets Hayabusa2 after thruster failures end planned 2031 asteroid landing",
+      "explainer": {
+        "tagline": "Repeated ion-thruster failures forced JAXA to swap Hayabusa2's 2031 asteroid landing for a 2028 flyby instead.",
+        "what_happened": "JAXA said repeated malfunctions in Hayabusa2's ion thrusters, including the failure of its last functioning engine in August, forced the mission to abandon its planned 2031 rendezvous and landing attempt on asteroid 1998 KY26. The extended mission will instead fly by the smaller, darker asteroid 2015 BM510 in April 2028 without landing. Extended-mission team leader Yuya Mimasu called the new target, a 17-to-74-meter asteroid rotating every 49 minutes, one of the hardest flybys attempted, per AFP.",
+        "why_it_matters": "Hayabusa2 already returned Ryugu samples to Earth in 2020; losing the planned KY26 landing trims the extended mission's remaining ambitions to a flyby, underscoring that the aging probe's propulsion health, not its science goals, now sets the schedule for Japan's long-running sample-return program."
+      },
+      "tags": [
+        "science",
+        "japan"
+      ],
+      "category": "science",
+      "impact": "notable",
+      "companies": [
+        "JAXA"
+      ],
+      "source_url": "https://www.space.com/space-exploration/asteroid-comet-missions/no-more-asteroid-landing-engine-trouble-forces-japans-hayabusa2-probe-to-change-plans",
+      "secondary_urls": [
+        "https://phys.org/news/2026-11-japan-space-probe.html"
+      ],
+      "kind": "event",
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://www.space.com/space-exploration/asteroid-comet-missions/no-more-asteroid-landing-engine-trouble-forces-japans-hayabusa2-probe-to-change-plans",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Space.com)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2,
+        "single_class_corroboration": "mainstream"
+      },
+      "sources": [
+        {
+          "url": "https://www.space.com/space-exploration/asteroid-comet-missions/no-more-asteroid-landing-engine-trouble-forces-japans-hayabusa2-probe-to-change-plans",
+          "outlet": "Space.com",
+          "class": "mainstream",
+          "added": "2026-11-20",
+          "via": "initial"
+        },
+        {
+          "url": "https://phys.org/news/2026-11-japan-space-probe.html",
+          "outlet": "phys.org (AFP)",
+          "class": "mainstream",
+          "added": "2026-11-20",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-20T01:15:35.030Z",
+      "entities": [
+        {
+          "name": "JAXA",
+          "ref": "organizations/jaxa"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-17-jaxa-hayabusa2-2015-bm510-retarget.webp",
+        "credit": "Image: space.com",
+        "origin_url": "https://www.space.com/space-exploration/asteroid-comet-missions/no-more-asteroid-landing-engine-trouble-forces-japans-hayabusa2-probe-to-change-plans",
+        "width": 1200,
+        "height": 675
       }
     }
   ]
