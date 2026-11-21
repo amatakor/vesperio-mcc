@@ -4251,3 +4251,50 @@ a newer entry if a lesson changes.
   files (items, held, state, source_ledger, sources, candidates); held and registry-candidates were untouched
   (no held entries; only the Satellogic item had a like-for-like crossfeed metric, `sats_launched_total`).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~7.5h gap, unfiltered full source list (2026-11-21, third)
+
+- 2026-11-21-L: A near-total-junk 77-candidate queue (SpaceX/Tesla-merger and Musk-politics spam, launch-alert
+  and viewing-guide Bluesky bots that only restate already-known launches, an "@everythingspace.bsky.social"
+  aggregator feed that mirrors already-known trade headlines) still yielded four open-web-discovery items:
+  GomSpace's own press release never names Blue Origin as the customer for its 8 MEUR Oasis lunar contract
+  ("a leading North American space company," consistent with its January first-phase release), while
+  europeanspaceflight.com's own reporting makes the Blue Origin/Project Oasis identification; led with
+  GomSpace's own-domain release reclassified `wire_pr` (no registry organization entity, same precedent as
+  OVHcloud 2026-10-25-G) and attributed the Blue Origin tie to European Spaceflight in the copy rather than
+  stating it as GomSpace's own claim.
+- 2026-11-21-M: A WebSearch-surfaced europeanspaceflight.com "Isar Aerospace signs $112.5M deal for dedicated
+  launch site in Canada" headline read as a fresh gap but its own byline dated it July 7, 2026; the body's
+  2026-2028 milestone dates (statement of work, pad handover, first launch) made it look current on a skim.
+  Worth checking a WebSearch-surfaced trade article's own byline date before treating a multi-year-milestone
+  story as new, extending the standing page-load-date-is-not-proof-of-age pattern to byline dates specifically.
+- 2026-11-21-N: A Seagate Space/Kratos Defense "offshore rocket launch" deal (tbbwmag.com) described a mobile
+  sea platform for "missile tests," "hypersonic testing," and "ballistic-missile targets," not an orbital
+  launch vehicle service; left out of scope as suborbital defense target testing rather than drafted as a
+  spaceport/launch-services item, on the standing orbital-only launch-vehicle scope rule.
+  Also left out: a Florian Rabitz/Xiao-Shan Yap academic journal article calling for a lunar-industrialization
+  moratorium (no tracked commercial actor, an advocacy paper rather than an event or a commentary-eligible
+  signals/outlet voice) and NASA's own April-2026-dated "$476M Commercial Satellite Data" resurfacing already
+  flagged stale by 2026-10-22-J.
+- 2026-11-21-O: The Paraguay Starlink-schools item's two independently-written, different-domain sources
+  (revistaplus.com.py's Nov. 16 original with the Copaco GM's named quote; hoy.com.py's Nov. 20 follow-up with
+  a department-level installation breakdown) collapsed to ONE corroboration unit at finalize under the
+  `same_domain` label despite being genuinely different domains; final SNR landed at the honest mainstream
+  base of 3 rather than a `corroboration_2plus` 4. Submitted both sources anyway per the standing
+  don't-under-submit-a-source-list-out-of-fear-of-collapse practice (2026-10-24-C); the collapse rule's exact
+  trigger here (domain vs. title-similarity) is worth double-checking in `scripts/snr/corroboration.ts` next
+  time a cross-domain pair collapses unexpectedly.
+- 2026-11-21-P: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on four same-company-plus-
+  category dedup collisions at once (GomSpace/Blue Origin vs. both the unrelated NSSL Lane 2 contract-mod and
+  the unrelated Google/New Glenn Suncatcher item, both sharing Blue Origin + category contract; BepiColombo vs.
+  both the unrelated ESA Plasma Observatory selection and the unrelated JAXA Hayabusa2 retarget, both sharing
+  the agency + category science; Paraguay/Starlink vs. the unrelated Senate Appropriations SpaceX sole-source
+  item, sharing SpaceX + category procurement); four `dedup_distinct` entries cleared it on the second attempt
+  ("merged 4 new, 1 updated, 0 held"), 1331 items up from 1327. Confirmed via a direct `jq` read of all four
+  new items' `snr`/`category`/`impact` fields and the Starship Flight 15 item's grown `sources`/`updates`
+  arrays (15 sources, up from 14; 5 updates, up from 4, recording Musk's Nov. 18 decision to retire Ship 42 for
+  display rather than refly it), the sweep log's `corroboration_collapses` entry for the Paraguay same-domain
+  case above, and a `jq empty` parse check on all seven touched data files (items, held, state, source_ledger,
+  sources, candidates, registry-candidates); held and registry-candidates were untouched (no held entries;
+  none of the four new items' companies had a registry profile with a like-for-like crossfeed metric). `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
