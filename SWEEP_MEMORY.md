@@ -4216,3 +4216,38 @@ a newer entry if a lesson changes.
   candidates, registry-candidates); held and registry-candidates were untouched (no held entries; none of
   the three new items' companies had a registry profile with a like-for-like crossfeed metric). `bun run
   build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~4h47m gap, unfiltered full source list (2026-11-21, second)
+
+- 2026-11-21-G: A "Morgan Stanley Starlink Tesla Report: 36% by 2040" shattered.io queue lead (and its
+  NAI500/investing.com/BigGo mirrors) all traced to the SAME Adam Jonas note first covered by BigGo Finance
+  and Investing.com on September 21, 2026; left undrafted as a stale resurfacing, extending the standing
+  page-load-date-is-not-proof-of-age pattern (2026-10-22-M, 2026-11-18-J) to analyst-note commentary
+  specifically, not just press releases.
+- 2026-11-21-H: A Senate NASA Authorization Act (S.933) "extends ISS to 2032" queue lead read as fresh (a
+  newspaceeconomy.ca piece citing a November 9 "Senate-reported" calendar placement) but the underlying
+  committee passage was SpaceNews-confirmed to March 4, 2026; the only genuinely new fact was a procedural
+  calendar placement 8 months later, with no floor vote. Left undrafted as too thin/not-yet-passed, same
+  judgment as the standing still-unveiled-appropriations-bill precedent (2026-11-17-L).
+- 2026-11-21-I: Three Gray Television/Nexstar-network local-news mirrors of the same SpaceX Vermilion Parish
+  Coastal Use Permit story (theadvocate.com, acadiananewsfirst.com, klfy.com) all carried the identical
+  byline (Claire Taylor) and text; attested `crawl: "found_none"` and cited only the original (The Advocate)
+  rather than stacking the same-author mirrors as independent corroboration, consistent with the standing
+  same-byline-is-one-source rule extended from wire services to a shared local-TV content network. klfy.com
+  itself 403'd on a direct fetch; acadiananewsfirst.com (same publisher group) worked as a readable mirror
+  of the identical text for confirmation purposes only, not as a second scored source.
+- 2026-11-21-J: A routine classified Falcon 9 NSSL launch (USSF-317) had zero trade/mainstream pickup beyond
+  a local Santa Barbara TV affiliate (keyt.com) and a low-profile business portal (businessupturn.com, classed
+  `informal`); published off Launch Library's own tracking data as the `aggregator` lead per the standing
+  "every on-scope launch publishes, weak sourcing is never a hold reason" rule, needing three `dedup_distinct`
+  entries against unrelated same-window SpaceX+launch commentary/talks items purely on company+category
+  overlap.
+- 2026-11-21-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on a 142-char tagline and the
+  USSF-317 item's triple company+category dedup collision at once; merged cleanly on the second attempt
+  ("merged 3 new, 0 updated, 0 held"), 1327 items up from 1324. Confirmed via a direct `jq` read of all three
+  new items' `snr`/`snr_trace`/`category`/`impact` fields (Satellogic/Common Space: SNR 5, first-party
+  ceiling; USSF-317: SNR 4, aggregator base plus mainstream/informal corroboration; Vermilion Parish CUP: SNR
+  2, mainstream base minus honest `corroboration_none`) and a `jq empty` parse check on all six touched data
+  files (items, held, state, source_ledger, sources, candidates); held and registry-candidates were untouched
+  (no held entries; only the Satellogic item had a like-for-like crossfeed metric, `sats_launched_total`).
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
