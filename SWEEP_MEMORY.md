@@ -4298,3 +4298,37 @@ a newer entry if a lesson changes.
   sources, candidates, registry-candidates); held and registry-candidates were untouched (no held entries;
   none of the four new items' companies had a registry profile with a like-for-like crossfeed metric). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2h gap, unfiltered full source list (2026-11-21, fourth)
+
+- 2026-11-21-Q: Five separate queue/discovery candidates in one pass all traced to stories already fully
+  captured under existing items with no new facts: a Futurism "SpaceX lenders horrified" AI-chips piece and a
+  Bloomberg "Credit Weekly" piece were both rewrites of the same FT/Apollo reporting already attached to the
+  2026-10-06 GPU-financing item; a Yahoo Finance "Google paying SpaceX $30 billion" (Jim Cramer) piece and a
+  "Musk won't take stock awards for merging with SpaceX" piece both resurfaced facts (the $920M/month Google
+  compute deal, the exact DealBook Summit stock-award quote) already verbatim in existing items. Left all four
+  undrafted rather than publish a duplicate card with no new information.
+- 2026-11-21-R: Two further candidates were stale resurfacings disguised as fresh by today's load/post date,
+  extending the standing page-load-date-is-not-proof-of-age pattern: a Satellogic "$18 million contract"
+  press release (satellogic.com itself) actually dated May 26, 2026, and a "European Southern Observatory
+  calls for a 100,000-satellite limit" story (via a Bluesky repost) whose original Fast Company reporting
+  dated to July 3, 2026. Checking a first-party press release's own dateline, not just when a Bluesky bot
+  reposted it, caught the first one; checking the original outlet's byline date (not the aggregator's) caught
+  the second.
+- 2026-11-21-S: A WebSearch for the Mexico/Texas Starship-debris angle surfaced an unrelated June 2025
+  "Sheinbaum threatens to sue SpaceX" story from a prior, different Starbase explosion incident; confirmed via
+  the article's own dateline before treating it as a new escalation on the current Nov. 17-21 Playa Bagdad
+  Flight 15 debris story, which the sitting item already covers via its Nov. 21 Mexico News Daily addition.
+- 2026-11-21-T: Of 17 fetchable signals channels, Bluesky profile pages fetched via `bsky.app/profile/<handle>`
+  return only the bare handle with no post content (the page is JS-rendered); the public AT Protocol endpoint
+  `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10` returns the actual
+  posts with `indexedAt` timestamps and works as a direct fetch. Use the API endpoint, not the bsky.app profile
+  URL, for any fetchable-channel signals pass on a Bluesky handle.
+- 2026-11-21-U: Only one genuine action survived this pass: Indian Masterminds and BehindTheBlack both
+  independently rewrote the same India Today Digital Gaganyaan G1 delay report (2026-11-20 item), corroborating
+  rather than duplicating it; attached both via `updates[].attach` with `bump: "corroboration_2plus"`, raising
+  the item from SNR 2 to 3. `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 0 new,
+  1 updated, 0 held"). Confirmed via a direct read of the updated item's grown `sources`/`secondary_urls` and
+  `snr_trace.history` entry, the sweep log's `snr_movements` entry, and a `jq empty` parse check on all six
+  touched data files (items, held, state, source_ledger, sources, candidates); held was untouched. `bun run
+  build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
