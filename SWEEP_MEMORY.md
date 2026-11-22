@@ -4244,3 +4244,42 @@ a newer entry if a lesson changes.
   re-supplying an update patch's entire `explainer` block verbatim, to avoid accidentally
   re-triggering field-length gates on text that was never meant to change. `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~2h13m gap, unfiltered full source list (2026-11-22, third)
+
+- 2026-11-22-I: A near-total-junk 32-candidate queue was entirely NROL-136 launch rehash from a
+  dozen angles (already published same-day), NSSL Lane 2/Starship Flight 15/Mexico-debris recaps,
+  SpaceX/Tesla-merger and Anthropic-IPO chatter, and two off-topic Futurism lifestyle pieces; a
+  routine ground test was nearly drafted as new (an Atomic-6 "tests new space Armor to protect
+  astronauts" Satellite Evolution piece) before a direct read of the existing Oct. 20 Atomic-6
+  item showed the identical Texas A&M hypervelocity test and CEO quote were already folded in via
+  a Nov. 20 update two days earlier; grepping an existing item's own `updates[]` log, not just its
+  original `what_happened`, caught the duplicate.
+- 2026-11-22-J: Google News RSS redirect URLs again failed to resolve via WebFetch this entire run
+  (bare "Google News" header, no content), extending the standing 2026-10-25-A/E outage pattern;
+  WebSearch-plus-direct-outlet-URL was the only working path for every Google News-sourced lead.
+  A Sandra Erwin (X search leg) SpaceNews piece on the Space Data Network Backbone's accelerated
+  launch cadence was itself paywalled and never directly fetched; rather than cite it from a
+  WebSearch synthesis, chased the same facts through Spaceflight Now's own live-coverage page
+  (successfully fetched directly), which verbatim-confirmed USSF-317 was the sixth R-designated
+  SDN Backbone launch (R-1 through R-6, matching the existing item's independent Tech Times count)
+  and stated the accelerated regional-this-year/global-next-year schedule; folded into two
+  existing items (USSF-317's payload-ID confirmation, the $2.3B SDN contract item's bump to 4) as
+  attach+patch rather than drafted as a new item, since both were the same program already
+  covered.
+- 2026-11-22-K: Elon Musk's SpaceX-stock-to-every-child pledge (and The Hill's tax-loophole
+  critique of it) was judged out of scope: it is Musk's personal estate/tax-planning vehicle using
+  his own shares as the asset, not a disclosed SpaceX corporate transaction (no funding round, 8-K,
+  M&A, or filing), and no commercial-market consequence is stated. A routine CRS-35 Dragon cargo
+  splashdown (ISS resupply mission already published at launch) was left undrafted as the
+  splashdown/return-leg analogue of a scheduled-launch-succeeding-on-schedule noise item, with no
+  new company fact to add. Flag both for Florian if either read is too strict.
+- 2026-11-22-L: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new,
+  3 updated, 0 held"), 1337 items unchanged (update-only sweep). Confirmed via a direct `jq` read
+  of all three updated items' `snr`/`sources`/`updates` fields (USSF-317: SNR unchanged at 4, 5
+  sources, 2 updates; SDN contract: SNR 3 to 4 via `corroboration_2plus`, 2 sources, 1 update;
+  NROL-136: SNR unchanged at 4, 3 sources, 1 update), the sweep log's `snr_movements` entry, and a
+  `jq empty` parse check on all six touched data files (items, held, state, source_ledger,
+  sources, candidates); held and registry-candidates were untouched (no held entries; all three
+  touched items were updates, which carry no crossfeed block). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
