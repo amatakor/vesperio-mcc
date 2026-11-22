@@ -4208,3 +4208,39 @@ a newer entry if a lesson changes.
   registry-candidates); held and registry-candidates were untouched (no held entries; none of the five
   new items' companies had a registry profile with a like-for-like crossfeed metric). `bun run build`
   was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~9h15m gap, unfiltered full source list (2026-11-22, second)
+
+- 2026-11-22-F: Of 15 fetchable-leg fetches this run (10 bluesky via the AT Protocol `getAuthorFeed`
+  endpoint, 5 sites), every single one returned content that predated this run's `lastSweep`
+  (2026-11-22T05:41 UTC) by hours to months, including channels not previously flagged as
+  serving stale cache (Josef Aschbacher, Marco Langbroek, SpacePolicyOnline bluesky, Andrew
+  Jones, Andrew Parsonson bluesky). Worth treating the bsky stale-cache issue (2026-11-22-C) as
+  a general per-run risk rather than a fixed list of four accounts; sanity-check newest-post
+  timestamps against `lastSweep` every time, not just for the previously-identified names.
+- 2026-11-22-G: A WebSearch-surfaced NewSpace India Limited/Australia "Space MAITRI" $18M MoU
+  story (newsbytesapp, pwonlyias, indiastrategic, latestly, diplomacyindia) could not be pinned
+  to a fresh November 2026 signing: the underlying Launch Service Agreement traces to a June 26,
+  2024 signing at India Space Congress, and no fetched source stated a distinct new November
+  2026 action (ratification, amendment, or launch-date confirmation) beyond restating the
+  original 2024 deal terms. Left undrafted as unconfirmed-fresh rather than guess which framing
+  was correct, extending the standing page-load-date-is-not-proof-of-age pattern to a case where
+  multiple outlets disagree on the underlying event's actual year.
+- 2026-11-22-H: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on three
+  same-company-plus-category dedup collisions at once (SpaceX + launch, against two unrelated
+  commentary items and the Philippines launch-site-talks item, none caught by the initial
+  single-collision check against USSF-317) and a second attempt on a 168-char tagline (a
+  pre-existing item's own tagline, carried over unchanged into an enrichment patch that reused
+  the full `explainer` block rather than touching only `what_happened`); three added
+  `dedup_distinct` entries plus a shortened tagline merged cleanly on the third attempt ("merged
+  1 new, 1 updated, 0 held"), 1337 items up from 1336. Confirmed via a direct `jq` read of the
+  new item's `snr`/`snr_trace`/`category`/`impact` fields (NROL-136 Vandenberg turnaround record:
+  SNR 4, trade base plus `corroboration_2plus`) and the updated GPU-financing item's grown
+  `sources` (17, up from 15) and `updates` (11, up from 10) arrays, plus a `jq empty` parse check
+  on all six touched data files (items, held, state, source_ledger, sources, candidates); held
+  and registry-candidates were untouched (no held entries; the new item stated only a
+  pad-turnaround time and a single booster's flight count, neither a like-for-like registry
+  metric). Worth patching only the specific field needing new text (`what_happened`) rather than
+  re-supplying an update patch's entire `explainer` block verbatim, to avoid accidentally
+  re-triggering field-length gates on text that was never meant to change. `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.
