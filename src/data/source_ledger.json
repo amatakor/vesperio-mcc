@@ -1,7 +1,7 @@
 {
   "$comment": "Source reliability ledger (SNR_SPEC.md 7.1, contract in SNR_PLAN.md A4). Machine-owned: updated only by scheduled runs; human-auditable via the rendered report. Rolling 90-day window for demotion/recovery decisions; claims records power the calibration report and are written at scoring time, never reconstructed.",
   "version": "0.1",
-  "updated": "2026-11-23T05:29:51.681Z",
+  "updated": "2026-11-23T16:48:17.987Z",
   "sources": [
     {
       "domain": "spacenews.com",
@@ -83,6 +83,12 @@
           "kind": "credit",
           "claim": "2026-07-27-esa-lunar-link-repurpose-tender",
           "reason": "early, not wrong: published at SNR 2, later confirmed by a direct source"
+        },
+        {
+          "date": "2026-11-23",
+          "kind": "credit",
+          "claim": "2026-09-16-space-force-spacex-sdn-design-latitude",
+          "reason": "early, not wrong: published at SNR 2, later reached 4 floor-independently"
         }
       ],
       "claims": [
@@ -895,7 +901,8 @@
           "claim": "2026-08-19-eartheye-in2-partnership",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-08-20-rocket-lab-iqps-9th-launch",
@@ -908,13 +915,15 @@
           "claim": "2026-08-20-latconnect60-transcelestial-optical-network",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-08-20-draper-proteus-space-on-orbit-mission",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-08-20-rock-west-composites-stratopultrusion",
@@ -927,7 +936,8 @@
           "claim": "2026-08-20-novaspace-eo-satellites-2035-forecast",
           "date": "2026-08-22",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-08-24-tendeg-newten-antenna",
@@ -992,7 +1002,8 @@
           "claim": "2026-09-16-space-force-spacex-sdn-design-latitude",
           "date": "2026-09-16",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-09-17-simera-sense-idom-multiscape350",
@@ -1116,13 +1127,15 @@
           "claim": "2026-11-04-leolabs-dow-osc-conditional-loan",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-05-cesiumastro-series-d-730m",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-10-rocket-lab-osc-150m-neutron-loan",
@@ -1713,7 +1726,8 @@
           "claim": "2026-11-03-tumbleweed-seed-round-reentry-vehicle",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-04-orbital-matter-endurosat-in-space-manufacturing",
@@ -1725,7 +1739,8 @@
           "claim": "2026-11-05-redwire-darpa-otter-second-vleo-demo",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-05-orca-aerospace-orbital-autonomy-deal",
@@ -1743,7 +1758,8 @@
           "claim": "2026-11-09-canada-budget-medium-lift-rocket-funding",
           "date": "2026-11-09",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-12-spaceium-openport-dollar1-license",
@@ -1970,7 +1986,8 @@
           "claim": "2026-08-18-cnes-compact-telescope-rfi",
           "date": "2026-08-23",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-08-25-esa-draco-reentry-cdr",
@@ -2175,13 +2192,15 @@
           "claim": "2026-11-09-saxavord-uk-government-stake",
           "date": "2026-11-09",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-09-rfa-one-launch-slips-2027",
           "date": "2026-11-09",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-12-esa-maiaspace-launcher-challenge-delay",
@@ -2414,19 +2433,22 @@
           "claim": "2026-11-02-rocket-lab-iqps-10th-launch",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-02-voyager-saltzman-advisory-board",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-03-intuitive-machines-falcon-radar-contract",
           "date": "2026-11-03",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-19-redwire-ascendarc-elsa-solar-array",
@@ -2651,7 +2673,8 @@
           "claim": "2026-11-09-planet-stoke-space-nova-launch-agreement",
           "date": "2026-11-09",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -2899,25 +2922,29 @@
           "claim": "2026-11-03-starfish-space-otter-contact-loss",
           "date": "2026-11-04",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-07-nasa-blue-origin-promise-rover",
           "date": "2026-11-08",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-07-nasa-vadr-moon-base-task-orders",
           "date": "2026-11-08",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-07-nasa-clps-2-eight-providers",
           "date": "2026-11-08",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-07-nasa-spacex-cislunar-comms-demo",
@@ -3228,7 +3255,8 @@
           "claim": "2026-08-19-speedcast-tgs-all-leo-starlink",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-05-29-spacex-sb-amti-contract",
@@ -3634,31 +3662,36 @@
           "claim": "2026-11-02-hydrosat-nyktos-mwir-program",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-04-nasa-viasat-ses-astranis-kaband-relay",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-04-ula-vulcan-fairing-manufacturing-inhouse",
           "date": "2026-11-05",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-06-viasat-space-force-sdn-b-moc",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-05-leap-sutherland-spaceport-mou",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-11-skylo-kt-sat-south-korea",
@@ -4102,13 +4135,15 @@
           "claim": "2026-11-03-satport-acquires-speedcast-teleport",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-04-kt-sat-st-engineering-idirect-maritime",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-12-united-starlink-half-fleet-thanksgiving",
@@ -4280,7 +4315,8 @@
           "claim": "2026-11-06-spacex-ussf-432-vandenberg",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-17-jaxa-hayabusa2-2015-bm510-retarget",
@@ -4375,7 +4411,8 @@
           "claim": "2026-11-06-ast-spacemobile-firefly-blacklift-rocket",
           "date": "2026-11-06",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-10-firefly-synspective-multi-launch-agreement",
@@ -4610,7 +4647,8 @@
           "claim": "2026-11-04-spacex-qualcomm-starlink-mobile-5g",
           "date": "2026-11-04",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-10-barclays-tmobile-spacex-wireless-fit",
@@ -4738,7 +4776,8 @@
           "claim": "2026-11-04-redwire-q3-2026-earnings",
           "date": "2026-11-05",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-09-rocket-lab-q3-2026-neutron-backlog",
@@ -4887,7 +4926,8 @@
           "claim": "2026-11-05-blacksky-q3-2026-results",
           "date": "2026-11-05",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -5276,7 +5316,8 @@
           "claim": "2026-10-29-arianegroup-prometheus-methane-test-bench",
           "date": "2026-11-08",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-18-esa-sentinel-3c-slstr-first-thermal-images",
@@ -5373,7 +5414,8 @@
           "claim": "2026-11-03-connected-solutions-starlink-reseller",
           "date": "2026-11-03",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -5932,7 +5974,8 @@
           "claim": "2026-11-02-nasa-swift-observatory-reentry",
           "date": "2026-11-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-09-nasa-escapade-powered-earth-flyby-mars",
@@ -6370,13 +6413,15 @@
           "claim": "2026-11-05-long-march-2c-yaogan-51-launch",
           "date": "2026-11-05",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-08-satnet-guowang-group-29-launch",
           "date": "2026-11-08",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-13-spacex-starship-flight-15-booster-splashdown",
@@ -6547,7 +6592,8 @@
           "claim": "2026-11-05-ukraine-starshield-contract-expires-2027",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -6665,7 +6711,8 @@
           "claim": "2026-08-20-starlink-india-gen2-reapplication",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -6756,7 +6803,8 @@
           "claim": "2026-11-05-russia-cosmos-2611-2613-iceye-x37",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -6876,13 +6924,15 @@
           "claim": "2026-11-02-ses-finnair-air-astana-ifc",
           "date": "2026-11-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-04-ses-optical-comms-demo-k2-gravitas",
           "date": "2026-11-05",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -7167,7 +7217,8 @@
           "claim": "2026-11-07-galactic-energy-ceres2-y3-return-to-flight",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -7345,7 +7396,8 @@
           "claim": "2026-11-06-musk-spacex-buy-legacy-telco-spectrum",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-10-deutsche-bank-spacex-compute-forecast-commentary",
@@ -7465,7 +7517,8 @@
           "claim": "2026-11-03-earthdaily-geosolutions-central-america",
           "date": "2026-11-03",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -7631,7 +7684,8 @@
           "claim": "2026-11-06-russia-security-council-starlink-oneweb-risk",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-14-roscosmos-koen-kinosputnik-private-satellites",
@@ -7682,7 +7736,8 @@
           "claim": "2026-08-19-stoke-space-nova-fit-checks",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-09-24-starfish-space-otter-transporter-18",
@@ -7709,7 +7764,8 @@
           "claim": "2026-11-05-blue-origin-gs3-northstar-new-glenn",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -7915,7 +7971,8 @@
           "claim": "2026-08-20-spacesail-1b-series-b",
           "date": "2026-08-20",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -7994,7 +8051,8 @@
           "claim": "2026-08-20-cnes-kayrros-firewatch-wildfire",
           "date": "2026-08-22",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -8032,7 +8090,8 @@
           "claim": "2026-08-24-iran-starlink-crackdown-arrests",
           "date": "2026-08-24",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "expired",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -8293,7 +8352,8 @@
           "claim": "2026-11-05-cosmoserve-seed-debris-facility",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -8595,7 +8655,8 @@
           "claim": "2026-11-06-starlink-retailer-program",
           "date": "2026-11-08",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-18-starlink-direct-to-cell-mongolia-mobicom",
@@ -9053,7 +9114,8 @@
           "claim": "2026-11-05-planet-ai-app-launch",
           "date": "2026-11-05",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -9256,7 +9318,8 @@
           "claim": "2026-11-02-space-force-cislunar-prime-constellation",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -9471,13 +9534,15 @@
           "claim": "2026-10-21-att-ast-spacemobile-handoff",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-05-ses-q3-2026-results",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-16-transastra-tests-10-meter-capture-bag",
@@ -10525,7 +10590,8 @@
           "claim": "2026-11-06-starlink-router4-wifi7-shipping",
           "date": "2026-11-07",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-10-starlink-mini-2-launch",
@@ -10587,13 +10653,21 @@
     },
     {
       "domain": "en.defence-ua.com",
-      "events": [],
+      "events": [
+        {
+          "date": "2026-11-23",
+          "kind": "credit",
+          "claim": "2026-11-03-russia-rassvet-4-itu-filing",
+          "reason": "early, not wrong: published at SNR 2, later reached 4 floor-independently"
+        }
+      ],
       "claims": [
         {
           "claim": "2026-11-03-russia-rassvet-4-itu-filing",
           "date": "2026-11-03",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10605,7 +10679,8 @@
           "claim": "2026-11-03-lijian-2-qianfan-batch17-launch",
           "date": "2026-11-03",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10617,7 +10692,8 @@
           "claim": "2026-11-04-ubotica-cognisat6-autonomous-scheduling",
           "date": "2026-11-04",
           "snr_at_publication": 3,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10629,7 +10705,8 @@
           "claim": "2026-11-04-ohb-esa-sentinel3-ngt-contract",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10641,7 +10718,8 @@
           "claim": "2026-11-02-starvision-adasat-oman-space-silk-road",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10665,7 +10743,8 @@
           "claim": "2026-11-05-united-spotify-starlink-seatback",
           "date": "2026-11-05",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10677,7 +10756,8 @@
           "claim": "2026-11-05-faa-commercial-space-licensing-reforms",
           "date": "2026-11-06",
           "snr_at_publication": 5,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10689,7 +10769,8 @@
           "claim": "2026-11-05-deutsche-telekom-ceo-spacex-200-billion",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         },
         {
           "claim": "2026-11-18-tim-farrar-falcon9-third-party-access-commentary",
@@ -10701,13 +10782,21 @@
     },
     {
       "domain": "www.washingtonpost.com",
-      "events": [],
+      "events": [
+        {
+          "date": "2026-11-23",
+          "kind": "credit",
+          "claim": "2026-11-06-spacex-white-house-starlink-donation-contracts",
+          "reason": "early, not wrong: published at SNR 2, later reached 4 floor-independently"
+        }
+      ],
       "claims": [
         {
           "claim": "2026-11-06-spacex-white-house-starlink-donation-contracts",
           "date": "2026-11-06",
           "snr_at_publication": 2,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10719,7 +10808,8 @@
           "claim": "2026-11-06-musk-spacex-government-contracts-cancel-offer",
           "date": "2026-11-06",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10731,7 +10821,8 @@
           "claim": "2026-11-01-gistda-krabi-suspected-debris",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10743,7 +10834,8 @@
           "claim": "2026-11-07-uk-istari-titania-satellite-orbit",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10755,7 +10847,8 @@
           "claim": "2026-11-03-morgan-stanley-spacex-cheaper-sp500",
           "date": "2026-11-07",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10767,7 +10860,8 @@
           "claim": "2026-11-09-ntt-mitsubishi-electric-megaconstellation-mou",
           "date": "2026-11-09",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
@@ -10779,7 +10873,8 @@
           "claim": "2026-11-09-rakuten-ast-joint-venture-incorporated",
           "date": "2026-11-09",
           "snr_at_publication": 4,
-          "resolution": "unresolved"
+          "resolution": "confirmed",
+          "resolved_on": "2026-11-23"
         }
       ]
     },
