@@ -93,132 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h57m gap, unfiltered full source list (2026-10-23)
-
-- 2026-10-23-A: The em-dash ban applies even inside a real, verbatim quote: Trump's reported
-  "The bottom line — he put it back" tripped `finalize-sweep`'s blanket em-dash rejection on first
-  submission. Rewrote the quoted clause as "The bottom line, he put it back" (comma for the dash,
-  wording otherwise unchanged) rather than drop the fact; extends the 2026-10-06-R finding that the
-  no-punctuation-marks rules bind the rendered copy, not just unquoted agent prose, from exclamation
-  marks to em dashes specifically.
-- 2026-10-23-B: Two separate WebFetch passes over near-identical Al Jazeera/Reuters wire text about
-  Trump's Starlink-restoration claim returned materially different quote wording and a fabricated
-  "October 24" follow-up date that doesn't exist in this sweep's window; neither was trusted until two
-  further direct fetches (The Moscow Times via Reuters, UNN.ua) independently confirmed the same "the
-  bottom line, he put it back" / "nothing has changed anywhere" exchange. Confirms the standing
-  never-trust-a-single-WebFetch-summary-for-an-exact-quote discipline extends to short, simple quotes,
-  not just long technical ones.
-- 2026-10-23-C: A WebFetch of Vivienne Machi's Aviation Week author-page listing surfaced a "Space
-  Force Plans New 'Spider' Program For GPS Ground Ops" headline that could not be confirmed by a
-  dedicated WebSearch at all (no result named any "Spider" program); treated as a fabricated/garbled
-  small-model summarization artifact per the standing 2026-10-03-G/2026-10-22-B pattern and left
-  entirely unchased rather than drafted or even logged as a gap to revisit.
-- 2026-10-23-D: A near-total-junk queue (SpaceX/Tesla-merger and Starlink/Ukraine-saga rehash
-  dominating every Google News and Bluesky search leg) and a fully clean mandatory 4-source HTML pass
-  still yielded five genuine enrichment patches, all via a source already cited on an existing item, a
-  same-outlet correction caught through the signals pass, or a discovery-pass fact missing from an
-  already-published item's copy: Trump's disputed Starlink-restoration claim (Ukraine saga), a $561M
-  Boring Company stake markup disclosed in SpaceX's own Q3 10-Q (missed by the original Q3-earnings
-  draft because it sat in the 10-Q rather than the 8-K/Exhibit 99.1 already cited), European
-  Spaceflight's own correction to the Vulcain Aft Bay weight figures (880kg actually beat the 800kg
-  target, not fell short), SpacePolicyOnline's fuller ASAP Artemis IV writeup (adds a future-LEO-access
-  concern the original bluesky-sourced draft didn't carry), and Rocket Lab's own response to the
-  Space Force launch-capacity-gap item. Zero new items; `bun scripts/finalize-sweep.ts` merged cleanly
-  on the second attempt ("merged 0 new, 5 updated, 0 held") after the em-dash fix, confirmed via a
-  direct `grep` item-count check (1022, unchanged) and a read of the sweep log's `snr_movements` (four
-  unrelated persistence bumps) and `signals`/`discovery` blocks. `bun run build` was not attempted, per
-  the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h gap, unfiltered full source list (2026-10-23, second)
-
-- 2026-10-23-E: A candidate drafted from the signals pass (European Spaceflight's Themis
-  schedule-slip piece, found by fetching europeanspaceflight.com directly since its substack
-  feed 403'd) turned out to duplicate an item the immediately-prior sweep had already published
-  from the exact same source URL seconds before this run's `lastSweep` cutoff; `finalize-sweep`
-  caught it on the dedup check and it was dropped rather than drafted as a duplicate or an
-  update. Worth re-grepping a brand-new-looking signals-pass find's exact headline/company against
-  `existing[]` before drafting, even when it reads as fresh, since a same-day prior sweep can land
-  between one run's candidate discovery and its own finalize.
-- 2026-10-23-F: Bluesky profile pages (`bsky.app/profile/...`) are consistently unreadable via
-  WebFetch this run (renders only the bare handle, no post content, for every account tried); the
-  public AT Protocol endpoint `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
-  fetches cleanly via WebFetch instead and returns real post text with `indexedAt` timestamps.
-  Prefer that endpoint over `bsky.app` URLs directly whenever `bsky.app` returns only a handle shell.
-- 2026-10-23-G: WebSearch synthesis fabricated a source name on the Cosmos 2612 UN exchange: an
-  initial search attributed the US statement to "Thomas DiNanno" and Russia's rebuttal to named
-  diplomat "Konstantin Vorontsov" with an "absurd" quote, but two independent direct fetches
-  (rferl.org, eurasiareview.com, both the same Mike Eckel wire piece) showed the actual US speaker
-  at the Oct. 21 UN First Committee was Brian Hardesty, and Russia's representative was not
-  identified by name in either piece. Drafted the update using only the directly-confirmed names
-  and quotes; extends the standing WebSearch-synthesis-fabricates-specifics pattern
-  (2026-10-22-B/G, 2026-10-23-C) to person names, not just figures and headlines.
-- 2026-10-23-H: Several near-total-junk queue leads traced to stale resurfacings rather than new
-  facts: "Mystery space debris found in Minnesota cornfield linked to Chinese rocket" (KSTP)
-  rehashes the already-fully-identified Oct. 14 Zhuque-2E debris item; a WebSearch for "Ukraine
-  independent satellite system" surfaces Stetman's $1.1B/360-satellite constellation plan, which
-  traces to a July 2026 Kyiv Post piece, not a new event; and a "NASA awards $476M in Commercial
-  Satellite Data contracts" hit (framed by a reposted tweet as "4 hours ago") is actually the
-  June 18, 2026 CSDA On-Ramp 2 announcement. All three left undrafted.
-- 2026-10-23-I: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (a second new item,
-  the Themis piece above, as a same-event dedup match against both an unrelated Oct. 21
-  Airbus/Vulcain-aft-bay item and the already-published same-day Themis item); dropping that item
-  entirely merged cleanly on the second attempt ("merged 1 new, 3 updated, 0 held"). Confirmed via
-  a direct `jq` read of the new Orbital Operations/Astraeus item's `snr`/`category`/`impact` fields
-  (1025 items, up from 1024) and all three updated items' grown `sources`/`updates` arrays
-  (Atomic-6/Starburst: 3 sources, 1 update; Starlink/Ukraine: 58 sources, 23 updates; Cosmos
-  2612/ICEYE-X36: 18 sources, 10 updates), plus a `jq empty` parse check across all touched data
-  files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~4.3h gap, unfiltered full source list (2026-10-23, third)
-
-- 2026-10-23-J: A directly-fetched Yahoo mirror of a Politico piece ("British PM pushes Trump
-  on Ukraine's Starlink access") twice named the UK Prime Minister as "Andy Burnham," not the
-  real-world Keir Starmer; re-fetched with a targeted "who exactly is named" prompt and got the
-  same answer both times. Trusted the directly-fetched text over outside/training-data knowledge
-  of real-world politics per rule 2 (never enrich from memory) and wrote the item using the
-  site's own stated name; this platform's 2026 is a simulated continuity that can diverge from
-  real-world events, and the fetched source is the only authority that matters.
-- 2026-10-23-K: A Via Satellite "Space Systems Command Makes CASR Awards for Space Domain
-  Awareness" piece read as a fresh award but turned out to recap the already-published Oct. 22
-  CASR item (same six companies, just "unnamed by SSC" in this outlet's own phrasing where
-  airandspaceforces.com had named them); still carried genuinely new budget figures (a March 2025
-  wargame with a dozen-plus companies, $37M FY26 / $24M FY27 commercial-services lines against a
-  ~$71B FY27 request) not in the original draft, folded in as a no-bump `updates[].patch`+`attach`
-  enrichment rather than a new item or a skip. Worth reading a same-program "award" piece in full
-  even when the headline sounds redundant; it can carry the only sourced budget context the
-  original draft lacked.
-- 2026-10-23-L: An Ars Technica "pressure is on to find a home for a new spaceport" piece read as
-  a fresh gap but was the same story as the already-published Oct. 22
-  `2026-10-22-space-force-third-launch-site-feasibility` item (Garrant's "aspirational" 2030
-  quote, no site chosen), just reframed around congressional pressure and Meink's May hearing
-  testimony; grepping `items.json` by topic ("spaceport", "launch site") before drafting caught
-  it. The incremental Meink/congressional-study detail was judged too marginal to patch in on its
-  own.
-- 2026-10-23-M: Vivienne Machi's Aviation Week author-page listing (one of the mandatory
-  fetchable signals channels) surfaced a genuine same-day gap the queue and an 8-query discovery
-  matrix both missed: Space Systems Command's new ACES program (Access to the Classified
-  Ecosystem for Space), announced Oct. 22 at LA Space Week, easing security-clearance barriers for
-  commercial vendors entering classified national-security space work. SatNews and ExecutiveGov
-  both fetched directly and independently worded, landing a clean SNR 4 off two trade sources; no
-  named vendors or dollar figures exist yet, so `crossfeed.facts` stayed empty.
-- 2026-10-23-N: BlackSky's own news listing carried a same-day "AI driven space-based
-  intelligence as a path to space sovereignty" entry that read like a company blog post but
-  turned out to be syndicated NATIVE ADVERTISING (`airforcetimes.com/native/blacksky/...`,
-  `militarytimes.com/native/blacksky/...`, the same piece dated as far back as Oct. 9 on one
-  mirror) rather than a dated news item; left undrafted per the standing thin-marketing exclusion,
-  extending it to sponsored-content placements specifically, not just a company's own blog.
-- 2026-10-23-O: A routine, undramatic Chinese Yaogan launch (Long March 4B, six Yaogan 53/56-series
-  reconnaissance satellites) had zero trade or mainstream pickup on a direct search; published
-  single-sourced off Launch Library's own tracking data (`aggregator`, `crawl: "found_none"`,
-  honest SNR 3) rather than held, per the standing "every on-scope launch publishes" rule and the
-  "weak sourcing is never a reason to hold" rule, extended here to a launch vehicle itself (not
-  just its payload) when literally no press exists yet.
-- 2026-10-23-P: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4
-  new, 2 updated, 0 held"); confirmed via a direct `jq` read of all four new items'
-  `snr`/`category`/`impact` fields (1029 items, up from 1025), the CASR and Starlink/Ukraine
-  updated items' grown `sources`/`updates` arrays, and a `jq empty` parse check across all touched
-  data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~7h20m gap, unfiltered full source list (2026-10-24)
 
 - 2026-10-24-A: Bash file redirection (`>`) and `mkdir` are blocked outright in this
@@ -4331,3 +4205,38 @@ a newer entry if a lesson changes.
   `snr_movement` (Marble Imaging 2 to 3), and a `jq empty` parse check on all six touched data files
   (items, state, held, source_ledger, sources, candidates). `bun run build` was not attempted, per
   the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~5h13m gap, unfiltered full source list (2026-11-23, second)
+
+- 2026-11-23-G: Google News RSS redirect URLs again failed to resolve via WebFetch this entire run
+  (bare "Google News" header, no content, on 5 separate attempts), extending the standing
+  2026-10-25-A/E/2026-11-22-J outage pattern across a fourth day; WebSearch-plus-direct-outlet-URL
+  remained the only working path for every Google News-sourced queue lead.
+- 2026-11-23-H: A SatNews piece ("Scientists and Regulators Weigh 150x Emission Claims...") on
+  SpaceX's pending FCC million-satellite data-center filing had no byline, no named study, and no
+  link to its source, failing the attribution bar outright; a dedicated WebSearch traced the actual
+  claim to a named UCL preprint (Eloise Marais and Connor Barker, awaiting peer review in the ACS
+  journal *Earth and Space Chemistry*), which essopenarchive.org itself 403'd on direct fetch.
+  Scientific American (Nov. 18, byline Jacklin Kwan, a direct Marais quote) and Futurism (Nov. 22,
+  independently written, a different Marais quote) both fetched cleanly and gave clean
+  `corroboration_2plus` at the mainstream base tier; led with the earlier, more-detailed outlet
+  rather than the thin trade piece that actually surfaced in the queue. Worth remembering that when
+  an academic preprint is the real newsy fact, lead with whichever mainstream outlet's own reporting
+  you can directly fetch, not the (likely 403'd) preprint host or a thin, unbylined trade rewrite.
+- 2026-11-23-I: A Bluesky "satellite constellation" search hit claiming Poland's Creotech got a
+  fresh "€59M" sovereign-constellation funding round traced, on a dedicated search, to the CAMILA
+  program's original April 2025 ESA contract (later extended to ~€59M total, still within 2026);
+  left undrafted as a stale resurfacing rather than republished off the bot repost's framing.
+- 2026-11-23-J: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on six
+  same-company-plus-category dedup collisions at once (four on the UCL/SpaceX emissions item, two
+  on the Citi price-target item, all against unrelated SpaceX regulatory/financial items in the
+  window); adding the `dedup_distinct` entries merged cleanly on the second attempt ("merged 4 new,
+  0 updated, 0 held"), 1343 items up from 1339. Confirmed via a direct `jq` read of all four new
+  items' `snr`/`category`/`impact`/`kind` fields (BTC/Botswana: SNR 4, trade base plus
+  `corroboration_2plus`; UCL emissions study: SNR 4, mainstream base plus `corroboration_2plus`;
+  AssamSAT: SNR 4, mainstream base plus `corroboration_2plus`; Citi price target: SNR 2, trade base
+  minus `corroboration_none`) and a `jq empty` parse check on all seven touched data files (items,
+  state, held, source_ledger, sources, candidates, registry-candidates); held and
+  registry-candidates were untouched (no held entries; none of the four new items' companies/
+  entities had a registry profile with a like-for-like crossfeed metric). `bun run build` was not
+  attempted, per the 2026-09-09 CLAUDE.md procedure update.
