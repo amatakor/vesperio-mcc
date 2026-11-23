@@ -4283,3 +4283,51 @@ a newer entry if a lesson changes.
   sources, candidates); held and registry-candidates were untouched (no held entries; all three
   touched items were updates, which carry no crossfeed block). `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6.5h gap, unfiltered full source list (2026-11-23)
+
+- 2026-11-23-A: Two different banks' SpaceX price targets landed on the identical $210 figure five
+  months apart (UBS, July 7, 2026; Jefferies, Nov. 22, 2026, initiating fresh coverage); the
+  matching number alone is not proof of a stale resurfacing, but it is worth double-checking the
+  byline date on any "new" analyst note whose price target matches a figure already seen, since a
+  coincidence like this is exactly the shape a stale-recirculation trap takes. Confirmed Jefferies
+  was the genuinely new Nov. 22 initiation by checking both notes' own publish dates directly.
+- 2026-11-23-B: AskTraders.com and TheFly (via TipRanks) both carried byte-identical analyst-note
+  phrasing ("exceptional" engineering, "durable high growth," "exponential growth," the $8.4
+  trillion AI figure) for the same Jefferies initiation, alongside several more mirrors (panews.io,
+  phemex.com, chaincatcher.com) with the same wording; treated as one wire source
+  (`crawl: "found_none"`, honest SNR 2) rather than padding `corroboration_2plus` from the mirror
+  count, extending the standing many-mirrors-of-one-wire-is-not-corroboration rule to sell-side
+  research-note pickups specifically. Neither AskTraders.com nor TheFly/TipRanks had prior
+  classification precedent in this file; treated both as `trade` (same tier as Benzinga/TheStreet).
+- 2026-11-23-C: A ColombiaOne.com queue hit (Colombia's MinTIC filing formal charges against
+  Starlink and three mobile carriers over prison signal-blocking failures at four facilities) and
+  an independently-fetched Colombian business outlet (Asuntos Legales, different language framing
+  of the same facts, `trade`) gave clean `corroboration_2plus` off a `mainstream` lead for a
+  genuinely new Latin American regulatory action; no prior item covered Starlink-in-Colombia
+  prison-signal enforcement specifically, so no dedup collision beyond the standing
+  same-company-plus-category heuristic (three unrelated SpaceX+regulatory items in the window,
+  cleared with `dedup_distinct`).
+- 2026-11-23-D: A whitelisted signal's bluesky feed (here, Andrew Jones, via a repost rather than
+  his own reporting) surfaced the sweep's only genuine signals-pass find: ESA's own "ESA Operations"
+  account confirming the Nov. 21 BepiColombo Mercury orbit-insertion thruster burn ran shorter than
+  planned due to a software issue. Space.com's own article (already the item's attached lead) had
+  already been updated in place with the same quote, so no new source URL was attached, just a
+  copy-only `updates[].patch` resync, the same shape as the standing 2026-11-08-I/2026-11-18-L
+  pattern of re-checking an already-cited page's current content before assuming nothing changed.
+- 2026-11-23-E: A Houston Chronicle follow-up (Molly Wilhelm) on the open Starship Flight 15
+  Tamaulipas debris item was paywalled directly (402 on its own `tollbit.chron.com` redirect target)
+  but a Yahoo republish explicitly crediting "Houston Chronicle" by byline worked cleanly; it also
+  corrected a WebSearch synthesis that had misattributed a Conibio Global conservation-group quote
+  ("the evidence is in Mexico... must be treated with the seriousness it deserves") to an unnamed
+  Mexican government official, confirming the standing never-trust-a-synthesis-for-attribution
+  pattern extends to quote sourcing, not just figures and dates.
+- 2026-11-23-F: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 2 new,
+  2 updated, 0 held"), 1339 items up from 1337. Confirmed via a direct `jq` read of both new items'
+  `snr`/`snr_trace`/`category`/`impact`/`kind` fields (Colombia/MinTIC: SNR 4, mainstream base plus
+  `corroboration_2plus`; Jefferies: SNR 2, trade base minus `corroboration_none`) and both updated
+  items' grown `sources`/`updates` arrays (BepiColombo: 2 sources unchanged, 1 update; Tamaulipas
+  debris: 5 sources up from 4, 2 updates up from 1), the sweep log's one unrelated persistence-bump
+  `snr_movement` (Marble Imaging 2 to 3), and a `jq empty` parse check on all six touched data files
+  (items, state, held, source_ledger, sources, candidates). `bun run build` was not attempted, per
+  the 2026-09-09 CLAUDE.md procedure update.
