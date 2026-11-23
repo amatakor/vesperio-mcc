@@ -4240,3 +4240,36 @@ a newer entry if a lesson changes.
   registry-candidates were untouched (no held entries; none of the four new items' companies/
   entities had a registry profile with a like-for-like crossfeed metric). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~6h gap, unfiltered full source list (2026-11-23, third)
+
+- 2026-11-23-K: A Payload "Industry Shares Plan for Moon Base Power Tower" piece read like a fresh
+  gap on first glance but turned out to be a deeper feature on the already-published Nov. 10
+  Redwire $40M NASA Moon Base contract (same figure, same program), naming the broader architecture
+  (miniCAST) and two uncredited-elsewhere partners (Blue Origin's Honeybee Robotics for storage,
+  Yank Technologies for wireless power transfer); folded in as a no-bump `attach`+`patch` rather
+  than drafted as a new item. Worth checking a company's most recent registry items by name before
+  treating a differently-titled feature as a new program.
+- 2026-11-23-L: A CGTN "UK joins 10 other nations in NATO STARLIFT" piece read as fresh news but the
+  existing Nov. 17 STARLIFT item already named the UK as one of the ten founding Allies in its own
+  `what_happened` text; left entirely unpatched as a stale-framing resurfacing, not a UK-specific
+  development. Also left out: Nara Space's and ISRO's CARTOSAT-2F "satellite exceeds design life"
+  design-life-milestone recaps (routine operational status, no commercial action, same shape as the
+  standing evergreen-milestone exclusion), an ISpA conference recap restating already-known
+  Jio/OneWeb/Starlink India spectrum status with no new dateable action, and an Iran intelligence-
+  ministry weapons-seizure release whose only Starlink angle was one terminal among hundreds of
+  firearms seized from alleged separatists (no commercial-operations angle, unverified claims about
+  unnamed detainees).
+- 2026-11-23-M: `bun scripts/finalize-sweep.ts` rejected the first two draft attempts on two
+  different updated items' taglines exceeding 140 chars (one at a time, since the gate reports only
+  the first violation); merged cleanly on the third attempt ("merged 2 new, 3 updated, 0 held"),
+  1345 items up from 1343. Confirmed via a direct `jq` read of both new items' `snr`/`category`/
+  `impact` fields (Eutelsat/Space Force: SNR 4, trade base plus `corroboration_2plus`; Verde
+  Technologies/ISS: SNR 2, trade base minus `corroboration_none` off a single-sourced Payload
+  exclusive) and all three updated items' grown `sources`/`updates` arrays (Redwire Moon Base: 3
+  sources, 1 update, SNR unchanged at 4; Poland Starlink sabotage saga: 16 sources, 6 updates, SNR
+  unchanged at 4; Quantum Space SPAC: 5 sources, 2 updates, SNR unchanged at its official_record
+  ceiling of 5), and a `jq empty` parse check on all six touched data files (items, held, state,
+  source_ledger, sources, candidates); held and registry-candidates were untouched (no held
+  entries; neither new item's company had a registry profile with a like-for-like crossfeed
+  metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
