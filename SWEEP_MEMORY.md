@@ -4149,3 +4149,50 @@ a newer entry if a lesson changes.
   source_ledger, sources, candidates); held and registry-candidates were untouched (no held
   entries; neither new item's company had a registry profile with a like-for-like crossfeed
   metric). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~11.7h gap, unfiltered full source list (2026-11-24)
+
+- 2026-11-24-N: A 196-candidate queue almost entirely Tesla-SpaceX-merger stock-reaction spam and a
+  massive Pakistani-astronaut/Shenzhou-24 cluster (left out of scope throughout, same no-commercial-
+  prime-named precedent as 2026-10-25-H/2026-11-20-C) still yielded six genuinely new items via direct
+  IR/trade queue entries rather than Google News: Northrop's sixth Falcon 9 booking for Cygnus (Antares
+  330 still undated), a White House Artemis funding-anomalies request, BlackSky's EpochGeo acquisition,
+  ISRO's L&T-HAL industry-built-PSLV milestone, a routine Ariane 6/Amazon Leo batch, and Myriota's
+  Series C first close. A WebSearch synthesis for "NASA Artemis $2 billion boost" surfaced an Axios URL
+  that, fetched via the `r.jina.ai` proxy, turned out to be a verbatim 2019 Trump-administration Artemis
+  funding request (same $1.6B-shaped ask, Bridenstine "down payment" quote) rather than today's story;
+  caught only by checking the fetched content's own dateline against the headline's claimed year, and
+  worth flagging as a new flavor of the stale-resurfacing trap: a search engine can index an old article
+  under a URL/headline that reads as current. The live $2B figure was confirmed instead via Politico/
+  piqmarkets.com/qncnews.com (all dated Nov. 23) and the earlier-fetched Ars Technica piece.
+- 2026-11-24-O: A real figure quoted in a WebSearch result ("Rs 860 crore" for the L&T-HAL PSLV
+  contract) did not appear in either directly-fetched article (Tribune, India Strategic) about today's
+  ISRO-chief statement; left the figure out of the drafted copy entirely rather than trust the search
+  synthesis, consistent with the standing never-state-a-fact-from-an-unfetched-source rule extended to
+  numbers a search engine attaches to an otherwise-correct, dated story.
+- 2026-11-24-P: `arianespace.com`/`newsroom.arianespace.com` fails the `first_party` anti-spoof check:
+  the registry's `arianegroup.json` organization entity records `website` as `ariane.group`, a distinct
+  legal entity from Arianespace itself; reclassified Arianespace's own launch-success release to `trade`
+  rather than resubmit, same shape as the standing same-company-domain-mismatch precedents (Redwire,
+  Airbus, JAXA). Also: Amazon's Leo constellation has no `amazon-leo` registry slug; the entity is still
+  filed under the legacy `kuiper` slug/name in `src/data/registry/constellations/kuiper.json` (a
+  registry-maintenance item for Florian, not something a sweep can fix) — crossfeed facts on an Amazon
+  Leo item must target `entity_slug: "kuiper"`.
+- 2026-11-24-Q: Six same-week procurement/contract dedup collisions needed pre-emptive `dedup_distinct`
+  entries this run (Northrop/Cygnus vs. the NSSL Lane 2 contract mod sharing company+category; the White
+  House Artemis request vs. five unrelated NASA/SpaceX-adjacent procurement items from the trailing
+  week), confirming the standing prolific-category pre-emption practice extends to "procurement" as a
+  category, not just a single prolific company, once several government funding/contract stories land
+  in the same window.
+- 2026-11-24-R: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (six dedup collisions
+  above, plus the Arianespace first_party misclassification); merged cleanly on the second attempt after
+  fixing an invalid `entity_slug` on the Amazon Leo crossfeed fact on a third attempt ("merged 6 new, 5
+  updated, 0 held"), 1357 items up from 1351. Confirmed via a direct `jq` read of all six new items'
+  `snr`/`category`/`impact` fields and all five updated items' grown `sources`/`updates` arrays
+  (Tesla-SpaceX merger committees: 14 sources, 7 updates; Planet European defense deal: 3 sources, 1
+  update; Simera Sense/Spacemanic: 2 sources, 1 update; SpaceX BEAD: 3 sources, 1 update; Zvezda PrK: 2
+  sources, 1 update), the new `registry-candidates.json` `annotate_mismatch` entry for `kuiper.
+  sats_launched_total` (Arianespace's own cumulative count is narrower than the registry field), and a
+  `jq empty` parse check on all six touched data files (items, state, source_ledger, sources, candidates,
+  registry-candidates); held was untouched (no held entries). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
