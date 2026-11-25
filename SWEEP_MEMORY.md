@@ -4134,3 +4134,44 @@ a newer entry if a lesson changes.
   plus the sweep log's three unrelated persistence-bump `snr_movements` entries and `signals`/`discovery`
   blocks (12-channel signals pass, 4 X handles, 8-query discovery matrix). `bun run build` was not
   attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~12h gap, unfiltered full source list (2026-11-25, second)
+
+- 2026-11-25-F: A near-total-junk ~110-candidate queue (SpaceX/Tesla-merger stock chatter, dozens of
+  Shenzhou-24/Pakistan-astronaut syndicated pickups across small-town US papers via a single AP-style feed)
+  still surfaced a major first via the Google News launch feed itself: the FCC's same-day grant of SpaceX's
+  "Starmind" authorization for up to 1 million orbital data-center satellites, the first US authorization
+  for a space-based data-center constellation, widely covered within the hour (Reuters, CNBC, Light
+  Reading, Seeking Alpha). Treated as a new item rather than an update to the existing Starmind filing/
+  emissions-study items since this is the actual grant, not a filing or a third-party study of a pending
+  one; needed `dedup_distinct` against five unrelated same-company-plus-category SpaceX+regulatory items
+  in the window (Greenland Starlink enforcement, the UCL emissions study, the Vermilion Parish CUP, the
+  BEAD no-cost deal, and Colombia/MinTIC), the last one found only from the gate's own rejection message.
+  The FCC's own order (`docs.fcc.gov/public/attachments/DA-26-113A1.docx`) rendered as corrupted binary via
+  WebFetch even after Reading the auto-saved local copy (a `.docx`, not a `.pdf`; the standing PDF-local-
+  copy workaround does not generalize to Word documents), so the item led on Light Reading (trade) rather
+  than an official_record source.
+- 2026-11-25-G: Aerospacelab's own Nov. 24 inauguration of its 20,000-square-metre Charleroi satellite
+  factory (Iris2's largest single production line, tied to the Sept. 10 €2.4B contract already published)
+  surfaced via a Bluesky "satellite constellation" search hit, not the queue; Euronews and Kyiv Post carried
+  the identical CEO Benoit Deper quote verbatim, reading as the same AFP wire text, but neither explicitly
+  credited AFP and both fetched as distinct domains, so both were submitted per the standing
+  don't-under-submit practice and left for the gate's title-collapse detection to adjudicate rather than
+  pre-judging it a wire rewrite.
+- 2026-11-25-H: Two existing items needed refinement, not new cards: SpaceX's BEAD no-cost deal (2026-11-23)
+  had only a vague "~$700M"/"~$636M" range on record; Teslarati and SDxCentral (both fetched directly)
+  gave the deal's finalized exact figure ($738M, ~476,000 locations) and new oversight terms (financial
+  audits and procurement reporting dropped, performance-only oversight retained), landing a genuine
+  `corroboration_2plus` bump (SNR 2 to 3). Louisiana's Nov. 23 pause of SpaceX's Vermilion Parish coastal
+  permit review (a wildlife-habitat proximity concern, 30-day response window) patched the existing CUP
+  item as a copy-only update, WDSU being the only outlet of several same-headline local-TV pickups
+  (klfy.com, myarklamiss.com) that didn't 403 on direct fetch.
+- 2026-11-25-I: `bun scripts/finalize-sweep.ts` rejected the first attempt (the Colombia/MinTIC dedup
+  collision above, surfaced only in the gate's rejection message despite a pre-draft grep for SpaceX+
+  regulatory items in the window); merged cleanly on the second attempt ("merged 2 new, 2 updated, 0
+  held"), 1363 items up from 1361. Confirmed via a direct grep read of both new items' `snr`/`category`/
+  `impact` fields (FCC Starmind grant: SNR 4, trade base plus `corroboration_2plus`; Aerospacelab factory:
+  SNR 4, mainstream base plus `corroboration_2plus`) and both updated items' grown `sources` arrays (BEAD:
+  5 sources, SNR 2 to 3; Vermilion Parish CUP: 2 sources, SNR unchanged at 2), plus the sweep log's
+  `snr_movements` entry and `signals`/`discovery` blocks (13-channel signals pass, 2 X handles, 8-query
+  discovery matrix). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
