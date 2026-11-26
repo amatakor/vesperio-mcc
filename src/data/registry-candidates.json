@@ -1,36 +1,5 @@
 {
   "$comment": "Registry crossfeed queue (SNR_SPEC 6, SNR_PLAN 7.3); not the news harvest queue, which is src/data/candidates.json. Written by finalize-sweep from attested crossfeed facts on scored items; consumed by the weekly maintain-registry run. Every entry either lands in the registry (with the item's URL as source), is rejected with a reason, or is queued for Florian; entries are removed only when consumed.",
   "version": "0.1",
-  "candidates": [
-    {
-      "id": "2026-11-24-arianespace-ariane6-amazon-leo-le04:kuiper.sats_launched_total",
-      "item_id": "2026-11-24-arianespace-ariane6-amazon-leo-le04",
-      "entity_slug": "kuiper",
-      "entity_type": "constellation",
-      "field": "sats_launched_total",
-      "value": 136,
-      "metric": "cumulative Amazon Leo satellites deployed by Arianespace in 2026, as stated by Arianespace",
-      "same_metric": false,
-      "item_snr": 4,
-      "source_url": "https://newsroom.arianespace.com/arianespace-successfully-launches-another-36-amazon-leo-satellites-on-ariane-6s-10th-flight/?lang=eng",
-      "action": "annotate_mismatch",
-      "proposed_on": "2026-11-24",
-      "status": "pending"
-    },
-    {
-      "id": "2026-11-24-amazon-accelerates-falcon9-after-vulcan-failure:kuiper.sats_launched_total",
-      "item_id": "2026-11-24-amazon-accelerates-falcon9-after-vulcan-failure",
-      "entity_slug": "kuiper",
-      "entity_type": "constellation",
-      "field": "sats_launched_total",
-      "value": 432,
-      "metric": "cumulative Amazon Leo satellites launched across all providers, as stated by Ars Technica",
-      "same_metric": true,
-      "item_snr": 2,
-      "source_url": "https://arstechnica.com/space/2026/11/amazon-surges-launches-with-rival-spacex-after-ula-fails-to-deliver/",
-      "action": "annotate_mismatch",
-      "proposed_on": "2026-11-25",
-      "status": "pending"
-    }
-  ]
+  "candidates": []
 }
