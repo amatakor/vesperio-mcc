@@ -4136,3 +4136,31 @@ a newer entry if a lesson changes.
   check on all six touched data files (items, held, state, source_ledger, sources, candidates); held and
   registry-candidates were untouched (no held entries; the update carried no crossfeed-eligible fact). `bun
   run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~11h52m gap, unfiltered full source list (2026-11-26, third)
+
+- 2026-11-26-H: A Telecompaper/aggregator-sourced "German armed forces plan satellite constellation" lead
+  (Satcom BW 4) carried wildly inconsistent satellite counts (100/200/600) and budget figures (€8-10B/€15B/
+  €35B) across secondary write-ups, because several conflated two distinct programs (SATCOMBw Stage 4
+  secure comms vs. the separate SPOCK 2 reconnaissance constellation) and one cited a stale January 2026
+  estimate from before Rheinmetall-OHB and Airbus merged into one consortium. Handelsblatt.com itself
+  (German business daily, paywalled on other articles in the past) fetched cleanly for the specific,
+  dated Nov. 24 piece and gave one internally consistent figure set (600 satellites, €15B incl. VAT/10-yr
+  ops, three unnamed insiders, signature "within weeks," Bundestag Q1 2027, first launch NET 2030); worth
+  going straight to the primary outlet's own most-recent, dated article rather than trusting aggregator
+  summaries when a program's reported numbers disagree across sources.
+- 2026-11-26-I: ITU's own press release (itu.int) fetched cleanly for a same-day PP-26 (Plenipotentiary
+  Conference, Doha, Nov. 9-27) resolution, the first ITU PP-26 resolution dedicated to lunar spectrum;
+  worth checking itu.int directly for other PP-26 outcomes before this year's conference closes Nov. 27.
+- 2026-11-26-J: Bluesky stale-cache (2026-11-22-C/F) recurred for three different accounts this run
+  (chenryspace, tmfassociates, sciguyspace all served months-old feeds) while the other seven bluesky
+  fetches were current; confirms the stale-cache risk is per-fetch, not a fixed account list, and every
+  bluesky result still needs its own newest-post-date sanity check against `lastSweep`.
+- 2026-11-26-K: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 3 new, 1
+  updated, 0 held"), 1369 items up from 1366. Confirmed via a direct grep read of all three new items'
+  `snr`/`category`/`impact` fields (Rheinmetall/OHB/Airbus Bundeswehr: SNR 2, mainstream base minus
+  `corroboration_none`; Thales Alenia SPV: SNR 2, trade base minus `corroboration_none`; ITU lunar
+  spectrum: SNR 5, official_record ceiling) and the updated Tamaulipas debris item's grown
+  `secondary_urls` (8, up from 5) with SNR correctly unchanged at 4 (no bump requested, Sheinbaum's
+  airspace-talks request folded in as a copy-only enrichment). `bun run build` was not attempted, per the
+  2026-09-09 CLAUDE.md procedure update.
