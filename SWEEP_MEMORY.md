@@ -93,117 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~8h11m gap, unfiltered full source list (2026-10-26)
-
-- 2026-10-26-A: Marco Langbroek's bluesky feed carried "SpaceX wins $28.7M contract from Air Force for
-  data connectivity research" with no visible date in the post itself; a direct search traced the
-  underlying GeekWire piece to December 2018 (the DEUCSI program), not a same-day event. Worth checking
-  a signals-pass repost/HT with no obvious timeframe against its underlying source's own publish date
-  before treating it as news, distinct from the standing stale-PR-recycled-under-a-new-pageload-date
-  pattern (2026-10-22-M): here the repost carried no date at all, not a misleading one.
-- 2026-10-26-B: A near-total-junk ~110-candidate queue (SpaceX/Tesla-merger and Q3-earnings stock-reaction
-  spam, SpaceX $40B Apollo/Nvidia debt-financing rehash already closed and published 2026-10-06, dozens of
-  ISRO "four launch pads by 2029" Narayanan-quote pickups already published 2026-10-25, the Starlink/
-  Ukraine saga's restrictions-lifted and Reuters historical-pressure angles both already folded in via
-  2026-10-24/25 updates) still yielded four genuinely new items: Astranis's Falcon 9 contract upgrade to a
-  dedicated Block 4 GEO mission (SpaceNews lead, a Business Wire mirror of the same underlying release as
-  corroboration, landing SNR 3); EarthDaily's own $3M NASA Landsat-benchmarking task order (first_party,
-  single-sourced at SNR 5, only wire-syndication mirrors existed independently); Australia's formal ESA
-  counteroffer for Katherine Bennell-Pegg's ISS seat (europeanspaceflight.com trade lead, ABC News
-  corroboration, SNR 4, dated on the actual Oct 23 submission rather than the Oct 26 article date); and
-  EasyJet's fleet-wide Starlink Wi-Fi commitment (paxex.aero, the aviation-connectivity trade outlet, as
-  lead over several informal aviation blogs, SNR 4). All four needed `dedup_distinct` against unrelated
-  same-company-plus-category items within 7 days (Astranis/SpaceX against three separate Falcon 9 stories;
-  Bennell-Pegg against the Artemis III/IV mission-plan briefing, both SpaceX+human-spaceflight; EasyJet
-  against the Crown Castle cell-tower story, both SpaceX+partnership), extending the standing heuristic
-  pattern to a fresh batch.
-- 2026-10-26-C: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4 new, 0
-  updated, 0 held"); confirmed via a direct `jq` read of all four new items' `snr`/`category`/`impact`/
-  `sources` fields (1043 items, up from 1039), the sweep log's summary, and a `jq empty` parse check across
-  all touched data files (items, held, state, sources, source_ledger, candidates). `bun run build` was not
-  attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~3.5h gap, unfiltered full source list (2026-10-26, second)
-
-- 2026-10-26-D: A ~73-candidate queue was almost entirely SpaceX/Tesla-merger stock-market chatter
-  (dozens of Yahoo Finance/Motley Fool/Business Insider pieces on the $40B Apollo GPU financing "close",
-  already published 2026-10-25, and pure speculation pieces about a Tesla/SpaceX merger that are not
-  attributable company events) plus a dense rehash of the Starlink/Ukraine speed-restriction saga: every
-  "new" angle in the queue (Musk's "loophole closed" admission, Ukraine's denial via Beskrestnov/
-  Sternenko, the 400 km/h restoration, Trump's "he put it back") was already folded into
-  `2026-10-14-spacex-starlink-ukraine-speed-restriction`'s existing updates through Oct 25 almost
-  verbatim; fetching CBS News, NBC News and an investing.com Reuters wire copy directly confirmed this
-  rather than surfacing anything new, so no update was drafted. Worth checking a saga item's full
-  `what_happened` text for a quote before spending a corroboration fetch chasing it as "new."
-- 2026-10-26-E: A whitelisted signal's own site, not a Bluesky post, carried the sweep's best find: Anatoly
-  Zak's russianspaceweb.com running 2026 launch-schedule log (page anchor, not a dated article) stated
-  that Zvezda's leaking Transfer Chamber (PrK) will be permanently closed starting with the Progress
-  MS-36 mission (planned Nov 24), a detail no other outlet carried despite a targeted search (only vaguer
-  pre-2026-08 "reportedly planning to" coverage existed). Classed `whitelist`/`observer` (floor 4) since
-  Zak reports on Roscosmos rather than speaking for it; `crawl: "found_none"` did not pull the score below
-  the floor per the scorer's `whitelist_floor` modifier. Worth remembering that a specialist's own
-  reference/schedule page, not just their dated posts, can be the actual news source behind a signals-pass
-  repost.
-- 2026-10-26-F: A Bluesky post from a Euractiv journalist's own handle ("EU eyes Canada joining Europe's
-  Starlink alternative, IRIS²," linking an exclusive rapporteur.com piece) was judged too thin to draft:
-  rapporteur.com 403'd on every WebFetch attempt (direct, URL-decoded, and via an r.jina.ai reader proxy,
-  which hit a CAPTCHA wall instead), and the only verbatim text available was the one-sentence post itself.
-  Broader web search surfaced what the underlying story actually is (an EU Cloud and AI Development Act
-  "sovereign cloud" label being discussed for Canadian cloud providers, with IRIS² membership only a
-  tangential mention) via other outlets' independent coverage, but using those facts would have meant
-  citing claims not in the one source actually fetched. Dropped rather than drafted from search-result
-  synthesis of pages other than the cited one.
-- 2026-10-26-G: `bun scripts/finalize-sweep.ts` rejected the first two draft attempts on the Zvezda item's
-  tagline exceeding the 140-char cap (160, then 144, then 142 chars after two trims) before a third trim
-  passed at under 140; merged cleanly on the third attempt ("merged 2 new, 0 updated, 0 held"). Confirmed
-  via a direct `jq` read of both new items' `snr`/`snr_trace`/`category`/`impact` fields (mainstream base
-  3 to 4 on 2-source corroboration for the Korea item; whitelist base 3, found_none -1, whitelist_floor
-  +2 netting 4 for the Zvezda item), the item count moving from 1043 to 1045, and a `jq empty` parse check
-  across all touched data files. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
-  update.
-
-## Narrow re-check, ~5.5h gap, unfiltered full source list (2026-10-26, third)
-
-- 2026-10-26-H: A ~75-candidate queue, heavily dominated by SpaceX/Tesla-merger stock-reaction pieces
-  (Yahoo Finance/Motley Fool/Seeking Alpha/TheStreet chatter about the already-closed $40B Apollo GPU
-  financing) and dozens of Bluesky "spacex launch" search hits anticipating that evening's record-setting
-  Falcon 9 flight, still yielded five genuinely new items via careful triage rather than discarding the
-  whole queue as noise: a SEALSQ/WISeSat.Space $15M satellite-capacity LOI (found via a Bluesky
-  "satellite constellation" search hit, not the SpaceX-focused searches), an ST Engineering
-  iDirect/MBSat Oman ground-network partnership, a Flexell Space French subsidiary (noise), a Vermilion
-  Parish, Louisiana open-meetings lawsuit targeting the Starbase Louisiana tax deal, and a SpaceX FCC
-  filing backing NextNav's 900 MHz petition. Both SEALSQ's and WISeSat's own-domain press releases on
-  this deal classed `wire_pr` (tier 4), not `first_party`, per the standing 2026-10-06-W/2026-10-25-G
-  precedent: neither company has a registry organization entity for the anti-spoof domain check to pass
-  against, so even an own-domain release caps at wire_pr.
-- 2026-10-26-I: The Vermilion Parish lawsuit and the SpaceX/NextNav 900 MHz filing each triggered FOUR
-  separate same-company-plus-category dedup heuristic collisions against unrelated SpaceX regulatory
-  items (Boca Chica state park land sale, Tristar AWS-3 spectrum, carriers' spectrum opposition, South
-  Africa roaming lockout) on the first finalize attempt; all four needed `dedup_distinct` entries on
-  each item (not just one) before the draft passed, since the heuristic fires once per matching existing
-  item, not once per draft item. Worth expecting a prolific regulatory actor like SpaceX to collide with
-  several unrelated same-category items at once, not just the single most-obviously-related one.
-- 2026-10-26-J: `locationbusinessnews.com` and `findcheapbroadband.com` both looked like plausible
-  corroboration for SpaceX's Oct. 23 FCC 900 MHz filing on first search hit, but both predated it by
-  months (August filings on a related but distinct NextNav angle); fetched and dated-checked before
-  use, correctly excluded, and the Oct. 23 filing itself was left `crawl: "found_none"` since its only
-  coverage was one wire-style piece (Yahoo Finance) mirrored byte-identically on Stocktwits/TradingView/
-  Asianet. Worth re-confirming a search hit's own publish date before treating it as corroboration of a
-  specific dated filing, not just its topical match.
-- 2026-10-26-K: The full fetchable signals-channel pass (13 of 17 channels, 3 duplicate bsky-profile
-  entries skipped for people already covered via their primary site/substack) and a 6-handle X search
-  surfaced nothing new in this narrow window; `mainenginecutoff.com` fetched cleanly this run (no new
-  episode since Sept 29), resolving the "retry next sweep" flag from 2026-10-24-I as a one-off, not a
-  dead source. `aviationweek.com/author/vivienne-machi` 403'd.
-- 2026-10-26-L: `bun scripts/finalize-sweep.ts` rejected the first three draft attempts (a 148-char
-  tagline; four unattested same-company dedup collisions per -I above; two more taglines over 140 after
-  trims) before a fourth attempt passed; merged cleanly ("merged 5 new, 2 updated, 0 held"). Confirmed
-  via a direct `jq` read of all five new items' `snr`/`impact`/`category` fields (1050 items, up from
-  1045), both updated items' grown `sources`/`updates` arrays (GPU financing: 6 sources, 4 updates, SNR
-  unchanged at 4; Starfall second flight: 6 sources, 3 updates, SNR unchanged at 4), and a `jq empty`
-  parse check across all touched data files. `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update.
-
 ## Narrow re-check, ~6h12m gap, unfiltered full source list (2026-10-27)
 
 - 2026-10-27-A: A secondary source covering Cowboy Space's genuinely-new Oct. 26 "Big Iron" rocket
@@ -4175,3 +4064,49 @@ a newer entry if a lesson changes.
   5 sources, SNR 2 to 3; Vermilion Parish CUP: 2 sources, SNR unchanged at 2), plus the sweep log's
   `snr_movements` entry and `signals`/`discovery` blocks (13-channel signals pass, 2 X handles, 8-query
   discovery matrix). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8.5h gap, unfiltered full source list (2026-11-26)
+
+- 2026-11-26-A: `signalsPass.checked` must list the exact `bsky.app/profile/<handle>` URLs from
+  `signals-context`'s `fetchable` array, not the `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`
+  API endpoint actually used to fetch them; the first draft attempt was rejected ten times over (one per
+  bluesky channel) for listing the API URLs instead. The standing practice of hitting the AT Protocol
+  endpoint to get real content (the bare profile page is a JS shell) is still correct and still required;
+  just report it back to the gate under the bsky.app profile URL it corresponds to.
+- 2026-11-26-B: A `Rocket Lab posts record $268 million Q3 revenue, $515 million in new Neutron orders`
+  item was almost drafted as new before a grep of recent same-company items caught that this exact Nov. 9
+  SEC 8-K/earnings release was already published same-week as
+  `2026-11-09-rocket-lab-q3-2026-neutron-backlog` (SNR 5, 3 sources, all the same figures). Worth the
+  reminder that a discovery-pass WebSearch surfacing a company's own earnings release can look like a gap
+  when the original sweep already caught it off the SEC filing directly; grep `items.json` by company
+  name across the trailing 2-3 weeks before drafting any financial/earnings item, not just the headline
+  terms from the search.
+- 2026-11-26-C: SpaceX's own announcement (not Musk's personal pledge) that it will donate one Class A
+  share to every active Trump Account, with Musk personally matching the gift, was judged out of scope
+  under the same personal-philanthropy-is-not-a-corporate-event precedent as Musk's October pledge
+  (2026-11-22-K) and Shotwell's July gift: it is a philanthropic gesture tied to a federal savings program,
+  not a disclosed financial transaction (funding round, M&A, 8-K figure, bankruptcy) that changes the
+  company's capital structure or market position. The corporate (not purely personal) framing this time is
+  a genuine distinction from the prior precedent; flagging for Florian in case the corporate-donation angle
+  should be treated differently from a founder's personal gift.
+- 2026-11-26-D: A SemiAnalysis-attributed "SpaceX cuts Blackwell GPU spot prices" claim, repeated across a
+  dozen crypto/financial-news mirrors (KuCoin, CryptoBriefing, Futunn, Longbridge, AGI Hunt, ExplainX,
+  HuggingNews), traced back to an unlinked, never-directly-fetched SemiAnalysis report with no SpaceX or
+  Anthropic confirmation; left entirely undrafted per the standing never-draft-from-synthesis-of-an-
+  unfetched-page rule, extending it to a secondhand industry-analyst claim rather than a news article.
+  A Spain-based EOS-X Space funding round (€110M/$120M, Nov. 6) traced to a stratospheric-balloon tourism
+  company, not an orbital one; left out of scope on the standing suborbital/non-orbital-tourism exclusion
+  regardless of the funding angle.
+- 2026-11-26-E: `bun scripts/finalize-sweep.ts` rejected the first draft attempt (the bsky.app URL format
+  above, ten violations at once); merged cleanly on the second attempt ("merged 3 new, 2 updated, 0
+  held"), 1366 items up from 1363. Confirmed via a direct `jq` read of all three new items' `snr`/
+  `category`/`impact` fields (EnduroSat/Blue Origin: SNR 4, trade base plus `corroboration_2plus`;
+  MaiaSpace: SNR 2, trade base minus `corroboration_none`, a same-domain mirror having explicitly credited
+  European Spaceflight so not counted as independent; GalaxEye/Bellatrix: SNR 4, mainstream base plus
+  `corroboration_2plus`) and both updated items' grown `sources`/`updates` arrays (Hera: 4 sources, 1
+  update, SNR unchanged at its first-party ceiling of 5; Starlink/Ukraine saga: 107 sources, 51 updates,
+  SNR unchanged at its indirect-sourcing ceiling of 4), the sweep log's four unrelated persistence-bump
+  `snr_movements` entries, and a `jq empty` parse check on all four touched data files (items, state,
+  held, source_ledger); held and registry-candidates were untouched (no held entries; none of the three
+  new items' companies had a registry profile with a like-for-like crossfeed metric). `bun run build` was
+  not attempted, per the 2026-09-09 CLAUDE.md procedure update.
