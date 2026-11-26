@@ -4110,3 +4110,29 @@ a newer entry if a lesson changes.
   held, source_ledger); held and registry-candidates were untouched (no held entries; none of the three
   new items' companies had a registry profile with a like-for-like crossfeed metric). `bun run build` was
   not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h gap, unfiltered full source list (2026-11-26, second)
+
+- 2026-11-26-F: A near-total-junk 71-candidate queue (SpaceX/Trump-Accounts stock-giveaway pledge mirrors,
+  extending the standing personal-philanthropy-is-not-a-corporate-event precedent from 2026-11-22-K/
+  2026-11-26-C, plus a Pakistani-astronaut/Shenzhou-24 cluster, out of scope per the standing
+  no-commercial-prime-named precedent) and a clean 8-query discovery matrix plus 14/17 fetchable signals
+  channels yielded exactly one genuine development, found via Jeff Foust's bluesky repost: on-record
+  scientific pushback (astrophysicist Adam Becker and the American Astronomical Society via an AP/KSAT
+  piece, Monash University's Michael Brown via his university's own Medianet expert-comment release) against
+  the Nov. 25 FCC Starmind authorization, folded in as an `attach`+`patch` enrichment with no `bump` (the
+  item was already at its indirect-sourcing ceiling of 4; a 4th and 5th source added zero delta, confirming
+  the ceiling holds regardless of corroboration count once reached). A Cosmoserve "raises $6 million" Business
+  Today piece read as fresh but Inc42's own earlier report dated the actual seed round to Nov. 5, three weeks
+  stale; a classified USSF-380 Falcon 9 launch was still "Go for Launch" for Nov. 29 per Launch Library,
+  i.e. not yet flown, so left undrafted rather than published as a scheduling note. A WSJ "Amazon's rival to
+  Starlink is struggling" feature was left undrafted as a synthesis of already-published facts (the Vulcan
+  failure, an Arianespace satellite-batch delay) rather than drafted as a new item with its own fact.
+- 2026-11-26-G: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 0 new, 1
+  updated, 0 held"), 1366 items unchanged (update-only sweep). Confirmed via a direct `jq` read of the
+  updated item's grown `sources` (5, up from 3) and `updates` arrays and unchanged `snr`/`snr_trace` (still 4,
+  only the pre-existing `corroboration_2plus` modifier logged, the two new attaches producing zero-delta
+  pushes as expected at the ceiling), the sweep log's `signals`/`discovery` blocks, and a `jq empty` parse
+  check on all six touched data files (items, held, state, source_ledger, sources, candidates); held and
+  registry-candidates were untouched (no held entries; the update carried no crossfeed-eligible fact). `bun
+  run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
