@@ -4140,3 +4140,22 @@ a newer entry if a lesson changes.
   `jq empty` parse check on all six touched data files (items, held, state, source_ledger, sources,
   candidates); held and registry-candidates were untouched (no held entries; the new item's crossfeed
   facts list was empty with a note, since a 13F share count isn't a crossfeed-eligible organization field).
+
+## Narrow re-check, ~11.5h gap, unfiltered full source list (2026-11-27, third)
+
+- 2026-11-27-I: A pre-draft `grep -n "Zhuque-3"` (with the hyphen) against `items.json` missed the
+  already-published `2026-11-20-landspace-zhuque3-engine-reuse-test` item entirely, because that item's own
+  id and body text use the unhyphenated "Zhuque3"/"Zhuque-3 Y2" spelling inconsistently; drafted the LandSpace
+  engine-requalification story (China In Space, SpaceNews) as a new item and got rejected at finalize on the
+  same-event dedup check before fixing it into an `updates[]` attach with `bump: "corroboration_4plus"` (two
+  new independently-written trade sources beyond the original two Chinese-mainstream sources). Worth grepping
+  a company/program name both with and without hyphens (or just the bare product name, e.g. "Zhuque") before
+  trusting a pre-draft dedup check cleared something as new.
+- 2026-11-27-J: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the Zhuque-3 dedup
+  collision above; merged cleanly on the second attempt ("merged 2 new, 3 updated, 0 held"), 1374 items up
+  from 1372. Confirmed via a direct read of both new items' `snr`/`category`/`impact` fields (MDA/Blue Canyon:
+  SNR 5, first_party ceiling off mda.space, domain-matched to the registry's recorded website; Stoke
+  Space/SLC-14: SNR 5, first_party ceiling off stokespace.com) and all three updated items' `snr`/`sources`
+  fields (LandSpace: SNR 3 to 4 via the new `corroboration_4plus` bump; Aerospacelab: SNR unchanged at 4, 3
+  sources up from 2; Axelspace GRUS-3: SNR unchanged at its first-party ceiling of 5, grown `secondary_urls`).
+  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
