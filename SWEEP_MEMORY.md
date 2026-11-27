@@ -4107,3 +4107,36 @@ a newer entry if a lesson changes.
   two unrelated persistence-bump `snr_movements` entries, and a `jq empty` parse check on all six touched
   data files (items, state, held, source_ledger, sources, candidates). `bun run build` was not attempted,
   per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~3h9m gap, unfiltered full source list (2026-11-27, second)
+
+- 2026-11-27-E: A WebSearch for "Europe space agency contract announcement November 27 2026" synthesized a
+  confident-looking claim that ESA's Council of Ministers "approved on November 27" a record budget and a
+  new defense-related "European Resilience from Space" fund; a direct follow-up search surfaced the actual
+  dates across several outlets (sciencebusiness.net, space.com) showing the Bremen Ministerial Council ran
+  Nov. 26-27, **2025**, a full year stale. The search engine's synthesis silently dropped the year, the same
+  shape as 2026-11-24-N's "search engine indexes an old article under a URL/headline that reads as current"
+  trap, but this time with no article URL at all to check a byline against, just a confident prose summary;
+  worth a second, date-focused search whenever a WebSearch synthesis states a big institutional-budget
+  figure with no linked source attached, since there's nothing to directly fetch and verify otherwise.
+- 2026-11-27-F: ESO's own domain (eso.org) press release failed `finalize-sweep`'s `official_record`
+  anti-spoof allowlist (it only recognizes gov/court/procurement-register domains, not intergovernmental
+  research-organization domains); reclassifying to `trade` cleared it. Worth remembering `official_record`
+  is narrower than "authoritative institution's own site" and defaulting non-gov institutional press
+  releases (ESO, and likely other IGOs) to `trade` rather than retrying `official_record`.
+- 2026-11-27-G: A chain of low-tier blog pickups (basenor.com, world-today-news.com, both previously
+  unseen in this file) reporting "$250M+ of Tesla Megapacks installed at Starbase" traced only to a Tesla
+  investor's (Sawyer Merritt) X post referenced secondhand, not independently verified via the syndication
+  endpoint or any outlet with its own reporting; left entirely undrafted per the standing
+  never-draft-from-synthesis-of-an-unfetched-page rule, the same shape as the 2026-11-26-D SemiAnalysis
+  case. basenor.com reads as a low-quality Tesla-accessories content-farm blog; treat it as unreliable by
+  default rather than a new source worth classifying.
+- 2026-11-27-H: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the ESO official_record
+  misclassification above; merged cleanly on the second attempt ("merged 1 new, 1 updated, 0 held"), 1372
+  items up from 1371. Confirmed via a direct `jq` read of the new Nvidia/SpaceX-13F item's `snr`/`category`/
+  `impact`/`kind` fields (SNR 5, official_record ceiling off the SEC EDGAR 13F-HR filing itself, dated on
+  its actual Nov. 16 filing date per the predates-window chase rule) and the updated Starmind item's grown
+  `sources` (6, up from 5) and `updates` (2, up from 1) arrays with SNR correctly unchanged at 4, plus a
+  `jq empty` parse check on all six touched data files (items, held, state, source_ledger, sources,
+  candidates); held and registry-candidates were untouched (no held entries; the new item's crossfeed
+  facts list was empty with a note, since a 13F share count isn't a crossfeed-eligible organization field).
