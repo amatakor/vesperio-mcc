@@ -93,92 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h12m gap, unfiltered full source list (2026-10-27)
-
-- 2026-10-27-A: A secondary source covering Cowboy Space's genuinely-new Oct. 26 "Big Iron" rocket
-  reveal (Payload, a Business Wire release) also restated the company's $275M Series B/$2B valuation
-  as if current; a dedicated follow-up search showed that round closed in May 2026, five months
-  stale, and was left out of the draft entirely. A new flavor of the stale-resurfacing trap: the
-  SURROUNDING article is genuinely fresh and worth drafting, but a background figure embedded inside
-  it can still be old; check every dollar figure's own date, not just the article's dateline, before
-  copying it into a new item.
-  - PCMag, SDxCentral, Benzinga (direct), RCR Wireless, Mobile World Live, PhoneArena, and
-  driveteslacanada.ca all 403'd on direct WebFetch this run; Yahoo Finance's Benzinga-syndication
-  mirror and TheNextWeb worked as fetchable, independently-written substitutes for the same CEO
-  commentary story (Verizon's Dan Schulman on SpaceX/Starlink Mobile's buildout timeline), extending
-  the standing wire/syndication-mirror-attribution pattern. A Motley Fool (fool.com) earnings-call
-  transcript again worked cleanly as a `trade`-class primary-ish quote source for a CEO's own words
-  (extends the 2026-10-22-U Crown Castle precedent to Verizon's Q3 2026 call).
-- 2026-10-27-B: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 3 new, 1
-  updated, 0 held"); confirmed via a direct `jq` read of all three new items' `snr`/`category`/
-  `impact`/`kind` fields (1053 items, up from 1050), the updated United item's grown `sources`
-  (3)/`updates` (1) arrays, and the sweep log's two unrelated persistence-bump `snr_movements`
-  entries. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~4.6h gap, unfiltered full source list (2026-10-27, second)
-
-- 2026-10-27-C: A Payload "This week" framing on OSMOS X's EDF-backed Tactical-Capture (TAC)
-  consortium read as a fresh contract award but traced, via the consortium partner Poznan
-  University of Technology's own announcement and a Starburst piece, to an April 17, 2026
-  selection decision, over 6 months stale; OSMOS X's own site confirms the same partner list and
-  30-month duration with no distinct October signing/kickoff date stated anywhere. Left undrafted
-  per the standing stale-resurfacing pattern rather than trust a trade outlet's own "this week"
-  framing against three independent sources dating the underlying award months earlier.
-- 2026-10-27-D: The Guardian (theguardian.com) is now unfetchable directly via WebFetch (joins the
-  standing ft.com/wsj.com/axios.com/reuters.com/arstechnica.com list); two mirrors that explicitly
-  credit it by name (ua.news, democracynow.org) worked as citable `mainstream`-class corroboration
-  for a story (SpaceX's classified DoD tracking-data access) originally sourced to Breaking
-  Defense's Sept. 23 "sources say" report, landing a clean `mainstream_pickup` bump (3 to 4).
-- 2026-10-27-E: A Polish GPW-listed company's own ESPI stock-exchange disclosure (here, Scanway's,
-  mirrored on parkiet.com) still classes `trade`, not `official_record`/`first_party`, per the
-  standing 2026-10-02-G Creotech precedent; landed a clean SNR 4 anyway alongside two independently-
-  written trade pieces (Space24.pl, SatNews) on Scanway's MoU expanding its Pixxel partnership,
-  since three distinct `trade`-class sources alone clear `corroboration_2plus`.
-- 2026-10-27-F: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 1 new,
-  4 updated, 0 held"); confirmed via a direct `jq` read of the new Scanway/Pixxel item's
-  `snr`/`snr_trace`/`category`/`impact` fields (1058 items, up from 1057), all four updated items'
-  `snr`/`sources`/`updates` fields (DoD tracking data 3→4, carriers/FCC spectrum 2→3, both via
-  genuine bumps; Starlink/Ukraine and SpaceX/Tesla merger unchanged at their ceilings), the sweep
-  log's two `snr_movements` entries, and a `jq empty` parse check across all touched data files.
-  `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h24m gap, unfiltered full source list (2026-10-27, third)
-
-- 2026-10-27-G: The `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint, the
-  standing workaround for the bare `bsky.app/profile/<handle>` page returning no post
-  content, itself returned a flat HTTP 403 for every one of the 10 fetchable bluesky
-  accounts this run (confirmed on several handles and both the `getAuthorFeed` and
-  `getProfile` XRPC methods) -- a new, total-block failure distinct from the standing
-  blank-profile-page and stale-cache issues. No alternate working route was found this
-  run; treated all 10 accounts as checked-but-unreachable in `signalsPass` rather than
-  silently dropping them. Worth retrying the API endpoint first on the next sweep before
-  assuming it's a permanent block.
-- 2026-10-27-H: Two genuinely new items cleared despite a queue almost entirely consumed
-  by SpaceX/Tesla-merger stock-reaction spam and Starlink/Ukraine-saga rehash: Ukrainian
-  startup Himera and Denmark's GomSpace confirmed their Obria Nano test satellite
-  (launched Oct. 1 on Transporter-18) is operating in orbit, the first step toward a
-  sovereign Ukrainian comms constellation; and the Pentagon's Office of Strategic Capital
-  signed a $150 million conditional loan with Stoke Space for a second Cape Canaveral
-  launchpad, found via Sandra Erwin's recent-bylines (an xSearch WebSearch, not a direct
-  feed) after the SpaceNews article itself was paywalled beyond a teaser -- Air & Space
-  Forces Magazine and a Department of War release mirror (newsroomamerica.com) gave the
-  full figures and quotes. Neither company nor program had been drafted by any prior
-  sweep.
-  - A same-day Via Satellite piece on ESA's Oct. 23/26 Galileo G2 contracts (already
-  published same-day from ESA's own first-party release) still carried a genuinely new
-  fact set -- a 2028 first-launch target for the G2 satellites, the current 36-satellite
-  operational count, and an ESA quote -- folded in as a no-bump enrichment patch, same
-  shape as the standing "re-read a same-day source for a missed detail" pattern.
-  - United's own Oct. 22 Kirby/Musk exchange (already captured same-day) picked up a
-  further-escalated framing the next sweep missed: Kirby calling Delta's choice of Amazon
-  Leo over Starlink "a mistake" to a podcast, with updated fleet (661 aircraft) and
-  passenger (5.4 million in September) figures, sourced to TeslaNorth and Teslarati since
-  the original "Cheeky Pint" podcast substack 403'd on direct fetch.
-  - `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 2 new, 3
-  updated, 0 held"); confirmed via a direct `jq` read of both new items' `snr`/`category`/
-  `impact` fields (1060 items, up from 1058) and all three updated items' grown `sources`
-  arrays. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
 ## Narrow re-check, ~6h19m gap, unfiltered full source list (2026-10-28)
 
 - 2026-10-28-A: The `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint, flat
@@ -4164,3 +4078,32 @@ a newer entry if a lesson changes.
   `secondary_urls` (8, up from 5) with SNR correctly unchanged at 4 (no bump requested, Sheinbaum's
   airspace-talks request folded in as a copy-only enrichment). `bun run build` was not attempted, per the
   2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8h20m gap, unfiltered full source list (2026-11-27)
+
+- 2026-11-27-A: A ~95-candidate queue was almost entirely two sagas: the FCC's Nov. 25 Starmind grant
+  drawing a second wave of astronomer/academic reaction (Common Dreams, Space Connect, AP "scientists
+  skeptical," several Bluesky "judgement-bot" posts) and Musk/SpaceX's doubled kids-stock pledge
+  (out of scope, standing personal-philanthropy precedent 2026-11-22-K/2026-11-26-C). Both the Starmind
+  item and the Tamaulipas debris/Mexico-airspace-talks item had already absorbed this exact reaction wave
+  via the prior sweep's updates; checking each item's own `updates[]` log before drafting caught both as
+  zero-delta before spending a corroboration crawl on either.
+- 2026-11-27-B: Rocket Lab's own GlobeNewswire mission-success release for "Night Owls Never Sleep"
+  (Synspective's 14th StriX satellite, 101st Electron flight) carried a template date error, "September 27,
+  2026," on every mirror checked (StockTitan, a lifestyle-site reprint, QuiverQuant's AI summary) despite
+  being published and the mission itself occurring Nov. 26-27; Launch Library's own record (net
+  2026-11-27T00:15Z, status "Payload Deployed") resolved the true date cleanly. Worth cross-checking a
+  wire release's stated date against Launch Library/computed sources when a GlobeNewswire mirror's date
+  looks implausible relative to its publish timestamp, rather than trusting the press text verbatim.
+- 2026-11-27-C: rocketlabcorp.com and globenewswire.com both 403'd on every direct WebFetch attempt as
+  usual; StockTitan and a lifestyle-magazine syndication site both cleanly reprinted the same GlobeNewswire
+  release text and were usable as `wire_pr` leads (collapsed as a wire rewrite at finalize, no SNR cost).
+- 2026-11-27-D: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on a 141-char tagline
+  (one over the 140 limit) on the IN-SPACe item; trimming it merged cleanly on the second attempt ("merged
+  2 new, 1 updated, 0 held"). Confirmed via a direct grep read of both new items' `snr`/`category`/
+  `impact` fields (Rocket Lab/Synspective: SNR 4, `wire_pr` base, no corroboration bump since trade-tier
+  corroboration doesn't lift a wire_pr base; IN-SPACe/SSLV: SNR 4, mainstream base plus
+  `corroboration_2plus`) and the Isar Aerospace/Nova Scotia item's grown `sources` array, the sweep log's
+  two unrelated persistence-bump `snr_movements` entries, and a `jq empty` parse check on all six touched
+  data files (items, state, held, source_ledger, sources, candidates). `bun run build` was not attempted,
+  per the 2026-09-09 CLAUDE.md procedure update.
