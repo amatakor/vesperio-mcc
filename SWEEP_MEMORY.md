@@ -4013,3 +4013,25 @@ a newer entry if a lesson changes.
   held entries; the item's crossfeed facts list was empty with a note, since a military recon launch states
   no organization-level fact for CASC). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
   procedure update.
+
+## Narrow re-check, ~3.5h gap, unfiltered full source list (2026-11-28, second)
+
+- 2026-11-28-E: A near-total-junk 32-candidate queue (fabricated/bot-shaped Bluesky outrage over the Nov.
+  25 FCC Starmind grant, the already-fully-covered Mexico/Sheinbaum airspace-talks escalation, unflown
+  USSF-380/Cygnus NG-25 previews) yielded one genuine new item found via the queue's own Google News:
+  launch entry: Bloomberg reported (via a Briefs republish, Bloomberg itself unfetchable) that SpaceX is
+  exploring acquiring Anterix's and NextNav's 900 MHz spectrum for its direct-to-device push; every other
+  mirror found (oninvest, Yahoo Finance, webull, tipranks) explicitly credited Bloomberg as the source, so
+  a genuine quoted-phrase corroboration search still landed `crawl: "found_none"` despite real stock-market
+  reaction, an honest SNR 2. Separately, Rocket Lab's own 101st-Electron release plus Space.com/
+  spaceanddefense.io write-ups confirmed the mission was also the vehicle's 22nd launch of 2026, a new
+  annual record beating 2025's 21; folded into the existing same-day item as a no-bump copy enrichment
+  (already at its wire_pr ceiling of 4).
+- 2026-11-28-F: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on an updated item's
+  patched `explainer.tagline` at 158 chars (the original item's own tagline was well under the limit, but
+  folding the "annual record" phrase into it pushed it over); trimming it merged cleanly on the second
+  attempt ("merged 1 new, 1 updated, 0 held"), 1376 items up from 1375. Confirmed via a direct read of the
+  new Anterix/NextNav item's `snr`/`snr_trace`/`category`/`impact` fields and the Rocket Lab item's patched
+  `explainer` fields, plus a `jq empty`-equivalent grep sanity check on the touched data files (items,
+  state, source_ledger, sources, candidates). `bun run build` was not attempted, per the 2026-09-09
+  CLAUDE.md procedure update.
