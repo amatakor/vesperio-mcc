@@ -95756,7 +95756,7 @@
       ],
       "source_url": "https://www.prnewswire.com/news-releases/trusted-space-acquires-falcon-exodynamics-to-deliver-end-to-end-trusted-autonomy-for-national-security-space-302935637.html",
       "secondary_urls": [],
-      "snr": 3,
+      "snr": 4,
       "snr_trace": {
         "base": {
           "tier": 4,
@@ -95768,10 +95768,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 3,
-        "scorer_version": 2
+        "final": 4,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-28",
+            "from": 3,
+            "to": 4,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -95809,7 +95822,7 @@
       "source_url": "https://europeanspaceflight.com/next-vega-c-launch-edges-closer-to-christmas-day-as-satellites-arrive-late/",
       "secondary_urls": [],
       "kind": "event",
-      "snr": 2,
+      "snr": 3,
       "snr_trace": {
         "base": {
           "tier": 3,
@@ -95821,10 +95834,23 @@
             "type": "corroboration_none",
             "delta": -1,
             "reason": "corroboration crawl ran and found nothing"
+          },
+          {
+            "type": "persistence",
+            "delta": 1,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
           }
         ],
-        "final": 2,
-        "scorer_version": 2
+        "final": 3,
+        "scorer_version": 2,
+        "history": [
+          {
+            "date": "2026-11-28",
+            "from": 2,
+            "to": 3,
+            "reason": "survived uncontested past the persistence window (caps at 4)"
+          }
+        ]
       },
       "sources": [
         {
@@ -104589,6 +104615,77 @@
         "origin_url": "https://www.nasaspaceflight.com/2026/11/stoke-nova-booster-slc-14-2027-debut/",
         "width": 1200,
         "height": 801
+      }
+    },
+    {
+      "id": "2026-11-27-yaogan-50-04-launch",
+      "date": "2026-11-27",
+      "headline": "China launches Yaogan-50 04 remote sensing satellite",
+      "explainer": {
+        "tagline": "China launched the Yaogan-50 04 remote-sensing satellite on a Long March-6A rocket from Taiyuan, Xinhua says.",
+        "what_happened": "China launched the Yaogan-50 04 satellite at 9:05 p.m. Beijing time on Nov. 27 from the Taiyuan Satellite Launch Center aboard a modified Long March-6 carrier rocket, per Xinhua. Xinhua said the satellite entered its planned orbit and the mission was a complete success, marking the 682nd flight of the Long March rocket series. Per Xinhua, the satellite will mainly be used for land survey, crop yield estimation, and disaster prevention and relief; China In Space reported it flies a retrograde low-Earth orbit, the fourth satellite in the Yaogan-50 series.",
+        "why_it_matters": "The launch adds to China's fast-growing Yaogan remote-sensing fleet and keeps up the Long March family's launch cadence, the kind of state-directed EO capacity that commercial EO operators and resellers abroad increasingly compete and partner against."
+      },
+      "kind": "event",
+      "tags": [
+        "eo",
+        "china"
+      ],
+      "category": "launch",
+      "impact": "noise",
+      "companies": [
+        "CASC"
+      ],
+      "source_url": "https://english.news.cn/20261127/c52f32fc5aa04bd28cdc63b5a63ee925/c.html",
+      "secondary_urls": [
+        "https://www.china-in-space.com/p/fourth-retrograde-orbiting-yaogan"
+      ],
+      "snr": 4,
+      "snr_trace": {
+        "base": {
+          "tier": 3,
+          "source": "https://english.news.cn/20261127/c52f32fc5aa04bd28cdc63b5a63ee925/c.html",
+          "reason": "base tier 3 from lead source class \"mainstream\" (Xinhua)"
+        },
+        "modifiers": [
+          {
+            "type": "corroboration_2plus",
+            "delta": 1,
+            "reason": "2 distinct sources (>=2)"
+          }
+        ],
+        "final": 4,
+        "scorer_version": 2
+      },
+      "sources": [
+        {
+          "url": "https://english.news.cn/20261127/c52f32fc5aa04bd28cdc63b5a63ee925/c.html",
+          "outlet": "Xinhua",
+          "class": "mainstream",
+          "added": "2026-11-28",
+          "via": "initial"
+        },
+        {
+          "url": "https://www.china-in-space.com/p/fourth-retrograde-orbiting-yaogan",
+          "outlet": "China In Space",
+          "class": "trade",
+          "added": "2026-11-28",
+          "via": "corroboration"
+        }
+      ],
+      "publishDate": "2026-11-28T01:49:35.348Z",
+      "entities": [
+        {
+          "name": "CASC",
+          "ref": "organizations/casc"
+        }
+      ],
+      "image": {
+        "src": "/img/items/2026-11-27-yaogan-50-04-launch.webp",
+        "credit": "Image: china-in-space.com",
+        "origin_url": "https://www.china-in-space.com/p/fourth-retrograde-orbiting-yaogan",
+        "width": 1200,
+        "height": 675
       }
     }
   ]

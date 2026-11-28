@@ -93,183 +93,6 @@ a newer entry if a lesson changes.
     of slip isn't mechanically caught -- double-count newItems against
     the summary's claimed count before running finalize-sweep next time.
 
-## Narrow re-check, ~6h19m gap, unfiltered full source list (2026-10-28)
-
-- 2026-10-28-A: The `public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed` endpoint, flat
-  403'd for every handle on 2026-10-27-G, worked cleanly again this run for all 10 bluesky
-  signals accounts tried; the 403 reads as a transient same-day block, not a lasting change.
-  Worth retrying it first each run per the standing practice rather than assuming yesterday's
-  block persists.
-- 2026-10-28-B: A near-total-junk ~27-candidate queue (Google News Starlink/Ukraine-saga and
-  SpaceX-Tesla-merger-speculation rehash, routine Bluesky launch-reaction chatter, off-topic
-  BBC/CGTN filler) and a fully clean 17-channel signals pass traced entirely to already-
-  published ground; both genuine finds came from the discovery pass's M&A leg: the FCC's
-  October 27 order (DA 26-1160) approving Amazon's transfer of Globalstar's satellite
-  licenses, clearing the regulatory path for the April-announced $11.57B acquisition to
-  close, and Scott Galloway's Oct 26 Prof G Markets podcast commentary on the Tesla-SpaceX
-  merger speculation thread (a new named-voice angle distinct from the bank-analyst notes
-  already published). The FCC order's own PDF fetched as binary garbage via WebFetch's
-  text-extraction pass but parsed cleanly once the Read tool was pointed at WebFetch's
-  auto-saved local copy (per the standing 2026-10-24-B workaround), giving a clean
-  official_record SNR 5 lead with the exact docket number, conditions, and deal figures.
-- 2026-10-28-C: A UL Lafayette/Pecan Island property story (donors supporting a sale to
-  SpaceX) surfaced via the Google News queue turned out to be two separate, genuinely new
-  facts once chased: the UL System board's Oct. 22 approval of a 40-year, $1-a-year lease
-  (via a nonprofit sublease to SpaceX, improvements in lieu of rent) ahead of the land's
-  planned 2027 purchase, folded into the long-running Starbase Louisiana item as a no-bump
-  attach+patch; and a residents' Open Meetings Law lawsuit over the Aug. 25 PILOT deal,
-  which turned out to already be fully published as its own item
-  (`2026-10-26-vermilion-parish-spacex-tax-deal-lawsuit`) from the day before. Worth
-  grepping `items.json` for each distinct sub-story a bundled local-news lead touches,
-  not just the most prominent one, before drafting or patching.
-- 2026-10-28-D: An Israeli ad-tech firm (Discover-Tech) allegedly using ad networks to track
-  Starlink terminal locations for surveillance purposes (Citizen Lab/Trend Micro research,
-  widely covered via Reuters) was judged out of scope and left undrafted: it is a
-  cybersecurity/surveillance story about spyware targeting Starlink's user base, not a fact
-  about Starlink's own commercial operations, contracts, or regulatory status, and no
-  operator or government statement on the record ties it to a market-moving consequence.
-  Flag for Florian if a future sweep finds SpaceX or a government responding on the record,
-  which would change the calculus the way the orbital-safety-incident carve-out does for
-  debris.
-- 2026-10-28-E: A single-source lead (Kiko Dontchev's own remarks at an Oct. 21 public event
-  disclosing a six-week Florida Falcon 9 gap ahead of Starship's first KSC launch) was left
-  undrafted despite a verbatim-confirmed X post (via the syndication endpoint): the only
-  other coverage was two flagged SEO-mill sites (tech-insider.org, shattered.io) and a
-  403'd substack, with no trade-press pickup found after two searches. Worth a same-topic
-  re-check once a trade outlet covers it, rather than publishing on a single X repost alone
-  when cheaper, cleaner sourcing is likely to surface soon given the story's profile.
-- 2026-10-28-F: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on the
-  standing same-company-plus-category dedup heuristic (the Galloway commentary item against
-  the unrelated `2026-10-20-spacex-q3-2026-earnings` release, sharing only company SpaceX +
-  category financial); one more `dedup_distinct` entry cleared it on the second attempt
-  ("merged 2 new, 1 updated, 0 held"). Confirmed via a direct `jq` read of both new items'
-  `snr`/`snr_trace`/`category`/`impact`/`kind` fields (1062 items, up from 1060), the
-  updated Starbase Louisiana item's grown `sources` (17, up from 15) and `updates` (9, up
-  from 8) arrays, and the sweep log's two unrelated persistence-bump `snr_movements`
-  entries. `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~8h gap, unfiltered full source list (2026-10-28, second)
-
-- 2026-10-28-G: A WebSearch-surfaced "Google to pay SpaceX $920 million a month" wave
-  (TechRepublic, DataCenterDynamics, TheNextWeb, tech-insider.org, all reading as live and
-  tagged "[2026]") traced on direct fetch (TheNextWeb) to a June 6, 2026 SpaceX SEC filing,
-  made public one week before the company's June 12 IPO; the figure was already background
-  in the already-published Sept. 10 `spacex-ai-compute-deal-1-1b-monthly` item ("previously
-  disclosed compute deals with... Google ($920 million a month)"). A new flavor of the
-  stale-resurfacing trap: multiple independently-domained outlets all describing the filing
-  as "ahead of SpaceX's anticipated IPO" five months after that IPO actually happened, each
-  apparently republishing or paraphrasing the same stale piece without noticing the company
-  already went public. Left entirely undrafted.
-- 2026-10-28-H: A same-day FAA comment-period closing (SpaceX's own filing on the Aug. 25
-  `faa-spaceport-launch-corridor-rfi` docket, arguing it alone expects 10,000 launches/year
-  and that outdated air traffic control, not rocket cadence, is the real bottleneck) is an
-  `updates[].patch`+`attach` on that 2-month-old RFI item, not a new item, since it's SpaceX's
-  comment on the exact docket the RFI item already covers; caught by checking the RFI's own
-  content before drafting a "SpaceX tells FAA" item from a Google-News/Dealroom headline that
-  read standalone. regulations.gov itself 403'd on every WebFetch attempt (including the
-  docket landing page); TeslaNorth and WCCFTech, both fetched directly, gave the full figures
-  (182 launches/7 reentries in 2025, Cape Canaveral's 450/year capacity claim, the docket
-  number FAA-2026-9736-0263) without needing the primary filing.
-- 2026-10-28-I: A routine Starlink batch (B1082's 26th flight, Group 15-16, 27 satellites,
-  Oct. 27 from Vandenberg) that looked like a same-day queue-sourced gap (a KeepTrack "B1082
-  Flies Starlink Group 15-16" headline plus a Florida Today trend piece on California
-  overtaking Florida in launch counts) turned out to already be published same-day as
-  `2026-10-27-spacex-starlink-15-16-b1082-26th-flight`; caught by grepping `items.json` for
-  recent SpaceX+`launch`-category items by date before drafting, not just by booster/mission
-  name. Worth the reminder on a fast-moving cadence story: check the last 5-7 days of a
-  frequent actor's same-category items by date range, not just a title/company grep, since a
-  routine batch's id rarely names the booster or group number the way a search headline does.
-- 2026-10-28-J: South Korea's KASA/KAIST active debris removal satellite (ADR-SAT) readiness
-  review and assembly start (Oct. 26-27, target KITSAT-3, 2027 Nuri-6 launch) is a genuine new
-  gap neither the queue nor a Google-News non-US query surfaced; found via a dedicated
-  discovery-pass search once the queue's own "KASA begins assembly... Nuri-6" Google News
-  entry pointed at the right program name. Korea Times named the target "KITSAT-3" while
-  Herald Business named it "Woori-byeol 3"; these are the same satellite (Woori-byeol, "Our
-  Star," is KITSAT's Korean public name), not a contradiction, worth remembering before
-  treating two Korean-sourced outlets naming a spacecraft differently as a same-metric
-  conflict.
-- 2026-10-28-K: `bun scripts/finalize-sweep.ts` rejected the first draft attempt on a
-  `bump: "corroboration_2plus"` request on the Rassvet sanctions item, which already carried
-  that exact modifier from an October 3 update (modifiers saturate, confirmed again per the
-  2026-10-07-O mechanism); dropping the bump and submitting the HUR-supply-chain enrichment as
-  a plain `attach`+`patch` (the item was already at its persistence-capped ceiling of 4)
-  merged cleanly on the second attempt ("merged 6 new, 2 updated, 0 held"). Confirmed via a
-  direct `jq` read of all six new items' `snr`/`category`/`impact` fields (1068 items, up from
-  1062) and both updated items' grown `sources`/`updates` arrays (FAA RFI: 4 sources, 1 update;
-  Rassvet sanctions: 6 sources, 3 updates). `bun run build` was not attempted, per the
-  2026-09-09 CLAUDE.md procedure update.
-
-## Narrow re-check, ~6h19m gap, unfiltered full source list (2026-10-28, third)
-
-- 2026-10-28-L: Two identically-titled Vietnamese outlets (VietnamPlus, Saigon Giai Phong, both
-  headlined verbatim "Vietnam joins Artemis Accords on space exploration") title-collapsed as a
-  `wire_rewrite` at finalize despite being two distinct state-media domains, netting the item a
-  mainstream base of 3 with no corroboration bump rather than the 4 two genuinely independent
-  mainstream sources would have earned; worth remembering a near-identical headline across two
-  outlets is a real risk when citing state-affiliated press that runs the same wire text in
-  English, not just when a single outlet's story is mirrored on other domains.
-- 2026-10-28-M: Dating a debris item on its actual reentry date, not the sweep date, matters for
-  the same-company-plus-category dedup gate: a LandSpace Zhuque-2E upper-stage reentry over
-  Indonesia (debris recovered in Sampit, Central Kalimantan, Oct. 18) sits only 4 days from the
-  already-published Sept.-15-launch Minnesota cornfield debris item (both company LandSpace,
-  category incident) because both are dated close together even though the two reentries are 5
-  weeks apart in real time; attesting `dedup_distinct` with each item's own launch date cleared
-  it cleanly on the second attempt.
-- 2026-10-28-N: A Google-News/queue-dominant day (SpaceX stock and Tesla-merger reaction, ISRO's
-  Oct. 30 NVS-03 preview, Starlink/Ukraine-saga rehash) still yielded four new items once each
-  queue/signals lead was chased past the headline: Flexell Space/Satoro's in-orbit solar cell
-  demo deal (SpaceNews, single-sourced, honest `found_none`), Reflect Orbital's unannounced
-  ground spotlight test near Lone Pine that drew astronomer alarm (Leonard David leading, Hoodline
-  and Futurism corroborating, three outlets giving different framings of the same facts worth
-  attributing separately rather than picking one), Vietnam's Artemis Accords signing (found via
-  Marcia Smith's bluesky, no number-of-signatory claim made since no directly-fetched source
-  stated it, only a WebSearch synthesis did), and the LandSpace debris incident above. Four
-  updates folded in: SpaceX's reported talks to acquire ~4,000 acres of Vermilion Parish School
-  District land (single-sourced local TV, no bump, still drafted per the standing weak-sourcing
-  rule); Anthropic's own public S-1 revealing the real SpaceX compute figure is $120.5B, not the
-  $84.5B from the earlier confidential-draft leak; Fitch's rating note confirming the $40B GPU
-  lease doesn't move SpaceX's BBB+ rating, with the same note disclosing SpaceX's $89.9B cash
-  position; and American Tower's CEO becoming the second tower-company executive (after Crown
-  Castle) to say on an earnings call he expects to be approached if Starlink builds a US network.
-  `bun scripts/finalize-sweep.ts` rejected the first attempt on the Minnesota-debris dedup
-  collision above, and a second attempt on one update tagline at 144 chars; merged cleanly on
-  the third attempt ("merged 4 new, 4 updated, 0 held"). Confirmed via a direct `jq` read of all
-  four new items' `snr`/`category`/`impact` fields (1072 items, up from 1068), all four updated
-  items' grown `sources`/`updates` arrays, and the sweep log's `corroboration_collapses` entry
-  for the Vietnam title-collapse above. `bun run build` was not attempted, per the 2026-09-09
-  CLAUDE.md procedure update.
-
-## Narrow re-check, ~5h17m gap, unfiltered full source list (2026-10-28, fourth)
-
-- 2026-10-28-O: Vivienne Machi's Aviation Week author page (403'd on 2026-10-26) fetched cleanly this
-  run and surfaced three same-day (Oct. 28) bylines; two traced to already-published ground (CASR
-  contracts, the rideshare/launch-market trend piece) but the third was the ULA Vulcan return-to-flight
-  story, independently confirmed via the mandatory HTML/queue legs anyway. Worth treating a 403 on this
-  author page as transient, not permanent, consistent with the pattern on other outlets.
-  A genuinely new item surfaced from a discovery-pass JAXA query despite predating the sweep window by
-  6 days: ispace's own Oct. 22 release on a JAXA "Lunar Solar Power Tower" conceptual-design contract had
-  no queue/signals hit across several intervening sweeps; chased per the standing predates-window rule
-  and dated on the actual Oct. 22 announcement. Neither ispace (Japan) nor Virgin Galactic has a
-  `src/data/registry` organization entity, so both companies' own-domain releases (ispace-inc.com,
-  virgingalactic.com) classed `wire_pr`, not `first_party`, per the standing 2026-10-06-W/2026-10-25-G
-  no-registry-entity precedent, capping both items at SNR 4 despite being genuinely the actor's own site.
-- 2026-10-28-P: A crossfeed attestation on `vulcan.next_flight_date` (Nov. 13, from trade/mainstream
-  sources landing SNR 3 pre-dispute) tied against the registry's existing canonical LL2-sourced value
-  (Dec. 31 placeholder, tier 4) as a genuine same-metric SNR conflict: both sides got marked disputed
-  (the item's SNR dropping 4→3 via the `dispute` modifier) and the crossfeed fact queued to `held.json`
-  for Florian per SNR_SPEC 6, while the news item itself still published normally (held.json holds the
-  crossfeed dispute, not the item). Worth remembering a specific announced date beating a vague
-  registry placeholder on `next_flight_date` doesn't auto-win since the registry's aggregator-sourced
-  claim is still tier 4; a true same-metric tie between two tier-4-class claims disputes rather than
-  overwrites, exactly as SNR_SPEC intends.
-- 2026-10-28-Q: `bun scripts/finalize-sweep.ts` merged cleanly on the first attempt ("merged 4 new, 1
-  updated, 1 held"); confirmed via a direct `jq` read of all four new items' `snr`/`category`/`impact`
-  fields (1076 items, up from 1072), the Terrestar/Equatys update's grown `sources` (3) array, the new
-  `held.json` entry for the Vulcan `next_flight_date` crossfeed tie, and a `jq empty` parse check across
-  all touched data files (items, held, state, sources, source_ledger, candidates, the Vulcan registry
-  file, registry-candidates). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure
-  update.
-
 ## Narrow re-check, ~6h10m gap, unfiltered full source list (2026-10-29)
 
 - 2026-10-29-A: A ~35-candidate queue almost entirely consumed by SpaceX/Tesla-merger stock
@@ -4159,3 +3982,34 @@ a newer entry if a lesson changes.
   fields (LandSpace: SNR 3 to 4 via the new `corroboration_4plus` bump; Aerospacelab: SNR unchanged at 4, 3
   sources up from 2; Axelspace GRUS-3: SNR unchanged at its first-party ceiling of 5, grown `secondary_urls`).
   `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md procedure update.
+
+## Narrow re-check, ~8.5h gap, unfiltered full source list (2026-11-28)
+
+- 2026-11-28-A: An 86-candidate queue was almost entirely two already-handled sagas (the Nov. 25 FCC
+  Starmind reaction wave and the Musk/SpaceX kids'-stock-pledge doubling, out of scope per the standing
+  personal-philanthropy precedent) plus Black-Friday/retail-deal filler from Space.com and Futurism noise
+  unrelated to space. The lone genuine new item was a routine Chinese Yaogan-50 04 recon-satellite launch,
+  found via Launch Library and confirmed with Xinhua's own English piece (english.news.cn) plus China In
+  Space's independent write-up, same sourcing pattern as the 50-02/50-03 precedents.
+- 2026-11-28-B: Bluesky profile pages (`bsky.app/profile/<handle>`) still render as blank JS shells on
+  plain WebFetch; the `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10`
+  endpoint worked cleanly for all 10 bluesky fetchable channels this run, continuing the standing
+  workaround. Three of ten (chenryspace, tmfassociates, sciguyspace) again served months-old cached feeds
+  (same stale-cache pattern as 2026-11-26-J), confirming it recurs on largely the same accounts run over
+  run, not randomly; worth flagging those three specifically for a fresher cache or an alternate fetch path
+  if it keeps happening. spacepolicyonline.com's plain page 403'd/bot-checked but its bluesky channel
+  substituted cleanly; europeanspaceflight.substack.com/feed 403'd but the site itself and the author's own
+  bluesky both worked, so coverage of that person was not lost.
+- 2026-11-28-C: European Spaceflight's own top headline, "Hundreds of ArianeGroup Workers Strike in Bremen"
+  (a 24-hour IG Metall action, nearly the whole Bremen Ariane-6-upper-stage workforce), was left undrafted
+  once ArianeGroup's own statement (also on the same outlet, in a same-day follow-up) confirmed the strike
+  did not affect the Ariane 6 delivery schedule: a labor action with an explicit no-commercial-impact
+  outcome reads as below the inclusion bar even though the employer and vehicle are both tracked.
+- 2026-11-28-D: `bun scripts/finalize-sweep.ts` merged cleanly on the FIRST attempt ("merged 1 new, 0
+  updated, 0 held"), 1375 items up from 1374. Confirmed via a direct `jq` read of the new Yaogan-50 04
+  item's `snr`/`snr_trace`/`category`/`impact` fields (SNR 4, mainstream base off Xinhua plus
+  `corroboration_2plus` from China In Space) and a `jq empty` parse check on all six touched data files
+  (items, held, state, source_ledger, sources, candidates); held and registry-candidates were untouched (no
+  held entries; the item's crossfeed facts list was empty with a note, since a military recon launch states
+  no organization-level fact for CASC). `bun run build` was not attempted, per the 2026-09-09 CLAUDE.md
+  procedure update.
